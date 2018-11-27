@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <changeSet author="danrodney" id="changelog-1">
+
+    <createTable tableName="cdr_version">
+      <column name="cdr_version_id" type="bigint" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(80)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <!-- Enum: CONTROLLED or REGISTERED -->
+      <column name="data_access_level" type="tinyint">
+        <constraints nullable="false"/>
+      </column>
+      <!-- Increases by one for each release of the CDR -->
+      <column name="release_number" type="smallint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bigquery_project" type="varchar(80)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bigquery_dataset" type="varchar(80)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creation_time" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="num_participants" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+  </changeSet>
+</databaseChangeLog>
