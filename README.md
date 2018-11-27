@@ -110,48 +110,6 @@ Other available operations may be discovered by running:
 ./project.rb swagger-regen
 ```
 
-## Deploying
-
-To deploy your local databrowser API code to a given AppEngine project, in the public-api
-directory run:
-
-```
-./project.rb deploy --project PROJECT --version VERSION --[no-]promote
-```
-
-This also migrates the SQL databases, so avoid using this when you have local
-SQL schema changes.
-
-Example:
-
-```
-./project.rb deploy --project all-of-us-workbench-test --version dantest --no-promote
-```
-
-When the api is deployed, you'll be able to access it at https://VERSION-public-api-dot-api-dot-PROJECT.appspot.com. If you specify --promote, it will be the main API code
-served out of https://public-api-dot-PROJECT.appspot.com.
-Aside from releases, this command can be used to test a topic branch in the
-shared test project before submitting. If possible, push to a version with your
-own username and --no-promote.
-
-
-To deploy your local UI code to a given AppEngine project, in the public-ui
-directory run:
-
-```
-./project.rb deploy-ui --project PROJECT --version VERSION --[no-]promote
-```
-
-Example:
-
-```
-./project.rb deploy-ui --project all-of-us-workbench-test --version dantest --no-promote
-```
-
-When the UI is deployed, you'll be able to access it at https://VERSION-dot-PROJECT.appspot.com. If you specify --promote, you can access it at https://public-ui-dot-PROJECT.appspot.com. Note that either way, it will be pointing at the live test API
-service (https://public-api-dot-PROJECT.appspot.com). (This can be overridden locally
-in the Chrome console).
-
 ## git-secrets
 
 ### Setup
@@ -204,40 +162,6 @@ objects) and loaded into the database by `workbench.tools.ConfigLoader`.
 `CacheSpringConfiguration`, a Spring `@Configuration`, provides
 the `@RequestScoped` `WorkbenchConfig`. It caches the values fetched from the
 database with a 10 minute expiration.
-
-## API Server Database Updates
-
-Loading of local tables/data for both schemas (workbench/public) happens in a manual goal(creates tables in both schemas and insert any app data needed for local development):
-
-```
-./project.rb run-local-data-migrations
-```
-
-Local tables loaded with data are:
-  * **workbench** - cdr_version
-  * **public** - criteria, achilles_analysis, concept, concept_relationship, vocabulary, domain, achilles_results, achilles_results_concept and db_domain
-
-When editing database models, you must write a new changelog XML file. See
-[Liquibase change docs](http://www.liquibase.org/documentation/changes/index.html),
-such as [createTable](http://www.liquibase.org/documentation/changes/create_table.html).
-
-You can get Hibernate to update the schema for inspection (and then backport
-that to liquibase's XML files) by editing `public-api/db/vars.env` to make Hibernate
-run as the liquibase user and adding `spring.jpa.hibernate.ddl-auto=update`
-to `public-api/src/main/resources/application.properties`.
-
-Then use `public-api/project.rb connect-to-db` and `SHOW CREATE TABLE my_new_table`.
-Revert your changes or drop the db when you're done to verify the changelog
-works.
-
-Finally, write a new changelog file in `public-api/db/changelog/` and include it in
-`db.changelog-master.xml`.
-
-`liquibase` does not roll back partially failed changes.
-
-Workbench schema lives in `public-api/db` --> all workbench related activities access/persist data here
-
-Public schema lives in `public-api/db-cdr` --> all data browser related activities access/persist data here
 
 ## Generate public count databases for a CDR version
 
