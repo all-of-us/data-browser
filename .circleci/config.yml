@@ -40,7 +40,7 @@ jobs:
           - api-cache-
       - run:
           working_directory: ~/data-browser
-          command: ci/activate_creds.sh api/circle-sa-key.json
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
       - run:
           # MySQL sometimes refuses connections by the time we attempt to apply
           # data migrations. Watch the port for 2m for startup.
@@ -71,18 +71,18 @@ jobs:
       # TODO: Fix the deploy script to work on the correct new project.
       - restore_cache:
           keys:
-          - api-cache-{{ checksum "~/data-browser/api/build.gradle" }}
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
           - api-cache-
       - run:
           working_directory: ~/data-browser
-          command: ci/activate_creds.sh api/circle-sa-key.json
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
       - deploy:
           name: Deploy to App Engine
-          working_directory: ~/data-browser/api
+          working_directory: ~/data-browser/public-api
           command: |
-            ./project.rb deploy \
-              --project all-of-us-workbench-test \
-              --account circle-deploy-account@all-of-us-workbench-test.iam.gserviceaccount.com \
+            ./project.rb deploy-public-api \
+              --project aou-db-test \
+              --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
               --version circle-ci-test \
               --key-file circle-sa-key.json \
               --promote
@@ -151,8 +151,8 @@ jobs:
           command: |
             ../ci/activate_creds.sh circle-sa-key.json
             ./project.rb deploy-ui \
-              --project all-of-us-workbench-test \
-              --account circle-deploy-account@all-of-us-workbench-test.iam.gserviceaccount.com \
+              --project aou-db-test \
+              --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
               --version circle-ci-test \
               --key-file circle-sa-key.json \
               --promote
@@ -170,15 +170,15 @@ jobs:
           command: git submodule update --init --recursive
       - restore_cache:
           keys:
-          - api-cache-{{ checksum "~/data-browser/api/build.gradle" }}
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
           - api-cache-
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
             ../ci/activate_creds.sh circle-sa-key.json
             ./project.rb deploy \
-              --project all-of-us-rw-staging \
-              --account circle-deploy-account@all-of-us-workbench-test.iam.gserviceaccount.com \
+              --project aou-db-staging \
+              --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
               --git-version "${CIRCLE_TAG}" \
               --app-version "${CIRCLE_TAG}" \
               --circle-url "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}" \
