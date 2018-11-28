@@ -10,18 +10,5 @@
     "numParticipants": 946237,
     "cdrDbName": "cdr20181023",
     "publicDbName": "public20181015"
-  },
-  {
-    "cdrVersionId": 2,
-    "isDefault": true,
-    "name": "Synthetic Dataset v2",
-    "dataAccessLevel": 1,
-    "bigqueryProject": "all-of-us-ehr-dev",
-    "bigqueryDataset": "synthetic_cdr20180606",
-    "creationTime": "2018-09-20 00:00:01Z",
-    "releaseNumber": 2,
-    "numParticipants": 946237,
-    "cdrDbName": "cdr20181101",
-    "publicDbName": "public20181101"
   }
 ]

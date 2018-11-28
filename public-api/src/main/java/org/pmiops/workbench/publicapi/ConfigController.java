@@ -23,9 +23,8 @@ public class ConfigController implements ConfigApiDelegate {
     WorkbenchConfig config = configProvider.get();
     return ResponseEntity.ok(
         new ConfigResponse()
-            .gsuiteDomain(config.googleDirectoryService.gSuiteDomain)
-            .projectId(config.server.projectId)
-            .enforceRegistered(config.firecloud.enforceRegistered)
+            .gsuiteDomain(config.auth.gsuiteDomain)
+            .enforceRegistered(config.auth.enforceRegistered)
             .publicApiKeyForErrorReports(config.server.publicApiKeyForErrorReports));
   }
 }

@@ -20,8 +20,8 @@ public class PrivateWorkbenchConfig {
   public ApiClient workbenchApiClient(HttpServletRequest request,
                                       WorkbenchConfig workbenchConfig) {
     ApiClient apiClient = new ApiClient();
-    apiClient.setBasePath(workbenchConfig.server.apiBaseUrl);
-    apiClient.setDebugging(workbenchConfig.firecloud.debugEndpoints);
+    apiClient.setBasePath(workbenchConfig.server.workbenchApiBaseUrl);
+    apiClient.setDebugging(workbenchConfig.server.debugEndpoints);
     apiClient.setAccessToken(
         request.getHeader(HttpHeaders.AUTHORIZATION)
             .substring("Bearer".length()).trim());
