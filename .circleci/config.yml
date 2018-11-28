@@ -135,7 +135,6 @@ jobs:
           paths:
             - public-ui
 
-  # TODO: Deploy to new data browser project.
   public-ui-deploy-to-test:
     <<: *defaults
     steps:
@@ -160,8 +159,6 @@ jobs:
   # In staging, we deploy all at once in order to track and control the release
   # for a tagged version only. In "test", we maintain individual release jobs
   # for API and UI to allow faster deploys and because we lack a version tag.
-
-  # TODO: Deploy to new data-browser project.
   deploy-staging:
     <<: *defaults
     steps:
