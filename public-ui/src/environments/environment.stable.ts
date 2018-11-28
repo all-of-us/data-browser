@@ -1,6 +1,6 @@
 export const environment = {
   displayTag: 'Stable',
-  publicApiUrl: 'https://public-api-dot-all-of-us-rw-stable.appspot.com',
+  publicApiUrl: 'https://api-dot-aou-db-stable.appspot.com',
   workbenchUrl: 'https://all-of-us-rw-stable.appspot.com',
   clientId: '56507752110-ovdus1lkreopsfhlovejvfgmsosveda6.apps.googleusercontent.com',
   tcellappid: 'AoUNonProd-WZFW2',

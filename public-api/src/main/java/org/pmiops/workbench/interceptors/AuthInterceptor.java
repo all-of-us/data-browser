@@ -78,7 +78,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     }
 
     Profile profile = privateWorkbenchService.getMe();
-    if (configProvider.get().firecloud.enforceRegistered &&
+    if (configProvider.get().auth.enforceRegistered &&
         profile.getIdVerificationStatus() != IdVerificationStatus.VERIFIED) {
       log.warning("Account has not been id verified");
       response.sendError(HttpServletResponse.SC_FORBIDDEN);
