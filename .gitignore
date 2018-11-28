@@ -35,10 +35,6 @@ tools/cloud_sql_proxy
 .DS_Store
 client/py/.pydevproject
 Common-api/out/*
-public-api/wrapper
-public-api/gradle
-public-api/gradlew
-public-api/gradlew.bat
 **/.idea
 **/*.iml
 **/*.ipr
