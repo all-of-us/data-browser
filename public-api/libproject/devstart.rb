@@ -1091,8 +1091,7 @@ def setup_cloud_project(cmd_name, *args)
   op.parse.validate
   gcc.validate
 
-  # XXX: Add back
-  # create_project_resources(gcc)
+  create_project_resources(gcc)
   setup_project_data(gcc, op.opts.public_db_name)
 end
 
