@@ -42,6 +42,9 @@ jobs:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
       - run:
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb run-local-migrations
+      - run:
           # MySQL sometimes refuses connections by the time we attempt to apply
           # data migrations. Watch the port for 2m for startup.
           name: Await MySQL startup
