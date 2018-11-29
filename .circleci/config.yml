@@ -58,35 +58,35 @@ jobs:
 
   public-api-build-test:
     <<: *java_defaults
-      steps:
-        - checkout
-        - run:
-            command: git submodule update --init --recursive
-        - run:
-            #Circle is bad about setting up your remotes for you, you must use origin/
-            command: |
-              if [ ${CIRCLE_BRANCH} != "" ] && [ ${CIRCLE_BRANCH} != "master" ] && [ $(git diff --name-only $(git merge-base origin/master ${CIRCLE_BRANCH}) | grep public-api/ | wc -l | xargs) == 0 ]; then
-                echo No relevant changes on non-master branch, skipping
-                circleci step halt
-              fi
-        - restore_cache:
-            keys:
-            - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-            - api-cache-
-        - run:
-            name: Validate swagger definitions
-            working_directory: ~/data-browser/public-api
-            command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
-        - run:
-            name: Unit tests
-            working_directory: ~/data-browser/public-api
-            command: ./project.rb test
-        - save_cache:
-            paths:
-              - ~/.gradle
-              - ~/.m2
-              - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
-            key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      - run:
+          #Circle is bad about setting up your remotes for you, you must use origin/
+          command: |
+            if [ ${CIRCLE_BRANCH} != "" ] && [ ${CIRCLE_BRANCH} != "master" ] && [ $(git diff --name-only $(git merge-base origin/master ${CIRCLE_BRANCH}) | grep public-api/ | wc -l | xargs) == 0 ]; then
+              echo No relevant changes on non-master branch, skipping
+              circleci step halt
+            fi
+      - restore_cache:
+          keys:
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - api-cache-
+      - run:
+          name: Validate swagger definitions
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
+      - run:
+          name: Unit tests
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb test
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/.m2
+            - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
+          key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-deploy-to-test:
     <<: *java_defaults
