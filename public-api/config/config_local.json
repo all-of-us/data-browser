@@ -7,6 +7,7 @@
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-workbench-test.appspot.com",
     "publicApiKeyForErrorReports": "",
+    "debugEndpoints": false,
     "projectId": "aou-db-test"
   }
 }
