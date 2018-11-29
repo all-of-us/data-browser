@@ -16,7 +16,7 @@ java_defaults: &java_defaults
     TERM: dumb
 
 jobs:
-  api-local-test:
+  public-api-local-test:
     docker:
       - image: allofustest/workbench:buildimage-0.0.12
       - image: mysql:5.7
@@ -56,7 +56,39 @@ jobs:
             - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
           key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
-  api-deploy-to-test:
+  public-api-build-test:
+    <<: *java_defaults
+      steps:
+        - checkout
+        - run:
+            command: git submodule update --init --recursive
+        - run:
+            #Circle is bad about setting up your remotes for you, you must use origin/
+            command: |
+              if [ ${CIRCLE_BRANCH} != "" ] && [ ${CIRCLE_BRANCH} != "master" ] && [ $(git diff --name-only $(git merge-base origin/master ${CIRCLE_BRANCH}) | grep public-api/ | wc -l | xargs) == 0 ]; then
+                echo No relevant changes on non-master branch, skipping
+                circleci step halt
+              fi
+        - restore_cache:
+            keys:
+            - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - api-cache-
+        - run:
+            name: Validate swagger definitions
+            working_directory: ~/data-browser/public-api
+            command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
+        - run:
+            name: Unit tests
+            working_directory: ~/data-browser/public-api
+            command: ./project.rb test
+        - save_cache:
+            paths:
+              - ~/.gradle
+              - ~/.m2
+              - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
+            key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+
+  public-api-deploy-to-test:
     <<: *java_defaults
     steps:
       - checkout
@@ -200,14 +232,18 @@ workflows:
     jobs:
       # Always run basic test/lint/compilation (open PRs, master merge).
       # Note: by default tags are not picked up.
-
-      # TODO: Add the public api testsapi tests
+      - public-api-local-test
       - public-ui-build-test
+      - public-api-build-test
       # Run deployment to "test" on master merges.
-#
-#      # TODO: Deploy public api to test
-#      - public-ui-deploy-to-test:
-#          <<: *filter_master
+      - api-deploy-to-test:
+          <<: *filter_master
+          requires:
+            - public-api-build-test
+      - public-ui-deploy-to-test:
+          <<: *filter_master
+          requires:
+            - public-ui-build-test
   deploy-staging:
     jobs:
       # TODO: Add the public api tests
