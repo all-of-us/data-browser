@@ -217,7 +217,7 @@ services:
       - ~/.gsutil:/.gsutil:cached
     command: |
       cloud_sql_proxy
-        -instances all-of-us-workbench-test:us-central1:workbenchmaindb=tcp:0.0.0.0:3307
+        -instances all-of-us-db-test:us-central1:databrowsermaindb=tcp:0.0.0.0:3307
         -credential_file=/w/sa-key.json
   mysql-cloud:
     depends_on:

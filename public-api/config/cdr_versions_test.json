@@ -2,6 +2,7 @@
   {
     "cdrVersionId": 1,
     "name": "Synthetic Dataset v1",
+    "isDefault": true,
     "dataAccessLevel": 1,
     "bigqueryProject": "all-of-us-ehr-dev",
     "bigqueryDataset": "synthetic_cdr20180606",

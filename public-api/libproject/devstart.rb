@@ -15,10 +15,9 @@ require "optparse"
 require "ostruct"
 require "tempfile"
 
-TEST_PROJECT = "all-of-us-workbench-test"
-GSUITE_ADMIN_KEY_PATH = "src/main/webapp/WEB-INF/gsuite-admin-sa.json"
-INSTANCE_NAME = "workbenchmaindb"
-FAILOVER_INSTANCE_NAME = "workbenchbackupdb"
+TEST_PROJECT = "aou-db-test"
+INSTANCE_NAME = "databrowsermaindb"
+FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
               compute.googleapis.com admin.googleapis.com appengine.googleapis.com
               cloudbilling.googleapis.com sqladmin.googleapis.com sql-component.googleapis.com
@@ -27,24 +26,19 @@ DRY_RUN_CMD = %W{echo [DRY_RUN]}
 
 ENVIRONMENTS = {
   TEST_PROJECT => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:workbenchmaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_test.json",
     :cdr_versions_json => "cdr_versions_test.json"
   },
-  "all-of-us-rw-staging" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:workbenchmaindb",
+  "aou-db-staging" => {
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_staging.json",
     :cdr_versions_json => "cdr_versions_staging.json"
   },
-  "all-of-us-rw-stable" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:workbenchmaindb",
+  "aou-db-stable" => {
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_stable.json",
     :cdr_versions_json => "cdr_versions_stable.json"
-  },
-  "all-of-us-rw-prod" => {
-    :cdr_sql_instance => "all-of-us-rw-prod:us-central1:workbenchmaindb",
-    :config_json => "config_prod.json",
-    :cdr_versions_json => "cdr_versions_prod.json"
   }
 }
 
@@ -119,9 +113,6 @@ def read_db_vars(gcc)
     exit 1
   end
   return vars.merge({
-    'CDR_DB_CONNECTION_STRING' => cdr_vars['DB_CONNECTION_STRING'],
-    'CDR_DB_USER' => cdr_vars['WORKBENCH_DB_USER'],
-    'CDR_DB_PASSWORD' => cdr_vars['WORKBENCH_DB_PASSWORD'],
     'PUBLIC_DB_CONNECTION_STRING' => cdr_vars['PUBLIC_DB_CONNECTION_STRING'],
     'PUBLIC_DB_USER' => cdr_vars['PUBLIC_DB_USER'],
     'PUBLIC_DB_PASSWORD' => cdr_vars['PUBLIC_DB_PASSWORD']
@@ -171,7 +162,7 @@ def setup_local_environment()
   ENV.update(Workbench.read_vars_file("db/vars.env"))
   ENV["DB_HOST"] = "127.0.0.1"
   ENV["MYSQL_ROOT_PASSWORD"] = root_password
-  ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/workbench?useSSL=false"
+  ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser?useSSL=false"
   ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public?useSSL=false"
 end
 
@@ -243,24 +234,6 @@ Common.register_command({
   :description => "Runs smoke tests against public-api server",
   :fn => ->() { run_local_public_api_tests() }
 })
-
-def get_gsuite_admin_key(project)
-  unless File.exist? GSUITE_ADMIN_KEY_PATH
-    common = Common.new
-    common.run_inline("gsutil cp gs://#{project}-credentials/gsuite-admin-sa.json #{GSUITE_ADMIN_KEY_PATH}")
-  end
-end
-
-def run_api()
-  common = Common.new
-  ServiceAccountContext.new(TEST_PROJECT).run do
-    get_gsuite_admin_key(TEST_PROJECT)
-    common.status "Starting API. This can take a while. Thoughts on reducing development cycle time"
-    common.status "are here:"
-    common.status "  https://github.com/all-of-us/workbench/blob/master/api/doc/2017/dev-cycle.md"
-    at_exit { common.run_inline %W{docker-compose down} }
-  end
-end
 
 def run_public_api_and_db()
   common = Common.new
@@ -344,7 +317,6 @@ def run_integration_tests(cmd_name, *args)
   ensure_docker cmd_name, args
   common = Common.new
   ServiceAccountContext.new(TEST_PROJECT).run do
-    get_gsuite_admin_key(TEST_PROJECT)
     common.run_inline %W{gradle integration} + args
   end
 end
@@ -459,30 +431,6 @@ end
 def get_auth_login_account()
   return `gcloud config get-value account`.strip()
 end
-
-def register_service_account(cmd_name, *args)
-  op = WbOptionsParser.new(cmd_name, args)
-  op.add_option(
-        "--project [project]",
-        ->(opts, v) { opts.project = v},
-        "Project to register the service account for"
-  )
-  op.parse.validate
-  ServiceAccountContext.new(op.opts.project).run do
-    Dir.chdir("../firecloud-tools") do
-      common = Common.new
-      common.run_inline %W{./run.sh scripts/register_service_account/register_service_account.py
-           -j #{ENV["GOOGLE_APPLICATION_CREDENTIALS"]} -e all-of-us-research-tools@googlegroups.com}
-    end
-  end
-end
-
-Common.register_command({
-  :invocation => "register-service-account",
-  :description => "Registers a service account with Firecloud; do this once per account we use.",
-  :fn => ->(*args) { register_service_account("register-service-account", *args) }
-})
-
 
 def drop_cloud_db(cmd_name, *args)
   ensure_docker cmd_name, args
@@ -719,26 +667,24 @@ Common.register_command({
   :fn => ->(*args) { run_cloud_data_migrations("run-cloud-data-migrations", args) }
 })
 
-def write_db_creds_file(project, cdr_db_name, public_db_name,
-                        root_password, workbench_password, public_password=nil)
-  instance_name = "#{project}:us-central1:workbenchmaindb"
+def write_db_creds_file(project, public_db_name, root_password, meta_db_password, public_password=nil)
+  instance_name = "#{project}:us-central1:#{INSTANCE_NAME}"
   db_creds_file = Tempfile.new("#{project}-vars.env")
   if db_creds_file
     begin
-      db_creds_file.puts "DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/workbench?rewriteBatchedStatements=true"
+      db_creds_file.puts "DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/databrowser?rewriteBatchedStatements=true"
       db_creds_file.puts "DB_DRIVER=com.mysql.jdbc.GoogleDriver"
       db_creds_file.puts "DB_HOST=127.0.0.1"
-      db_creds_file.puts "DB_NAME=workbench"
+      db_creds_file.puts "DB_NAME=databrowser"
       # TODO: make our CDR migration scripts update *all* CDR versions listed in the cdr_version
       # table of the workbench DB; then this shouldn't be needed anymore.
-      db_creds_file.puts "CDR_DB_NAME=#{cdr_db_name}"
       db_creds_file.puts "PUBLIC_DB_NAME=#{public_db_name}"
       db_creds_file.puts "CLOUD_SQL_INSTANCE=#{instance_name}"
       db_creds_file.puts "LIQUIBASE_DB_USER=liquibase"
-      db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{workbench_password}"
+      db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{meta_db_password}"
       db_creds_file.puts "MYSQL_ROOT_PASSWORD=#{root_password}"
-      db_creds_file.puts "WORKBENCH_DB_USER=workbench"
-      db_creds_file.puts "WORKBENCH_DB_PASSWORD=#{workbench_password}"
+      db_creds_file.puts "META_DB_USER=databrowser"
+      db_creds_file.puts "META_DB_PASSWORD=#{meta_db_password}"
       if public_password
         db_creds_file.puts "PUBLIC_DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/#{public_db_name}?rewriteBatchedStatements=true"
         db_creds_file.puts "PUBLIC_DB_USER=public"
@@ -754,214 +700,6 @@ def write_db_creds_file(project, cdr_db_name, public_db_name,
     raise("Error creating file.")
   end
 end
-
-def create_auth_domain(cmd_name, args)
-  op = WbOptionsParser.new(cmd_name, args)
-  op.add_option(
-    "--project [project]",
-    ->(opts, v) { opts.project = v},
-    "Project to create the authorization domain"
-  )
-  op.parse.validate
-
-  common = Common.new
-  common.run_inline %W{gcloud auth login}
-  token = common.capture_stdout %W{gcloud auth print-access-token}
-  token = token.chomp
-  header = "Authorization: Bearer #{token}"
-  content_type = "Content-type: application/json"
-
-  domain_name = get_auth_domain(op.opts.project)
-  common.run_inline %W{curl -X POST -H #{header} -H #{content_type} -d {}
-     https://api-dot-#{op.opts.project}.appspot.com/v1/auth-domain/#{domain_name}}
-end
-
-Common.register_command({
-  :invocation => "create-auth-domain",
-  :description => "Creates an authorization domain in Firecloud for registered users",
-    :fn => ->(*args) { create_auth_domain("create-auth-domain", args) }
-})
-
-def update_user_registered_status(cmd_name, args)
-  common = Common.new
-  op = WbOptionsParser.new(cmd_name, args)
-  op.add_option(
-    "--project [project]",
-    ->(opts, v) { opts.project = v},
-    "Project to update registered status for"
-  )
-  op.add_option(
-    "--action [action]",
-    ->(opts, v) { opts.action = v},
-    "Action to perform: add/remove."
-  )
-  op.add_option(
-    "--account [account]",
-    ->(opts, v) { opts.account = v},
-    "Account to perform update registered status as."
-  )
-  op.add_option(
-    "--user [user]",
-    ->(opts, v) { opts.user = v},
-    "User to grant or revoke registered access from."
-  )
-  op.parse.validate
-
-  common.run_inline %W{gcloud auth login}
-  token = common.capture_stdout %W{gcloud auth print-access-token}
-  token = token.chomp
-  common.run_inline %W{gcloud config set account #{op.opts.account}}
-  header = "Authorization: Bearer #{token}"
-  content_type = "Content-type: application/json"
-  payload = "{\"email\": \"#{op.opts.user}\"}"
-  domain_name = get_auth_domain(op.opts.project)
-  if op.opts.action == "add"
-    common.run_inline %W{curl -H #{header} -H #{content_type}
-      -d #{payload} https://api-dot-#{op.opts.project}.appspot.com/v1/auth-domain/#{domain_name}/users}
-  end
-
-  if op.opts.action == "remove"
-    common.run_inline %W{curl -X DELETE -H #{header} -H #{content_type}
-      -d #{payload} https://api-dot-#{op.opts.project}.appspot.com/v1/auth-domain/#{domain_name}/users}
-  end
-end
-
-Common.register_command({
-  :invocation => "update-user-registered-status",
-  :description => "Adds or removes a specified user from the registered access domain.\n" \
-                  "Accepts three flags: --action [add/remove], --account [admin email], and --user [target user email]",
-  :fn => ->(*args) { update_user_registered_status("update_user_registered_status", args) }
-})
-
-def authority_options(cmd_name, args)
-  op = WbOptionsParser.new(cmd_name, args)
-  op.opts.remove = false
-  op.opts.dry_run = false
-  op.add_option(
-       "--email [EMAIL,...]",
-       ->(opts, v) { opts.email = v},
-       "Comma-separated list of user accounts to change. Required.")
-  op.add_option(
-      "--authority [AUTHORITY,...]",
-      ->(opts, v) { opts.authority = v},
-      "Comma-separated list of user authorities to add or remove for the users. ")
-  op.add_option(
-      "--remove",
-      ->(opts, _) { opts.remove = "true"},
-      "Remove authorities (rather than adding them.)")
-  op.add_option(
-      "--dry_run",
-      ->(opts, _) { opts.dry_run = "true"},
-      "Make no changes.")
-  op.add_validator ->(opts) { raise ArgumentError unless opts.email and opts.authority}
-  return op
-end
-
-def set_authority(cmd_name, *args)
-  ensure_docker cmd_name, args
-  op = authority_options(cmd_name, args)
-  gcc = GcloudContextV2.new(op)
-  op.parse.validate
-  gcc.validate
-
-  with_cloud_proxy_and_db(gcc) do
-    Dir.chdir("tools") do
-      common = Common.new
-      common.run_inline %W{
-        gradle --info setAuthority
-       -PappArgs=['#{op.opts.email}','#{op.opts.authority}',#{op.opts.remove},#{op.opts.dry_run}]}
-    end
-  end
-end
-
-Common.register_command({
-  :invocation => "set-authority",
-  :description => "Set user authorities (permissions). See set-authority --help.",
-  :fn => ->(*args) { set_authority("set-authority", *args) }
-})
-
-def set_authority_local(cmd_name, *args)
-  ensure_docker_api(cmd_name, args)
-
-  op = authority_options(cmd_name, args)
-  op.parse.validate
-
-  Dir.chdir("tools") do
-    common = Common.new
-    common.run_inline %W{
-        gradle --info setAuthority
-       -PappArgs=['#{op.opts.email}','#{op.opts.authority}',#{op.opts.remove},#{op.opts.dry_run}]}
-  end
-end
-
-Common.register_command({
-  :invocation => "set-authority-local",
-  :description => "Set user authorities on a local server (permissions); "\
-                  "requires a local server is running (dev-up or run-api). "\
-                  "See set-authority-local --help.",
-  :fn => ->(*args) { set_authority_local("set-authority-local", *args) }
-})
-
-def delete_clusters(cmd_name, *args)
-  ensure_docker cmd_name, args
-  op = WbOptionsParser.new(cmd_name, args)
-  op.opts.dry_run = true
-  op.add_option(
-      "--min-age-days [DAYS]",
-      ->(opts, v) { opts.min_age_days = v},
-      "Optional minimum age filter in days for clusters to delete, e.g. 21")
-  op.add_option(
-      "--ids [CLUSTER_ID1,...]",
-      ->(opts, v) { opts.cluster_ids = v},
-      "Optional cluster IDs to delete, e.g. 'aou-test-f1-1/all-of-us'")
-  op.add_option(
-      "--nodry-run",
-      ->(opts, _) { opts.dry_run = false},
-      "Actually delete clusters, defaults to dry run")
-  gcc = GcloudContextV2.new(op)
-  op.parse.validate
-  gcc.validate
-
-  api_url = get_leo_api_url(gcc.project)
-  ServiceAccountContext.new(gcc.project).run do
-    Dir.chdir("tools") do
-      common = Common.new
-      common.run_inline %W{
-         gradle --info manageClusters
-        -PappArgs=['delete','#{api_url}','#{op.opts.min_age_days}','#{op.opts.cluster_ids}',#{op.opts.dry_run}]}
-    end
-  end
-end
-
-Common.register_command({
-  :invocation => "delete-clusters",
-  :description => "Delete all clusters in this environment",
-  :fn => ->(*args) { delete_clusters("delete-clusters", *args) }
-})
-
-def list_clusters(cmd_name, *args)
-  ensure_docker cmd_name, args
-  op = WbOptionsParser.new(cmd_name, args)
-  gcc = GcloudContextV2.new(op)
-  op.parse.validate
-  gcc.validate
-
-  api_url = get_leo_api_url(gcc.project)
-  ServiceAccountContext.new(gcc.project).run do
-    Dir.chdir("tools") do
-      common = Common.new
-      common.run_inline %W{
-        gradle --info manageClusters -PappArgs=['list','#{api_url}']
-      }
-    end
-  end
-end
-
-Common.register_command({
-  :invocation => "list-clusters",
-  :description => "List all clusters in this environment",
-  :fn => ->(*args) { list_clusters("list-clusters", *args) }
-})
 
 def update_cdr_version_options(cmd_name, args)
   op = WbOptionsParser.new(cmd_name, args)
@@ -1017,18 +755,6 @@ Common.register_command({
   :fn => ->(*args) { update_cdr_versions_local("update-cdr-versions-local", *args)}
 })
 
-def get_test_service_account()
-  ServiceAccountContext.new(TEST_PROJECT).run do
-    print "Service account key is now in sa-key.json"
-  end
-end
-
-Common.register_command({
-  :invocation => "get-test-service-creds",
-  :description => "Copies sa-key.json locally (for use when running tests from an IDE, etc).",
-  :fn => ->() { get_test_service_account()}
-})
-
 def connect_to_cloud_db(cmd_name, *args)
   ensure_docker cmd_name, args
   common = Common.new
@@ -1042,8 +768,8 @@ def connect_to_cloud_db(cmd_name, *args)
   gcc.validate
   env = read_db_vars(gcc)
   CloudSqlProxyContext.new(gcc.project).run do
-    password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["WORKBENCH_DB_PASSWORD"]
-    user = op.opts.root ? "root" : env["WORKBENCH_DB_USER"]
+    password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["META_DB_PASSWORD"]
+    user = op.opts.root ? "root" : env["META_DB_USER"]
     common.run_inline %W{
       mysql --host=127.0.0.1 --port=3307 --user=#{user}
       --database=#{env["DB_NAME"]} --password=#{password}},
@@ -1058,72 +784,7 @@ Common.register_command({
 })
 
 
-def deploy_gcs_artifacts(cmd_name, args)
-  ensure_docker cmd_name, args
-
-  common = Common.new
-  op = WbOptionsParser.new(cmd_name, args)
-  op.opts.dry_run = false
-  op.add_option(
-    "--dry-run",
-    ->(opts, _) { opts.dry_run = true},
-    "Don't actually push, just log the command lines which would be " +
-    "executed on a real invocation."
-  )
-  gcc = GcloudContextV2.new(op)
-  op.parse.validate
-  gcc.validate
-  run_inline_or_log(op.opts.dry_run, %W{
-    gsutil cp
-    cluster-resources/setup_notebook_cluster.sh
-    cluster-resources/playground-extension.js
-    gs://#{gcc.project}-cluster-resources/
-  })
-  # This file must be readable by all AoU researchers and the Leonardo service
-  # account (https://github.com/DataBiosphere/leonardo/issues/220). Just make
-  # these public since these assets are public in GitHub anyways.
-  run_inline_or_log(op.opts.dry_run, %W{
-    gsutil acl ch -u AllUsers:R
-    gs://#{gcc.project}-cluster-resources/setup_notebook_cluster.sh
-    gs://#{gcc.project}-cluster-resources/playground-extension.js
-  })
-end
-
-Common.register_command({
-  :invocation => "deploy-gcs-artifacts",
-  :description => "Deploys any GCS artifacts associated with this environment.",
-  :fn => ->(*args) { deploy_gcs_artifacts("deploy-gcs-artifacts", args) }
-})
-
-def deploy_gcs_demos(cmd_name, args)
-  ensure_docker cmd_name, args
-
-  common = Common.new
-  op = WbOptionsParser.new(cmd_name, args)
-  op.opts.dry_run = false
-  op.add_option(
-    "--dry-run",
-    ->(opts, _) { opts.dry_run = true},
-    "Don't actually push, just log the command lines which would be " +
-    "executed on a real invocation."
-  )
-  gcc = GcloudContextV2.new(op)
-  op.parse.validate
-  gcc.validate
-  cmd_prefix = op.opts.dry_run ? DRY_RUN_CMD : []
-  # Run but ignore failure statuses, as these files may not exist.
-  Process.wait spawn(*cmd_prefix, "gsutil", "rm", "gs://#{gcc.project}-demos/**")
-  run_inline_or_log(op.opts.dry_run, %W{gsutil cp demos/* gs://#{gcc.project}-demos/})
-end
-
-Common.register_command({
-  :invocation => "deploy-gcs-demos",
-  :description => "Deploys any GCS demos associated with this environment.",
-  :fn => ->(*args) { deploy_gcs_demos("deploy-gcs-demos", args) }
-})
-
-
-def deploy_app(cmd_name, args, with_cron, with_gsuite_admin)
+def deploy_app(cmd_name, args)
   common = Common.new
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.dry_run = false
@@ -1162,11 +823,6 @@ def deploy_app(cmd_name, args, with_cron, with_gsuite_admin)
 
   # Clear out generated files, which may be out of date; they will be regenerated by appengineStage.
   common.run_inline %W{rm -rf src/generated}
-  if with_gsuite_admin
-    common.run_inline %W{rm -f #{GSUITE_ADMIN_KEY_PATH}}
-    # TODO: generate new key here
-    get_gsuite_admin_key(gcc.project)
-  end
 
   common.run_inline %W{gradle :appengineStage}
   promote = "--no-promote"
@@ -1179,8 +835,8 @@ def deploy_app(cmd_name, args, with_cron, with_gsuite_admin)
   run_inline_or_log(op.opts.dry_run, %W{
     gcloud app deploy
       build/staged-app/app.yaml
-  } + (with_cron ? %W{build/staged-app/WEB-INF/appengine-generated/cron.yaml} : []) +
-    %W{--project #{gcc.project} #{promote}} +
+      --project #{gcc.project} #{promote}
+    } +
     (op.opts.quiet ? %W{--quiet} : []) +
     (op.opts.version ? %W{--version #{op.opts.version}} : []))
 end
@@ -1189,7 +845,7 @@ def deploy_public_api(cmd_name, args)
   ensure_docker cmd_name, args
   common = Common.new
   common.status "Deploying public-api..."
-  deploy_app(cmd_name, args, false, false)
+  deploy_app(cmd_name, args)
 end
 
 Common.register_command({
@@ -1198,17 +854,9 @@ Common.register_command({
   :fn => ->(*args) { deploy_public_api("deploy-public-api", args) }
 })
 
-def create_workbench_db()
+def create_meta_db()
   run_with_redirects(
     "cat db/create_db.sql | envsubst | " \
-    "mysql -u \"root\" -p\"#{ENV["MYSQL_ROOT_PASSWORD"]}\" --host 127.0.0.1 --port 3307",
-    ENV["MYSQL_ROOT_PASSWORD"]
-  )
-end
-
-def grant_permissions()
-  run_with_redirects(
-    "cat db/grant_permissions.sql | envsubst | " \
     "mysql -u \"root\" -p\"#{ENV["MYSQL_ROOT_PASSWORD"]}\" --host 127.0.0.1 --port 3307",
     ENV["MYSQL_ROOT_PASSWORD"]
   )
@@ -1222,22 +870,12 @@ def migrate_database(dry_run = false)
   end
 end
 
-def migrate_workbench_data()
+def migrate_meta_db()
   common = Common.new
-  common.status "Migrating workbench data..."
+  common.status "Migrating metadata db..."
   Dir.chdir("db") do
     common.run_inline(%W{gradle --info update -PrunList=data -Pcontexts=cloud})
   end
-end
-
-def get_leo_api_url(project)
-  config_json = get_config(project)
-  return JSON.parse(File.read("config/#{config_json}"))["firecloud"]["leoBaseUrl"]
-end
-
-def get_auth_domain(project)
-  config_json = get_config(project)
-  return JSON.parse(File.read("config/#{config_json}"))["firecloud"]["registeredDomainName"]
 end
 
 def load_config(project, dry_run = false)
@@ -1324,20 +962,13 @@ def deploy(cmd_name, args)
     versions_file = get_cdr_versions_file(ctx.project)
     update_cdr_versions_for_project("../config/#{versions_file}", op.opts.dry_run)
 
-    common.status "Pushing GCS artifacts..."
-    dry_flag = op.opts.dry_run ? %W{--dry-run} : []
-    deploy_gcs_artifacts(cmd_name, %W{--project #{ctx.project}} + dry_flag)
-
-    deploy_gcs_demos(cmd_name, %W{--project #{ctx.project}} + dry_flag)
-
     # Keep the cloud proxy context open for the service account credentials.
-    deploy_args = %W{
+    deploy_public_api(cmd_name, %W{
       --project #{gcc.project}
       --version #{op.opts.version}
       #{op.opts.promote ? "--promote" : "--no-promote"}
       --quiet
-    } + dry_flag
-    deploy_public_api(cmd_name, deploy_args)
+    } + (op.opts.dry_run ? %W{--dry-run} : []))
   end
 end
 
@@ -1382,50 +1013,14 @@ Common.register_command({
   :fn => ->(*args) { docker_run(args) }
 })
 
-def print_scoped_access_token(cmd_name, args)
-  ensure_docker cmd_name, args
-  op = WbOptionsParser.new(cmd_name, args)
-  op.add_typed_option(
-    "--scopes s1,s2,s3",
-    Array,
-    ->(opts, v) { opts.scopes = v},
-    "Action to perform: add/remove."
-  )
-  gcc = GcloudContextV2.new(op)
-  op.parse.validate
-  gcc.validate
-  ServiceAccountContext.new(gcc.project).run do
-    scopes = %W{profile email} + op.opts.scopes
-
-    require "googleauth"
-    f = File.open(ServiceAccountContext::SERVICE_ACCOUNT_KEY_PATH) do
-      creds = Google::Auth::ServiceAccountCredentials.make_creds(
-        json_key_io: f,
-        scope: scopes
-      )
-
-      token_data = creds.fetch_access_token!
-      puts "\n#{token_data["access_token"]}"
-    end
-  end
-end
-
-Common.register_command({
-  :invocation => "print-scoped-sa-access-token",
-  :description => "Prints access token for the service account that has been scoped for API access.",
-  :fn => ->(*args) { print_scoped_access_token("print-scoped-sa-access-token", args) }
-})
-
 def create_project_resources(gcc)
   common = Common.new
   common.status "Enabling APIs..."
   for service in SERVICES
-    common.run_inline("gcloud service-management enable #{service} --project #{gcc.project}")
+    common.run_inline("gcloud services enable #{service} --project #{gcc.project}")
   end
   common.status "Creating GCS bucket to store credentials..."
   common.run_inline %W{gsutil mb -p #{gcc.project} -c regional -l us-central1 gs://#{gcc.project}-credentials/}
-  common.status "Creating GCS bucket to store scripts..."
-  common.run_inline %W{gsutil mb -p #{gcc.project} -c regional -l us-central1 gs://#{gcc.project}-cluster-resources/}
   common.status "Creating Cloud SQL instances..."
   common.run_inline %W{gcloud sql instances create #{INSTANCE_NAME} --tier=db-n1-standard-2
                        --activation-policy=ALWAYS --backup-start-time 00:00
@@ -1434,7 +1029,7 @@ def create_project_resources(gcc)
   common.status "Waiting for database instance to become ready..."
   loop do
     sleep 3.0
-    db_status = `gcloud sql instances describe workbenchmaindb --project #{gcc.project} | grep state`
+    db_status = `gcloud sql instances describe databrowsermaindb --project #{gcc.project} | grep state`
     common.status "DB status: #{db_status}"
     break if db_status.include? "RUNNABLE"
   end
@@ -1442,8 +1037,8 @@ def create_project_resources(gcc)
   common.run_inline %W{gcloud app create --region us-central --project #{gcc.project}}
 end
 
-def setup_project_data(gcc, cdr_db_name, public_db_name)
-  root_password, workbench_password = random_password(), random_password()
+def setup_project_data(gcc, public_db_name)
+  root_password, meta_db_password = random_password(), random_password()
 
   public_password = nil
   if gcc.project == get_cdr_sql_project(gcc.project)
@@ -1454,33 +1049,23 @@ def setup_project_data(gcc, cdr_db_name, public_db_name)
   common = Common.new
   # This changes database connection information; don't call this while the server is running!
   common.status "Writing DB credentials file..."
-  write_db_creds_file(gcc.project, cdr_db_name, public_db_name, root_password,
-                      workbench_password, public_password)
+  write_db_creds_file(gcc.project, public_db_name, root_password,
+                      meta_db_password, public_password)
   common.status "Setting root password..."
-  run_with_redirects("gcloud sql users set-password root % --project #{gcc.project} " +
+  run_with_redirects("gcloud sql users set-password root --host % --project #{gcc.project} " +
                      "--instance #{INSTANCE_NAME} --password #{root_password}",
                      root_password)
   # Don't delete the credentials created here; they will be stored in GCS and reused during
   # deployment, etc.
   with_cloud_proxy_and_db(gcc) do
-    common.status "Copying service account key to GCS..."
-    gsuite_admin_creds_file = Tempfile.new("gsuite-admin-sa.json").path
-    common.run_inline %W{gcloud iam service-accounts keys create #{gsuite_admin_creds_file}
-        --iam-account=gsuite-admin@#{gcc.project}.iam.gserviceaccount.com --project=#{gcc.project}}
-    common.run_inline %W{gsutil cp #{gsuite_admin_creds_file} gs://#{gcc.project}-credentials/gsuite-admin-sa.json}
-
     common.status "Setting up databases and users..."
-    create_workbench_db
+    create_meta_db
 
     common.status "Running schema migrations..."
     migrate_database
 
     # Grants permissions to the public user for specific tables
     grant_permissions
-
-    # This will insert a CDR version row pointing at the CDR and public DB.
-    migrate_workbench_data
-
   end
 end
 
@@ -1495,27 +1080,20 @@ def setup_cloud_project(cmd_name, *args)
   ensure_docker cmd_name, args
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
-    "--cdr-db-name [CDR_DB]",
-    ->(opts, v) { opts.cdr_db_name = v},
-    "Name of the default CDR db to use; required. (example: cdr20180206) This will subsequently " +
-    "be created by cloudsql-import."
-  )
-  op.add_option(
     "--public-db-name [PUBLIC_DB]",
     ->(opts, v) { opts.public_db_name = v},
     "Name of the public db to use for the data browser. (example: public20180206) This will " +
     "subsequently be created by cloudsql-import."
   )
-  op.add_validator ->(opts) { raise ArgumentError unless opts.cdr_db_name}
   op.add_validator ->(opts) { raise ArgumentError unless opts.public_db_name}
   gcc = GcloudContextV2.new(op)
 
   op.parse.validate
   gcc.validate
 
-  create_project_resources(gcc)
-  setup_project_data(gcc, op.opts.cdr_db_name, op.opts.public_db_name)
-  deploy_gcs_artifacts(cmd_name, %W{--project #{gcc.project}})
+  # XXX: Add back
+  # create_project_resources(gcc)
+  setup_project_data(gcc, op.opts.public_db_name)
 end
 
 Common.register_command({

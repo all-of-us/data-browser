@@ -2,7 +2,6 @@ runtime: python27
 api_version: 1
 threadsafe: true
 default_expiration: "2m"
-service: public-ui
 handlers:
 - url: /(.*\.(css|eot|gz|html|ico|jpg|jpeg|js|map|png|svg|ttf|woff|woff2|pdf))
   static_files: dist/\1

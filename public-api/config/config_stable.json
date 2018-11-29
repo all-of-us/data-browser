@@ -6,6 +6,7 @@
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-rw-stable.appspot.com",
     "publicApiKeyForErrorReports": "AIzaSyA4gOEvyJRkhIbW0x0Y7PkIowOSIK_Tous",
+    "debugEndpoints": false,
     "projectId": "aou-db-stable"
   }
 }
