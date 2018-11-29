@@ -42,13 +42,13 @@ jobs:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
       - run:
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb run-local-migrations
-      - run:
           # MySQL sometimes refuses connections by the time we attempt to apply
           # data migrations. Watch the port for 2m for startup.
           name: Await MySQL startup
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
+      - run:
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb run-local-migrations
       - run:
           working_directory: ~/data-browser/public-api
           command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
