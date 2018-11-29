@@ -1,0 +1,229 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: allofustest/workbench:buildimage-0.0.12
+  working_directory: ~/data-browser
+java_defaults: &java_defaults
+  <<: *defaults
+  environment:
+    # As best I can tell (dmohs, 7 Feb '17), this is the only way to set a memory limit that Java
+    # processes executed within CircleCI's docker containers will respect. Very helpful resource:
+    # https://circleci.com/blog/how-to-handle-java-oom-errors/
+    # Gradle itself doesn't usually reach 1G, so as long as we can keep tasks under 3G, we should
+    # have room in Circle's 4G to get our work done.
+    JAVA_TOOL_OPTIONS: -Xmx3g
+    TERM: dumb
+
+jobs:
+  api-local-test:
+    docker:
+      - image: allofustest/workbench:buildimage-0.0.12
+      - image: mysql:5.7
+        environment:
+          - MYSQL_ROOT_PASSWORD=ubuntu
+          - MYSQL_USER=ubuntu
+          - MYSQL_PASSWORD=ubuntu
+    working_directory: ~/data-browser
+    environment:
+      JAVA_TOOL_OPTIONS: -Xmx3g
+      TERM: dumb
+      MYSQL_ROOT_PASSWORD: ubuntu
+    steps:
+      - checkout
+      - run:
+          name: Fetch Submodules
+          command: git submodule update --init --recursive
+      - restore_cache:
+          keys:
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - api-cache-
+      - run:
+          working_directory: ~/data-browser
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+      - run:
+          # MySQL sometimes refuses connections by the time we attempt to apply
+          # data migrations. Watch the port for 2m for startup.
+          name: Await MySQL startup
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
+      - run:
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/.m2
+            - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
+          key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+
+  api-deploy-to-test:
+    <<: *java_defaults
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      # Note: most of the time spent here appears to be in Gradle / App Engine
+      # deployment. We tried more aggressively caching outputs via Cirlce
+      # workspaces, but that seemed to have a negligible effect on speed. It's
+      # also tricky to pick specific sub directories since the API deploy
+      # touches several top level folders {public,common,}api.
+
+      # TODO: Fix the deploy script to work on the correct new project.
+      - restore_cache:
+          keys:
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - api-cache-
+      - run:
+          working_directory: ~/data-browser
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+      - deploy:
+          name: Deploy to App Engine
+          working_directory: ~/data-browser/public-api
+          command: |
+            ./project.rb deploy-public-api \
+              --project aou-db-test \
+              --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
+              --version circle-ci-test \
+              --key-file circle-sa-key.json \
+              --promote
+
+  api-deps-check:
+    <<: *java_defaults
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      - run:
+          name: Scan dependencies for vulnerabilities
+          working_directory: ~/data-browser/public-api
+          command: |
+            ./project.rb gradle dependencyCheckAnalyze --info
+
+  public-ui-build-test:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Fetch Submodules
+          command: git submodule update --init --recursive
+      - run:
+          working_directory: ~/data-browser
+          name: Download Swagger CLI
+          command: |
+            ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
+      - restore_cache:
+          keys:
+          - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+          - public-ui-cache-
+      - run:
+          working_directory: ~/data-browser/public-ui
+          command: yarn install && yarn codegen
+      - save_cache:
+          paths:
+            - ~/data-browser/public-ui/node_modules
+          key: public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+      - run:
+          name: Lint Angular app
+          working_directory: ~/data-browser/public-ui
+          command: yarn run lint
+      - run:
+          name: Build with strict compilation
+          working_directory: ~/data-browser/public-ui
+          command: ./project.rb build --environment test
+      - persist_to_workspace:
+          root: .
+          paths:
+            - public-ui
+
+  public-ui-deploy-to-test:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      # Use the ui-build-test workspace here to avoid redoing the setup.
+      - attach_workspace:
+          at: .
+      - deploy:
+          name: Deploy to App Engine
+          working_directory: ~/data-browser/public-ui
+          command: |
+            ../ci/activate_creds.sh circle-sa-key.json
+            ./project.rb deploy-ui \
+              --project aou-db-test \
+              --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
+              --version circle-ci-test \
+              --key-file circle-sa-key.json \
+              --promote
+
+  # In staging, we deploy all at once in order to track and control the release
+  # for a tagged version only. In "test", we maintain individual release jobs
+  # for API and UI to allow faster deploys and because we lack a version tag.
+  deploy-staging:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      - restore_cache:
+          keys:
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - api-cache-
+      - deploy:
+          working_directory: ~/data-browser/deploy
+          command: |
+            ../ci/activate_creds.sh circle-sa-key.json
+            ./project.rb deploy \
+              --project aou-db-staging \
+              --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
+              --git-version "${CIRCLE_TAG}" \
+              --app-version "${CIRCLE_TAG}" \
+              --circle-url "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}" \
+              --key-file circle-sa-key.json \
+              --promote
+
+# See https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
+filter_master: &filter_master
+  filters:
+    branches:
+      only: master
+filter_releases: &filter_releases
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^v.*/
+
+workflows:
+  version: 2
+#  build-test-deploy:
+#    jobs:
+#      # Always run basic test/lint/compilation (open PRs, master merge).
+#      # Note: by default tags are not picked up.
+#
+#      # TODO: Add the public api testsapi tests
+#      - public-ui-build-test
+#      # Run deployment to "test" on master merges.
+#
+#      # TODO: Deploy public api to test
+#      - public-ui-deploy-to-test:
+#          <<: *filter_master
+  deploy-staging:
+    jobs:
+      # TODO: Add the public api tests
+      - public-ui-build-test:
+          <<: *filter_releases
+      # Run slower integration tests and dep checks on release tags only.
+      - api-deps-check:
+          <<: *filter_releases
+      - deploy-staging:
+          <<: *filter_releases
+          requires:
+            - api-deps-check
+            - public-ui-build-test
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
