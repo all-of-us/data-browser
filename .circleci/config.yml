@@ -196,18 +196,18 @@ filter_releases: &filter_releases
 
 workflows:
   version: 2
-#  build-test-deploy:
-#    jobs:
-#      # Always run basic test/lint/compilation (open PRs, master merge).
-#      # Note: by default tags are not picked up.
-#
-#      # TODO: Add the public api testsapi tests
-#      - public-ui-build-test
-#      # Run deployment to "test" on master merges.
-#
-#      # TODO: Deploy public api to test
-#      - public-ui-deploy-to-test:
-#          <<: *filter_master
+  build-test-deploy:
+    jobs:
+      # Always run basic test/lint/compilation (open PRs, master merge).
+      # Note: by default tags are not picked up.
+
+      # TODO: Add the public api testsapi tests
+      - public-ui-build-test
+      # Run deployment to "test" on master merges.
+
+      # TODO: Deploy public api to test
+      # - public-ui-deploy-to-test:
+      #     <<: *filter_master
   deploy-staging:
     jobs:
       # TODO: Add the public api tests
