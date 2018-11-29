@@ -1,4 +1,6 @@
 # Common UI project management commands and command-line flag definitions.
+#
+# TODO: Merge this into public-ui/libproject.
 
 require "optparse"
 require "set"
@@ -219,7 +221,7 @@ class DeployUI
   def add_options
     # TODO: Make flag handling more consistent with api/devstart.rb
     @parser.on("--project [PROJECT]",
-               "Project to create credentials for (e.g. all-of-us-workbench-test). Required.") do |project|
+               "Project to create credentials for (e.g. aou-db-test). Required.") do |project|
       @opts.project = project
     end
     @parser.on("--account [ACCOUNT]",
@@ -268,10 +270,9 @@ class DeployUI
     @parser.parse @args
     validate_options
     environment_names = {
-        "all-of-us-workbench-test" => "test",
-        "all-of-us-rw-staging" => "staging",
-        "all-of-us-rw-stable" => "stable",
-        "all-of-us-rw-prod" => "prod",
+        "aou-db-test" => "test",
+        "aou-db-staging" => "staging",
+        "aou-db-stable" => "stable"
     }
     environment_name = environment_names[@opts.project]
 

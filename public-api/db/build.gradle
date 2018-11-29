@@ -17,7 +17,7 @@ liquibase {
     activities {
         main {
             changeLogFile "changelog/db.changelog-master.xml"
-            url "jdbc:mysql://${db_host}:${db_port}/workbench"
+            url "jdbc:mysql://${db_host}:${db_port}/databrowser"
             username "liquibase"
             password "${liquibase_password}"
         }
