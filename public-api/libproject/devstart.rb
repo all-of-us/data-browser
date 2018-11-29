@@ -1063,9 +1063,6 @@ def setup_project_data(gcc, public_db_name)
 
     common.status "Running schema migrations..."
     migrate_database
-
-    # Grants permissions to the public user for specific tables
-    grant_permissions
   end
 end
 
