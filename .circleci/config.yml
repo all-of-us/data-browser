@@ -102,8 +102,6 @@ jobs:
       # workspaces, but that seemed to have a negligible effect on speed. It's
       # also tricky to pick specific sub directories since the API deploy
       # touches several top level folders {public,common,}api.
-
-      # TODO: Fix the deploy script to work on the correct new project.
       - restore_cache:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
@@ -249,8 +247,11 @@ workflows:
             - public-ui-build-test
   deploy-staging:
     jobs:
-      # TODO: Add the public api tests
       - public-ui-build-test:
+          <<: *filter_releases
+      - public-api-build-test:
+          <<: *filter_releases
+      - public-api-local-test:
           <<: *filter_releases
       # Run slower integration tests and dep checks on release tags only.
       - api-deps-check:
