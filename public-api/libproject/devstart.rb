@@ -1063,9 +1063,6 @@ def setup_project_data(gcc, public_db_name)
 
     common.status "Running schema migrations..."
     migrate_database
-
-    # Grants permissions to the public user for specific tables
-    grant_permissions
   end
 end
 
@@ -1091,8 +1088,7 @@ def setup_cloud_project(cmd_name, *args)
   op.parse.validate
   gcc.validate
 
-  # XXX: Add back
-  # create_project_resources(gcc)
+  create_project_resources(gcc)
   setup_project_data(gcc, op.opts.public_db_name)
 end
 
