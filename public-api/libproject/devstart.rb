@@ -363,7 +363,7 @@ Common.register_command({
 def connect_to_db()
   common = Common.new
 
-  cmd = "MYSQL_PWD=root-notasecret mysql --database=workbench"
+  cmd = "MYSQL_PWD=root-notasecret mysql --database=databrowser"
   common.run_inline %W{docker-compose exec db sh -c #{cmd}}
 end
 
