@@ -30,8 +30,8 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
     List<Concept> findByConceptName(String conceptName);
 
     @Query(value = "select c.* from concept c " +
-      "where c.vocabulary_id in ('Gender', 'Race', 'Ethnicity')",
-      nativeQuery = true)
+            "where c.vocabulary_id in ('Gender', 'Race', 'Ethnicity')",
+            nativeQuery = true)
     List<Concept> findGenderRaceEthnicityFromConcept();
 
     /**
@@ -42,12 +42,12 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
      * @return per-vocabulary concept counts
      */
     @Query(value = "select c.vocabularyId as vocabularyId, count(distinct c.conceptId) as conceptCount from Concept c\n" +
-        "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
-        "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
-        "c.standardConcept IN ('S', 'C') and\n" +
-        "c.domainId = ?2\n" +
-        "group by c.vocabularyId\n" +
-        "order by c.vocabularyId\n")
+            "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
+            "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
+            "c.standardConcept IN ('S', 'C') and\n" +
+            "c.domainId = ?2\n" +
+            "group by c.vocabularyId\n" +
+            "order by c.vocabularyId\n")
     List<VocabularyCount> findVocabularyStandardConceptCounts(String matchExp, String domainId);
 
     /**
@@ -59,10 +59,23 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
      * @return per-vocabulary concept counts
      */
     @Query(value = "select c.vocabularyId as vocabularyId, count(*) as conceptCount from Concept c\n" +
-        "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
-        "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
-        "c.domainId = ?2\n" +
-        "group by c.vocabularyId\n" +
-        "order by c.vocabularyId\n")
+            "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
+            "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
+            "c.domainId = ?2\n" +
+            "group by c.vocabularyId\n" +
+            "order by c.vocabularyId\n")
     List<VocabularyCount> findVocabularyAllConceptCounts(String matchExp, String domainId);
+
+    @Query(value = "select distinct c1.* from concept_relationship cr " +
+            "join concept c1 on (cr.concept_id_2 = c1.concept_id " +
+            "and cr.concept_id_1 in (" +
+            "select distinct c.concept_id from criteria c\n" +
+            "where c.type = 'DRUG' " +
+            "and c.subtype in ('BRAND') " +
+            "and c.is_selectable = 1 " +
+            "and (upper(c.name) like upper(concat('%',?1,'%')) " +
+            "or upper(c.code) like upper(concat('%',?1,'%'))) " +
+            "order by c.name asc) " +
+            "and c1.concept_class_id = 'Ingredient') ", nativeQuery = true)
+    List<Concept> findDrugIngredientsByBrand(String query);
 }
