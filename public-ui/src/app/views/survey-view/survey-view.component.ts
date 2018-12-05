@@ -8,7 +8,6 @@ import {ISubscription} from 'rxjs/Subscription';
 import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
 import {AchillesResult} from '../../../publicGenerated/model/achillesResult';
 import {QuestionConcept} from '../../../publicGenerated/model/questionConcept';
-import {QuestionConceptListResponse} from '../../../publicGenerated/model/questionConceptListResponse';
 import {SurveyModule} from '../../../publicGenerated/model/surveyModule';
 
 @Component({
@@ -20,11 +19,11 @@ import {SurveyModule} from '../../../publicGenerated/model/surveyModule';
 export class SurveyViewComponent implements OnInit, OnDestroy {
 
   domainId: string;
-  title: string;
-  subTitle: string;
+  title ;
+  subTitle;
   surveys: SurveyModule[] = [];
-  survey: any;
-  surveyConceptId: any;
+  survey;
+  surveyConceptId;
   surveyResult: any;
   resultsComplete = false;
   private subscriptions: ISubscription[] = [];
@@ -58,7 +57,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (obj) {
       const survey = JSON.parse(obj);
       this.surveyConceptId = survey.conceptId;
-      this.surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
+      this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
     }
     this.searchText.setValue(localStorage.getItem('searchText'));
     if (!this.searchText.value) {
@@ -145,11 +144,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public searchQuestion(q: QuestionConcept) {
     // Todo , match all words maybe instead of any. Or allow some operators such as 'OR' 'AND'
     const text = this.searchText.value;
+
     let words = text.split(new RegExp(',| | and | or '));
     words = words.filter(w => w.length > 0
       && w.toLowerCase() !== 'and'
       && w.toLowerCase() !== 'or');
-    words = words.map(word => word.replace(/[&!^\/\\#,+()$~%.'":*?<>{}]/g, ''));
     const reString = words.join('|');
     // If doing an and search match all words
     if (this.searchMethod === 'and') {
@@ -206,7 +205,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     q.selectedAnswer = a;
   }
 
-  public graphAnswerClicked(achillesResult: AchillesResult) {
+  public graphAnswerClicked(achillesResult) {
     console.log('Graph answer clicked ', achillesResult);
   }
 

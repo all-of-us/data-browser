@@ -37,11 +37,11 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
 import {DbConfigService} from './utils/db-config.service';
-import { HighlightSearchPipe } from './utils/highlight-search.pipe';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
+import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 
 function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
@@ -82,8 +82,8 @@ export function getConfigService(http: Http) {
     QuickSearchComponent,
     EhrViewComponent,
     PageTemplateSignedOutComponent,
-    HighlightSearchPipe,
     PhysicalMeasurementsComponent,
+    HighlightSearchComponent,
   ],
   providers: [
     {
