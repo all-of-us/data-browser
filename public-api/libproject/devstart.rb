@@ -1022,7 +1022,7 @@ def create_project_resources(gcc)
   common.status "Creating GCS bucket to store credentials..."
   common.run_inline %W{gsutil mb -p #{gcc.project} -c regional -l us-central1 gs://#{gcc.project}-credentials/}
   common.status "Creating Cloud SQL instances..."
-  common.run_inline %W{gcloud sql instances create #{INSTANCE_NAME} --tier=db-n1-standard-2
+  common.run_inline %W{gcloud sql instances create #{INSTANCE_NAME} --require-ssl --tier=db-n1-standard-2
                        --activation-policy=ALWAYS --backup-start-time 00:00
                        --failover-replica-name #{FAILOVER_INSTANCE_NAME} --enable-bin-log
                        --database-version MYSQL_5_7 --project #{gcc.project} --storage-auto-increase --async --maintenance-release-channel preview --maintenance-window-day SAT --maintenance-window-hour 5}
