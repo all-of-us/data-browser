@@ -179,17 +179,17 @@ Description of arguments these scripts take are as follows.
 * instance: Cloud Sql Instance
 
 #### Generate public count data for use by databrowser in BigQuery from a non de-identified cdr release
-`./project.rb generate-public-cdr-counts --bq-project all-of-us-ehr-dev --bq-dataset synthetic_cdr20180606 --public-project all-of-us-workbench-test --cdr-version 20181107 --bin-size 20 --bucket all-of-us-workbench-public-cloudsql`
+`./project.rb generate-public-cdr-counts --bq-project all-of-us-ehr-dev --bq-dataset synthetic_cdr20180606 --public-project aou-db-test --cdr-version 20181107 --bin-size 20 --bucket aou-db-public-cloudsql`
 ##### Result is
-1. Public BigQuery dataset:  all-of-us-workbench-test:public20181107
-2. CSV dumps of tables in bucket all-of-us-workbench-public-cloudsql: public20181107/*.csv.gz 
-3. Browse csvs in browser like here :https://console.cloud.google.com/storage/browser?project=all-of-us-workbench-test&organizationId=394551486437
+1. Public BigQuery dataset:  aou-db-test:public20181107
+2. CSV dumps of tables in bucket aou-db-public-cloudsql: public20181107/*.csv.gz 
+3. Browse csvs in browser like here :https://console.cloud.google.com/storage/browser?project=aou-db-test&organizationId=394551486437
 3. Note cdr-version can be '' to make dataset named public
 #### Generate cloudsql databases from a bucket without downloading the data
 ##### * NOTE The cloudsql instance is set in code for each environment in /public-api/libproject/devstart.rb. Thus each cdr release will be on the same cloudsql instance for an environment.  
 `# Once for public cdr.`
 
-`./project.rb generate-cloudsql-db --project all-of-us-workbench-test --instance workbenchmaindb --database public20180913 --bucket all-of-us-workbench-public-cloudsql/public20180913`
+`./project.rb generate-cloudsql-db --project aou-db-test --instance databrowsermaindb --database public20180913 --bucket aou-db-public-cloudsql/public20180913`
 
 ##### * NOTE If the import to cloudsql stops at any point because of any other operation happening on the same cloudsql instance, run cloudsql-import on rest of the files.
 ##### Result is
@@ -222,7 +222,7 @@ Description of arguments these scripts take are as follows.
 3. Update your local environment per above.
 
 Alternatively if you want to make a local database from csvs in gcs  
- * Run `./project.rb generate-local-count-dbs --cdr-version 20180206 --bucket all-of-us-workbench-public-cloudsql`
+ * Run `./project.rb generate-local-count-dbs --cdr-version 20180206 --bucket aou-db-public-cloudsql`
  * You may want to do this if generate-cloudsql-db fails because of limited gcloud sql import csv functionality
  * Or you have some local schema changes you need and just need csv data 
 ##### Result is
@@ -230,22 +230,22 @@ Alternatively if you want to make a local database from csvs in gcs
 2. cdr-version in the alternative method can be an empty string, '',  to make database named 'public'
 
 #### Put mysqldump of local mysql database in bucket for importing into cloudsql. Call once for db you want to dump
-`./project.rb mysqldump-local-db --db-name public20180206 --bucket all-of-us-workbench-public-cloudsql`
+`./project.rb mysqldump-local-db --db-name public20180206 --bucket aou-db-public-cloudsql`
 ##### Result is
-1. public20180206.sql uploaded to all-of-us-workbench-public-cloudsql
+1. public20180206.sql uploaded to aou-db-public-cloudsql
 
 #### Import a dump to cloudsql instance by specifying dump file in the --file option.
-`./project.rb cloudsql-import --project all-of-us-workbench-test --instance workbenchmaindb --bucket all-of-us-workbench-public-cloudsql --database public20180206 --file public20180206.sql`
-##### Note a 3GB dump can take an hour or so to finish. You must wait before running another import on same instance (Cloudsql limitation) You can check status of import at the website: https://console.cloud.google.com/sql/instances/workbenchmaindb/operations?project=all-of-us-workbench-test
+`./project.rb cloudsql-import --project aou-db-test --instance databrowsermaindb --bucket aou-db-public-cloudsql --database public20180206 --file public20180206.sql`
+##### Note a 3GB dump can take an hour or so to finish. You must wait before running another import on same instance (Cloudsql limitation) You can check status of import at the website: https://console.cloud.google.com/sql/instances/databrowsermaindb/operations?project=aou-db-test
 ##### Or with this command:
 `gcloud sql operations list --instance [INSTANCE_NAME] --limit 10`
 
 ##### Result
 1) database is in cloudsql
 
-#### Run `./project.rb cloudsql-import --project all-of-us-workbench-test --instance workbenchmaindb --bucket all-of-us-workbench-public-cloudsql --database public20180206 --file achilles_results.csv.gz` to import only achilles_results into the database.
+#### Run `./project.rb cloudsql-import --project aou-db-test --instance databrowsermaindb --bucket aou-db-public-cloudsql --database public20180206 --file achilles_results.csv.gz` to import only achilles_results into the database.
 #### Import a dump to local mysql db.
-`./project.rb local-mysql-import --sql-dump-file cdr20180206.sql --bucket all-of-us-workbench-public-cloudsql`
+`./project.rb local-mysql-import --sql-dump-file cdr20180206.sql --bucket aou-db-public-cloudsql`
 
 ##### Result
 1) mysql db is in your local mysql for development. You need to alter your env per above to use it.
