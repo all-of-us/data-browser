@@ -20,11 +20,11 @@ import {SurveyModule} from '../../../publicGenerated/model/surveyModule';
 export class SurveyViewComponent implements OnInit, OnDestroy {
 
   domainId: string;
-  title ;
-  subTitle;
+  title: string;
+  subTitle: string;
   surveys: SurveyModule[] = [];
-  survey;
-  surveyConceptId;
+  survey: any;
+  surveyConceptId: any;
   surveyResult: any;
   resultsComplete = false;
   private subscriptions: ISubscription[] = [];
@@ -206,7 +206,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     q.selectedAnswer = a;
   }
 
-  public graphAnswerClicked(achillesResult) {
+  public graphAnswerClicked(achillesResult: AchillesResult) {
     console.log('Graph answer clicked ', achillesResult);
   }
 
