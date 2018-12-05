@@ -190,6 +190,8 @@ Description of arguments these scripts take are as follows.
 `# Once for public cdr.`
 
 `./project.rb generate-cloudsql-db --project all-of-us-workbench-test --instance workbenchmaindb --database public20180913 --bucket all-of-us-workbench-public-cloudsql/public20180913`
+
+##### * NOTE If the import to cloudsql stops at any point because of any other operation happening on the same cloudsql instance, run cloudsql-import on rest of the files.
 ##### Result is
 1. Database is live on cloudsql.
 
@@ -241,6 +243,7 @@ Alternatively if you want to make a local database from csvs in gcs
 ##### Result
 1) database is in cloudsql
 
+#### Run `./project.rb cloudsql-import --project all-of-us-workbench-test --instance workbenchmaindb --bucket all-of-us-workbench-public-cloudsql --database public20180206 --file achilles_results.csv.gz` to import only achilles_results into the database.
 #### Import a dump to local mysql db.
 `./project.rb local-mysql-import --sql-dump-file cdr20180206.sql --bucket all-of-us-workbench-public-cloudsql`
 
