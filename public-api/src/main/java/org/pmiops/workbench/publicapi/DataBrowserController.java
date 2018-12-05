@@ -16,25 +16,32 @@ import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.pmiops.workbench.cdr.CdrVersionContext;
+import org.pmiops.workbench.cdr.dao.ConceptDao;
+import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
+import org.pmiops.workbench.cdr.dao.DomainInfoDao;
+import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
-import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
-import org.pmiops.workbench.cdr.dao.DomainInfoDao;
-import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
-import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
-import org.pmiops.workbench.cdr.model.*;
+import org.pmiops.workbench.cdr.model.AchillesResult;
+import org.pmiops.workbench.cdr.model.AchillesAnalysis;
+import org.pmiops.workbench.cdr.model.AchillesResultDist;
+import org.pmiops.workbench.cdr.model.Concept;
+import org.pmiops.workbench.cdr.model.DomainInfo;
+import org.pmiops.workbench.cdr.model.QuestionConcept;
+import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CdrVersion;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
-import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
-import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
+import org.pmiops.workbench.model.SearchConceptsRequest;
+import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.MatchType;
 import org.pmiops.workbench.model.QuestionConceptListResponse;
-import org.pmiops.workbench.model.SearchConceptsRequest;
+import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.StandardConceptFilter;
+import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Slice;
@@ -71,10 +78,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController() {}
 
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao,
-        DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
-        AchillesResultDao achillesResultDao,
-        AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
-        EntityManager entityManager, Provider<CdrVersion> defaultCdrVersionProvider) {
+                                 DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
+                                 AchillesResultDao achillesResultDao,
+                                 AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
+                                 EntityManager entityManager, Provider<CdrVersion> defaultCdrVersionProvider) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.domainInfoDao = domainInfoDao;
@@ -299,23 +306,29 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         String keyword = ConceptService.modifyMultipleMatchKeyword(query);
-        Long conceptId = null;
+        Long conceptId = 0L;
         try {
             conceptId = Long.parseLong(query);
         } catch (NumberFormatException e) {
             // expected
         }
         // TODO: consider parallelizing these lookups
+        List<Long> toMatchConceptIds = new ArrayList<>();
+        toMatchConceptIds.add(conceptId);
+        List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(query);
+        if (drugMatchedConcepts.size() > 0) {
+            toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
+        }
 
-        List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(keyword, query, conceptId);
+        List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(keyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(keyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domains.stream()
-            .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-            .collect(Collectors.toList()));
+                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
+                .collect(Collectors.toList()));
         response.setSurveyModules(surveyModules.stream()
-            .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-            .collect(Collectors.toList()));
+                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
+                .collect(Collectors.toList()));
         return ResponseEntity.ok(response);
     }
 
@@ -352,7 +365,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
-
         Slice<Concept> concepts = null;
         concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter,
                 searchConceptsRequest.getVocabularyIds(), domainIds, maxResults, minCount);
@@ -374,7 +386,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if(response.getMatchType() == null && response.getStandardConcepts() == null){
             response.setMatchType(MatchType.NAME);
         }
-        response.setItems(concepts.getContent().stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+
+        List<Concept> conceptList = new ArrayList(concepts.getContent());
+
+        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG)) {
+            List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+
+            if(drugMatchedConcepts.size() > 0) {
+                conceptList.addAll(drugMatchedConcepts);
+            }
+        }
+
+        response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
         return ResponseEntity.ok(response);
     }
 
@@ -385,11 +408,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByOrderByName());
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
-            .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-            .collect(Collectors.toList()));
+                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
+                .collect(Collectors.toList()));
         response.setSurveyModules(surveyModules.stream()
-            .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-            .collect(Collectors.toList()));
+                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
+                .collect(Collectors.toList()));
         return ResponseEntity.ok(response);
     }
 
@@ -567,7 +590,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                 unitSeperateAnalysis.add(unitAgeAnalysis);
                             }
                         }else {
-                                unitSeperateAnalysis.add(aa);
+                            unitSeperateAnalysis.add(aa);
                         }
 
                     }
@@ -666,6 +689,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
             }
         }
+        aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
         if(uniqueAgeDeciles.size() < 7){
             Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8"}));
             completeAgeDeciles.removeAll(uniqueAgeDeciles);
@@ -681,7 +705,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
-                   ar.setAnalysisStratumName(QuestionConcept.raceStratumNameMap.get(ar.getStratum2()));
+                ar.setAnalysisStratumName(QuestionConcept.raceStratumNameMap.get(ar.getStratum2()));
             }
         }
     }
