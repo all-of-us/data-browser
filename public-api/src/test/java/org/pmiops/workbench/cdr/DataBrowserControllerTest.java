@@ -678,6 +678,4 @@ public class DataBrowserControllerTest {
         cdrVersionDao.save(cdrVersion);
         return cdrVersion;
     }
-
-
 }

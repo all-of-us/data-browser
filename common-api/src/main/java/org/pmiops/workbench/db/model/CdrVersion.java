@@ -97,7 +97,7 @@ public class CdrVersion {
   @Override
   public int hashCode() {
     return Objects.hash(cdrVersionId, isDefault, name, dataAccessLevel,
-            creationTime, numParticipants, publicDbName);
+          creationTime, numParticipants, publicDbName);
   }
 
   @Override
