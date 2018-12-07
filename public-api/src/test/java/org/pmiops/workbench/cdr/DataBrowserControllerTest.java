@@ -669,18 +669,15 @@ public class DataBrowserControllerTest {
     private CdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime,
         DataAccessLevel dataAccessLevel) {
         cdrVersion = new CdrVersion();
-        cdrVersion.setBigqueryDataset("a");
-        cdrVersion.setBigqueryProject("b");
-        cdrVersion.setCdrDbName("c");
         cdrVersion.setCdrVersionId(cdrVersionId);
         cdrVersion.setCreationTime(new Timestamp(creationTime));
         cdrVersion.setDataAccessLevelEnum(dataAccessLevel);
         cdrVersion.setName(name);
         cdrVersion.setNumParticipants(123);
         cdrVersion.setPublicDbName("p");
-        cdrVersion.setReleaseNumber((short) 1);
         cdrVersionDao.save(cdrVersion);
         return cdrVersion;
     }
+
 
 }

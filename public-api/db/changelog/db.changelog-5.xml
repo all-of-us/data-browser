@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <changeSet author="srushti" id="changelog-5">
+    <dropColumn tableName="cdr_version" columnName="cdr_db_name" />
+    <dropColumn tableName="cdr_version" columnName="bigquery_project" />
+    <dropColumn tableName="cdr_version" columnName="bigquery_dataset" />
+    <dropColumn tableName="cdr_version" columnName="release_number" />
+  </changeSet>
+</databaseChangeLog>
