@@ -1,8 +1,8 @@
 # Deployment
 
 This directory contains scripts for deploying the data-browser API/UIs. To deploy
-individual services, see [../public-api/project.rb](../public-api/project.rb) `deploy-api` and
-`deploy-public-api` and [../public-ui/project.rb](../public-ui/project.rb) `deploy-ui`. Test
+individual services, see [../public-api/project.rb](../public-api/project.rb) `deploy-public-api` 
+and [../public-ui/project.rb](../public-ui/project.rb) `deploy-ui`. Test
 and staging are automatically pushed by CircleCI.
 
 - test: pushed by Circle on every master branch merge
