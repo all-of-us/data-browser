@@ -1,0 +1,18 @@
+version: "3"
+services:
+  deploy:
+    image: allofustest/workbench:buildimage-0.0.13
+    entrypoint: /bootstrap-docker.sh
+    user: circleci
+    environment:
+      # Required: a GitHub release git tag, e.g. v1-0-rc1
+      - WORKBENCH_VERSION
+    volumes:
+      # Cache the codebase and gradle for deployment only.
+      - gradle-cache:/.gradle
+      - workbench:/home/circleci/workbench
+      - ./bootstrap-docker.sh:/bootstrap-docker.sh
+
+volumes:
+  workbench:
+  gradle-cache:
