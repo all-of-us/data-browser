@@ -1,9 +1,8 @@
 # Deployment
 
-This directory contains scripts for deploying the Workbench API/UIs. To deploy
-individual services, see [../api/project.rb](../api/project.rb) `deploy-api` and
-`deploy-public-api` and [../ui/project.rb](../ui/project.rb) `deploy-ui` 
-and [../public-ui/project.rb](../public-ui/project.rb) `deploy-ui`. Test
+This directory contains scripts for deploying the data-browser API/UIs. To deploy
+individual services, see [../public-api/project.rb](../public-api/project.rb) `deploy-api` and
+`deploy-public-api` and [../public-ui/project.rb](../public-ui/project.rb) `deploy-ui`. Test
 and staging are automatically pushed by CircleCI.
 
 - test: pushed by Circle on every master branch merge
@@ -17,8 +16,8 @@ these processes locally.
 
 ## Deploy to staging
 
-- Verify that the most recent master commit [passed on Circle](https://circleci.com/gh/all-of-us/workflows/workbench/tree/master)
-- Go to the [GitHub releases page](https://github.com/all-of-us/workbench/releases);
+- Verify that the most recent master commit [passed on Circle](https://circleci.com/gh/all-of-us/workflows/data-browser/tree/master)
+- Go to the [GitHub releases page](https://github.com/all-of-us/data-browser/releases);
   note the latest version (e.g. v0-1-rc1)
 - Click "Draft new release"
 - Increment the minor version and reset the RC/patch version from the previous
@@ -30,8 +29,8 @@ these processes locally.
 - Ensure that Circle staging deployment succeeded.
 - Run deployment (automatically takes the current staging deployment):
   ```
-  deploy$ ./project.rb deploy --project all-of-us-rw-stable \
-    --account deploy@all-of-us-rw-stable.iam.gserviceaccount.com --promote
+  deploy$ ./project.rb deploy --project aou-db-stable \
+    --account deploy@aou-db-stable.iam.gserviceaccount.com --promote
   ```
 
 # Manual deployment details
@@ -58,7 +57,7 @@ Note: See above for an explanation of why this process is special right now.
 This could be improved in the future by supporting builds via dirty clients.
 
 - To test changes without deploying, use the --dry-run flag
-- To run a full manual test deployment, use --project all-of-us-workbench-test
+- To run a full manual test deployment, use --project aou-db-test
   --app-version *username* --no-promote.
 
 To ensure your local changes are picked up during the deploy process, follow
@@ -69,7 +68,7 @@ this process:
 1. Use --dry-run and --git-version to build using your branch:
 
   ```
-  ./project.rb deploy --dry-run --no-promote --project all-of-us-workbench-test \
+  ./project.rb deploy --dry-run --no-promote --project aou-db-test \
     --git-version origin/ch/deploy-fix --app-version calbach \
-    --account circle-deploy-account@all-of-us-workbench-test.iam.gserviceaccount.com
+    --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com
   ```
