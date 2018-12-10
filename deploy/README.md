@@ -5,9 +5,9 @@ individual services, see [../public-api/project.rb](../public-api/project.rb) `d
 and [../public-ui/project.rb](../public-ui/project.rb) `deploy-ui`. Test
 and staging are automatically pushed by CircleCI.
 
--  test: pushed by Circle on every master branch merge
--  staging: pushed by Circle when someone tags a new release
--  stable: manually pushed using a tagged staging release
+- test: pushed by Circle on every master branch merge
+- staging: pushed by Circle when someone tags a new release
+- stable: manually pushed using a tagged staging release
 
 The scripts in this directory are to be used for manual deployment to stable
 (and later, prod). Ideally we'd do this in some cloud service, but none of the
@@ -16,22 +16,22 @@ these processes locally.
 
 ## Deploy to staging
 
--  Verify that the most recent master commit [passed on Circle](https://circleci.com/gh/all-of-us/workflows/data-browser/tree/master)
--  Go to the [GitHub releases page](https://github.com/all-of-us/data-browser/releases);
-   note the latest version (e.g. v0-1-rc1)
--  Click "Draft new release"
--  Increment the minor version and reset the RC/patch version from the previous
-   release (e.g. if the previous were "v0-2-rc5", next would be "v0-3-rc1")
--  Wait for the staging release to complete on Circle
+- Verify that the most recent master commit [passed on Circle](https://circleci.com/gh/all-of-us/workflows/data-browser/tree/master)
+- Go to the [GitHub releases page](https://github.com/all-of-us/data-browser/releases);
+  note the latest version (e.g. v0-1-rc1)
+- Click "Draft new release"
+- Increment the minor version and reset the RC/patch version from the previous
+  release (e.g. if the previous were "v0-2-rc5", next would be "v0-3-rc1")
+- Wait for the staging release to complete on Circle
 
 ## Deploy to stable
 
--  Ensure that Circle staging deployment succeeded.
--  Run deployment (automatically takes the current staging deployment):
-   ```
-   deploy$ ./project.rb deploy --project aou-db-stable \
+- Ensure that Circle staging deployment succeeded.
+- Run deployment (automatically takes the current staging deployment):
+  ```
+  deploy$ ./project.rb deploy --project aou-db-stable \
     --account deploy@aou-db-stable.iam.gserviceaccount.com --promote
-   ```
+  ```
 
 # Manual deployment details
 
@@ -56,18 +56,18 @@ specified for deployment.
 Note: See above for an explanation of why this process is special right now.
 This could be improved in the future by supporting builds via dirty clients.
 
--  To test changes without deploying, use the --dry-run flag
--  To run a full manual test deployment, use --project aou-db-test --app-version *username* --no-promote.
+- To test changes without deploying, use the --dry-run flag
+- To run a full manual test deployment, use --project aou-db-test --app-version *username* --no-promote.
 
 To ensure your local changes are picked up during the deploy process, follow
 this process:
 
-1.  Commit your changes to the deploy scripts
-1.  Push your branch to GitHub, e.g. 'ch/deploy-fix'
-1.  Use --dry-run and --git-version to build using your branch:
+1. Commit your changes to the deploy scripts
+1. Push your branch to GitHub, e.g. 'ch/deploy-fix'
+1. Use --dry-run and --git-version to build using your branch:
 
-    ```
-    ./project.rb deploy --dry-run --no-promote --project aou-db-test \
-     --git-version origin/ch/deploy-fix --app-version calbach \
-     --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com
-    ```
+  ```
+  ./project.rb deploy --dry-run --no-promote --project aou-db-test \
+    --git-version origin/ch/deploy-fix --app-version calbach \
+    --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com
+  ```
