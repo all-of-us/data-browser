@@ -63,7 +63,7 @@ def setup_and_enter_docker(cmd_name, opts)
                    "using this script to deploy to staging. Note: this " +
                    "should be an uncommon use case, please see the release " +
                    "documentation for details"
-      exit 1
+       exit 1
     end
     live_staging_version = get_live_gae_version(STAGING_PROJECT)
     unless live_staging_version
@@ -279,7 +279,7 @@ def deploy(cmd_name, args)
                       "services (including DB updates)"
   common.run_inline %W{../public-api/project.rb deploy} + api_deploy_flags
 
-  maybe_log_jira.call "'#{op.opts.project}': completed api service " +
+  maybe_log_jira.call "'#{op.opts.project}': completed public api service " +
                       "deployment; beginning deploy of UI service"
 
   common.run_inline %W{
