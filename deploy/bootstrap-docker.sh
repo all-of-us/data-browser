@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-if [[ -z "${WORKBENCH_VERSION}" ]]; then
-  echo "missing required env var WORKBENCH_VERSION" 1>&2
+if [[ -z "${DATA_BROWSER_VERSION}" ]]; then
+  echo "missing required env var DATA_BROWSER_VERSION" 1>&2
   exit 1
 fi
 
