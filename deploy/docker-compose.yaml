@@ -6,13 +6,13 @@ services:
     user: circleci
     environment:
       # Required: a GitHub release git tag, e.g. v1-0-rc1
-      - WORKBENCH_VERSION
+      - DATA_BROWSER_VERSION
     volumes:
       # Cache the codebase and gradle for deployment only.
       - gradle-cache:/.gradle
-      - workbench:/home/circleci/workbench
+      - data-browser:/home/circleci/workbench
       - ./bootstrap-docker.sh:/bootstrap-docker.sh
 
 volumes:
-  workbench:
+  data-browser:
   gradle-cache:

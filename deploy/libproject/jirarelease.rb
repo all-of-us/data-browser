@@ -97,7 +97,7 @@ class JiraReleaseClient
   end
 
   def ticket_summary(tag)
-    return "Release tracker: Workbench #{tag}"
+    return "Release tracker: Data Browser #{tag}"
   end
 
   def create_ticket(project, from_tag, to_tag, circle_url = nil)
