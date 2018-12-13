@@ -56,7 +56,7 @@ specified for deployment.
 Note: See above for an explanation of why this process is special right now.
 This could be improved in the future by supporting builds via dirty clients.
 
-- To test changes without deploying, use the --dry-run flag
+- To test changes without deploying, use the --dry-run flag.
 - To run a full manual test deployment, use --project aou-db-test --app-version *username* --no-promote.
 
 To ensure your local changes are picked up during the deploy process, follow
