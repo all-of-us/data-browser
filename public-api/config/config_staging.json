@@ -1,7 +1,7 @@
 {
   "auth": {
     "gsuiteDomain": "staging.fake-research-aou.org",
-    "enforceRegistered": true
+    "enforceRegistered": false
   },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-rw-staging.appspot.com",
