@@ -113,7 +113,7 @@ jobs:
           name: Deploy to App Engine
           working_directory: ~/data-browser/public-api
           command: |
-            ./project.rb deploy-public-api \
+            ./project.rb deploy \
               --project aou-db-test \
               --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
               --version circle-ci-test \
@@ -238,7 +238,7 @@ workflows:
       - public-api-build-test
       # Run deployment to "test" on master merges.
       - public-api-deploy-to-test:
-          <<: *filter_master
+          # <<: *filter_master
           requires:
             - public-api-build-test
       - public-ui-deploy-to-test:
