@@ -52,6 +52,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
       return true;
     }
 
+    WorkbenchConfig config = configProvider.get();
     if (!configProvider.get().auth.requireSignIn) {
       return true;
     }
