@@ -238,7 +238,7 @@ workflows:
       - public-api-build-test
       # Run deployment to "test" on master merges.
       - public-api-deploy-to-test:
-          # <<: *filter_master
+          <<: *filter_master
           requires:
             - public-api-build-test
       - public-ui-deploy-to-test:
