@@ -213,6 +213,7 @@ jobs:
               --app-version "${CIRCLE_TAG}" \
               --circle-url "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}" \
               --key-file circle-sa-key.json \
+              --no-update-jira \
               --promote
 
 # See https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
