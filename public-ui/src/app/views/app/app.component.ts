@@ -16,6 +16,7 @@ import {Observable} from 'rxjs/Observable';
 
 import {environment} from 'environments/environment';
 
+import {ServerConfigService} from 'app/services/server-config.service';
 import {SignInService} from 'app/services/sign-in.service';
 
 export const overriddenUrlKey = 'allOfUsApiUrlOverride';
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
   private baseTitle: string;
   private overriddenPublicUrl: string = null;
   public noHeaderMenu = false;
+  requireSignIn = false;
   signedIn = false;
 
   constructor(
@@ -41,6 +43,7 @@ export class AppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private locationService: Location,
     private router: Router,
+    private serverConfigService: ServerConfigService,
     private signInService: SignInService,
     private titleService: Title
   ) {}
@@ -49,6 +52,9 @@ export class AppComponent implements OnInit {
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
 
+    this.serverConfigService.getConfig().subscribe((config) => {
+      this.requireSignIn = config.requireSignIn;
+    });
     this.signInService.isSignedIn$.subscribe((isSignedIn) => {
       this.signedIn = isSignedIn;
     });
