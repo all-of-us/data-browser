@@ -1,4 +1,4 @@
-<clr-main-container *ngIf="signedIn else login">
+<clr-main-container *ngIf="(signedIn || !requireSignIn) else login">
   <app-db-header [noMenu]="noHeaderMenu"></app-db-header>
   <div class="content-container">
     <div class="content-area">
