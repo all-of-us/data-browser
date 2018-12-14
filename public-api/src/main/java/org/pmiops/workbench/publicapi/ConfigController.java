@@ -25,6 +25,7 @@ public class ConfigController implements ConfigApiDelegate {
         new ConfigResponse()
             .gsuiteDomain(config.auth.gsuiteDomain)
             .enforceRegistered(config.auth.enforceRegistered)
+            .requireSignIn(config.auth.requireSignIn)
             .publicApiKeyForErrorReports(config.server.publicApiKeyForErrorReports));
   }
 }
