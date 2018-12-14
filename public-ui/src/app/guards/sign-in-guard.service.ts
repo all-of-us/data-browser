@@ -27,7 +27,7 @@ export class SignInGuard implements CanActivate, CanActivateChild {
       }
       return this.signInService.isSignedIn$.do(
         isSignedIn => isSignedIn || this.router.navigate(['/login']));
-    );
+    });
   }
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.canActivate(route, state);
