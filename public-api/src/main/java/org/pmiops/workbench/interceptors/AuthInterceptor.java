@@ -52,8 +52,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
       return true;
     }
 
-    HandlerMethod method = (HandlerMethod) handler;
+    if (!configProvider.get().auth.requireSignIn) {
+      return true;
+    }
 
+    HandlerMethod method = (HandlerMethod) handler;
     boolean isAuthRequired = false;
     ApiOperation apiOp = AnnotationUtils.findAnnotation(method.getMethod(), ApiOperation.class);
     if (apiOp != null) {
@@ -78,7 +81,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     }
 
     Profile profile = privateWorkbenchService.getMe();
-    if (configProvider.get().auth.enforceRegistered &&
+    if (config.auth.enforceRegistered &&
         profile.getIdVerificationStatus() != IdVerificationStatus.VERIFIED) {
       log.warning("Account has not been id verified");
       response.sendError(HttpServletResponse.SC_FORBIDDEN);
