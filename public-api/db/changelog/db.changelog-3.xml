@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="danrodney" id="changelog-20">
-    <addColumn tableName="cdr_version">
-      <column name="cdr_db_name" type="varchar(20)"/>
-      <column name="public_db_name" type="varchar(20)"/>
-    </addColumn>
-    <createSequence sequenceName="hibernate_sequence" startValue="1"/>
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <changeSet author="danrodney" id="changelog-3">
+
+    <createTable tableName="config">
+      <column name="config_id" type="varchar(80)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="configuration" type="CLOB">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
   </changeSet>
 </databaseChangeLog>

@@ -4,10 +4,34 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
-  <changeSet author="srushti" id="changelog-5">
+  <changeSet author="srushti" id="changelog-5-drop-col-1">
+    <preConditions onFail="MARK_RAN">
+      <columnExists tableName="cdr_version" columnName="cdr_db_name"/>
+    </preConditions>
     <dropColumn tableName="cdr_version" columnName="cdr_db_name" />
+  </changeSet>
+  <changeSet author="srushti" id="changelog-5-drop-col-2">
+    <preConditions onFail="MARK_RAN">
+      <columnExists tableName="cdr_version" columnName="bigquery_project"/>
+    </preConditions>
     <dropColumn tableName="cdr_version" columnName="bigquery_project" />
+  </changeSet>
+  <changeSet author="srushti" id="changelog-5-drop-col-3">
+    <preConditions onFail="MARK_RAN">
+      <columnExists tableName="cdr_version" columnName="bigquery_dataset"/>
+    </preConditions>
     <dropColumn tableName="cdr_version" columnName="bigquery_dataset" />
+  </changeSet>
+  <changeSet author="srushti" id="changelog-5-drop-col-4">
+    <preConditions onFail="MARK_RAN">
+      <columnExists tableName="cdr_version" columnName="release_number"/>
+    </preConditions>
     <dropColumn tableName="cdr_version" columnName="release_number" />
+  </changeSet>
+  <changeSet author="srushti" id="changelog-5-drop-col-5">
+    <preConditions onFail="MARK_RAN">
+      <columnExists tableName="cdr_version" columnName="data_access_level"/>
+    </preConditions>
+    <dropColumn tableName="cdr_version" columnName="data_access_level" />
   </changeSet>
 </databaseChangeLog>

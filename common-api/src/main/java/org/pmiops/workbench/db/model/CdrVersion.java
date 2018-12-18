@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.pmiops.workbench.model.DataAccessLevel;
 
 @Entity
 @Table(name = "cdr_version")
@@ -19,7 +18,6 @@ public class CdrVersion {
   private long cdrVersionId;
   private boolean isDefault;
   private String name;
-  private Short dataAccessLevel;
   private Timestamp creationTime;
   private int numParticipants;
   private String publicDbName;
@@ -53,24 +51,6 @@ public class CdrVersion {
     this.name = name;
   }
 
-  @Column(name = "data_access_level")
-  public Short getDataAccessLevel() {
-    return dataAccessLevel;
-  }
-
-  public void setDataAccessLevel(Short dataAccessLevel) {
-    this.dataAccessLevel = dataAccessLevel;
-  }
-
-  @Transient
-  public DataAccessLevel getDataAccessLevelEnum() {
-    return CommonStorageEnums.dataAccessLevelFromStorage(getDataAccessLevel());
-  }
-
-  public void setDataAccessLevelEnum(DataAccessLevel dataAccessLevel) {
-    setDataAccessLevel(CommonStorageEnums.dataAccessLevelToStorage(dataAccessLevel));
-  }
-
   @Column(name = "creation_time")
   public Timestamp getCreationTime() {
     return creationTime;
@@ -96,7 +76,7 @@ public class CdrVersion {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cdrVersionId, isDefault, name, dataAccessLevel,
+    return Objects.hash(cdrVersionId, isDefault, name,
           creationTime, numParticipants, publicDbName);
   }
 
@@ -109,7 +89,6 @@ public class CdrVersion {
     return new EqualsBuilder().append(this.cdrVersionId, that.cdrVersionId)
         .append(this.isDefault, that.isDefault)
         .append(this.name, that.name)
-        .append(this.dataAccessLevel, that.dataAccessLevel)
         .append(this.creationTime, that.creationTime)
         .append(this.numParticipants, that.numParticipants)
         .append(this.publicDbName, that.publicDbName)
