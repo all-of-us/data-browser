@@ -10,7 +10,6 @@ import javax.inject.Provider;
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.CdrVersion;
-import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.model.CdrVersionListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
