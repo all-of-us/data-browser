@@ -33,7 +33,6 @@ import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
-import org.pmiops.workbench.model.DataAccessLevel;
 import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
@@ -631,7 +630,7 @@ public class DataBrowserControllerTest {
 
     private void saveData() {
         makeCdrVersion(1L, "Test Registered CDR",
-            123L, DataAccessLevel.REGISTERED);
+            123L);
         conceptDao.save(CONCEPT_1);
         conceptDao.save(CONCEPT_2);
         conceptDao.save(CONCEPT_3);
@@ -666,12 +665,10 @@ public class DataBrowserControllerTest {
         achillesResultDao.save(ACHILLES_RESULT_9);
     }
 
-    private CdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime,
-        DataAccessLevel dataAccessLevel) {
+    private CdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
         cdrVersion = new CdrVersion();
         cdrVersion.setCdrVersionId(cdrVersionId);
         cdrVersion.setCreationTime(new Timestamp(creationTime));
-        cdrVersion.setDataAccessLevelEnum(dataAccessLevel);
         cdrVersion.setName(name);
         cdrVersion.setNumParticipants(123);
         cdrVersion.setPublicDbName("p");
