@@ -62,7 +62,6 @@ definitions:
     required:
       - cdrVersionId
       - name
-      - dataAccessLevel
       - creationTime
     properties:
       cdrVersionId:
