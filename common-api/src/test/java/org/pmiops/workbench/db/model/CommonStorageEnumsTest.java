@@ -16,7 +16,6 @@ public class CommonStorageEnumsTest {
   @Parameters(name = "{0}")
   public static Object[][] data() {
     return new Object[][] {
-        {},
         {
             Domain.class.getSimpleName(),
             Domain.values(),
