@@ -46,7 +46,6 @@ definitions:
     properties:
       items:
         type: "array"
-        type: "array"
         items:
           $ref: "#/definitions/CdrVersion"
       defaultCdrVersionId:
