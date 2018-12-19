@@ -71,7 +71,7 @@ public class CdrDbConfig {
       Long defaultId = null;
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
       for (CdrVersion cdrVersion : cdrVersionDao.findAll()) {
-        String dbName = "public".equals(dbUser) ? cdrVersion.getPublicDbName() : cdrVersion.getCdrDbName();
+        String dbName = "public".equals(dbUser) ? cdrVersion.getPublicDbName() : null;
         int slashIndex = originalDbUrl.lastIndexOf('/');
         String dbUrl = originalDbUrl.substring(0, slashIndex + 1) + dbName + "?useSSL=false";
         DataSource dataSource =

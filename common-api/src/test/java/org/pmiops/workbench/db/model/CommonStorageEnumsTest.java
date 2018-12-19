@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-import org.pmiops.workbench.model.DataAccessLevel;
 import org.pmiops.workbench.model.Domain;
 
 @RunWith(Parameterized.class)
@@ -17,12 +16,6 @@ public class CommonStorageEnumsTest {
   @Parameters(name = "{0}")
   public static Object[][] data() {
     return new Object[][] {
-        {
-            DataAccessLevel.class.getSimpleName(),
-            DataAccessLevel.values(),
-            (Function<Short, DataAccessLevel>) CommonStorageEnums::dataAccessLevelFromStorage,
-            (Function<DataAccessLevel, Short>) CommonStorageEnums::dataAccessLevelToStorage
-        },
         {
             Domain.class.getSimpleName(),
             Domain.values(),

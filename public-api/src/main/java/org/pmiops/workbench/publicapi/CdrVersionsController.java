@@ -10,10 +10,8 @@ import javax.inject.Provider;
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.CdrVersion;
-import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.model.CdrVersionListResponse;
-import org.pmiops.workbench.model.DataAccessLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +28,6 @@ public class CdrVersionsController implements CdrVersionsApiDelegate {
           return new org.pmiops.workbench.model.CdrVersion()
               .cdrVersionId(String.valueOf(cdrVersion.getCdrVersionId()))
               .creationTime(cdrVersion.getCreationTime().getTime())
-              .dataAccessLevel(cdrVersion.getDataAccessLevelEnum())
               .name(cdrVersion.getName());
         }
       };
@@ -50,8 +47,7 @@ public class CdrVersionsController implements CdrVersionsApiDelegate {
     // We return CDR versions for just registered CDR versions; controlled CDR data is currently
     // out of scope for the data browser.
     List<CdrVersion> cdrVersions = cdrVersionDao
-        .findByDataAccessLevelInOrderByCreationTimeDescDataAccessLevelDesc(
-            ImmutableSet.of(CommonStorageEnums.dataAccessLevelToStorage(DataAccessLevel.REGISTERED)));
+        .findAllByOrderByCreationTimeDesc();
     List<Long> defaultVersions = cdrVersions.stream()
       .filter(v -> v.getIsDefault())
       .map(CdrVersion::getCdrVersionId)
