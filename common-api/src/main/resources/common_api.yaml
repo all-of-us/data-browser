@@ -33,11 +33,6 @@ paths:
             $ref: "#/definitions/CdrVersionListResponse"
 
 definitions:
-  DataAccessLevel:
-    type: string
-    description: levels of access to data in the curated data repository
-    enum: &DATA_ACCESS_LEVEL [unregistered, registered, protected, revoked]
-
   Domain:
     type: string
     description: a domain for concepts corresponding to a table in the OMOP schema
@@ -62,15 +57,12 @@ definitions:
     required:
       - cdrVersionId
       - name
-      - dataAccessLevel
       - creationTime
     properties:
       cdrVersionId:
         type: string
       name:
         type: string
-      dataAccessLevel:
-        $ref: "#/definitions/DataAccessLevel"
       creationTime:
         type: integer
         format: int64
