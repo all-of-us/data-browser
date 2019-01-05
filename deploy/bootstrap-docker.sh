@@ -19,10 +19,10 @@ if [[ ! -d ~/data-browser/.git ]]; then
 fi
 cd ~/data-browser
 git fetch
+# Drop any untracked/ignored files which may have carried over, to ensure a clean build.
+git clean -fdx
 git checkout "${DATA_BROWSER_VERSION}"
 git submodule update --init --recursive
-# Drop any ignored files which may have carried over, to ensure a clean build.
-git clean -fX
 git status
 
 exec "$@"
