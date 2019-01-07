@@ -28,7 +28,7 @@ def get_live_gae_version(project, validate_version=true)
     common.error "Failed to get live GAE version for project '#{project}'"
     exit 1
   end
-  services = Set["public-api", "public-ui"]
+  services = Set["api", "default"]
   actives = JSON.parse(versions).select{|v| v["traffic_split"] == 1.0}
   active_services = actives.map{|v| v["service"]}.to_set
   if actives.empty?
