@@ -35,6 +35,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   loading = true;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
+  showTopConcepts = {};
   private searchRequest: SearchConceptsRequest;
   private subscriptions: ISubscription[] = [];
   private initSearchSubscription: ISubscription = null;
@@ -195,5 +196,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.showGenderIdentity = false;
     }
   }
-
+  
+  public toggleTopConcepts(domainName) {
+    if (!this.showTopConcepts[domainName] ) {
+      this.showTopConcepts[domainName] = true;
+    } else {
+      this.showTopConcepts[domainName] = false;
+    }
+  }
 }

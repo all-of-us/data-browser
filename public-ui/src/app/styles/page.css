@@ -117,9 +117,10 @@ label {
 }
 
 .row .chart-wrapper {
-    height: 8rem;
-    margin-top: .25rem;
-    margin-bottom: .25rem;
+    height: 10rem;
+    width: 100%;
+    margin-top: .50rem;
+    margin-bottom: .50rem;
 }
 
 .db-page-spinner {

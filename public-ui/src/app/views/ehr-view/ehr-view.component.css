@@ -13,3 +13,6 @@
 .flex-xs-middle.code-tooltip {
     display: inline;
 }
+.top-concepts-chart {
+    background-size: contain;
+}
