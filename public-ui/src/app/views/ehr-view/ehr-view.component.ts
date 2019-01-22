@@ -196,7 +196,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.showGenderIdentity = false;
     }
   }
-  
   public toggleTopConcepts(domainName) {
     if (!this.showTopConcepts[domainName] ) {
       this.showTopConcepts[domainName] = true;
