@@ -669,6 +669,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
             }
         }
+        aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
     }
 
     public void addGenderIdentityStratum(AchillesAnalysis aa){
