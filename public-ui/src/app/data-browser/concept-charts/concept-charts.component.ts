@@ -53,7 +53,8 @@ export class ConceptChartsComponent implements OnInit, OnDestroy {
     // Get chart results for concept
     this.loadingStack.push(true);
     const conceptIdStr = '' + this.concept.conceptId.toString();
-    this.subscriptions.push( this.api.getConceptAnalysisResults([conceptIdStr]).subscribe(
+    this.subscriptions.push( this.api.getConceptAnalysisResults([conceptIdStr],
+      this.concept.domainId).subscribe(
     results =>  {
       this.results = results.items;
       this.analyses = results.items[0];
@@ -76,6 +77,9 @@ export class ConceptChartsComponent implements OnInit, OnDestroy {
     this.subscriptions.push( this.api.getSourceConcepts(this.concept.conceptId).subscribe(
     results => {
       this.sourceConcepts = results.items;
+      if (this.sourceConcepts.length > 10) {
+        this.sourceConcepts = this.sourceConcepts.slice(0, 10);
+      }
       this.loadingStack.pop();
       }));
   }
