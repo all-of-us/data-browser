@@ -75,24 +75,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private ConceptService conceptService;
 
-    public DataBrowserController() {}
-
-    public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao,
-                                 DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
-                                 AchillesResultDao achillesResultDao,
-                                 AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
-                                 EntityManager entityManager, Provider<CdrVersion> defaultCdrVersionProvider) {
-        this.conceptService = conceptService;
-        this.conceptDao = conceptDao;
-        this.domainInfoDao = domainInfoDao;
-        this.surveyModuleDao = surveyModuleDao;
-        this.achillesResultDao = achillesResultDao;
-        this.achillesAnalysisDao = achillesAnalysisDao;
-        this.achillesResultDistDao = achillesResultDistDao;
-        this.entityManager = entityManager;
-        this.defaultCdrVersionProvider = defaultCdrVersionProvider;
-    }
-
     public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
     public static final long COUNT_ANALYSIS_ID = 3000;
     public static final long GENDER_ANALYSIS_ID = 3101;
@@ -119,6 +101,24 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long GENDER_ANALYSIS = 2;
     public static final long RACE_ANALYSIS = 4;
     public static final long ETHNICITY_ANALYSIS = 5;
+
+    public DataBrowserController() {}
+
+    public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao,
+                                 DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
+                                 AchillesResultDao achillesResultDao,
+                                 AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
+                                 EntityManager entityManager, Provider<CdrVersion> defaultCdrVersionProvider) {
+        this.conceptService = conceptService;
+        this.conceptDao = conceptDao;
+        this.domainInfoDao = domainInfoDao;
+        this.surveyModuleDao = surveyModuleDao;
+        this.achillesResultDao = achillesResultDao;
+        this.achillesAnalysisDao = achillesAnalysisDao;
+        this.achillesResultDistDao = achillesResultDistDao;
+        this.entityManager = entityManager;
+        this.defaultCdrVersionProvider = defaultCdrVersionProvider;
+    }
 
     /**
      * Converter function from backend representation (used with Hibernate) to
