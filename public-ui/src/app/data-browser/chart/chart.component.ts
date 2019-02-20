@@ -332,6 +332,9 @@ export class ChartComponent implements OnChanges {
       if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
       }
+      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
+      }
 
       data.push({
         name: a.analysisStratumName
