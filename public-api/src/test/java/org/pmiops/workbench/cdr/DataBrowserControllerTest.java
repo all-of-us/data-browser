@@ -513,7 +513,7 @@ public class DataBrowserControllerTest {
     public void testGetMeasurementAnalysisNoMatch() throws Exception{
         ArrayList<String> queryConceptIds = new ArrayList<String>();
         queryConceptIds.add("137990");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds);
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
         List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
         assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
     }
@@ -522,7 +522,7 @@ public class DataBrowserControllerTest {
     public void testGetSurveyDemographicAnalysesMatch() throws Exception{
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1586134");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds);
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds,"");
         List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
         Analysis ageAnalysis = conceptAnalysis.get(0).getAgeAnalysis();
         Analysis genderAnalysis = conceptAnalysis.get(0).getGenderAnalysis();
@@ -535,7 +535,7 @@ public class DataBrowserControllerTest {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1586134");
         conceptsIds.add("1585855");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds);
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
         List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
         assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(2);
         assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
@@ -545,7 +545,7 @@ public class DataBrowserControllerTest {
     public void testGetSurveyDemographicAnalysesNoMatch() throws Exception{
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1585855");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds);
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
         List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
         assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
     }
