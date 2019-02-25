@@ -1,13 +1,13 @@
 // Configuration for the aou-db-prod.
 {
   "auth": {
-    "gsuiteDomain": "fake-research-aou.org",
-    "requireSignIn": false,
+    "gsuiteDomain": "prod.fake-research-aou.org",
+    "requireSignIn": true,
     "enforceRegistered": false
   },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api.workbench.researchallofus.org",
-    "publicApiKeyForErrorReports": "AIzaSyDPoX4Eg7-_FVKi7JFzEKaJpZ4IMRLaER4",
+    "publicApiKeyForErrorReports": "AIzaSyAtXrWsPSJDOaOrdwYcpDKNDXeiTuTi_88",
     "debugEndpoints": false,
     "projectId": "aou-db-prod"
   }
