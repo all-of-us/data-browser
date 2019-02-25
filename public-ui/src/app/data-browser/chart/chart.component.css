@@ -1,7 +1,8 @@
 .standard-chart {
     display: block;
-    width: auto;
-    height: 100%
+    background-size: contain;
+    height: 100%;
+    width: 100%;
 }
 
 .small-chart {
@@ -9,6 +10,8 @@
     width: 400px;
     height: 300px;
 }
+/* tool-tip-styles */
+
 
 highcharts-title {
     fill: #434348;
