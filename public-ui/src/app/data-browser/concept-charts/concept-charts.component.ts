@@ -61,7 +61,8 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
           this.analyses = results.items[0];
           this.organizeGenders(this.analyses.genderAnalysis);
           this.fetchMeasurementGenderResults();
-          // Set this var to make template simpler. We can just loop through the results and show bins
+          // Set this var to make template simpler.
+          // We can just loop through the results and show bins
           this.loadingStack.pop();
         }));
 
