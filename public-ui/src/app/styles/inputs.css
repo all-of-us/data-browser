@@ -16,18 +16,20 @@ input[type=url]:not([readonly]) {
 }
 
 
+
 .search-input-big {
   padding: 0;
   margin-left:-24px;
 }
 .search-input-full {
-  postion: relative;
-
+  border-radius: 5px;
+  background-color: var(--pale-grey-two);
+  box-shadow: var(--boxshadow);
+  padding-left: var(--gutter);
 }
 .search-wrapper {
-  border-bottom: solid 1px;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: var(--gutter) 0;
+
 }
 .search-wrapper input[type="text"]
 {
@@ -36,13 +38,39 @@ input[type=url]:not([readonly]) {
 
 .search-input-full input{
   border-bottom: none;
-  width: 100%;
-  padding-left: 24px;
-  padding-right: 0px;
+  padding: 1.25em;
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
+  height: auto;
 
+}
+
+.search-bar input {
+  /* padding: 1.25em; */
+  height:auto
+}
+
+.search-input-full input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-family: GothamBook,open-sans,sans-serif;
+  font-size: 20px;
+  color: #216fb4;
+
+}
+.search-input-full input::-moz-placeholder { /* Firefox 19+ */
+  font-family: GothamBook,open-sans,sans-serif;
+  font-size: 16px;
+  font-weight:bolder;
+}
+.search-input-full input:-ms-input-placeholder { /* IE 10+ */
+  font-family: GothamBook,open-sans,sans-serif;
+  font-size: 16px;
+  font-weight:bolder;
+}
+.search-input-full input:-moz-placeholder { /* Firefox 18- */
+  font-family: GothamBook,open-sans,sans-serif;
+  font-size: 16px;
+  font-weight:bolder;
 }
 
 .input-icon {
@@ -61,11 +89,5 @@ input[type=url]:not([readonly]) {
 }
 
 
-/* webkit solution */
-/*
-::-webkit-input-placeholder { text-align:left; padding-left:24px; }
-*/
-/* mozilla solution */
-/*
-input:-moz-placeholder { text-align:left; }
-*/
+
+
