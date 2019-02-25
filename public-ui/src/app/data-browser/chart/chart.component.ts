@@ -228,7 +228,7 @@ export class ChartComponent implements OnChanges {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
-  //this is not running
+  // this is not running
   public makeCountChartOptions() {
     alert('makecountChartOptions is running');
     let data = [];
