@@ -71,8 +71,8 @@ input[type=password]:focus {
     content: " *";
     color: red;
 }
-
-:root {
+/* variables */
+/* :root {
     --mid-blue: #216fb4;
     --pale-sky-blue: #bee1ff;
     --pale-grey: #f6f6f8;
@@ -83,9 +83,9 @@ input[type=password]:focus {
     --gutter: 9px;
     --boxshadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
     --tbl-border:1px solid #CCCCCC;
-  }
+  } */
   a a:link a:visited {
-      color:var(--pale-sky-blue);
+      color:#bee1ff;
       
   }
 
@@ -93,7 +93,7 @@ input[type=password]:focus {
       cursor: pointer;
   }
 .highcharts-tooltip>span {
-    background:var(--pale-grey);
+    background:#f6f6f8;
     border-radius: 3px;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
     padding: 8px;

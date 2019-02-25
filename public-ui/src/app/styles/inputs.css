@@ -23,12 +23,12 @@ input[type=url]:not([readonly]) {
 }
 .search-input-full {
   border-radius: 5px;
-  background-color: var(--pale-grey-two);
-  box-shadow: var(--boxshadow);
-  padding-left: var(--gutter);
+  background-color: #f0f2f3;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+  padding-left: 9px;
 }
 .search-wrapper {
-  padding: var(--gutter) 0;
+  padding: 9px 0;
 
 }
 .search-wrapper input[type="text"]
