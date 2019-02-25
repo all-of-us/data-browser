@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators';
-import {DataBrowserService} from '../../publicGenerated/api/dataBrowser.service';
-import {AchillesResult} from '../../publicGenerated/model/achillesResult';
-import {Analysis} from '../../publicGenerated/model/analysis';
-import {ConceptAnalysis} from '../../publicGenerated/model/conceptAnalysis';
-import {ConceptGroup} from './conceptGroup';
-import {ConceptWithAnalysis} from './conceptWithAnalysis';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
+import { DataBrowserService } from '../../publicGenerated/api/dataBrowser.service';
+import { AchillesResult } from '../../publicGenerated/model/achillesResult';
+import { Analysis } from '../../publicGenerated/model/analysis';
+import { ConceptAnalysis } from '../../publicGenerated/model/conceptAnalysis';
+import { ConceptGroup } from './conceptGroup';
+import { ConceptWithAnalysis } from './conceptWithAnalysis';
 
 
 @Injectable()
@@ -15,7 +15,9 @@ export class DbConfigService {
   /* CONSTANTS */
   MALE_GENDER_ID = '8507';
   FEMALE_GENDER_ID = '8532';
-  OTHER_GENDER_ID = '8521';
+  // OTHER_GENDER_ID = '8521';
+  // Current data has 0 for other gender.
+  OTHER_GENDER_ID = '0';
   INTERSEX_GENDER_ID = '1585848';
   NONE_GENDER_ID = '1585849';
   PREGNANCY_CONCEPT_ID = '903120';
@@ -40,7 +42,8 @@ export class DbConfigService {
     '8507': '#8DC892',
     '8532': '#6CAEE3',
     '1585848': '#4259A5',
-    '1585849': '#252660'
+    '1585849': '#252660',
+    '0': '#4259A5'
   };
 
   GENDER_IDENTITY_COLORS = {
@@ -49,7 +52,7 @@ export class DbConfigService {
     '903070': '#252660',
     '903096': '#252660',
     '903079': '#80C4EC',
-    '1585841': '#4259A5',
+    '1585841': '#216fb4',
     '1585842': '#80C4EC',
     '1585843': '#8DC892'
   };
@@ -72,20 +75,20 @@ export class DbConfigService {
     '11': '#000000',
     '12': '#DDDDDD'
   };
-  COLUMN_COLOR = '#6CAEE3';
+  COLUMN_COLOR = '#216fb4';
   AXIS_LINE_COLOR = '#979797';
 
   /* Chart Styles */
   CHART_TITLE_STYLE = {
-    'color': '#302C71', 'font-family': 'Gotham HTF',	'font-size': '14px', 'font-weight': '300'
+    'color': '#262262', 'font-family': 'GothamBook', 'font-size': '22px', 'font-weight': 'normal'
   };
   DATA_LABEL_STYLE = {
-    'color': '#FFFFFF', 'font-family': 'Gotham HTF',	'font-size': '14px',
-    'font-weight': '300', 'textOutline': 'none'
+    'color': '#f6f6f8', 'font-family': 'GothamBook', 'fontSize': '15px', 'padding': '10px',
+    'font-weight': '300', 'textOutline': 'none',
   };
   GI_DATA_LABEL_STYLE = {
-    'color': 'black', 'font-family': 'Gotham HTF',	'font-size': '14px',
-      'font-weight': '300', 'textOutline': 'none'
+    'color': '#f6f6f8', 'font-family': 'GothamBook', 'font-size': '22px',
+    'font-weight': '300', 'textOutline': 'none'
   };
 
   pmGroups: ConceptGroup[] = [];
@@ -111,7 +114,7 @@ export class DbConfigService {
       return Observable.of(this.pmGroups);
     }
 
-   // const conceptIds = ['903118', '903115', '903133', '903121', '903135',
+    // const conceptIds = ['903118', '903115', '903133', '903121', '903135',
     //  '903136', '903126', '903111', '903120'];
 
     // Set up the groups

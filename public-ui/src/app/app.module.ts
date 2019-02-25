@@ -18,10 +18,12 @@ import {
 } from 'publicGenerated';
 
 
-import {AppRoutingModule} from './app-routing.module';
-import {DataBrowserModule} from './data-browser/data-browser.module';
+import { AppRoutingModule } from './app-routing.module';
+import { DataBrowserModule } from './data-browser/data-browser.module';
+import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
+import { BreadcrumbComponent } from './views/breadcrumb/component';
 import { DbHeaderComponent } from './views/db-header/db-header.component';
 import { DbHomeComponent } from './views/db-home/db-home.component';
 import { LoginComponent } from './views/login/login.component';
@@ -30,15 +32,14 @@ import {
 } from './views/page-template-signed-out/page-template-signed-out.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 import { SurveysComponent } from './views/surveys/surveys.component';
-
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
-import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 import {DbConfigService} from './utils/db-config.service';
+import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
@@ -77,14 +78,15 @@ export function getConfigService(http: Http) {
     AppComponent,
     SurveysComponent,
     DbHeaderComponent,
+    BreadcrumbComponent,
     SurveyViewComponent,
     DbHomeComponent,
+    HighlightSearchComponent,
     LoginComponent,
     QuickSearchComponent,
     EhrViewComponent,
     PageTemplateSignedOutComponent,
     PhysicalMeasurementsComponent,
-    HighlightSearchComponent,
   ],
   providers: [
     {
@@ -98,13 +100,14 @@ export function getConfigService(http: Http) {
       useFactory: getConfiguration
     },
     DbConfigService,
+    TooltipService,
     ServerConfigService,
-    SignInService,
     {
       provide: ErrorHandler,
       deps: [ServerConfigService],
       useClass: ErrorReporterService,
     },
+    SignInService,
   ],
   // This specifies the top-level components, to load first.
   bootstrap: [AppComponent]
