@@ -60,7 +60,7 @@ export class ChartComponent implements OnChanges {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-
+    console.log(options.chart);
 
     return {
       chart: options.chart,
