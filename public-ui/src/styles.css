@@ -92,11 +92,6 @@ input[type=password]:focus {
   .toggle-link {
       cursor: pointer;
   }
-
-  .no-b-border {
-      border-bottom:none!important;
-  }
-
 .highcharts-tooltip>span {
     background:var(--pale-grey);
     border-radius: 3px;
