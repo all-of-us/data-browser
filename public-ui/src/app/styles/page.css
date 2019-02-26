@@ -65,7 +65,7 @@
 
 #db-title {
   text-align: center;
-  width: calc((100%/12)- 8px);
+  width: calc(100%/1);
   margin: auto;
 }
 

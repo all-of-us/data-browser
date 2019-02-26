@@ -70,12 +70,12 @@
             <span><strong> {{r.participantCount | number}}</strong> participants in this domain
             </span>
           </span>
+        </div>
           <div class="result-bottom">
             <span *ngIf="!searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
               View Top 100 </span>
             <span *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)"> View Results </span>
           </div>
-        </div>
       </div>
       <!--result-box/>-->
 
@@ -104,6 +104,7 @@
           <span class="result-body_item" *ngIf="searchText.value">matching survey questions</span>
           <span class="result-body_item" *ngIf="!searchText.value"><span>survey questions</span></span>
           <span class="result-body_item">{{r.description}}</span>
+        </div>
 
           <div class="result-bottom">
             <span *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
@@ -112,7 +113,6 @@
               <span class="result-bottom-link" (click)="viewSurvey(r)"> View Results </span>
             </div>
           </div>
-        </div>
       </div>
 
 
