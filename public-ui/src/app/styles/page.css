@@ -1,5 +1,5 @@
-
 /* primary display */
+
 .primary-display, h1 {
   font-family: unit, sans-serif;
   font-size: 50px;
@@ -60,9 +60,6 @@
   color: #262262;
 }
 
-
-
-
 #db-title {
   text-align: center;
   width: calc(100%/1);
@@ -71,14 +68,13 @@
 
 #db-desc {
   text-align: center;
+  margin: 36px 0;
 }
 
 #db-sub-desc {
   padding: 2rem;
   text-align: center;
 }
-
-
 
 .chart {
   width: calc((100%/12)*10);
@@ -155,6 +151,7 @@
 }
 
 /* •••• table with fisrt column maxwidth 50% •••• */
+
 .tbl-r {
   display: flex;
   justify-content: space-between;
