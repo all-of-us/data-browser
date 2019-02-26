@@ -1,9 +1,9 @@
 // Configuration for the aou-db-prod.
 {
   "auth": {
-    "gsuiteDomain": "prod.fake-research-aou.org",
+    "gsuiteDomain": "researchallofus.org",
     "requireSignIn": true,
-    "enforceRegistered": false
+    "enforceRegistered": true
   },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api.workbench.researchallofus.org",
