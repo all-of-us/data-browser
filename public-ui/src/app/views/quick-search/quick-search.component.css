@@ -4,7 +4,7 @@ strong {
 }
 
 .search {
-    padding: 2rem 0;
+    padding: 18px 0;
     display: flex;
     flex-wrap: wrap;
 }
@@ -23,9 +23,6 @@ strong {
     font-size: 20px;
 }
 
-.search .sarch-bar {
-    margin-bottom: 0;
-}
 
 .search-bar input {
     min-width: calc((100%/12)*10);
@@ -66,12 +63,14 @@ strong {
 }
 
 .result-box {
-    margin-right: 20px;
-    margin-bottom: 1rem;
-    padding: 18px;
-    padding-bottom: 0;
-    min-width: calc(((100%/12)*3) - 15px);
-    max-width: 339px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: calc(((100%/12)*3) - 14px);
+    max-width: calc(((100%/12)*3) - 18px);
+    margin-right: 18px;
+    margin-bottom: 18px;
+    padding: 0 18px;
     border-radius: 4px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
@@ -84,7 +83,7 @@ strong {
     font-weight: 500;
     display: flex;
     width: 100%;
-    padding-bottom: .5rem;
+    margin:9px 0;
     transition: .4s all linear;
 }
 
@@ -109,25 +108,27 @@ strong {
     font-family: GothamBook;
     font-style: normal;
     font-weight: 400;
-    line-height: 18px;
+    line-height: 22px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-}
-
-#survey .result-box:first-of-type .result-body_item:nth-of-type(2) {
-    padding-bottom: .65rem;
 }
 
 .result-body_item:first-of-type {
-    padding: .25rem 0;
+    padding-bottom:9px;
 }
+/* #survey .result-box:first-of-type .result-body_item:nth-of-type(2) {
+    padding-bottom: .65rem;
+} */
 
-.result-body_item:nth-of-type(2) {
+/* .result-body_item:first-of-type {
+    padding-bottom:18px;
+} */
+
+/* .result-body_item:nth-of-type(2) {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-}
+} */
 
 .result-body-stat {
     padding-top: .5rem;
@@ -151,9 +152,9 @@ strong {
 
 #pm-box .result-body {}
 
-@media (max-width: 978px) {
+@media (max-width: 1090px) {
     .result-box {
-        min-width: calc(((100%/12)*6) - 20px);
-        max-width: calc(((100%/12)*6) - 20px);
+        min-width: calc(((100%/12)*6) - 18px);
+        max-width: calc(((100%/12)*6) - 18px);
     }
 }
