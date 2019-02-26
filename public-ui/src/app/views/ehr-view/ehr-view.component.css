@@ -29,7 +29,7 @@
 .domain-info-container {
     display: flex;
     align-items: center;
-    padding: 0 var(--gutter)
+    padding: 0  18px 
 }
 
 .top-concepts-chart {
@@ -41,10 +41,10 @@
 
 .results-tbl-row-inner {
     width: 100%;
-    padding: var(--gutter);
+    padding:  18px ;
     padding-bottom: none;
-    border-left: var(--tbl-border);
-    border-right: var(--tbl-border);
+    border-left: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+    border-right: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
 .tbl-r .tbl-d {
@@ -52,8 +52,8 @@
 }
 
 .aka {
-    padding-bottom: var(--gutter);
-    padding-left: var(--gutter);
+    padding-bottom:  18px ;
+    padding-left:  18px ;
 }
 
 .aka .info-icon {
@@ -63,14 +63,14 @@
 
 .see-more, .see-less {
     display: inline;
-    color: var(--mid-blue);
+    color: #216fb4;
     font-weight: 400;
     position: relative;
     z-index: 100;
 }
 
 .row-selected {
-    background: var(--pale-grey);
+    background: #f6f6f8;
 }
 
 .results-tbl-row-expanded .results-tbl-row .domain-info-container {
@@ -90,14 +90,14 @@
 }
 
 .tbl-r.tbl-head {
-    background: var(--pale-grey);
-    border: var(--tbl-border);
+    background: #f6f6f8;
+    border: 1px solid #CCCCCC;
     border-bottom: none;
 }
 
 .icon-btn {
     position: relative;
-    right: var(--gutter);
+    right:  18px ;
 }
 
 
