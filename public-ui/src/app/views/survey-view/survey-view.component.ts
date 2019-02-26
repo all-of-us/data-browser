@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
@@ -8,8 +8,10 @@ import {ISubscription} from 'rxjs/Subscription';
 import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
 import {AchillesResult} from '../../../publicGenerated/model/achillesResult';
 import {QuestionConcept} from '../../../publicGenerated/model/questionConcept';
+import {QuestionConceptListResponse} from '../../../publicGenerated/model/questionConceptListResponse';
 import {SurveyModule} from '../../../publicGenerated/model/surveyModule';
-
+import {GraphType} from '../../utils/enum-defs';
+import {TooltipService} from '../../utils/tooltip.service';
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -17,7 +19,7 @@ import {SurveyModule} from '../../../publicGenerated/model/surveyModule';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-
+  graphToShow = GraphType.BiologicalSex;
   domainId: string;
   title ;
   subTitle;
@@ -31,7 +33,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
   surveyName: string;
   conceptCodeTooltip: any;
-  genderGraph: string;
   binnedSurveyQuestions: string[] = ['1585864', '1585870', '1585873', '1585795', '1585802',
     '1585820', '1585889', '1585890'];
 
@@ -42,8 +43,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   /* Show answers toggle */
   showAnswer = {};
+  @ViewChild('chartElement') chartEl: ElementRef;
 
-  constructor(private route: ActivatedRoute, private api: DataBrowserService) {
+  constructor(private route: ActivatedRoute, private api: DataBrowserService,
+     private tooltipText: TooltipService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
@@ -69,12 +72,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.surveyResult = x;
         this.survey = this.surveyResult.survey;
         this.surveyName = this.survey.name;
-
         // Add Did not answer to each question
         for (const q of this.surveyResult.items) {
           // Get did not answer count for question and count % for each answer
           // Todo -- add this to api maybe
           let didNotAnswerCount  = this.survey.participantCount;
+          q.selectedAnalysis = q.genderAnalysis;
           for (const a of q.countAnalysis.results) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
@@ -137,7 +140,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (!countValue || countValue <= 0) { return 0; }
     let percent: number = countValue / this.survey.participantCount ;
     percent = parseFloat(percent.toFixed(4));
-
     return percent * 100;
   }
 
@@ -201,23 +203,48 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public showAnswerGraphs(q, a: AchillesResult) {
-    q.selectedAnswer = a;
+  public showAnswerGraphs(a: any) {
+    a.expanded = !a.expanded;
+  }
+
+  public resetSelectedGraphs() {
+    this.graphToShow = GraphType.None;
+  }
+
+  public selectGraph(g, q: any) {
+    this.chartEl.nativeElement.scrollIntoView(
+      { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    this.resetSelectedGraphs();
+    this.graphToShow = g;
+    switch (g) {
+      case GraphType.GenderIdentity:
+        q.selectedAnalysis = q.genderIdentityAnalysis;
+        break;
+      case GraphType.Age:
+        q.selectedAnalysis = q.ageAnalysis;
+        break;
+      default:
+        q.selectedAnalysis = q.genderAnalysis;
+        break;
+    }
   }
 
   public graphAnswerClicked(achillesResult) {
     console.log('Graph answer clicked ', achillesResult);
   }
 
-  public selectSurveyGenderGraph(g) {
-      if (g === 'Gender Identity') {
-        this.genderGraph = 'GI';
-      } else {
-        this.genderGraph = 'BS';
-      }
-  }
   public convertToNum(s) {
     return Number(s);
+  }
+
+  public showToolTip(g: string) {
+    if (g === 'Biological Sex' || g === 'Gender Identity') {
+      return 'Gender chart';
+    } else if (g === 'Age at Occurrence') {
+      return this.tooltipText.ageChartHelpText;
+    } else if (g === 'Sources') {
+      return this.tooltipText.sourcesChartHelpText;
+    }
   }
 
 }

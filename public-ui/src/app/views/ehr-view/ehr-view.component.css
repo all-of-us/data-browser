@@ -1,15 +1,113 @@
-.row.search {
-    margin: .25rem;
+:host {
+    margin: auto auto;
+    width: 100%;
 }
-.white-card-box{
-    padding: .25rem;
+
+.aka-text {
+    width: 120px;
+    font-style: italic;
+    color: rgb(150 150 150);
+    display: flex;
+    align-items: center;
 }
-.white-card-box.top-stat {
-    padding: 1rem;
+
+.aka-info {
+    opacity: .7;
 }
-.card-view {
-    margin-top: .5rem;
+
+#domain-name {
+    padding-bottom: 12px;
+    font-size: 30px;
+    line-height: 31px;
 }
-.flex-xs-middle.code-tooltip {
+
+#domain-summary {
+    font-size: 23px;
+    margin-bottom: 28px;
+}
+
+.domain-info-container {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--gutter)
+}
+
+.top-concepts-chart {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+
+.results-tbl-row-inner {
+    width: 100%;
+    padding: var(--gutter);
+    padding-bottom: none;
+    border-left: var(--tbl-border);
+    border-right: var(--tbl-border);
+}
+
+.tbl-r .tbl-d {
+    width:170px;
+}
+
+.aka {
+    padding-bottom: var(--gutter);
+    padding-left: var(--gutter);
+}
+
+.aka .info-icon {
+    filter: contrast(43%) brightness(165%);
+    transform: scale(0.7);
+}
+
+.see-more, .see-less {
     display: inline;
+    color: var(--mid-blue);
+    font-weight: 400;
+    position: relative;
+    z-index: 100;
+}
+
+.row-selected {
+    background: var(--pale-grey);
+}
+
+.results-tbl-row-expanded .results-tbl-row .domain-info-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+.tbl-head .tbl-r-group .tbl-d::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    background: url('/assets/icons/divider.svg');
+    background-repeat: no-repeat;
+    left: -10px;
+}
+
+.tbl-r.tbl-head {
+    background: var(--pale-grey);
+    border: var(--tbl-border);
+    border-bottom: none;
+}
+
+.icon-btn {
+    position: relative;
+    right: var(--gutter);
+}
+
+
+.tbl-r {
+    border: none;
+}
+
+@media (max-width: 600px) {
+    .chart-choice {
+        font-size: 4vw;
+        padding: 2px;
+    }
 }

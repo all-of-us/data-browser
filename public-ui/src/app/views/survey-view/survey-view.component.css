@@ -1,118 +1,125 @@
-.white-card-box.top-stat {
-    height: inherit;
-}
-.view-sub-title {
-    color: #4A4A4A;
-    font-weight: 300;
-}
-.box-sub-title.question {
-    font-size: larger;
-    display: inline;
-}
-.box-sub-title.question.question-display{
-    font-size: larger;
-}
-.survey-results {
-    padding: .5rem;
-    position: relative;
-    margin-top: 1rem;
-    background: linear-gradient(180deg, #EDEDED 0%, rgba(255,255,255,0) 100%);
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
-    border-radius: 4px;
-
-}
-.survey-results-background {
+.title-container {
     width: 100%;
-    opacity: 0.59;
-    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0) 100%);
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
-    padding: 1rem;
-    /* Opacity trick so the question cards can be white and not inherit these */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.desc-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.title-container * {
+    padding-right: var(--gutter);
+    width: calc(auto + var(--gutter));
+}
+
+.title-container h1 {
+    line-height: 1em;
+}
+
+.toggle-link, .toggle-link:link, .toggle-link:visited {
+    color: var(--mid-blue);
+}
+
+.search-bar-container {
+    margin-bottom: calc(var(--gutter)*4);
+    margin-top: var(--gutter);
+}
+
+.survey-head {
+    display: flex;
+    position: relative;
+    margin-bottom: calc(var(--gutter)*4)
+}
+
+.stat-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-container .secondary-display {
+    font-size: 70px;
+    line-height: 0.97em;
+}
+
+.stat-container:first-of-type {
+    padding-right: 45px;
+}
+
+.stat-desc {
+    font-size: .75em;
+}
+
+.pdf-link {
     position: absolute;
+    right: 0;
     top: 0;
-    bottom: 0;
 }
 
-.survey-results .question-card {
-    width: 100%;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 0;
-    opacity: 1;
-    background: #FFFFFF;
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
-    border-radius:4px;
+.survey-results {
     position: relative;
-    /*margin-right: 12px;
-    margin-left: 12px;
-    */
 }
 
-
-.survey-results .row.search {
-    margin-left: .1rem;
-    margin-right: .1rem;
-    margin-bottom: 1rem;
-    background-color: #DEDEE3;
+.no-results {
+    margin-top: 1em;
 }
 
-
-.survey-results .box-sub-title,
-.row.answers {
-    margin-left: .5rem;
+.question-result {
+    border-top: var(--tbl-border);
 }
 
-.answer-active, .answer-card, .answer-charts-wrapper {
-    background-color: #D9E4EA;
-}
-.answer-card {
-    height: 100%;
+.question-result:first-of-type {
+    border-top: none;
 }
 
-/* remove space between list and charts */
-.answer-list {
-
-}
-.answer-charts {
-    margin-left: 0px;
-    padding-left: 0px;
-}
-
-.chart-wrapper {
-    height: 240px;
-}
-
-.answer-charts .chart-wrapper {
-    height: 240px;
-    margin-top:0;
-}
-.answer-charts .chart-wrapper.age {
-    height: 240px;
-    margin-top: 0;
-}
-
-.row.answers .chart-wrapper {
-    margin-bottom:0px;
-}
-
-
-.answers-bar-col {
-    margin-top:1rem;
-}
-
-.btn-link.extra-search  {
-    font-weight: bolder;
-    text-decoration: underline;
-}
-
-.percent-bar {
-    padding-right: 1rem;
-}
-
-.gender-chart-button {
-    text-align: center;
-}
-
-.answer-text {
+.see-answers {
     cursor: pointer;
+    font-size: 1.3em;
+}
+
+.see-answers clr-icon {
+    width: 1.3em;
+    height: 1.3em;
+    color: var(--mid-blue);
+}
+
+.tbl-r.tbl-head {
+    padding-bottom: 0;
+}
+
+.tbl-exp-r {
+    padding: var(--gutter);
+}
+
+.tbl-exp-r:last-of-type {
+    border-bottom: var(--tbl-border)
+}
+
+.question .display-body {
+    padding-bottom: var(--gutter);
+}
+
+.question .body-default {
+    padding-bottom: var(--gutter);
+}
+
+.icon-btn clr-icon {
+    width: 2em;
+    height: 2em;
+    color: var(--mid-blue);
+}
+
+.tbl {
+    padding-bottom: calc(var(--gutter)*7);
+}
+
+.tbl-r-group .tbl-d.display-body {
+    font-size: .8em;
+}
+
+.tbl-exp-r .tbl-d {
+    font-size: 1em;
 }
