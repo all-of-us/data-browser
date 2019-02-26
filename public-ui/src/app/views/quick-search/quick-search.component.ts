@@ -3,13 +3,12 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
-import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
-import {DomainInfosAndSurveyModulesResponse} from '../../../publicGenerated/model/domainInfosAndSurveyModulesResponse';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
 
@@ -190,13 +189,13 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewSurvey(r) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('/survey/' + r.conceptId);
+    this.router.navigateByUrl('quick-search/survey/' + r.conceptId);
   }
 
   public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('/ehr/' + r.domain.toLowerCase());
+    this.router.navigateByUrl('quick-search/ehr/' + r.domain.toLowerCase());
   }
 
   public matchPhysicalMeasurements(searchString: string) {
