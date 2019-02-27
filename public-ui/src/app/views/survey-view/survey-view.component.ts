@@ -5,11 +5,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import {ISubscription} from 'rxjs/Subscription';
-import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
-import {AchillesResult} from '../../../publicGenerated/model/achillesResult';
-import {QuestionConcept} from '../../../publicGenerated/model/questionConcept';
-import {QuestionConceptListResponse} from '../../../publicGenerated/model/questionConceptListResponse';
-import {SurveyModule} from '../../../publicGenerated/model/surveyModule';
+import {DataBrowserService, QuestionConcept, SurveyModule } from '../../../publicGenerated';
 import {GraphType} from '../../utils/enum-defs';
 import {TooltipService} from '../../utils/tooltip.service';
 @Component({

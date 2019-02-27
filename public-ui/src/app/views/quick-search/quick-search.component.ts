@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -11,7 +10,7 @@ import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
-import { forEach } from '@angular/router/src/utils/collection';
+
 
 
 @Component({
@@ -205,7 +204,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('quick-search/ehr/' + r.domain.toLowerCase());
+    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
   }
 
   public matchPhysicalMeasurements(searchString: string) {
