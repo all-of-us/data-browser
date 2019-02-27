@@ -107,6 +107,11 @@
   width: 100%;
 }
 
+.search-bar-container {
+  margin-bottom: calc( 18px *4);
+  margin-top:  18px ;
+}
+
 
 .search-icon {
   width: calc((100%/12));
@@ -129,6 +134,11 @@
   color: #216fb4;
   position: relative;
   display: flex;
+  cursor: pointer;
+}
+
+.chart-choice:hover {
+  color: #262262;
 }
 
 .chart-choice.active::after {

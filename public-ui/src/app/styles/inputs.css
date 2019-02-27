@@ -15,8 +15,6 @@ input[type=url]:not([readonly]) {
   background: none;
 }
 
-
-
 .search-input-big {
   padding: 0;
   margin-left:-24px;
@@ -25,7 +23,7 @@ input[type=url]:not([readonly]) {
   border-radius: 5px;
   background-color: #f0f2f3;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
-  padding-left: 9px;
+  padding-left: 18px;
 }
 .search-wrapper {
   padding: 9px 0;
@@ -38,10 +36,12 @@ input[type=url]:not([readonly]) {
 
 .search-input-full input{
   border-bottom: none;
-  padding: 1.25em;
+  padding: 36px;
+  padding-left: 18px;
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
+  line-height: 1;
   height: auto;
 
 }

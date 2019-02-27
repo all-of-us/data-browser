@@ -38,6 +38,7 @@ body {
 
 .main-container .db-container {
     max-width:1400px;
+    width:100vw;
     min-width: 30rem;
     margin: auto;
     padding:  0 20px;
