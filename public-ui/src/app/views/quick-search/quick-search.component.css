@@ -4,7 +4,8 @@ strong {
 }
 
 .search {
-    padding: 18px 0;
+    margin-top:18px;
+    margin-bottom:36px;
     display: flex;
     flex-wrap: wrap;
 }
@@ -14,15 +15,13 @@ strong {
     min-width: calc((100%/12)*3.5);
     display: flex;
     height: auto;
-    margin: 6px;
 }
 
 .search-bar {
     min-width: calc((100%/12)*7.5);
     flex-grow: 1;
-    font-size: 20px;
+    font-size: 22px;
 }
-
 
 .search-bar input {
     min-width: calc((100%/12)*10);

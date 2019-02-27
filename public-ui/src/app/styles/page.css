@@ -68,7 +68,8 @@
 
 #db-desc {
   text-align: center;
-  margin: 36px 0;
+  margin-top:0;
+  margin-bottom: 54px;
 }
 
 #db-sub-desc {
@@ -106,9 +107,6 @@
   width: 100%;
 }
 
-.search-bar {
-  margin-bottom: calc(9px * 4);
-}
 
 .search-icon {
   width: calc((100%/12));
