@@ -1,3 +1,6 @@
+:host {
+  margin-top: 18px;
+}
 .breadcrumb-container {
   margin-left: 10vw;
   display: flex;
