@@ -149,7 +149,7 @@ strong {
     max-width: calc(((100%/12)*5));
 }
 
-#pm-box .result-body {}
+
 
 @media (max-width: 1090px) {
     .result-box {
