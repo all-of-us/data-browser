@@ -26,7 +26,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     children: [
       {
-        path: 'quick-search',
+        path: '',
         data: {
           title: 'Databrowser',
           breadcrumb: {

@@ -196,7 +196,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', this.prevSearchText);
     this.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
-        this.router.navigateByUrl('quick-search/survey/' + idName.conceptName);
+        this.router.navigateByUrl('survey/' + idName.conceptName);
       }
     });
   }
