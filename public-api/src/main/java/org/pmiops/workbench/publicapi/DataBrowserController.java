@@ -588,7 +588,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                 AchillesAnalysis unitAgeAnalysis = new AchillesAnalysis(aa);
                                 unitAgeAnalysis.setResults(results.get(unit));
                                 unitAgeAnalysis.setUnitName(unit);
-                                processMeasurementAgeDecileMissingBins(MEASUREMENT_AGE_DIST_ANALYSIS_ID,unitAgeAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                if(!unit.equalsIgnoreCase("no unit")) {
+                                    processMeasurementAgeDecileMissingBins(MEASUREMENT_AGE_DIST_ANALYSIS_ID,unitAgeAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                }
                                 addAgeStratum(unitAgeAnalysis,conceptId);
                                 unitSeperateAnalysis.add(unitAgeAnalysis);
                             }
