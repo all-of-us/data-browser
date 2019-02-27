@@ -24,11 +24,6 @@
     color: #216fb4;
 }
 
-.search-bar-container {
-    margin-bottom: calc( 18px *4);
-    margin-top:  18px ;
-}
-
 .survey-head {
     display: flex;
     position: relative;
