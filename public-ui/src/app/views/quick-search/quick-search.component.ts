@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
+import { forEach } from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -60,6 +61,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'processes that are ordered or carried out on individuals for ' +
       'diagnostic or therapeutic purposes are captured by the procedures domain.'};
     pmConceptGroups: ConceptGroup[];
+    conceptIdNames = [
+      { conceptId: 1585855, conceptName: 'Lifetyle' },
+      { conceptId: 1585710, conceptName: 'Overall Health' },
+      { conceptId: 1586134, conceptName: 'The Basics' }
+    ];
 
     private subscriptions: ISubscription[] = [];
 
@@ -189,7 +195,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewSurvey(r) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('quick-search/survey/' + r.conceptId);
+    this.conceptIdNames.forEach(idName => {
+      if (r.conceptId === idName.conceptId) {
+        this.router.navigateByUrl('quick-search/survey/' + idName.conceptName);
+      }
+    });
   }
 
   public viewEhrDomain(r) {
