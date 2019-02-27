@@ -28,9 +28,9 @@ const routes: Routes = [
       {
         path: 'quick-search',
         data: {
-          title: 'Quick Search',
+          title: 'Databrowser',
           breadcrumb: {
-            value: 'Quick Search',
+            value: 'Databrowser',
           }
         },
         children: [{
@@ -43,7 +43,7 @@ const routes: Routes = [
           data: {
             title: 'View Survey Questions and Answers',
             breadcrumb: {
-              value: 'survey – :id',
+              value: 'survey: :id',
             }
           }
         },
@@ -53,7 +53,7 @@ const routes: Routes = [
           data: {
             title: 'View Full Results',
             breadcrumb: {
-              value: 'ehr – :id',
+              value: 'ehr: :id',
             }
           }
         }
