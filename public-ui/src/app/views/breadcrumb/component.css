@@ -1,5 +1,6 @@
 :host {
-  margin-top: 18px;
+  padding-top: 18px;
+  padding-bottom: 36px;
 }
 .breadcrumb-container {
   margin-left: 10vw;
