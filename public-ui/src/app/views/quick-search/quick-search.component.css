@@ -13,6 +13,7 @@ strong {
 .search-title {
     white-space: nowrap;
     min-width: calc((100%/12)*3.5);
+    margin-top:9px;
     display: flex;
     height: auto;
 }
@@ -152,7 +153,9 @@ strong {
 
 @media (max-width: 1090px) {
     .result-box {
-        min-width: calc(((100%/12)*6) - 18px);
-        max-width: calc(((100%/12)*6) - 18px);
+        min-width: calc(((100%/12)*6) - 9px);
+    }
+    .result-box:nth-of-type(2) {
+        margin-right:0;
     }
 }
