@@ -47,7 +47,7 @@ input[type=url]:not([readonly]) {
 }
 
 .search-bar input {
-  /* padding: 1.25em; */
+  padding:27px;
   height:auto
 }
 
