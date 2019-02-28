@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-db-header',
   templateUrl: './db-header.component.html',
-  styleUrls: ['./db-header.component.css']
+  styleUrls: ['./db-header.component.css', '../../styles/template.css']
 })
 export class DbHeaderComponent implements OnInit {
   @Input() noMenu = false;

@@ -1,5 +1,5 @@
+<app-db-header></app-db-header>
 <clr-main-container class="main-bg" *ngIf="signedIn else login">
-  <app-db-header [noMenu]="noHeaderMenu"></app-db-header>
   <div class="db-container">
     <app-breadcrumb></app-breadcrumb>
     <router-outlet></router-outlet>
