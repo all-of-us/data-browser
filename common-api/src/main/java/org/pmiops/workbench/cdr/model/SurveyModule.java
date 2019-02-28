@@ -26,6 +26,7 @@ public class SurveyModule {
   private String description;
   private long questionCount;
   private long participantCount;
+  private int orderNumber;
 
   @Id
   @Column(name = "concept_id")
@@ -107,17 +108,32 @@ public class SurveyModule {
         Objects.equals(description, surveyModule.description) &&
         Objects.equals(conceptId, surveyModule.conceptId) &&
         Objects.equals(questionCount, surveyModule.questionCount) &&
-        Objects.equals(participantCount, surveyModule.participantCount);
+        Objects.equals(participantCount, surveyModule.participantCount) &&
+            Objects.equals(orderNumber, surveyModule.orderNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, description, conceptId, questionCount, participantCount);
+    return Objects.hash(name, description, conceptId, questionCount, participantCount, orderNumber);
   }
 
   @Override
   public String toString() {
     return  ToStringBuilder.reflectionToString(this);
+  }
+
+  @Column(name="order_number")
+  public int getOrderNumber() {
+    return orderNumber;
+  }
+
+  public void setOrderNumber(int orderNumber) {
+    this.orderNumber = orderNumber;
+  }
+
+  public SurveyModule orderNumber(int orderNumber) {
+    this.orderNumber = orderNumber;
+    return this;
   }
 
 }
