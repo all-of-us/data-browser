@@ -272,7 +272,8 @@ class DeployUI
     environment_names = {
         "aou-db-test" => "test",
         "aou-db-staging" => "staging",
-        "aou-db-stable" => "stable"
+        "aou-db-stable" => "stable",
+        "aou-db-prod" => "prod"
     }
     environment_name = environment_names[@opts.project]
 
