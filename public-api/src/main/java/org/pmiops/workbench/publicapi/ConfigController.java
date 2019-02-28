@@ -24,6 +24,7 @@ public class ConfigController implements ConfigApiDelegate {
     return ResponseEntity.ok(
         new ConfigResponse()
             .gsuiteDomain(config.auth.gsuiteDomain)
+            .projectId(config.server.projectId)
             .enforceRegistered(config.auth.enforceRegistered)
             .requireSignIn(config.auth.requireSignIn)
             .publicApiKeyForErrorReports(config.server.publicApiKeyForErrorReports));

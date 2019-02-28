@@ -390,7 +390,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<Concept> conceptList = new ArrayList(concepts.getContent());
 
-        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG)) {
+        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
             List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
 
             if(drugMatchedConcepts.size() > 0) {
@@ -476,7 +476,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds){
+    public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
@@ -535,6 +535,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 Long analysisId = (Long)pair.getKey();
                 AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
                 //aa.setUnitName(unitName);
+                if(analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_DIST_ANALYSIS_ID && !domainId.isEmpty()) {
+                    aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
+                }
                 if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -586,7 +589,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                 AchillesAnalysis unitAgeAnalysis = new AchillesAnalysis(aa);
                                 unitAgeAnalysis.setResults(results.get(unit));
                                 unitAgeAnalysis.setUnitName(unit);
-                                processMeasurementAgeDecileMissingBins(MEASUREMENT_AGE_DIST_ANALYSIS_ID,unitAgeAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                if(!unit.equalsIgnoreCase("no unit")) {
+                                    processMeasurementAgeDecileMissingBins(MEASUREMENT_AGE_DIST_ANALYSIS_ID,unitAgeAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                }
                                 addAgeStratum(unitAgeAnalysis,conceptId);
                                 unitSeperateAnalysis.add(unitAgeAnalysis);
                             }
@@ -670,6 +675,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
             }
         }
+        aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
     }
 
     public void addGenderIdentityStratum(AchillesAnalysis aa){
