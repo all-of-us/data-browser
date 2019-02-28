@@ -267,6 +267,7 @@ input#s {
     }
     #menu-primary ul.sub-menu {
         position: absolute;
+        padding:0;
         top: -9999em
     }
     #menu-primary {
@@ -284,47 +285,45 @@ input#s {
     #menu-primary li.icon_search {
         display: inline-block
     }
-    ul.main-menu li a:hover {
+    ul.main-menu li.main-menu-item:hover {
         background: rgba(38, 34, 98, 1);
-        color: #fff;
         transition: all .8s ease
+    }
+    ul.main-menu li.main-menu-item:hover a {
+        color: #fff;
     }
     ul.main-menu li.icon_search a:hover {
         background: 0 0
     }
-    ul.sub-menu li a:hover {
-        background: 0 0;
-        color: rgba(38, 34, 98, 1);
+    ul.sub-menu li[class*=icon_]:hover {
+        background: transparent;
         border-bottom: rgba(38, 34, 98, 1) solid 2px;
-        margin-bottom:-2px;
-        transition: none
+        transition: none;
     }
-    #menu-primary ul.sub-menu li {
+    #menu-primary ul.sub-menu li[class*=icon_] {
         display: inline-block;
         padding: 0;
         width: 175px;
         white-space:pre-wrap;
         font-family: unit,Arial, Helvetica, sans-serif;
         font-weight: 500;
-        font-size:0px;
         cursor:pointer;
-        line-height: 1;
+        font-size:0;
+        line-height: 1.5;
+        padding-bottom: 3px;
+        margin: -1.2rem 0;
+
     }
-    #menu-primary ul.sub-menu li img {
-        height: 50px;
-        margin: 1rem auto .5rem;
-        display: block;
-    }
+
     #menu-primary ul.sub-menu li img:hover + a{
         background: 0 0;
         color: rgba(38, 34, 98, 1);
         border-bottom: rgba(38, 34, 98, 1) solid 2px;
         transition: none;
-        margin-bottom:-2px;
-
     }
     #menu-primary ul.sub-menu li a {
-        font-size: 18px;
+        color: rgba(38, 34, 98, 1);
+        font-size: 16px;
         padding:0;
     }
         
@@ -334,10 +333,12 @@ input#s {
         padding: 1rem
     }
     #menu-primary ul.sub-menu li a {
+        padding-bottom:11px;
         width: auto;
     }
     #menu-primary li:last-of-type ul.sub-menu li {
         font-size:18px;
+        padding: 9px 0;
     }
     #menu-primary>li {
         border: none;
@@ -363,10 +364,24 @@ input#s {
         display: block;
         top: 60px!important
     }
-    #menu-primary ul.sub-menu li[class*=icon_] a img, .main-menu ul.sub-menu li a img {
+    #menu-primary ul.sub-menu li[class*=icon_] a img {
         width: 50px;
-        margin: 1rem auto .5rem;
+        margin: 0 auto .5rem;
         display: block
     }
+    #searchform {
+        width: 20rem;
+        margin: 0 auto;
+        padding-top: 0;
+    }
 
+}
+#searchsubmit {
+    background: url('https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png');
+    border: none;
+    width: 22px;
+    height: 22px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding: 13px;
 }
