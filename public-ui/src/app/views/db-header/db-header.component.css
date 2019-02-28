@@ -130,9 +130,7 @@ input#s {
     -webkit-margin-before: 0
 }
 
-.sub-menu {
-  padding-top:18px;
-}
+
 .main-navigation ul.sub-menu {
     padding-left: 0;
     position: absolute;
@@ -296,7 +294,6 @@ input#s {
         background: 0 0
     }
     ul.sub-menu li[class*=icon_]:hover {
-        background: transparent;
         border-bottom: rgba(38, 34, 98, 1) solid 2px;
         transition: none;
     }
@@ -354,8 +351,8 @@ input#s {
 
     }
     .main-menu>li:hover>ul {
-        left: 0;
-        right: 0;
+        left: -10%;
+        right: -10%;
         padding-left: calc(10%);
         padding-right: calc(10%);
         background: #fff;
