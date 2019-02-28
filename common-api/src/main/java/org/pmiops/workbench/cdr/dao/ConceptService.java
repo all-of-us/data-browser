@@ -19,26 +19,27 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ConceptService {
 
     public static class ConceptIds {
 
-      private final List<Long> standardConceptIds;
-      private final List<Long> sourceConceptIds;
+        private final List<Long> standardConceptIds;
+        private final List<Long> sourceConceptIds;
 
-      public ConceptIds(List<Long> standardConceptIds, List<Long> sourceConceptIds) {
-        this.standardConceptIds = standardConceptIds;
-        this.sourceConceptIds = sourceConceptIds;
-      }
+        public ConceptIds(List<Long> standardConceptIds, List<Long> sourceConceptIds) {
+            this.standardConceptIds = standardConceptIds;
+            this.sourceConceptIds = sourceConceptIds;
+        }
 
-      public List<Long> getStandardConceptIds() {
-        return standardConceptIds;
-      }
+        public List<Long> getStandardConceptIds() {
+            return standardConceptIds;
+        }
 
-      public List<Long> getSourceConceptIds() {
-        return sourceConceptIds;
-      }
+        public List<Long> getSourceConceptIds() {
+            return sourceConceptIds;
+        }
 
     }
 
@@ -121,10 +122,10 @@ public class ConceptService {
                     final String keyword = modifyMultipleMatchKeyword(query);
 
                     if (keyword != null) {
-                      Expression<Double> matchExp = criteriaBuilder.function("matchConcept", Double.class,
+                        Expression<Double> matchExp = criteriaBuilder.function("matchConcept", Double.class,
                                 root.get("conceptName"), root.get("conceptCode"), root.get("vocabularyId"),
-                          root.get("synonymsStr"), criteriaBuilder.literal(keyword));
-                      predicates.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                                root.get("synonymsStr"), criteriaBuilder.literal(keyword));
+                        predicates.add(criteriaBuilder.greaterThan(matchExp, 0.0));
                     }
 
                     if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_CONCEPTS)) {
@@ -140,21 +141,21 @@ public class ConceptService {
 
                     } else if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH)) {
                         if(keyword != null){
-                          List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
-                          standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
-                              criteriaBuilder.literal(query)));
-                          try {
-                            long conceptId = Long.parseLong(query);
-                            standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
-                                criteriaBuilder.literal(conceptId)));
-                          } catch (NumberFormatException e) {
-                            // Not a long, don't try to match it to a concept ID.
-                          }
-                          standardOrCodeOrIdMatch.add(
-                              criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
-                          predicates.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
+                            List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
+                            standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
+                                    criteriaBuilder.literal(query)));
+                            try {
+                                long conceptId = Long.parseLong(query);
+                                standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
+                                        criteriaBuilder.literal(conceptId)));
+                            } catch (NumberFormatException e) {
+                                // Not a long, don't try to match it to a concept ID.
+                            }
+                            standardOrCodeOrIdMatch.add(
+                                    criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                            predicates.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
                         } else {
-                          predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                            predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                         }
 
                     }
@@ -187,19 +188,19 @@ public class ConceptService {
     }
 
     public ConceptIds classifyConceptIds(Set<Long> conceptIds) {
-      ImmutableList.Builder<Long> standardConceptIds = ImmutableList.builder();
-      ImmutableList.Builder<Long> sourceConceptIds = ImmutableList.builder();
+        ImmutableList.Builder<Long> standardConceptIds = ImmutableList.builder();
+        ImmutableList.Builder<Long> sourceConceptIds = ImmutableList.builder();
 
-      Iterable<Concept> concepts = conceptDao.findAll(conceptIds);
-      for (Concept concept : concepts) {
-        if (ConceptService.STANDARD_CONCEPT_CODE.equals(concept.getStandardConcept())
-            || ConceptService.CLASSIFICATION_CONCEPT_CODE.equals(concept.getStandardConcept())) {
-          standardConceptIds.add(concept.getConceptId());
-        } else {
-          // We may need to handle classification / concept hierarchy here eventually...
-          sourceConceptIds.add(concept.getConceptId());
+        Iterable<Concept> concepts = conceptDao.findAll(conceptIds);
+        for (Concept concept : concepts) {
+            if (ConceptService.STANDARD_CONCEPT_CODE.equals(concept.getStandardConcept())
+                    || ConceptService.CLASSIFICATION_CONCEPT_CODE.equals(concept.getStandardConcept())) {
+                standardConceptIds.add(concept.getConceptId());
+            } else {
+                // We may need to handle classification / concept hierarchy here eventually...
+                sourceConceptIds.add(concept.getConceptId());
+            }
         }
-      }
-      return new ConceptIds(standardConceptIds.build(), sourceConceptIds.build());
+        return new ConceptIds(standardConceptIds.build(), sourceConceptIds.build());
     }
 }
