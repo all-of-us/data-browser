@@ -226,6 +226,10 @@
   padding: 9px 0;
 }
 
+.tbl-exp-r:last-of-type {
+  border-bottom: 1px solid #CCCCCC;
+}
+
 .tbl-exp-r:hover {
   background: #f6f6f8;
   transition: .1s background ease-in;
