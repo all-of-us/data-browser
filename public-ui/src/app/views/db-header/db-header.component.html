@@ -1,11 +1,200 @@
-<clr-header class="header db-header">
-  <div class="branding">
-    <a routerLink="/" class="nav-link logo"><img [src]="logo"></a>
-  </div>
+    <div id="masthead" class="site-header">
+  
+        <div class="site-branding-container">
+            <div class="site-branding">
+              <div class="logo">
+                <div class="site-logo"><a href="/" class="custom-logo-link"><img width="4356" height="528"
+                      src="https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/allofus_research-hub_color.png"
+                      class="custom-logo" alt="All of Us Research Hub" itemprop="logo"
+                      srcset="https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/allofus_research-hub_color.png 4356w, https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/allofus_research-hub_color-300x36.png 300w, https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/allofus_research-hub_color-768x93.png 768w, https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/allofus_research-hub_color-1024x124.png 1024w, https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/allofus_research-hub_color-1568x190.png 1568w"
+                      sizes="(max-width: 4356px) 100vw, 4356px"></a>
+                </div>
+                <div class="nih-logo">
+                  <a href="https://allofus.nih.gov/" target="_blank">
+                    <img alt="National Institute of Health All of Us Research Program" class="nih_header"
+                      src="https://staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/nih_allofus_color.png" />
+                  </a>
+                </div>
+              </div><!-- .logo -->
+        
+        
+              <aside class="widget-area widget-header" role="complementary" aria-label="Header Learn More">
+                <div class="widget-column header-widget-1">
+                  <section id="text-2" class="widget widget_text">
+                    <div class="textwidget">
+                      <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
+                          rel="noopener">JoinAllofUs.org</a></p>
+                      <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank"
+                          rel="noopener">AllofUs.nih.gov</a></p>
+                    </div>
+                  </section>
+                </div>
+              </aside><!-- .widget-area -->
+        
+              <div class="mobile-nav">
+                <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div><!-- .site-branding -->
+          </div><!-- .layout-wrap -->
+      
+      <div class="site-nav-container">
+        <div class="site-branding-nav">
+          <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
+            <div class="menu-primary-container">
+              <ul class="main-menu" id="menu-primary">
+                <li id="menu-item-89" class="icon_about main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-89">
+                  <a href="'/wp-content/themes/research-hub-wordpress-theme/fonts//about/">About</a>
+        <ul class="sub-menu">
+          <li id="menu-item-92" class="icon_program-overview">
+          
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/program-overview/">
+            <img src="/assets/icons/icon_program-overview.png" alt="">Program<span class='break'></span>Overview</a>
+        </li>
+          <li id="menu-item-90" class="icon_how-the-hub">
+            
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/how-the-research-hub-works/">
+            <img src="/assets/icons/icon_how-the-hub.png" alt="">How the Research<span class='break'></span>Hub Works</a>
+        </li>
+          <li id="menu-item-93" class="icon_researchers-as-partners">
+            
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/researchers-as-partners/">
+            <img src="/assets/icons/icon_researchers-as-partners.png" alt="">Researchers as<span class='break'></span>Partners</a>
+        </li>
+          <li id="menu-item-91" class="icon_privacy-security">
+            
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/privacy-security-protocols/">
+            <img src="/assets/icons/icon_privacy-security.png" alt="">Privacy &#038; Security<span class='break'></span>Protocols</a>
+        </li>
+        </ul>
+        </li>
+        <li id="menu-item-94" class="main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-94">
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/">Data &#038; Research Tools</a>
+        <ul class="sub-menu">
+          <li id="menu-item-96" class="icon_data-snapshots">
+            <a href="'/assets/icons/data-snapshots/">
+              <img src="/assets/icons/icon_data-snapshots.png" alt="">Data Snapshots</a>
+          </li>
+          <li id="menu-item-95" class="icon_data-browser fake-active">
+            <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/data-browser/">
+                <img src="/assets/icons/icon_data-browser.png" alt="">Data Browser</a>
+          </li>
+          <li id="menu-item-97" class="icon_data-sources">
+            <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/data-sources/">
+              <img src="/assets/icons/icon_data-sources.png" alt="">Data Sources</a>
+          </li>
+            <li id="menu-item-99" class="icon_survey-explorer">
+            <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/survey-explorer/">
+              <img src="/assets/icons/icon_survey-explorer.png" alt="">Survey Explorer</a>
+          </li>
+          <li id="menu-item-98" class="icon_help">
+            <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/help-and-support/">
+              <img src="/assets/icons/icon_help.png" alt="">Help and Support</a>
+          </li>
+        </ul>
+        </li>
+        <li id="menu-item-100" class="main-menu-item"><a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//frequently-asked-questions/">FAQ</a></li>
+        <li class="icon_search">
+          <a>
+          <img src="https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png" />
+        </a>
+          <ul class="sub-menu"><li><form role="search" method="get" id="searchform" action="'/wp-content/themes/research-hub-wordpress-theme/fonts//">
+          <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" />
+          <input type="submit"  value="" id="searchsubmit" /></form></li></ul></li></ul>
+     
+     
+          <!-- •••••••••••Mobile Menu•••••••••••••••••••••••••      -->
+          <!-- •••••••••••••••••••••••••      -->
 
-  <div  class="header-nav menu" [clr-nav-level]="2">
-    <a class="title nav-link db-logo" routerLink="/"> &nbsp; <img [src]="dbLogo"> &nbsp; </a>
-    <a class="nav-link nav-text" #home routerLinkActive="active" routerLink="/quick-search">Quick Guided Search</a>
-    <a class="nav-link nav-text" routerLinkActive="active" routerLink="quick-search/surveys">Survey Instruments</a>
-  </div>
-</clr-header>
+          <ul *ngIf="openTopMenu"  id="menu-mobile">
+              <li (click)="openAbout = !openAbout" id="menu-item-89" class="icon_about main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-89">
+                <a href="'/wp-content/themes/research-hub-wordpress-theme/fonts//about/">About</a>
+      <ul [hidden]="!openAbout" class="sub-menu">
+        <li id="menu-item-92" class="icon_program-overview">
+        
+        <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/program-overview/">
+          Program<span class='break'></span>Overview</a>
+      </li>
+        <li id="menu-item-90" class="icon_how-the-hub">
+          
+        <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/how-the-research-hub-works/">
+          How the Research<span class='break'></span>Hub Works</a>
+      </li>
+        <li id="menu-item-93" class="icon_researchers-as-partners">
+          
+        <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/researchers-as-partners/">
+          Researchers as<span class='break'></span>Partners</a>
+      </li>
+        <li id="menu-item-91" class="icon_privacy-security">
+          
+        <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//about/privacy-security-protocols/">
+          Privacy &#038; Security<span class='break'></span>Protocols</a>
+      </li>
+      </ul>
+      </li>
+      <li (click)="openDataTools = !openDataTools" id="menu-item-94" class="main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-94">
+        <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/">Data &#038; Research Tools</a>
+      <ul [hidden]="!openDataTools" class="sub-menu">
+        <li id="menu-item-96" class="icon_data-snapshots">
+          <a href="'/assets/icons/data-snapshots/">
+            <img src="/assets/icons/icon_data-snapshots.png" alt="">Data Snapshots</a>
+        </li>
+        <li id="menu-item-95" class="icon_data-browser fake-active">
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/data-browser/">
+              <img src="/assets/icons/icon_data-browser.png" alt="">Data Browser</a>
+        </li>
+        <li id="menu-item-97" class="icon_data-sources">
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/data-sources/">
+            <img src="/assets/icons/icon_data-sources.png" alt="">Data Sources</a>
+        </li>
+          <li id="menu-item-99" class="icon_survey-explorer">
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/survey-explorer/">
+            <img src="/assets/icons/icon_survey-explorer.png" alt="">Survey Explorer</a>
+        </li>
+        <li id="menu-item-98" class="icon_help">
+          <a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//data-research-tools/help-and-support/">
+            <img src="/assets/icons/icon_help.png" alt="">Help and Support</a>
+        </li>
+      </ul>
+      </li>
+      <li id="menu-item-100" class="main-menu-item"><a href="'https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/fonts//frequently-asked-questions/">FAQ</a></li>
+      
+      <li class="main-menu-item" (click)="openSearch = !openSearch" class="icon_search">
+        <a>
+        <img src="/assets/icons/icon_search.png" />
+      </a>
+        <ul [hidden]="!openSearch" class="sub-menu"><li><form role="search" method="get" id="searchform" action="'/wp-content/themes/research-hub-wordpress-theme/fonts//">
+        <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" />
+        <input type="submit"  value="" id="searchsubmit" /></form></li></ul></li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+        </div>
+          </nav><!-- #site-navigation -->
+        </div><!-- .site-branding -->
+      </div><!-- .layout-wrap -->
+      
+      </div><!-- #masthead -->      

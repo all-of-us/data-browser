@@ -33,7 +33,11 @@ body {
     letter-spacing: normal;
 }
 
-
+img {
+    height: auto;
+    max-width: 100%;
+    position: relative
+}
 
 .main-container .db-container {
     max-width:1400px;
