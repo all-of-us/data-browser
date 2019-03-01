@@ -1,29 +1,40 @@
+:host {
+  padding-top: 18px;
+  padding-bottom: 36px;
+}
 .breadcrumb-container {
-  margin-left: 3.25rem;
-  display: inline-block;
+  display: flex;
+  align-items: baseline;
+  font-family: unit;
+  font-size: 18px;
 }
 
 .breadcrumb {
   display: inline;
+  white-space: nowrap;
+  text-transform: uppercase;
+  
 }
 
 .breadcrumb a {
-  font-weight: 100;
+  font-weight: 500;
   color: #2691D0;
   text-decoration: none;
 }
 
 .breadcrumb:after {
-  font-size: .5rem;
-  font-weight: 100;
+  /* font-size: .5rem; */
+  font-weight: 500;
   color: #c3c3c3;
   content: "  >";
+  padding-right:.1rem;
 }
 
 .breadcrumb-last a {
   color: #262262;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 500;
+  /* font-size: 1rem; */
+  text-transform: uppercase;
   text-decoration: none;
 }
 

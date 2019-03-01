@@ -1,5 +1,5 @@
-
 /* primary display */
+
 .primary-display, h1 {
   font-family: unit, sans-serif;
   font-size: 50px;
@@ -60,25 +60,24 @@
   color: #262262;
 }
 
-
-
-
 #db-title {
   text-align: center;
-  width: calc((100%/12)- 8px);
+  width: calc(100%/1);
   margin: auto;
 }
 
 #db-desc {
+  width:calc((100%/12) * 10);
+  margin:auto;
   text-align: center;
+  margin-top:0;
+  margin-bottom: 54px;
 }
 
 #db-sub-desc {
   padding: 2rem;
   text-align: center;
 }
-
-
 
 .chart {
   width: calc((100%/12)*10);
@@ -110,9 +109,11 @@
   width: 100%;
 }
 
-.search-bar {
-  margin-bottom: calc(9px * 4);
+.search-bar-container {
+  margin-bottom: calc( 18px *4);
+  margin-top:  18px ;
 }
+
 
 .search-icon {
   width: calc((100%/12));
@@ -135,6 +136,11 @@
   color: #216fb4;
   position: relative;
   display: flex;
+  cursor: pointer;
+}
+
+.chart-choice:hover {
+  color: #262262;
 }
 
 .chart-choice.active::after {
@@ -155,6 +161,7 @@
 }
 
 /* •••• table with fisrt column maxwidth 50% •••• */
+
 .tbl-r {
   display: flex;
   justify-content: space-between;
@@ -219,6 +226,10 @@
   cursor: pointer;
   transition: .2s background ease-out;
   padding: 9px 0;
+}
+
+.tbl-exp-r:last-of-type {
+  border-bottom: 1px solid #CCCCCC;
 }
 
 .tbl-exp-r:hover {
