@@ -4,5 +4,6 @@ export const environment = {
   ...testEnvironmentBase,
   displayTag: 'Local->Test',
   workbenchUrl: 'http://localhost:4200',
+  researchAllOfUsUrl: 'https://staging.researchallofus.org',
   debug: true,
 };
