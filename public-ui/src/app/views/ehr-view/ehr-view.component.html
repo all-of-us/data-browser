@@ -1,5 +1,5 @@
 <h2 class="primary-display">{{title}}</h2>
-<div class="display-body search-bar search-input-full">
+<div class="display-body search-bar search-bar-container search-input-full">
   <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
   <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
 </div>
@@ -256,7 +256,7 @@
       </div>
       <div>
         <div class="col-md-4 ">
-          <button class="btn btn-primary btn-sm" [routerLink]="['/quick-search/ehr']"> Back to Quick Search </button>
+          <button class="btn btn-primary btn-sm" [routerLink]="['']"> Back to Quick Search </button>
         </div>
       </div>
     </div>

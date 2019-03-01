@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -11,6 +10,7 @@ import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
+
 
 
 @Component({
@@ -60,6 +60,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'processes that are ordered or carried out on individuals for ' +
       'diagnostic or therapeutic purposes are captured by the procedures domain.'};
     pmConceptGroups: ConceptGroup[];
+    conceptIdNames = [
+      { conceptId: 1585855, conceptName: 'Lifetyle' },
+      { conceptId: 1585710, conceptName: 'Overall Health' },
+      { conceptId: 1586134, conceptName: 'The Basics' }
+    ];
 
     private subscriptions: ISubscription[] = [];
 
@@ -189,7 +194,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewSurvey(r) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('survey/' + r.conceptId);
+    this.conceptIdNames.forEach(idName => {
+      if (r.conceptId === idName.conceptId) {
+        this.router.navigateByUrl('survey/' + idName.conceptName);
+      }
+    });
   }
 
   public viewEhrDomain(r) {
@@ -201,8 +210,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public matchPhysicalMeasurements(searchString: string) {
     if (!this.pmConceptGroups) {
       return 0;
-    }
-    if (!searchString) {
+    } else if (!searchString) {
       return this.pmConceptGroups.length;
     }
     return this.pmConceptGroups.filter(conceptgroup =>
