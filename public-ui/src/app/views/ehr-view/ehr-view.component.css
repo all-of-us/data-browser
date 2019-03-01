@@ -108,10 +108,3 @@
         padding: 2px;
     }
 }
-
-@media (max-width: 600px) {
-    .chart-choice {
-        font-size: 4vw;
-        padding: 2px;
-    }
-}
