@@ -3,6 +3,7 @@
   padding-bottom: 36px;
 }
 .breadcrumb-container {
+  margin-left: 10vw;
   display: flex;
   align-items: baseline;
   font-family: unit;

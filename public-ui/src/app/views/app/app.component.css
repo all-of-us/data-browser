@@ -8,7 +8,10 @@
     
 }
 
-
+#workbench-header {
+    height: 40px;
+    background: white;
+}
 #social {
     text-align: right;
 }
