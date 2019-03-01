@@ -1,197 +1,227 @@
-.content-container, .card-header, .card, .card-title, h1, h2, h3, h4, h5, h6, .title, .view-title, .box-title,
-.box-heading, p, div, .view-sub-title, .box-sub-title, label  {
-    font-family: "Gotham HTF", open-sans, sans-serif;
-}
-.page-header {
-    margin-top: .5rem;
-    margin-bottom: 1.5rem;
-}
 
-p {
-    font-size: 14px;
-    margin-top: .25rem;
-    line-height: 20px;
-}
-
-.title, .view-title, .box-title, .box-heading  {
-    color: #302C71;
+/* primary display */
+.primary-display, h1 {
+  font-family: unit, sans-serif;
+  font-size: 50px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.08em;
+  letter-spacing: normal;
+  text-align: left;
+  color: #262262;
 }
 
-.view-title {
-    padding-top: 12px;
-    padding-bottom:12px;
-
+.secondary-display, h2 {
+  font-family: unit, sans-serif, sans-serif;
+  font-weight: 200;
+  font-style: normal;
+  font-size: 38px;
+  font-stretch: normal;
+  line-height: 1.47em;
+  letter-spacing: normal;
+  text-align: left;
+  color: #262262;
 }
 
-.view-sub-title, .box-sub-title {
-    color: rgba(0,0,0,0.87);
-    font-weight: 300;
-    line-height: 20px;
+.display-body {
+  font-family: unit, sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.23;
+  letter-spacing: normal;
+  text-align: left;
+  color: #262262;
 }
 
-
-
-
-.white-box {
-    padding: 1rem;
-    background-color: white;
-}
-.white-card-box {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    padding-top: .5rem;
-    width: 100%;
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
-    position: relative;
+.body-lead {
+  font-family: GothamBook, open-sans, sans-serif;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2em;
+  letter-spacing: normal;
+  text-align: left;
+  color: #262262;
 }
 
-.box-header {
-    margin-top: 1.5rem;
-    margin-bottom: .5rem;
-}
-
-.white-card-box .box-title {
-    margin-top: .5rem;
-}
-
-.white-card-box .box-header {
-    margin-top: inherit ;
-    margin-bottom: .5rem;
-}
-
-/* Sequeeze this heading down to the box it is above */
-.box-heading {
-    margin-top: 1.5rem;
-    margin-bottom: -.5rem;
-}
-
-.toggle-link {
-    color: #2691D0;
-    font-size: 14px;
-}
-.button-col {
-    text-align: right;
-}
-
-label {
-    color: #302C71;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 18px;
-}
-
-.sub-label {
-    margin-top: -.25rem;
-}
-.sub-label label {
-    font-size: 12px;
-    font-weight: 300;
-    line-height: 14px;
-}
-
-
-.row.search {
-    /*opacity: 0.32;*/
-    border-radius: 4px;
-    background-color: #ECECF1; /* rgba(38,34,98,0.27); */
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.15);
-    padding-top:.5rem;
-    padding-bottom:.5rem;
-    margin-bottom: 1rem;
+.body-default, p {
+  font-family: GothamBook, open-sans, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #262262;
 }
 
 
 
-/* stat box at tops of pages */
-.white-card-box.top-stat {
-    /* Min Height for this row fixed. Needs to get taller for small screens */
-    /*min-height: 9rem;*/
+
+#db-title {
+  text-align: center;
+  width: calc((100%/12)- 8px);
+  margin: auto;
 }
 
-/* A white card box that is divided in columns needs the row to be 100% of of the height of the box */
-.one-row > .row {
-    height: 100%;
+#db-desc {
+  text-align: center;
 }
 
-.row .chart-wrapper {
-    height: 8rem;
-    margin-top: .25rem;
-    margin-bottom: .25rem;
+#db-sub-desc {
+  padding: 2rem;
+  text-align: center;
 }
 
-.db-page-spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+
+
+.chart {
+  width: calc((100%/12)*10);
+  margin: 0 auto;
 }
 
-/* Used to expand clarity data grid row to show charts because you can't change the clarity expansion icon or position
-
- */
-.expandable-grid-row  {
-    width: 100%;
-    border: 1px solid #CCCCCC;
-    border-radius: 3px 3px 0 0;
-    min-height: 2rem;
-
+.info-icon {
+  color: #216fb4;
+  font-weight: 600;
+  filter: contrast(56%) brightness(127.2%);
+  transform: scale(0.8);
 }
 
-/* This is a column in our grid */
-.expandable-grid-row > div {
-
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16px;
-
+.bar-chart-icon {
+  height: 1rem;
+  width: 1rem;
+  color: #2691D0;
+  cursor: pointer;
 }
-.expanded-grid-row, .row-expansion {
-    background-color: #ECF1F4;
+
+.db-card {
+  padding: 18px;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.db-card-inner {
+  width: 100%;
+}
+
+.search-bar {
+  margin-bottom: calc(9px * 4);
+}
+
+.search-icon {
+  width: calc((100%/12));
+  height: 20px;
+}
+
+.info-text {
+  font-size: .75em;
+}
+
+.graph-menu {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 9px;
+}
+
+.chart-choice {
+  padding: 9px;
+  color: #216fb4;
+  position: relative;
+  display: flex;
+}
+
+.chart-choice.active::after {
+  content: '';
+  position: absolute;
+  width: 86%;
+  height: 5px;
+  background: #216fb4;
+  left: 5%;
+  bottom: -5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.aka {
+  transition: .1s background ease-in;
+  cursor: pointer;
+}
+
+/* •••• table with fisrt column maxwidth 50% •••• */
+.tbl-r {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tbl-r-group {
+  display: flex;
+  justify-content: space-between;
+  width: 45%;
+}
+
+.tbl-r-group .tbl-d {
+  width: 31%;
+  /* white-space: nowrap; */
+}
+
+.tbl-r-group .tbl-d:last-of-type {
+  width: 84px;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.tbl-r.tbl-head {
+  padding: 9px;
+  border-radius: 3px 3px 0 0;
+}
+
+.tbl-d {
+  padding: 0 9px;
+  position: relative;
+}
+
+.tbl-d:first-of-type {
+  padding: 0 9px;
 }
 
 .row-expansion {
-    width: 100%;
-    text-align: center;
-    margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+  padding-top: 9px;
+  background: #f6f6f8;
+  border-top: none;
+  padding-bottom: calc(9px*3);
 }
 
-.white-card-box .expandable-grid-row {
-    margin-left: .10rem;
+.tbl-r-state {
+  background: #f6f6f8;
 }
 
-.results-grid {
-    margin: .75rem;
+.tbl-r-expanded {
+  border-left: 1px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
 }
 
-.info-text, .card-text.info-text  {
-    color: #302C71;
-
+.tbl-exp-r .tbl-r .tbl-d {
+  max-width: 50%;
 }
 
-span.keyword {
-    font-style: italic;
-    font-weight: bolder;
-
+.tbl-exp-r {
+  border: 1px solid #CCCCCC;
+  border-bottom: none;
+  cursor: pointer;
+  transition: .2s background ease-out;
+  padding: 9px 0;
 }
 
-.inline-search-button {
-    text-align: right;
-}
-
-.results-heading {
-    font-size: larger;
-}
-
-.highlight {
-    background-color: yellow;
-
-}
-
-/* column with no 12 px gutter on either side */
-.col-no-gutter
-{
-    padding-left: 0;
-    padding-right: 0;
+.tbl-exp-r:hover {
+  background: #f6f6f8;
+  transition: .1s background ease-in;
 }

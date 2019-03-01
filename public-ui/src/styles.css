@@ -1,5 +1,10 @@
 /* Master Styles */
-/*@font-face {
+
+@import url('https://fonts.googleapis.com/css?family=unit');
+/* Unit font */
+@import url("https://use.typekit.net/buf4baz.css");
+
+@font-face {
     font-family: GothamBook;
     src: url('/assets/fonts/Gotham Book.otf');
 }
@@ -15,48 +20,96 @@
     font-family: GothamMedium;
     src: url('/assets/fonts/Gotham Medium.otf');
 }
-*/
+
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-  background-color: #E0E0E1;
+    background-color: #E0E0E1;
+    /* overflow-x: hidden; */
+    font-family: Gotham;
+    font-size: 18px;
+    line-height: 1.5em;
+    letter-spacing: normal;
+}
+
+
+
+.content-container {
+    width:80vw;
+    min-width: 30rem;
+    margin: auto;
 }
 
 .main-container {
     background-color: #E0E0E1;
+    
 }
 
-
-input[type=text], input[type=password] {
-  border: 1px solid #9a9a9a;
+input[type=text],
+input[type=password] {
+    border: 1px solid #9a9a9a;
 }
 
-input[type=text]:focus, input[type=password]:focus {
-  border: 1px solid #0094d2;
+input[type=text]:focus,
+input[type=password]:focus {
+    border: 1px solid #0094d2;
 }
 
 .loading-text {
-  padding-left: 0.3rem;
-  color: #888;
+    padding-left: 0.3rem;
+    color: #888;
 }
 
 .loading-area {
-  padding-top: 0.3rem;
-}
-
-/* everywhere else */
-* {
-  font-family: Arial, Helvetica, sans-serif;
+    padding-top: 0.3rem;
 }
 
 .required::after {
-  content: " *";
-  color: red;
+    content: " *";
+    color: red;
+}
+/* variables */
+/* :root {
+    --mid-blue: #216fb4;
+    --pale-sky-blue: #bee1ff;
+    --pale-grey: #f6f6f8;
+    --pale-grey-two: #f0f2f3;
+    --blueberry: #2f2e7e;
+    --pinkish-grey: #bababa;
+    --dark-slate-blue: #262262;
+    --gutter: 9px;
+    --boxshadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+    --tbl-border:1px solid #CCCCCC;
+  } */
+  a a:link a:visited {
+      color:#bee1ff;
+      
+  }
+
+  .toggle-link {
+      cursor: pointer;
+  }
+.highcharts-tooltip>span {
+    background:#f6f6f8;
+    border-radius: 3px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+    padding: 8px;
 }
 
+/* get rid of margins on small screens */
 
-
+@media (max-width: 978px) {
+    .content-container {
+        width: 90vw
+    }
+    body {
+        padding: 0;
+    }
+}
 
 /* Must override clarity styles here, globally as angular component styles don't apply to child components used
  * in the template ie clarity components.
  */
-

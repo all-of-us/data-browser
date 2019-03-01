@@ -1,14 +1,18 @@
-<clr-main-container *ngIf="(signedIn || !requireSignIn) else login">
+<clr-main-container class="main-bg" *ngIf="signedIn else login">
   <app-db-header [noMenu]="noHeaderMenu"></app-db-header>
+    <app-breadcrumb></app-breadcrumb>
   <div class="content-container">
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
-    <div *ngIf="overriddenUrl" style="position: absolute; top: 0; left: 1rem;">
-      <span style="font-size: 80%; color: darkred;">API URL: {{this.overriddenUrl}}</span>
-    </div>
+    <router-outlet></router-outlet>
   </div>
 </clr-main-container>
+<footer>
+  <div class="banner-container">
+    <div class="banner-inner">
+      <div class="banner-btn"></div>
+      <p class="banner-text">Find out more about Data Access Levels and How to Apply. </p>
+    </div>
+  </div>
+</footer>
 <ng-template #login>
   <router-outlet></router-outlet>
 </ng-template>
