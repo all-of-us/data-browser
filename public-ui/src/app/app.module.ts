@@ -25,7 +25,6 @@ import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
 import { BreadcrumbComponent } from './views/breadcrumb/component';
 import { DbHeaderComponent } from './views/db-header/db-header.component';
-import { DbHomeComponent } from './views/db-home/db-home.component';
 import { LoginComponent } from './views/login/login.component';
 import {
   PageTemplateSignedOutComponent
@@ -80,7 +79,6 @@ export function getConfigService(http: Http) {
     DbHeaderComponent,
     BreadcrumbComponent,
     SurveyViewComponent,
-    DbHomeComponent,
     HighlightSearchComponent,
     LoginComponent,
     QuickSearchComponent,
