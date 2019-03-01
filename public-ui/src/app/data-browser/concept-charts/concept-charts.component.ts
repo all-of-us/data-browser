@@ -65,7 +65,6 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
           // We can just loop through the results and show bins
           this.loadingStack.pop();
         }));
-
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
       results => {
