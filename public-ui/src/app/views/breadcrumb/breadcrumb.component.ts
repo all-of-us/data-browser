@@ -101,7 +101,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         url += `/${routeURL}`;
       }
 
-      let label = child.snapshot.data[routeDataBreadcrumb].value;
+      const label = child.snapshot.data[routeDataBreadcrumb].value;
       const isIntermediate = child.snapshot.data[routeDataBreadcrumb].intermediate;
 
       if (!breadcrumbs.some(b => b.url === url)) {
