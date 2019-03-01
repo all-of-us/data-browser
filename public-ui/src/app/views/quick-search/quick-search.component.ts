@@ -210,8 +210,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public matchPhysicalMeasurements(searchString: string) {
     if (!this.pmConceptGroups) {
       return 0;
-    }
-    if (!searchString) {
+    } else if (!searchString) {
       return this.pmConceptGroups.length;
     }
     return this.pmConceptGroups.filter(conceptgroup =>

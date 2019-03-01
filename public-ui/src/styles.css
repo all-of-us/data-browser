@@ -72,7 +72,7 @@ input[type=password]:focus {
     content: " *";
     color: red;
 }
-/* variables */
+
 /* :root {
     --mid-blue: #216fb4;
     --pale-sky-blue: #bee1ff;
@@ -114,3 +114,4 @@ input[type=password]:focus {
 /* Must override clarity styles here, globally as angular component styles don't apply to child components used
  * in the template ie clarity components.
  */
+ 

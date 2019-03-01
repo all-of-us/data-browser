@@ -139,17 +139,13 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     analysis.results = [];
     if (this.maleGenderResult) {
       analysis.results.push(this.maleGenderResult);
-    }
-    if (this.femaleGenderResult) {
+    } else if (this.femaleGenderResult) {
       analysis.results.push(this.femaleGenderResult);
-    }
-    if (this.intersexGenderResult) {
+    } else if (this.intersexGenderResult) {
       analysis.results.push(this.intersexGenderResult);
-    }
-    if (this.noneGenderResult) {
+    } else if (this.noneGenderResult) {
       analysis.results.push(this.noneGenderResult);
-    }
-    if (this.otherGenderResult) {
+    } else if (this.otherGenderResult) {
       analysis.results.push(this.otherGenderResult);
     }
   }
