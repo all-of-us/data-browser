@@ -15,12 +15,9 @@ export class DbHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(window.innerWidth);
-    
   }
 
   public toggleTopMenu() {
     this.openTopMenu = !this.openTopMenu;
   }
-
 }
