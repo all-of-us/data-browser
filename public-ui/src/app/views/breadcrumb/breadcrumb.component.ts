@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
+import { environment } from '../../../environments/environment';
 
 export interface Breadcrumb {
   label: string;
@@ -9,16 +10,17 @@ export interface Breadcrumb {
 }
 @Component({
   selector: 'app-breadcrumb',
-  templateUrl: './component.html',
+  templateUrl: './breadcrumb.component.html',
   styleUrls: ['../../styles/buttons.css',
     '../../styles/cards.css',
     '../../styles/headers.css',
     '../../styles/inputs.css',
-    './component.css']
+    './breadcrumb.component.css']
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   breadcrumbs: Breadcrumb[];
+  allOfUs = environment.researchAllOfUsUrl;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router) {}
@@ -99,23 +101,9 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         url += `/${routeURL}`;
       }
 
-      let label = child.snapshot.data[routeDataBreadcrumb].value;
+      const label = child.snapshot.data[routeDataBreadcrumb].value;
       const isIntermediate = child.snapshot.data[routeDataBreadcrumb].intermediate;
 
-      if (label === 'Param: Workspace Name') {
-        label = child.snapshot.data['workspace'].name;
-      }
-      if (label === 'Param: Cohort Name') {
-        label = child.snapshot.data['cohort'].name;
-      }
-      if (label === 'Param: Concept Set Name') {
-        label = child.snapshot.data['conceptSet'].name;
-      }
-      if (label === 'Param: Notebook Name') {
-        label = decodeURI(child.snapshot.params['nbName'])
-          .replace(/\.ipynb$/, '');
-      }
-      // Prevent processing children with duplicate urls
       if (!breadcrumbs.some(b => b.url === url)) {
         const breadcrumb = BreadcrumbComponent.makeBreadcrumb(label, isIntermediate, url, child);
         breadcrumbs.push(breadcrumb);

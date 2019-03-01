@@ -3,7 +3,7 @@ import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/t
 import {Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 
-import {BreadcrumbComponent} from './component';
+import {BreadcrumbComponent} from './breadcrumb.component';
 
 const testRoutes: Routes = [
   {
