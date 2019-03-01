@@ -102,20 +102,6 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       let label = child.snapshot.data[routeDataBreadcrumb].value;
       const isIntermediate = child.snapshot.data[routeDataBreadcrumb].intermediate;
 
-      if (label === 'Param: Workspace Name') {
-        label = child.snapshot.data['workspace'].name;
-      }
-      if (label === 'Param: Cohort Name') {
-        label = child.snapshot.data['cohort'].name;
-      }
-      if (label === 'Param: Concept Set Name') {
-        label = child.snapshot.data['conceptSet'].name;
-      }
-      if (label === 'Param: Notebook Name') {
-        label = decodeURI(child.snapshot.params['nbName'])
-          .replace(/\.ipynb$/, '');
-      }
-      // Prevent processing children with duplicate urls
       if (!breadcrumbs.some(b => b.url === url)) {
         const breadcrumb = BreadcrumbComponent.makeBreadcrumb(label, isIntermediate, url, child);
         breadcrumbs.push(breadcrumb);
