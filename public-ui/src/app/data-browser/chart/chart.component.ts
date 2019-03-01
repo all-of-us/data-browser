@@ -60,7 +60,6 @@ export class ChartComponent implements OnChanges {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    console.log(options.chart);
 
     return {
       chart: options.chart,
@@ -228,9 +227,8 @@ export class ChartComponent implements OnChanges {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
-  // this is not running
+
   public makeCountChartOptions() {
-    alert('makecountChartOptions is running');
     let data = [];
     let cats = [];
     for (const a of this.analysis.results) {
