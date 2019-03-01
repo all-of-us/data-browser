@@ -23,7 +23,7 @@ import { DataBrowserModule } from './data-browser/data-browser.module';
 import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
-import { BreadcrumbComponent } from './views/breadcrumb/component';
+import { BreadcrumbComponent } from './views/breadcrumb/breadcrumb.component';
 import { DbHeaderComponent } from './views/db-header/db-header.component';
 import { LoginComponent } from './views/login/login.component';
 import {
