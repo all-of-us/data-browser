@@ -7,11 +7,20 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DbHeaderComponent implements OnInit {
   @Input() noMenu = false;
-  logo = '/assets/db-images/All_Of_Us_Logo.svg';
-  dbLogo = '/assets/db-images/Data_Browser_Logo.svg';
+  topMenuItemToggle = false;
+  openTopMenu = false;
+  openAbout = false;
+  openDataTools = false;
+  openSearch = false;
   constructor() { }
 
   ngOnInit() {
+    console.log(window.innerWidth);
+    
+  }
+
+  public toggleTopMenu() {
+    this.openTopMenu = !this.openTopMenu;
   }
 
 }
