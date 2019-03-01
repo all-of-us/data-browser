@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-db-header',
   templateUrl: './db-header.component.html',
@@ -12,6 +12,7 @@ export class DbHeaderComponent implements OnInit {
   openAbout = false;
   openDataTools = false;
   openSearch = false;
+  allOfUs = environment.researchAllOfUsUrl;
   constructor() { }
 
   ngOnInit() {

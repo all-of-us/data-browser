@@ -207,6 +207,10 @@ input#s {
     font-size: 19.8px;
 }
 
+#menu-mobile ul.sub-menu li[class*=icon_] a img {
+    display:none;
+}
+
 #menu-mobile ul.sub-menu li[class*=icon_]:hover {
     border-bottom: none;
 }
