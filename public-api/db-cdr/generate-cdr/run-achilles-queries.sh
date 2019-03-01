@@ -43,9 +43,6 @@ then
   exit 1
 fi
 
-#The list of ppi questions which have user entered values which can have wide range so placing them in ten ranged buckets
-declare -a toBinSurveyQuestions=(1585864,1585870,1585873,1585795,1585802,1585820,1585889,1585890)
-
 # Next Populate achilles_results
 echo "Running achilles queries..."
 
@@ -99,7 +96,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0, 6 as analysis_id,  CAST(floor((2018 - year_of_birth)/10) AS STRING) as stratum_2,
 COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
-where floor((2018 - year_of_birth)/10) >=3
+where floor((2018 - year_of_birth)/10) >=2
 group by stratum_2"
 
 # 7 Gender identity count
@@ -110,14 +107,13 @@ select 0, 7 as analysis_id,  cast(gender_identity_concept_id as STRING) as strat
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\`
 group by gender_identity_concept_id"
 
-# Age decile 2 count
+# Age decile 1 count
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
-select 0, 6 as analysis_id,  '2' as stratum_2,
+select 0, 6 as analysis_id,  '1' as stratum_2,
 COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
-where ((2018 - year_of_birth) > 18 and (2018 - year_of_birth) < 30)"
-
+where (2018 - year_of_birth) < 20"
 
 # 10	Number of all persons by year of birth and by gender
 echo "Getting year of birth , gender count"
@@ -231,8 +227,8 @@ where co1.condition_source_concept_id not in (select distinct condition_concept_
 group by co1.condition_source_concept_id, p1.gender_identity_concept_id"
 
 # (400 age ) 3102 Number of persons with at least one condition occurrence, by condition_concept_id by age decile
-# Age Deciles : They will be 18 - 29, 30 - 39, 40 - 49, 50 - 59, 60 - 69, 70 - 79, 80-89, 90+
-#  children are 0-17 and we don't have children for now . Want all adults in a bucket thus 18 - 29 .
+# Age Deciles : They will be  < 20, 20 - 29, 30 - 39, 40 - 49, 50 - 59, 60 - 69, 70 - 79, 80-89, 90+
+#  children are 0-17 and we don't have children for now .
 #Ex yob = 2000  , start date : 2017 -- , sd - yob = 17  / 10 = 1.7 floor(1.7 ) = 1
 # 30 - 39 , 2017 - 1980 = 37 / 10 = 3
 
@@ -245,11 +241,11 @@ CAST(co1.condition_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from condition_start_date) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Condition' as stratum_3,
 count(distinct p1.person_id) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2
-on p2.person_id=co2.person_id where co2.condition_source_concept_id=co1.condition_concept_id and floor((extract(year from co2.condition_start_date) - p2.year_of_birth)/10) >=3) as source_count_value
+on p2.person_id=co2.person_id where co2.condition_source_concept_id=co1.condition_concept_id and floor((extract(year from co2.condition_start_date) - p2.year_of_birth)/10) >=2) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from condition_start_date) - p1.year_of_birth)/10) >=3
+where floor((extract(year from condition_start_date) - p1.year_of_birth)/10) >=2
 and co1.condition_concept_id > 0
 group by co1.condition_concept_id, stratum_2
 union all
@@ -258,36 +254,34 @@ CAST(co1.condition_source_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from condition_start_date) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Condition' as stratum_3,
 COUNT(distinct p1.person_id) as count_value,
 COUNT(distinct p1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
-on p1.person_id = co1.person_id where floor((extract(year from condition_start_date) - p1.year_of_birth)/10) >=3
+on p1.person_id = co1.person_id where floor((extract(year from condition_start_date) - p1.year_of_birth)/10) >=2
 and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id, stratum_2"
 
-#Get conditions by age decile id 3102 for the 18-29 group labeled as 2
+#Get conditions by age decile id 3102 for the <20 group labeled as 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value,source_count_value)
 select 0, 3102 as analysis_id,
 CAST(co1.condition_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Condition' as stratum_3,
+'1' as stratum_2,'Condition' as stratum_3,
  count(distinct p1.person_id) as count_value,(select COUNT(distinct p2.PERSON_ID) from
  \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2 on
  p2.person_id=co2.person_id where co2.condition_source_concept_id=co1.condition_concept_id
- and (extract(year from co2.condition_start_date) - p2.year_of_birth) > 18 and
- (extract(year from co2.condition_start_date) - p2.year_of_birth) < 30) as source_count_value
+ and (extract(year from co2.condition_start_date) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from condition_start_date) - p1.year_of_birth) > 18 and (extract(year from condition_start_date) - p1.year_of_birth) < 30
+where (extract(year from condition_start_date) - p1.year_of_birth) < 20
 and co1.condition_concept_id > 0
 group by co1.condition_concept_id, stratum_2
 union all
-select 0, 3102 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,'2' as stratum_2,'Condition' as stratum_3,
+select 0, 3102 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,'1' as stratum_2,'Condition' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from
 \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from condition_start_date) - p1.year_of_birth) > 18
-and (extract(year from condition_start_date) - p1.year_of_birth) < 30
+where (extract(year from condition_start_date) - p1.year_of_birth) < 20
 and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id,stratum_2"
 
@@ -300,11 +294,11 @@ CAST(co1.condition_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Condition' as stratum_3,
 count(distinct p1.person_id) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2
-on p2.person_id=co2.person_id where co2.condition_source_concept_id=co1.condition_concept_id and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=3) as source_count_value
+on p2.person_id=co2.person_id where co2.condition_source_concept_id=co1.condition_concept_id and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=2) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.condition_concept_id > 0
 group by co1.condition_concept_id, stratum_2
 union all
@@ -313,34 +307,33 @@ CAST(co1.condition_source_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Condition' as stratum_3,
 COUNT(distinct p1.person_id) as count_value,
 COUNT(distinct p1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
-on p1.person_id = co1.person_id where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+on p1.person_id = co1.person_id where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id, stratum_2"
 
-#Get conditions by age decile id 3102 for the 18-29 group labeled as 2
+#Get conditions by age decile id 3102 for the <20 group labeled as 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value,source_count_value)
 select 0, 3106 as analysis_id,
 CAST(co1.condition_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Condition' as stratum_3,
+'1' as stratum_2,'Condition' as stratum_3,
 count(distinct p1.person_id) as count_value,(select COUNT(distinct p2.PERSON_ID) from
 \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2 on p2.person_id=co2.person_id
 where co2.condition_source_concept_id=co1.condition_concept_id
-and (extract(year from current_date()) - p2.year_of_birth) > 18 and
-(extract(year from current_date()) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from current_date()) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from current_date()) - p1.year_of_birth) > 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+where (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.condition_concept_id > 0
 group by co1.condition_concept_id, stratum_2
 union all
-select 0, 3106 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,'2' as stratum_2,'Condition' as stratum_3,
+select 0, 3106 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,'1' as stratum_2,'Condition' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from current_date()) - p1.year_of_birth) > 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+where (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id,stratum_2"
 
@@ -381,20 +374,20 @@ group by co1.condition_source_concept_id,stratum_2"
 #from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 #\`${BQ_PROJECT}.${BQ_DATASET}.death\` co1
 #on p1.person_id = co1.person_id
-#where floor((extract(year from co1.death_date) - p1.year_of_birth)/10) >=3
+#where floor((extract(year from co1.death_date) - p1.year_of_birth)/10) >=2
 #group by co1.cause_concept_id,
 #	stratum_2"
 #
-## Death (3102)	Number of persons with a death by death cause concept id by  age decile  18-29 yr old decile 2 */
+## Death (3102)	Number of persons with a death by death cause concept id by  age decile  <20 yr old decile 1 */
 #bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 #"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 #(id, analysis_id, stratum_1, stratum_2, count_value)
-#select 0, 3102 as analysis_id, CAST(co1.cause_concept_id AS STRING) as stratum_1, '2' as stratum_2,
+#select 0, 3102 as analysis_id, CAST(co1.cause_concept_id AS STRING) as stratum_1, '1' as stratum_2,
 #	COUNT(distinct p1.PERSON_ID) as count_value
 #from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 #\`${BQ_PROJECT}.${BQ_DATASET}.death\` co1
 #on p1.person_id = co1.person_id
-#where (extract(year from co1.death_date) - p1.year_of_birth) >= 18 and (extract(year from co1.death_date) - p1.year_of_birth) < 30
+#where (extract(year from co1.death_date) - p1.year_of_birth) < 20
 #group by co1.cause_concept_id,
 #	stratum_2"
 
@@ -481,11 +474,11 @@ CAST(floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) AS STR
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2
 on p2.person_id = co2.person_id where co2.procedure_source_concept_id=co1.procedure_concept_id
-and floor((extract(year from co2.procedure_date) - p2.year_of_birth)/10) >=3) as source_count_value
+and floor((extract(year from co2.procedure_date) - p2.year_of_birth)/10) >=2) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) >=3
+where floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) >=2
 and co1.procedure_concept_id > 0
 group by co1.procedure_concept_id, stratum_2
 union all
@@ -494,37 +487,34 @@ CAST(floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) AS STR
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) >=3
+where floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) >=2
 and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
-# 600 age 18 to 29
+# 600 age < 20
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3,count_value,source_count_value)
 select 0, 3102 as analysis_id,
 CAST(co1.procedure_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Procedure' as stratum_3,
+'1' as stratum_2,'Procedure' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2
 on p2.person_id = co2.person_id where co2.procedure_source_concept_id=co1.procedure_concept_id
-and (extract(year from co2.procedure_date) - p2.year_of_birth) >= 18 and
-(extract(year from co2.procedure_date) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from co2.procedure_date) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from co1.procedure_date) - p1.year_of_birth) >= 18 and
-(extract(year from co1.procedure_date) - p1.year_of_birth) < 30
+where (extract(year from co1.procedure_date) - p1.year_of_birth) < 20
 and co1.procedure_concept_id > 0
 group by co1.procedure_concept_id, stratum_2
 union all
-select 0, 3102 as analysis_id,CAST(co1.procedure_source_concept_id AS STRING) as stratum_1,'2' as stratum_2,
+select 0, 3102 as analysis_id,CAST(co1.procedure_source_concept_id AS STRING) as stratum_1,'1' as stratum_2,
 'Procedure' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from co1.procedure_date) - p1.year_of_birth) >= 18 and
-(extract(year from co1.procedure_date) - p1.year_of_birth) < 30
+where (extract(year from co1.procedure_date) - p1.year_of_birth) <  20
 and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2
 "
@@ -538,11 +528,11 @@ CAST(co1.procedure_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Procedure' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2 on p2.person_id = co2.person_id where co2.procedure_source_concept_id=co1.procedure_concept_id
-and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=3) as source_count_value
+and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=2) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.procedure_concept_id > 0
 group by co1.procedure_concept_id, stratum_2
 union all
@@ -551,36 +541,33 @@ CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING)
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
-# 3106 age 18 to 29
+# 3106 age < 20
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3,count_value,source_count_value)
 select 0, 3106 as analysis_id,
 CAST(co1.procedure_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Procedure' as stratum_3,
+'1' as stratum_2,'Procedure' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2 on p2.person_id = co2.person_id where co2.procedure_source_concept_id=co1.procedure_concept_id
-and (extract(year from current_date()) - p2.year_of_birth) >= 18 and
-(extract(year from current_date()) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from current_date()) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from current_date()) - p1.year_of_birth) >= 18 and
-(extract(year from current_date()) - p1.year_of_birth) < 30
+where (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.procedure_concept_id > 0
 group by co1.procedure_concept_id, stratum_2
 union all
-select 0, 3106 as analysis_id,CAST(co1.procedure_source_concept_id AS STRING) as stratum_1,'2' as stratum_2,
+select 0, 3106 as analysis_id,CAST(co1.procedure_source_concept_id AS STRING) as stratum_1,'1' as stratum_2,
 'Procedure' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
-where (extract(year from current_date()) - p1.year_of_birth) >= 18 and
-(extract(year from current_date()) - p1.year_of_birth) < 30
+where (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
@@ -660,11 +647,11 @@ select 0, 3102 as analysis_id,CAST(co1.drug_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Drug' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2 on p2.person_id = co2.person_id where co2.drug_source_concept_id=co1.drug_concept_id
-and floor((extract(year from co2.drug_exposure_start_date) - p2.year_of_birth)/10) >=3 ) as source_count_value
+and floor((extract(year from co2.drug_exposure_start_date) - p2.year_of_birth)/10) >=2 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) >=3
+where floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) >=2
 and co1.drug_concept_id > 0
 group by co1.drug_concept_id, stratum_2
 union all
@@ -673,7 +660,7 @@ CAST(floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) >=3
+where floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) >=2
 and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
@@ -683,26 +670,23 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3102 as analysis_id,
 CAST(co1.drug_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Drug' as stratum_3,
+'1' as stratum_2,'Drug' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2 on p2.person_id = co2.person_id where co2.drug_source_concept_id=co1.drug_concept_id
-and (extract(year from co2.drug_exposure_start_date) - p2.year_of_birth) >= 18 and
-(extract(year from co2.drug_exposure_start_date) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from co2.drug_exposure_start_date) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where (extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) >= 18 and
-(extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) < 30
+where (extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) < 20
 and co1.drug_concept_id > 0
 group by co1.drug_concept_id, stratum_2
 union all
-select 0, 3102 as analysis_id,CAST(co1.drug_source_concept_id AS STRING) as stratum_1,'2' as stratum_2,'Drug' as stratum_3,
+select 0, 3102 as analysis_id,CAST(co1.drug_source_concept_id AS STRING) as stratum_1,'1' as stratum_2,'Drug' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where (extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) >= 18 and
-(extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) < 30
+where (extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) < 20
 and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
@@ -714,11 +698,11 @@ select 0, 3106 as analysis_id,CAST(co1.drug_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Drug' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2 on p2.person_id = co2.person_id where co2.drug_source_concept_id=co1.drug_concept_id
-and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=3 ) as source_count_value
+and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=2 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.drug_concept_id > 0
 group by co1.drug_concept_id, stratum_2
 union all
@@ -727,7 +711,7 @@ CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING)
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
@@ -737,27 +721,24 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3106 as analysis_id,
 CAST(co1.drug_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Drug' as stratum_3,
+'1' as stratum_2,'Drug' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2 on
 p2.person_id = co2.person_id where co2.drug_source_concept_id=co1.drug_concept_id
-and (extract(year from current_date()) - p2.year_of_birth) >= 18 and
-(extract(year from current_date()) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from current_date()) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where (extract(year from current_date()) - p1.year_of_birth) >= 18 and
-(extract(year from current_date()) - p1.year_of_birth) < 30
+where (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.drug_concept_id > 0
 group by co1.drug_concept_id, stratum_2
 union all
-select 0, 3106 as analysis_id,CAST(co1.drug_source_concept_id AS STRING) as stratum_1,'2' as stratum_2,'Drug' as stratum_3,
+select 0, 3106 as analysis_id,CAST(co1.drug_source_concept_id AS STRING) as stratum_1,'1' as stratum_2,'Drug' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
-where (extract(year from current_date()) - p1.year_of_birth) >= 18 and
-(extract(year from current_date()) - p1.year_of_birth) < 30
+where (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
@@ -848,11 +829,11 @@ CAST(floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) AS S
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id
 where co2.observation_source_concept_id=co1.observation_concept_id
-and floor((extract(year from co2.observation_date) - p2.year_of_birth)/10) >=3 ) as source_count_value
+and floor((extract(year from co2.observation_date) - p2.year_of_birth)/10) >=2 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) >=3
+where co1.observation_concept_id > 0 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) >=2
 group by co1.observation_concept_id, stratum_2
 union all
 select 0, 3102 as analysis_id,CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
@@ -862,34 +843,34 @@ COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_source_concept_id > 0 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) >=3
+where co1.observation_source_concept_id > 0 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) >=2
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
-# Observation (3102)	Number of persons with concept id by  age decile  18-29 yr old decile 2
+# Observation (3102)	Number of persons with concept id by  age decile  < 20 yr old decile 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3102 as analysis_id,
 CAST(co1.observation_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Observation' as stratum_3,
+'1' as stratum_2,'Observation' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id where co2.observation_source_concept_id=co1.observation_concept_id
-and (extract(year from co2.observation_date) - p2.year_of_birth) >= 18 and (extract(year from co2.observation_date) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from co2.observation_date) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and (extract(year from co1.observation_date) - p1.year_of_birth) >= 18 and (extract(year from co1.observation_date) - p1.year_of_birth) < 30
+where co1.observation_concept_id > 0 and (extract(year from co1.observation_date) - p1.year_of_birth) < 20
 group by co1.observation_concept_id, stratum_2
 union all
 select 0, 3102 as analysis_id,CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Observation' as stratum_3,
+'1' as stratum_2,'Observation' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and (extract(year from co1.observation_date) - p1.year_of_birth) >= 18 and (extract(year from co1.observation_date) - p1.year_of_birth) < 30
+where co1.observation_concept_id > 0 and (extract(year from co1.observation_date) - p1.year_of_birth) < 20
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
@@ -904,11 +885,11 @@ CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING)
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id
 where co2.observation_source_concept_id=co1.observation_concept_id
-and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=3 ) as source_count_value
+and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=2 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where co1.observation_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 group by co1.observation_concept_id, stratum_2
 union all
 select 0, 3106 as analysis_id,CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
@@ -918,34 +899,34 @@ COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where co1.observation_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
-# Observation (3106)	Number of persons with concept id by current age decile  18-29 yr old decile 2
+# Observation (3106)	Number of persons with concept id by current age decile  < 20 yr old decile 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3106 as analysis_id,
 CAST(co1.observation_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Observation' as stratum_3,
+'1' as stratum_2,'Observation' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id where co2.observation_source_concept_id=co1.observation_concept_id
-and (extract(year from current_date()) - p2.year_of_birth) >= 18 and (extract(year from current_date()) - p2.year_of_birth) < 30) as source_count_value
+and (extract(year from current_date()) - p2.year_of_birth) < 20) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+where co1.observation_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) < 20
 group by co1.observation_concept_id, stratum_2
 union all
 select 0, 3106 as analysis_id,CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Observation' as stratum_3,
+'1' as stratum_2,'Observation' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+where co1.observation_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
@@ -1016,11 +997,11 @@ CAST(co1.measurement_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Measurement' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id where co2.measurement_source_concept_id=co1.measurement_concept_id
-and floor((extract(year from co2.measurement_date) - p2.year_of_birth)/10) >=3 ) as source_count_value
+and floor((extract(year from co2.measurement_date) - p2.year_of_birth)/10) >=2 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_concept_id > 0 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) >=3
+where co1.measurement_concept_id > 0 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) >=2
 group by co1.measurement_concept_id, stratum_2
 union all
 select 0, 3102 as analysis_id,
@@ -1031,36 +1012,36 @@ COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_source_concept_id > 0 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) >=3
+where co1.measurement_source_concept_id > 0 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) >=2
 and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2"
 
-# Measurement  18-29 yr old decile 2
+# Measurement  < 20 yr old decile 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3102 as analysis_id,
 CAST(co1.measurement_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Measurement' as stratum_3,
+'1' as stratum_2,'Measurement' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2
 on p2.person_id=co2.person_id where co2.measurement_source_concept_id=co1.measurement_concept_id
-and (extract(year from co2.measurement_date) - p2.year_of_birth) >= 18 and (extract(year from co2.measurement_date) - p2.year_of_birth) < 30 ) as source_count_value
+and (extract(year from co2.measurement_date) - p2.year_of_birth) < 20 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_concept_id > 0 and (extract(year from co1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from co1.measurement_date) - p1.year_of_birth) < 30
+where co1.measurement_concept_id > 0 and (extract(year from co1.measurement_date) - p1.year_of_birth) < 20
 group by co1.measurement_concept_id, stratum_2
 union all
 select 0, 3102 as analysis_id,
 CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Measurement' as stratum_3,
+'1' as stratum_2,'Measurement' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_source_concept_id > 0 and (extract(year from co1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from co1.measurement_date) - p1.year_of_birth) < 30
+where co1.measurement_source_concept_id > 0 and (extract(year from co1.measurement_date) - p1.year_of_birth) < 20
 and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2
 "
@@ -1074,11 +1055,11 @@ CAST(co1.measurement_concept_id AS STRING) as stratum_1,
 CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING) as stratum_2,'Measurement' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id where co2.measurement_source_concept_id=co1.measurement_concept_id
-and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=3 ) as source_count_value
+and floor((extract(year from current_date()) - p2.year_of_birth)/10) >=2 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where co1.measurement_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 group by co1.measurement_concept_id, stratum_2
 union all
 select 0, 3106 as analysis_id,
@@ -1089,35 +1070,35 @@ COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+where co1.measurement_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2"
 
-# 3106 Measurement  current age histogram 18-29 yr old decile 2
+# 3106 Measurement  current age histogram < 20 yr old decile 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3106 as analysis_id,
 CAST(co1.measurement_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Measurement' as stratum_3,
+'1' as stratum_2,'Measurement' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id where co2.measurement_source_concept_id=co1.measurement_concept_id
-and (extract(year from current_date()) - p2.year_of_birth) >= 18 and (extract(year from current_date()) - p2.year_of_birth) < 30 ) as source_count_value
+and (extract(year from current_date()) - p2.year_of_birth) < 20 ) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+where co1.measurement_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) < 20
 group by co1.measurement_concept_id, stratum_2
 union all
 select 0, 3106 as analysis_id,
 CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
-'2' as stratum_2,'Measurement' as stratum_3,
+'1' as stratum_2,'Measurement' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_source_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+where co1.measurement_source_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) < 20
 and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2
 "
@@ -1127,44 +1108,29 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.id as string) stratum_5,
+CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,
 Count(*) as count_value, 0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sm.concept_id,sq.id
-order by sq.id asc"
+group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sm.concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Set the survey answer count for all the survey questions that belong to each module(value as number)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_as_number as string) as stratum_4,cast(sq.id as string) stratum_5,
+CAST(o.value_as_number as string) as stratum_4,cast(sq.question_order_number as string) stratum_5,
 Count(*) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-Where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.observation_source_concept_id not in (${toBinSurveyQuestions[@]}) )
-Group by o.observation_source_concept_id,o.value_as_number,sm.concept_id,sq.id
-order by sq.id asc"
-
-# Bin and set the survey answer count for the survey question answers that has free text value
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,count_value,source_count_value)
-SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(floor(o.value_as_number/10)*10 as string) as stratum_4,cast(sq.id as string) stratum_5,
-Count(*) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
-On o.observation_source_concept_id=sq.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-Where (o.observation_source_concept_id in (${toBinSurveyQuestions[@]}) and o.value_as_number >= 0)
-Group by o.observation_source_concept_id,stratum_4,sm.concept_id,sq.id
-order by sq.id asc"
-
+Where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 )
+Group by o.observation_source_concept_id,o.value_as_number,sm.concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1179,8 +1145,8 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_concept_id,sq.id
-order by sq.id asc"
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender(value_as_number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1192,24 +1158,9 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DA
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0
-and o.observation_source_concept_id not in (${toBinSurveyQuestions[@]}) )
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.id
-order by sq.id asc"
-
-# Bin and set the survey answer count by gender for the survey question answers that has free text value
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
-select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(floor(o.value_as_number/10)*10 as string) as stratum_4,CAST(p.gender_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
-On o.observation_source_concept_id=sq.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id in (${toBinSurveyQuestions[@]}) and o.value_as_number >= 0)
-group by sm.concept_id,o.observation_source_concept_id,stratum_4,p.gender_concept_id,sq.id
-order by sq.id asc"
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 )
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender identity
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1224,8 +1175,8 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_identity_concept_id,sq.id
-order by sq.id asc"
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_identity_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender identity(value_as_number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1237,25 +1188,9 @@ FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p inne
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0
-and o.observation_source_concept_id not in (${toBinSurveyQuestions[@]}) )
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_identity_concept_id,sq.id
-order by sq.id asc"
-
-# Bin and set the survey answer count by gender for the survey question answers that has free text value
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
-select 0,3113 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(floor(o.value_as_number/10)*10 as string) as stratum_4,CAST(p.gender_identity_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
-On o.observation_source_concept_id=sq.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.value_as_number >= 0
-and o.observation_source_concept_id in (${toBinSurveyQuestions[@]}) )
-group by sm.concept_id,o.observation_source_concept_id,stratum_4,p.gender_identity_concept_id,sq.id
-order by sq.id asc"
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0)
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_identity_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Survey Question Answer Count by age decile  30+ yr old deciles
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1270,27 +1205,27 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=3
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.id
-order by sq.id asc"
+and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=2
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  18-29 yr old decile 2
+# Survey Question Answer Count by age decile  <20 yr old decile 1
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,
 CAST(o.observation_source_concept_id as string) as stratum_2,CAST(o.value_source_concept_id as string) as stratum_3,
 c.concept_name as stratum_4,
-'2' as stratum_5,COUNT(distinct p.PERSON_ID) as count_value,0 as source_count_value
+'1' as stratum_5,COUNT(distinct p.PERSON_ID) as count_value,0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and ((extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract(year from o.observation_date) - p.year_of_birth) < 30)
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.id
-order by sq.id asc"
+and ((extract(year from o.observation_date) - p.year_of_birth) < 20)
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 
 # Survey Question Answer Count by age decile  30+ yr old deciles(value as number not null)
@@ -1304,62 +1239,27 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DA
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0
-and o.observation_source_concept_id not in (${toBinSurveyQuestions[@]}) )
-and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=3
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.id
-order by sq.id asc"
-
-# Binned Survey Question Answer Count by age decile  30+ yr old deciles(value as number not null)
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
-select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,
-CAST(o.observation_source_concept_id as string) as stratum_2,CAST(floor(o.value_as_number/10)*10 as string) as stratum_4,
-CAST(floor((extract(year from o.observation_date) - p.year_of_birth)/10) AS STRING) as stratum_5,COUNT(distinct p.PERSON_ID) as count_value,0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
-On o.observation_source_concept_id=sq.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.value_as_number >= 0 and o.observation_source_concept_id in (${toBinSurveyQuestions[@]}) )
-and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=3
-group by sm.concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.id
-order by sq.id asc"
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0)
+and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=2
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 
-# Survey Question Answer Count by age decile  18-29 yr old decile 2(value as number not null)
+# Survey Question Answer Count by age decile  <20 yr old decile 1(value as number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,
 CAST(o.observation_source_concept_id as string) as stratum_2,CAST(o.value_as_number as string) as stratum_4,
-'2' as stratum_5,COUNT(distinct p.PERSON_ID) as count_value,0 as source_count_value
+'1' as stratum_5,COUNT(distinct p.PERSON_ID) as count_value,0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0
-and o.observation_source_concept_id not in (${toBinSurveyQuestions[@]}) )
-and ((extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract(year from o.observation_date) - p.year_of_birth) < 30)
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.id
-order by sq.id asc"
-
-# Binned survey Question Answer Count by age decile  18-29 yr old decile 2(value as number not null)
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
-select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,
-CAST(o.observation_source_concept_id as string) as stratum_2,CAST(floor(o.value_as_number/10)*10 as string) as stratum_4,
-'2' as stratum_5,COUNT(distinct p.PERSON_ID) as count_value,0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
-On o.observation_source_concept_id=sq.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.value_as_number >= 0
-and o.observation_source_concept_id in (${toBinSurveyQuestions[@]}) )
-and ((extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract(year from o.observation_date) - p.year_of_birth) < 30)
-group by sm.concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.id
-order by sq.id asc"
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 )
+and ((extract(year from o.observation_date) - p.year_of_birth) < 20)
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
 
 # Condition Domain participant counts
 echo "Getting condition domain participant counts"
@@ -1513,7 +1413,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
-and floor((extract(year from ob1.observation_date) - p1.year_of_birth)/10) >=3
+and floor((extract(year from ob1.observation_date) - p1.year_of_birth)/10) >=2
 group by sm.concept_id, stratum_2"
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile 2)
@@ -1522,7 +1422,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 select 0, 3102 as analysis_id,
 CAST(sm.concept_id AS STRING) as stratum_1,
-'2' as stratum_2,
+'1' as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
@@ -1532,7 +1432,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
-and (extract(year from ob1.observation_date) - p1.year_of_birth) >= 18 and (extract(year from ob1.observation_date) - p1.year_of_birth) < 30
+and (extract(year from ob1.observation_date) - p1.year_of_birth) < 20
 group by sm.concept_id, stratum_2"
 
 # Current Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
@@ -1551,7 +1451,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
-and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3
+and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=2
 group by sm.concept_id, stratum_2"
 
 # Current age breakdown of people who took each survey (Row for combinations of each survey and age decile 2)
@@ -1560,7 +1460,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 select 0, 3106 as analysis_id,
 CAST(sm.concept_id AS STRING) as stratum_1,
-'2' as stratum_2,
+'1' as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
@@ -1570,7 +1470,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
-and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+and (extract(year from current_date()) - p1.year_of_birth) < 20
 group by sm.concept_id, stratum_2"
 
 
