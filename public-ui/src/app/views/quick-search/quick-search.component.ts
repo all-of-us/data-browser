@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
+import { TooltipService } from '../../utils/tooltip.service';
 
 
 
@@ -46,7 +47,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     EHR_DATATYPE = 'ehr';
     SURVEY_DATATYPE = 'surveys';
     PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
-    domainHelpText = {'condition': 'Medical concepts that describe the ' +
+    domainHelpText = {
+      'condition': 'Medical concepts that describe the ' +
       'health status of an individual, ' +
       'such as medical diagnoses, are found in the conditions domain.',
       'drug': 'Medical concepts that capture information about the utilization of a ' +
@@ -58,7 +60,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'quantitative findings from pathology reports, etc.',
       'procedure': 'Medical concepts that capture information related to activities or ' +
       'processes that are ordered or carried out on individuals for ' +
-      'diagnostic or therapeutic purposes are captured by the procedures domain.'};
+      'diagnostic or therapeutic purposes are captured by the procedures domain.',
+      'the basics' : this.tooltipText.theBasicsSurvey,
+      'overall health' : this.tooltipText.overallHealthSurvey,
+      'lifestyle' : this.tooltipText.lifestyleSurvey};
     pmConceptGroups: ConceptGroup[];
     conceptIdNames = [
       { conceptId: 1585855, conceptName: 'Lifetyle' },
@@ -71,7 +76,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     constructor(private api: DataBrowserService,
                 private route: ActivatedRoute,
                 private router: Router,
-                public dbc: DbConfigService) {
+                public dbc: DbConfigService,
+                public tooltipText: TooltipService) {
       this.route.params.subscribe(params => {
         this.dataType = params.dataType;
       });
