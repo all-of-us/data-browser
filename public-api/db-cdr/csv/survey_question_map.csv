@@ -1,4 +1,4 @@
-id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,path,sub
+id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,"path",sub
 1,1586134,1586135,1,1,"1586135",0
 2,1586134,1586140,1,2,"1586140",0
 3,1586134,1586150,1,2,"1586140.1586141.1586150",1
