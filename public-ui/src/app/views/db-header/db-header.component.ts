@@ -12,8 +12,10 @@ export class DbHeaderComponent implements OnInit {
   openAbout = false;
   openDataTools = false;
   openSearch = false;
-  allOfUs = environment.researchAllOfUsUrl;
-  constructor() { }
+  allOfUs: string;
+  constructor() {
+    this.allOfUs = environment.researchAllOfUsUrl;
+  }
 
   ngOnInit() {
   }
