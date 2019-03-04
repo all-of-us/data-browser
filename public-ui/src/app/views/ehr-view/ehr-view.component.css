@@ -52,6 +52,7 @@
 .aka {
     padding-left:  9px ;
     padding-top:18px;
+    font-size:14px;
 }
 
 .aka .info-icon {
@@ -101,6 +102,10 @@
 
 .tbl-r {
     border: none;
+}
+
+#answer-result {
+    width: 35%;
 }
 
 @media (max-width: 600px) {

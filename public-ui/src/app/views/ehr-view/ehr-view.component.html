@@ -135,7 +135,7 @@
             *ngFor="let r of standardConcepts.concat(items), let i = index">
             <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
 
-              <div class="secondary-display info-text tbl-d"
+              <div id="answer-result" class="secondary-display info-text tbl-d"
                 *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept !='S';else code_match_standard">
                 <div class="code-tooltip">
                   <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
@@ -144,7 +144,7 @@
               </div>
 
               <ng-template #code_match_standard>
-                <div class="secondary-display info-text tbl-d"
+                <div id="answer-result" class="secondary-display info-text tbl-d"
                   *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
                   <div class="code-tooltip"
                     *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
@@ -154,7 +154,7 @@
                 </div>
               </ng-template>
               <ng-template #code_match_not_standard>
-                <div class="secondary-display info-text tbl-d">
+                <div id="answer-result" class="secondary-display info-text tbl-d">
                   <div class="code-tooltip">
                     <app-highlight-search [indNum]="i+1" [text]="r.conceptName" [searchTerm]="prevSearchText">
                     </app-highlight-search>

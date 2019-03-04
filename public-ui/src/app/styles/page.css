@@ -188,6 +188,7 @@
 .tbl-d {
   padding: 0 9px;
   position: relative;
+  width: calc(24%);
 }
 
 
