@@ -1,9 +1,9 @@
 <app-db-header></app-db-header>
 <clr-main-container class="main-bg" *ngIf="signedIn else login">
-  <div class="db-container">
-    <app-breadcrumb></app-breadcrumb>
+  <app-breadcrumb></app-breadcrumb>
+    <!-- <div class="db-container"> -->
     <router-outlet></router-outlet>
-  </div>
+  <!-- </div> -->
 </clr-main-container>
 <footer>
   <div class="banner-container">

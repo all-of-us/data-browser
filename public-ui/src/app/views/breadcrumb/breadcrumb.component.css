@@ -1,9 +1,11 @@
 :host {
   padding-top: 18px;
   padding-bottom: 36px;
+  background: #f4f4f4;
 }
 
-.breadcrumb-container {
+
+.breadcrumbs-container {
   display: flex;
   align-items: baseline;
   font-family: FFUnitStdMedium,Medium,Arial, Helvetica, sans-serif;

@@ -453,7 +453,7 @@ img {
 }
 
 
-.db-container {
+.db-container, .breadcrumbs-container {
     margin: 0 calc(10%);
     padding: 0 0.7rem
 }
@@ -464,7 +464,6 @@ img {
     background: url('/assets/backgrounds/background-pattern1.png');
     background-attachment: fixed;
     background-color: #f0f0f1;
-    padding-top: 18px;
 }
 
 
