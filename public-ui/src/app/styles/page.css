@@ -168,17 +168,14 @@
 
 .tbl-r-group {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  width: 45%;
+  width: 30rem;
 }
 
-.tbl-r-group .tbl-d {
-  width: 31%;
-  /* white-space: nowrap; */
-}
 
 .tbl-r-group .tbl-d:last-of-type {
-  width: 84px;
+  width: 5rem;
   white-space: nowrap;
   text-align: right;
 }
@@ -193,9 +190,6 @@
   position: relative;
 }
 
-.tbl-d:first-of-type {
-  padding: 0 9px;
-}
 
 .row-expansion {
   width: 100%;

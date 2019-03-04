@@ -125,6 +125,14 @@
 }
 
 .tbl-r-group .tbl-d.display-body {
+    font-size: .7em;
+}
+.tbl-r-group {
+    width:50%;
+}
+.tbl-exp-r {
     font-size: .8em;
 }
-
+.tbl-d {
+    width: calc(24%);
+}
