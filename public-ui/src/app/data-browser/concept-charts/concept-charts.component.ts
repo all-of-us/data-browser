@@ -24,7 +24,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
 
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
-  results;
+  results: Array<any>;
   maleGenderResult: AchillesResult;
   femaleGenderResult: AchillesResult;
   intersexGenderResult: AchillesResult;
@@ -121,16 +121,20 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       if (g.stratum2 === this.dbc.MALE_GENDER_ID) {
         this.maleGenderResult = g;
         this.maleGenderChartTitle = chartTitle;
-      } else if (g.stratum2 === this.dbc.FEMALE_GENDER_ID) {
+      }
+      if (g.stratum2 === this.dbc.FEMALE_GENDER_ID) {
         this.femaleGenderResult = g;
         this.femaleGenderChartTitle = chartTitle;
-      } else if (g.stratum2 === this.dbc.INTERSEX_GENDER_ID) {
+      }
+      if (g.stratum2 === this.dbc.INTERSEX_GENDER_ID) {
         this.intersexGenderResult = g;
         this.intersexGenderChartTitle = chartTitle;
-      } else if (g.stratum2 === this.dbc.NONE_GENDER_ID) {
+      }
+      if (g.stratum2 === this.dbc.NONE_GENDER_ID) {
         this.noneGenderResult = g;
         this.noneGenderChartTitle = chartTitle;
-      } else if (g.stratum2 === this.dbc.OTHER_GENDER_ID) {
+      }
+      if (g.stratum2 === this.dbc.OTHER_GENDER_ID) {
         this.otherGenderResult = g;
         this.otherGenderChartTitle = chartTitle;
       }
@@ -139,13 +143,17 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     analysis.results = [];
     if (this.maleGenderResult) {
       analysis.results.push(this.maleGenderResult);
-    } else if (this.femaleGenderResult) {
+    }
+    if (this.femaleGenderResult) {
       analysis.results.push(this.femaleGenderResult);
-    } else if (this.intersexGenderResult) {
+    }
+    if (this.intersexGenderResult) {
       analysis.results.push(this.intersexGenderResult);
-    } else if (this.noneGenderResult) {
+    }
+    if (this.noneGenderResult) {
       analysis.results.push(this.noneGenderResult);
-    } else if (this.otherGenderResult) {
+    }
+    if (this.otherGenderResult) {
       analysis.results.push(this.otherGenderResult);
     }
   }

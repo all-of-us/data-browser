@@ -183,9 +183,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public showToolTip(g) {
     if (g === 'Biological Sex' || g === 'Gender Identity') {
       return 'Gender chart';
-    } else if (g === 'Age at Occurrence') {
+    }
+    if (g === 'Age at Occurrence') {
       return this.tooltipText.ageChartHelpText;
-    } else if (g === 'Sources') {
+    }
+    if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
     }
   }
