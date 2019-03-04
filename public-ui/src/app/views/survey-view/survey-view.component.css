@@ -105,7 +105,9 @@
     padding:  18px ;
 }
 
-
+#answer-result {
+    width: calc(40%)
+}
 .question .display-body {
     padding-bottom:  18px ;
 }

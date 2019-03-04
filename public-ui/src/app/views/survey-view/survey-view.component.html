@@ -127,7 +127,7 @@
             <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r " *ngFor="let a of q.countAnalysis.results"
               (click)="showAnswerGraphs(a)" [hidden]="!showAnswer[q.conceptId]">
               <div class="tbl-r">
-                <div class="tbl-d secondary-display">
+                <div id="answer-result" class="tbl-d secondary-display">
                   <div *ngIf="!binnedSurveyQuestions.includes(a.stratum2); else binnedSurveyQuestionDisplay">
                     <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value"></app-highlight-search>
                   </div>
