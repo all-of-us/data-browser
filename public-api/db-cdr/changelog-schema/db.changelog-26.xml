@@ -5,31 +5,14 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" id="changelog-25">
+  <changeSet author="srushtigangireddy" id="changelog-26">
     <validCheckSum>ANY</validCheckSum>
-    <createTable tableName="survey_question_map">
-      <column name="id" type="INTEGER">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="survey_concept_id" type="INTEGER">
-        <constraints nullable="false"/>
-      </column>
-      <column name="question_concept_id" type="INTEGER">
-        <constraints nullable="false"/>
-      </column>
-      <column name="survey_order_number" type="INTEGER">
-        <constraints nullable="false"/>
-      </column>
-      <column name="question_order_Number" type="INTEGER">
-        <constraints nullable="false"/>
-      </column>
+    <addColumn tableName="concept">
+      <!-- Contains the tree path of the concept -->
       <column name="path" type="VARCHAR(1000)">
         <constraints nullable="false"/>
       </column>
-      <column name="sub" type="INTEGER">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
+    </addColumn>
   </changeSet>
 
 </databaseChangeLog>

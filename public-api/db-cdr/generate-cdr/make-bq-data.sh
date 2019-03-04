@@ -466,6 +466,7 @@ SET ar.count_value = cr1.est_count
 FROM
 \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr1
 WHERE cast(cr1.concept_id as string)=ar.stratum_1 and cr1.synonyms like ('%rank1%')
+and cr1.domain_id='Condition' and cr1.type='SNOMED'
 and analysis_id=3000 and ar.stratum_3='Condition' "
 
 ###########################
@@ -577,7 +578,7 @@ set sm.question_count=num_questions from
     on r.stratum_1 = CAST(sq.survey_concept_id AS STRING)
   join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
     on sq.question_concept_id = qc.concept_id
-where r.analysis_id = 3110 and qc.count_value > 0 and sq.is_main=1
+where r.analysis_id = 3110 and qc.count_value > 0
   group by survey_concept_id)
 where CAST(sm.concept_id AS STRING) = survey_concept_id
 "
@@ -624,7 +625,7 @@ echo "Updating path of concept in achilles results to fetch tree later"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar
 set ar.stratum_5=(select path from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` where synonyms like ('%rank1%') and cast(concept_id as string)=ar.stratum_1
-and type='SNOMED')
+and type='SNOMED' and domain_id='Condition')
 where ar.analysis_id=3000 and ar.stratum_3='Condition' "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -634,5 +635,12 @@ from
 (select string_agg(cast(concept_id as string)) as concepts,parent from (
 select cr.*,ar2.stratum_1 as parent from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar2
 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr on cast(cr.id as string) in UNNEST(split(ar2.stratum_5,'.')) where ar2.analysis_id=3000
-and ar2.stratum_3='Condition' and cr.type='SNOMED' order by cr.id asc)
+and ar2.stratum_3='Condition' and cr.type='SNOMED' and cr.domain_id='Condition' order by cr.id asc)
 group by parent) where parent=ar.stratum_1 and ar.analysis_id=3000 and ar.stratum_3='Condition' "
+
+echo "Updating path of concept in concept to fetch tree later"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+set c.path=(select stratum_5 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where stratum_1=CAST(c.concept_id as string) and analysis_id=3000
+and stratum_3='Condition')
+where c.domain_id='Condition' "

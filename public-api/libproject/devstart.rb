@@ -1097,3 +1097,15 @@ Common.register_command({
   :description => "Initializes resources within a cloud project that has already been created",
   :fn => ->(*args) { setup_cloud_project("setup-cloud-project", *args) }
 })
+
+def get_test_service_account()
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    print "Service account key is now in sa-key.json"
+  end
+end
+
+Common.register_command({
+  :invocation => "get-test-service-creds",
+  :description => "Copies sa-key.json locally (for use when running tests from an IDE, etc).",
+  :fn => ->() { get_test_service_account()}
+})
