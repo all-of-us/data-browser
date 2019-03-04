@@ -39,7 +39,12 @@ ENVIRONMENTS = {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_stable.json",
     :cdr_versions_json => "cdr_versions_stable.json"
-  }
+  },
+  "aou-db-prod" => {
+    :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb",
+    :config_json => "config_prod.json",
+    :cdr_versions_json => "cdr_versions_prod.json"
+    }
 }
 
 def run_inline_or_log(dry_run, args)

@@ -1,11 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 
 @Component({
   selector: 'app-highlight-search',
   templateUrl: './highlight-search.component.html',
   styleUrls: ['./highlight-search.component.css']
 })
-export class HighlightSearchComponent implements OnChanges {
+export class HighlightSearchComponent implements OnChanges, OnDestroy {
   @Input() text: string;
   @Input() searchTerm: string;
   @Input() isSource: boolean;
