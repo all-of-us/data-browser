@@ -100,6 +100,7 @@ strong {
     font-style: normal;
     font-weight: 400;
     font-size: 35px;
+    line-height: 1em;
 }
 
 .result-body {
@@ -108,6 +109,7 @@ strong {
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
+    height:30%;
     display: flex;
     flex-direction: column;
 }
