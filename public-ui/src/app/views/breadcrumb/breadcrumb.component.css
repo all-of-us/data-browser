@@ -6,7 +6,7 @@
 .breadcrumb-container {
   display: flex;
   align-items: baseline;
-  font-family: unit;
+  font-family: FFUnitStdMedium,Medium,Arial, Helvetica, sans-serif;
   font-size: 18px;
 }
 
@@ -25,7 +25,7 @@
 .breadcrumb:after {
   font-weight: 400;
   color: #262262;
-  content: "  >";
+  content: "  > ";
   padding-left: 0.15rem
 }
 

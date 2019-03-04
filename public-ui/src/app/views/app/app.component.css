@@ -1,12 +1,4 @@
-.main-bg {
-    height: auto;
-    padding-bottom: 4rem;
-    background: url('/assets/backgrounds/background-pattern1.png');
-    background-attachment: fixed;
-    background-color:transparent;
-    padding-top:18px;
-    
-}
+
 
 #workbench-header {
     height: 40px;

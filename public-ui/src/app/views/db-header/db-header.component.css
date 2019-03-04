@@ -26,11 +26,8 @@ a:hover, a:link, a:visited a:active, a {
 }
 
 .site-branding {
-    max-width: 1440px;
-    width: 100%;
-    margin: auto;
-    min-width: 30rem;
-    padding: 1rem;
+    margin: 0 calc(10%);
+    padding: 0.7rem;
 }
 
 #site-navigation {
@@ -59,7 +56,7 @@ input#s {
 }
 
 .widget {
-    font-family: unit, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;     
     font-weight: 500;
     width: 100%;
     color: rgba(255, 255, 255, 1)
@@ -71,7 +68,6 @@ input#s {
 }
 
 .textwidget p {
-    font-size: .8em;
     text-align: right;
 }
 
@@ -445,7 +441,7 @@ input#s {
     #menu-primary>li a {
         width: 100%;
         padding: 18px;
-        font-family: unit, Helvetica, sans-serif;
+        font-family: FFUnitStdMedium, Helvetica, sans-serif;
         font-weight: 500;
     }
     .main-menu>li:hover>ul {

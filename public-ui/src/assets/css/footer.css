@@ -4,17 +4,6 @@
     line-height: 1.3;
 }
 
-.widget>* {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: 'GothamBook', 'GothamBook', 'Helvetica Neue', sans-serif;
-    font-weight: 400;
-    font-size: 1em;
-    line-height: 1.5;
-    margin: 0;
-    text-rendering: optimizeLegibility
-}
-
 
 .mc-field-group input, #mce-EMAIL {
     font-family: unit, Helvetica, sans-serif;

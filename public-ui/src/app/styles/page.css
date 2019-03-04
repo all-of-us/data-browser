@@ -1,7 +1,7 @@
 /* primary display */
 
 .primary-display, h1 {
-  font-family: unit, sans-serif;
+  font-family: FFUnitStdRegular, sans-serif;
   font-size: 50px;
   font-weight: normal;
   font-style: normal;
@@ -13,7 +13,7 @@
 }
 
 .secondary-display, h2 {
-  font-family: unit, sans-serif, sans-serif;
+  font-family: FFUnitStdLight, sans-serif, sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 38px;
@@ -25,7 +25,7 @@
 }
 
 .display-body {
-  font-family: unit, sans-serif;
+  font-family: FFUnitStdRegular, sans-serif;
   font-size: 22px;
   font-weight: 500;
   font-style: normal;
@@ -49,8 +49,6 @@
 }
 
 .body-default, p {
-  font-family: GothamBook, open-sans, sans-serif;
-  font-size: 18px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;

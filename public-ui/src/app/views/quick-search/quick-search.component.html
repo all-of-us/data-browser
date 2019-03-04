@@ -1,7 +1,7 @@
     <div class="db-header">
       <div>
         <h1 id='db-title' class="primary-display ">Data Browser</h1>
-        <p id="db-desc" class="body-lead">{{dbDesc}} </p>
+        <p id="db-desc" class="body-default">{{dbDesc}} </p>
       </div>
     </div>
     <div class="search">
@@ -32,7 +32,7 @@
     </div>
 
 
-    <h5 class="result-heading" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
+    <h5 class="result-heading body-default" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
       <clr-tooltip>
         <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>

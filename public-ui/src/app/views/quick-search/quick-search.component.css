@@ -44,7 +44,6 @@ strong {
 .result-heading {
     margin-left: 0;
     margin-bottom: 8px;
-    font-family: unit, open-sans, sans-serif;
     padding: 0;
     color: #302C71;
     font-size: 28px;
@@ -78,7 +77,7 @@ strong {
 
 .result-box-title {
     color: #337AB7;
-    font-family: unit;
+    font-family: FFUnitStdMedium,Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 500;
     display: flex;
@@ -108,13 +107,13 @@ strong {
     font-family: GothamBook;
     font-style: normal;
     font-weight: 400;
-    line-height: 22px;
+    font-size: 14px;
     display: flex;
     flex-direction: column;
 }
 
 .result-body_item:first-of-type {
-    padding-bottom:9px;
+    padding-bottom:.5em;
 }
 /* #survey .result-box:first-of-type .result-body_item:nth-of-type(2) {
     padding-bottom: .65rem;
