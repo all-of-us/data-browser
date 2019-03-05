@@ -141,6 +141,10 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         this.otherGenderResult = g;
         this.otherGenderChartTitle = chartTitle;
       }
+      if (g.stratum2 === this.dbc.OTHER_GENDER_ID) {
+        this.otherGenderResult = g;
+        this.otherGenderChartTitle = chartTitle;
+      }
     }
 
     analysis.results = [];
