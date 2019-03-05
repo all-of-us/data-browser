@@ -20,7 +20,7 @@ export interface Breadcrumb {
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   breadcrumbs: Breadcrumb[];
-  allOfUs = environment.researchAllOfUsUrl;
+  allOfUsUrl: string;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router) {}
@@ -67,6 +67,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+   this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.breadcrumbs = this.buildBreadcrumbs(this.activatedRoute.root);
 
     this.subscription = this.router.events.filter(event => event instanceof NavigationEnd)
