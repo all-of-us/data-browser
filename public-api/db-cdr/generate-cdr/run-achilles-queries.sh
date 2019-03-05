@@ -1148,6 +1148,7 @@ where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
+
 # Survey question answers count by gender(value_as_number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
