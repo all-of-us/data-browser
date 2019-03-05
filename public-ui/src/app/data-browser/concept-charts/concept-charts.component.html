@@ -116,7 +116,6 @@
       </div>
     </div>
   </ng-container>
-
   <ng-container *ngIf="displayMeasurementGraphs">
     <div class="col-md-4 col-xs-12 chart" *ngFor="let gender of genderResults">
       <app-chart *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2)"
