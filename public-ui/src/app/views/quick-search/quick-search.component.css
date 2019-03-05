@@ -8,6 +8,7 @@ strong {
     margin-bottom:36px;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .search-title {
@@ -26,10 +27,6 @@ strong {
 
 .search-bar input {
     min-width: calc((100%/12)*10);
-}
-
-.search-title clr-tooltip .info-icon {
-    margin-top:25px;
 }
 
 .search-icon {
