@@ -1,0 +1,343 @@
+
+.footer-container p {
+    color: white;
+    line-height: 1.3;
+}
+
+
+.mc-field-group input, #mce-EMAIL {
+    font-family: unit, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    border-bottom: 2px solid;
+    background:white;
+    padding:0.8rem;
+    border:none;
+}
+
+.footer-container .site-info {
+    font-weight: 400;
+    font-size: .58333rem;
+}
+
+
+#colophon .footer-widget .button {
+    font-family: unit, Helvetica, sans-serif;
+    font-weight: 400;
+    transition: background 150ms ease-in-out;
+    background: rgba(38, 34, 98, 1);
+    border: none;
+    border-radius: 50px;
+    box-sizing: border-box;
+    color: #fff;
+    outline: 0;
+    padding: .8rem 2rem;
+    min-width: 290px;
+    text-decoration: none;
+    vertical-align: bottom
+}
+
+.mc-field-group input {
+    -webkit-backface-visibility: hidden;
+    -webkit-appearance: none;
+    background: #fff;
+    border: solid 1px #f6f6f8;
+    box-sizing: border-box;
+    outline: 0;
+    padding: 1em;
+    outline-offset: 0;
+    border-radius: 0
+}
+
+.mc-field-group input[type=search]::-webkit-search-decoration {
+    display: block
+}
+
+.footer-container {
+    margin-block-end: 0;
+    margin-block-start: 0;
+    padding: 1rem
+}
+
+#colophon .footer-widget #mc_embed_signup {
+    text-align: center;
+    background: 0 0;
+    position: relative
+}
+
+.button:focus, .button:hover, a:focus, a:hover, button:focus, button:hover {
+    color: rgba(33, 111, 180, 1);
+    cursor: pointer
+}
+
+#colophon .footer-widget .button:focus, #colophon .footer-widget .button:hover {
+    background: rgba(33, 111, 180, 1);
+    color: #fff
+}
+
+
+
+.mc-field-group input:focus, .mc-field-group input:hover {
+    cursor: text
+}
+
+.mc-field-group input#s {
+    border-bottom: 2px solid;
+    outline: 0;
+    border-top: 0 transparent;
+    border-left: 0 transparent;
+    border-right: 0 transparent;
+    margin-right: 1rem
+}
+
+.widget {
+    font-family: unit, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: .8rem;
+    width: 100%;
+    color: rgba(255, 255, 255, 1)
+}
+
+.widget em {
+    font-family: unit, Helvetica, sans-serif;
+    font-style: italic;
+}
+
+.widget ul {
+    padding: 0;
+    list-style: none
+}
+
+#colophon .widget-column {
+    display: flex;
+    flex-wrap: wrap
+}
+
+#colophon .site-info {
+    color: rgba(255, 255, 255, 1);
+    text-align: center
+}
+
+#colophon a {
+    color: rgba(190, 225, 255, 1)
+}
+
+#colophon a:focus, #colophon a:hover {
+    color: #fff
+}
+
+.footer-widget .widget a {
+    text-decoration: none
+}
+
+.footer-boiler .widget a {
+    text-decoration: underline
+}
+
+#colophon .footer-widget .button {
+    min-width: auto;
+    background-color: #fff;
+    color: rgba(38, 34, 98, 1);
+    padding: .3rem;
+    margin-top: .6rem;
+    width: 100%;
+    max-width: 160px
+}
+
+#colophon .footer-widget p {
+    margin-top: 0.6rem;
+    margin-block-end: 0;
+}
+
+.mc-field-group {
+    margin-top: .6rem
+}
+
+.mc-field-group input {
+    width: 100%;
+    max-width: 320px
+}
+
+:after {
+    clear: both
+}
+
+.logo {
+    display: inline-block;
+    width: 85%
+}
+
+.site-logo {
+    max-width: 264px
+}
+
+.nih-logo {
+    display: none
+}
+
+#nav-icon {
+    width: 60px;
+    height: 45px;
+    position: relative;
+    z-index: 2;
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0) scale(.4);
+    cursor: pointer
+}
+
+#nav-icon span {
+    display: block;
+    position: absolute;
+    height: 9px;
+    width: 100%;
+    background: #262262;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0)
+}
+
+#nav-icon span:nth-child(1) {
+    top: 0;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center
+}
+
+#nav-icon span:nth-child(2) {
+    top: 18px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center
+}
+
+#nav-icon span:nth-child(3) {
+    top: 36px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center
+}
+
+.social-navigation ul.social-links-menu {
+    margin: .5rem 0 0;
+    padding: 0
+}
+
+.social-navigation ul.social-links-menu li {
+    display: inline-block;
+    list-style: none
+}
+
+.social-navigation ul.social-links-menu li a {
+    display: block;
+    color: rgba(255, 255, 255, 1)!important;
+    transition: opacity 110ms ease-in-out
+}
+
+.social-navigation ul.social-links-menu li a:active, .social-navigation ul.social-links-menu li a:hover {
+    color: #fff;
+    opacity: .6
+}
+
+.social-navigation ul.social-links-menu li a svg {
+    display: block;
+    width: 32px;
+    height: 32px;
+    transform: translateZ(0)
+}
+
+.svg-icon {
+    transition: fill 120ms ease-in-out;
+    fill: currentColor
+}
+
+.site-footer {
+    background-color: rgba(38, 34, 98, 1);
+    padding-bottom: 2rem
+}
+
+@media only screen and (min-width:768px) {
+    .logo {
+        width: 50%
+    }
+    .site-logo {
+        display: inline-block;
+        width: 50%;
+        padding-right: .5rem
+    }
+    .nih-logo {
+        display: inline-block;
+        width: 40%;
+        border-left: solid 2px;
+        padding-left: 1rem
+    }
+    .nih-logo img, .site-logo img {
+        vertical-align: bottom
+    }
+    .nih-logo img {
+        max-height: 32px
+    }
+}
+
+@media only screen and (min-width:1168px) {
+    .footer-container {
+        margin: 0 calc(10%);
+    }
+    #colophon .widget-area:not(.widget-full-width) {
+        width: 24%;
+        display: inline-block
+    }
+    #colophon .footer-boiler {
+        text-align: center;
+        margin-top: 2rem
+    }
+    #colophon .widget-column:not(.footer-boiler) {
+        margin: 0 2rem 0 0
+    }
+}
+
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute!important;
+    width: 1px;
+    word-wrap: normal!important
+}
+
+.screen-reader-text:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, .6);
+    clip: auto!important;
+    clip-path: none;
+    color: #21759b;
+    display: block;
+    font-size: 14px;
+    font-size: .875rem;
+    font-weight: 700;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000
+}
+
+#content[tabindex="-1"]:focus {
+    outline: 0
+}
