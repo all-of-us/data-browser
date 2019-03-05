@@ -89,7 +89,7 @@
             </div>
             <div class="tbl-r-group">
               <div class="tbl-d secondary-display info-text"> Participants of <b>
-                  {{totalParticipants | number}}</b>
+                {{totalParticipants | number}}</b>
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                   <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
@@ -132,11 +132,11 @@
             </div>
           </div>
           <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
-            *ngFor="let r of standardConcepts.concat(items), let i = index">
+               *ngFor="let r of standardConcepts.concat(items), let i = index">
             <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
 
               <div id="answer-result" class="secondary-display info-text tbl-d"
-                *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept !='S';else code_match_standard">
+                   *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept !='S';else code_match_standard">
                 <div class="code-tooltip">
                   <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
                   </app-highlight-search>
@@ -145,9 +145,9 @@
 
               <ng-template #code_match_standard>
                 <div id="answer-result" class="secondary-display info-text tbl-d"
-                  *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
+                     *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
                   <div class="code-tooltip"
-                    *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
+                       *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
                     <app-highlight-search [isStandard]="true" [text]="r.conceptName" [searchTerm]="prevSearchText">
                     </app-highlight-search>
                   </div>
@@ -195,9 +195,9 @@
               </div>
             </div>
             <div (click)="expandRow(standardConcepts.concat(items),r)" class="secondary-display info-text aka"
-              [ngClass]="{'no-b-border': r.expanded}" *ngIf="r.conceptSynonyms;else noConceptSynonyms">
+                 [ngClass]="{'no-b-border': r.expanded}" *ngIf="r.conceptSynonyms;else noConceptSynonyms">
               <div (click)="$event.stopPropagation();toggleSynonyms(r.conceptId)" class="aka-text"
-                [ngClass]="{'no-b-border': r.expanded}"><span>Also Known As</span>
+                   [ngClass]="{'no-b-border': r.expanded}"><span>Also Known As</span>
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info"></clr-icon>
                   <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
@@ -209,18 +209,18 @@
                 </clr-tooltip>
               </div>
               <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
-                *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,110)"
-                [searchTerm]="prevSearchText">
+                                    *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,110)"
+                                    [searchTerm]="prevSearchText">
               </app-highlight-search>
               <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
-                *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
+                                    *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
               </app-highlight-search>
               <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-less"
-                *ngIf="synonymString[r.conceptId].length > 110 && showMoreSynonyms[r.conceptId]; else seeMore"> See Less
+                 *ngIf="synonymString[r.conceptId].length > 110 && showMoreSynonyms[r.conceptId]; else seeMore"> See Less
               </a>
               <ng-template #seeMore>
                 <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-more"
-                  *ngIf="synonymString[r.conceptId].length > 100"> See More
+                   *ngIf="synonymString[r.conceptId].length > 100"> See More
                   <clr-icon shape="ellipsis-horizontal"></clr-icon>
                 </a>
               </ng-template>
@@ -228,7 +228,7 @@
             <div class="row-expansion" *ngIf="r.expanded" #chartElement>
               <div class="graph-menu">
                 <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age at Occurrence', 'Sources']"
-                  [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
+                     [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
                   <span>{{g}}</span>
                   <clr-tooltip>
                     <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -263,4 +263,4 @@
         </div>
       </div>
     </div>
-  </div
+  </div>
