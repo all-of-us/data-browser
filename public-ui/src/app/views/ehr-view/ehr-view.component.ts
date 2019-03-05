@@ -220,7 +220,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return count;
     }
   }
-  
+
   public toggleTopConcepts() {
     this.showTopConcepts = !this.showTopConcepts;
   }
