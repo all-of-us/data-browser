@@ -13,6 +13,7 @@ export class DbHeaderComponent implements OnInit {
   openDataTools = false;
   openSearch = false;
   allOfUsUrl: string;
+
   constructor() {}
 
   ngOnInit() {
