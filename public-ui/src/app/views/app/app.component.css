@@ -1,27 +1,44 @@
-.content-container{
-    padding-left: 3rem;
-    padding-right: 3rem;
-    margin-top: -1.5rem;
+
+
+#workbench-header {
+    height: 40px;
+    background: white;
+}
+#social {
+    text-align: right;
 }
 
-@media (max-width: 978px) {
-    .content-container {
-        padding:0;
-        margin:0;
-    }
-
-    body {
-        padding:0;
-    }
-
-    .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom:0;
-    }
+footer {
+    background: url('/assets/backgrounds/background-pattern_invert.png');
+    height: 200px;
+    background-position-y: 1rem;
+   
 }
 
+.banner-container {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+    padding: 1rem;
+}
 
+.banner-btn {
+    cursor: pointer;
+    background: url('/assets/images/applyForAccess_btn.png');
+    width: 100px;
+    height: 100px;
+}
+.banner-btn,.banner-text{
+    display:inline-block;
+    padding:.25rem;
 
+}
+.banner-inner{
+    display: flex;
+    align-items: center;
+}
+.banner-text{
+    margin-top:0;
 
-
+}

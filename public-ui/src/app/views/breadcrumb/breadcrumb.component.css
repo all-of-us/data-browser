@@ -1,0 +1,38 @@
+:host {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  background: #f8f8f9;
+}
+
+
+.breadcrumbs-container {
+  display: flex;
+  align-items: baseline;
+  font-family: FFUnitStdMedium,Medium,Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+
+.breadcrumb {
+  display: inline;
+  white-space: nowrap;
+  padding-right: 0.25rem;
+}
+
+.breadcrumb a {
+  font-weight: 400;
+  color: #2691D0;
+  text-decoration: none;
+}
+
+.breadcrumb:after {
+  font-weight: 400;
+  color: #262262;
+  content: "  > ";
+  padding-left: 0.15rem
+}
+
+.breadcrumb-last a {
+  color: #262262;
+  font-weight: 500;
+  text-decoration: none;
+}

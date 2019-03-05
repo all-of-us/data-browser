@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HighlightSearchComponent } from './highlight-search.component';
 
 describe('HighlightSearchComponent', () => {

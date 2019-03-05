@@ -2,14 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
-import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
-import {DomainInfosAndSurveyModulesResponse} from '../../../publicGenerated/model/domainInfosAndSurveyModulesResponse';
+import {ConceptGroup} from '../../utils/conceptGroup';
+import {DbConfigService} from '../../utils/db-config.service';
+import { TooltipService } from '../../utils/tooltip.service';
+
 
 
 @Component({
@@ -19,9 +21,16 @@ import {DomainInfosAndSurveyModulesResponse} from '../../../publicGenerated/mode
         './quick-search.component.css']
 })
 export class QuickSearchComponent implements OnInit, OnDestroy {
-    pageImage = '/assets/db-images/man-standing.png';
+    dbDesc = `The Data Browser provides interactive views of the publically available
+     All of Us (AoU) Research Program participant data. Currently, participant provided
+      information, including surveys
+    and physical measurements taken at the time of participant enrollment
+    (“program physical measurements”), as well as electronic health record (EHR) data are
+     available. The AoU Research Program data resource will grow to include
+      more data types over time.`;
     title = 'Search Across Data Types';
-    subTitle = 'Conduct a search across all AoU Research Program data types, including surveys, ' +
+    subTitle = 'Conduct a search across all All of Us Research Program data types, ' +
+      'including surveys, ' +
       'physical measurements taken at the time of participant enrollment ' +
       ' (“program physical measurements”), ' +
       'and electronic health record (EHR) data. Search using common keywords and/or ' +
@@ -37,7 +46,9 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     dataType = null;
     EHR_DATATYPE = 'ehr';
     SURVEY_DATATYPE = 'surveys';
-    domainHelpText = {'condition': 'Medical concepts that describe the ' +
+    PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
+    domainHelpText = {
+      'condition': 'Medical concepts that describe the ' +
       'health status of an individual, ' +
       'such as medical diagnoses, are found in the conditions domain.',
       'drug': 'Medical concepts that capture information about the utilization of a ' +
@@ -49,19 +60,33 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'quantitative findings from pathology reports, etc.',
       'procedure': 'Medical concepts that capture information related to activities or ' +
       'processes that are ordered or carried out on individuals for ' +
-      'diagnostic or therapeutic purposes are captured by the procedures domain.'};
+      'diagnostic or therapeutic purposes are captured by the procedures domain.',
+      'the basics' : this.tooltipText.theBasicsSurvey,
+      'overall health' : this.tooltipText.overallHealthSurvey,
+      'lifestyle' : this.tooltipText.lifestyleSurvey};
+    pmConceptGroups: ConceptGroup[];
+    conceptIdNames = [
+      { conceptId: 1585855, conceptName: 'Lifetyle' },
+      { conceptId: 1585710, conceptName: 'Overall Health' },
+      { conceptId: 1586134, conceptName: 'The Basics' }
+    ];
 
     private subscriptions: ISubscription[] = [];
 
     constructor(private api: DataBrowserService,
                 private route: ActivatedRoute,
-                private router: Router) {
+                private router: Router,
+                public dbc: DbConfigService,
+                public tooltipText: TooltipService) {
       this.route.params.subscribe(params => {
         this.dataType = params.dataType;
       });
     }
 
     ngOnInit() {
+      this.dbc.getPmGroups().subscribe(results => {
+        this.pmConceptGroups = results;
+      });
         // Set title based on datatype
       if (this.dataType === this.EHR_DATATYPE) {
         this.title = 'Electronic Health Data';
@@ -78,6 +103,16 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             'response options for each question. ' +
             'The Data Browser provides a total count, ' +
             'grouped by age at occurrence and gender, for each response option.';
+      }
+      if (this.dataType === this.PROGRAM_PHYSICAL_MEASUREMENTS) {
+        this.title = 'Program Physical Measurements';
+        this.subTitle = 'Participants have the option to provide a standard set of ' +
+          'physical measurements as part\n' +
+          'of the enrollment process  (“program physical measurements”).\n' +
+          'Use this tool to browse distributions of measurement ' +
+          'values and counts,\n' +
+          'grouped by age at occurrence and gender, for each ' +
+          'program physical measurement.';
       }
     // Get search result from localStorage
       this.prevSearchText = localStorage.getItem('searchText');
@@ -127,6 +162,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.searchText.valueChanges.subscribe(
         (query) => this.loading = true ));
   }
+
   ngOnDestroy() {
     for (const s of this.subscriptions) {
         s.unsubscribe();
@@ -142,6 +178,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.surveyResults = results.surveyModules;
     this.loading = false;
   }
+
   public searchDomains(query: string) {
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
@@ -163,13 +200,26 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewSurvey(r) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('/survey/' + r.conceptId);
+    this.conceptIdNames.forEach(idName => {
+      if (r.conceptId === idName.conceptId) {
+        this.router.navigateByUrl('survey/' + idName.conceptName);
+      }
+    });
   }
 
   public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('/ehr/' + r.domain.toLowerCase());
+    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
   }
 
+  public matchPhysicalMeasurements(searchString: string) {
+    if (!this.pmConceptGroups) {
+      return 0;
+    } else if (!searchString) {
+      return this.pmConceptGroups.length;
+    }
+    return this.pmConceptGroups.filter(conceptgroup =>
+      conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
+  }
 }

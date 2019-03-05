@@ -1,0 +1,15 @@
+<div class="breadcrumbs-container">
+  <div class="breadcrumb">
+    <a href="{{allOfUs}}/">Home</a>
+  </div>
+  <div class="breadcrumb">
+    <a href="{{allOfUs}}/data-research-tools/">Data & Reasearch Tools</a>
+  </div>
+  <div class="breadcrumb">
+    <a href="{{allOfUs}}/data-research-tools/data-browser/">About The Databrowser</a>
+  </div>
+  <div *ngFor="let breadcrumb of breadcrumbs; let last = last"
+    [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}">
+    <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label }}</a>
+  </div>
+</div>
