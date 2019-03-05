@@ -612,9 +612,9 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m1 join \`${BQ_PROJECT}.${BQ_DA
 join measurement_quartile_data on m1.measurement_concept_id=concept
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
-where m1.measurement_concept_id > 0 and measurement_source_concept_id = measurement_concept_id
+where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
-group by m1.measurement_concept_id,stratum_2,stratum_3,stratum_4
+group by stratum_1, stratum_2, stratum_3, stratum_4
 union all
 select 0 as id, 1900 as analysis_id,
 CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
@@ -660,7 +660,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept
 where m1.measurement_source_concept_id > 0
 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and m1.value_as_number is not null and p1.gender_concept_id=gender and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
-group by m1.measurement_source_concept_id,stratum_2,stratum_3,stratum_4"
+group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 # 1900 Measurement string value counts (This query generates counts, source counts of the value and gender combination. It gets bin size from joining the achilles_results)
 # We do not yet generate the source counts of standard concepts
@@ -680,7 +680,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
  where m1.value_as_concept_id != 0
  and m1.measurement_concept_id > 0
- group by m1.measurement_concept_id,c2.concept_name,p1.gender_concept_id,m1.value_as_concept_id
+ group by stratum_1,stratum_3,stratum_4,stratum_5
  union all
  SELECT 0,1900 as analysis_id,
  cast(m1.measurement_source_concept_id as string) as stratum_1,'0' as stratum_2,
@@ -695,7 +695,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
  where m1.value_as_concept_id != 0
  and m1.measurement_source_concept_id > 0 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
- group by m1.measurement_source_concept_id,c2.concept_name,p1.gender_concept_id,m1.unit_concept_id,m1.value_as_concept_id"
+ group by stratum_1,stratum_3,stratum_4,stratum_5"
 
 # 1901 Measurement response, age decile histogram data (age decile > 2)
 # We do not yet generate the binned source counts of standard concepts
@@ -756,7 +756,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age_decile
  and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
  and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10) >=3
- group by m1.measurement_concept_id,stratum_2,stratum_3,stratum_4
+ group by stratum_1,stratum_2,stratum_3,stratum_4
  union all
  select 0, 1901 as analysis_id,
  CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
@@ -807,7 +807,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
  and m1.value_as_number is not null
  and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10) >=3
- group by m1.measurement_source_concept_id,stratum_2,stratum_3,stratum_4"
+ group by stratum_1,stratum_2,stratum_3,stratum_4"
 
 
 # 1901 Measurement response, age decile histogram data (age decile = 2)
@@ -869,7 +869,7 @@ and m1.value_as_number is not null
 and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age_decile
 and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
 and (extract(year from m1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from m1.measurement_date) - p1.year_of_birth) < 30
-group by m1.measurement_concept_id,stratum_2,stratum_3,stratum_4
+group by stratum_1, stratum_2, stratum_3, stratum_4
 union all
 select 0, 1901 as analysis_id,
 CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
@@ -919,7 +919,7 @@ and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age
 and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
 and m1.value_as_number is not null
 and (extract(year from m1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from m1.measurement_date) - p1.year_of_birth) < 30
-group by m1.measurement_source_concept_id,stratum_2,stratum_3,stratum_4"
+group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 
 # 1901 Measurement response, age decile histogram data (For concepts that have text values)
@@ -942,7 +942,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.
 where m1.value_as_concept_id != 0
 and m1.measurement_concept_id > 0
 and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10) >=3
-group by m1.measurement_concept_id,c2.concept_name,m1.value_as_concept_id,stratum_3
+group by stratum_1,stratum_3,stratum_4,stratum_5
 union all
 SELECT 0,1901 as analysis_id,
 cast(m1.measurement_source_concept_id as string) as stratum_1,'0' as stratum_2,CAST(floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10) AS STRING) as stratum_3,
@@ -957,7 +957,7 @@ where m1.value_as_concept_id != 0
 and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10) >=3
 and m1.measurement_source_concept_id > 0 and
 m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
-group by m1.measurement_source_concept_id,c2.concept_name,m1.value_as_concept_id,stratum_3"
+group by stratum_1,stratum_3,stratum_4,stratum_5"
 
 #1901 Measurement string value counts (This query generates counts, source counts of the value and age decile 2. It gets bin size from joining the achilles_results)
 # We do not yet generate the binned source counts of standard concepts
@@ -977,7 +977,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c2 on c2.concept_id=m1.value_as_con
 where m1.value_as_concept_id != 0
 and m1.measurement_concept_id > 0
 and (extract(year from m1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from m1.measurement_date) - p1.year_of_birth) < 30
-group by m1.measurement_concept_id,c2.concept_name,m1.value_as_concept_id,stratum_3
+group by stratum_1,stratum_3,stratum_4,stratum_5
 union all
 SELECT 0,1901 as analysis_id,
 cast(m1.measurement_source_concept_id as string) as stratum_1,'0' as stratum_2,'2' as stratum_3,
@@ -992,7 +992,68 @@ where m1.value_as_concept_id != 0
 and (extract(year from m1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from m1.measurement_date) - p1.year_of_birth) < 30
 and m1.measurement_source_concept_id > 0 and
 m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
-group by m1.measurement_source_concept_id,c2.concept_name,m1.value_as_concept_id,stratum_3"
+group by stratum_1,stratum_3,stratum_4,stratum_5"
+
+# Generating biological sex counts for measurement concepts for each unit
+echo "Inserting unit specific biological sex counts for each measurement concept"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0 as id, 1910 as analysis_id, cast(measurement_concept_id as string) as stratum_1, cast(unit_concept_id as string) as stratum_2, cast(p.gender_concept_id as string) as stratum_3,count(distinct p.person_id) as count_value,
+(select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+on co2.person_id=p1.person_id
+where co2.measurement_source_concept_id=m.measurement_concept_id
+and co2.unit_concept_id=unit_concept_id and p1.gender_concept_id=p.gender_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+where m.measurement_concept_id!=0 and unit_concept_id != 0
+group by m.measurement_concept_id,unit_concept_id,p.gender_concept_id
+union all
+select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit, cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
+(select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+on co2.person_id=p1.person_id
+where co2.measurement_source_concept_id=m.measurement_concept_id
+and co2.unit_concept_id=0 and co2.unit_source_value=unit_source_value and p1.gender_concept_id=p.gender_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on um.unit_source_value=m.unit_source_value
+where m.measurement_concept_id!=0 and m.unit_source_value is not null and m.unit_concept_id = 0
+group by m.measurement_concept_id,um.unit_concept_id,p.gender_concept_id
+union all
+select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as concept_id, 'No unit' as unit, cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
+(select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+on co2.person_id=p1.person_id
+where co2.measurement_source_concept_id=m.measurement_concept_id
+and p1.gender_concept_id=p.gender_concept_id and co2.unit_concept_id = 0 and co2.unit_source_value is null) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+where m.measurement_concept_id!=0 and unit_source_value is null and unit_concept_id = 0
+group by m.measurement_concept_id,p.gender_concept_id
+union all
+select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(m.unit_concept_id as string) as unit,
+cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
+count(distinct p.person_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+where m.measurement_source_concept_id > 0 and
+m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
+and m.unit_concept_id != 0
+group by concept_id, unit, gender
+union all
+select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit,
+cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
+count(distinct p.person_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on um.unit_source_value=m.unit_source_value
+where m.measurement_source_concept_id > 0 and
+m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
+and m.unit_concept_id = 0 and m.unit_source_value is not null
+group by concept_id, unit, gender
+union all
+select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, 'No unit' as unit,
+cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
+count(distinct p.person_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+where m.measurement_source_concept_id > 0 and
+m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
+and m.unit_concept_id = 0 and m.unit_source_value is null
+group by concept_id, unit, gender"
 
 
 # Set the counts > 0 and < 20 to 20
@@ -1013,16 +1074,22 @@ echo "Replacing unit concept id with unit concept name"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 set stratum_2 = (select distinct concept_name from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` where cast(concept_id as string)=stratum_2)
-where analysis_id in (1900,1901) and stratum_2 is not null and stratum_2 != '' "
+where analysis_id in (1900,1901,1910) and stratum_2 is not null and stratum_2 != '' "
 
 # Update no unit concept name in achilles_results_dist(For nice display)
 echo "Replacing no matching concept unit name to no unit"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` set stratum_2 = 'No unit'
-where stratum_2 = 'No matching concept' "
+where stratum_2 = 'No matching concept'"
 
 # Update no unit concept name in achilles_results(For nice display)
 echo "Replacing no matching concept unit name to no unit"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` set stratum_2 = 'No unit'
-where stratum_2 = 'No matching concept' "
+where stratum_2 = 'No matching concept'"
+
+# Update no unit concept name in achilles_results(For nice display)
+echo "Replacing no matching concept unit name to no unit"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` set stratum_2 = 'No unit'
+where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910 "
