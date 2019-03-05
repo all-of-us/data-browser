@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import * as highcharts from 'highcharts';
 
-import {Analysis} from '../../../publicGenerated/model/analysis';
-import {Concept} from '../../../publicGenerated/model/concept';
-import {DbConfigService} from '../../utils/db-config.service';
+import { Analysis } from '../../../publicGenerated/model/analysis';
+import { Concept } from '../../../publicGenerated/model/concept';
+import { DbConfigService } from '../../utils/db-config.service';
+import { DomainType } from '../../utils/enum-defs';
 
 @Component({
   selector: 'app-chart',
@@ -14,18 +15,19 @@ export class ChartComponent implements OnChanges {
   @Input() analysis: Analysis;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
   @Input() selectedResult: any; // For ppi question, this is selected answer.
-  @Input() pointWidth = 10;   // Optional width of bar or point or box plot
-  @Input() backgroundColor = '#FFFFFF'; // Optional background color
+  @Input() pointWidth = 15;   // Optional width of bar or point or box plot
+  @Input() backgroundColor = 'transparent'; // Optional background color
   @Input() chartTitle: string;
   @Input() chartType: string;
   @Input() sources = false;
   @Input() genderId: string; // Hack until measurement design of graphs gender overlay
+  @Input() domainType: DomainType;
   @Output() resultClicked = new EventEmitter<any>();
   chartOptions: any = null;
 
   constructor(private dbc: DbConfigService) {
     highcharts.setOptions({
-      lang: {thousandsSep: ','},
+      lang: { thousandsSep: ',' },
     });
   }
 
@@ -41,14 +43,14 @@ export class ChartComponent implements OnChanges {
   public isSurveyGenderAnalysis() {
     return this.analysis ?
       (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
+        this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
       : false;
   }
 
   public isGenderIdentityAnalysis() {
     return this.analysis ?
       (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
+        this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
       : false;
   }
 
@@ -63,11 +65,11 @@ export class ChartComponent implements OnChanges {
       chart: options.chart,
       lang: {
         noData: {
-        style: {
-          fontWeight: 'bold',
-          fontSize: '15px',
-          color: '#303030'
-        }
+          style: {
+            fontWeight: 'bold',
+            fontSize: '15px',
+            color: '#303030'
+          }
         }
       },
       credits: {
@@ -76,6 +78,17 @@ export class ChartComponent implements OnChanges {
       title: options.title,
       subtitle: {},
       tooltip: {
+        followPointer: true,
+        backgroundColor: '#f0f2f3',
+        borderWidth: 0,
+        borderRadius: 10,
+        shadow: false,
+        style: {
+          padding: 0,
+          borderRadius: 3,
+          fontSize: '18px',
+          color: '#262262'
+        },
         formatter: function(tooltip) {
           if (this.point.y <= 20) {
             return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
@@ -92,11 +105,11 @@ export class ChartComponent implements OnChanges {
           pointWidth: options.pointWidth ? options.pointWidth : null,
           minPointLength: 3,
           events: {
-            click: function (event) {
+            click: event => {
               // Todo handle click and log events in analytics
               // console.log('plot options clicked ', event.point);
             }
-          }
+          },
         },
         pie: {
           borderColor: null,
@@ -105,9 +118,14 @@ export class ChartComponent implements OnChanges {
           dataLabels: {
             enabled: true,
             style: this.isGenderIdentityAnalysis()
-                ? this.dbc.GI_DATA_LABEL_STYLE : this.dbc.DATA_LABEL_STYLE,
-            distance: this.isGenderIdentityAnalysis() ? 3 : -30,
-            format: '{point.name} {point.percentage:.0f}%',
+              ? this.dbc.GI_DATA_LABEL_STYLE : this.dbc.DATA_LABEL_STYLE,
+            distance: this.isGenderIdentityAnalysis() ? 3 : -50,
+            formatter: function () {
+              if (this.percentage < 1) {
+                return this.point.name + ' ' + Number(this.percentage).toFixed(1) + '%';
+              }
+              return this.point.name + ' ' + Number(this.percentage).toFixed(0) + '%';
+            }
           }
         },
         column: {
@@ -115,6 +133,7 @@ export class ChartComponent implements OnChanges {
           borderColor: null,
           colorByPoint: true,
           groupPadding: 0,
+          pointPadding: 0,
           dataLabels: {
             enabled: false,
           },
@@ -125,6 +144,7 @@ export class ChartComponent implements OnChanges {
           borderColor: null,
           colorByPoint: true,
           groupPadding: 0,
+          pointPadding: 0,
           dataLabels: {
             enabled: false,
           },
@@ -134,6 +154,14 @@ export class ChartComponent implements OnChanges {
       yAxis: {
         title: {
           text: null
+        },
+        labels: {
+          style: {
+            fontSize: '18',
+            labels: {
+              format: '<{value}'
+            }
+          }
         },
         lineWidth: 1,
         lineColor: this.dbc.AXIS_LINE_COLOR,
@@ -146,9 +174,12 @@ export class ChartComponent implements OnChanges {
         categories: options.categories,
         // type: 'category',
         labels: {
+          align: 'right',
+          reserveSpace: true,
           style: {
-            whiteSpace: 'nowrap',
-          }
+            whiteSpace: 'wrap',
+            fontSize: '18',
+          },
         },
         lineWidth: 1,
         lineColor: this.dbc.AXIS_LINE_COLOR
@@ -207,8 +238,8 @@ export class ChartComponent implements OnChanges {
   public makeCountChartOptions() {
     let data = [];
     let cats = [];
-    for (const a  of this.analysis.results) {
-      data.push({name: a.stratum4, y: a.countValue, thisCtrl: this, result: a});
+    for (const a of this.analysis.results) {
+      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a });
       cats.push(a.stratum4);
     }
     data = data.sort((a, b) => {
@@ -219,7 +250,7 @@ export class ChartComponent implements OnChanges {
         return -1;
       }
       return 0;
-      }
+    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -231,7 +262,7 @@ export class ChartComponent implements OnChanges {
       return 0;
     });
 
-    const seriesClick = function (event) {
+    const seriesClick = event => {
       const thisCtrl = event.point.options.thisCtrl;
       // Todo handle click and log events in analytics
       // console.log('Count plot Clicked point :', event.point);
@@ -243,14 +274,15 @@ export class ChartComponent implements OnChanges {
       colorByPoint: true,
       data: data,
       colors: [this.dbc.COLUMN_COLOR],
+      tooltip: { pointFormat: '<b>{point.y} </b>' },
       events: {
         click: seriesClick
       }
 
     };
     return {
-      chart: {type: 'column', backgroundColor: this.backgroundColor},
-      title: {text: null},
+      chart: { type: 'column' },
+      title: { text: null },
       series: series,
       categories: cats,
       pointWidth: this.pointWidth,
@@ -273,13 +305,14 @@ export class ChartComponent implements OnChanges {
         return -1;
       }
       return 0;
-      }
+    }
     );
 
-    for (const a  of this.concepts) {
+    for (const a of this.concepts) {
       data.push({
         name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
-        y: a.countValue
+        y: a.countValue,
+        color: this.dbc.COLUMN_COLOR
       });
       if (!this.sources) {
         cats.push(a.conceptName);
@@ -294,15 +327,24 @@ export class ChartComponent implements OnChanges {
     };
     return {
       chart: {
-        type: 'column',
+        type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
+        style: {
+          fontFamily: 'GothamBook'
+        }
       },
-      title: {text: null, style: this.dbc.CHART_TITLE_STYLE},
+      title: { text: null, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
       categories: cats,
-      pointWidth: this.pointWidth,
+      pointPadding: 0.25,
+      minPointLength: 3,
+      pointWidth: 20,
       xAxisTitle: null,
-      tooltip: {pointFormat: '<b>{point.y} </b>'}
+      tooltip: {
+        headerFormat: `<span>
+        <span style="font-size:.7em;">{point.key}</span> <br/>`,
+        pointFormat: '<b>{point.y}</b></span>'
+      },
     };
 
   }
@@ -320,33 +362,35 @@ export class ChartComponent implements OnChanges {
       // For ppi we need to filter the results to the particular answer that the user selected
       // because we only show the breakdown for one answer on this chart
       // results = this.getSelectedResults(this.selectedResult);
-      results = this.analysis.results.filter( r => r.stratum4 === this.selectedResult.stratum4);
+      results = this.analysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4);
       // Series name for answers is the answer selected which is in stratum4
       seriesName = this.selectedResult.stratum4;
     }
     let data = [];
     let cats = [];
-    for (const a  of results) {
+    for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let color = null;
-      if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-        color = this.dbc.GENDER_COLORS[a.stratum2];
-      }
-      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-        color = this.dbc.GENDER_COLORS[a.stratum5];
-      }
-      if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
-      }
-      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
-      }
+      if (this.chartTitle === 'Biological Sex') {
+        if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+          color = this.dbc.GENDER_COLORS[a.stratum2];
+        }
+        if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+          color = this.dbc.GENDER_COLORS[a.stratum5];
+        }
+        if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+          color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
+        }
+        if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
+          color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
+        }
+      } else { color = this.dbc.COLUMN_COLOR; }
 
       data.push({
         name: a.analysisStratumName
         , y: a.countValue, color: color, sliced: true
       });
-      cats.push(a.stratum4);
+      cats.push(a.analysisStratumName);
     }
     data = data.sort((a, b) => {
       if (a.name > b.name) {
@@ -356,7 +400,7 @@ export class ChartComponent implements OnChanges {
         return -1;
       }
       return 0;
-      }
+    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -367,14 +411,33 @@ export class ChartComponent implements OnChanges {
       }
       return 0;
     });
-    const series = {name: seriesName, colorByPoint: true, data: data};
+    const series = {
+      name: seriesName, colorByPoint: true, data: data,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID
+          || this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
+          ? `<span style="font-size:.7em">
+        <b> {point.y}</b> {point.name}s </span></span>` : `<span style="font-size:.7em">
+        <b> {point.y}</b> {point.name} </span></span>`
+
+      }
+    };
     return {
-      chart: {type: 'pie', backgroundColor: this.backgroundColor}, // '#D9E4EA'
-      title: {text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE},
+      chart: {
+        type: (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID
+          || this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
+          ? 'pie' : 'bar',
+        backgroundColor: 'transparent',
+        style: {
+          fontFamily: 'GothamBook'
+        },
+      },
+      title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
       categories: cats,
-      pointWidth: null,
-      xAxisTitle: null
+      pointWidth: this.pointWidth,
+      xAxisTitle: null,
     };
 
   }
@@ -391,7 +454,7 @@ export class ChartComponent implements OnChanges {
       ageDecileStratum = 'stratum2';
     } else if (this.analysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       // For ppi survey we filter the results to the particular answer that the user selected
-      results = this.analysis.results.filter( r => r.stratum4 === this.selectedResult.stratum4);
+      results = this.analysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4);
       // Series name for answers is the answer selected which is in stratum4
       seriesName = this.selectedResult.stratum4;
       ageDecileStratum = 'stratum5';
@@ -409,23 +472,36 @@ export class ChartComponent implements OnChanges {
         return -1;
       }
       return 0;
-      }
+    }
     );
     const data = [];
     const cats = [];
-    const color = this.dbc.AGE_COLOR;
-    for (const a  of results) {
+    const color = this.dbc.COLUMN_COLOR;
+    for (const a of results) {
       data.push({
         name: a.analysisStratumName,
-        y: a.countValue, color: color
+        y: a.countValue, color: color,
       });
       cats.push(a.analysisStratumName);
     }
 
-    const series = {name: seriesName, colorByPoint: true, data: data};
+    const series = {
+      name: seriesName,
+      colorByPoint: true,
+      data: data,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: `<span style="font-size:.7em">
+        {point.name}</span> <br/ ><b> {point.y}</b></span>`
+      }
+    };
     return {
-      chart: {type: 'column', backgroundColor: this.backgroundColor},
-      title: {text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE},
+      chart: { type: 'column', backgroundColor: 'transparent' },
+      title: {
+        text: this.getChartTitle(this.domainType),
+        style: this.dbc.CHART_TITLE_STYLE
+      },
+      color: this.dbc.COLUMN_COLOR,
       series: series,
       categories: cats,
       pointWidth: this.pointWidth,
@@ -446,14 +522,14 @@ export class ChartComponent implements OnChanges {
     if (this.genderId) {
       results = results.filter(r => r.stratum3 === this.genderId);
     }
-    for (const a  of results) {
-      data.push({name: a.stratum4, y: a.countValue, thisCtrl: this, result: a});
+    for (const a of results) {
+      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a });
     }
     data = data.sort((a, b) => {
       let aVal: any = a.name;
       let bVal: any = b.name;
       // Sort  numeric data as number
-      if ( isNaN(Number(a.name)) ) {
+      if (isNaN(Number(a.name))) {
         // Don't do anything
       } else {
         // Make a number so sort works
@@ -461,7 +537,7 @@ export class ChartComponent implements OnChanges {
         bVal = Number(b.name);
       }
 
-      if (aVal  > bVal) {
+      if (aVal > bVal) {
         return 1;
       }
       if (aVal < bVal) {
@@ -474,7 +550,7 @@ export class ChartComponent implements OnChanges {
     }
 
     // Todo we will use this later in drill downs and such
-    const seriesClick = function(event) {
+    const seriesClick = event => {
       const thisCtrl = event.point.options.thisCtrl;
       // Todo handle click events
       // console.log('Histogram plot Clicked point :',  event.point);
@@ -503,7 +579,7 @@ export class ChartComponent implements OnChanges {
     }
 
     return {
-      chart: {type: 'column', backgroundColor: this.backgroundColor},
+      chart: { type: 'column', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
       series: series,
       categories: cats,
@@ -515,6 +591,15 @@ export class ChartComponent implements OnChanges {
       },
     };
 
+  }
+  public getChartTitle(domainType: string) {
+    if (domainType === DomainType.EHR) {
+      return 'Age At First Occurrence';
+    } else if (domainType === DomainType.SURVEYS) {
+      return 'Age When Survey Was Taken';
+    } else if (domainType === DomainType.PHYSICAL_MEASUREMENTS) {
+      return 'Age When Physical Measurement Was Taken';
+    }
   }
 
 }
