@@ -127,6 +127,10 @@ definitions:
         description: number of participants with data in the CDR for questions in this module
         type: integer
         format: int64
+      orderNumber:
+        description: survey release order number
+        type: integer
+        format: int32
 
   ErrorResponse:
     type: object

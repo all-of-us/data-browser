@@ -69,7 +69,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.survey = this.surveyResult.survey;
         this.surveyName = this.survey.name;
         // Add Did not answer to each question
-        for (const q of this.surveyResult.items) {
+        for (let q of this.surveyResult.items) {
+          q.actualQuestionNumber = 0;
+          if (q.questions && q.questions.length > 0) {
+            q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
+          }
           // Get did not answer count for question and count % for each answer
           // Todo -- add this to api maybe
           let didNotAnswerCount  = this.survey.participantCount;
