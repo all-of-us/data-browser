@@ -88,6 +88,13 @@ export class ChartComponent implements OnChanges {
           borderRadius: 3,
           fontSize: '18px',
           color: '#262262'
+        },
+        formatter: function(tooltip) {
+          if (this.point.y <= 20) {
+            return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
+          }
+          // If not <= 20, use the default formatter
+          return tooltip.defaultFormatter.call(this, tooltip);
         }
       },
       plotOptions: {
@@ -267,7 +274,6 @@ export class ChartComponent implements OnChanges {
       colorByPoint: true,
       data: data,
       colors: [this.dbc.COLUMN_COLOR],
-      tooltip: { pointFormat: '<b>{point.y} </b>' },
       events: {
         click: seriesClick
       }
@@ -279,7 +285,8 @@ export class ChartComponent implements OnChanges {
       series: series,
       categories: cats,
       pointWidth: this.pointWidth,
-      xAxisTitle: null
+      xAxisTitle: null,
+      tooltip: { pointFormat: '<b>{point.y} </b>' },
     };
 
   }
@@ -316,11 +323,6 @@ export class ChartComponent implements OnChanges {
     // Override tooltip and colors and such
     const series = {
       name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
-      tooltip: {
-        headerFormat: `<span>
-        <span style="font-size:.7em;">{point.key}</span> <br/>`,
-        pointFormat: '<b>{point.y}</b></span>'
-      },
     };
     return {
       chart: {
@@ -328,7 +330,12 @@ export class ChartComponent implements OnChanges {
         backgroundColor: this.backgroundColor,
         style: {
           fontFamily: 'Gotham'
-        }
+        },
+        tooltip: {
+          headerFormat: `<span>
+        <span style="font-size:.7em;">{point.key}</span> <br/>`,
+          pointFormat: '<b>{point.y}</b></span>'
+        },
       },
       title: { text: null, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
@@ -405,15 +412,6 @@ export class ChartComponent implements OnChanges {
     });
     const series = {
       name: seriesName, colorByPoint: true, data: data,
-      tooltip: {
-        headerFormat: '<span> ',
-        pointFormat: (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID
-          || this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
-          ? `<span style="font-size:.7em">
-        <b> {point.y}</b> {point.name}s </span></span>` : `<span style="font-size:.7em">
-        <b> {point.y}</b> {point.name} </span></span>`
-
-      }
     };
     return {
       chart: {
@@ -430,6 +428,14 @@ export class ChartComponent implements OnChanges {
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID
+          || this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
+          ? `<span style="font-size:.7em">
+        <b> {point.y}</b> {point.name}s </span></span>` : `<span style="font-size:.7em">
+        <b> {point.y}</b> {point.name} </span></span>`
+      }
     };
 
   }
@@ -481,11 +487,6 @@ export class ChartComponent implements OnChanges {
       name: seriesName,
       colorByPoint: true,
       data: data,
-      tooltip: {
-        headerFormat: '<span> ',
-        pointFormat: `<span style="font-size:.7em">
-        {point.name}</span> <br/ ><b> {point.y}</b></span>`
-      }
     };
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
@@ -497,7 +498,12 @@ export class ChartComponent implements OnChanges {
       series: series,
       categories: cats,
       pointWidth: this.pointWidth,
-      xAxisTitle: null
+      xAxisTitle: null,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: `<span style="font-size:.7em">
+        {point.name}</span> <br/ ><b> {point.y}</b></span>`
+      }
     };
   }
 
@@ -556,10 +562,6 @@ export class ChartComponent implements OnChanges {
       colorByPoint: true,
       data: data,
       colors: [this.dbc.COLUMN_COLOR],
-      tooltip: {
-        headerFormat: '<span style="font-size: 10px">{point.key} ' + unit + '</span><br/>',
-        pointFormat: '<b> {point.y} participants </b> '
-      },
     };
 
     // Note that our data is binned already so we use a column chart to show histogram
@@ -580,7 +582,11 @@ export class ChartComponent implements OnChanges {
       series: series,
       categories: cats,
       pointWidth: this.pointWidth,
-      xAxisTitle: unit
+      xAxisTitle: unit,
+      tooltip: {
+        headerFormat: '<span style="font-size: 10px">{point.key} ' + unit + '</span><br/>',
+        pointFormat: '<b> {point.y} participants </b> '
+      },
     };
 
   }
