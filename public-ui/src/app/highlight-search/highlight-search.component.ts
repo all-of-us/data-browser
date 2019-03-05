@@ -12,7 +12,7 @@ export class HighlightSearchComponent implements OnChanges, OnDestroy {
   @Input() conceptId: string;
   @Input() isStandard: string;
   @Input() indNum: number;
-  words: string[];
+  words: string[] = [];
   matchString: RegExp;
   ngOnChanges() {
     if (!this.searchTerm) {
