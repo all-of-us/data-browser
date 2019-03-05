@@ -327,7 +327,7 @@ export class ChartComponent implements OnChanges {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
         style: {
-          fontFamily: 'GothamBook'
+          fontFamily: 'Gotham'
         }
       },
       title: { text: null, style: this.dbc.CHART_TITLE_STYLE },
@@ -422,7 +422,7 @@ export class ChartComponent implements OnChanges {
           ? 'pie' : 'bar',
         backgroundColor: 'transparent',
         style: {
-          fontFamily: 'GothamBook'
+          fontFamily: 'Gotham'
         },
       },
       title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
