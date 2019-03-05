@@ -145,11 +145,20 @@ strong {
     cursor: pointer;
     font-size: 15px;
 }
+.result-bottom-link:hover {
+    color:#262262;
+}
 
 #pm-box {
     min-width: 490px;
     max-width: calc(((100%/12)*5));
+    padding-top:9px;
 }
+#pm-box .result-body {
+    margin: 0;
+}
+
+
 
 
 
