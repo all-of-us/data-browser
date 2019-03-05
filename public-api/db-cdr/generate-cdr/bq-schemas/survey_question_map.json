@@ -13,5 +13,25 @@
     "mode": "REQUIRED",
     "name": "question_concept_id",
     "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "survey_order_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "question_order_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "path",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "sub",
+    "type": "INTEGER"
   }
 ]
