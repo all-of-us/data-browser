@@ -12,7 +12,8 @@ DOCKER_KEY_FILE_PATH = "/creds/sa-key.json"
 
 STAGING_PROJECT = "aou-db-staging"
 STABLE_PROJECT = "aou-db-stable"
-RELEASE_MANAGED_PROJECTS = [STAGING_PROJECT, STABLE_PROJECT]
+PROD_PROJECT = "aou-db-prod"
+RELEASE_MANAGED_PROJECTS = [STAGING_PROJECT, STABLE_PROJECT, PROD_PROJECT]
 
 VERSION_RE = /^v[[:digit:]]+-[[:digit:]]+-rc[[:digit:]]+$/
 
