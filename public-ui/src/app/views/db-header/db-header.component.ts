@@ -12,10 +12,11 @@ export class DbHeaderComponent implements OnInit {
   openAbout = false;
   openDataTools = false;
   openSearch = false;
-  allOfUsUrl = environment.researchAllOfUsUrl;
+  allOfUsUrl: string;
   constructor() {}
 
   ngOnInit() {
+    this.allOfUsUrl = environment.researchAllOfUsUrl;
   }
 
   public toggleTopMenu() {
