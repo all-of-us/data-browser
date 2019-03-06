@@ -51,7 +51,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
-  
     this.serverConfigService.getConfig().subscribe((config) => {
       this.requireSignIn = config.requireSignIn;
     });
