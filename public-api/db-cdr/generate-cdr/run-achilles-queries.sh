@@ -1272,7 +1272,7 @@ if [[ $tables =~ $cri_table_check ]]; then
     echo "Getting condition domain participant counts"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
     with condition_concepts as
     (select condition_concept_id as concept,co.person_id as person
     from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
@@ -1294,7 +1294,7 @@ if [[ $tables =~ $cri_table_check ]]; then
     echo "Getting drug domain participant counts"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
     with drug_concepts as
     (select drug_concept_id as concept,co.person_id as person
     from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
@@ -1316,7 +1316,7 @@ if [[ $tables =~ $cri_table_check ]]; then
     echo "Getting measurement domain participant counts"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
     with measurement_concepts as
     (select measurement_concept_id as concept,co.person_id as person
     from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
@@ -1338,7 +1338,7 @@ if [[ $tables =~ $cri_table_check ]]; then
     echo "Getting procedure domain participant counts"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
     with procedure_concepts as
     (select procedure_concept_id as concept,co.person_id as person
     from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
