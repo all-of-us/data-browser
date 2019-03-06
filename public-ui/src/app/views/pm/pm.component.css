@@ -1,21 +1,11 @@
-.white-card-box {
-    min-height: 400px;
-}
-.loading.white-card-box .row{
-    text-align: center;
-    /* Todo align loading spinner better after design */
-    padding-top: 10%;
-}
-.chart-wrapper {
-    width: 336px;
+.pm-layout {
+    display:grid;
+    grid-template-columns: 20% 1fr;
+    grid-column-gap: 18px;
 }
 
-/* Style the active sub buttons */
-button.active.btn-link {
-    font-weight: bolder;
-}
-
-.row.page-align {
-    margin-left: 0;
-    margin-right: 0;
+.chart-layout-top {
+    width:100%;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
 }
