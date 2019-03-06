@@ -83,7 +83,7 @@ export class DbConfigService {
     'color': '#262262', 'font-family': 'Gotham A', 'font-size': '22px', 'font-weight': 'normal'
   };
   DATA_LABEL_STYLE = {
-    'color': '#f6f6f8', 'font-family': 'Gotham A','fontSize': '15px', 'padding': '10px',
+    'color': '#f6f6f8', 'font-family': 'Gotham A', 'fontSize': '15px', 'padding': '10px',
     'font-weight': '300', 'textOutline': 'none',
   };
   GI_DATA_LABEL_STYLE = {
