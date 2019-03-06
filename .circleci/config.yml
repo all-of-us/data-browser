@@ -150,7 +150,7 @@ jobs:
           - public-ui-cache-
       - run:
           working_directory: ~/data-browser/public-ui
-          command: yarn install && yarn codegen
+          command: yarn install --frozen-lockfile && yarn codegen
       - save_cache:
           paths:
             - ~/data-browser/public-ui/node_modules
