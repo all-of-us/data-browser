@@ -45,7 +45,6 @@ fi
 
 #Get the list of tables in the dataset
 tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
-mapping_tables_check=\\_mapping\\b
 
 # Next Populate achilles_results
 echo "Running achilles queries..."
@@ -1266,7 +1265,7 @@ and ((extract(year from o.observation_date) - p.year_of_birth) < 20)
 group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-if [[ $tables =~ $mapping_tables_check ]]; then
+if [[ "$tables" == *"_mapping_"* ]]; then
     ### Mapping tables has the ehr fetched records linked to the dataset named 'ehr'. So, joining on the mapping tables to fetch only ehr concepts.
     # Condition Domain participant counts
     echo "Getting condition domain participant counts"
