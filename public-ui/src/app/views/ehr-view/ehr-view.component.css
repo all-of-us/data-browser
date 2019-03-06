@@ -105,7 +105,7 @@
 }
 
 #answer-result {
-    width: 35%;
+    width: calc(47%);
 }
 
 @media (max-width: 600px) {
