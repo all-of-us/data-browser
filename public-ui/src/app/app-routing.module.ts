@@ -47,23 +47,17 @@ const routes: Routes = [
           }
         },
         {
-          path: 'ehr/:id',
+          path: ':id',
           component: EhrViewComponent,
           data: {
             title: 'View Full Results',
             breadcrumb: {
-              value: 'ehr: :id',
+              value: ':id Domain',
             }
           }
         }
         ]
       },
-
-      // {
-      //   path: 'quick-search/:dataType',
-      //   component: QuickSearchComponent,
-      //   data: { title: 'Quick Search' }
-      // },
       {
         path: 'survey/:id',
         component: SurveyViewComponent,

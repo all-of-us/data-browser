@@ -30,7 +30,6 @@
 .domain-info-container {
     display: flex;
     align-items: center;
-    padding: 0  18px 
 }
 
 .top-concepts-chart {
@@ -51,7 +50,7 @@
 
 .aka {
     padding-left:  9px ;
-    padding-top:18px;
+    padding-top:9px;
     font-size:14px;
 }
 
@@ -105,7 +104,7 @@
 }
 
 #answer-result {
-    width: 35%;
+    width: calc(47%);
 }
 
 @media (max-width: 600px) {
