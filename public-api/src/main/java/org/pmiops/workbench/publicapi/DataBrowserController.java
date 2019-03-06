@@ -474,8 +474,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
-        // Get questions for survey
+        // Gets all the questions of each survey
         List<QuestionConcept> questions = questionConceptDao.findSurveyQuestions(surveyConceptId);
+
+        List<QuestionConcept> mainQuestions = questions.stream().
+                filter(q -> q.getQuestions().get(0).getSub() == 0).collect(Collectors.toList());
+        System.out.println(mainQuestions);
+
 
         // Get survey definition
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
