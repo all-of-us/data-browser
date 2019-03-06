@@ -47,15 +47,18 @@
             <h5 id="domain-name" class="primary-display">
               Showing top {{items.length}}&nbsp;
             </h5>
-            <h5 id="domain-name" class="primary-display" *ngIf="searchText.value.length === 0; else no_search_term">
-              concepts for this domain
-              <clr-tooltip>
-                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                  <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
-                </clr-tooltip-content>
-              </clr-tooltip>
-            </h5>
+            <ng-container *ngIf="searchText.value.length === 0; else no_search_term">
+              <h5 id="domain-name" class="primary-display" >
+                concepts for this domain
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                  <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                    <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </h5>
+              <span>Interested in general health information related to "{{searchText.value}}"?</span>
+            </ng-container>
             <ng-template #no_search_term>
               <h5 id="domain-name" class="primary-display" *ngIf="searchText.value.length > 0">
                 matching medical concepts
