@@ -5,7 +5,7 @@ import {
   CanActivateChild,
   Router, RouterStateSnapshot
 } from '@angular/router';
-
+import {environment} from "../../environments/environment";
 import {Observable} from 'rxjs/Observable';
 
 import {SignInService} from 'app/services/sign-in.service';
@@ -18,6 +18,9 @@ export class SignInGuard implements CanActivate, CanActivateChild {
   constructor(private signInService: SignInService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    if (!environment.requireSignIn) {
+      return Observable.of(true);
+    }
     return this.signInService.isSignedIn$.do(
       isSignedIn => isSignedIn || this.router.navigate(['/login']));
   }
