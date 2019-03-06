@@ -360,6 +360,11 @@ definitions:
         description: prevalence among participants percent count divided num participants
         type: number
         format: float
+      questions:
+        description: survey question map list
+        type: array
+        items:
+          $ref: "#/definitions/SurveyQuestionMap"
       countAnalysis:
         description: count analysis
         $ref: "#/definitions/Analysis"
@@ -384,6 +389,39 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/QuestionConcept"
+
+  SurveyQuestionMap:
+    type: object
+    required:
+      - questionConceptId
+    properties:
+      id:
+        description: pk id for jpa code to work
+        type: integer
+        format: int32
+      surveyConceptId:
+        description: survey concept id
+        type: integer
+        format: int64
+      questionConceptId:
+        description: question concept id
+        type: integer
+        format: int64
+      surveyOrderNumber:
+        description: survey order number
+        type: integer
+        format: int32
+      questionOrderNumber:
+        description: question order number
+        type: integer
+        format: int32
+      path:
+        description: concept branching path
+        type: string
+      sub:
+        description: flag to check if question is sub
+        type: integer
+        format: int32
 
 
   AchillesResult:

@@ -19,6 +19,7 @@ public class QuestionConcept {
     private AchillesAnalysis genderAnalysis;
     private AchillesAnalysis ageAnalysis;
     private AchillesAnalysis genderIdentityAnalysis;
+    private List<SurveyQuestionMap> questions = new ArrayList<>();
 
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
@@ -270,6 +271,22 @@ public class QuestionConcept {
     public QuestionConcept prevalence(float prevalence) {
         this.prevalence = prevalence;
         return this;
+    }
+
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "concept")
+    public List<SurveyQuestionMap> getQuestions() {
+        return questions;
+    }
+    public void setQuestions(List<SurveyQuestionMap> questions) {
+        this.questions = questions;
+    }
+    public QuestionConcept questions(List<SurveyQuestionMap> questions) {
+        this.questions = questions;
+        return this;
+    }
+    public void addQuestion(SurveyQuestionMap question) {
+        this.questions.add(question);
     }
 
     @Transient
