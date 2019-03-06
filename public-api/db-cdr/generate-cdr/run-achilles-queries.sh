@@ -43,6 +43,10 @@ then
   exit 1
 fi
 
+#Get the list of tables in the dataset
+tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
+mapping_tables_check=\\_mapping\\b
+
 # Next Populate achilles_results
 echo "Running achilles queries..."
 
@@ -1262,77 +1266,170 @@ and ((extract(year from o.observation_date) - p.year_of_birth) < 20)
 group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Condition Domain participant counts
-echo "Getting condition domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with condition_concepts as
-(select condition_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'),
-condition_source_concepts as
-(select condition_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'
-and co.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)),
-concepts as
-(select * from condition_concepts union all select * from condition_source_concepts)
-select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,(select count(distinct person) from concepts) as count_value,
-0 as source_count_value"
+if [[ $tables =~ $cri_table_check ]]; then
+    ### Mapping tables has the ehr fetched records linked to the dataset named 'ehr'. So, joining on the mapping tables to fetch only ehr concepts.
+    # Condition Domain participant counts
+    echo "Getting condition domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with condition_concepts as
+    (select condition_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` mm on co.condition_occurrence_id =mm.condition_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` where src_dataset_id like '%ehr%')),
+    condition_source_concepts as
+    (select condition_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` mm on co.condition_occurrence_id=mm.src_condition_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` where src_dataset_id like '%ehr%')
+    and co.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)),
+    concepts as
+    (select * from condition_concepts union all select * from condition_source_concepts)
+    select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,
+    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
 
-echo "Getting drug domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with drug_concepts as
-(select drug_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'),
-drug_source_concepts as
-(select drug_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'
-and co.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)),
-concepts as
-(select * from drug_concepts union all select * from drug_source_concepts)
-select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3, (select count(distinct person) from concepts) as count_value, 0 as source_count_value"
+    echo "Getting drug domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with drug_concepts as
+    (select drug_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` mde on mde.drug_exposure_id=co.drug_exposure_id
+    where c.vocabulary_id != 'PPI' and mde.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` where src_dataset_id like '%ehr%') ),
+    drug_source_concepts as
+    (select drug_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` mde on mde.src_drug_exposure_id=co.drug_exposure_id
+    where c.vocabulary_id != 'PPI' and mde.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` where src_dataset_id like '%ehr%')
+    and co.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)),
+    concepts as
+    (select * from drug_concepts union all select * from drug_source_concepts)
+    select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3,
+    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
 
-echo "Getting measurement domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with measurement_concepts as
-(select measurement_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and co.measurement_concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
-measurement_source_concepts as
-(select measurement_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and co.measurement_source_concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
-and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
-concepts as
-(select * from measurement_concepts union all select * from measurement_source_concepts)
-select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3, (select count(distinct person) from concepts) as count_value,
-0 as source_count_value"
+    echo "Getting measurement domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with measurement_concepts as
+    (select measurement_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm on co.measurement_id=mm.measurement_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')),
+    measurement_source_concepts as
+    (select measurement_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm on co.measurement_id=mm.src_measurement_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')
+    and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
+    concepts as
+    (select * from measurement_concepts union all select * from measurement_source_concepts)
+    select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3,
+    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value;"
 
-echo "Getting participant domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with procedure_concepts as
-(select procedure_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
-procedure_source_concepts as
-(select procedure_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
-and co.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)),
-concepts as
-(select * from procedure_concepts union all select * from procedure_source_concepts)
-select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, (select count(distinct person) from concepts) as count_value,
-0 as source_count_value"
+    echo "Getting procedure domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with procedure_concepts as
+    (select procedure_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` mm on co.procedure_occurrence_id =mm.procedure_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` where src_dataset_id like '%ehr%')),
+    procedure_source_concepts as
+    (select procedure_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` mm on co.procedure_occurrence_id=mm.src_procedure_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` where src_dataset_id like '%ehr%')
+    and co.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)),
+    concepts as
+    (select * from procedure_concepts union all select * from procedure_source_concepts)
+    select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3,
+    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+else
+    ### Test data does not have the mapping tables, so this else block lets the script to fetch domain counts for test data
+    # Condition Domain participant counts
+    echo "Getting condition domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with condition_concepts as
+    (select condition_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'),
+    condition_source_concepts as
+    (select condition_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'
+    and co.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)),
+    concepts as
+    (select * from condition_concepts union all select * from condition_source_concepts)
+    select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,(select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+
+    echo "Getting drug domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with drug_concepts as
+    (select drug_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'),
+    drug_source_concepts as
+    (select drug_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'
+    and co.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)),
+    concepts as
+    (select * from drug_concepts union all select * from drug_source_concepts)
+    select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3, (select count(distinct person) from concepts) as count_value, 0 as source_count_value"
+
+    echo "Getting measurement domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with measurement_concepts as
+    (select measurement_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and co.measurement_concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
+    measurement_source_concepts as
+    (select measurement_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and co.measurement_source_concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
+    and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
+    concepts as
+    (select * from measurement_concepts union all select * from measurement_source_concepts)
+    select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3, (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+
+    echo "Getting participant domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with procedure_concepts as
+    (select procedure_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
+    procedure_source_concepts as
+    (select procedure_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
+    and co.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)),
+    concepts as
+    (select * from procedure_concepts union all select * from procedure_source_concepts)
+    select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+fi
 
 echo "Getting physical measurements participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
