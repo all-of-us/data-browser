@@ -329,7 +329,7 @@ export class ChartComponent implements OnChanges {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
         style: {
-          fontFamily: 'Gotham A'
+          fontFamily: 'Gotham-Book'
         },
         tooltip: {
           headerFormat: `<span>
@@ -420,7 +420,7 @@ export class ChartComponent implements OnChanges {
           ? 'pie' : 'bar',
         backgroundColor: 'transparent',
         style: {
-          fontFamily: 'Gotham A'
+          fontFamily: 'Gotham-Book'
         },
       },
       title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
