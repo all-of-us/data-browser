@@ -1333,7 +1333,7 @@ if [[ $tables =~ $mapping_tables_check ]]; then
     select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3,
     (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`) as stratum_5,
     (select count(distinct person) from concepts) as count_value,
-    0 as source_count_value;"
+    0 as source_count_value"
 
     echo "Getting procedure domain participant counts"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
