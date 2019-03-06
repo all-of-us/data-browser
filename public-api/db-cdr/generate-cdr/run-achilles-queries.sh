@@ -1286,7 +1286,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     concepts as
     (select * from condition_concepts union all select * from condition_source_concepts)
     select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,
-    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`) as stratum_5,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`) as STRING) as stratum_5,
     (select count(distinct person) from concepts) as count_value,
     0 as source_count_value"
 
@@ -1308,7 +1308,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     concepts as
     (select * from drug_concepts union all select * from drug_source_concepts)
     select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3,
-    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`) as stratum_5,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`) as STRING) as stratum_5,
     (select count(distinct person) from concepts) as count_value,
     0 as source_count_value"
 
@@ -1330,7 +1330,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     concepts as
     (select * from measurement_concepts union all select * from measurement_source_concepts)
     select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3,
-    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`) as stratum_5,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`) as STRING) as stratum_5,
     (select count(distinct person) from concepts) as count_value,
     0 as source_count_value"
 
@@ -1352,7 +1352,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     concepts as
     (select * from procedure_concepts union all select * from procedure_source_concepts)
     select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3,
-    (select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`) as stratum_5,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`) as STRING) as stratum_5,
     (select count(distinct person) from concepts) as count_value,
     0 as source_count_value"
 else
