@@ -137,7 +137,7 @@
         <clr-tooltip>
           <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{domainHelpText[r.domain.toLowerCase()]}}</div>
+            <div class="tooltip-label">{{tooltipText.physicalMeasurements}}</div>
           </clr-tooltip-content>
         </clr-tooltip>
       </p>
@@ -147,16 +147,11 @@
           Use this tool to browse distributions of measurement values and counts,
           grouped by age at occurrence and gender, for each program physical measurement.</span>
       </p>
-      <div class="result-stat">
-        <!-- {{matchPhysicalMeasurements(searchText.value)}} -->
-      </div>
-      <div class="result-body">
         <span *ngIf="searchText.value">matching physical measurements</span>
         <div class="result-bottom">
           <span class="result-bottom-link" [routerLink]="['physical-measurements']"
             [queryParams]="{searchString: searchText.value}"> View Program Physical Measurements </span>
         </div>
-      </div>
     </div>
 
   </div>
