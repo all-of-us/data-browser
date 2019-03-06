@@ -8,4 +8,5 @@ export const environment = {
   tcellapikey: 'AQEBBAEkx4iE2KxNyI7Wx08EwU1ycTM7E4FMSmaibbMUQxNU6uQvuAJt7fyABAtFYSYfgEE',
   debug: false,
   gaId: 'UA-116298798-5',
+  requireSignIn: true,
 };

@@ -6,4 +6,5 @@ export const environment = {
   publicApiUrl: 'http://localhost:8083',
   debug: true,
   gaId: 'UA-116298798-4',
+  requireSignIn: false,
 };
