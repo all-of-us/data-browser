@@ -75,7 +75,7 @@
       <div class="survey-results" *ngIf="resultsComplete">
         <div class="question-result" *ngFor="let q of questions, let i = index">
           <div class="secondary-display">
-            <div class="question-text"> Question {{i + 1}}</div>
+            <div class="box-title"> Question {{q.actualQuestionNumber}}</div>
             <div class="body-default">
               <app-highlight-search [text]="q.conceptName" [searchTerm]="searchText.value" [conceptId]="q.conceptId">
               </app-highlight-search>
