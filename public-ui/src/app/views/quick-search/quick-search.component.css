@@ -1,5 +1,5 @@
 strong {
-    font-family: GothamMedium;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
     color: #302C71;
 }
 
@@ -45,7 +45,7 @@ strong {
     color: #302C71;
     font-size: 28px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 36px;
 }
 

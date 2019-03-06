@@ -66,7 +66,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'lifestyle' : this.tooltipText.lifestyleSurvey};
     pmConceptGroups: ConceptGroup[];
     conceptIdNames = [
-      { conceptId: 1585855, conceptName: 'Lifetyle' },
+      { conceptId: 1585855, conceptName: 'Lifestyle' },
       { conceptId: 1585710, conceptName: 'Overall Health' },
       { conceptId: 1586134, conceptName: 'The Basics' }
     ];
@@ -210,7 +210,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
+    this.router.navigateByUrl(r.domain.toLowerCase());
   }
 
   public matchPhysicalMeasurements(searchString: string) {
