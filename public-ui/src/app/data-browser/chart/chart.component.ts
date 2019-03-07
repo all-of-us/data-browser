@@ -155,6 +155,7 @@ export class ChartComponent implements OnChanges {
         title: {
           text: null
         },
+        min: 20,
         labels: {
           style: {
             fontSize: '18',
