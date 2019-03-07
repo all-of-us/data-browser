@@ -187,7 +187,7 @@
                   </div>
                 </div>
                 <div class="chart">
-                  <app-chart [analysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
+                  <app-chart (click)="$event.stopPropagation()" [analysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
                     [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
                 </div>
               </div>
