@@ -18,12 +18,14 @@
 
 #domain-name {
     padding-bottom: 12px;
-    font-size: 30px;
-    line-height: 31px;
+    font-size: 18px;
+    line-height: 18px;
+    margin-top:9px;
 }
 
 #domain-summary {
-    font-size: 23px;
+    font-size: 24px;
+    margin-top:0;
     margin-bottom: 28px;
 }
 
