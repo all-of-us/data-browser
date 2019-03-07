@@ -183,8 +183,8 @@
             </div>
             <div (click)="expandRow(standardConcepts.concat(items),r)" class="secondary-display info-text aka"
               [ngClass]="{'no-b-border': r.expanded}" *ngIf="r.conceptSynonyms;else noConceptSynonyms">
-              <div (click)="$event.stopPropagation();toggleSynonyms(r.conceptId)" class="aka-text"
-                [ngClass]="{'no-b-border': r.expanded}"><span>Also Known As</span>
+              <div *ngIf="synonymString[r.conceptId]" (click)="$event.stopPropagation();toggleSynonyms(r.conceptId)" class="aka-text"
+                [ngClass]="{'no-b-border': r.expanded}"><span>Also Known As</span> 
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info"></clr-icon>
                   <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
