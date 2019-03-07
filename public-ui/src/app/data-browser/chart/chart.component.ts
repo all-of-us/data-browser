@@ -161,8 +161,7 @@ export class ChartComponent implements OnChanges {
             fontSize: '18',
           },
           formatter: function () {
-            var label = this.axis.defaultLabelFormatter.call(this);
-    
+            const label = this.axis.defaultLabelFormatter.call(this);
             // Change <= 20 count to display '<= 20'
             if (label <= 20) {
               return '<= 20';

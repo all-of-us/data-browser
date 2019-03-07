@@ -106,7 +106,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             setTimeout(() => this.toggleTopConcepts(), 500);
           }
         }));
-      
       // Set to loading as long as they are typing
       this.subscriptions.push(this.searchText.valueChanges.subscribe(
         (query) => this.loading = true));
@@ -140,7 +139,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   private searchDomain(query: string) {
     // Unsubscribe from our initial search subscription if this is called again
-    this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=medlineplus&v%3Asources=medlineplus-bundle&query='
+    this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
+      'medlineplus&v%3Asources=medlineplus-bundle&query='
       + query;
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
