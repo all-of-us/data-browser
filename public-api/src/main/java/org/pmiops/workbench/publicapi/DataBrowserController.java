@@ -481,7 +481,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 filter(q -> q.getQuestions().get(0).getSub() == 0).collect(Collectors.toList());
         System.out.println(mainQuestions);
 
-
         // Get survey definition
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
