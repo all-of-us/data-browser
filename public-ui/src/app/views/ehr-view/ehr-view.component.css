@@ -22,6 +22,11 @@
     line-height: 31px;
 }
 
+.medline-link {
+    font-size: 15px;
+    margin-left: 5%;
+}
+
 #domain-summary {
     font-size: 23px;
     margin-bottom: 28px;
