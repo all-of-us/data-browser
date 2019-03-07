@@ -49,7 +49,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.loading = true;
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
@@ -240,9 +239,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showToolTip(g: string) {
     if (g === 'biological sex' || g === 'gender identity') {
       return 'Gender chart';
-    } else if (g === 'Age at Occurrence') {
+    } else if (g === 'age') {
       return this.tooltipText.ageChartHelpText;
-    } else if (g === 'Sources') {
+    } else if (g === 'sources') {
       return this.tooltipText.sourcesChartHelpText;
     }
   }
