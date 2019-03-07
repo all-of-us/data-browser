@@ -115,7 +115,7 @@ export class ChartComponent implements OnChanges {
         pie: {
           borderColor: null,
           slicedOffset: 4,
-          size: this.isSurveyGenderAnalysis() ? '60%' : '100%',
+          size:  '100%',
           dataLabels: {
             enabled: true,
             style: this.isGenderIdentityAnalysis()
