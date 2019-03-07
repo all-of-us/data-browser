@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TooltipService {
+  ehrDomains = `Electronic health records contain information about an individual’s health.
+  Medical concepts are similar to medical terms; they capture medical information in individual 
+  records and may sometimes have values associated with them.
+  For example, “height” is a medical concept that has a measurement value (in centimeters).
+  These concepts are categorized into different domains. Domains are types of medical information.
+  There are numerous domains of data in EHR records,
+  but some of the most common domains include conditions, drug exposures, measurements and
+  procedures`;
   ageChartHelpText = `The Age at First Occurrence in EHR bar chart captures the age at which the
    concept first occurred in a patient’s electronic health record (EHR). Ages are binned to
    protect participant privacy`;
@@ -37,6 +45,24 @@ export class TooltipService {
   to the All of Us Research Program data and are assigned to all medical concepts. In some
   instances, a medical concept may not be assigned a source or standard vocabulary code.
    In these instances, the concept code can be utilized to query the data for the medical concept.`;
+   domainHelpText = {
+    'condition': 'Medical concepts that describe the ' +
+    'health status of an individual, ' +
+    'such as medical diagnoses, are found in the conditions domain.',
+    'drug': 'Medical concepts that capture information about the utilization of a ' +
+    'drug when ingested or otherwise introduced into ' +
+    'the body are captured by the drug exposures domain.',
+    'measurement': 'Medical concepts that capture values resulting from ' +
+    'examinations or tests are captured by the measurements domain. ' +
+    'The measurements domain may include vital signs, lab values, ' +
+    'quantitative findings from pathology reports, etc.',
+    'procedure': 'Medical concepts that capture information related to activities or ' +
+    'processes that are ordered or carried out on individuals for ' +
+    'diagnostic or therapeutic purposes are captured by the procedures domain.',
+    'the basics' : this.theBasicsSurvey,
+    'overall health' : this.overallHealthSurvey,
+    'lifestyle' : this.lifestyleSurvey
+  };
   constructor() { }
 
 }

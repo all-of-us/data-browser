@@ -47,23 +47,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts = false;
   medlinePlusLink: string;
-  domainHelpText = {
-    'condition': 'Medical concepts that describe the ' +
-    'health status of an individual, ' +
-    'such as medical diagnoses, are found in the conditions domain.',
-    'drug': 'Medical concepts that capture information about the utilization of a ' +
-    'drug when ingested or otherwise introduced into ' +
-    'the body are captured by the drug exposures domain.',
-    'measurement': 'Medical concepts that capture values resulting from ' +
-    'examinations or tests are captured by the measurements domain. ' +
-    'The measurements domain may include vital signs, lab values, ' +
-    'quantitative findings from pathology reports, etc.',
-    'procedure': 'Medical concepts that capture information related to activities or ' +
-    'processes that are ordered or carried out on individuals for ' +
-    'diagnostic or therapeutic purposes are captured by the procedures domain.',
-    'the basics' : this.tooltipText.theBasicsSurvey,
-    'overall health' : this.tooltipText.overallHealthSurvey,
-    'lifestyle' : this.tooltipText.lifestyleSurvey};
+
   @ViewChild('chartElement') chartEl: ElementRef;
 
 
