@@ -33,19 +33,22 @@
           </div>
         </section>
         <div class="results-grid" *ngIf="items.length > 0">
-          <div class="domain-info-container">
+          <div class="domain-info-layout">
+            <span>
             <h5 id="domain-name" class="primary-display">
-              Showing top {{items.length}}&nbsp;
+              Showing top {{items.length}}
             </h5>
-            <h5 id="domain-name" class="primary-display" *ngIf="searchText.value.length === 0; else no_search_term">
-              concepts for this domain
-              <clr-tooltip>
-                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                  <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
-                </clr-tooltip-content>
-              </clr-tooltip>
-            </h5>
+            <ng-container *ngIf="searchText.value.length === 0; else no_search_term">
+              <h5 id="domain-name" class="primary-display" >
+                concepts for this domain
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                  <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                    <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </h5>
+            </ng-container>
             <ng-template #no_search_term>
               <h5 id="domain-name" class="primary-display" *ngIf="searchText.value.length > 0">
                 matching medical concepts
@@ -57,6 +60,8 @@
                 </clr-tooltip>
               </h5>
             </ng-template>
+          </span>
+          <h6 *ngIf="searchText.value.length > 0" class="primary-display medline-link">Interested in general health information related to "{{searchText.value}}"? &nbsp; <a href="{{medlinePlusLink}}" target="_blank"> Search Medline Plus</a>.</h6>
           </div>
           <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
             <div class=" db-alert">

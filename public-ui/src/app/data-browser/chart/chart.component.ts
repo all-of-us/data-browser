@@ -156,12 +156,18 @@ export class ChartComponent implements OnChanges {
         title: {
           text: null
         },
+        min: 20,
         labels: {
           style: {
             fontSize: '18',
-            labels: {
-              format: '<{value}'
+          },
+          formatter: function () {
+            const label = this.axis.defaultLabelFormatter.call(this);
+            // Change <= 20 count to display '<= 20'
+            if (label <= 20) {
+              return '<= 20';
             }
+            return label;
           }
         },
         lineWidth: 1,
