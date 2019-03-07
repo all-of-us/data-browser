@@ -2,13 +2,9 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TooltipService {
-  ageChartHelpText = 'The age at occurrence bar chart provides a binned age \n' +
-    'distribution for participants at the time the medical concept ' +
-    'being queried occurred in their records. \n' +
-    'If an individual’s record contains more than one mention of a concept, \n' +
-    'the age at occurrence is included for each mention. \n' +
-    'As a result, a participant may be counted more ' +
-    'than once in the distribution. ';
+  ageChartHelpText = `The Age at First Occurrence in EHR bar chart captures the age at which the
+   concept first occurred in a patient’s electronic health record (EHR). Ages are binned to
+   protect participant privacy`;
   sourcesChartHelpText = 'Individual health records often contain medical ' +
     'information that means the same thing ' +
     'but may be recorded in many different ways. \n' +
@@ -36,6 +32,11 @@ export class TooltipService {
   physicalMeasurements = `Measurements taken at the time of participant enrollment,
  including blood pressure, heart rate, height, weight, waist and hip circumference,
   pregnancy status and wheelchair use.`;
+  conceptCode = `The concept code is an additional piece of information that
+  can be utilized to find medical concepts in the All of Us data set. Concept codes are specific
+  to the All of Us Research Program data and are assigned to all medical concepts. In some
+  instances, a medical concept may not be assigned a source or standard vocabulary code.
+   In these instances, the concept code can be utilized to query the data for the medical concept.`;
   constructor() { }
 
 }

@@ -136,6 +136,7 @@
   position: relative;
   display: flex;
   cursor: pointer;
+  text-transform: capitalize;
 }
 
 .chart-choice:hover {

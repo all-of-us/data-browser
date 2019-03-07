@@ -99,16 +99,8 @@
                   Concept Code
                   <clr-tooltip>
                     <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                    <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                      <div class="tooltip-label">The concept code is an additional piece of information that
-                        can be utilized to find medical concepts in the All of Us data set. Concept codes are specific
-                        to
-                        the
-                        All of Us Research Program data and are assigned to all medical concepts.
-                        In some instances,
-                        a medical concept may not be assigned a source or standard vocabulary code.
-                        In these instances, the concept code can be utilized to
-                        query the data for the medical concept.</div>
+                    <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                      <div class="tooltip-label">{{tooltipText.conceptCode}}</div>
                     </clr-tooltip-content>
                   </clr-tooltip>
                 </div>
@@ -174,14 +166,14 @@
               <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer'"
                 #chartElement>
                 <div class="graph-menu">
-                  <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age']"
+                  <div *ngFor="let g of ['biological Sex', 'gender identity', 'age']"
                     [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,q)"
                     class="chart-choice">
                     <span>{{g}}</span>
                     <clr-tooltip>
                       <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                       <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                        <div class="tooltip-label">{{showToolTip(g)}}</div>
+                        <div class="tooltip-label">{{showToolTip(g.toLowerCase())}}</div>
                       </clr-tooltip-content>
                     </clr-tooltip>
                   </div>

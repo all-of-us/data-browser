@@ -238,7 +238,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public showToolTip(g: string) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
+    if (g === 'biological sex' || g === 'gender identity') {
       return 'Gender chart';
     } else if (g === 'Age at Occurrence') {
       return this.tooltipText.ageChartHelpText;
