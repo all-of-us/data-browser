@@ -592,7 +592,7 @@ export class ChartComponent implements OnChanges {
   }
   public getChartTitle(domainType: string) {
     if (domainType === DomainType.EHR) {
-      return 'Age At First Occurrence';
+      return 'Age at First Occurrence in EHR.';
     } else if (domainType === DomainType.SURVEYS) {
       return 'Age When Survey Was Taken';
     } else if (domainType === DomainType.PHYSICAL_MEASUREMENTS) {
