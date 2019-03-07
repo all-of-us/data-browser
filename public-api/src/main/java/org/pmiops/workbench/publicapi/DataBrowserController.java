@@ -92,6 +92,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public static final long MEASUREMENT_GENDER_ANALYSIS_ID = 1900;
     public static final long MEASUREMENT_AGE_ANALYSIS_ID = 1901;
+    public static final long MEASUREMENT_GENDER_UNIT_ANALYSIS_ID = 1910;
 
     public static final long MALE = 8507;
     public static final long FEMALE = 8532;
@@ -244,7 +245,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .ethnicityAnalysis(ca.getEthnicityAnalysis())
                             .measurementValueGenderAnalysis(ca.getMeasurementValueGenderAnalysis())
                             .measurementValueAgeAnalysis(ca.getMeasurementValueAgeAnalysis())
-                            .measurementDistributionAnalysis(ca.getMeasurementDistributionAnalysis());
+                            .measurementDistributionAnalysis(ca.getMeasurementDistributionAnalysis())
+                            .measurementGenderCountAnalysis(ca.getMeasurementGenderCountAnalysis());
                 }
             };
 
@@ -512,6 +514,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(MEASUREMENT_GENDER_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_AGE_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_DIST_ANALYSIS_ID);
+        analysisIds.add(MEASUREMENT_GENDER_UNIT_ANALYSIS_ID);
 
         List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,MEASUREMENT_AGE_DIST_ANALYSIS_ID) ),conceptIds);
 
@@ -536,7 +539,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
             }
         }
-
         for(String conceptId: conceptIds){
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
@@ -556,8 +558,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 Map.Entry pair = (Map.Entry)it.next();
                 Long analysisId = (Long)pair.getKey();
                 AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
+
                 //aa.setUnitName(unitName);
-                if(analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
+                if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
                     aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                 }
                 if(analysisId == GENDER_ANALYSIS_ID){
@@ -576,7 +579,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     addEthnicityStratum(aa);
                     conceptAnalysis.setEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == MEASUREMENT_GENDER_ANALYSIS_ID){
-                    HashMap<String,List<AchillesResult>> results = seperateUnitResults(aa);
+                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
                     List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
                     HashMap<String,List<AchillesResultDist>> distResults = analysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
                     if (distResults != null) {
@@ -588,7 +591,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                     AchillesAnalysis unitGenderAnalysis = new AchillesAnalysis(aa);
                                     unitGenderAnalysis.setResults(results.get(unit));
                                     unitGenderAnalysis.setUnitName(unit);
-                                    processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                    if(!unit.equalsIgnoreCase("no unit")) {
+                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                    }
                                     unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }
                             }
@@ -598,9 +603,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
-
                 }else if(analysisId == MEASUREMENT_AGE_ANALYSIS_ID){
-                    HashMap<String,List<AchillesResult>> results = seperateUnitResults(aa);
+                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
                     List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
                     HashMap<String,List<AchillesResultDist>> distResults = analysisDistResults.get(MEASUREMENT_AGE_DIST_ANALYSIS_ID);
                     if (distResults != null) {
@@ -620,10 +624,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                         }else {
                             unitSeperateAnalysis.add(aa);
                         }
-
                     }
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueAgeAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+                }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
+                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
+                    List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
+                    for(String unit: results.keySet()){
+                        AchillesAnalysis unitGenderCountAnalysis = new AchillesAnalysis(aa);
+                        unitGenderCountAnalysis.setResults(results.get(unit));
+                        unitGenderCountAnalysis.setUnitName(unit);
+                        unitSeperateAnalysis.add(unitGenderCountAnalysis);
+                    }
+                    isMeasurement = true;
+                    conceptAnalysis.setMeasurementGenderCountAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                 }
             }
 
@@ -645,7 +659,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
         return ResponseEntity.ok(resp);
     }
-
 
     /**
      * This method gets concepts with maps to relationship in concept relationship table

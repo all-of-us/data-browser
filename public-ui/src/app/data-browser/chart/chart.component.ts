@@ -13,6 +13,7 @@ import { DomainType } from '../../utils/enum-defs';
 })
 export class ChartComponent implements OnChanges {
   @Input() analysis: Analysis;
+  @Input() analysis2: Analysis;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
   @Input() selectedResult: any; // For ppi question, this is selected answer.
   @Input() pointWidth = 15;   // Optional width of bar or point or box plot
