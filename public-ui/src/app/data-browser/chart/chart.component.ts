@@ -374,30 +374,31 @@ export class ChartComponent implements OnChanges {
     }
     let data = [];
     let cats = [];
+
+    // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let color = null;
-      if (this.chartTitle === 'Biological Sex') {
-        if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-          color = this.dbc.GENDER_COLORS[a.stratum2];
-        }
-        if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-          color = this.dbc.GENDER_COLORS[a.stratum5];
-        }
-        if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-          color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
-        }
-        if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-          color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
-        }
-      } else { color = this.dbc.COLUMN_COLOR; }
-
+      if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+        color = this.dbc.GENDER_COLORS[a.stratum2];
+      }
+      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+        color = this.dbc.GENDER_COLORS[a.stratum5];
+      }
+      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
+      }
+      if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
+        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
+      }
       data.push({
         name: a.analysisStratumName
         , y: a.countValue, color: color, sliced: true
       });
       cats.push(a.analysisStratumName);
     }
+
+
     data = data.sort((a, b) => {
       if (a.name > b.name) {
         return 1;
