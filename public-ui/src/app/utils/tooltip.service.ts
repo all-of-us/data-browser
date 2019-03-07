@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class TooltipService {
   ehrDomains = `Electronic health records contain information about an individual’s health.
-  Medical concepts are similar to medical terms; they capture medical information in individual 
+  Medical concepts are similar to medical terms; they capture medical information in individual
   records and may sometimes have values associated with them.
   For example, “height” is a medical concept that has a measurement value (in centimeters).
   These concepts are categorized into different domains. Domains are types of medical information.
