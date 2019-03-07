@@ -4,7 +4,6 @@
     <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
     <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
   </div>
-
   <div class="row ">
     <div class="col-md-4 col-sm-2 col-xs-1 flex-xs-middle" *ngIf="loading">
       <span class="spinner spinner-lg hidden-sm-down">Loading ...</span>
@@ -26,7 +25,6 @@
                 <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
               </a>
             </h5>
-
             <div *ngIf="showTopConcepts">
               <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results" [pointWidth]="10">
               </app-chart>
@@ -74,7 +72,6 @@
                 </clr-alert>
               </div>
             </div>
-
             <div class="tbl-r tbl-head">
               <div class="tbl-d first secondary-display info-text"> {{ehrDomain.name}}
                 <clr-tooltip>
@@ -159,7 +156,6 @@
                       </div>
                     </div>
                   </ng-template>
-
                   <div class="tbl-r-group">
                     <div class="secondary-display info-text tbl-d">
                       {{checkCount(r.countValue)}}
@@ -215,22 +211,22 @@
                   </ng-template>
                 </div>
                 <div class="row-expansion" *ngIf="r.expanded" #chartElement>
-                    <div class="row-expansion" *ngIf="r.expanded" #chartElement>
-                        <div class="graph-menu">
-                          <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age', 'Sources']"
-                            [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
-                            <span>{{g}}</span>
-                            <clr-tooltip>
-                              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                              <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                                <div class="tooltip-label">{{showToolTip(g)}}</div>
-                              </clr-tooltip-content>
-                            </clr-tooltip>
-                          </div>
-                        </div>
-                        <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-                        </app-concept-charts>
+                  <div class="row-expansion" *ngIf="r.expanded" #chartElement>
+                    <div class="graph-menu">
+                      <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age', 'Sources']"
+                        [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
+                        <span>{{g}}</span>
+                        <clr-tooltip>
+                          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                            <div class="tooltip-label">{{showToolTip(g)}}</div>
+                          </clr-tooltip-content>
+                        </clr-tooltip>
                       </div>
+                    </div>
+                    <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                    </app-concept-charts>
+                  </div>
                 </div>
               </div>
               <div class="results-grid">
