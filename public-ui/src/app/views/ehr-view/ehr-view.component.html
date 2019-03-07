@@ -17,17 +17,6 @@
       <div class="db-card-inner">
         <section *ngIf="items.length > 0">
           <!-- Top summary boxes -- only show if have results -->
-          <div class="domain-summary">
-            <h5 id="domain-name" class="primary-display">
-              {{ehrDomain.name}}
-              <clr-tooltip>
-                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                  <div class="tooltip-label">{{domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
-                </clr-tooltip-content>
-              </clr-tooltip>
-            </h5>
-          </div>
 
           <h5 id="domain-summary" class="secondary-display">
             <a class="toggle-link" (click)="toggleTopConcepts()"> Top 10 Medical Concepts by Descending Participant
@@ -184,9 +173,6 @@
                 <div class="secondary-display info-text tbl-d">
                   {{r.conceptId}}
                 </div>
-
-
-
                 <div class="secondary-display info-text tbl-d">
                   <button class="icon-btn">
                     <clr-icon [ngClass]="r.expanded?'is-solid':''" shape="bar-chart" class="bar-chart-icon"></clr-icon>
