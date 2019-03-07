@@ -43,9 +43,10 @@
           </div>
         </section>
         <div class="results-grid" *ngIf="items.length > 0">
-          <div class="domain-info-container">
+          <div class="domain-info-layout">
+            <span>
             <h5 id="domain-name" class="primary-display">
-              Showing top {{items.length}}&nbsp;
+              Showing top {{items.length}}
             </h5>
             <ng-container *ngIf="searchText.value.length === 0; else no_search_term">
               <h5 id="domain-name" class="primary-display" >
@@ -68,8 +69,9 @@
                   </clr-tooltip-content>
                 </clr-tooltip>
               </h5>
-              <h6 class="primary-display medline-link">Interested in general health information related to "{{searchText.value}}"? <a href="{{medlinePlusLink}}" target="_blank">Search Medline Plus</a>.</h6>
             </ng-template>
+          </span>
+          <h6 class="primary-display medline-link">Interested in general health information related to "{{searchText.value}}"? <a href="{{medlinePlusLink}}" target="_blank">Search Medline Plus</a>.</h6>
           </div>
           <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
             <div class=" db-alert">
