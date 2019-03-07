@@ -71,7 +71,7 @@
               </h5>
             </ng-template>
           </span>
-          <h6 class="primary-display medline-link">Interested in general health information related to "{{searchText.value}}"? <a href="{{medlinePlusLink}}" target="_blank">Search Medline Plus</a>.</h6>
+          <h6 *ngIf="searchText.value.length === 0" class="primary-display medline-link">Interested in general health information related to "{{searchText.value}}"? <a href="{{medlinePlusLink}}" target="_blank">Search Medline Plus</a>.</h6>
           </div>
           <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
             <div class=" db-alert">
