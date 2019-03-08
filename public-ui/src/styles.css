@@ -468,7 +468,7 @@ template {
 body {
   background-color: #E0E0E1;
   /* overflow-x: hidden; */
-  font-family: Gotham-Book;
+  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
   font-size: 1em;
   line-height: 1.5;
   margin: 0;
@@ -484,7 +484,7 @@ img {
 .widget>* {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   line-height: 1.5;
   margin: 0;
