@@ -13,7 +13,7 @@
       <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
       <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
     </div>
-
+    <a class="btn btn-link btn-sm" [routerLink]="['']">< Back to main search </a>
     <div class="db-card">
       <div class="survey-head">
         <div class="stat-container">
@@ -187,7 +187,7 @@
                   </div>
                 </div>
                 <div class="chart">
-                <app-chart [surveyAnalysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
+                  <app-chart (click)="$event.stopPropagation()" [analysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
                     [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
                 </div>
               </div>

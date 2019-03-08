@@ -115,7 +115,7 @@ export class ChartComponent implements OnChanges {
         pie: {
           borderColor: null,
           slicedOffset: 4,
-          size: this.isSurveyGenderAnalysis() ? '60%' : '100%',
+          size:  '100%',
           dataLabels: {
             enabled: true,
             style: this.isGenderIdentityAnalysis()
@@ -156,12 +156,18 @@ export class ChartComponent implements OnChanges {
         title: {
           text: null
         },
+        min: 20,
         labels: {
           style: {
             fontSize: '18',
-            labels: {
-              format: '<{value}'
+          },
+          formatter: function () {
+            const label = this.axis.defaultLabelFormatter.call(this);
+            // Change <= 20 count to display '<= 20'
+            if (label <= 20) {
+              return '<= 20';
             }
+            return label;
           }
         },
         lineWidth: 1,
@@ -330,7 +336,7 @@ export class ChartComponent implements OnChanges {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
         style: {
-          fontFamily: 'Gotham-Book'
+          fontFamily: 'GothamBook'
         },
         tooltip: {
           headerFormat: `<span>
@@ -368,30 +374,31 @@ export class ChartComponent implements OnChanges {
     }
     let data = [];
     let cats = [];
+
+    // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let color = null;
-      if (this.chartTitle === 'Biological Sex') {
-        if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-          color = this.dbc.GENDER_COLORS[a.stratum2];
-        }
-        if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-          color = this.dbc.GENDER_COLORS[a.stratum5];
-        }
-        if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-          color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
-        }
-        if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-          color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
-        }
-      } else { color = this.dbc.COLUMN_COLOR; }
-
+      if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+        color = this.dbc.GENDER_COLORS[a.stratum2];
+      }
+      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+        color = this.dbc.GENDER_COLORS[a.stratum5];
+      }
+      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
+      }
+      if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
+        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
+      }
       data.push({
         name: a.analysisStratumName
         , y: a.countValue, color: color, sliced: true
       });
       cats.push(a.analysisStratumName);
     }
+
+
     data = data.sort((a, b) => {
       if (a.name > b.name) {
         return 1;
@@ -421,7 +428,7 @@ export class ChartComponent implements OnChanges {
           ? 'pie' : 'bar',
         backgroundColor: 'transparent',
         style: {
-          fontFamily: 'Gotham-Book'
+          fontFamily: 'GothamBook'
         },
       },
       title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },

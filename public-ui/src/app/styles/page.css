@@ -37,7 +37,7 @@
 }
 
 .body-lead {
-  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
   font-size: 20px;
   font-weight: normal;
   font-style: normal;
@@ -109,7 +109,7 @@
 }
 
 .search-bar-container {
-  margin-bottom: calc( 18px *4);
+  margin-bottom: calc( 18px * 2);
   margin-top:  18px ;
 }
 

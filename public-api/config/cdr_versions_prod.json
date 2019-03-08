@@ -2,7 +2,6 @@
   {
     "cdrVersionId": 1,
     "name": "Synthetic Dataset v1",
-    "isDefault": true,
     "dataAccessLevel": 1,
     "bigqueryProject": "all-of-us-ehr-dev",
     "bigqueryDataset": "synthetic_cdr20180606",
@@ -10,5 +9,17 @@
     "releaseNumber": 1,
     "numParticipants": 946237,
     "publicDbName": "synth_p_2018q3_1"
+  },
+  {
+    "cdrVersionId": 2,
+    "isDefault": true,
+    "name": "All of Us Dataset v1",
+    "dataAccessLevel": 1,
+    "bigqueryProject": "aou-res-curation-prod",
+    "bigqueryDataset": "R2018Q4R1",
+    "creationTime": "2018-11-13 15:09:27Z",
+    "releaseNumber": 1,
+    "numParticipants": 116460,
+    "publicDbName": "p_2019q1_1"
   }
 ]

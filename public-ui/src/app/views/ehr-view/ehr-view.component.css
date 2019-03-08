@@ -17,19 +17,26 @@
 }
 
 #domain-name {
-    padding-bottom: 12px;
-    font-size: 30px;
-    line-height: 31px;
+    font-size: 18px;
+    line-height: 18px;
+    display: inline;
+}
+
+.medline-link {
+    font-size: 14px;
+    color: black;
 }
 
 #domain-summary {
-    font-size: 23px;
+    font-size: 24px;
+    margin-top:0;
     margin-bottom: 28px;
 }
 
-.domain-info-container {
+.domain-info-layout {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 .top-concepts-chart {
