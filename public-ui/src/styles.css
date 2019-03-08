@@ -409,14 +409,14 @@ template {
 
 @font-face {
   font-family: "Gotham-Book";
-  src: url("/asssets/fonts/GothamBook.eot");
+  src: url("/assets/fonts/GothamBook.eot");
   /* IE9 Compat Modes */
-  src: url("/asssets/fonts/GothamBook.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-  url("/asssets/fonts/GothamBook.otf") format("opentype"), /* Open Type Font */
-  url("/asssets/fonts/GothamBook.svg") format("svg"), /* Legacy iOS */
-  url("/asssets/fonts/GothamBook.ttf") format("truetype"), /* Safari, Android, iOS */
-  url("/asssets/fonts/GothamBook.woff") format("woff"), /* Modern Browsers */
-  url("/asssets/fonts/GothamBook.woff2") format("woff2");
+  src: url("/assets/fonts/GothamBook.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("/assets/fonts/GothamBook.otf") format("opentype"), /* Open Type Font */
+  url("/assets/fonts/GothamBook.svg") format("svg"), /* Legacy iOS */
+  url("/assets/fonts/GothamBook.ttf") format("truetype"), /* Safari, Android, iOS */
+  url("/assets/fonts/GothamBook.woff") format("woff"), /* Modern Browsers */
+  url("/assets/fonts/GothamBook.woff2") format("woff2");
   /* Modern Browsers */
   font-weight: normal;
   font-style: normal;
@@ -429,7 +429,7 @@ template {
 body {
   background-color: #E0E0E1;
   /* overflow-x: hidden; */
-  font-family: Gotham;
+  font-family: Gotham-Book;
   font-size: 1em;
   line-height: 1.5;
   margin: 0;
