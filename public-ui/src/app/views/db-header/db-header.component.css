@@ -56,7 +56,7 @@ input#s {
 }
 
 .widget {
-    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;     
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;   
     font-weight: 500;
     width: 100%;
     color: rgba(255, 255, 255, 1)
@@ -112,6 +112,10 @@ input#s {
 
 .nih-logo {
     display: none
+}
+
+.textwidget p {
+    font-size:15px;
 }
 
 #menu-primary {
