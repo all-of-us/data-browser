@@ -24,12 +24,13 @@ Test runs are stored in `performance/build/reports/gatling/`
 ## Writing Tests
 
 Tests are broken down into `Scenarios`. Each scenario is comprised of a series of `Pages`
-Some pages require a previous 
+Some pages require a series of steps to get to, so each scenario should build upon existing
+`Page` objects to get to a final destination.
 
-https://gatling.io/docs/current/cheat-sheet/
+* [Gatling Cheat Sheet](https://gatling.io/docs/current/cheat-sheet/)
 
-* TODO: How to write a basic test
 * TODO: How to configure failure criteria
+* TODO: Add a non-trivial search scenario with a variety of search terms.
 
 
 ## Configuring Tests
