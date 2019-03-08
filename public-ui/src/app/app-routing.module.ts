@@ -42,12 +42,12 @@ const routes: Routes = [
           data: {
             title: 'View Survey Questions and Answers',
             breadcrumb: {
-              value: 'survey: :id',
+              value: ':id survey',
             }
           }
         },
         {
-          path: ':id',
+          path: 'ehr/:id',
           component: EhrViewComponent,
           data: {
             title: 'View Full Results',
@@ -55,24 +55,18 @@ const routes: Routes = [
               value: ':id Domain',
             }
           }
-        }
-        ]
-      },
-      {
-        path: 'survey/:id',
-        component: SurveyViewComponent,
-        data: {
-          title: 'View Survey Questions and Answers',
-          breadcrumb: {
-            value: 'survey',
-            intermediate: false
+        },
+        {
+          path: 'physical-measurements',
+          component: PhysicalMeasurementsComponent,
+          data: {
+            title: 'Physical Measurements from Enrollment',
+            breadcrumb: {
+              value: 'physical measurements'
+            }
           }
         }
-      },
-      {
-        path: 'physical-measurements',
-        component: PhysicalMeasurementsComponent,
-        data: { title: 'Physical Measurements from Enrollment' }
+        ]
       }
     ]
   },
