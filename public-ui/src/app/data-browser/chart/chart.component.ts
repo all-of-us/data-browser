@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 import * as highcharts from 'highcharts';
 
 import { Analysis } from '../../../publicGenerated/model/analysis';
+import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { DbConfigService } from '../../utils/db-config.service';
 import { DomainType } from '../../utils/enum-defs';
@@ -14,6 +15,7 @@ import { DomainType } from '../../utils/enum-defs';
 export class ChartComponent implements OnChanges {
   @Input() analysis: Analysis;
   @Input() analysis2: Analysis;
+  @Input() surveyAnalysis: SurveyQuestionAnalysis;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
   @Input() selectedResult: any; // For ppi question, this is selected answer.
   @Input() pointWidth = 15;   // Optional width of bar or point or box plot
@@ -35,17 +37,11 @@ export class ChartComponent implements OnChanges {
   // Render new chart on changes
   ngOnChanges() {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
-      (this.concepts && this.concepts.length)) {
+      (this.concepts && this.concepts.length) ||
+      (this.surveyAnalysis && this.surveyAnalysis.surveyQuestionResults && this.surveyAnalysis.surveyQuestionResults.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
     }
-  }
-
-  public isSurveyGenderAnalysis() {
-    return this.analysis ?
-      (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
-        this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
-      : false;
   }
 
   public isGenderIdentityAnalysis() {
@@ -204,19 +200,30 @@ export class ChartComponent implements OnChanges {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
     }
-    if (this.analysis.analysisId === this.dbc.COUNT_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
-      return this.makeCountChartOptions();
+    if (this.analysis && this.analysis.analysisId === this.dbc.COUNT_ANALYSIS_ID) {
+      return this.makeCountChartOptions(this.analysis.results, this.analysis.analysisName);
+    }
+    
+    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
+      return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults, this.surveyAnalysis.analysisName);
     }
 
-    if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-      return this.makeGenderChartOptions();
+    if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName, 'pie');
+    }
+    
+    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'pie');
     }
 
-    if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-      return this.makeGenderChartOptions();
+    if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName, 'bar');
+    }
+    
+    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'bar');
     }
 
     /* Todo make charts for ethniticy and race
@@ -227,11 +234,17 @@ export class ChartComponent implements OnChanges {
       return this.makePieChartOptions();
     }*/
 
-    if (this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
-      return this.makeAgeChartOptions();
+    if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
+      return this.makeAgeChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
+      'stratum2');
     }
-    if (this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
+    
+    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+      return this.makeAgeChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4,'stratum5');
+    }
+    
+    if (this.analysis && this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       return this.makeMeasurementChartOptions();
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
@@ -242,10 +255,10 @@ export class ChartComponent implements OnChanges {
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
 
-  public makeCountChartOptions() {
+  public makeCountChartOptions(results: any, analysisName: string) {
     let data = [];
     let cats = [];
-    for (const a of this.analysis.results) {
+    for (const a of results) {
       data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a });
       cats.push(a.stratum4);
     }
@@ -297,7 +310,7 @@ export class ChartComponent implements OnChanges {
     };
 
   }
-
+  
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
@@ -355,23 +368,7 @@ export class ChartComponent implements OnChanges {
 
   }
 
-  public makeGenderChartOptions() {
-    let results = [];
-    let seriesName = '';
-    if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.ETHNICITY_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.RACE_ANALYSIS_ID ||
-      this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-      results = this.analysis.results;
-      seriesName = this.analysis.analysisName;
-    } else {
-      // For ppi we need to filter the results to the particular answer that the user selected
-      // because we only show the breakdown for one answer on this chart
-      // results = this.getSelectedResults(this.selectedResult);
-      results = this.analysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4);
-      // Series name for answers is the answer selected which is in stratum4
-      seriesName = this.selectedResult.stratum4;
-    }
+  public makeGenderChartOptions(results: any, analysisName: string, seriesName: string, chartType: string) {
     let data = [];
     let cats = [];
 
@@ -379,16 +376,16 @@ export class ChartComponent implements OnChanges {
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let color = null;
-      if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+      if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         color = this.dbc.GENDER_COLORS[a.stratum2];
       }
-      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+      if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.GENDER_COLORS[a.stratum5];
       }
-      if (this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+      if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
       }
-      if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
+      if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
       }
       data.push({
@@ -423,49 +420,26 @@ export class ChartComponent implements OnChanges {
     };
     return {
       chart: {
-        type: (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID
-          || this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
-          ? 'pie' : 'bar',
+        type: chartType,
         backgroundColor: 'transparent',
         style: {
           fontFamily: 'GothamBook'
         },
       },
-      title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID
-          || this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
-          ? `<span style="font-size:.7em">
-        <b> {point.y}</b> {point.name}s </span></span>` : `<span style="font-size:.7em">
-        <b> {point.y}</b> {point.name} </span></span>`
+        pointFormat: '<span style="font-size:.7em"> <b> {point.y}</b> {point.name} </span></span>',
       }
     };
 
   }
 
-  public makeAgeChartOptions() {
-    let results = [];
-    let seriesName = '';
-    let ageDecileStratum = '';
-
-    // Question/answers have a different data structure than other concepts
-    if (this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
-      results = this.analysis.results;
-      seriesName = this.analysis.analysisName;
-      ageDecileStratum = 'stratum2';
-    } else if (this.analysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
-      // For ppi survey we filter the results to the particular answer that the user selected
-      results = this.analysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4);
-      // Series name for answers is the answer selected which is in stratum4
-      seriesName = this.selectedResult.stratum4;
-      ageDecileStratum = 'stratum5';
-    }
-
+  public makeAgeChartOptions(results: any, analysisName: string, seriesName: string, ageDecileStratum: string) {
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     results = results.sort((a, b) => {
