@@ -491,10 +491,14 @@ img {
   text-rendering: optimizeLegibility
 }
 
-.db-container, .breadcrumbs-container {
+ .breadcrumbs-container, .site-branding {
   margin: 0 calc(10%);
   padding: 0 0.7rem;
-  background: #f1f1f1;
+}
+
+.db-container {
+  max-width: 1038px;
+  margin: 0 auto;
 }
 
 .main-bg {

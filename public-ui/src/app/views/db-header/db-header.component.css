@@ -25,10 +25,6 @@ a:hover, a:link, a:visited a:active, a {
     padding-bottom: 3rem
 }
 
-.site-branding {
-    margin: 0 calc(10%);
-    padding: 0.7rem;
-}
 
 #site-navigation {
     background: #f1f1f1;
