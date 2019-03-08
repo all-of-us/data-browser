@@ -469,7 +469,8 @@ body {
   background-color: #E0E0E1;
   /* overflow-x: hidden; */
   font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
-  font-size: 1em;
+  font-size: 18px;
+  color: #262262;
   line-height: 1.5;
   margin: 0;
   text-rendering: optimizeLegibility;
@@ -491,7 +492,7 @@ img {
   text-rendering: optimizeLegibility
 }
 
- .breadcrumbs-container, .site-branding {
+ .breadcrumbs, .site-branding {
   margin: 0 calc(10%);
   padding: 0 0.7rem;
 }

@@ -1,27 +1,36 @@
 /* primary display */
 
 .primary-display, h1 {
-  font-family: FFUnitStdRegular, sans-serif;
-  font-size: 50px;
+  font-family: FFUnitStdMedium, sans-serif;
+  font-size: 36.8px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 2.08em;
+  line-height: 45.36px;
   letter-spacing: normal;
   text-align: left;
-  color: #262262;
 }
 
 .secondary-display, h2 {
   font-family: FFUnitStdLight, sans-serif;
-  font-weight: 200;
+  /* font-weight: 200; */
   font-style: normal;
   font-size: 38px;
   font-stretch: normal;
   line-height: 1.47em;
   letter-spacing: normal;
   text-align: left;
-  color: #262262;
+}
+
+.body-lead {
+  font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-sarif;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 40px;
+  letter-spacing: normal;
+  text-align: left;
 }
 
 .display-body {
@@ -33,19 +42,6 @@
   line-height: 1.23;
   letter-spacing: normal;
   text-align: left;
-  color: #262262;
-}
-
-.body-lead {
-  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
-  font-size: 20px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 2em;
-  letter-spacing: normal;
-  text-align: left;
-  color: #262262;
 }
 
 .body-default, p {
@@ -53,24 +49,22 @@
   font-style: normal;
   font-stretch: normal;
   line-height: 1.5;
-  font-size:18px;
+  font-size: 18px;
   letter-spacing: normal;
   text-align: left;
-  color: #262262;
 }
 
 #db-title {
   text-align: center;
-  width: calc(100%/1);
-  margin: auto;
+  margin: 0;
+  padding: 18px;
 }
 
 #db-desc {
-  width:calc((100%/12) * 10);
-  margin:auto;
-  text-align: center;
-  margin-top:0;
-  margin-bottom: 54px;
+  width: calc((100%/12) * 11);
+  text-align: justify;
+  padding: 18px;
+  margin: 0 auto;
 }
 
 #db-sub-desc {
@@ -84,9 +78,9 @@
 }
 
 .info-icon {
-  color: #216fb4;
+  color: #337AB7;
   font-weight: 600;
-  filter: contrast(56%) brightness(127.2%);
+  /* filter: contrast(56%) brightness(127.2%); */
   transform: scale(0.8);
 }
 
@@ -110,9 +104,8 @@
 
 .search-bar-container {
   margin-bottom: calc( 18px * 2);
-  margin-top:  18px ;
+  margin-top: 18px;
 }
-
 
 .search-icon {
   width: calc((100%/12));
@@ -172,7 +165,6 @@
   justify-content: space-between;
   width: 30rem;
 }
-
 
 .tbl-r-group .tbl-d:last-of-type {
   width: 5rem;
