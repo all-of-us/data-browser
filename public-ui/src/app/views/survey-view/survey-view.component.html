@@ -124,7 +124,7 @@
 
 
 
-            <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r " *ngFor="let a of q.countAnalysis.results"
+            <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r " *ngFor="let a of q.countAnalysis.surveyQuestionResults"
               (click)="showAnswerGraphs(a)" [hidden]="!showAnswer[q.conceptId]">
               <div class="tbl-r">
                 <div id="answer-result" class="tbl-d secondary-display">
@@ -187,7 +187,7 @@
                   </div>
                 </div>
                 <div class="chart">
-                  <app-chart [analysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
+                <app-chart [surveyAnalysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
                     [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
                 </div>
               </div>

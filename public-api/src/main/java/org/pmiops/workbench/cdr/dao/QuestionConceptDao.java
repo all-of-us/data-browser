@@ -12,7 +12,7 @@ public interface QuestionConceptDao extends CrudRepository<QuestionConcept, Long
             "join achilles_results ar on ar.stratum_2=c.concept_id\n" +
             "join survey_question_map sqm on sqm.question_concept_id=ar.stratum_2\n" +
             "where ar.stratum_1=?1 and ar.analysis_id=3110\n" +
-            "group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_code,c.count_value,c.prevalence,ar.stratum_5 \n" +
+            "group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_code,c.count_value,c.prevalence,sqm.question_order_number \n" +
             "order by sqm.question_order_number asc")
     List<QuestionConcept> findSurveyQuestions(String survey_concept_id);
 }

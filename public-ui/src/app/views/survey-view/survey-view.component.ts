@@ -78,11 +78,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // Todo -- add this to api maybe
           let didNotAnswerCount  = this.survey.participantCount;
           q.selectedAnalysis = q.genderAnalysis;
-          for (const a of q.countAnalysis.results) {
+          for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
           }
-          const result = q.countAnalysis.results[0];
+          const result = q.countAnalysis.surveyQuestionResults[0];
           if (didNotAnswerCount < 0 ) { didNotAnswerCount = 0; }
           const notAnswerPercent = this.countPercentage(didNotAnswerCount);
           const didNotAnswerResult = {
@@ -95,13 +95,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             stratum4: 'Did not answer',
             stratum5: result.stratum5
           };
-          q.countAnalysis.results.push(didNotAnswerResult);
+          q.countAnalysis.surveyQuestionResults.push(didNotAnswerResult);
         }
 
         this.questions = this.surveyResult.items;
         // Sort count value desc
         for (const q of this.questions ) {
-          q.countAnalysis.results.sort((a1, a2) => {
+          q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
             if (a1.countValue > a2.countValue) { return -1; }
             if (a1.countValue < a2.countValue) { return 1; }
             return 0;
@@ -156,7 +156,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (this.searchMethod === 'and') {
       for (const w of words) {
         if (q.conceptName.toLowerCase().indexOf(w.toLowerCase()) === -1  &&
-          q.countAnalysis.results.filter(r =>
+          q.countAnalysis.surveyQuestionResults.filter(r =>
             r.stratum4.toLowerCase().indexOf(w.toLowerCase()) === -1 )) {
           return false;
         }
@@ -169,7 +169,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (re.test(q.conceptName)) {
       return true;
     }
-    const results = q.countAnalysis.results.filter(r => re.test(r.stratum4));
+    const results = q.countAnalysis.surveyQuestionResults.filter(r => re.test(r.stratum4));
     if (results.length > 0) {
       return true;
     }
