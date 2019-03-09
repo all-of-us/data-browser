@@ -50,7 +50,6 @@
     </clr-tooltip>
   </h5>
   <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
-
     <div class="result-box" *ngFor="let r of domainResults">
       <p class="result-box-title">
         {{r.name}}
@@ -73,8 +72,8 @@
         </span>
       </div>
       <div class="result-bottom">
-        <span *ngIf="!searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
-          View Top 100 </span>
+        <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
+          View Top 100 </a>
         <span *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)"> View Results </span>
       </div>
     </div>
@@ -108,8 +107,8 @@
       </div>
 
       <div class="result-bottom">
-        <span *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
-          View Complete Survey </span>
+        <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
+          View Complete Survey </a>
         <div *ngIf="searchText.value">
           <span class="result-bottom-link" (click)="viewSurvey(r)"> View Results </span>
         </div>
@@ -133,7 +132,6 @@
     <div id="pm-box" class="result-box">
       <p class="result-box-title">
         Physical Measurements
-        <!-- NEEDS help text -->
         <clr-tooltip>
           <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
