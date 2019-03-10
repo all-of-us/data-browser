@@ -52,6 +52,7 @@
   font-size: 18px;
   letter-spacing: normal;
   text-align: left;
+  color:#262262;
 }
 
 #db-title {
@@ -61,10 +62,10 @@
 }
 
 #db-desc {
-  width: calc((100%/12) * 11);
   text-align: justify;
   padding: 18px;
   margin: 0 auto;
+  line-height: 2.0;
 }
 
 #db-sub-desc {
