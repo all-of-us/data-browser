@@ -43,6 +43,7 @@ import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
+import { SpinnerComponent } from './utils/spinner/spinner.component';
 
 function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
@@ -85,6 +86,7 @@ export function getConfigService(http: Http) {
     EhrViewComponent,
     PageTemplateSignedOutComponent,
     PhysicalMeasurementsComponent,
+    SpinnerComponent,
   ],
   providers: [
     {
