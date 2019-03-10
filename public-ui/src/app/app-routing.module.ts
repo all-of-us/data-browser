@@ -37,9 +37,9 @@ const routes: Routes = [
       {
         path: '',
         data: {
-          title: 'Databrowser',
+          title: 'Data Browser',
           breadcrumb: {
-            value: 'Databrowser',
+            value: 'Data Browser',
           }
         },
         children: [{
