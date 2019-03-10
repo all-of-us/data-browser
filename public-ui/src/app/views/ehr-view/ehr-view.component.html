@@ -4,20 +4,13 @@
     <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
     <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
   </div>
-  <div class="row ">
-    <div class="col-md-4 col-sm-2 col-xs-1 flex-xs-middle" *ngIf="loading">
-      <span class="spinner spinner-lg hidden-sm-down">Loading ...</span>
-      <span class="spinner spinner-md hidden-md-up hidden-xs-down"></span>
-      <span class="spinner spinner-sm hidden-sm-up"></span>
-    </div>
-  </div>
+  <app-spinner [loading]="loading"></app-spinner>
   <a class="btn btn-link btn-sm" [routerLink]="['']">
     < Back to main search </a> <div class="result-list">
       <div class="db-card">
         <div class="db-card-inner">
           <section *ngIf="items.length > 0">
             <!-- Top summary boxes -- only show if have results -->
-
             <h5 id="domain-summary" class="secondary-display">
               <a class="toggle-link" (click)="toggleTopConcepts()"> Top 10 Medical Concepts by Descending Participant
                 Counts

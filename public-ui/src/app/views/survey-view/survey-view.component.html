@@ -13,6 +13,7 @@
       <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
       <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
     </div>
+    <app-spinner [loading]="loading"></app-spinner>
     <a class="btn btn-link btn-sm" [routerLink]="['']">< Back to main search </a>
     <div class="db-card">
       <div class="survey-head">
@@ -29,7 +30,6 @@
           <h2 *ngIf="!loading" class="secondary-display">
             <span>{{ surveyResult.items.length }} </span>
           </h2>
-          <span *ngIf="loading" class="spinner spinner-md"> </span>
           <p class="info-text">
             Questions
           </p>
