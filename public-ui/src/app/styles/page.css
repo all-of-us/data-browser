@@ -15,7 +15,7 @@
   font-family: FFUnitStdMedium, sans-serif;
   font-weight: 200;
   font-style: normal;
-  font-size: 38px;
+  font-size: 27px;
   font-stretch: normal;
   line-height: 1.47em;
   letter-spacing: normal;
@@ -52,7 +52,7 @@
   font-size: 18px;
   letter-spacing: normal;
   text-align: left;
-  color:#262262;
+  color: #262262;
 }
 
 #db-title {
@@ -103,14 +103,45 @@
   width: 100%;
 }
 
-.search-bar-container {
-  margin-bottom: calc( 18px * 2);
-  margin-top: 18px;
+/* •••••SEARCH-BAR•••••• */
+
+#db-search-bar {
+  min-width: calc((100%/12)*7.5);
+  flex-grow: 1;
+  background: #DAE6ED;
+  padding: 9px;
+  border-radius: 5px;
+}
+
+#db-search-bar input {
+  min-width: calc((100%/12)*10);
+  padding: 18px;
+  font-size: 18px;
 }
 
 .search-icon {
-  width: calc((100%/12));
+  width: 20px;
   height: 20px;
+}
+
+#db-search-bar input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #216fb4;
+}
+
+#db-search-bar input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #216fb4;
+}
+
+#db-search-bar input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #216fb4;
+}
+
+#db-search-bar input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #216fb4;
 }
 
 .info-text {
