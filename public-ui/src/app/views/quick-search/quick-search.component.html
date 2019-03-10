@@ -72,7 +72,7 @@
         </span>
       </div>
       <div class="result-bottom">
-        <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
+        <a [routerLink]="'ehr/'+r.domain.toLowerCase()" *ngIf="!searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
           View Top 100 </a>
         <span *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)"> View Results </span>
       </div>
@@ -147,8 +147,8 @@
       </p>
         <span *ngIf="searchText.value">matching physical measurements</span>
         <div class="result-bottom">
-          <span class="result-bottom-link" [routerLink]="['physical-measurements']"
-            [queryParams]="{searchString: searchText.value}"> View Program Physical Measurements </span>
+          <a class="result-bottom-link" [routerLink]="['physical-measurements']"
+            [queryParams]="{searchString: searchText.value}"> View Program Physical Measurements </a>
         </div>
     </div>
 

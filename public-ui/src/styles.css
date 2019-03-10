@@ -359,6 +359,10 @@ template {
 
 /* Master Styles */
 
+a:hover {
+  text-decoration: none;
+}
+
 @font-face {
   font-family: 'FFUnitStdMedium';
   src: url('/assets/fonts/38B71D_0_0.eot');
