@@ -12,8 +12,8 @@
 }
 
 .secondary-display, h2 {
-  font-family: FFUnitStdLight, sans-serif;
-  /* font-weight: 200; */
+  font-family: FFUnitStdMedium, sans-serif;
+  font-weight: 200;
   font-style: normal;
   font-size: 38px;
   font-stretch: normal;
