@@ -481,6 +481,11 @@ img {
   position: relative
 }
 
+.pushFooter {
+  width:100vw;
+  height:100vh;
+}
+
 .widget>* {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
