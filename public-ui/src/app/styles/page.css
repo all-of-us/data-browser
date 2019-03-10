@@ -28,13 +28,12 @@
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 40px;
   letter-spacing: normal;
   text-align: left;
 }
 
 .display-body {
-  font-family: FFUnitStdRegular, sans-serif;
+  font-family: FFUnitStdLight, sans-serif;
   font-size: 22px;
   font-weight: 500;
   font-style: normal;
@@ -45,6 +44,7 @@
 }
 
 .body-default, p {
+  font-family: GothamLight,sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -66,6 +66,8 @@
   padding: 18px;
   margin: 0 auto;
   line-height: 2.0;
+  font-family: GothamLight,sans-serif;
+  font-size:20px;
 }
 
 #db-sub-desc {
@@ -106,10 +108,9 @@
 /* •••••SEARCH-BAR•••••• */
 
 #db-search-bar {
-  min-width: calc((100%/12)*7.5);
   flex-grow: 1;
   background: #DAE6ED;
-  padding: 9px;
+  padding: 18px;
   border-radius: 5px;
 }
 
@@ -242,7 +243,7 @@
   border-bottom: none;
   cursor: pointer;
   transition: .2s background ease-out;
-  padding: 9px 0;
+  padding:9px;
 }
 
 .tbl-exp-r:last-of-type {
@@ -252,4 +253,8 @@
 .tbl-exp-r:hover {
   background: #f6f6f8;
   transition: .1s background ease-in;
+}
+.tbl-d.first {
+  width:50%;
+  min-width: 10rem;
 }

@@ -4,34 +4,30 @@ strong {
 }
 
 .search {
-    margin-top: 18px;
-    margin-bottom: 36px;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: baseline;
+    padding:18px;
 }
 
 .search-title {
     white-space: nowrap;
-    min-width: calc((100%/12)*3.5);
-    margin-top: 9px;
     display: flex;
-    height: auto;
 }
 
 .search-title .info-icon {
     margin: 0.6em 0.5em 0.1em;
 }
 
+.results {
+    padding:18px;
+}
+
 .result-heading {
-    margin-left: 0;
-    margin-bottom: 8px;
-    padding: 0;
-    color: #302C71;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 36px;
+    font-size: 23px;
+    margin: 0;
+    padding: 9px;
+    padding-left: 0;
 }
 
 .result-boxes {
@@ -45,31 +41,25 @@ strong {
 .result-box {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     min-width: calc(((100%/12)*3) - 14px);
     max-width: calc(((100%/12)*3) - 18px);
     margin-right: 18px;
-    margin-bottom: 18px;
-    padding: 0 18px;
-    border-radius: 4px;
+    padding: 18px;
+    border-radius: 5px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
-    transition: 0.1s all linear;
 }
 
 .result-box-title {
     color: #337AB7;
     font-family: FFUnitStdMedium, Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    font-weight: 500;
     display: flex;
-    width: 100%;
-    margin: 9px 0;
-    transition: .4s all linear;
+    padding-bottom:3px;
+    margin:0;
 }
 
 .result-box-title .info-icon {
-    margin-left: .25rem;
+
 }
 
 .result-box:last-of-type {
@@ -88,45 +78,23 @@ strong {
 .result-body {
     color: #302C71;
     font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
-    height: 30%;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.result-body_item:first-of-type {
-    padding-bottom: .5em;
+.result-body-item {
+    padding: 6px 0;
 }
-
-/* #survey .result-box:first-of-type .result-body_item:nth-of-type(2) {
-    padding-bottom: .65rem;
-} */
-
-/* .result-body_item:first-of-type {
-    padding-bottom:18px;
-} */
-
-/* .result-body_item:nth-of-type(2) {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-} */
-
-.result-body-stat {
-    padding-top: .5rem;
-}
-
-.result-bottom {
-    /* padding: .5rem 0; */
-    padding: 18px 0;
+.result-body-item:last-child {
+    margin-top:auto;
 }
 
 .result-bottom-link {
+    font-size: 15px;
     color: #337AB7;
     cursor: pointer;
-    font-size: 15px;
 }
 
 .result-bottom-link:hover {
@@ -134,18 +102,18 @@ strong {
 }
 
 #pm-box {
-    min-width: 490px;
     max-width: calc(((100%/12)*5));
-    padding-top: 9px;
 }
 
 #pm-box .result-body {
     margin: 0;
+    padding-top:9px;
 }
 
-@media (max-width: 1090px) {
+@media (max-width: 900px) {
     .result-box {
         min-width: calc(((100%/12)*6) - 9px);
+        margin-bottom:18px;
     }
     .result-box:nth-of-type(2) {
         margin-right: 0;
