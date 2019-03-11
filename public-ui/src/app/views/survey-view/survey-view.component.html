@@ -9,132 +9,122 @@
         </span>
       </div>
     </div>
-    <div class="search-bar search-bar-container search-input-full">
-      <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
-      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
+    <div class="search-bar-container">
+      <div id="db-search-bar">
+        <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+        <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
+      </div>
     </div>
-    <a class="btn btn-link btn-sm" [routerLink]="['']">< Back to main search </a>
-    <div class="db-card">
-      <div class="survey-head">
-        <div class="stat-container">
-          <h2 class="secondary-display" *ngIf="!loading">
-            {{survey.participantCount | number }}
-          </h2>
-          <p class="info-text">
-            Participants completed this survey
-          </p>
-        </div>
-
-        <div class="stat-container">
-          <h2 *ngIf="!loading" class="secondary-display">
-            <span>{{ surveyResult.items.length }} </span>
-          </h2>
-          <span *ngIf="loading" class="spinner spinner-md"> </span>
-          <p class="info-text">
-            Questions
-          </p>
-        </div>
-        <div class="pdf-link">
-          <a href="{{surveyPdfUrl}}" download>
-            <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
-          </a>
-        </div>
-      </div>
-
-
-      <div class="no-results" *ngIf="searchText.value.length > 0">
-        <p class="results-heading no-results" *ngIf="questions.length === 0 && !loading">
-          <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <mark> {{searchText.value}}</mark>.
-            <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
-                keyword</button> </span>
-          </span>
-          <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <mark>
-              {{searchText.value}}</mark>.
-            <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
-                search</button></span>
-          </span>
-        </p>
-
-        <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
-          <span *ngIf="searchMethod==='or'">
-            <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <mark>{{searchText.value}}</mark>.
-            <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
-          </span>
-          <span *ngIf="searchMethod==='and'">
-            <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
-              <mark>{{searchText.value}}</mark>.</span>
-            <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
-          </span>
-        </p>
-      </div>
-
-
-
-
-
-      <div class="survey-results" *ngIf="resultsComplete">
-        <div class="question-result" *ngFor="let q of questions, let i = index">
-          <div class="secondary-display">
-            <div class="box-title"> Question {{q.actualQuestionNumber}}</div>
-            <div class="body-default">
-              <app-highlight-search [text]="q.conceptName" [searchTerm]="searchText.value" [conceptId]="q.conceptId">
-              </app-highlight-search>
+    <section class="results">
+      <a class="btn btn-link btn-sm" [routerLink]="['']">
+        < Back to main search </a> <div class="db-card">
+          <div class="survey-head">
+            <div class="stat-container">
+              <h2 class="secondary-display" *ngIf="!loading">
+                {{survey.participantCount | number }}
+              </h2>
+              <p class="info-text">
+                Participants completed this survey
+              </p>
+            </div>
+            <div class="stat-container">
+              <h2 *ngIf="!loading" class="secondary-display">
+                <span>{{ surveyResult.items.length }} </span>
+              </h2>
+              <span *ngIf="loading" class="spinner spinner-md"> </span>
+              <p class="info-text">
+                Questions
+              </p>
+            </div>
+            <div class="pdf-link">
+              <a href="{{surveyPdfUrl}}" download>
+                <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
+              </a>
             </div>
           </div>
-
-
-
-          <div class="see-answers body-lead" (click)="toggleAnswer(q.conceptId)"> See Answers
-            <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
-            <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
+          <div class="no-results" *ngIf="searchText.value.length > 0">
+            <p class="results-heading no-results" *ngIf="questions.length === 0 && !loading">
+              <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <mark>
+                  {{searchText.value}}</mark>.
+                <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
+                    keyword</button> </span>
+              </span>
+              <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <mark>
+                  {{searchText.value}}</mark>.
+                <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
+                    search</button></span>
+              </span>
+            </p>
+            <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
+              <span *ngIf="searchMethod==='or'">
+                <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <mark>{{searchText.value}}</mark>.
+                <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
+              </span>
+              <span *ngIf="searchMethod==='and'">
+                <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
+                  <mark>{{searchText.value}}</mark>.</span>
+                <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
+              </span>
+            </p>
           </div>
-
-          <!-- v add ! back -->
-          <div class="tbl" [hidden]="!showAnswer[q.conceptId]">
-            <div class="tbl-r tbl-head">
-              <div class=" info-text tbl-d">
+          <div class="survey-results" *ngIf="resultsComplete">
+            <div class="question-result" *ngFor="let q of questions, let i = index">
+              <div class="secondary-display">
+                <div class="box-title"> Question {{q.actualQuestionNumber}}</div>
+                <div class="body-default">
+                  <app-highlight-search [text]="q.conceptName" [searchTerm]="searchText.value"
+                    [conceptId]="q.conceptId">
+                  </app-highlight-search>
+                </div>
               </div>
-              <div class="tbl-r-group tbl-r-group-style ">
-                <div class="tbl-d display-body">
-                  Concept Code
-                  <clr-tooltip>
-                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                    <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                      <div class="tooltip-label">The concept code is an additional piece of information that
-                        can be utilized to find medical concepts in the All of Us data set. Concept codes are specific
-                        to
-                        the
-                        All of Us Research Program data and are assigned to all medical concepts.
-                        In some instances,
-                        a medical concept may not be assigned a source or standard vocabulary code.
-                        In these instances, the concept code can be utilized to
-                        query the data for the medical concept.</div>
-                    </clr-tooltip-content>
-                  </clr-tooltip>
-                </div>
-                <div class=" info-text tbl-d display-body">
-                  Participant Count
-                </div>
-                <div class=" info-text tbl-d display-body">
-                  % answered
-                </div>
-                <div class="tbl-d display-body"></div>
+              <div class="see-answers body-lead" (click)="toggleAnswer(q.conceptId)"> See Answers
+                <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
+                <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </div>
-            </div>
-
-
-
-            <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r " *ngFor="let a of q.countAnalysis.results"
-              (click)="showAnswerGraphs(a)" [hidden]="!showAnswer[q.conceptId]">
-              <div class="tbl-r">
-                <div id="answer-result" class="tbl-d secondary-display">
-                  <div *ngIf="!binnedSurveyQuestions.includes(a.stratum2); else binnedSurveyQuestionDisplay">
-                    <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value"></app-highlight-search>
+              <div class="tbl" [hidden]="!showAnswer[q.conceptId]">
+                <div class="tbl-r tbl-head">
+                  <div class=" info-text first tbl-d">
+                  </div>
+                  <div class="tbl-r-group tbl-r-group-style ">
+                    <div class="info-text tbl-d display-body">
+                      Concept Code
+                      <clr-tooltip>
+                        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                          <div class="tooltip-label">The concept code is an additional piece of information that
+                            can be utilized to find medical concepts in the All of Us data set. Concept codes are
+                            specific
+                            to
+                            the
+                            All of Us Research Program data and are assigned to all medical concepts.
+                            In some instances,
+                            a medical concept may not be assigned a source or standard vocabulary code.
+                            In these instances, the concept code can be utilized to
+                            query the data for the medical concept.</div>
+                        </clr-tooltip-content>
+                      </clr-tooltip>
+                    </div>
+                    <div class=" info-text tbl-d display-body">
+                      Participant Count
+                    </div>
+                    <div class=" info-text tbl-d display-body">
+                      % answered
+                    </div>
+                    <div class="tbl-d display-body"></div>
                   </div>
                 </div>
-
-                <div class="tbl-r-group">
-                  <!-- <span class='body'>
+                <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r "
+                  *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a)"
+                  [hidden]="!showAnswer[q.conceptId]">
+                  <div class="tbl-r">
+                    <div class="tbl-d first display-body info-text">
+                      <div *ngIf="!binnedSurveyQuestions.includes(a.stratum2); else binnedSurveyQuestionDisplay">
+                        <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
+                        </app-highlight-search>
+                      </div>
+                    </div>
+                    <div class="tbl-r-group">
+                      <!-- <span class='body'>
                   <ng-template class="text" #binnedSurveyQuestionDisplay>
                     <label
                       *ngIf="a.stratum4.toLowerCase().trim() === 'did not answer' || a.stratum4.toLowerCase().includes('skip'); else rangeLabel">
@@ -149,58 +139,59 @@
                   </ng-template>
                 </span> -->
 
-                  <div class="info-text tbl-d secondary-display">
-                    <label class="concept-code">{{a.stratum3}}</label>
-                  </div>
+                      <div class="info-text tbl-d display-body info-text">
+                        <label class="concept-code">{{a.stratum3}}</label>
+                      </div>
 
 
-                  <div class="info-text tbl-d secondary-display">
-                    <label class="participant-count">{{a.countValue | number}} </label>
+                      <div class="info-text tbl-d display-body info-text">
+                        <label class="participant-count">{{a.countValue | number}} </label>
+                      </div>
+
+                      <div class=" info-text tbl-d display-body info-text">
+                        <span>{{a.countPercent.toFixed(2)}}%</span>
+                      </div>
+
+                      <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
+                        <button class="icon-btn">
+                          <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
+                          <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
-                  <div class=" info-text tbl-d secondary-display">
-                    <span>{{a.countPercent.toFixed(2)}}%</span>
+                  <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer'"
+                    #chartElement>
+                    <div class="graph-menu">
+                      <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age']"
+                        [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,q)"
+                        class="chart-choice">
+                        <span>{{g}}</span>
+                        <clr-tooltip>
+                          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                            <div class="tooltip-label">{{showToolTip(g)}}</div>
+                          </clr-tooltip-content>
+                        </clr-tooltip>
+                      </div>
+                    </div>
+                    <div class="chart">
+                      <app-chart (click)="$event.stopPropagation()" [analysis]="q.selectedAnalysis" [selectedResult]="a"
+                        [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
+                    </div>
                   </div>
-
-                  <div class=" info-text tbl-d secondary-display secondary-display graph-btn">
-                    <button class="icon-btn">
-                      <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
-                      <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer'"
-                #chartElement>
-                <div class="graph-menu">
-                  <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age']"
-                    [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,q)"
-                    class="chart-choice">
-                    <span>{{g}}</span>
-                    <clr-tooltip>
-                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                        <div class="tooltip-label">{{showToolTip(g)}}</div>
-                      </clr-tooltip-content>
-                    </clr-tooltip>
-                  </div>
-                </div>
-                <div class="chart">
-                  <app-chart (click)="$event.stopPropagation()" [analysis]="q.selectedAnalysis" [selectedResult]="a" [backgroundColor]="'#ECF1F4'"
-                    [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
   </div>
+  </section>
+</div>
 
 
-  <!-- Todo show general totals for demographics of who took the survey -->
-  <!--
+<!-- Todo show general totals for demographics of who took the survey -->
+<!--
   <div class="row">
     <div class="">
       <app-concept-charts [concept]="survey" [showRace]="true" [showAge]="true" [showGender]="true"
@@ -209,6 +200,6 @@
     </div>
   </div>
   -->
-  <div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
-  </div>
+<div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
+</div>
 </div>
