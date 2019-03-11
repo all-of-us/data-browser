@@ -452,9 +452,8 @@ export class ChartComponent implements OnChanges {
     };
   }
 
-  public makeRaceEthnicityChartOptions(results: any, seriesName: string, 
-                                        analysisName: string) {
-   
+  public makeRaceEthnicityChartOptions(
+    results: any, seriesName: string, analysisName: string) {
     let data = [];
     let cats = [];
     // LOOP CREATES DYNAMIC CHART VARS
