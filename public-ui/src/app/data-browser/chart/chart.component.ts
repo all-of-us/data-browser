@@ -218,6 +218,11 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions();
     }
+    
+    if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID ||
+    this.analysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+      return this.makeRaceEthnicityChartOptions();
+    }
 
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
@@ -446,6 +451,77 @@ export class ChartComponent implements OnChanges {
       }
     };
 
+  }
+  
+  public makeRaceEthnicityChartOptions() {
+    let results = [];
+    let seriesName = '';
+    
+    if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID) {
+      results = this.analysis.results;
+      seriesName = this.analysis.analysisName;
+    } else if (this.analysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+      results = this.analysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4);
+      // Series name for answers is the answer selected which is in stratum4
+      seriesName = this.selectedResult.stratum4;
+    }
+    
+    
+    let data = [];
+    let cats = [];
+    
+    // LOOP CREATES DYNAMIC CHART VARS
+    for (const a of results) {
+      data.push({
+        name: a.analysisStratumName
+        , y: a.countValue, sliced: true, color: '#216fb4'
+      });
+      cats.push(a.analysisStratumName);
+    }
+    
+    
+    data = data.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      }
+    );
+    cats = cats.sort((a, b) => {
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    });
+    const series = {
+      name: seriesName, colorByPoint: true, data: data,
+    };
+    return {
+      chart: {
+        type: 'bar',
+        backgroundColor: 'transparent',
+        style: {
+          fontFamily: 'Gotham-Book'
+        },
+      },
+      title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      series: series,
+      categories: cats,
+      pointWidth: this.pointWidth,
+      xAxisTitle: null,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: `<span style="font-size:.7em">
+        <b> {point.y}</b> {point.name}s </span></span>`
+      }
+    };
+    
   }
 
   public makeAgeChartOptions() {

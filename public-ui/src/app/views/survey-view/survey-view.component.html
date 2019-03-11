@@ -174,7 +174,7 @@
               <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer'"
                 #chartElement>
                 <div class="graph-menu">
-                  <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age']"
+                  <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
                     [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,q)"
                     class="chart-choice">
                     <span>{{g}}</span>

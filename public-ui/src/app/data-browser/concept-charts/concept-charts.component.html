@@ -45,6 +45,13 @@
     </div>
   </ng-container>
 
+  <ng-container *ngIf="showGraph === graphType.RaceEthnicity">
+    <div class="chart" *ngIf="showGraph === graphType.RaceEthnicity && analyses.raceEthnicityAnalysis">
+      <app-chart [analysis]="analyses.raceEthnicityAnalysis" [backgroundColor]="backgroundColor"
+                 [chartTitle]="'Race Ethnicity'"> </app-chart>
+    </div>
+  </ng-container>
+
   <!-- show age totals  if we want -->
   <!-- AGE COLUMN CHART -->
   <ng-container *ngIf="showGraph === graphType.Age">

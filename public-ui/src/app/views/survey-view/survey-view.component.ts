@@ -223,6 +223,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       case GraphType.Age:
         q.selectedAnalysis = q.ageAnalysis;
         break;
+      case GraphType.RaceEthnicity:
+        q.selectedAnalysis = q.raceEthnicityAnalysis;
+        break;
       default:
         q.selectedAnalysis = q.genderAnalysis;
         break;

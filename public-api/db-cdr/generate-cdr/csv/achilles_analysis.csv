@@ -1,4 +1,4 @@
-analysis_id,"analysis_name","stratum_1_name","stratum_2_name","stratum_3_name","stratum_4_name","stratum_5_name","chart_type","data_type"
+"analysis_id","analysis_name","stratum_1_name","stratum_2_name","stratum_3_name","stratum_4_name","stratum_5_name","chart_type","data_type"
 0,"Source name","","","","","","column","counts"
 1,"Number of persons","","","","","","column","counts"
 2,"Number of persons by sex at birth (ppi variable","gender_concept_id","","","","","column","counts"
