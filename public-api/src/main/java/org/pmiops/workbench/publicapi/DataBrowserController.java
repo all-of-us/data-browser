@@ -178,7 +178,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                         genderIdentityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderIdentityAnalysis());
                     }
                     if(concept.getRaceEthnicityAnalysis() != null){
-                        raceEthnicityAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
+                        raceEthnicityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
                     }
 
 
