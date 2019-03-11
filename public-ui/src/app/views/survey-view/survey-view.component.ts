@@ -70,7 +70,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.surveyName = this.survey.name;
         // Add Did not answer to each question
         for (const q of this.surveyResult.items) {
-          console.log(q);
           q.actualQuestionNumber = 0;
           if (q.questions && q.questions.length > 0) {
             q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
