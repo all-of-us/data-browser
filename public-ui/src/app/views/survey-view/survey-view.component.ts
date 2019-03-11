@@ -103,7 +103,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             return 0;
           });
         }
-        
+
         this.filterResults();
         this.loading = false;
       },
