@@ -15,7 +15,7 @@ import {TooltipService} from '../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  graphToShow = GraphType.BiologicalSex;
+  graphToShow = GraphType.None;
   domainId: string;
   title ;
   subTitle;
