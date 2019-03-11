@@ -251,7 +251,7 @@ export class ChartComponent implements OnChanges {
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName,
-        this.selectedResult.stratum4,'stratum5');
+        this.selectedResult.stratum4, 'stratum5');
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
@@ -320,7 +320,7 @@ export class ChartComponent implements OnChanges {
     };
 
   }
-  
+
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
@@ -378,7 +378,8 @@ export class ChartComponent implements OnChanges {
 
   }
 
-  public makeGenderChartOptions(results: any, analysisName: string, seriesName: string, chartType: string) {
+  public makeGenderChartOptions(results: any, analysisName: string,
+                                seriesName: string, chartType: string) {
     let data = [];
     let cats = [];
 
@@ -449,7 +450,8 @@ export class ChartComponent implements OnChanges {
 
   }
 
-  public makeAgeChartOptions(results: any, analysisName: string, seriesName: string, ageDecileStratum: string) {
+  public makeAgeChartOptions(results: any, analysisName: string,
+                             seriesName: string, ageDecileStratum: string) {
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     results = results.sort((a, b) => {
