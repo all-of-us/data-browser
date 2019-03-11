@@ -128,27 +128,12 @@
               (click)="showAnswerGraphs(a)" [hidden]="!showAnswer[q.conceptId]">
               <div class="tbl-r">
                 <div id="answer-result" class="tbl-d secondary-display">
-                  <div *ngIf="!binnedSurveyQuestions.includes(a.stratum2); else binnedSurveyQuestionDisplay">
+                  <div>
                     <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value"></app-highlight-search>
                   </div>
                 </div>
 
                 <div class="tbl-r-group">
-                  <!-- <span class='body'>
-                  <ng-template class="text" #binnedSurveyQuestionDisplay>
-                    <label
-                      *ngIf="a.stratum4.toLowerCase().trim() === 'did not answer' || a.stratum4.toLowerCase().includes('skip'); else rangeLabel">
-                      <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value"></app-highlight-search>
-                    </label>
-                    <ng-template #rangeLabel>
-                      <label class="text">
-                        <app-highlight-search [text]="a.stratum4 + '-' + (convertToNum(a.stratum4)+10)"
-                          [searchTerm]="searchText.value"></app-highlight-search>
-                      </label>
-                    </ng-template>
-                  </ng-template>
-                </span> -->
-
                   <div class="info-text tbl-d secondary-display">
                     <label class="concept-code">{{a.stratum3}}</label>
                   </div>

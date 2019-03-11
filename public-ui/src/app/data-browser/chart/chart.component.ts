@@ -218,7 +218,7 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions();
     }
-    
+
     if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID ||
     this.analysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
       return this.makeRaceEthnicityChartOptions();
@@ -452,11 +452,11 @@ export class ChartComponent implements OnChanges {
     };
 
   }
-  
+
   public makeRaceEthnicityChartOptions() {
     let results = [];
     let seriesName = '';
-    
+
     if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID) {
       results = this.analysis.results;
       seriesName = this.analysis.analysisName;
@@ -465,11 +465,10 @@ export class ChartComponent implements OnChanges {
       // Series name for answers is the answer selected which is in stratum4
       seriesName = this.selectedResult.stratum4;
     }
-    
-    
+
     let data = [];
     let cats = [];
-    
+
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       data.push({
@@ -478,8 +477,7 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-    
-    
+
     data = data.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
