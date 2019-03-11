@@ -44,7 +44,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     setTimeout(() => {
       if (this.chartOptions) {
         this.chartOptions = this.hcChartOptions();
-        this.chartOptions.reflow();
       }
     }, 1);
    }
