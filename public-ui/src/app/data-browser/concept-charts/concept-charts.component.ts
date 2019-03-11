@@ -50,7 +50,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   loading() {
     return this.loadingStack.length > 0;
   }
-  
+
   ngOnInit() {
     // Get chart results for concept
     this.loadingStack.push(true);
