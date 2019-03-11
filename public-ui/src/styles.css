@@ -359,6 +359,10 @@ template {
 
 /* Master Styles */
 
+a:hover {
+  text-decoration: none;
+}
+
 @font-face {
   font-family: 'FFUnitStdMedium';
   src: url('/assets/fonts/38B71D_0_0.eot');
@@ -469,10 +473,12 @@ body {
   background-color: #E0E0E1;
   /* overflow-x: hidden; */
   font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
-  font-size: 1em;
+  font-size: 18px;
+  color: #262262;
   line-height: 1.5;
   margin: 0;
   text-rendering: optimizeLegibility;
+  min-width:721px;
 }
 
 img {
@@ -491,10 +497,14 @@ img {
   text-rendering: optimizeLegibility
 }
 
-.db-container, .breadcrumbs-container {
+ .breadcrumbs, .site-branding {
   margin: 0 calc(10%);
   padding: 0 0.7rem;
-  background: #f1f1f1;
+}
+
+.db-container {
+  max-width: 1038px;
+  margin: 0 auto;
 }
 
 .main-bg {

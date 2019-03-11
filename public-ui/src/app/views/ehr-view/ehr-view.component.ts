@@ -183,6 +183,17 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.showMoreSynonyms[conceptId] = !this.showMoreSynonyms[conceptId];
   }
 
+  public showToolTip(g) {
+    if (g === 'Biological Sex' || g === 'Gender Identity') {
+      return 'Gender chart';
+    }
+    if (g === 'Age at Occurrence') {
+      return this.tooltipText.ageChartHelpText;
+    }
+    if (g === 'Sources') {
+      return this.tooltipText.sourcesChartHelpText;
+    }
+  }
 
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
