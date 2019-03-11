@@ -830,16 +830,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
-            if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                maleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                femaleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                intersexBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                noneBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                otherBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+            try {
+                if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    maleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    femaleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    intersexBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    noneBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    otherBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }
+            } catch (NumberFormatException nfe) {
+
             }
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
@@ -980,20 +984,24 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
-            if(ar.getStratum2().equals("2") && binRanges2.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges2.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("3") && binRanges3.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges3.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("4") && binRanges4.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges4.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("5") && binRanges5.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges5.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("6") && binRanges6.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges6.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("7") && binRanges7.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges7.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("8") && binRanges8.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges8.remove(Float.parseFloat(ar.getStratum4()));
+            try {
+                if(ar.getStratum2().equals("2") && binRanges2.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges2.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(ar.getStratum2().equals("3") && binRanges3.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges3.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(ar.getStratum2().equals("4") && binRanges4.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges4.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(ar.getStratum2().equals("5") && binRanges5.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges5.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(ar.getStratum2().equals("6") && binRanges6.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges6.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(ar.getStratum2().equals("7") && binRanges7.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges7.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(ar.getStratum2().equals("8") && binRanges8.contains(Float.parseFloat(ar.getStratum4()))){
+                    binRanges8.remove(Float.parseFloat(ar.getStratum4()));
+                }
+            } catch (NumberFormatException nfe) {
+
             }
 
             if (analysisStratumName == null || analysisStratumName.equals("")) {
