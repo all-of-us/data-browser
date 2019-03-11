@@ -274,7 +274,6 @@ export class ChartComponent implements OnChanges {
       events: {
         click: seriesClick
       }
-      
     };
     return {
       chart: { type: 'column' },
@@ -497,7 +496,6 @@ export class ChartComponent implements OnChanges {
     let results = [];
     let seriesName = '';
     let ageDecileStratum = '';
-    
     // Question/answers have a different data structure than other concepts
     if (this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       results = this.analysis.results;
@@ -510,7 +508,6 @@ export class ChartComponent implements OnChanges {
       seriesName = this.selectedResult.stratum4;
       ageDecileStratum = 'stratum5';
     }
-    
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     results = results.sort((a, b) => {
@@ -535,7 +532,6 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-    
     const series = {
       name: seriesName,
       colorByPoint: true,
@@ -599,7 +595,6 @@ export class ChartComponent implements OnChanges {
     for (const d of data) {
       cats.push(d.name);
     }
-    
     // Todo we will use this later in drill downs and such
     const seriesClick = event => {
       const thisCtrl = event.point.options.thisCtrl;
@@ -607,7 +602,6 @@ export class ChartComponent implements OnChanges {
       // console.log('Histogram plot Clicked point :',  event.point);
       // thisCtrl.resultClicked.emit(event.point.result);
     };
-    
     // Unit for measurements is in stratum5
     const unit = this.analysis.unitName ? this.analysis.unitName : '';
     const series: any = {
@@ -616,7 +610,6 @@ export class ChartComponent implements OnChanges {
       data: data,
       colors: [this.dbc.COLUMN_COLOR],
     };
-    
     // Note that our data is binned already so we use a column chart to show histogram
     // however we need to style it to make it look like a histogram. Some measurements
     // like pregnancy and wheel chair we don't want a histogram.
@@ -628,7 +621,6 @@ export class ChartComponent implements OnChanges {
       series.pointWidth = null;
       series.shadow = false;
     }
-    
     return {
       chart: { type: 'column', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
