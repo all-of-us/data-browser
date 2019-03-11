@@ -217,7 +217,8 @@ export class ChartComponent implements OnChanges {
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        this.surveyAnalysis.surveyQuestionResults.filter(
+          r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'pie');
     }
     if (this.analysis &&
@@ -228,7 +229,8 @@ export class ChartComponent implements OnChanges {
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        this.surveyAnalysis.surveyQuestionResults.filter(
+          r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'bar');
     }
     /* Todo make charts for ethniticy and race
@@ -239,7 +241,8 @@ export class ChartComponent implements OnChanges {
       return this.makePieChartOptions();
     }*/
     if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
-      return this.makeAgeChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
+      return this.makeAgeChartOptions(
+        this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
       'stratum2');
     }
     if (this.surveyAnalysis &&
