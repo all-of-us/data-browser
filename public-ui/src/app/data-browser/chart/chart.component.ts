@@ -248,8 +248,10 @@ export class ChartComponent implements OnChanges {
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName, this.selectedResult.stratum4,'stratum5');
+        this.surveyAnalysis.surveyQuestionResults.filter(
+          r => r.stratum4 === this.selectedResult.stratum4),
+        this.surveyAnalysis.analysisName,
+        this.selectedResult.stratum4,'stratum5');
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
