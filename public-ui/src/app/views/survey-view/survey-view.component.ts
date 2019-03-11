@@ -29,25 +29,23 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
   surveyName: string;
   conceptCodeTooltip: any;
-  
   /* Have questions array for filtering and keep track of what answers the pick  */
   questions: any = [];
   searchText: FormControl = new FormControl();
   searchMethod = 'or';
-  
   /* Show answers toggle */
   showAnswer = {};
   @ViewChild('chartElement') chartEl: ElementRef;
-  
+
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
               private tooltipText: TooltipService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
   }
-  
+
   ngOnInit() {
-    
+
     this.loading = true;
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
@@ -60,7 +58,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (!this.searchText.value) {
       this.searchText.setValue('');
     }
-    
+
     this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
       next: x => {
         this.surveyResult = x;
@@ -95,7 +93,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           };
           q.countAnalysis.results.push(didNotAnswerResult);
         }
-        
+
         this.questions = this.surveyResult.items;
         // Sort count value desc
         for (const q of this.questions ) {
@@ -115,36 +113,35 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       },
       complete: () => { this.resultsComplete = true; }
     }));
-    
+
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges
         .debounceTime(400)
         .distinctUntilChanged()
         .subscribe((query) => { this.filterResults(); } ));
-    
+
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
       (query) => this.loading = true ));
   }
-  
+
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
     }
   }
-  
+
   public countPercentage(countValue: number) {
     if (!countValue || countValue <= 0) { return 0; }
     let percent: number = countValue / this.survey.participantCount ;
     percent = parseFloat(percent.toFixed(4));
     return percent * 100;
   }
-  
+
   public searchQuestion(q: QuestionConcept) {
     // Todo , match all words maybe instead of any. Or allow some operators such as 'OR' 'AND'
     const text = this.searchText.value;
-    
     let words = text.split(new RegExp(',| | and | or '));
     words = words.filter(w => w.length > 0
       && w.toLowerCase() !== 'and'
@@ -171,10 +168,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (results.length > 0) {
       return true;
     }
-    
     return false ;
   }
-  
+
   public filterResults() {
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
@@ -184,7 +180,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.loading = false;
   }
-  
+
   public setSearchMethod(method: string, resetSearch: boolean = false) {
     this.searchMethod = method;
     if (resetSearch) {
@@ -192,7 +188,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.filterResults();
   }
-  
+
   public toggleAnswer(qid) {
     if (! this.showAnswer[qid] ) {
       this.showAnswer[qid] = true;
@@ -200,15 +196,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.showAnswer[qid] = false;
     }
   }
-  
+
   public showAnswerGraphs(a: any) {
     a.expanded = !a.expanded;
   }
-  
+
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
   }
-  
+
   public selectGraph(g, q: any) {
     this.chartEl.nativeElement.scrollIntoView(
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
@@ -229,15 +225,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  
+
   public graphAnswerClicked(achillesResult) {
     console.log('Graph answer clicked ', achillesResult);
   }
-  
+
   public convertToNum(s) {
     return Number(s);
   }
-  
+
   public showToolTip(g: string) {
     if (g === 'Biological Sex' || g === 'Gender Identity') {
       return 'Gender chart';
@@ -247,5 +243,5 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return this.tooltipText.sourcesChartHelpText;
     }
   }
-  
+
 }
