@@ -25,13 +25,13 @@ export class ChartComponent implements OnChanges {
   @Input() domainType: DomainType;
   @Output() resultClicked = new EventEmitter<any>();
   chartOptions: any = null;
-  
+
   constructor(private dbc: DbConfigService) {
     highcharts.setOptions({
       lang: { thousandsSep: ',' },
     });
   }
-  
+
   // Render new chart on changes
   ngOnChanges() {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
@@ -40,28 +40,21 @@ export class ChartComponent implements OnChanges {
       this.chartOptions = this.hcChartOptions();
     }
   }
-  
-  public isSurveyGenderAnalysis() {
-    return this.analysis ?
-      (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
-        this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
-      : false;
-  }
-  
+
   public isGenderIdentityAnalysis() {
     return this.analysis ?
       (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
         this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
       : false;
   }
-  
+
   public hcChartOptions(): any {
     const options = this.makeChartOptions();
     // Override title if they passed one
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    
+
     return {
       chart: options.chart,
       lang: {
@@ -198,8 +191,7 @@ export class ChartComponent implements OnChanges {
       series: [options.series],
     };
   }
-  
-  
+
   public makeChartOptions() {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
@@ -246,7 +238,7 @@ export class ChartComponent implements OnChanges {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
-  
+
   public makeCountChartOptions() {
     let data = [];
     let cats = [];
@@ -302,7 +294,7 @@ export class ChartComponent implements OnChanges {
     };
     
   }
-  
+
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
@@ -318,7 +310,7 @@ export class ChartComponent implements OnChanges {
         return 0;
       }
     );
-    
+
     for (const a of this.concepts) {
       data.push({
         name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
@@ -331,7 +323,7 @@ export class ChartComponent implements OnChanges {
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
     }
-    
+
     // Override tooltip and colors and such
     const series = {
       name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
@@ -359,7 +351,7 @@ export class ChartComponent implements OnChanges {
     };
     
   }
-  
+
   public makeGenderChartOptions() {
     let results = [];
     let seriesName = '';
@@ -402,8 +394,7 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-    
-    
+
     data = data.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
@@ -452,7 +443,7 @@ export class ChartComponent implements OnChanges {
     };
     
   }
-  
+
   public makeRaceEthnicityChartOptions() {
     let results = [];
     let seriesName = '';
@@ -520,7 +511,7 @@ export class ChartComponent implements OnChanges {
       }
     };
   }
-  
+
   public makeAgeChartOptions() {
     let results = [];
     let seriesName = '';
@@ -587,7 +578,7 @@ export class ChartComponent implements OnChanges {
       }
     };
   }
-  
+
   // Histogram data analyses come already binned
   // The value is in stratum 4, the unit in stratum5, the countValue in the bin is countValue
   // and we also have
@@ -669,8 +660,8 @@ export class ChartComponent implements OnChanges {
         pointFormat: '<b> {point.y} participants </b> '
       },
     };
-    
   }
+
   public getChartTitle(domainType: string) {
     if (domainType === DomainType.EHR) {
       return 'Age at First Occurrence in EHR.';
@@ -680,5 +671,4 @@ export class ChartComponent implements OnChanges {
       return 'Age When Physical Measurement Was Taken';
     }
   }
-  
 }
