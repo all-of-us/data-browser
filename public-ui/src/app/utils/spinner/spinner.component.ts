@@ -10,4 +10,6 @@ export class SpinnerComponent implements OnChanges {
   constructor() { }
   @Input() loading: boolean;
 
+  ngOnChanges() {
+  }
 }
