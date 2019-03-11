@@ -65,4 +65,17 @@ export class TooltipService {
   };
   constructor() { }
 
+  public showToolTip(g: string) {
+    if (g === 'biological sex' || g === 'gender identity') {
+      return 'Gender chart';
+    }
+    if (g === 'age') {
+      return this.ageChartHelpText;
+    }
+    if (g === 'sources') {
+      return this.sourcesChartHelpText;
+    }
+  }
+
+
 }

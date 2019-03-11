@@ -235,15 +235,4 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public convertToNum(s) {
     return Number(s);
   }
-
-  public showToolTip(g: string) {
-    if (g === 'biological sex' || g === 'gender identity') {
-      return 'Gender chart';
-    } else if (g === 'age') {
-      return this.tooltipText.ageChartHelpText;
-    } else if (g === 'sources') {
-      return this.tooltipText.sourcesChartHelpText;
-    }
-  }
-
 }
