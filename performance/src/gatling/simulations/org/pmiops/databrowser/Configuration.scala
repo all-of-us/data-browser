@@ -9,6 +9,7 @@ object Configuration {
     env match {
       case "prod" => "https://databrowser.researchallofus.org"
       case "stable" => "https://www.databrowser.stable.fake-research-aou.org"
+      case "staging" => "https://www.databrowser.staging.fake-research-aou.org"
       case _ => "https://aou-db-test.appspot.com"
     }
   }
