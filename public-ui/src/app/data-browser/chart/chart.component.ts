@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 import * as highcharts from 'highcharts';
 
 import { Analysis } from '../../../publicGenerated/model/analysis';
-import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
 import { Concept } from '../../../publicGenerated/model/concept';
+import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
 import { DbConfigService } from '../../utils/db-config.service';
 import { DomainType } from '../../utils/enum-defs';
 
@@ -38,7 +38,8 @@ export class ChartComponent implements OnChanges {
   ngOnChanges() {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
       (this.concepts && this.concepts.length) ||
-      (this.surveyAnalysis && this.surveyAnalysis.surveyQuestionResults && this.surveyAnalysis.surveyQuestionResults.length)) {
+      (this.surveyAnalysis && this.surveyAnalysis.surveyQuestionResults &&
+        this.surveyAnalysis.surveyQuestionResults.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
     }
@@ -203,29 +204,23 @@ export class ChartComponent implements OnChanges {
     if (this.analysis && this.analysis.analysisId === this.dbc.COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions(this.analysis.results, this.analysis.analysisName);
     }
-    
     if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults, this.surveyAnalysis.analysisName);
     }
-
     if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName, 'pie');
     }
-    
     if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'pie');
     }
-
     if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName, 'bar');
     }
-    
     if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'bar');
     }
-
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
     if (
@@ -233,17 +228,14 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.RACE_ANALYSIS_ID) {
       return this.makePieChartOptions();
     }*/
-
     if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
       'stratum2');
     }
-    
     if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4,'stratum5');
     }
-    
     if (this.analysis && this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       return this.makeMeasurementChartOptions();
     }
