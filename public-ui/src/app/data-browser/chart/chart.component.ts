@@ -583,7 +583,6 @@ export class ChartComponent implements OnChanges {
         aVal = Number(aVal);
         bVal = Number(b.name);
       }
-      
       if (aVal > bVal) {
         return 1;
       }
