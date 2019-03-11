@@ -77,7 +77,7 @@
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                   <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                    <div class="tooltip-label">{{domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
+                    <div class="tooltip-label">{{tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>
@@ -117,8 +117,8 @@
                         Concept Code
                         <clr-tooltip>
                           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                            <div class="tooltip-label">{{conceptCodeHelpText}}</div>
+                          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                            <div class="tooltip-label">{{tooltipText.conceptCode}}</div>
                           </clr-tooltip-content>
                         </clr-tooltip>
                       </div>
@@ -219,7 +219,7 @@
                         <clr-tooltip>
                           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                           <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                            <div class="tooltip-label">{{showToolTip(g)}}</div>
+                            <div class="tooltip-label">{{tooltopText.showToolTip(g.toLowerCase())}}</div>
                           </clr-tooltip-content>
                         </clr-tooltip>
                       </div>
