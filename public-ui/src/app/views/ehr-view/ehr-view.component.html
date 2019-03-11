@@ -222,7 +222,7 @@
                       </a>
                     </ng-template>
                   </div>
-                  <div class="row-expansion" *ngIf="r.expanded" #chartElement>
+
                     <div class="row-expansion" *ngIf="r.expanded" #chartElement>
                       <div class="graph-menu">
                         <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age', 'Sources']"
@@ -239,7 +239,7 @@
                       <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
                       </app-concept-charts>
                     </div>
-                  </div>
+
                 </div>
                 <div class="results-grid">
                   <div *ngIf="!loading && items.length === 0">
