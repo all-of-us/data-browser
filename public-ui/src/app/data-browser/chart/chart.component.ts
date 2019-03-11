@@ -228,7 +228,6 @@ export class ChartComponent implements OnChanges {
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
   }
-  
   seriesClick(event) {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
@@ -260,7 +259,6 @@ export class ChartComponent implements OnChanges {
       }
       return 0;
     });
-    
     const seriesClick = event => {
       const thisCtrl = event.point.options.thisCtrl;
       // Todo handle click and log events in analytics
@@ -287,13 +285,11 @@ export class ChartComponent implements OnChanges {
       xAxisTitle: null,
       tooltip: { pointFormat: '<b>{point.y} </b>' },
     };
-    
   }
 
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
-    
     // Sort by count value
     this.concepts = this.concepts.sort((a, b) => {
         if (a.countValue < b.countValue) {
@@ -305,7 +301,6 @@ export class ChartComponent implements OnChanges {
         return 0;
       }
     );
-
     for (const a of this.concepts) {
       data.push({
         name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
@@ -318,7 +313,6 @@ export class ChartComponent implements OnChanges {
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
     }
-
     // Override tooltip and colors and such
     const series = {
       name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
@@ -344,7 +338,6 @@ export class ChartComponent implements OnChanges {
       pointWidth: 20,
       xAxisTitle: null,
     };
-    
   }
 
   public makeGenderChartOptions() {
@@ -366,7 +359,6 @@ export class ChartComponent implements OnChanges {
     }
     let data = [];
     let cats = [];
-    
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -389,7 +381,6 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-
     data = data.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
@@ -436,13 +427,11 @@ export class ChartComponent implements OnChanges {
         <b> {point.y}</b> {point.name} </span></span>`
       }
     };
-    
   }
 
   public makeRaceEthnicityChartOptions() {
     let results = [];
     let seriesName = '';
-    
     if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID) {
       results = this.analysis.results;
       seriesName = this.analysis.analysisName;
@@ -451,10 +440,8 @@ export class ChartComponent implements OnChanges {
       // Series name for answers is the answer selected which is in stratum4
       seriesName = this.selectedResult.stratum4;
     }
-    
     let data = [];
     let cats = [];
-    
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       data.push({
@@ -463,7 +450,6 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-    
     data = data.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
