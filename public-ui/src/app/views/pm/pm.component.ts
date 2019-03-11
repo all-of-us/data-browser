@@ -50,6 +50,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
       this.selectedGroup = this.conceptGroups[0];
+      // wait 1ms before triggering the graphs.
       setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
       this.loadingStack.pop();
     });
@@ -90,6 +91,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
-    setTimeout(() =>  this.selectedConcept = concept, 500);
+    this.selectedConcept = concept;
   }
 }
