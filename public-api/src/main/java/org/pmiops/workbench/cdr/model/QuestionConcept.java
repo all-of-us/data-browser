@@ -19,18 +19,21 @@ public class QuestionConcept {
     private AchillesAnalysis genderAnalysis;
     private AchillesAnalysis ageAnalysis;
     private AchillesAnalysis genderIdentityAnalysis;
+    private AchillesAnalysis raceEthnicityAnalysis;
     private List<SurveyQuestionMap> questions = new ArrayList<>();
 
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
     public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
     public static final long SURVEY_GENDER_IDENTITY_ANALYSIS_ID = 3113;
+    public static final long SURVEY_RACE_ETHNICITY_ANALYSIS_ID = 3114;
 
     public static Map<String, String> ageStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderIdentityStratumNameMap = new HashMap<>();
     public static Map<String, String> raceStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> ethnicityStratumNameMap = new HashMap<String, String>();
+    public static Map<String, String> raceEthnicityStratumNameMap = new HashMap<String, String>();
 
     public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8"}));
 
@@ -125,6 +128,19 @@ public class QuestionConcept {
         raceStratumNameMap.put("38003616", "Arab");
     }
 
+    public static void setRaceEthnicityStratunNameMap() {
+        raceEthnicityStratumNameMap.put("903070", "Other");
+        raceEthnicityStratumNameMap.put("903079", "Prefer Not To Answer");
+        raceEthnicityStratumNameMap.put("1586141", "American Indian or Alaska Native");
+        raceEthnicityStratumNameMap.put("1586142", "Asian");
+        raceEthnicityStratumNameMap.put("1586143", "Black, African American, or African");
+        raceEthnicityStratumNameMap.put("1586144", "Middle Eastern or North African");
+        raceEthnicityStratumNameMap.put("1586145", "Native Hawaiian or other Pacific Islander");
+        raceEthnicityStratumNameMap.put("1586146", "White");
+        raceEthnicityStratumNameMap.put("1586147", "Hispanic, Latino, or Spanish");
+        raceEthnicityStratumNameMap.put("1586148", "None of these fully describe me");
+    }
+
     public static void setEthnicityStratumNameMap() {
 
         ethnicityStratumNameMap.put("38003564", "Not Hispanic or Latino");
@@ -138,6 +154,7 @@ public class QuestionConcept {
         setGenderIdentityStratumNameMap();
         setRaceStratumNameMap();
         setEthnicityStratumNameMap();
+        setRaceEthnicityStratunNameMap();
     }
 
     /* Take analysis list with results and put them on the list of questions.
@@ -182,6 +199,9 @@ public class QuestionConcept {
                     }
                     if (analysis.getAnalysisId() == SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
                         r.setAnalysisStratumName(genderIdentityStratumNameMap.get(r.getStratum5()));
+                    }
+                    if (analysis.getAnalysisId() == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+                        r.setAnalysisStratumName(raceEthnicityStratumNameMap.get(r.getStratum5()));
                     }
                 }
             }
@@ -332,6 +352,20 @@ public class QuestionConcept {
     }
 
     @Transient
+    public AchillesAnalysis getRaceEthnicityAnalysis() {
+        return this.raceEthnicityAnalysis;
+    }
+
+    public void setRaceEthnicityAnalysis(AchillesAnalysis analysis) {
+        this.raceEthnicityAnalysis = analysis;
+    }
+
+    public QuestionConcept raceEthnicityAnalysis(AchillesAnalysis analysis) {
+        this.raceEthnicityAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
     public AchillesAnalysis getGenderIdentityAnalysis() {
         return this.genderIdentityAnalysis;
     }
@@ -355,6 +389,8 @@ public class QuestionConcept {
             this.ageAnalysis = analysis;
         } else if (analysis.getAnalysisId() == SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
             this.genderIdentityAnalysis = analysis;
+        } else if (analysis.getAnalysisId() == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+            this.raceEthnicityAnalysis = analysis;
         }
     }
 
@@ -367,6 +403,8 @@ public class QuestionConcept {
             return this.ageAnalysis;
         } else if (analysisId == SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
             return this.genderIdentityAnalysis;
+        } else if (analysisId == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+            return this.raceEthnicityAnalysis;
         }
         return null;
     }

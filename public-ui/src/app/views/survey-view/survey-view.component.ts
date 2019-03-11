@@ -15,7 +15,7 @@ import {TooltipService} from '../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  graphToShow = GraphType.BiologicalSex;
+  graphToShow = GraphType.None;
   domainId: string;
   title ;
   subTitle;
@@ -29,20 +29,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
   surveyName: string;
   conceptCodeTooltip: any;
-  binnedSurveyQuestions: string[] = ['1585864', '1585870', '1585873', '1585795', '1585802',
-    '1585820', '1585889', '1585890'];
-
   /* Have questions array for filtering and keep track of what answers the pick  */
   questions: any = [];
   searchText: FormControl = new FormControl();
   searchMethod = 'or';
-
   /* Show answers toggle */
   showAnswer = {};
   @ViewChild('chartElement') chartEl: ElementRef;
 
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
-     private tooltipText: TooltipService) {
+              private tooltipText: TooltipService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
@@ -146,7 +142,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public searchQuestion(q: QuestionConcept) {
     // Todo , match all words maybe instead of any. Or allow some operators such as 'OR' 'AND'
     const text = this.searchText.value;
-
     let words = text.split(new RegExp(',| | and | or '));
     words = words.filter(w => w.length > 0
       && w.toLowerCase() !== 'and'
@@ -173,7 +168,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (results.length > 0) {
       return true;
     }
-
     return false ;
   }
 
@@ -222,6 +216,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         break;
       case GraphType.Age:
         q.selectedAnalysis = q.ageAnalysis;
+        break;
+      case GraphType.RaceEthnicity:
+        q.selectedAnalysis = q.raceEthnicityAnalysis;
         break;
       default:
         q.selectedAnalysis = q.genderAnalysis;

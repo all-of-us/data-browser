@@ -377,6 +377,9 @@ definitions:
       genderIdentityAnalysis:
         description: gender identity analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
+      raceEthnicityAnalysis:
+        description: race ethnicity analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   QuestionConceptListResponse:
     type: object
@@ -714,6 +717,10 @@ definitions:
         $ref: "#/definitions/Analysis"
       genderIdentityAnalysis:
         description: gender identity analysis
+        type: object
+        $ref: "#/definitions/Analysis"
+      raceEthnicityAnalysis:
+        description: race ethnicity analysis
         type: object
         $ref: "#/definitions/Analysis"
       ageAnalysis:
