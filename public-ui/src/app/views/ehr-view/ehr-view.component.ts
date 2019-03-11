@@ -133,7 +133,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     // Set the localStorage to empty so making a new search here does not follow to other pages
     localStorage.setItem('searchText', '');
     this.loading = false;
-    // Wait till last to load chard so it fits its container
+    // Wait till last to load chart so it fits its container
     setTimeout(() => this.toggleTopConcepts(), 500);
   }
 
