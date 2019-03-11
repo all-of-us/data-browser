@@ -552,12 +552,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             QuestionConcept.mapAnalysesToQuestions(questions, analyses);
         }
 
-
-        List<QuestionConcept> mainQuestions = questions.stream().
-                filter(q -> q.getQuestions().get(0).getSub() == 0).collect(Collectors.toList());
         List<QuestionConcept> subQuestions = questions.stream().
                 filter(q -> q.getQuestions().get(0).getSub() == 1).collect(Collectors.toList());
-
 
         List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
 
@@ -577,7 +573,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else if (conceptPath.size() == 5) {
                     int questionConceptId1 = conceptPath.get(0);
                     int resultConceptId1 = conceptPath.get(1);
-                    int questionConceptId2 = conceptPath.get(2);
                     int resultConceptId2 = conceptPath.get(3);
 
                     org.pmiops.workbench.model.QuestionConcept mainQuestion1 = convertedQuestions.stream().filter(mq -> mq.getConceptId() == questionConceptId1).collect(Collectors.toList()).get(0);
