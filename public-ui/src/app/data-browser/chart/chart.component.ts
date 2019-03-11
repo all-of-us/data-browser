@@ -73,7 +73,7 @@ export class ChartComponent implements OnChanges {
       credits: {
         enabled: false
       },
-      title: options.title,
+      title: '',
       subtitle: {},
       tooltip: {
         followPointer: true,
