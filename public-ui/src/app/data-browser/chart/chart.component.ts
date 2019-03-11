@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges , Output } from '@angular/core';
 import * as highcharts from 'highcharts';
 
 import { Analysis } from '../../../publicGenerated/model/analysis';
@@ -11,7 +11,7 @@ import { DomainType } from '../../utils/enum-defs';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css']
 })
-export class ChartComponent implements OnChanges {
+export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() analysis: Analysis;
   @Input() analysis2: Analysis;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
@@ -25,7 +25,6 @@ export class ChartComponent implements OnChanges {
   @Input() domainType: DomainType;
   @Output() resultClicked = new EventEmitter<any>();
   chartOptions: any = null;
-
   constructor(private dbc: DbConfigService) {
     highcharts.setOptions({
       lang: { thousandsSep: ',' },
@@ -38,8 +37,17 @@ export class ChartComponent implements OnChanges {
       (this.concepts && this.concepts.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
-    }
-  }
+        }
+      }
+  // renderChart after 1ms to fill container
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.chartOptions) {
+        this.chartOptions = this.hcChartOptions();
+        this.chartOptions.reflow();
+      }
+    }, 1);
+   }
 
   public isSurveyGenderAnalysis() {
     return this.analysis ?
@@ -61,7 +69,6 @@ export class ChartComponent implements OnChanges {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-
     return {
       chart: options.chart,
       lang: {
@@ -90,13 +97,13 @@ export class ChartComponent implements OnChanges {
           fontSize: '18px',
           color: '#262262'
         },
-        formatter: function(tooltip) {
-          if (this.point.y <= 20) {
-            return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
-          }
-          // If not <= 20, use the default formatter
-          return tooltip.defaultFormatter.call(this, tooltip);
-        }
+        // formatter: function(tooltip) {
+        //   if (this.point.y <= 20) {
+        //     return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
+        //   }
+        //   // If not <= 20, use the default formatter
+        //   return tooltip.defaultFormatter.call(this, tooltip);
+        // }
       },
       plotOptions: {
         series: {
