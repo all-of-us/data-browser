@@ -235,11 +235,12 @@ export class ChartComponent implements OnChanges {
     if (this.analysis && this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID) {
       return this.makeRaceEthnicityChartOptions(this.analysis.results,
         this.analysis.analysisName, this.analysis.analysisName);
-    } 
+    }
     if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
       return this.makeRaceEthnicityChartOptions(
-      this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+      this.surveyAnalysis.surveyQuestionResults.filter(
+        r => r.stratum4 === this.selectedResult.stratum4),
       this.selectedResult.stratum4,
       this.surveyAnalysis.analysisName);
     }
