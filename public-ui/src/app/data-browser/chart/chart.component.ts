@@ -204,21 +204,31 @@ export class ChartComponent implements OnChanges {
     if (this.analysis && this.analysis.analysisId === this.dbc.COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions(this.analysis.results, this.analysis.analysisName);
     }
-    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
-      return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults, this.surveyAnalysis.analysisName);
+    if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
+      return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults,
+        this.surveyAnalysis.analysisName);
     }
-    if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName, 'pie');
+    if (this.analysis &&
+      this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(this.analysis.results,
+        this.analysis.analysisName, this.analysis.analysisName, 'pie');
     }
-    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+    if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(
+        this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'pie');
     }
-    if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName, 'bar');
+    if (this.analysis &&
+      this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(this.analysis.results,
+        this.analysis.analysisName, this.analysis.analysisName, 'bar');
     }
-    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+    if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+      return this.makeGenderChartOptions(
+        this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'bar');
     }
     /* Todo make charts for ethniticy and race
@@ -232,11 +242,14 @@ export class ChartComponent implements OnChanges {
       return this.makeAgeChartOptions(this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
       'stratum2');
     }
-    if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
-      return this.makeAgeChartOptions(this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
+    if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+      return this.makeAgeChartOptions(
+        this.surveyAnalysis.surveyQuestionResults.filter(r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4,'stratum5');
     }
-    if (this.analysis && this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
+    if (this.analysis &&
+      this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       return this.makeMeasurementChartOptions();
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
