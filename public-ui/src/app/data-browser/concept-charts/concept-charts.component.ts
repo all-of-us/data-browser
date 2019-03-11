@@ -21,7 +21,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   @Input() showGraph = GraphType.None;
   @Input() showRace = false;
   @Input() showEthnicity = false;
-
+  
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
   results: Array<any>;
@@ -44,28 +44,28 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   toDisplayMeasurementGenderAnalysis: Analysis;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
-
+  
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
-
+  
   loading() {
     return this.loadingStack.length > 0;
   }
-
+  
   ngOnInit() {
     // Get chart results for concept
     this.loadingStack.push(true);
     const conceptIdStr = '' + this.concept.conceptId.toString();
     this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
       this.concept.domainId).subscribe(
-        results => {
-          this.results = results.items;
-          this.analyses = results.items[0];
-          this.organizeGenders(this.analyses.genderAnalysis);
-          this.fetchMeasurementGenderResults();
-          // Set this var to make template simpler.
-          // We can just loop through the results and show bins
-          this.loadingStack.pop();
-        }));
+      results => {
+        this.results = results.items;
+        this.analyses = results.items[0];
+        this.organizeGenders(this.analyses.genderAnalysis);
+        this.fetchMeasurementGenderResults();
+        // Set this var to make template simpler.
+        // We can just loop through the results and show bins
+        this.loadingStack.pop();
+      }));
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
       results => {
@@ -76,7 +76,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         this.loadingStack.pop();
       }));
   }
-
+  
   public fetchMeasurementGenderResults() {
     if (!this.analyses) {
       return;
@@ -102,13 +102,13 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       this.fetchMeasurementGenderResults();
     }
   }
-
+  
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
     }
   }
-
+  
   // Organize genders and set the chart title for the gender charts for simple display
   organizeGenders(analysis: Analysis) {
     // No need to do anything if only one gender
@@ -147,7 +147,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         this.otherGenderChartTitle = chartTitle;
       }
     }
-
+    
     analysis.results = [];
     if (this.maleGenderResult) {
       analysis.results.push(this.maleGenderResult);
@@ -165,17 +165,17 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       analysis.results.push(this.otherGenderResult);
     }
   }
-
+  
   showMeasurementGenderHistogram(unit: string) {
     this.selectedUnit = unit;
     this.toDisplayMeasurementGenderAnalysis = this.analyses.measurementValueGenderAnalysis.
-      find(aa => aa.unitName === unit);
+    find(aa => aa.unitName === unit);
     if (this.analyses.measurementGenderCountAnalysis) {
       this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.
       find(aa => aa.unitName === unit);
     }
   }
-
+  
   public fetchChartTitle(gender: any) {
     if (this.toDisplayMeasurementGenderCountAnalysis) {
       const genderResults = this.toDisplayMeasurementGenderCountAnalysis.results

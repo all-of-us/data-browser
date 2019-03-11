@@ -80,6 +80,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long COUNT_ANALYSIS_ID = 3000;
     public static final long GENDER_ANALYSIS_ID = 3101;
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
+    public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
 
     public static final long RACE_ANALYSIS_ID = 3103;
@@ -160,6 +161,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     org.pmiops.workbench.model.Analysis genderAnalysis=null;
                     org.pmiops.workbench.model.Analysis ageAnalysis=null;
                     org.pmiops.workbench.model.Analysis genderIdentityAnalysis=null;
+                    org.pmiops.workbench.model.Analysis raceEthnicityAnalysis=null;
                     if(concept.getCountAnalysis() != null){
                         countAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getCountAnalysis());
                     }
@@ -171,6 +173,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                     if(concept.getGenderIdentityAnalysis() != null){
                         genderIdentityAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getGenderIdentityAnalysis());
+                    }
+                    if(concept.getRaceEthnicityAnalysis() != null){
+                        raceEthnicityAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
                     }
 
 
@@ -185,7 +190,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .countAnalysis(countAnalysis)
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis)
-                            .genderIdentityAnalysis(genderIdentityAnalysis);
+                            .genderIdentityAnalysis(genderIdentityAnalysis)
+                            .raceEthnicityAnalysis(raceEthnicityAnalysis);
 
                 }
             };
@@ -240,6 +246,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .conceptId(ca.getConceptId())
                             .genderAnalysis(ca.getGenderAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
+                            .raceEthnicityAnalysis(ca.getRaceEthnicityAnalysis())
                             .ageAnalysis(ca.getAgeAnalysis())
                             .raceAnalysis(ca.getRaceAnalysis())
                             .ethnicityAnalysis(ca.getEthnicityAnalysis())
@@ -507,6 +514,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Long> analysisIds  = new ArrayList<>();
         analysisIds.add(GENDER_ANALYSIS_ID);
         analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
+        analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
         analysisIds.add(AGE_ANALYSIS_ID);
         analysisIds.add(RACE_ANALYSIS_ID);
         analysisIds.add(COUNT_ANALYSIS_ID);
@@ -569,6 +577,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
                     conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                }else if(analysisId == RACE_ETHNICITY_ANALYSIS_ID){
+                    addRaceEthnicityStratum(aa);
+                    conceptAnalysis.setRaceEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_ANALYSIS_ID){
                     addAgeStratum(aa, conceptId);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -748,6 +759,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             String analysisStratumName=ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 ar.setAnalysisStratumName(QuestionConcept.raceStratumNameMap.get(ar.getStratum2()));
+            }
+        }
+    }
+
+    public void addRaceEthnicityStratum(AchillesAnalysis aa){
+        for(AchillesResult ar: aa.getResults()){
+            String analysisStratumName=ar.getAnalysisStratumName();
+            if (analysisStratumName == null || analysisStratumName.equals("")) {
+                ar.setAnalysisStratumName(QuestionConcept.raceEthnicityStratumNameMap.get(ar.getStratum2()));
             }
         }
     }
