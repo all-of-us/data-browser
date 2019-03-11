@@ -1,7 +1,6 @@
 .pm-layout {
-    display:grid;
-    grid-template-columns: 20% 1fr;
-    grid-column-gap: 18px;
+    display:flex;
+    justify-content: space-between;
 }
 .chart-layout {
     display:flex;
@@ -11,7 +10,7 @@
 }
 .chart-item {
     max-width: calc((50%) - 18px);
-    min-width: 20rem ;
+    min-width: 10rem ;
     flex-grow: 1;
 }
 .chart-item:last-of-type {
