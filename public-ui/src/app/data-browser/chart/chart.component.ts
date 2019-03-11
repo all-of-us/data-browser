@@ -200,22 +200,18 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions();
     }
-    
     if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions();
     }
-    
     if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions();
     }
-    
     if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
       return this.makeRaceEthnicityChartOptions();
     }
-    
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
     if (
@@ -223,7 +219,6 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.RACE_ANALYSIS_ID) {
       return this.makePieChartOptions();
     }*/
-    
     if (this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions();
