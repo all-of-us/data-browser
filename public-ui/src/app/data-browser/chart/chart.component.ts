@@ -561,7 +561,7 @@ export class ChartComponent implements OnChanges {
       name: this.analysis.analysisName,
       colorByPoint: true,
       data: data,
-      colors: [this.dbc.COLUMN_COLOR],
+      colors: [this.dbc.GENDER_PM_COLOR],
     };
 
     // Note that our data is binned already so we use a column chart to show histogram
@@ -572,12 +572,12 @@ export class ChartComponent implements OnChanges {
       series.pointPadding = 0;
       series.borderWidth = 0;
       series.groupPadding = 0;
-      series.pointWidth = null;
+      series.pointWidth = 18 ;
       series.shadow = false;
     }
 
     return {
-      chart: { type: 'column', backgroundColor: this.backgroundColor },
+      chart: { type: 'bar', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
       series: series,
       categories: cats,

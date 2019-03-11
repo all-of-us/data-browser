@@ -75,8 +75,10 @@ export class DbConfigService {
     '11': '#000000',
     '12': '#DDDDDD'
   };
-  COLUMN_COLOR = '#216fb4';
+  COLUMN_COLOR = '#2f2e7e';
   AXIS_LINE_COLOR = '#979797';
+
+  GENDER_PM_COLOR = '#bee1ff';
 
   /* Chart Styles */
   CHART_TITLE_STYLE = {
