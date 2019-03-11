@@ -7,7 +7,6 @@
           class="btn btn-link"> {{item.groupName}} </button>
       </div>
     </aside>
-
     <div *ngIf="loading()" class="loading white-card-box ">
       <div class="row flex-items-xs-middle">
         <div class="col-xs-12">
@@ -25,7 +24,7 @@
             (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
         </div>
         <div *ngIf="selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
-          <div class="chart-layout-top">
+          <div class="chart-layout">
             <!-- Loop through the genders we have results for showing the graph -->
             <div class="chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
               <app-chart *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
@@ -35,17 +34,14 @@
                 [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]">
               </app-chart>
             </div>
-          </div>
-
-          <!-- show Age totals -->
-          <div class="chart-item" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
-            <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="20"
+            <!-- show Age totals -->
+            <div class="chart-item" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
+              <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="45"
               [backgroundColor]="backgroundColor">
             </app-chart>
           </div>
-
+        </div>
           <!-- Todo wait on design for further dev -->
-
         </div>
       </div>
     </div>

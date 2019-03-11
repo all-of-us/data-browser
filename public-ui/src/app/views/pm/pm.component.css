@@ -3,9 +3,19 @@
     grid-template-columns: 20% 1fr;
     grid-column-gap: 18px;
 }
-
-.chart-layout-top {
-    width:100%;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
+.chart-layout {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.chart-item {
+    max-width: calc((50%) - 18px);
+    min-width: 20rem ;
+    flex-grow: 1;
+}
+.chart-item:last-of-type {
+    width: 100%;
+    max-width: calc((100%) - 18px);
+    min-width: 20rem ;
 }

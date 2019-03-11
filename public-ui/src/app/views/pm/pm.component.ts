@@ -19,7 +19,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   loadingStack: any = [];
 
   // Todo put constants in a class for use in other views
-  chartType = 'histogram';
+  chartType = 'bar';
 
   // Total analyses
   genderAnalysis: Analysis = null;
@@ -50,7 +50,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
       this.selectedGroup = this.conceptGroups[0];
-      this.selectedConcept = this.selectedGroup.concepts[0];
+      setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
       this.loadingStack.pop();
     });
 
@@ -90,6 +90,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
-    this.selectedConcept = concept;
+    setTimeout(() =>  this.selectedConcept = concept, 500);
   }
 }
