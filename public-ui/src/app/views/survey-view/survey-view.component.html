@@ -8,6 +8,8 @@
           <p class="info-text"><em>Click on each response to view branding logic and age and gender</em></p>
         </span>
       </div>
+      <div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
+      </div>
     </div>
     <div class="search-bar-container">
       <div id="db-search-bar">
@@ -118,31 +120,15 @@
                   [hidden]="!showAnswer[q.conceptId]">
                   <div class="tbl-r">
                     <div class="tbl-d first display-body info-text">
-                      <div *ngIf="!binnedSurveyQuestions.includes(a.stratum2); else binnedSurveyQuestionDisplay">
+                      <div>
                         <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                         </app-highlight-search>
                       </div>
                     </div>
                     <div class="tbl-r-group">
-                      <!-- <span class='body'>
-                  <ng-template class="text" #binnedSurveyQuestionDisplay>
-                    <label
-                      *ngIf="a.stratum4.toLowerCase().trim() === 'did not answer' || a.stratum4.toLowerCase().includes('skip'); else rangeLabel">
-                      <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value"></app-highlight-search>
-                    </label>
-                    <ng-template #rangeLabel>
-                      <label class="text">
-                        <app-highlight-search [text]="a.stratum4 + '-' + (convertToNum(a.stratum4)+10)"
-                          [searchTerm]="searchText.value"></app-highlight-search>
-                      </label>
-                    </ng-template>
-                  </ng-template>
-                </span> -->
-
                       <div class="info-text tbl-d display-body info-text">
                         <label class="concept-code">{{a.stratum3}}</label>
                       </div>
-
 
                       <div class="info-text tbl-d display-body info-text">
                         <label class="participant-count">{{a.countValue | number}} </label>
@@ -164,7 +150,7 @@
                   <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer'"
                     #chartElement>
                     <div class="graph-menu">
-                      <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Age']"
+                      <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
                         [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,q)"
                         class="chart-choice">
                         <span>{{g}}</span>
@@ -200,6 +186,4 @@
     </div>
   </div>
   -->
-<div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
-</div>
 </div>
