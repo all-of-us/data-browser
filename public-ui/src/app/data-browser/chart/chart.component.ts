@@ -519,7 +519,6 @@ export class ChartComponent implements OnChanges {
         <b> {point.y}</b> {point.name}s </span></span>`
       }
     };
-    
   }
 
   public makeAgeChartOptions() {
