@@ -5,10 +5,15 @@
 
 ## Running Tests
 
-From the `performance` directory, run the gatling tests (optionally accepts `-Denv=<ENV>` 
-which defaults to the test environment):
+From the `performance` directory, run the gatling tests which defaults to running against the 
+stable environment:
 ```shell
 gradle gatlingRun
+```
+
+Tests can also be run against a specific environment by specifying `-Denv=<ENV>`: 
+```shell
+gradle gatlingRun -Denv=test
 ```
 
 Tests can also be run from inside IntelliJ. Execute the `gatlingRun` 
