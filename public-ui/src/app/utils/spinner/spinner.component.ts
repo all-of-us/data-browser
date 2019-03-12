@@ -1,15 +1,13 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.css']
 })
-export class SpinnerComponent implements OnChanges {
+export class SpinnerComponent {
 
   constructor() { }
   @Input() loading: boolean;
 
-  ngOnChanges() {
-  }
 }
