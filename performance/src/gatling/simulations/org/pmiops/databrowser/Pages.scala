@@ -29,7 +29,7 @@ object Pages {
       http("domain-totals").get("/v1/databrowser/domain-totals?searchWord=" + searchTerm)
     }
     def searchConcepts(postBody: String): HttpRequestBuilder = {
-      http("search-concepts").post("v1/databrowser/searchConcepts").body(StringBody(postBody))
+      http("search-concepts").post("/v1/databrowser/searchConcepts").body(StringBody(postBody))
     }
   }
 
