@@ -75,7 +75,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       credits: {
         enabled: false
       },
-      title: options.title,
+      title: '',
       subtitle: {},
       tooltip: {
         followPointer: true,
