@@ -21,49 +21,45 @@
       <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
     </div>
   </div>
-  <!-- todo: better loading icon -->
-  <div class="row" *ngIf="loading">
-    <div class="col-xs-12 flex-xs-middle" style="text-align: center">
-      <span class="spinner">
-        Loading...
-      </span>
-    </div>
-  </div>
-  <section class="results">
-    <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
-      <clr-tooltip>
-        <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
-        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-          <div class="tooltip-header">EHR Domains</div>
-          <div class="tooltip-label">Electronic health records contain information about an individual’s health.
-            Medical concepts are similar to medical terms;
-            they capture medical information in individual records and may sometimes have values associated with them.
-            For example, “height” is a medical concept that has a measurement value (in centimeters).
-            These concepts are categorized into different domains. Domains are types of medical information.
-            There are numerous domains of data in EHR records,
-            but some of the most common domains include conditions, drug exposures, measurements and procedures.
-          </div>
-        </clr-tooltip-content>
-      </clr-tooltip>
-    </h5>
-    <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
-      <div class="result-box" *ngFor="let r of domainResults">
-        <p class="result-box-title">
-          {{r.name}}
-          <clr-tooltip>
-            <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
-            <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-              <div class="tooltip-label">{{domainHelpText[r.domain.toLowerCase()]}}</div>
-            </clr-tooltip-content>
-          </clr-tooltip>
-        </p>
-        <div class="result-body">
-          <span class="result-body-item">
-            <div class="result-stat">
-              {{r.standardConceptCount | number}}
-            </div>
-            <span *ngIf="searchText.value">matching medical concepts</span>
-            <span *ngIf="!searchText.value">medical concepts</span>
+
+<app-spinner [loading]="loading"></app-spinner>
+
+  <h5 class="result-heading body-default" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
+    <clr-tooltip>
+      <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+        <div class="tooltip-header">EHR Domains</div>
+        <div class="tooltip-label">Electronic health records contain information about an individual’s health.
+          Medical concepts are similar to medical terms;
+          they capture medical information in individual records and may sometimes have values associated with them.
+          For example, “height” is a medical concept that has a measurement value (in centimeters).
+          These concepts are categorized into different domains. Domains are types of medical information.
+          There are numerous domains of data in EHR records,
+          but some of the most common domains include conditions, drug exposures, measurements and procedures.
+        </div>
+      </clr-tooltip-content>
+    </clr-tooltip>
+  </h5>
+  <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
+
+    <div class="result-box" *ngFor="let r of domainResults">
+      <p class="result-box-title">
+        {{r.name}}
+        <clr-tooltip>
+          <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-label">{{domainHelpText[r.domain.toLowerCase()]}}</div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+      </p>
+      <div class="result-stat">
+        {{r.standardConceptCount | number}}
+      </div>
+      <div class="result-body">
+        <span class="result-body_item" *ngIf="searchText.value"><span>matching medical concepts</span></span>
+        <span class="result-body_item" *ngIf="!searchText.value"><span>medical concepts</span></span>
+        <span class="result-body_item result-body-stat" *ngIf="r.participantCount">
+          <span><strong> {{r.participantCount | number}}</strong> participants in this domain
           </span>
           <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
             <span><strong> {{r.participantCount | number}}</strong> participants in this domain

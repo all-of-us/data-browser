@@ -8,7 +8,37 @@
           <p class="info-text"><em>Click on each response to view branding logic and age and gender</em></p>
         </span>
       </div>
-      <div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
+    </div>
+    <div class="search-bar search-bar-container search-input-full">
+      <clr-icon shape="search" size="25" class="is-info search-icon"></clr-icon>
+      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
+    </div>
+    <app-spinner [loading]="loading"></app-spinner>
+    <a class="btn btn-link btn-sm" [routerLink]="['']">< Back to main search </a>
+    <div class="db-card">
+      <div class="survey-head">
+        <div class="stat-container">
+          <h2 class="secondary-display" *ngIf="!loading">
+            {{survey.participantCount | number }}
+          </h2>
+          <p class="info-text">
+            Participants completed this survey
+          </p>
+        </div>
+
+        <div class="stat-container">
+          <h2 *ngIf="!loading" class="secondary-display">
+            <span>{{ surveyResult.items.length }} </span>
+          </h2>
+          <p class="info-text">
+            Questions
+          </p>
+        </div>
+        <div class="pdf-link">
+          <a href="{{surveyPdfUrl}}" download>
+            <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
+          </a>
+        </div>
       </div>
     </div>
     <div class="search-bar-container">

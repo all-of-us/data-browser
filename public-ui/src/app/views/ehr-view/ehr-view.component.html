@@ -8,37 +8,33 @@
       <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
     </div>
   </div>
-  <div class="row ">
-    <div class="col-md-4 col-sm-2 col-xs-1 flex-xs-middle" *ngIf="loading">
-      <span class="spinner spinner-lg hidden-sm-down">Loading ...</span>
-      <span class="spinner spinner-md hidden-md-up hidden-xs-down"></span>
-      <span class="spinner spinner-sm hidden-sm-up"></span>
-    </div>
-  </div>
-  <div class="results">
-    <a class="btn btn-link btn-sm" [routerLink]="['']">
-      < Back to main search </a> <div class="result-list">
-    <div class="db-card">
-      <div class="db-card-inner">
-        <section *ngIf="items.length > 0">
-          <!-- Top summary boxes -- only show if have results -->
 
-          <h5 id="domain-summary" class="secondary-display">
-            <a class="toggle-link" (click)="toggleTopConcepts()"> Top 10 Medical Concepts by Descending Participant
-              Counts
-              <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
-              <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
-            </a>
-          </h5>
-          <div *ngIf="showTopConcepts">
-            <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results"
-                       [pointWidth]="10">
-            </app-chart>
-          </div>
-        </section>
-        <div class="results-grid" *ngIf="items.length > 0">
-          <div class="domain-info-layout">
-                <span>
+  <app-spinner [loading]="loading"></app-spinner>
+  <a class="btn btn-link btn-sm" [routerLink]="['']">
+    < Back to main search </a> <div class="result-list">
+      <div class="db-card">
+        <div class="db-card-inner">
+          <section *ngIf="items.length > 0">
+            <!-- Top summary boxes -- only show if have results -->
+            <h5 id="domain-summary" class="secondary-display">
+              <a class="toggle-link" (click)="toggleTopConcepts()"> Top 10 Medical Concepts by Descending Participant
+                Counts
+                <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
+                <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
+              </a>
+            </h5>
+            <div *ngIf="showTopConcepts">
+              <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results" [pointWidth]="10">
+              </app-chart>
+            </div>
+          </section>
+          <div class="results-grid" *ngIf="items.length > 0">
+            <div class="domain-info-layout">
+              <span>
+                <h5 id="domain-name" class="primary-display">
+                  Showing top {{items.length}}
+                </h5>
+                <ng-container *ngIf="searchText.value.length === 0; else no_search_term">
                   <h5 id="domain-name" class="primary-display">
                     Showing top {{items.length}}
                   </h5>
