@@ -82,7 +82,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             if (a.subQuestions) {
               for (const subQuestion of a.subQuestions) {
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
-                for (const result of subQuestion.countAnalysis.surveyQuestionResults.filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
+                for (const result of subQuestion.countAnalysis.surveyQuestionResults.
+                filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                   for (const question of result.subQuestions) {
                     question.selectedAnalysis = question.genderAnalysis;
                   }
@@ -212,7 +213,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showAnswerGraphs(a: any) {
     a.expanded = !a.expanded;
   }
-  
+
   public showSubAnswerGraphs(sqa: any) {
     sqa.subExpanded = !sqa.subExpanded;
   }
