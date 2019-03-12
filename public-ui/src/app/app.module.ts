@@ -38,7 +38,6 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
 import {DbConfigService} from './utils/db-config.service';
-import { SpinnerComponent } from './utils/spinner/spinner.component';
 import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
@@ -86,7 +85,6 @@ export function getConfigService(http: Http) {
     EhrViewComponent,
     PageTemplateSignedOutComponent,
     PhysicalMeasurementsComponent,
-    SpinnerComponent,
   ],
   providers: [
     {
