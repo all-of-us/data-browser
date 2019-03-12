@@ -173,22 +173,23 @@
                   </div>
                   <div class="row-expansion" *ngIf="a.expanded && a.subQuestions">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
-                      <p class="sub-question-text" *ngIf="a.stratum4 !== subQuestion.conceptName">{{subQuestion.conceptName}} -- {{subQuestion.conceptId}}
-                      </p>
+                      <h6 class="sub-question-text" *ngIf="a.stratum4 !== subQuestion.conceptName">
+                      {{subQuestion.conceptName}} -- {{subQuestion.conceptId}}
+                      </h6>
                       <div class="tbl-r">
                         <div class="tbl-d first display-body info-text sub-question-heading">
                           Text
                         </div>
                         <div class="tbl-r-group">
-                          <div class="info-text tbl-d display-body info-text sub-question-heading">
+                          <div class="tbl-d display-body info-text sub-question-heading">
                             <label class="concept-code">Concept Code</label>
                           </div>
 
-                          <div class="info-text tbl-d display-body info-text sub-question-heading">
+                          <div class="tbl-d display-body info-text sub-question-heading">
                             <label class="participant-count">Participant Count</label>
                           </div>
 
-                          <div class=" info-text tbl-d display-body info-text sub-question-heading">
+                          <div class="tbl-d display-body info-text sub-question-heading">
                             <span>% Answered</span>
                           </div>
 
@@ -252,10 +253,11 @@
                         </div>
                         <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.subQuestions">
                           <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
-                            <p class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">{{subQuestion2.conceptName}} -- {{subQuestion2.conceptId}}
-                            </p>
+                            <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
+                            {{subQuestion2.conceptName}} -- {{subQuestion2.conceptId}}
+                            </h6>
                             <div class="tbl-r">
-                              <div class="tbl-d first display-body info-text sub-question-heading">
+                              <div class="tbl-d first display-body sub-question-heading">
                                 Text
                               </div>
                               <div class="tbl-r-group">
@@ -263,11 +265,11 @@
                                   <label class="concept-code">Concept Code</label>
                                 </div>
 
-                                <div class="info-text tbl-d display-body info-text sub-question-heading">
+                                <div class="info-text tbl-d display-body sub-question-heading">
                                   <label class="participant-count">Participant Count</label>
                                 </div>
 
-                                <div class=" info-text tbl-d display-body info-text sub-question-heading">
+                                <div class=" info-text tbl-d display-body sub-question-heading">
                                   <span>% Answered</span>
                                 </div>
 

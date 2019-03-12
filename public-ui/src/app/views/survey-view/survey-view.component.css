@@ -139,8 +139,9 @@
 }
 
 .sub-question-text {
-    margin-left: 1%;
-    font-weight: bolder;
+    margin-left: 0.5%;
+    text-align: left;
+    font-weight: 500;
 }
 
 
