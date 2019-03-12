@@ -18,8 +18,8 @@ object Scenarios {
   // TODO: Current user story seems incorrect, need to flesh this out more.
   val smokingSearch: ScenarioBuilder = scenario(UserStorySmoking.name)
     .exec(Pages.Home.home)
-    .exec(Pages.SmokingSearch.search)
-    .exec(Pages.ViewSmokingProcedures.view)
+    .exec(Pages.SearchSmoke.search)
+    .exec(Pages.ViewProceduresSmoke.view)
     .exec(Pages.Home.home)
 
   val allScenarios: List[ScenarioBuilder] = List(homePage, smokingSearch)

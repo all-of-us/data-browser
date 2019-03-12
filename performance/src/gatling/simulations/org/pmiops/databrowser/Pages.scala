@@ -47,13 +47,13 @@ object Pages {
       .pause(Configuration.defaultPause)
   }
 
-  object SmokingSearch {
+  object SearchSmoke {
     val search: ChainBuilder = exec(APIs.domainSearch("smoke").check(status.is(session => 200)))
       .pause(Configuration.defaultPause)
   }
 
-  object ViewSmokingProcedures {
-    private val searchConcepts: String = """{"query":"smoking","domain":"PROCEDURE","standardConceptFilter":"STANDARD_OR_CODE_ID_MATCH","maxResults":100,"minCount":1}"""
+  object ViewProceduresSmoke {
+    private val searchConcepts: String = """{"query":"smoke","domain":"PROCEDURE","standardConceptFilter":"STANDARD_OR_CODE_ID_MATCH","maxResults":100,"minCount":1}"""
     val view: ChainBuilder = exec(APIs.participantCount)
       .exec(APIs.searchConcepts(searchConcepts))
       .pause(Configuration.defaultPause)
