@@ -367,19 +367,19 @@ definitions:
           $ref: "#/definitions/SurveyQuestionMap"
       countAnalysis:
         description: count analysis
-        $ref: "#/definitions/Analysis"
+        $ref: "#/definitions/SurveyQuestionAnalysis"
       genderAnalysis:
         description: gender analysis
-        $ref: "#/definitions/Analysis"
+        $ref: "#/definitions/SurveyQuestionAnalysis"
       ageAnalysis:
         description: age analysis
-        $ref: "#/definitions/Analysis"
+        $ref: "#/definitions/SurveyQuestionAnalysis"
       genderIdentityAnalysis:
         description: gender identity analysis
-        $ref: "#/definitions/Analysis"
+        $ref: "#/definitions/SurveyQuestionAnalysis"
       raceEthnicityAnalysis:
         description: race ethnicity analysis
-        $ref: "#/definitions/Analysis"
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   QuestionConceptListResponse:
     type: object
@@ -477,6 +477,50 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/AchillesResult"
+
+  SurveyQuestionResult:
+      type: object
+      required:
+        - analysisId
+
+      properties:
+        id:
+          description: pk id for jpa code to work
+          type: integer
+          format: int64
+        analysisId:
+          description: id analysis
+          type: integer
+          format: int64
+        stratum1:
+          description: stratum 1
+          type: string
+        stratum2:
+          description: stratum 2
+          type: string
+        stratum3:
+          description: stratum 3
+          type: string
+        stratum4:
+          description: stratum 4
+          type: string
+        stratum5:
+          description: stratum 5
+          type: string
+        analysisStratumName:
+          description: stratum 5 Name
+          type: string
+        countValue:
+          description: count
+          type: integer
+          format: int64
+        sourceCountValue:
+          description: source count
+          type: integer
+          format: int64
+        subQuestion:
+          description: survey branching sub question
+          $ref: "#/definitions/QuestionConcept"
 
 
   AchillesResultDist:
@@ -605,6 +649,44 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Analysis"
+  SurveyQuestionAnalysis:
+    type: object
+    required:
+      - analysisId
+    properties:
+      analysisId:
+        description: id analysis
+        type: integer
+        format: int64
+      analysisName:
+        description:  analysis name
+        type: string
+      stratum1Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum2Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum3Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum4Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum5Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      chartType:
+        description:  chart type to display for this analysis column pie box
+        type: string
+      dataType:
+        description:  data type of this analysis count or distribution
+        type: string
+      surveyQuestionResults:
+        description: survey question results
+        type: array
+        items:
+          $ref: "#/definitions/SurveyQuestionResult"
 
   DomainInfosAndSurveyModulesResponse:
     type: object
