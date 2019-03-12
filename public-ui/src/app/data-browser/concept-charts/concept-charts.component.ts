@@ -57,15 +57,15 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     const conceptIdStr = '' + this.concept.conceptId.toString();
     this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
       this.concept.domainId).subscribe(
-        results => {
-          this.results = results.items;
-          this.analyses = results.items[0];
-          this.organizeGenders(this.analyses.genderAnalysis);
-          this.fetchMeasurementGenderResults();
-          // Set this var to make template simpler.
-          // We can just loop through the results and show bins
-          this.loadingStack.pop();
-        }));
+      results => {
+        this.results = results.items;
+        this.analyses = results.items[0];
+        this.organizeGenders(this.analyses.genderAnalysis);
+        this.fetchMeasurementGenderResults();
+        // Set this var to make template simpler.
+        // We can just loop through the results and show bins
+        this.loadingStack.pop();
+      }));
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
       results => {
@@ -147,7 +147,6 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         this.otherGenderChartTitle = chartTitle;
       }
     }
-
     analysis.results = [];
     if (this.maleGenderResult) {
       analysis.results.push(this.maleGenderResult);
@@ -169,7 +168,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   showMeasurementGenderHistogram(unit: string) {
     this.selectedUnit = unit;
     this.toDisplayMeasurementGenderAnalysis = this.analyses.measurementValueGenderAnalysis.
-      find(aa => aa.unitName === unit);
+    find(aa => aa.unitName === unit);
     if (this.analyses.measurementGenderCountAnalysis) {
       this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.
       find(aa => aa.unitName === unit);

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges , Output } from '@angular/core';
 import * as highcharts from 'highcharts';
 
 import { Analysis } from '../../../publicGenerated/model/analysis';
@@ -11,7 +11,7 @@ import { DomainType } from '../../utils/enum-defs';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css']
 })
-export class ChartComponent implements OnChanges {
+export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() analysis: Analysis;
   @Input() analysis2: Analysis;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
@@ -25,7 +25,6 @@ export class ChartComponent implements OnChanges {
   @Input() domainType: DomainType;
   @Output() resultClicked = new EventEmitter<any>();
   chartOptions: any = null;
-
   constructor(private dbc: DbConfigService) {
     highcharts.setOptions({
       lang: { thousandsSep: ',' },
@@ -38,15 +37,16 @@ export class ChartComponent implements OnChanges {
       (this.concepts && this.concepts.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
-    }
-  }
-
-  public isSurveyGenderAnalysis() {
-    return this.analysis ?
-      (this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
-        this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
-      : false;
-  }
+        }
+      }
+  // renderChart after 1ms to fill container
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.chartOptions) {
+        this.chartOptions = this.hcChartOptions();
+      }
+    }, 1);
+   }
 
   public isGenderIdentityAnalysis() {
     return this.analysis ?
@@ -61,7 +61,6 @@ export class ChartComponent implements OnChanges {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-
     return {
       chart: options.chart,
       lang: {
@@ -76,7 +75,7 @@ export class ChartComponent implements OnChanges {
       credits: {
         enabled: false
       },
-      title: '',
+      title: options.title,
       subtitle: {},
       tooltip: {
         followPointer: true,
@@ -90,13 +89,13 @@ export class ChartComponent implements OnChanges {
           fontSize: '18px',
           color: '#262262'
         },
-        formatter: function(tooltip) {
-          if (this.point.y <= 20) {
-            return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
-          }
-          // If not <= 20, use the default formatter
-          return tooltip.defaultFormatter.call(this, tooltip);
-        }
+        // formatter: function(tooltip) {
+        //   if (this.point.y <= 20) {
+        //     return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
+        //   }
+        //   // If not <= 20, use the default formatter
+        //   return tooltip.defaultFormatter.call(this, tooltip);
+        // }
       },
       plotOptions: {
         series: {
@@ -199,7 +198,6 @@ export class ChartComponent implements OnChanges {
     };
   }
 
-
   public makeChartOptions() {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
@@ -208,17 +206,18 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions();
     }
-
     if (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions();
     }
-
     if (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
       return this.makeGenderChartOptions();
     }
-
+    if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID ||
+      this.analysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+      return this.makeRaceEthnicityChartOptions();
+    }
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
     if (
@@ -226,7 +225,6 @@ export class ChartComponent implements OnChanges {
       this.analysis.analysisId === this.dbc.RACE_ANALYSIS_ID) {
       return this.makePieChartOptions();
     }*/
-
     if (this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID ||
       this.analysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions();
@@ -236,7 +234,6 @@ export class ChartComponent implements OnChanges {
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
   }
-
   seriesClick(event) {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
@@ -250,14 +247,14 @@ export class ChartComponent implements OnChanges {
       cats.push(a.stratum4);
     }
     data = data.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
       }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -268,7 +265,6 @@ export class ChartComponent implements OnChanges {
       }
       return 0;
     });
-
     const seriesClick = event => {
       const thisCtrl = event.point.options.thisCtrl;
       // Todo handle click and log events in analytics
@@ -284,7 +280,6 @@ export class ChartComponent implements OnChanges {
       events: {
         click: seriesClick
       }
-
     };
     return {
       chart: { type: 'column' },
@@ -295,25 +290,22 @@ export class ChartComponent implements OnChanges {
       xAxisTitle: null,
       tooltip: { pointFormat: '<b>{point.y} </b>' },
     };
-
   }
 
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
-
     // Sort by count value
     this.concepts = this.concepts.sort((a, b) => {
-      if (a.countValue < b.countValue) {
-        return 1;
+        if (a.countValue < b.countValue) {
+          return 1;
+        }
+        if (a.countValue > b.countValue) {
+          return -1;
+        }
+        return 0;
       }
-      if (a.countValue > b.countValue) {
-        return -1;
-      }
-      return 0;
-    }
     );
-
     for (const a of this.concepts) {
       data.push({
         name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
@@ -326,7 +318,6 @@ export class ChartComponent implements OnChanges {
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
     }
-
     // Override tooltip and colors and such
     const series = {
       name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
@@ -336,7 +327,7 @@ export class ChartComponent implements OnChanges {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
         style: {
-          fontFamily: 'GothamBook'
+          fontFamily: 'Gotham-Book'
         },
         tooltip: {
           headerFormat: `<span>
@@ -352,7 +343,6 @@ export class ChartComponent implements OnChanges {
       pointWidth: 20,
       xAxisTitle: null,
     };
-
   }
 
   public makeGenderChartOptions() {
@@ -374,7 +364,6 @@ export class ChartComponent implements OnChanges {
     }
     let data = [];
     let cats = [];
-
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -397,17 +386,15 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-
-
     data = data.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
       }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -428,7 +415,7 @@ export class ChartComponent implements OnChanges {
           ? 'pie' : 'bar',
         backgroundColor: 'transparent',
         style: {
-          fontFamily: 'GothamBook'
+          fontFamily: 'Gotham-Book'
         },
       },
       title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
@@ -445,14 +432,76 @@ export class ChartComponent implements OnChanges {
         <b> {point.y}</b> {point.name} </span></span>`
       }
     };
+  }
 
+  public makeRaceEthnicityChartOptions() {
+    let results = [];
+    let seriesName = '';
+    if (this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID) {
+      results = this.analysis.results;
+      seriesName = this.analysis.analysisName;
+    } else if (this.analysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+      results = this.analysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4);
+      // Series name for answers is the answer selected which is in stratum4
+      seriesName = this.selectedResult.stratum4;
+    }
+    let data = [];
+    let cats = [];
+    // LOOP CREATES DYNAMIC CHART VARS
+    for (const a of results) {
+      data.push({
+        name: a.analysisStratumName
+        , y: a.countValue, sliced: true, color: '#216fb4'
+      });
+      cats.push(a.analysisStratumName);
+    }
+    data = data.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      }
+    );
+    cats = cats.sort((a, b) => {
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    });
+    const series = {
+      name: seriesName, colorByPoint: true, data: data,
+    };
+    return {
+      chart: {
+        type: 'bar',
+        backgroundColor: 'transparent',
+        style: {
+          fontFamily: 'Gotham-Book'
+        },
+      },
+      title: { text: this.analysis.analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      series: series,
+      categories: cats,
+      pointWidth: this.pointWidth,
+      xAxisTitle: null,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: `<span style="font-size:.7em">
+        <b> {point.y}</b> {point.name}s </span></span>`
+      }
+    };
   }
 
   public makeAgeChartOptions() {
     let results = [];
     let seriesName = '';
     let ageDecileStratum = '';
-
     // Question/answers have a different data structure than other concepts
     if (this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       results = this.analysis.results;
@@ -465,20 +514,19 @@ export class ChartComponent implements OnChanges {
       seriesName = this.selectedResult.stratum4;
       ageDecileStratum = 'stratum5';
     }
-
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     results = results.sort((a, b) => {
-      const anum = Number(a[ageDecileStratum]);
-      const bnum = Number(b[ageDecileStratum]);
-      if (anum > bnum) {
-        return 1;
+        const anum = Number(a[ageDecileStratum]);
+        const bnum = Number(b[ageDecileStratum]);
+        if (anum > bnum) {
+          return 1;
+        }
+        if (anum < bnum) {
+          return -1;
+        }
+        return 0;
       }
-      if (anum < bnum) {
-        return -1;
-      }
-      return 0;
-    }
     );
     const data = [];
     const cats = [];
@@ -490,7 +538,6 @@ export class ChartComponent implements OnChanges {
       });
       cats.push(a.analysisStratumName);
     }
-
     const series = {
       name: seriesName,
       colorByPoint: true,
@@ -542,7 +589,6 @@ export class ChartComponent implements OnChanges {
         aVal = Number(aVal);
         bVal = Number(b.name);
       }
-
       if (aVal > bVal) {
         return 1;
       }
@@ -554,7 +600,6 @@ export class ChartComponent implements OnChanges {
     for (const d of data) {
       cats.push(d.name);
     }
-
     // Todo we will use this later in drill downs and such
     const seriesClick = event => {
       const thisCtrl = event.point.options.thisCtrl;
@@ -562,7 +607,6 @@ export class ChartComponent implements OnChanges {
       // console.log('Histogram plot Clicked point :',  event.point);
       // thisCtrl.resultClicked.emit(event.point.result);
     };
-
     // Unit for measurements is in stratum5
     const unit = this.analysis.unitName ? this.analysis.unitName : '';
     const series: any = {
@@ -571,7 +615,6 @@ export class ChartComponent implements OnChanges {
       data: data,
       colors: [this.dbc.COLUMN_COLOR],
     };
-
     // Note that our data is binned already so we use a column chart to show histogram
     // however we need to style it to make it look like a histogram. Some measurements
     // like pregnancy and wheel chair we don't want a histogram.
@@ -583,7 +626,6 @@ export class ChartComponent implements OnChanges {
       series.pointWidth = null;
       series.shadow = false;
     }
-
     return {
       chart: { type: 'column', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
@@ -596,8 +638,8 @@ export class ChartComponent implements OnChanges {
         pointFormat: '<b> {point.y} participants </b> '
       },
     };
-
   }
+
   public getChartTitle(domainType: string) {
     if (domainType === DomainType.EHR) {
       return 'Age at First Occurrence in EHR.';
@@ -607,5 +649,4 @@ export class ChartComponent implements OnChanges {
       return 'Age When Physical Measurement Was Taken';
     }
   }
-
 }
