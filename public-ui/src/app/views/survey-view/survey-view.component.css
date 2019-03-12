@@ -134,4 +134,13 @@
     padding-bottom: calc( 18px * 3);
 }
 
+.sub-question-heading {
+    font-weight: bold;
+}
+
+.sub-question-text {
+    margin-left: 1%;
+    font-weight: bold;
+}
+
 

@@ -36,6 +36,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   /* Show answers toggle */
   showAnswer = {};
   @ViewChild('chartElement') chartEl: ElementRef;
+  @ViewChild('subChartElement1') subChartEl1: ElementRef;
+  @ViewChild('subChartElement2') subChartEl2: ElementRef;
 
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
               private tooltipText: TooltipService) {
@@ -77,6 +79,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
+            if (a.subQuestions) {
+              for (const subQuestion of a.subQuestions) {
+                subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
+                for (const result of subQuestion.countAnalysis.surveyQuestionResults.filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
+                  for (const question of result.subQuestions) {
+                    question.selectedAnalysis = question.genderAnalysis;
+                  }
+                }
+              }
+            }
           }
           const result = q.countAnalysis.surveyQuestionResults[0];
           if (didNotAnswerCount < 0 ) { didNotAnswerCount = 0; }
@@ -200,14 +212,26 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showAnswerGraphs(a: any) {
     a.expanded = !a.expanded;
   }
+  
+  public showSubAnswerGraphs(sqa: any) {
+    sqa.subExpanded = !sqa.subExpanded;
+  }
 
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
   }
 
-  public selectGraph(g, q: any) {
-    this.chartEl.nativeElement.scrollIntoView(
-      { behavior: 'smooth', block: 'nearest', inline: 'start' });
+  public selectGraph(g, q: any, whichQuestion: string) {
+    if (whichQuestion === 'main') {
+      this.chartEl.nativeElement.scrollIntoView(
+        { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    } else if (whichQuestion === 'sub1') {
+      this.subChartEl1.nativeElement.scrollIntoView(
+        { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    } else if (whichQuestion === 'sub2') {
+      this.subChartEl2.nativeElement.scrollIntoView(
+        { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
     this.resetSelectedGraphs();
     this.graphToShow = g;
     switch (g) {
@@ -237,10 +261,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showToolTip(g: string) {
     if (g === 'Biological Sex' || g === 'Gender Identity') {
       return 'Gender chart';
-    } else if (g === 'Age at Occurrence') {
+    } else if (g === 'Age') {
       return this.tooltipText.ageChartHelpText;
     } else if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
+    } else if (g === 'Race / Ethnicity') {
+      return 'Race / Ethnicity chart';
     }
   }
 
