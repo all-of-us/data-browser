@@ -56,7 +56,7 @@ object Pages {
   }
 
   object ViewProcedures {
-    def view(searchTerm: String): ChainBuilder = {
+    def view (searchTerm: String): ChainBuilder = {
       val postMap = Map(
         "query" -> searchTerm,
         "domain" -> "PROCEDURE",
@@ -64,9 +64,8 @@ object Pages {
         "maxResults" -> 100,
         "minCount" -> 1
       )
-      val searchConcepts: String = Json.stringify(postMap)
       exec(APIs.participantCount)
-        .exec(APIs.searchConcepts(searchConcepts))
+        .exec(APIs.searchConcepts(Json.stringify(postMap)))
         .pause(Configuration.defaultPause)
     }
   }
