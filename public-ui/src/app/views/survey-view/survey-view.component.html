@@ -44,6 +44,7 @@
               </a>
             </div>
           </div>
+          <div class="info-text"><em>Note: The survey questions appear in the order in which people actually took the survey.</em> </div>
           <div class="no-results" *ngIf="searchText.value.length > 0">
             <p class="results-heading no-results" *ngIf="questions.length === 0 && !loading">
               <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <mark>
@@ -75,9 +76,9 @@
                 <div class="box-title"> Question {{q.actualQuestionNumber}}</div>
                 <div class="body-default">
                   <app-highlight-search [text]="q.conceptName" [searchTerm]="searchText.value"
-                    [conceptId]="q.conceptId">
-                  </app-highlight-search>
-                </div>
+                  [conceptId]="q.conceptId">
+                </app-highlight-search>
+              </div>
               </div>
               <div class="see-answers body-lead" (click)="toggleAnswer(q.conceptId)"> See Answers
                 <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
@@ -116,7 +117,7 @@
                   </div>
                 </div>
                 <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r "
-                  *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a)"
+                  *ngFor="let a of q.countAnalysis.surveyQuestionResults" (click)="showAnswerGraphs(a)"
                   [hidden]="!showAnswer[q.conceptId]">
                   <div class="tbl-r">
                     <div class="tbl-d first display-body info-text">
@@ -163,7 +164,7 @@
                       </div>
                     </div>
                     <div class="chart">
-                      <app-chart (click)="$event.stopPropagation()" [analysis]="q.selectedAnalysis" [selectedResult]="a"
+                      <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="q.selectedAnalysis" [selectedResult]="a"
                         [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
                     </div>
                   </div>
@@ -171,7 +172,7 @@
               </div>
             </div>
           </div>
-  </div>
+        </div>
   </section>
 </div>
 
