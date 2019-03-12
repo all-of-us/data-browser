@@ -44,6 +44,7 @@
               </a>
             </div>
           </div>
+          <div class="info-text"><em>Note: The survey questions appear in the order in which people actually took the survey.</em> </div>
           <div class="no-results" *ngIf="searchText.value.length > 0">
             <p class="results-heading no-results" *ngIf="questions.length === 0 && !loading">
               <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <mark>
@@ -75,9 +76,9 @@
                 <div class="box-title"> Question {{q.actualQuestionNumber}}</div>
                 <div class="body-default">
                   <app-highlight-search [text]="q.conceptName" [searchTerm]="searchText.value"
-                    [conceptId]="q.conceptId">
-                  </app-highlight-search>
-                </div>
+                  [conceptId]="q.conceptId">
+                </app-highlight-search>
+              </div>
               </div>
               <div class="see-answers body-lead" (click)="toggleAnswer(q.conceptId)"> See Answers
                 <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
@@ -171,7 +172,7 @@
               </div>
             </div>
           </div>
-  </div>
+        </div>
   </section>
 </div>
 
