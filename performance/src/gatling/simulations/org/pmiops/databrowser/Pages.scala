@@ -1,9 +1,12 @@
 package org.pmiops.databrowser
 
 import io.gatling.core.Predef._
+import io.gatling.core.json.Json
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
+
+import scala.util.parsing.json._
 
 /**
   * A "Page" should be a collection of API calls that are made when navigating to a specific
@@ -47,16 +50,25 @@ object Pages {
       .pause(Configuration.defaultPause)
   }
 
-  object SearchSmoke {
-    val search: ChainBuilder = exec(APIs.domainSearch("smoke").check(status.is(session => 200)))
+  object Search {
+    def search(searchTerm: String): ChainBuilder = exec(APIs.domainSearch(searchTerm).check(status.is(session => 200)))
       .pause(Configuration.defaultPause)
   }
 
-  object ViewProceduresSmoke {
-    private val searchConcepts: String = """{"query":"smoke","domain":"PROCEDURE","standardConceptFilter":"STANDARD_OR_CODE_ID_MATCH","maxResults":100,"minCount":1}"""
-    val view: ChainBuilder = exec(APIs.participantCount)
-      .exec(APIs.searchConcepts(searchConcepts))
-      .pause(Configuration.defaultPause)
+  object ViewProcedures {
+    def view(searchTerm: String): ChainBuilder = {
+      val postMap = Map(
+        "query" -> searchTerm,
+        "domain" -> "PROCEDURE",
+        "standardConceptFilter" -> "STANDARD_OR_CODE_ID_MATCH",
+        "maxResults" -> 100,
+        "minCount" -> 1
+      )
+      val searchConcepts: String = Json.stringify(postMap)
+      exec(APIs.participantCount)
+        .exec(APIs.searchConcepts(searchConcepts))
+        .pause(Configuration.defaultPause)
+    }
   }
 
 }
