@@ -4,21 +4,23 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
 
-import scala.concurrent.duration._
 import scala.language.postfixOps
 
 class BasicSimulation extends Simulation {
 
+  val config: Configuration.type = Configuration
+
   val httpConf: HttpProtocolBuilder = http.
-    baseUrl(Configuration.defaultUrl).
-    userAgentHeader(Configuration.userAgentHeader)
+    baseUrl(config.defaultUrl).
+    userAgentHeader(config.userAgentHeader)
 
   def globalAssertions: List[Assertion] = List(
-    forAll.failedRequests.percent.is(0),
-    global.responseTime.max.lt(15000)
+    forAll.failedRequests.percent.is(config.defaultFailedRequestsLimit),
+    global.responseTime.max.lt(config.defaultMaxResponseTime)
   )
 
-  setUp(Scenarios.userScenarios.map(s => s.inject(rampUsers(5) during(10 seconds))))
+  setUp(Scenarios.userScenarios.map(s =>
+    s.inject(rampUsers(config.defaultRampUsers) during config.defaultRampTime)))
     .assertions(globalAssertions)
     .protocols(httpConf)
 
