@@ -169,10 +169,6 @@ set participant_count =
     end
 where participant_count > 0"
 
-#Drop person_gender_identity table
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
-"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.person_gender_identity\` "
-
 #Drop unit_map table
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.unit_map\` "
