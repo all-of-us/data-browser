@@ -82,9 +82,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             if (a.subQuestions) {
               for (const subQuestion of a.subQuestions) {
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
-                for (const result of subQuestion.countAnalysis.surveyQuestionResults.
+                for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                 filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
-                  for (const question of result.subQuestions) {
+                  for (const question of subResult.subQuestions) {
                     question.selectedAnalysis = question.genderAnalysis;
                   }
                 }
