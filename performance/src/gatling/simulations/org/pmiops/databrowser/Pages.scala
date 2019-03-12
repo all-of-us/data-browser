@@ -29,7 +29,10 @@ object Pages {
       http("domain-totals").get("/v1/databrowser/domain-totals?searchWord=" + searchTerm)
     }
     def searchConcepts(postBody: String): HttpRequestBuilder = {
-      http("search-concepts").post("/v1/databrowser/searchConcepts").body(StringBody(postBody))
+      http("search-concepts")
+        .post("/v1/databrowser/searchConcepts")
+        .header("Content-Type", "application/json")
+        .body(StringBody(postBody))
     }
   }
 
@@ -45,12 +48,12 @@ object Pages {
   }
 
   object SmokingSearch {
-    val search: ChainBuilder = exec(APIs.domainSearch("smoking").check(status.is(session => 200)))
+    val search: ChainBuilder = exec(APIs.domainSearch("smoke").check(status.is(session => 200)))
       .pause(Configuration.defaultPause)
   }
 
   object ViewSmokingProcedures {
-    private val searchConcepts: String = "{\"query\":\"smoking\",\"domain\":\"PROCEDURE\",\"standardConceptFilter\":\"STANDARD_OR_CODE_ID_MATCH\",\"maxResults\":100,\"minCount\":1}"
+    private val searchConcepts: String = """{"query":"smoking","domain":"PROCEDURE","standardConceptFilter":"STANDARD_OR_CODE_ID_MATCH","maxResults":100,"minCount":1}"""
     val view: ChainBuilder = exec(APIs.participantCount)
       .exec(APIs.searchConcepts(searchConcepts))
       .pause(Configuration.defaultPause)
