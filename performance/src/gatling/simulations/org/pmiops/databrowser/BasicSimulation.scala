@@ -19,7 +19,7 @@ class BasicSimulation extends Simulation {
     global.responseTime.max.lt(config.defaultMaxResponseTime)
   )
 
-  setUp(Scenarios.userScenarios.map(s =>
+  setUp(Scenarios.allScenarios.map(s =>
     s.inject(rampUsers(config.defaultRampUsers) during config.defaultRampTime)))
     .assertions(globalAssertions)
     .protocols(httpConf)

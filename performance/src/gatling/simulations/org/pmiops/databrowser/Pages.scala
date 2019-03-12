@@ -16,13 +16,21 @@ object Pages {
     *
     */
   private object APIs {
-    val config: HttpRequestBuilder = http(HomePage.name).get("/v1/config")
-    val genderCount: HttpRequestBuilder = http(HomePage.name).get("/v1/databrowser/gender-count")
+    val config: HttpRequestBuilder = http("config").get("/v1/config")
+    val genderCount: HttpRequestBuilder = http("gender-count")
+      .get("/v1/databrowser/gender-count")
     def conceptAnalysisResults (conceptIds: Seq[String]): HttpRequestBuilder = {
-      http(HomePage.name).get("/v1/databrowser/concept-analysis-results?concept-ids=" + conceptIds.mkString(","))
+      http("concept-analysis-results")
+        .get("/v1/databrowser/concept-analysis-results?concept-ids=" + conceptIds.mkString(","))
     }
-    val participantCount: HttpRequestBuilder = http(HomePage.name).get("/v1/databrowser/participant-count")
-    val domainTotals: HttpRequestBuilder = http(HomePage.name).get("/v1/databrowser/domain-totals")
+    val participantCount: HttpRequestBuilder = http("participant-count").get("/v1/databrowser/participant-count")
+    val domainTotals: HttpRequestBuilder = http("domain-totals").get("/v1/databrowser/domain-totals")
+    def domainSearch (searchTerm: String): HttpRequestBuilder = {
+      http("domain-totals").get("/v1/databrowser/domain-totals?searchWord=" + searchTerm)
+    }
+    def searchConcepts(postBody: String): HttpRequestBuilder = {
+      http("search-concepts").post("v1/databrowser/searchConcepts").body(StringBody(postBody))
+    }
   }
 
   object Home {
@@ -33,6 +41,18 @@ object Pages {
         .check(status.is(session => 200)))
       .exec(APIs.participantCount.check(status.is(session => 200)))
       .exec(APIs.domainTotals.check(status.is(session => 200)))
+      .pause(Configuration.defaultPause)
+  }
+
+  object SmokingSearch {
+    val search: ChainBuilder = exec(APIs.domainSearch("smoking").check(status.is(session => 200)))
+      .pause(Configuration.defaultPause)
+  }
+
+  object ViewSmokingProcedures {
+    private val searchConcepts: String = "{\"query\":\"smoking\",\"domain\":\"PROCEDURE\",\"standardConceptFilter\":\"STANDARD_OR_CODE_ID_MATCH\",\"maxResults\":100,\"minCount\":1}"
+    val view: ChainBuilder = exec(APIs.participantCount)
+      .exec(APIs.searchConcepts(searchConcepts))
       .pause(Configuration.defaultPause)
   }
 
