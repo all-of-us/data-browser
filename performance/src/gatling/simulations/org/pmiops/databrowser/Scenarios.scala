@@ -22,6 +22,6 @@ object Scenarios {
     .exec(Pages.ViewSmokingProcedures.view)
     .exec(Pages.Home.home)
 
-  val allScenarios: List[ScenarioBuilder] = List(homePage)
+  val allScenarios: List[ScenarioBuilder] = List(homePage, smokingSearch)
 
 }
