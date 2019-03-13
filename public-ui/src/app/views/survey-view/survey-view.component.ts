@@ -8,6 +8,7 @@ import {ISubscription} from 'rxjs/Subscription';
 import {DataBrowserService, QuestionConcept, SurveyModule } from '../../../publicGenerated';
 import {GraphType} from '../../utils/enum-defs';
 import {TooltipService} from '../../utils/tooltip.service';
+import {element} from "protractor";
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -16,6 +17,7 @@ import {TooltipService} from '../../utils/tooltip.service';
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
   graphToShow = GraphType.None;
+  graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
   domainId: string;
   title ;
   subTitle;
@@ -217,58 +219,27 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showSubAnswerGraphs(sqa: any) {
     sqa.subExpanded = !sqa.subExpanded;
   }
-
-  public resetSelectedGraphs() {
-    this.graphToShow = GraphType.None;
-  }
-
-  public selectGraph(g, q: any, whichQuestion: string) {
-    if (whichQuestion === 'main') {
+  
+  public getGraphIntoView(elementName: string) {
+    
+    if (elementName === 'chartElement') {
       this.chartEl.nativeElement.scrollIntoView(
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
-    } else if (whichQuestion === 'sub1') {
+    } else if (elementName === 'subChartElement1') {
       this.subChartEl1.nativeElement.scrollIntoView(
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
-    } else if (whichQuestion === 'sub2') {
+    } else if (elementName === 'subChartElement2') {
       this.subChartEl2.nativeElement.scrollIntoView(
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
-    this.resetSelectedGraphs();
-    this.graphToShow = g;
-    switch (g) {
-      case GraphType.GenderIdentity:
-        q.selectedAnalysis = q.genderIdentityAnalysis;
-        break;
-      case GraphType.Age:
-        q.selectedAnalysis = q.ageAnalysis;
-        break;
-      case GraphType.RaceEthnicity:
-        q.selectedAnalysis = q.raceEthnicityAnalysis;
-        break;
-      default:
-        q.selectedAnalysis = q.genderAnalysis;
-        break;
-    }
   }
-
+  
   public graphAnswerClicked(achillesResult) {
     console.log('Graph answer clicked ', achillesResult);
   }
 
   public convertToNum(s) {
     return Number(s);
-  }
-
-  public showToolTip(g: string) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
-      return 'Gender chart';
-    } else if (g === 'Age') {
-      return this.tooltipText.ageChartHelpText;
-    } else if (g === 'Sources') {
-      return this.tooltipText.sourcesChartHelpText;
-    } else if (g === 'Race / Ethnicity') {
-      return 'Race / Ethnicity chart';
-    }
   }
 
 }

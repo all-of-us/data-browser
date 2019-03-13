@@ -151,24 +151,8 @@
                   </div>
 
                   <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions"
-                    #chartElement>
-                    <div class="graph-menu">
-                      <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
-                        [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,q,'main')"
-                        class="chart-choice">
-                        <span>{{g}}</span>
-                        <clr-tooltip>
-                          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                            <div class="tooltip-label">{{showToolTip(g)}}</div>
-                          </clr-tooltip-content>
-                        </clr-tooltip>
-                      </div>
-                    </div>
-                    <div class="chart">
-                      <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="q.selectedAnalysis" [selectedResult]="a"
-                        [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
-                    </div>
+                       (mouseenter)="getGraphIntoView('chartElement')" #chartElement>
+                    <app-survey-chart [graphButtons]="graphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a"></app-survey-chart>
                   </div>
                   <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
@@ -231,24 +215,8 @@
                           </div>
                         </div>
                         <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions"
-                             #subChartElement1>
-                          <div class="graph-menu">
-                            <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
-                                 [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,subQuestion,'sub1')"
-                                 class="chart-choice">
-                              <span>{{g}}</span>
-                              <clr-tooltip>
-                                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                                  <div class="tooltip-label">{{showToolTip(g)}}</div>
-                                </clr-tooltip-content>
-                              </clr-tooltip>
-                            </div>
-                          </div>
-                          <div class="chart">
-                            <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
-                                       [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
-                          </div>
+                             (mouseenter)="getGraphIntoView('subChartElement1')" #subChartElement1>
+                          <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"></app-survey-chart>
                         </div>
                         <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
                           <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
@@ -311,24 +279,8 @@
                                 </div>
                               </div>
                               <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions"
-                                   #subChartElement2>
-                                <div class="graph-menu">
-                                  <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
-                                       [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,subQuestion2,'sub2')"
-                                       class="chart-choice">
-                                    <span>{{g}}</span>
-                                    <clr-tooltip>
-                                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                                      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                                        <div class="tooltip-label">{{showToolTip(g)}}</div>
-                                      </clr-tooltip-content>
-                                    </clr-tooltip>
-                                  </div>
-                                </div>
-                                <div class="chart">
-                                  <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
-                                             [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
-                                </div>
+                                   (mouseenter)="getGraphIntoView('subChartElement2')" #subChartElement2>
+                                <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"></app-survey-chart>
                               </div>
                             </div>
                           </ng-container>

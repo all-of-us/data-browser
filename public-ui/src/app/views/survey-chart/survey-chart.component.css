@@ -1,0 +1,30 @@
+.survey-graph-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 9px;
+}
+
+.survey-chart-choice {
+    padding: 9px;
+    color: #216fb4;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+}
+
+.survey-chart-choice:hover {
+    color: #262262;
+}
+
+.survey-chart-choice.active::after {
+    content: '';
+    position: absolute;
+    width: 86%;
+    height: 5px;
+    background: #216fb4;
+    left: 5%;
+    bottom: -5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
