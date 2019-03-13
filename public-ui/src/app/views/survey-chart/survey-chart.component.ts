@@ -1,7 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {Concept} from "../../../publicGenerated/model/concept";
-import {GraphType} from "../../utils/enum-defs";
-import {TooltipService} from "../../utils/tooltip.service";
+import {GraphType} from '../../utils/enum-defs';
+import {TooltipService} from '../../utils/tooltip.service';
 
 @Component({
   selector: 'app-survey-chart',
@@ -9,7 +8,7 @@ import {TooltipService} from "../../utils/tooltip.service";
   styleUrls: ['./survey-chart.component.css']
 })
 export class SurveyChartComponent implements OnInit {
-  
+
   @Input() graphButtons: string[];
   @Input() question: any;
   @Input() selectedAnalysis: any;
@@ -20,11 +19,11 @@ export class SurveyChartComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
   }
-  
+
   public selectGraph(g, q: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
@@ -43,7 +42,7 @@ export class SurveyChartComponent implements OnInit {
         break;
     }
   }
-  
+
   public showToolTip(g: string) {
     if (g === 'Biological Sex' || g === 'Gender Identity') {
       return 'Gender chart';
