@@ -12,6 +12,6 @@
   </div>
 </div>
 <div class="chart">
-  <app-chart (click)="event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
+  <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
              [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
 </div>
