@@ -1,7 +1,22 @@
 .pm-layout {
-    display:grid;
-    grid-template-columns: 20% 1fr;
-    grid-column-gap: 18px;
+    display:flex;
+}
+.db-card-header {
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width:27em;
+    margin-top:-9px;
+    padding-bottom:18px;
+}
+.db-card-header div button{
+    padding:0 9px;
+}
+.group-name {
+    font-size: 1.3em;
+}
+.db-card-header div button.active {
+    border-bottom: 4px solid #216fb4;
 }
 .chart-layout {
     display:flex;
@@ -10,12 +25,24 @@
     align-items: center;
 }
 .chart-item {
-    max-width: calc((50%) - 18px);
-    min-width: 20rem ;
+    width: calc((50%) - 18px);
+    height: auto;
     flex-grow: 1;
 }
 .chart-item:last-of-type {
     width: 100%;
     max-width: calc((100%) - 18px);
     min-width: 20rem ;
+}
+button {
+    text-align: left;
+    padding:0;
+}
+
+.active {
+    font-weight: 900;
+}
+aside {
+    padding:18px;
+    padding-left:0;
 }

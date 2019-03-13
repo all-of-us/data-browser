@@ -1,8 +1,8 @@
 <div class="db-container">
-  {{title}}
+  <h1>{{title}}</h1>
   <div class="pm-layout">
     <aside>
-      <div *ngFor="let item of conceptGroups" class="button-item">
+      <div *ngFor="let item of conceptGroups;" class="button-item">
         <button (click)="showMeasurement(item, item.concepts[0])" [ngClass]="{active:selectedGroup === item}"
           class="btn btn-link"> {{item.groupName}} </button>
       </div>
@@ -18,11 +18,13 @@
     </div>
     <div class="db-card" *ngIf="!loading()">
       <div class="db-card-inner">
-        {{selectedGroup.groupName}}
-        <div *ngIf="selectedGroup.concepts.length > 1" class="col-md">
+        <div class="db-card-header">
+        <div class="group-name">{{selectedGroup.groupName}}</div>
+        <div *ngIf="selectedGroup.concepts.length > 1">
           <button *ngFor="let c of selectedGroup.concepts" [ngClass]="{active:selectedConcept === c}"
             (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
         </div>
+      </div>
         <div *ngIf="selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
           <div class="chart-layout">
             <!-- Loop through the genders we have results for showing the graph -->
