@@ -148,7 +148,7 @@
 }
 
 .info-text {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .graph-menu {
@@ -248,7 +248,7 @@
   padding:9px;
 }
 
-.tbl-exp-r:last-of-type {
+.tbl-exp-r {
   border-bottom: 1px solid #CCCCCC;
 }
 
@@ -256,7 +256,12 @@
   background: #f6f6f8;
   transition: .1s background ease-in;
 }
+
 .tbl-d.first {
   width:50%;
   min-width: 10rem;
+}
+
+.tbl-r {
+  text-align: left;
 }

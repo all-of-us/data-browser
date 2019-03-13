@@ -518,9 +518,11 @@ definitions:
           description: source count
           type: integer
           format: int64
-        subQuestion:
+        subQuestions:
           description: survey branching sub question
-          $ref: "#/definitions/QuestionConcept"
+          type: array
+          items:
+            $ref: "#/definitions/QuestionConcept"
 
 
   AchillesResultDist:

@@ -16,6 +16,7 @@ import {TooltipService} from '../../utils/tooltip.service';
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
   graphToShow = GraphType.None;
+  graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
   domainId: string;
   title ;
   subTitle;
@@ -36,6 +37,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   /* Show answers toggle */
   showAnswer = {};
   @ViewChild('chartElement') chartEl: ElementRef;
+  @ViewChild('subChartElement1') subChartEl1: ElementRef;
+  @ViewChild('subChartElement2') subChartEl2: ElementRef;
 
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
               private tooltipText: TooltipService) {
@@ -77,6 +80,17 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
+            if (a.subQuestions) {
+              for (const subQuestion of a.subQuestions) {
+                subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
+                for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
+                filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
+                  for (const question of subResult.subQuestions) {
+                    question.selectedAnalysis = question.genderAnalysis;
+                  }
+                }
+              }
+            }
           }
           const result = q.countAnalysis.surveyQuestionResults[0];
           if (didNotAnswerCount < 0 ) { didNotAnswerCount = 0; }
@@ -201,47 +215,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     a.expanded = !a.expanded;
   }
 
-  public resetSelectedGraphs() {
-    this.graphToShow = GraphType.None;
+  public showSubAnswerGraphs(sqa: any) {
+    sqa.subExpanded = !sqa.subExpanded;
   }
 
-  public selectGraph(g, q: any) {
-    this.chartEl.nativeElement.scrollIntoView(
-      { behavior: 'smooth', block: 'nearest', inline: 'start' });
-    this.resetSelectedGraphs();
-    this.graphToShow = g;
-    switch (g) {
-      case GraphType.GenderIdentity:
-        q.selectedAnalysis = q.genderIdentityAnalysis;
-        break;
-      case GraphType.Age:
-        q.selectedAnalysis = q.ageAnalysis;
-        break;
-      case GraphType.RaceEthnicity:
-        q.selectedAnalysis = q.raceEthnicityAnalysis;
-        break;
-      default:
-        q.selectedAnalysis = q.genderAnalysis;
-        break;
+  public getGraphIntoView(elementName: string) {
+    if (elementName === 'chartElement') {
+      this.chartEl.nativeElement.scrollIntoView(
+        { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    } else if (elementName === 'subChartElement1') {
+      this.subChartEl1.nativeElement.scrollIntoView(
+        { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    } else if (elementName === 'subChartElement2') {
+      this.subChartEl2.nativeElement.scrollIntoView(
+        { behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
   }
-
-  public graphAnswerClicked(achillesResult) {
-    console.log('Graph answer clicked ', achillesResult);
-  }
-
-  public convertToNum(s) {
-    return Number(s);
-  }
-
-  public showToolTip(g: string) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
-      return 'Gender chart';
-    } else if (g === 'Age at Occurrence') {
-      return this.tooltipText.ageChartHelpText;
-    } else if (g === 'Sources') {
-      return this.tooltipText.sourcesChartHelpText;
-    }
-  }
-
 }
