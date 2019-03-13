@@ -1,13 +1,16 @@
 .pm-layout {
     display:flex;
 }
+.db-card {
+    width:800px;
+}
 .db-card-header {
     display:flex;
     justify-content: space-between;
     align-items: baseline;
-    width:27em;
+    width:30em;
     margin-top:-9px;
-    padding-bottom:18px;
+    padding:18px;
 }
 .db-card-header div button{
     padding:0 9px;
@@ -34,15 +37,20 @@
     max-width: calc((100%) - 18px);
     min-width: 20rem ;
 }
+.chart-title {
+    text-align: center;
+}
 button {
     text-align: left;
     padding:0;
+    font-family: GothamBook, Arial, Helvetica, sans-serif;
+    outline: none;
 }
 
 .active {
+    font-family: GothamBold, Arial, Helvetica, sans-serif;
     font-weight: 900;
 }
 aside {
-    padding:18px;
-    padding-left:0;
+    padding-right: 18px;
 }
