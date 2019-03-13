@@ -134,14 +134,22 @@
     padding-bottom: calc( 18px * 3);
 }
 
-.sub-question-heading {
-    font-weight: bold;
-}
-
 .sub-question-text {
-    margin-left: 0.5%;
     text-align: left;
     font-weight: 500;
 }
 
+.survey-question-heading {
+    padding-top: 2%;
+    text-align: left;
+}
 
+.sub-table-1 {
+    margin-left: 2%;
+    width: 98%;
+}
+
+.sub-table-2 {
+    margin-left: 2%;
+    width: 98%;
+}
