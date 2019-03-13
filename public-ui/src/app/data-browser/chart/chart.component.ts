@@ -370,8 +370,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         backgroundColor: this.backgroundColor,
         // removed inline styling
         // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-      //  },
+        // fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        //  },
         tooltip: {
           headerFormat: `<span>
         <span style="font-size:.7em;">{point.key}</span> <br/>`,
@@ -445,7 +445,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         backgroundColor: 'transparent',
         // removed inline styling
         // style: {
-          // fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        // fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
         // },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
@@ -500,7 +500,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         backgroundColor: 'transparent',
         // removed inline styling
         // style: {
-          // fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        // fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
         // },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
