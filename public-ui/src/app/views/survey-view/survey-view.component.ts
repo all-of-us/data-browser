@@ -218,9 +218,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showSubAnswerGraphs(sqa: any) {
     sqa.subExpanded = !sqa.subExpanded;
   }
-  
+
   public getGraphIntoView(elementName: string) {
-    
     if (elementName === 'chartElement') {
       this.chartEl.nativeElement.scrollIntoView(
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
@@ -232,5 +231,4 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
   }
-  
 }
