@@ -151,4 +151,8 @@ export class AppComponent implements OnInit {
     head.appendChild(s);
   }
 
+  onActivate() {
+    window.scroll(0, 0);
+  }
+
 }
