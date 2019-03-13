@@ -41,3 +41,7 @@ Common-api/out/*
 **/*.iws
 **/build
 **/.gradle
+# These gradle directories/files churn on refresh
+**/gradle
+**/gradlew
+**/gradlew.bat
