@@ -19,6 +19,16 @@ const routes: Routes = [
     data: { title: 'Sign In' }
   },
   {
+    path: 'ehr',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
+    path: 'survey',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
     path: '',
     canActivate: [SignInGuard],
     canActivateChild: [SignInGuard],
@@ -27,9 +37,9 @@ const routes: Routes = [
       {
         path: '',
         data: {
-          title: 'Databrowser',
+          title: 'Data Browser',
           breadcrumb: {
-            value: 'Databrowser',
+            value: 'Data Browser',
           }
         },
         children: [{
@@ -42,7 +52,7 @@ const routes: Routes = [
           data: {
             title: 'View Survey Questions and Answers',
             breadcrumb: {
-              value: 'survey: :id',
+              value: ':id survey',
             }
           }
         },
@@ -52,33 +62,21 @@ const routes: Routes = [
           data: {
             title: 'View Full Results',
             breadcrumb: {
-              value: 'ehr: :id',
+              value: ':id Domain',
+            }
+          }
+        },
+        {
+          path: 'physical-measurements',
+          component: PhysicalMeasurementsComponent,
+          data: {
+            title: 'Physical Measurements from Enrollment',
+            breadcrumb: {
+              value: 'physical measurements'
             }
           }
         }
         ]
-      },
-
-      // {
-      //   path: 'quick-search/:dataType',
-      //   component: QuickSearchComponent,
-      //   data: { title: 'Quick Search' }
-      // },
-      {
-        path: 'survey/:id',
-        component: SurveyViewComponent,
-        data: {
-          title: 'View Survey Questions and Answers',
-          breadcrumb: {
-            value: 'survey',
-            intermediate: false
-          }
-        }
-      },
-      {
-        path: 'physical-measurements',
-        component: PhysicalMeasurementsComponent,
-        data: { title: 'Physical Measurements from Enrollment' }
       }
     ]
   },

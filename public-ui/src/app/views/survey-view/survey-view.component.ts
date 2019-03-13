@@ -15,7 +15,7 @@ import {TooltipService} from '../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  graphToShow = GraphType.BiologicalSex;
+  graphToShow = GraphType.None;
   domainId: string;
   title ;
   subTitle;
@@ -29,20 +29,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
   surveyName: string;
   conceptCodeTooltip: any;
-  binnedSurveyQuestions: string[] = ['1585864', '1585870', '1585873', '1585795', '1585802',
-    '1585820', '1585889', '1585890'];
-
   /* Have questions array for filtering and keep track of what answers the pick  */
   questions: any = [];
   searchText: FormControl = new FormControl();
   searchMethod = 'or';
-
   /* Show answers toggle */
   showAnswer = {};
   @ViewChild('chartElement') chartEl: ElementRef;
 
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
-     private tooltipText: TooltipService) {
+              private tooltipText: TooltipService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
@@ -70,15 +66,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.surveyName = this.survey.name;
         // Add Did not answer to each question
         for (const q of this.surveyResult.items) {
+          q.actualQuestionNumber = 0;
+          if (q.questions && q.questions.length > 0) {
+            q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
+          }
           // Get did not answer count for question and count % for each answer
           // Todo -- add this to api maybe
           let didNotAnswerCount  = this.survey.participantCount;
           q.selectedAnalysis = q.genderAnalysis;
-          for (const a of q.countAnalysis.results) {
+          for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
           }
-          const result = q.countAnalysis.results[0];
+          const result = q.countAnalysis.surveyQuestionResults[0];
           if (didNotAnswerCount < 0 ) { didNotAnswerCount = 0; }
           const notAnswerPercent = this.countPercentage(didNotAnswerCount);
           const didNotAnswerResult = {
@@ -91,13 +91,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             stratum4: 'Did not answer',
             stratum5: result.stratum5
           };
-          q.countAnalysis.results.push(didNotAnswerResult);
+          q.countAnalysis.surveyQuestionResults.push(didNotAnswerResult);
         }
 
         this.questions = this.surveyResult.items;
         // Sort count value desc
         for (const q of this.questions ) {
-          q.countAnalysis.results.sort((a1, a2) => {
+          q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
             if (a1.countValue > a2.countValue) { return -1; }
             if (a1.countValue < a2.countValue) { return 1; }
             return 0;
@@ -142,7 +142,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public searchQuestion(q: QuestionConcept) {
     // Todo , match all words maybe instead of any. Or allow some operators such as 'OR' 'AND'
     const text = this.searchText.value;
-
     let words = text.split(new RegExp(',| | and | or '));
     words = words.filter(w => w.length > 0
       && w.toLowerCase() !== 'and'
@@ -152,7 +151,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (this.searchMethod === 'and') {
       for (const w of words) {
         if (q.conceptName.toLowerCase().indexOf(w.toLowerCase()) === -1  &&
-          q.countAnalysis.results.filter(r =>
+          q.countAnalysis.surveyQuestionResults.filter(r =>
             r.stratum4.toLowerCase().indexOf(w.toLowerCase()) === -1 )) {
           return false;
         }
@@ -165,11 +164,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (re.test(q.conceptName)) {
       return true;
     }
-    const results = q.countAnalysis.results.filter(r => re.test(r.stratum4));
+    const results = q.countAnalysis.surveyQuestionResults.filter(r => re.test(r.stratum4));
     if (results.length > 0) {
       return true;
     }
-
     return false ;
   }
 
@@ -218,6 +216,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         break;
       case GraphType.Age:
         q.selectedAnalysis = q.ageAnalysis;
+        break;
+      case GraphType.RaceEthnicity:
+        q.selectedAnalysis = q.raceEthnicityAnalysis;
         break;
       default:
         q.selectedAnalysis = q.genderAnalysis;

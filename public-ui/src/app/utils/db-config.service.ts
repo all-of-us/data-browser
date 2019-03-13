@@ -26,10 +26,12 @@ export class DbConfigService {
   COUNT_ANALYSIS_ID = 3000;
   GENDER_ANALYSIS_ID = 3101;
   GENDER_IDENTITY_ANALYSIS_ID = 3107;
+  RACE_ETHNICITY_ANALYSIS_ID = 3108;
   AGE_ANALYSIS_ID = 3102;
   SURVEY_COUNT_ANALYSIS_ID = 3110;
   SURVEY_GENDER_ANALYSIS_ID = 3111;
   SURVEY_GENDER_IDENTITY_ANALYSIS_ID = 3113;
+  SURVEY_RACE_ETHNICITY_ANALYSIS_ID = 3114;
   SURVEY_AGE_ANALYSIS_ID = 3112;
   MEASUREMENT_AGE_ANALYSIS_ID = 3112;
   MEASUREMENT_VALUE_ANALYSIS_ID = 1900;
@@ -82,14 +84,14 @@ export class DbConfigService {
 
   /* Chart Styles */
   CHART_TITLE_STYLE = {
-    'color': '#262262', 'font-family': 'Gotham', 'font-size': '22px', 'font-weight': 'normal'
+    'color': '#262262', 'font-family': 'GothamBook', 'font-size': '22px', 'font-weight': 'normal'
   };
   DATA_LABEL_STYLE = {
-    'color': '#f6f6f8', 'font-family': 'Gotham', 'fontSize': '15px', 'padding': '10px',
+    'color': '#f6f6f8', 'font-family': 'GothamBook', 'fontSize': '15px', 'padding': '10px',
     'font-weight': '300', 'textOutline': 'none',
   };
   GI_DATA_LABEL_STYLE = {
-    'color': '#f6f6f8', 'font-family': 'Gotham', 'font-size': '22px',
+    'color': '#f6f6f8', 'font-family': 'GothamBook', 'font-size': '22px',
     'font-weight': '300', 'textOutline': 'none'
   };
 

@@ -46,6 +46,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   /* Show different graphs depending on domain we are in */
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts = false;
+  medlinePlusLink: string;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -101,11 +102,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
-            // Wait till last to load chard so it fits its container
-            setTimeout(() => this.toggleTopConcepts(), 500);
+           this.toggleTopConcepts();
           }
         }));
-
       // Set to loading as long as they are typing
       this.subscriptions.push(this.searchText.valueChanges.subscribe(
         (query) => this.loading = true));
@@ -133,12 +132,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     // Set the localStorage to empty so making a new search here does not follow to other pages
     localStorage.setItem('searchText', '');
     this.loading = false;
-    // Wait till last to load chart so it fits its container
-    setTimeout(() => this.toggleTopConcepts(), 500);
+    this.toggleTopConcepts();
   }
 
   private searchDomain(query: string) {
     // Unsubscribe from our initial search subscription if this is called again
+    this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
+      'medlineplus&v%3Asources=medlineplus-bundle&query='
+      + query;
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
     }

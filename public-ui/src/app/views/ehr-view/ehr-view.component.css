@@ -3,9 +3,21 @@
     width: 100%;
 }
 
+.page-header {
+    padding: 18px
+}
+.search-bar-container {
+    padding:18px;
+}
+
+.results {
+    padding:18px;
+    padding-top:36px;
+}
+
 .aka-text {
     width: 170px;
-    font-family: FFUnitStdLightItalic,Arial, Helvetica, sans-serif;
+    font-family: FFUnitStdLightItalic, Arial, Helvetica, sans-serif;
     font-style: italic;
     color: rgb(150 150 150);
     display: flex;
@@ -17,20 +29,26 @@
 }
 
 #domain-name {
-    padding-bottom: 12px;
-    font-size: 30px;
-    line-height: 31px;
+    font-size: 18px;
+    line-height: 18px;
+    display: inline;
+}
+
+.medline-link {
+    font-size: 14px;
+    color: black;
 }
 
 #domain-summary {
-    font-size: 23px;
+    font-size: 24px;
+    margin-top: 0;
     margin-bottom: 28px;
 }
 
-.domain-info-container {
+.domain-info-layout {
     display: flex;
-    align-items: center;
-    padding: 0  18px 
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 .top-concepts-chart {
@@ -39,20 +57,18 @@
     display: block;
 }
 
-
 .results-tbl-row-inner {
     width: 100%;
-    padding:  18px ;
+    padding: 18px;
     padding-bottom: none;
     border-left: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
     border-right: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
-
 .aka {
-    padding-left:  9px ;
-    padding-top:18px;
-    font-size:14px;
+    padding-left: 9px;
+    padding-top: 9px;
+    font-size: 14px;
 }
 
 .aka .info-icon {
@@ -96,16 +112,15 @@
 
 .icon-btn {
     position: relative;
-    right:  18px ;
+    right: 18px;
 }
-
 
 .tbl-r {
     border: none;
 }
 
 #answer-result {
-    width: 35%;
+    width: calc(47%);
 }
 
 @media (max-width: 600px) {

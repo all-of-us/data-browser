@@ -66,7 +66,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'lifestyle' : this.tooltipText.lifestyleSurvey};
     pmConceptGroups: ConceptGroup[];
     conceptIdNames = [
-      { conceptId: 1585855, conceptName: 'Lifetyle' },
+      { conceptId: 1585855, conceptName: 'Lifestyle' },
       { conceptId: 1585710, conceptName: 'Overall Health' },
       { conceptId: 1586134, conceptName: 'The Basics' }
     ];

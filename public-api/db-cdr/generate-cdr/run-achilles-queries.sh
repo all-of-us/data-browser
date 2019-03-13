@@ -43,6 +43,9 @@ then
   exit 1
 fi
 
+#Get the list of tables in the dataset
+tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
+
 # Next Populate achilles_results
 echo "Running achilles queries..."
 
@@ -102,10 +105,22 @@ group by stratum_2"
 # 7 Gender identity count
 echo "Getting gender identity count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
-select 0, 7 as analysis_id,  cast(gender_identity_concept_id as STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\`
-group by gender_identity_concept_id"
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, stratum_2, count_value,source_count_value)
+select 0, 7 as analysis_id, CAST(ob.value_source_concept_id as STRING) as stratum_1, c.concept_name as stratum_2, count(distinct p.person_id) as count_value, 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob on p.person_id=ob.person_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
+where ob.observation_source_concept_id=1585838
+group by ob.value_source_concept_id, c.concept_name"
+
+# 8 Getting race/ ethnicity counts from ppi data (Answers to gender/ ethnicity question in survey)
+echo "Getting race ethnicity counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, stratum_2, count_value,source_count_value)
+select 0, 8 as analysis_id, CAST(ob.value_source_concept_id as STRING) as stratum_1, c.concept_name as stratum_2, count(distinct p.person_id) as count_value, 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob on p.person_id=ob.person_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
+where ob.observation_source_concept_id=1586140
+group by ob.value_source_concept_id, c.concept_name"
 
 # Age decile 1 count
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -208,23 +223,48 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3107 as analysis_id,
 CAST(co1.condition_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Condition' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-(select COUNT(distinct p2.PERSON_ID) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p2
-inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2 on p2.person_id=co2.person_id
-where co2.condition_source_concept_id=co1.condition_concept_id and p2.gender_identity_concept_id = p1.gender_identity_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
-on p1.person_id = co1.person_id
-where co1.condition_concept_id > 0
-group by co1.condition_concept_id, p1.gender_identity_concept_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Condition' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct ob.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+on ob.person_id=co2.person_id
+where co2.condition_source_concept_id=co1.condition_concept_id and ob.observation_source_concept_id=1585838
+and ob.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on co1.person_id = ob1.person_id
+where co1.condition_concept_id > 0 and ob1.observation_source_concept_id=1585838
+group by co1.condition_concept_id, ob1.value_source_concept_id
 union all
-select 0, 3107 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Condition' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
-on p1.person_id = co1.person_id
+select 0, 3107 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Condition' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
 where co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
-group by co1.condition_source_concept_id, p1.gender_identity_concept_id"
+and ob1.observation_source_concept_id=1585838
+group by co1.condition_source_concept_id, ob1.value_source_concept_id"
+
+# Condition race ethnicity analysis
+# Calculating the race-ethnicity counts for condition concepts based on the answer of each person to ppi question 1586140
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0, 3108 as analysis_id,
+CAST(co1.condition_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Condition' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct ob.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+on ob.person_id=co2.person_id
+where co2.condition_source_concept_id=co1.condition_concept_id and ob.observation_source_concept_id=1586140
+and ob.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on co1.person_id = ob1.person_id
+where co1.condition_concept_id > 0 and ob1.observation_source_concept_id=1586140
+group by co1.condition_concept_id, ob1.value_source_concept_id
+union all
+select 0, 3108 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Condition' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
+and ob1.observation_source_concept_id=1586140
+group by co1.condition_source_concept_id, ob1.value_source_concept_id"
 
 # (400 age ) 3102 Number of persons with at least one condition occurrence, by condition_concept_id by age decile
 # Age Deciles : They will be  < 20, 20 - 29, 30 - 39, 40 - 49, 50 - 59, 60 - 69, 70 - 79, 80-89, 90+
@@ -442,26 +482,52 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3107 as analysis_id,
 CAST(co1.procedure_CONCEPT_ID AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Procedure' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-(select COUNT(distinct p2.PERSON_ID) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p2
-inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2
-on p2.person_id = co2.person_id where co2.procedure_source_concept_id=co1.procedure_concept_id and
-p2.gender_identity_concept_id=p1.gender_identity_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
-on p1.person_id = co1.person_id
-where co1.procedure_concept_id > 0
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Procedure' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct ob2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.procedure_source_concept_id=co1.procedure_concept_id and ob2.observation_source_concept_id=1585838 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.procedure_concept_id > 0 and ob1.observation_source_concept_id=1585838
 group by co1.procedure_concept_id,
-p1.gender_identity_concept_id
+ob1.value_source_concept_id
 union all
 select 0, 3107 as analysis_id,CAST(co1.procedure_source_CONCEPT_ID AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Procedure' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-COUNT(distinct p1.PERSON_ID) as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1
-inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1 on p1.person_id = co1.person_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Procedure' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
 where co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
-group by co1.procedure_source_concept_id,p1.gender_identity_concept_id"
+and ob1.observation_source_concept_id=1585838
+group by co1.procedure_source_concept_id,ob1.value_source_concept_id"
+
+#  3108 race ethnicity identity
+# Calculates race ethnicity counts for procedure concepts based on the people' answer to ppi question 1586140
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0, 3108 as analysis_id,
+CAST(co1.procedure_CONCEPT_ID AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Procedure' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct ob2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.procedure_source_concept_id=co1.procedure_concept_id and ob2.observation_source_concept_id=1586140 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.procedure_concept_id > 0 and ob1.observation_source_concept_id=1586140
+group by co1.procedure_concept_id,
+ob1.value_source_concept_id
+union all
+select 0, 3108 as analysis_id,CAST(co1.procedure_source_CONCEPT_ID AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Procedure' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
+where co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
+and ob1.observation_source_concept_id=1586140
+group by co1.procedure_source_concept_id,ob1.value_source_concept_id"
 
 
 # 600 age
@@ -620,24 +686,52 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3107 as analysis_id,
 CAST(co1.drug_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Drug' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-(select COUNT(distinct p2.PERSON_ID) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p2 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2
-on p2.person_id = co2.person_id where co2.drug_source_concept_id=co1.drug_concept_id and p2.gender_identity_concept_id = p1.gender_identity_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
-on p1.person_id = co1.person_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Drug' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct ob2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.drug_source_concept_id=co1.drug_concept_id and ob2.observation_source_concept_id=1585838 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
 where co1.drug_concept_id > 0
-group by co1.drug_concept_id,
-p1.gender_identity_concept_id
+and ob1.observation_source_concept_id=1585838
+group by co1.drug_concept_id, ob1.value_source_concept_id
 union all
 select 0, 3107 as analysis_id,CAST(co1.drug_source_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Drug' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
-on p1.person_id = co1.person_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Drug' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
 where co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
-group by co1.drug_source_concept_id,p1.gender_identity_concept_id"
+and ob1.observation_source_concept_id=1585838
+group by co1.drug_source_concept_id,ob1.value_source_concept_id"
+
+# Drug race ethnicity
+# Calculates race ethnicity counts for drug concepts based on the people' answer to ppi question 1586140
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0, 3108 as analysis_id,
+CAST(co1.drug_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Drug' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct ob2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.drug_source_concept_id=co1.drug_concept_id and ob2.observation_source_concept_id=1586140 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.drug_concept_id > 0
+and ob1.observation_source_concept_id=1586140
+group by co1.drug_concept_id, ob1.value_source_concept_id
+union all
+select 0, 3108 as analysis_id,CAST(co1.drug_source_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Drug' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
+where co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
+and ob1.observation_source_concept_id=1586140
+group by co1.drug_source_concept_id,ob1.value_source_concept_id"
 
 # Drug age
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -797,27 +891,54 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3107 as analysis_id,
 CAST(co1.observation_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Observation' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-(select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p2 on p2.person_id=co2.person_id
-where co2.observation_source_concept_id=co1.observation_concept_id and p2.gender_identity_concept_id = p1.gender_identity_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
-on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0
-group by co1.observation_concept_id, p1.gender_identity_concept_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Observation' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.observation_source_concept_id=co1.observation_concept_id and ob2.observation_source_concept_id=1585838 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.observation_concept_id > 0 and ob1.observation_source_concept_id=1585838
+group by co1.observation_concept_id, ob1.value_source_concept_id
 union all
 select 0, 3107 as analysis_id,
 CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Observation' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
-on p1.person_id = co1.person_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Observation' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
 where co1.observation_source_concept_id > 0
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
-group by co1.observation_source_concept_id, p1.gender_identity_concept_id"
+and ob1.observation_source_concept_id=1585838
+group by co1.observation_source_concept_id, ob1.value_source_concept_id"
+
+# Observation 3108 concept by race ethnicity
+# Calculates race ethnicity counts for observation concepts based on the people' answer to ppi question 1586140
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0, 3108 as analysis_id,
+CAST(co1.observation_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Observation' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.observation_source_concept_id=co1.observation_concept_id and ob2.observation_source_concept_id=1586140 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.observation_concept_id > 0 and ob1.observation_source_concept_id=1586140
+group by co1.observation_concept_id, ob1.value_source_concept_id
+union all
+select 0, 3108 as analysis_id,
+CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Observation' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
+where co1.observation_source_concept_id > 0
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
+and ob1.observation_source_concept_id=1586140
+group by co1.observation_source_concept_id, ob1.value_source_concept_id"
 
 # Observation (3102)	Number of persons with   concept id by  age decile  30+ yr old deciles
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -966,27 +1087,56 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0, 3107 as analysis_id,
 CAST(co1.measurement_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-(select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p2 on p2.person_id=co2.person_id
-where co2.measurement_source_concept_id=co1.measurement_concept_id and p2.gender_identity_concept_id=p1.gender_identity_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
-on p1.person_id = co1.person_id
-where co1.measurement_concept_id > 0
-group by co1.measurement_concept_id, p1.gender_identity_concept_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.measurement_source_concept_id=co1.measurement_concept_id
+and ob2.observation_source_concept_id=1585838 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.measurement_concept_id > 0 and ob1.observation_source_concept_id=1585838
+group by co1.measurement_concept_id, ob1.value_source_concept_id
 union all
 select 0, 3107 as analysis_id,
 CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
-COUNT(distinct p1.PERSON_ID) as count_value,
-COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
-on p1.person_id = co1.person_id
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
 where co1.measurement_source_concept_id > 0
 and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
-group by co1.measurement_source_concept_id, p1.gender_identity_concept_id"
+and ob1.observation_source_concept_id=1585838
+group by co1.measurement_source_concept_id, ob1.value_source_concept_id"
+
+# Measurement concept by race ethnicity
+# Calculates race ethnicity counts for measurement concepts based on the people' answer to ppi question 1586140
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0, 3108 as analysis_id,
+CAST(co1.measurement_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+(select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob2 on ob2.person_id=co2.person_id
+where co2.measurement_source_concept_id=co1.measurement_concept_id
+and ob2.observation_source_concept_id=1586140 and
+ob2.value_source_concept_id = ob1.value_source_concept_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 on ob1.person_id = co1.person_id
+where co1.measurement_concept_id > 0 and ob1.observation_source_concept_id=1586140
+group by co1.measurement_concept_id, ob1.value_source_concept_id
+union all
+select 0, 3108 as analysis_id,
+CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
+CAST(ob1.value_source_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
+COUNT(distinct ob1.PERSON_ID) as count_value,
+COUNT(distinct ob1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
+on ob1.person_id = co1.person_id
+where co1.measurement_source_concept_id > 0
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
+and ob1.observation_source_concept_id=1586140
+group by co1.measurement_source_concept_id, ob1.value_source_concept_id"
 
 # Measurement by age deciles
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1169,14 +1319,30 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 select 0,3113 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-CAST(p.gender_identity_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+CAST(p.value_source_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` p on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_identity_concept_id,sq.question_order_number
+where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0) and p.observation_source_concept_id=1585838
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.value_source_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc"
+
+# Survey question answers count by race-ethnicity
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+select 0,3114 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
+CAST(p.value_source_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` p on p.person_id = o.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
+On o.observation_source_concept_id=sq.question_concept_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0) and p.observation_source_concept_id=1586140
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.value_source_concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender identity(value_as_number not null)
@@ -1184,14 +1350,28 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 select 0,3113 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_as_number as string) as stratum_4,CAST(p.gender_identity_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+CAST(o.value_as_number as string) as stratum_4,CAST(p.value_source_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0)
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_identity_concept_id,sq.question_order_number
-order by CAST(sq.question_order_number as int64) asc"
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0) and p.observation_source_concept_id=1585838
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.value_source_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc;"
+
+# Survey question answers count by race-ethnicity(value_as_number not null)
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+select 0,3114 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+CAST(o.value_as_number as string) as stratum_4,CAST(p.value_source_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
+On o.observation_source_concept_id=sq.question_concept_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0) and p.observation_source_concept_id=1586140
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.value_source_concept_id,sq.question_order_number
+order by CAST(sq.question_order_number as int64) asc;"
 
 # Survey Question Answer Count by age decile  30+ yr old deciles
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1262,77 +1442,170 @@ and ((extract(year from o.observation_date) - p.year_of_birth) < 20)
 group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Condition Domain participant counts
-echo "Getting condition domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with condition_concepts as
-(select condition_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'),
-condition_source_concepts as
-(select condition_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'
-and co.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)),
-concepts as
-(select * from condition_concepts union all select * from condition_source_concepts)
-select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,(select count(distinct person) from concepts) as count_value,
-0 as source_count_value"
+if [[ "$tables" == *"_mapping_"* ]]; then
+    ### Mapping tables has the ehr fetched records linked to the dataset named 'ehr'. So, joining on the mapping tables to fetch only ehr concepts.
+    # Condition Domain participant counts
+    echo "Getting condition domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
+    with condition_concepts as
+    (select condition_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` mm on co.condition_occurrence_id =mm.condition_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` where src_dataset_id like '%ehr%')),
+    condition_source_concepts as
+    (select condition_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` mm on co.condition_occurrence_id=mm.src_condition_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` where src_dataset_id like '%ehr%')
+    and co.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)),
+    concepts as
+    (select * from condition_concepts union all select * from condition_source_concepts)
+    select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`) as STRING) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
 
-echo "Getting drug domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with drug_concepts as
-(select drug_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'),
-drug_source_concepts as
-(select drug_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI'
-and co.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)),
-concepts as
-(select * from drug_concepts union all select * from drug_source_concepts)
-select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3, (select count(distinct person) from concepts) as count_value, 0 as source_count_value"
+    echo "Getting drug domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
+    with drug_concepts as
+    (select drug_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` mde on mde.drug_exposure_id=co.drug_exposure_id
+    where c.vocabulary_id != 'PPI' and mde.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` where src_dataset_id like '%ehr%') ),
+    drug_source_concepts as
+    (select drug_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` mde on mde.src_drug_exposure_id=co.drug_exposure_id
+    where c.vocabulary_id != 'PPI' and mde.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` where src_dataset_id like '%ehr%')
+    and co.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)),
+    concepts as
+    (select * from drug_concepts union all select * from drug_source_concepts)
+    select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`) as STRING) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
 
-echo "Getting measurement domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with measurement_concepts as
-(select measurement_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and co.measurement_concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
-measurement_source_concepts as
-(select measurement_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and co.measurement_source_concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
-and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
-concepts as
-(select * from measurement_concepts union all select * from measurement_source_concepts)
-select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3, (select count(distinct person) from concepts) as count_value,
-0 as source_count_value"
+    echo "Getting measurement domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
+    with measurement_concepts as
+    (select measurement_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm on co.measurement_id=mm.measurement_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')),
+    measurement_source_concepts as
+    (select measurement_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm on co.measurement_id=mm.src_measurement_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')
+    and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
+    concepts as
+    (select * from measurement_concepts union all select * from measurement_source_concepts)
+    select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`) as STRING) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
 
-echo "Getting participant domain participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-with procedure_concepts as
-(select procedure_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
-procedure_source_concepts as
-(select procedure_source_concept_id as concept,co.person_id as person
-from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
-and co.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)),
-concepts as
-(select * from procedure_concepts union all select * from procedure_source_concepts)
-select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, (select count(distinct person) from concepts) as count_value,
-0 as source_count_value"
+    echo "Getting procedure domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, stratum_5, count_value, source_count_value)
+    with procedure_concepts as
+    (select procedure_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` mm on co.procedure_occurrence_id =mm.procedure_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` where src_dataset_id like '%ehr%')),
+    procedure_source_concepts as
+    (select procedure_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_source_concept_id=c.concept_id
+    join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` mm on co.procedure_occurrence_id=mm.src_procedure_occurrence_id
+    where c.vocabulary_id != 'PPI' and mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` where src_dataset_id like '%ehr%')
+    and co.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)),
+    concepts as
+    (select * from procedure_concepts union all select * from procedure_source_concepts)
+    select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3,
+    CAST((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`) as STRING) as stratum_5,
+    (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+else
+    ### Test data does not have the mapping tables, so this else block lets the script to fetch domain counts for test data
+    # Condition Domain participant counts
+    echo "Getting condition domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with condition_concepts as
+    (select condition_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'),
+    condition_source_concepts as
+    (select condition_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.condition_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'
+    and co.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)),
+    concepts as
+    (select * from condition_concepts union all select * from condition_source_concepts)
+    select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,(select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+
+    echo "Getting drug domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with drug_concepts as
+    (select drug_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'),
+    drug_source_concepts as
+    (select drug_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.drug_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI'
+    and co.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)),
+    concepts as
+    (select * from drug_concepts union all select * from drug_source_concepts)
+    select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3, (select count(distinct person) from concepts) as count_value, 0 as source_count_value"
+
+    echo "Getting measurement domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with measurement_concepts as
+    (select measurement_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and co.measurement_concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
+    measurement_source_concepts as
+    (select measurement_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and co.measurement_source_concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
+    and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
+    concepts as
+    (select * from measurement_concepts union all select * from measurement_source_concepts)
+    select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3, (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+
+    echo "Getting participant domain participant counts"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    with procedure_concepts as
+    (select procedure_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
+    procedure_source_concepts as
+    (select procedure_source_concept_id as concept,co.person_id as person
+    from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.procedure_source_concept_id=c.concept_id
+    where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
+    and co.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)),
+    concepts as
+    (select * from procedure_concepts union all select * from procedure_source_concepts)
+    select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, (select count(distinct person) from concepts) as count_value,
+    0 as source_count_value"
+fi
 
 echo "Getting physical measurements participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1387,16 +1660,29 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 select 0, 3107 as analysis_id,
 CAST(sm.concept_id AS STRING) as stratum_1,
-CAST(p1.gender_identity_concept_id AS STRING) as stratum_2,'Survey' as stratum_3,
+CAST(p1.value_source_concept_id AS STRING) as stratum_2,'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.person_gender_identity\` p1 inner join
-\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
-on p1.person_id = ob1.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` p1 on p1.person_id=ob1.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
-group by sm.concept_id, p1.gender_identity_concept_id"
+where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0) and p1.observation_source_concept_id=1585838
+group by sm.concept_id, p1.value_source_concept_id"
+
+# Race ethnicity breakdown of people who took each survey (Row for combinations of each survey and gender)
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
+select 0, 3108 as analysis_id,
+CAST(sm.concept_id AS STRING) as stratum_1,
+CAST(p1.value_source_concept_id AS STRING) as stratum_2,'Survey' as stratum_3,
+COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` p1 on p1.person_id=ob1.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
+On ob1.observation_source_concept_id=sq.question_concept_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
+where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0) and p1.observation_source_concept_id=1586140
+group by sm.concept_id, p1.value_source_concept_id"
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \

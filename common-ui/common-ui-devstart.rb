@@ -66,7 +66,7 @@ class CommonUiDevStart
   # Install ui dependencies with yarn
   def install_dependencies()
     common = Common.new
-    common.run_inline %W{docker-compose run --rm #{@ui_name} yarn install}
+    common.run_inline %W{docker-compose run --rm #{@ui_name} yarn install --frozen-lockfile}
   end
 
   def deploy_ui(cmd_name, args)
