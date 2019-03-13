@@ -503,8 +503,7 @@ img {
 }
 
 .db-container {
-  max-width: 1038px;
-  margin: 0 auto;
+  margin: 0 calc(10%);
 }
 
 .main-bg {
