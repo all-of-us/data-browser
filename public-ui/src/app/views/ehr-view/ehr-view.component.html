@@ -225,30 +225,16 @@
 
             <div class="row-expansion" *ngIf="r.expanded" #chartElement>
               <div class="graph-menu">
-                <ng-container *ngIf="ehrDomain.name.toLowerCase() != 'measurements'; else nonMeasurements">
-                  <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
-                       [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
-                    <span>{{g}}</span>
-                    <clr-tooltip>
-                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                        <div class="tooltip-label">{{showToolTip(g)}}</div>
-                      </clr-tooltip-content>
-                    </clr-tooltip>
-                  </div>
-                </ng-container>
-                <ng-template #nonMeasurements>
-                  <div *ngFor="let g of ['Values','Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
-                       [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
-                    <span>{{g}}</span>
-                    <clr-tooltip>
-                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                        <div class="tooltip-label">{{showToolTip(g)}}</div>
-                      </clr-tooltip-content>
-                    </clr-tooltip>
-                  </div>
-                </ng-template>
+                <div *ngFor="let g of graphButtons"
+                     [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
+                  <span>{{g}}</span>
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                    <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                      <div class="tooltip-label">{{showToolTip(g)}}</div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
+                </div>
               </div>
               <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
               </app-concept-charts>
