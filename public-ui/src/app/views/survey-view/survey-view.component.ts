@@ -8,7 +8,6 @@ import {ISubscription} from 'rxjs/Subscription';
 import {DataBrowserService, QuestionConcept, SurveyModule } from '../../../publicGenerated';
 import {GraphType} from '../../utils/enum-defs';
 import {TooltipService} from '../../utils/tooltip.service';
-import {element} from "protractor";
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -234,12 +233,4 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
   
-  public graphAnswerClicked(achillesResult) {
-    console.log('Graph answer clicked ', achillesResult);
-  }
-
-  public convertToNum(s) {
-    return Number(s);
-  }
-
 }
