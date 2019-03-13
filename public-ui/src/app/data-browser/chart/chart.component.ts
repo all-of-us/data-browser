@@ -499,7 +499,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: 'bar',
         backgroundColor: 'transparent',
         // removed inline styling
-        //style: {
+        // style: {
           // fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
         // },
       },
