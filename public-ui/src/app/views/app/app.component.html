@@ -2,7 +2,7 @@
 <clr-main-container class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
   <app-breadcrumb></app-breadcrumb>
     <!-- <div class="db-container"> -->
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="onActivate($event)" ></router-outlet>
   <!-- </div> -->
 </clr-main-container>
 <footer>
