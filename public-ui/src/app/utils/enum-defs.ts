@@ -4,7 +4,7 @@ export enum GraphType {
   RaceEthnicity = 'Race / Ethnicity',
   Age = 'Age',
   Sources = 'Sources',
-  MeasurementBins = 'Measurement Bins',
+  Values = 'Values',
   None = ''
 }
 

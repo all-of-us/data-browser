@@ -172,9 +172,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
-    if (this.ehrDomain.name === 'Measurements' && this.graphToShow === GraphType.BiologicalSex) {
-      this.graphToShow = GraphType.MeasurementBins;
-    }
   }
 
   public toggleSynonyms(conceptId) {
@@ -203,13 +200,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return;
     }
     this.resetSelectedGraphs();
-    // In the case of measurements we show the histogram of
-    // values in the place of normal gender graph.
-    if (this.ehrDomain.name === 'Measurements') {
-      this.graphToShow = GraphType.MeasurementBins;
-    } else {
-      this.graphToShow = GraphType.BiologicalSex;
-    }
+    this.graphToShow = GraphType.BiologicalSex;
     concepts.forEach(concept => concept.expanded = false);
     r.expanded = true;
   }
