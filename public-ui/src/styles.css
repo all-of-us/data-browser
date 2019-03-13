@@ -472,7 +472,7 @@ a:hover {
 body {
   background-color: #E0E0E1;
   /* overflow-x: hidden; */
-  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
+  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
   font-size: 18px;
   color: #262262;
   line-height: 1.5;
