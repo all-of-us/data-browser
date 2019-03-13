@@ -106,7 +106,8 @@ strong {
 }
 
 #pm-box {
-    max-width: calc(((100%/12)*5));
+    max-width: calc(((100%/12)*6) - 18px);
+    min-width: calc(((100%/12)*6) - 14px);
 }
 
 #pm-box .result-body {
@@ -115,9 +116,13 @@ strong {
 }
 
 @media (max-width: 900px) {
-    .result-box, #survey .result-box {
-        min-width: calc(((100%/12)*6) - 9px);
+    .result-box, #survey .result-box{
+        min-width: calc(((100%/12)*6) - 18px);
         margin-bottom: 18px;
+    }
+    #pm-box {
+        min-width: calc(((100%/12)*12) - 18px);
+
     }
     .result-box:nth-of-type(2), #survey .result-box:nth-of-type(2) {
         margin-right: 0;
