@@ -1,21 +1,56 @@
-.white-card-box {
-    min-height: 400px;
+.pm-layout {
+    display:flex;
 }
-.loading.white-card-box .row{
+.db-card {
+    width:800px;
+}
+.db-card-header {
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width:30em;
+    margin-top:-9px;
+    padding:18px;
+}
+.db-card-header div button{
+    padding:0 9px;
+}
+.group-name {
+    font-size: 1.3em;
+}
+.db-card-header div button.active {
+    border-bottom: 4px solid #216fb4;
+}
+.chart-layout {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.chart-item {
+    width: calc((50%) - 18px);
+    height: auto;
+    flex-grow: 1;
+}
+.chart-item:last-of-type {
+    width: 100%;
+    max-width: calc((100%) - 18px);
+    min-width: 20rem ;
+}
+.chart-title {
     text-align: center;
-    /* Todo align loading spinner better after design */
-    padding-top: 10%;
 }
-.chart-wrapper {
-    width: 336px;
-}
-
-/* Style the active sub buttons */
-button.active.btn-link {
-    font-weight: bolder;
+button {
+    text-align: left;
+    padding:0;
+    font-family: GothamBook, Arial, Helvetica, sans-serif;
+    outline: none;
 }
 
-.row.page-align {
-    margin-left: 0;
-    margin-right: 0;
+.active {
+    font-family: GothamBold, Arial, Helvetica, sans-serif;
+    font-weight: 900;
+}
+aside {
+    padding-right: 18px;
 }

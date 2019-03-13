@@ -100,9 +100,16 @@ strong {
 .result-bottom-link:hover {
     color: #262262;
 }
+.result-bottom-link:hover {
+    color:#262262;
+}
 
 #pm-box {
     max-width: calc(((100%/12)*5));
+    padding-top:9px;
+}
+#pm-box .result-body {
+    margin: 0;
 }
 
 #pm-box .result-body {

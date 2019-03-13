@@ -19,7 +19,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   loadingStack: any = [];
 
   // Todo put constants in a class for use in other views
-  chartType = 'histogram';
+  chartType = 'bar';
 
   // Total analyses
   genderAnalysis: Analysis = null;
@@ -50,7 +50,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
       this.selectedGroup = this.conceptGroups[0];
-      this.selectedConcept = this.selectedGroup.concepts[0];
+      // wait 1ms before triggering the graphs.
+      setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
       this.loadingStack.pop();
     });
 
