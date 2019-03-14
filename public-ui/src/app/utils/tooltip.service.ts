@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TooltipService {
+  biologicalSexChartHelpText = 'Sex assigned at birth. ';
+  genderIdentityChartHelpText = 'Gender identity refers to one’s internal sense of ' +
+    'gender (e.g. being a man, a woman, or genderqueer) that may or may not correspond ' +
+    'to a person’s sex assigned at birth or to a person’s secondary sex characteristics.';
   ageChartHelpText = 'The age at occurrence bar chart provides a binned age \n' +
     'distribution for participants at the time the medical concept ' +
     'being queried occurred in their records. \n' +

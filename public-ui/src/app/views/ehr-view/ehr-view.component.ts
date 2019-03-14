@@ -186,14 +186,16 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public showToolTip(g) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
-      return 'Gender chart';
-    }
-    if (g === 'Age at Occurrence') {
+    if (g === 'Biological Sex' ) {
+      return this.tooltipText.biologicalSexChartHelpText;
+    } else if (g === 'Gender Identity') {
+      return this.tooltipText.genderIdentityChartHelpText;
+    } else if (g === 'Age') {
       return this.tooltipText.ageChartHelpText;
-    }
-    if (g === 'Sources') {
+    } else if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
+    } else if (g === 'Race / Ethnicity') {
+      return 'Race / Ethnicity chart';
     }
   }
 

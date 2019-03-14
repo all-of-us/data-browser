@@ -44,8 +44,10 @@ export class SurveyChartComponent implements OnInit {
   }
 
   public showToolTip(g: string) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
-      return 'Gender chart';
+    if (g === 'Biological Sex' ) {
+      return this.tooltipText.biologicalSexChartHelpText;
+    } else if (g === 'Gender Identity') {
+      return this.tooltipText.genderIdentityChartHelpText;
     } else if (g === 'Age') {
       return this.tooltipText.ageChartHelpText;
     } else if (g === 'Sources') {
