@@ -223,4 +223,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return false;
     }
   }
+
+  public participantPercentage(count: number) {
+    if (!count || count <= 0) { return 0; }
+    let percent: number = count / this.totalParticipants;
+    percent = parseFloat(percent.toFixed(4));
+    return percent * 100;
+  }
 }
