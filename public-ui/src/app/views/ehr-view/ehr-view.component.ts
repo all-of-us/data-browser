@@ -47,6 +47,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts = false;
   medlinePlusLink: string;
+  graphButtons = [];
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -89,6 +90,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // a empty search returns top ordered by count_value desc
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
+      if (this.ehrDomain.name.toLowerCase() === 'measurements') {
+        this.graphButtons = ['Values', 'Biological Sex',
+          'Gender Identity', 'Race / Ethnicity', 'Age'];
+      } else {
+        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
+      }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
 
@@ -172,9 +179,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
-    if (this.ehrDomain.name === 'Measurements' && this.graphToShow === GraphType.BiologicalSex) {
-      this.graphToShow = GraphType.MeasurementBins;
-    }
   }
 
   public toggleSynonyms(conceptId) {
@@ -203,13 +207,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return;
     }
     this.resetSelectedGraphs();
-    // In the case of measurements we show the histogram of
-    // values in the place of normal gender graph.
-    if (this.ehrDomain.name === 'Measurements') {
-      this.graphToShow = GraphType.MeasurementBins;
-    } else {
-      this.graphToShow = GraphType.BiologicalSex;
-    }
+    this.graphToShow = GraphType.BiologicalSex;
     concepts.forEach(concept => concept.expanded = false);
     r.expanded = true;
   }

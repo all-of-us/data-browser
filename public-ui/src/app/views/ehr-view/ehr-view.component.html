@@ -225,7 +225,7 @@
 
             <div class="row-expansion" *ngIf="r.expanded" #chartElement>
               <div class="graph-menu">
-                <div *ngFor="let g of ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age']"
+                <div *ngFor="let g of graphButtons"
                      [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
                   <span>{{g}}</span>
                   <clr-tooltip>

@@ -81,12 +81,12 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     if (!this.analyses) {
       return;
     }
-    if (this.showGraph === GraphType.MeasurementBins) {
+    if (this.showGraph === GraphType.Values) {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
     this.unitNames = [];
     if (this.analyses && this.analyses.measurementValueGenderAnalysis
-      && this.showGraph === GraphType.MeasurementBins) {
+      && this.showGraph === GraphType.Values) {
       this.displayMeasurementGraphs = true;
       for (const aa of this.analyses.measurementValueGenderAnalysis) {
         this.unitNames.push(aa.unitName);
@@ -95,7 +95,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
   ngOnChanges() {
-    if (this.showGraph !== GraphType.MeasurementBins) {
+    if (this.showGraph !== GraphType.Values) {
       this.displayMeasurementGraphs = false;
     } else {
       this.displayMeasurementGraphs = true;
