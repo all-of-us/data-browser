@@ -166,9 +166,14 @@
                 </div>
               </ng-template>
               <div class="tbl-r-group">
-                <div class="body-lead info-text tbl-d">
-                  {{checkCount(r.countValue)}}
+                <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
+                  &le;{{r.countValue}}
                 </div>
+                <ng-template #Non20Counts>
+                  <div class="body-lead info-text tbl-d">
+                    {{r.countValue}}
+                  </div>
+                </ng-template>
                 <ng-template #noConceptSynonyms>
                   <div class="body-lead info-text tbl-d"></div>
                 </ng-template>

@@ -218,9 +218,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public checkCount(count: number) {
     if (count <= 20) {
-      return '<= ' + count;
+      return true;
     } else {
-      return count;
+      return false;
     }
   }
 }
