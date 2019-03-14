@@ -3,24 +3,48 @@ package org.pmiops.databrowser
 import io.gatling.core.Predef.scenario
 import io.gatling.core.structure.ScenarioBuilder
 
+import scala.concurrent.duration.{FiniteDuration, _}
+import scala.language.postfixOps
+
+case class ConfigurableScenario(name: String,
+                                builder: ScenarioBuilder,
+                                users: Int,
+                                time: FiniteDuration) {}
+
 sealed trait UserScenario { val name: String }
 case object HomePage extends UserScenario { val name = "Home Page" }
 case object UserStorySmoking extends UserScenario { val name = "User Story: Smoking" }
 
 /**
   * User scenarios are defined here. Scenarios can be comprised of different Pages.
+  *
+  * Scenario names must be unique which is why there is a bit of name duplication.
+  * In the case where we want to run the same scenario under multiple conditions,
+  * (i.e. different #s of users across different ramp up times) we have to give
+  * each condition a unique name, but also need the s
   */
 object Scenarios {
 
   val homePage: ScenarioBuilder = scenario(HomePage.name)
     .exec(Pages.Home.home)
 
-  val smokingSearch: ScenarioBuilder = scenario(UserStorySmoking.name)
+  val searchSmoke: ScenarioBuilder = scenario(UserStorySmoking.name)
     .exec(Pages.Home.home)
     .exec(Pages.Search.search("smoke"))
     .exec(Pages.ViewProcedures.view("smoke"))
     .exec(Pages.Home.home)
 
-  val allScenarios: List[ScenarioBuilder] = List(homePage, smokingSearch)
+  private val terms: List[String] = List("smoke", "diabetes", "cancer", "heart disease")
+  val domainSearchApi: List[ConfigurableScenario] = terms.flatMap { t =>
+    Configuration.userRampUpTimes.map { r =>
+      val name = s"Domain Search: $t: users: ${r._1}; time: ${r._2}"
+      ConfigurableScenario(name, scenario(name).exec(Pages.APIs.domainSearch(t)), r._1, r._2)
+    }
+  }
+
+  val configuredScenarios: List[ConfigurableScenario] = List(
+    ConfigurableScenario(HomePage.name, homePage, 10, 10 seconds),
+    ConfigurableScenario(UserStorySmoking.name, searchSmoke, 10, 10 seconds)
+  ) ++ domainSearchApi
 
 }
