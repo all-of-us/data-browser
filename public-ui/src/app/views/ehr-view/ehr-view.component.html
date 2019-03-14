@@ -101,8 +101,21 @@
                       mention of a medical concept in their records, but they will only be counted once. All
                       participant
                       counts are approximate to protect participant privacy. Participant counts are rounded to the
-                      nearest multiple of 20. Participant counts of 0 - 20 are returned as <= 20</div>
-                  </clr-tooltip-content> </clr-tooltip> </div> <div class="tbl-d  body-lead info-text">
+                      nearest multiple of 20. Participant counts of 0 - 20 are returned as <= 20
+                    </div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </div>
+              <div class="tbl-d body-lead info-text"> % of Total Participants
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                  <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                    <div class="tooltip-label">The overall participant count of this medical concept divided by the total number of participants
+                    </div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </div>
+              <div class="tbl-d  body-lead info-text">
               Vocabulary Code
               <clr-tooltip>
                 <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -166,8 +179,16 @@
                 </div>
               </ng-template>
               <div class="tbl-r-group">
+                <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
+                  &le; {{r.countValue | number}}
+                </div>
+                <ng-template #Non20Counts>
+                  <div class="body-lead info-text tbl-d">
+                    {{r.countValue | number}}
+                  </div>
+                </ng-template>
                 <div class="body-lead info-text tbl-d">
-                  {{checkCount(r.countValue)}}
+                  {{participantPercentage(r.countValue) | number}}
                 </div>
                 <ng-template #noConceptSynonyms>
                   <div class="body-lead info-text tbl-d"></div>

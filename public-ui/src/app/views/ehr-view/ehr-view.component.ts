@@ -218,9 +218,16 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public checkCount(count: number) {
     if (count <= 20) {
-      return '<= ' + count;
+      return true;
     } else {
-      return count;
+      return false;
     }
+  }
+
+  public participantPercentage(count: number) {
+    if (!count || count <= 0) { return 0; }
+    let percent: number = count / this.totalParticipants;
+    percent = parseFloat(percent.toFixed(4));
+    return percent * 100;
   }
 }

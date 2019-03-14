@@ -168,10 +168,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             const label = this.axis.defaultLabelFormatter.call(this);
             // Change <= 20 count to display '<= 20'
             if (label <= 20) {
-              return '<= 20';
+              return '&#8804; 20';
             }
             return label;
-          }
+          },
+          useHTML: true,
         },
         lineWidth: 1,
         lineColor: this.dbc.AXIS_LINE_COLOR,
