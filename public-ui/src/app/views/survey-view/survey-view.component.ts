@@ -178,7 +178,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return true;
     }
     const results = q.countAnalysis.surveyQuestionResults.filter(r => re.test(r.stratum4));
-    // Check if any of the sub questions in results or results of sub questions contains the search term
+    // Check if any of the sub questions in results or
+    // results of sub questions contains the search term
     for (const rs of q.countAnalysis.surveyQuestionResults.filter(
       r => r.subQuestions !== null)) {
       if (rs.subQuestions && rs.subQuestions.length > 0) {
