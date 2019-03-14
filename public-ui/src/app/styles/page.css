@@ -248,7 +248,7 @@
   padding:9px;
 }
 
-.tbl-exp-r {
+.tbl-exp-r:last-of-type {
   border-bottom: 1px solid #CCCCCC;
 }
 

@@ -262,12 +262,10 @@
             </div>
 
           </div>
-          <div class="results-grid">
-            <div *ngIf="!loading && items.length === 0">
-              <div class="">
+          <div class="results-grid" *ngIf="!loading && items.length === 0">
+           
                 <h5 class="no-results"> No results match your search. </h5>
-              </div>
-            </div>
+              
           </div>
         </div>
       </div>
