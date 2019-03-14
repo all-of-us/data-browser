@@ -15,7 +15,6 @@ import {TooltipService} from '../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  graphToShow = GraphType.None;
   graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
   domainId: string;
   title ;
@@ -179,6 +178,35 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return true;
     }
     const results = q.countAnalysis.surveyQuestionResults.filter(r => re.test(r.stratum4));
+    // Check if any of the sub questions in results or
+    // results of sub questions contains the search term
+    for (const rs of q.countAnalysis.surveyQuestionResults.filter(
+      r => r.subQuestions !== null)) {
+      if (rs.subQuestions && rs.subQuestions.length > 0) {
+        for (const sq of rs.subQuestions) {
+          if (re.test(sq.conceptName)) {
+            return true;
+          }
+          if (sq.countAnalysis.surveyQuestionResults.filter(r => re.test(r.stratum4)).length > 0) {
+            return true;
+          }
+          for (const rs2 of sq.countAnalysis.surveyQuestionResults.filter(
+            r => r.subQuestions !== null)) {
+            if (rs2.subQuestions && rs2.subQuestions.length > 0) {
+              for (const sq2 of rs2.subQuestions) {
+                if (re.test(sq2.conceptName)) {
+                  return true;
+                }
+                if (sq2.countAnalysis.surveyQuestionResults.filter(
+                  r => re.test(r.stratum4)).length > 0) {
+                  return true;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     if (results.length > 0) {
       return true;
     }

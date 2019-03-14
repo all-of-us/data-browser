@@ -156,7 +156,7 @@
                   </div>
                   <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
-                      <h6 class="sub-question-text" *ngIf="a.stratum4 !== subQuestion.conceptName">
+                      <h6 class="sub-question-text">
                         <clr-icon shape="child-arrow" size="25"></clr-icon> {{subQuestion.conceptName}}
                       </h6>
                       <div class="tbl-r sub-tbl-1">

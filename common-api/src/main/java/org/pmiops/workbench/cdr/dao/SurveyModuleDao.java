@@ -20,8 +20,8 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
           "from survey_module m\n" +
           "join achilles_results r on m.concept_id = r.stratum_1\n" +
           "join concept c on r.stratum_2 = c.concept_id\n" +
-          "join survey_question_map  sqm on sqm.question_concept_id = r.stratum_2\n" +
-          "where r.analysis_id = 3110 and sqm.sub=0\n" +
+          "join survey_question_map sqm on sqm.question_concept_id = r.stratum_2\n" +
+          "where r.analysis_id = 3110\n" +
           // Because we're using a native query we use MySQL match() here directly instead of matchConcept()
           // TODO: add AchillesResults entity, replace this with JQL
           "and (match(c.concept_name) against (?1 in boolean mode) > 0 or\n" +
