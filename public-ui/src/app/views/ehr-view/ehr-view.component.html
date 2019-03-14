@@ -167,11 +167,11 @@
               </ng-template>
               <div class="tbl-r-group">
                 <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
-                  &le; {{r.countValue}}
+                  &le; {{r.countValue | number}}
                 </div>
                 <ng-template #Non20Counts>
                   <div class="body-lead info-text tbl-d">
-                    {{r.countValue}}
+                    {{r.countValue | number}}
                   </div>
                 </ng-template>
                 <ng-template #noConceptSynonyms>
