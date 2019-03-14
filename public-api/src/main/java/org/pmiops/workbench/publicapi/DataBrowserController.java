@@ -582,7 +582,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                     mappedSubQuestions.add(TO_CLIENT_QUESTION_CONCEPT.apply(q));
                     matchingSurveyResult.setSubQuestions(mappedSubQuestions);
-                    //matchingSurveyResult.setSubQuestion(TO_CLIENT_QUESTION_CONCEPT.apply(q));
                 } else if (conceptPath.size() == 5) {
                     int questionConceptId1 = conceptPath.get(0);
                     int resultConceptId1 = conceptPath.get(1);
@@ -604,8 +603,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             }
                         }
                     }
-                    //SurveyQuestionResult matchingSurveyResult2 = mainQuestion2.getCountAnalysis().getSurveyQuestionResults().stream().filter(mr -> mr.getStratum3().equals(String.valueOf(resultConceptId2))).collect(Collectors.toList()).get(0);
-                    //matchingSurveyResult2.setSubQuestion(TO_CLIENT_QUESTION_CONCEPT.apply(q));
                 }
             }
         }
