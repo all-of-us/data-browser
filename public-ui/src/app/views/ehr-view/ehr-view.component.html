@@ -257,8 +257,21 @@
                   </clr-tooltip>
                 </div>
               </div>
-              <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-              </app-concept-charts>
+              <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <span>{{graphToShow}}</span>
+                  </div>
+                  <div class="col-xs-8">
+                    <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                    </app-concept-charts>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #NonSourceCharts>
+                <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                </app-concept-charts>
+              </ng-template>
             </div>
 
           </div>

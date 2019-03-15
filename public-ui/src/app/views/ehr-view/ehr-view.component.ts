@@ -48,6 +48,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   showTopConcepts = false;
   medlinePlusLink: string;
   graphButtons = [];
+  graphType = GraphType;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -92,9 +93,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // and these results don't trump the search results in case they come back slower
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
-          'Gender Identity', 'Race / Ethnicity', 'Age'];
+          'Gender Identity', 'Race / Ethnicity', 'Age', 'Sources'];
       } else {
-        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
+        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));

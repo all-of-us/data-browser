@@ -11,6 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
+import org.hibernate.annotations.Where;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -33,6 +37,7 @@ public class Concept {
     private List<String> synonyms = new ArrayList<>();
     private String synonymsStr;
     private String path;
+    private List<Criteria> criteriaRows = new ArrayList<>();
 
     public Concept() {}
 
@@ -49,7 +54,8 @@ public class Concept {
                 .sourceCountValue(a.getSourceCountValue())
                 .prevalence(a.getPrevalence())
                 .synonymsStr(a.getSynonymsStr())
-                .path(a.getPath());
+                .path(a.getPath())
+                .criteriaRows(new ArrayList());
     }
 
     @Id
@@ -242,6 +248,22 @@ public class Concept {
     public Concept synonyms(List<String> synonyms) {
         this.synonyms = synonyms;
         return this;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "concept")
+    @Where(clause = "synonyms like '%rank1%' ")
+    public List<Criteria> getCriteriaRows() {
+        return criteriaRows;
+    }
+    public void setCriteriaRows(List<Criteria> criteriaRows) {
+        this.criteriaRows = criteriaRows;
+    }
+    public Concept criteriaRows(List<Criteria> criteriaRows) {
+        this.criteriaRows = criteriaRows;
+        return this;
+    }
+    public void addCriteriaRow(Criteria row) {
+        this.criteriaRows.add(row);
     }
 
     @Override

@@ -4,6 +4,9 @@ import javax.persistence.GenerationType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,6 +32,7 @@ public class Criteria {
     private boolean attribute;
     private String path;
     private String synonyms;
+    private Concept concept;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -225,6 +229,19 @@ public class Criteria {
 
     public Criteria synonyms(String synonyms) {
         this.synonyms = synonyms;
+        return this;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="concept_id", insertable=false, updatable=false)
+    public Concept getConcept() {
+        return concept;
+    }
+    public void setConcept(Concept concept) {
+        this.concept = concept;
+    }
+    public Criteria concept(Concept concept) {
+        this.concept = concept;
         return this;
     }
 
