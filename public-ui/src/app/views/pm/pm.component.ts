@@ -41,7 +41,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   maleCount = 0;
   otherCount = 0;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService, private tooltipText: TooltipService) {
+  constructor(private api: DataBrowserService, public dbc: DbConfigService,
+              private tooltipText: TooltipService) {
 
   }
 
