@@ -92,13 +92,15 @@ export class TooltipService {
     'have values associated with them.\n' +
     'For example, “height” is a medical concept that has a ' +
     'measurement value (in centimeters).\n' +
-    'These concepts are categorized into different domains. Domains are types of medical information.\n' +
+    'These concepts are categorized into different domains. ' +
+    'Domains are types of medical information.\n' +
     'There are numerous domains of data in EHR records,\n' +
     'but some of the most common domains include conditions, drug exposures,' +
     ' measurements and procedures.';
   valueChartHelpText = 'Values provide the numeric result of an ' +
     'examination or test done on a participant. ' +
-    'For example, a participant’s measurement of their body temperature might have a value of 96.8 degrees. ' +
+    'For example, a participant’s measurement of their body ' +
+    'temperature might have a value of 96.8 degrees. ' +
     'Values can also be reported in different units, such as Fahrenheit or Celsius for body temperature.';
   constructor() { }
 
