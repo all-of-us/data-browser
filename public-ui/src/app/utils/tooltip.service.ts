@@ -101,7 +101,8 @@ export class TooltipService {
     'examination or test done on a participant. ' +
     'For example, a participant’s measurement of their body ' +
     'temperature might have a value of 96.8 degrees. ' +
-    'Values can also be reported in different units, such as Fahrenheit or Celsius for body temperature.';
+    'Values can also be reported in different units, ' +
+    'such as Fahrenheit or Celsius for body temperature.';
   constructor() { }
 
 }
