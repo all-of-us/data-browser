@@ -1,4 +1,6 @@
-:host {
+/* removed for skin test */
+/*
+/*:host {
     margin-bottom: 18px;
 }
 
@@ -55,7 +57,7 @@ input#s {
 }
 
 .widget {
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;   
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     font-weight: 500;
     width: 100%;
     color: rgba(255, 255, 255, 1)
@@ -184,6 +186,9 @@ input#s {
 
 #menu-mobile ul.sub-menu {
     /* position: static; */
+/*
+/*
+/*
     margin: 0.8rem;
 }
 
@@ -240,7 +245,9 @@ input#s {
 /* .main-navigation ul.sub-menu>li:last-child {
     padding-bottom: 1rem
 } */
-
+/*
+/*
+/*
 .main-navigation :not(.menu-item-has-children) :not(.sub-menu)>li {
     border-bottom: #d7d7d7 1px solid
 }
@@ -480,3 +487,4 @@ input#s {
     background-repeat: no-repeat;
     padding: 13px;
 }
+*/

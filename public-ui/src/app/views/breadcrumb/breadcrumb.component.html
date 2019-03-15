@@ -1,4 +1,5 @@
-<div class="breadcrumbs">
+<!-- * removed for skin testing * -->
+<!--<div class="breadcrumbs">
   <div class="breadcrumb">
     <a href="{{allOfUs}}/">Home</a>
   </div>
@@ -12,4 +13,8 @@
     [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}">
     <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label }}</a>
   </div>
-</div>
+</div> -->
+    <div class="breadcrumbs-container">
+			<ul id="breadcrumbs"><li class="item-home"><a class="bread-home" href="{{allOfUs}}/" title="Home">Home</a></li><li class="separator"> &gt; </li><li class="item-parent"><a class="bread-parent" href="{{allOfUs}}/data-research-tools/" title="Data &#038; Research Tools">Data &#038; Research Tools</a></li><li class="separator"> &gt; </li><li class="item-parent"><a class="bread-parent" href="{{allOfUs}}/data-research-tools/data-browser/" title="Data Browser">Data Browser</a></li><li class="separator"> &gt; </li><li class="item-active" title="{{ breadcrumb.label }}" *ngFor="let breadcrumb of breadcrumbs; let last = last"
+        [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}"><strong>{{ breadcrumb.label }}</strong></li></ul>
+		</div><!-- .breadcrumbs-container -->
