@@ -44,14 +44,20 @@ export class SurveyChartComponent implements OnInit {
   }
 
   public showToolTip(g: string) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
-      return 'Gender chart';
-    } else if (g === 'Age') {
+    if (g === 'Biological Sex') {
+      return this.tooltipText.biologicalSexChartHelpText;
+    }
+    if (g === 'Gender Identity') {
+      return this.tooltipText.genderIdentityChartHelpText;
+    }
+    if (g === 'Race / Ethnicity') {
+      return this.tooltipText.raceEthnicityChartHelpText;
+    }
+    if (g === 'Age') {
       return this.tooltipText.ageChartHelpText;
-    } else if (g === 'Sources') {
+    }
+    if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
-    } else if (g === 'Race / Ethnicity') {
-      return 'Race / Ethnicity chart';
     }
   }
 }
