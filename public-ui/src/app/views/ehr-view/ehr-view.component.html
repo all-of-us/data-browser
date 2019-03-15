@@ -48,7 +48,7 @@
                       <clr-tooltip>
                         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                         <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                          <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
+                          <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
                         </clr-tooltip-content>
                       </clr-tooltip>
                     </h5>
@@ -59,7 +59,7 @@
                       <clr-tooltip>
                         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                         <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                          <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
+                          <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
                         </clr-tooltip-content>
                       </clr-tooltip>
                     </h5>
@@ -85,7 +85,7 @@
               <clr-tooltip>
                 <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                 <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                  <div class="tooltip-label">{{domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
+                  <div class="tooltip-label">{{tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
                 </clr-tooltip-content>
               </clr-tooltip>
             </div>
@@ -139,7 +139,7 @@
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                   <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                    <div class="tooltip-label">{{conceptCodeHelpText}}</div>
+                    <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>

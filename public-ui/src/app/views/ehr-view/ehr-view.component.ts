@@ -92,9 +92,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // and these results don't trump the search results in case they come back slower
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
-          'Gender Identity', 'Race / Ethnicity', 'Age'];
+          'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
       } else {
-        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
+        this.graphButtons = ['Biological Sex', 'Gender Identity',
+          'Race / Ethnicity', 'Age at First Occurrence'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
@@ -186,14 +187,23 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public showToolTip(g) {
-    if (g === 'Biological Sex' || g === 'Gender Identity') {
-      return 'Gender chart';
+    if (g === 'Biological Sex') {
+      return this.tooltipText.biologicalSexChartHelpText;
     }
-    if (g === 'Age at Occurrence') {
-      return this.tooltipText.ageChartHelpText;
+    if (g === 'Gender Identity') {
+      return this.tooltipText.genderIdentityChartHelpText;
+    }
+    if (g === 'Race / Ethnicity') {
+      return this.tooltipText.raceEthnicityChartHelpText;
+    }
+    if (g === 'Age at First Occurrence') {
+      return this.tooltipText.ehrAgeChartHelpText;
     }
     if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
+    }
+    if (g === 'Values') {
+      return this.tooltipText.valueChartHelpText;
     }
   }
 
