@@ -94,7 +94,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.graphButtons = ['Values', 'Biological Sex',
           'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
       } else {
-        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
+        this.graphButtons = ['Biological Sex', 'Gender Identity',
+          'Race / Ethnicity', 'Age at First Occurrence'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
