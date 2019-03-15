@@ -369,9 +369,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
-        style: {
-          fontFamily: 'Gotham-Book'
-        },
+        // removed inline styling
+        // style: {
+        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        //  },
         tooltip: {
           headerFormat: `<span>
         <span style="font-size:.7em;">{point.key}</span> <br/>`,
@@ -443,9 +444,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: chartType,
         backgroundColor: 'transparent',
-        style: {
-          fontFamily: 'Gotham-Book'
-        },
+        // removed inline styling
+        // style: {
+        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        //  },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
@@ -497,9 +499,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: 'bar',
         backgroundColor: 'transparent',
-        style: {
-          fontFamily: 'Gotham-Book'
-        },
+        // removed inline styling
+        // style: {
+        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        //  },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
@@ -519,6 +522,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
+    if (this.domainType === 'physical measurements') {
+      seriesName = 'Age When Physical Measurement Was Taken';
+    } else if (this.domainType === 'ehr') {
+      seriesName = 'Age at First Occurrence in Participant Record';
+    }
     results = results.sort((a, b) => {
         const anum = Number(a[ageDecileStratum]);
         const bnum = Number(b[ageDecileStratum]);

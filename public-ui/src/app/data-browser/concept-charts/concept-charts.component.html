@@ -54,8 +54,8 @@
 
   <!-- show age totals  if we want -->
   <!-- AGE COLUMN CHART -->
-  <ng-container *ngIf="showGraph === graphType.Age">
-    <div class="chart" *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">
+  <ng-container *ngIf="showGraph === graphType.AgeAtFirstOccurrenceInParticipantRecord">
+    <div class="chart" *ngIf="showGraph === graphType.AgeAtFirstOccurrenceInParticipantRecord && analyses.ageAnalysis">
       <app-chart [analysis]="analyses.ageAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
                  [domainType]="'ehr'"> </app-chart>
     </div>

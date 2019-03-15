@@ -1,5 +1,5 @@
 strong {
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     color: #302C71;
 }
 
@@ -68,7 +68,7 @@ strong {
 
 .result-stat {
     color: #302C71;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 35px;
@@ -77,7 +77,7 @@ strong {
 
 .result-body {
     color: #302C71;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-sarif;
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     font-size: 14px;
     height: 100%;
     display: flex;

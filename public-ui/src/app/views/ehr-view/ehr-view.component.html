@@ -48,7 +48,7 @@
                       <clr-tooltip>
                         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                         <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                          <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
+                          <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
                         </clr-tooltip-content>
                       </clr-tooltip>
                     </h5>
@@ -59,16 +59,52 @@
                       <clr-tooltip>
                         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                         <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                          <div class="tooltip-label">{{matchingConceptsHelpText}}</div>
+                          <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
                         </clr-tooltip-content>
                       </clr-tooltip>
                     </h5>
                   </ng-template>
                 </span>
-                <h6 *ngIf="searchText.value.length > 0" class="primary-display medline-link">Interested in general
-                  health
-                  information related to "{{searchText.value}}"? &nbsp; <a href="{{medlinePlusLink}}" target="_blank">
-                    Search Medline Plus</a>.</h6>
+            <h6 *ngIf="searchText.value.length > 0" class="primary-display medline-link">Interested in general
+              health
+              information related to "{{searchText.value}}"? &nbsp; <a href="{{medlinePlusLink}}" target="_blank">
+                Search Medline Plus</a>.</h6>
+          </div>
+          <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
+            <div class=" db-alert">
+              <clr-alert [clrAlertClosable]="false" [clrAlertType]="info">
+                Note: {{items[0].vocabularyId}} {{items[0].conceptCode}} "{{items[0].conceptName}}"
+                maps to Standard Vocabulary {{standardConcepts[0].vocabularyId}}
+                {{standardConcepts[0].conceptCode}}.
+                Standard vocabularies capture data across a variety of source vocabularies.
+              </clr-alert>
+            </div>
+          </div>
+          <div class="tbl-r tbl-head">
+            <div class="tbl-d first body-lead info-text"> {{ehrDomain.name}}
+              <clr-tooltip>
+                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                  <div class="tooltip-label">{{tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
+                </clr-tooltip-content>
+              </clr-tooltip>
+            </div>
+            <div class="tbl-r-group">
+              <div class="tbl-d body-lead info-text"> Participants of <b>
+                {{totalParticipants | number}}</b>
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                  <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                    <div class="tooltip-label">The overall participant count reflected here is a count of all
+                      participants with electronic health record (EHR) information. Participants may have more than
+                      one
+                      mention of a medical concept in their records, but they will only be counted once. All
+                      participant
+                      counts are approximate to protect participant privacy. Participant counts are rounded to the
+                      nearest multiple of 20. Participant counts of 0 - 20 are returned as <= 20
+                    </div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
               </div>
               <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
                 <div class=" db-alert">
@@ -144,6 +180,31 @@
                         <div class="tbl-d body-lead info-text"> View graphs
                         </div>
                   </div>
+                </clr-tooltip-content>
+              </clr-tooltip>
+            </div>
+              <div class="tbl-d body-lead info-text">
+                Concept Code
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                  <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                    <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </div>
+              <div class="tbl-d body-lead info-text"> View graphs
+              </div>
+            </div>
+          </div>
+          <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
+               *ngFor="let r of standardConcepts.concat(items), let i = index">
+            <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
+
+              <div class="body-lead info-text tbl-d first"
+                   *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept !='S';else code_match_standard">
+                <div class="code-tooltip">
+                  <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
+                  </app-highlight-search>
                 </div>
                 <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
                   *ngFor="let r of standardConcepts.concat(items), let i = index">
@@ -156,7 +217,6 @@
                         </app-highlight-search>
                       </div>
                     </div>
-
                     <ng-template #code_match_standard>
                       <div class="body-lead info-text tbl-d first"
                         *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
@@ -258,8 +318,7 @@
                     <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
                     </app-concept-charts>
                   </div>
-
-                </div>
+                 </div>
                 <div class="results-grid" *ngIf="!loading && items.length === 0">
                   <h5 class="no-results"> No results match your search. </h5>
                 </div>

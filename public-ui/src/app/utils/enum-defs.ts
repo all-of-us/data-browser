@@ -2,7 +2,8 @@ export enum GraphType {
   BiologicalSex = 'Biological Sex',
   GenderIdentity = 'Gender Identity',
   RaceEthnicity = 'Race / Ethnicity',
-  Age = 'Age',
+  AgeAtFirstOccurrenceInParticipantRecord = 'Age at First Occurrence in Participant Record',
+  AgeWhenSurveyWasTaken = 'Age When Survey Was Taken',
   Sources = 'Sources',
   Values = 'Values',
   None = ''

@@ -1,12 +1,13 @@
 package org.pmiops.databrowser
 
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+
 import io.gatling.core.Predef._
 import io.gatling.core.json.Json
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
-
-import scala.util.parsing.json._
 
 /**
   * A "Page" should be a collection of API calls that are made when navigating to a specific
@@ -15,10 +16,7 @@ import scala.util.parsing.json._
   */
 object Pages {
 
-  /**
-    *
-    */
-  private object APIs {
+  object APIs {
     val config: HttpRequestBuilder = http("config").get("/v1/config")
     val genderCount: HttpRequestBuilder = http("gender-count")
       .get("/v1/databrowser/gender-count")
@@ -29,7 +27,8 @@ object Pages {
     val participantCount: HttpRequestBuilder = http("participant-count").get("/v1/databrowser/participant-count")
     val domainTotals: HttpRequestBuilder = http("domain-totals").get("/v1/databrowser/domain-totals")
     def domainSearch (searchTerm: String): HttpRequestBuilder = {
-      http("domain-totals").get("/v1/databrowser/domain-totals?searchWord=" + searchTerm)
+      def encodedTerm: String = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString).toLowerCase
+      http("domain-totals").get("/v1/databrowser/domain-totals?searchWord=" + encodedTerm)
     }
     def searchConcepts(postBody: String): HttpRequestBuilder = {
       http("search-concepts")
