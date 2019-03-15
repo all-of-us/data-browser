@@ -12,7 +12,7 @@ gradle gatlingRun
 ```
 
 Tests can also be run against a specific environment by specifying `-Denv=<ENV>`. 
-Available options for `env` are `test`, `staging`, `stable`, or `prod`:
+Available options for `env` are `local`, `test`, `staging`, `stable`, or `prod`:
 ```shell
 gradle gatlingRun -Denv=test
 ```
