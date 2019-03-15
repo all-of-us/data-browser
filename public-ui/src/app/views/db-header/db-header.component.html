@@ -19,8 +19,8 @@
 					<p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a>
 					</p>
 				</div>
-				<div class="mobile-nav">
-					<div id="nav-icon">
+				<div class="mobile-nav" (click)="clickMobileNav($event)">
+					<div  id="nav-icon">
 	            		<span></span>
 	            		<span></span>
 	            		<span></span>
@@ -33,7 +33,7 @@
 					<nav id="site-navigation" class="main-navigation">
 					<div class="menu-primary-container">
 						<ul id="menu-primary" class="main-menu">
-							<li class="menu-item menu-item-has-children">
+							<li (click)="clickMobileNavItem($event)" class="menu-item menu-item-has-children">
 								<a href="{{allOfUsUrl}}/about/">About</a>
 								<ul class="sub-menu">
 									<li class="icon_program-overview skinny menu-item"><a href="{{allOfUsUrl}}/about/program-overview/"><img src="{{allOfUsUrl}}/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_program-overview.png" />Program Overview</a></li>
@@ -63,7 +63,7 @@
 							<li class="icon_search">
 								<a><img src="{{allOfUsUrl}}/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png" /></a>
 									<ul class="sub-menu">
-										<li><form role="search" method="get" id="searchform" action="{{allOfUsUrl}}/"><input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="Search" /></form></li>
+										<li><form #f="ngForm" role="search" method="get" id="searchform" (ngSubmit)="headerSearch(f)"><input ngModel #headInput type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input [hidden]="true" type="submit" id="searchsubmit"  /><img (click)="headerSearch(f)" style="height:auto" src="{{allOfUsUrl}}/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png"></form></li>
 									</ul><!-- .sub-menu -->
 							</li><!-- .icon_search -->
 						</ul>

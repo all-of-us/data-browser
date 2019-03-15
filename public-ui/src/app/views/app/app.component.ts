@@ -156,41 +156,41 @@ export class AppComponent implements OnInit {
   }
 
 }
-(function() {
-/* mobile nav hamburger */
-var mobilenav = document.getElementsByClassName("mobile-nav");
-var i;
+// (function() {
+// /* mobile nav hamburger */
+// var mobilenav = document.getElementsByClassName("mobile-nav");
+// var i;
 
-for (i = 0; i < mobilenav.length; i++) {
-  mobilenav[i].addEventListener("click", function() {
-    this.classList.toggle("open");
-    document.querySelector(".main-menu").classList.toggle("open");
-  });
-}
-})();
+// for (i = 0; i < mobilenav.length; i++) {
+//   mobilenav[i].addEventListener("click", function() {
+//     this.classList.toggle("open");
+//     document.querySelector(".main-menu").classList.toggle("open");
+//   });
+// }
+// })();
 
-(function() {
-/* mobile nav accordion */
-var mobilenavacc = document.getElementsByClassName("menu-item");
-var i;
+// (function() {
+// /* mobile nav accordion */
+// var mobilenavacc = document.getElementsByClassName("menu-item");
+// var i;
 
-for (i = 0; i < mobilenavacc.length; i++) {
-  mobilenavacc[i].addEventListener("click", function() {
-    var nextup = this.lastElementChild;
-    nextup.classList.toggle("mobileopen");
-    this.classList.toggle("flip");
-  });
-}
-})();
+// for (i = 0; i < mobilenavacc.length; i++) {
+//   mobilenavacc[i].addEventListener("click", function() {
+//     var nextup = this.lastElementChild;
+//     nextup.classList.toggle("mobileopen");
+//     this.classList.toggle("flip");
+//   });
+// }
+// })();
 
-/** replaces search button in search form with image
-*/
-(function() {
-  var para = document.createElement("IMG");
-  para.setAttribute("src", "https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png");
-  document.body.appendChild(para);
+// /** replaces search button in search form with image
+// */
+// (function() {
+//   var para = document.createElement("IMG");
+//   para.setAttribute("src", "https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png");
+//   document.body.appendChild(para);
 
-var element = document.querySelector("#searchform")
-element.replaceChild(para, element.childNodes[1]);
+// var element = document.querySelector("#searchform")
+// element.replaceChild(para, element.childNodes[1]);
 
-})();
+// })();
