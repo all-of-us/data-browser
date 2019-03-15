@@ -95,7 +95,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
       } else {
         this.graphButtons = ['Biological Sex', 'Gender Identity',
-          'Race / Ethnicity', 'Age at First Occurrence'];
+          'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
@@ -196,7 +196,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (g === 'Race / Ethnicity') {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
-    if (g === 'Age at First Occurrence') {
+    if (g === 'Age at First Occurrence in Participant Record') {
       return this.tooltipText.ehrAgeChartHelpText;
     }
     if (g === 'Sources') {
