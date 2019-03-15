@@ -9,8 +9,6 @@ import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 
-import scala.util.parsing.json._
-
 /**
   * A "Page" should be a collection of API calls that are made when navigating to a specific
   * destination or performing a limited set of actions. These should be composable so larger
