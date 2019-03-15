@@ -85,16 +85,19 @@ export class TooltipService {
     'a source or standard vocabulary code.\n' +
     'In these instances, the concept code can be utilized to\n' +
     'query the data for the medical concept.';
-  ehrDomainHelpText = 'Electronic health records contain information about an individual’s health.\n' +
+  ehrDomainHelpText = 'Electronic health records contain information ' +
+    'about an individual’s health.\n' +
     'Medical concepts are similar to medical terms;\n' +
     'they capture medical information in individual records and may sometimes ' +
     'have values associated with them.\n' +
-    'For example, “height” is a medical concept that has a measurement value (in centimeters).\n' +
+    'For example, “height” is a medical concept that has a ' +
+    'measurement value (in centimeters).\n' +
     'These concepts are categorized into different domains. Domains are types of medical information.\n' +
     'There are numerous domains of data in EHR records,\n' +
     'but some of the most common domains include conditions, drug exposures,' +
     ' measurements and procedures.';
-  valueChartHelpText = 'Values provide the numeric result of an examination or test done on a participant. ' +
+  valueChartHelpText = 'Values provide the numeric result of an ' +
+    'examination or test done on a participant. ' +
     'For example, a participant’s measurement of their body temperature might have a value of 96.8 degrees. ' +
     'Values can also be reported in different units, such as Fahrenheit or Celsius for body temperature.';
   constructor() { }
