@@ -42,7 +42,5 @@ export class DbHeaderComponent implements OnInit {
 
   public headerSearch(f: NgForm) {
     window.location.href = this.allOfUsUrl + '/?s=' + f.value.s;
-
-
   }
 }
