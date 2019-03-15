@@ -15,7 +15,7 @@ import {TooltipService} from '../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
+  graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age When Survey Was Taken'];
   domainId: string;
   title ;
   subTitle;

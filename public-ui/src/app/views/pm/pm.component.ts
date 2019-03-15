@@ -6,6 +6,8 @@ import {Analysis} from '../../../publicGenerated/model/analysis';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {ConceptWithAnalysis} from '../../utils/conceptWithAnalysis';
 import {DbConfigService} from '../../utils/db-config.service';
+import { DomainType } from '../../utils/enum-defs';
+import {TooltipService} from '../../utils/tooltip.service';
 
 @Component({
   selector: 'app-physical-measurements',
@@ -17,6 +19,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   pageImage = '/assets/db-images/man-standing.png';
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
+  ageChartTitle = 'Age When Physical Measurement Was Taken';
 
   // Todo put constants in a class for use in other views
   chartType = 'bar';
@@ -31,13 +34,14 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   // Initialize to first group and concept, adjust order in groups array above
   selectedGroup: ConceptGroup;
   selectedConcept: ConceptWithAnalysis;
+  domainType = DomainType.PHYSICAL_MEASUREMENTS;
 
   // we save the total gender counts
   femaleCount = 0;
   maleCount = 0;
   otherCount = 0;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
+  constructor(private api: DataBrowserService, public dbc: DbConfigService, private tooltipText: TooltipService) {
 
   }
 

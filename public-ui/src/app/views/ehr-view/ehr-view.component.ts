@@ -92,9 +92,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // and these results don't trump the search results in case they come back slower
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
-          'Gender Identity', 'Race / Ethnicity', 'Age'];
+          'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
       } else {
-        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age'];
+        this.graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
@@ -195,14 +195,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (g === 'Race / Ethnicity') {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
-    if (g === 'Age') {
-      return this.tooltipText.ageChartHelpText;
+    if (g === 'Age at First Occurrence') {
+      return this.tooltipText.ehrAgeChartHelpText;
     }
     if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
     }
     if (g === 'Values') {
-      return 'Measurements taken from participant binned.'
+      return this.tooltipText.valueChartHelpText;
     }
   }
 

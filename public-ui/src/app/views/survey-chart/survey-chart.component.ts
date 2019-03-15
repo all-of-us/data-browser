@@ -31,7 +31,7 @@ export class SurveyChartComponent implements OnInit {
       case GraphType.GenderIdentity:
         q.selectedAnalysis = q.genderIdentityAnalysis;
         break;
-      case GraphType.Age:
+      case GraphType.AgeWhenSurveyWasTaken:
         q.selectedAnalysis = q.ageAnalysis;
         break;
       case GraphType.RaceEthnicity:
@@ -53,8 +53,8 @@ export class SurveyChartComponent implements OnInit {
     if (g === 'Race / Ethnicity') {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
-    if (g === 'Age') {
-      return this.tooltipText.ageChartHelpText;
+    if (g === 'Age When Survey Was Taken') {
+      return this.tooltipText.surveyAgeChartHelpText;
     }
     if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
