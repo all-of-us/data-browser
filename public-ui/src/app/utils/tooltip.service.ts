@@ -94,7 +94,7 @@ export class TooltipService {
     'measurement value (in centimeters).\n' +
     'These concepts are categorized into different domains. ' +
     'Domains are types of medical information.\n' +
-    'There are numerous domains of data in EHR records,\n' +
+    'There are numerous domains of data in EHR records, ' +
     'but some of the most common domains include conditions, drug exposures,' +
     ' measurements and procedures.';
   valueChartHelpText = 'Values provide the numeric result of an ' +
