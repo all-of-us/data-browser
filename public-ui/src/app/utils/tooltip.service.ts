@@ -7,30 +7,15 @@ export class TooltipService {
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
     'sex assigned at birth or to a person’s secondary sex characteristics.';
-  ehrAgeChartHelpText = 'The age at occurrence bar chart provides a binned age \n' +
-    'distribution for participants at the time the medical concept ' +
-    'being queried occurred in their records. \n' +
-    'If an individual’s record contains more than one mention of a concept, \n' +
-    'the age at occurrence is included for each mention. \n' +
-    'As a result, a participant may be counted more ' +
-    'than once in the distribution. ';
-  surveyAgeChartHelpText = 'The age when survey was taken bar chart \n' +
-    'displays the number of participants grouped by the age interval during which \n' +
-    'they answered each survey question. \n' +
-    'If a participant takes the same survey more than once while enrolled in the program, \n' +
-    'the chart will show each response in the relevant age ' +
-    'interval based on the participant’s age \n' +
-    'when the survey was taken. As a result, a participant may be counted more than once in the ' +
-    'age distribution chart.\n';
-  pmAgeChartHelpText = 'The age when physical measurement was taken bar chart displays ' +
-    'the number of participants grouped \n' +
-    'by the age interval during which they had their physical measurements taken. ' +
-    'If a participant has their physical measurements \n' +
-    'taken more than once while enrolled in the program, the chart will show each ' +
-    'measurement value in the relevant age interval \n' +
-    'based on the participant’s age when the measurement was taken. As a result, ' +
-    'a participant may be counted more than once \n' +
-    'in the age distribution chart.';
+  ehrAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at \n' +
+    'which medical concepts first occurred in participants \n' +
+    ' electronic health records. For example, if a medical concept occurred in a \n' +
+    'participant’s record at age 25 and again at age 43, 45 and 47 \n' +
+    'the participant is included once in the bar chart at the age of first occurrence, age 25.';
+  surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
+    'ages at which the participants took the indicated survey.';
+  pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
+    'which the participants had the physical measurement taken.';
   raceEthnicityChartHelpText = 'Race/ethnicity are categories that describe groups to \n' +
     'which individuals belong, identify with, or belong in the eyes of the community.';
   sourcesChartHelpText = 'Individual health records often contain medical ' +

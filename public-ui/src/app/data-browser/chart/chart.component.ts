@@ -522,6 +522,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
+    if (this.domainType === 'physical measurements') {
+      seriesName = 'Age When Physical Measurement Was Taken';
+    } else if (this.domainType === 'ehr') {
+      seriesName = 'Age at First Occurrence in Participant Record';
+    }
     results = results.sort((a, b) => {
         const anum = Number(a[ageDecileStratum]);
         const bnum = Number(b[ageDecileStratum]);
