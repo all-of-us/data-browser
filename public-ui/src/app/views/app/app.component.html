@@ -1,18 +1,13 @@
 <app-db-header></app-db-header>
 <clr-main-container class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
   <app-breadcrumb></app-breadcrumb>
-    <!-- <div class="db-container"> -->
+  <div class="site-content">
     <router-outlet (activate)="onActivate($event)" ></router-outlet>
-  <!-- </div> -->
+  </div><!-- .site-content -->
+  <div class="cta-content dark">
+				<img src="/assets/images/applyForAccess_btn.png" /><h4>Find out more about <a href="##">Data Access Levels</a> and <a href="##">How to Apply</a>.</h4>
+		</div><!-- .cta-content -->
 </clr-main-container>
-<footer>
-  <div class="banner-container">
-    <div class="banner-inner">
-      <div class="banner-btn"></div>
-      <p class="banner-text">Find out more about Data Access Levels and How to Apply. </p>
-    </div>
-  </div>
-</footer>
 <ng-template #login>
   <router-outlet></router-outlet>
 </ng-template>
