@@ -1,48 +1,75 @@
+:host {
+    padding: 1em;
+    display: block;
+}
+
 .pm-layout {
-    display:flex;
+    display: flex;
 }
 .db-card {
-    width:800px;
+    width:100%;
 }
 .db-card-header {
-    display:flex;
+    display: flex;
     justify-content: space-between;
     align-items: baseline;
-    width:30em;
-    margin-top:-9px;
-    padding:18px;
+    width: 100%;
+    flex-wrap: wrap;
+    
 }
-.db-card-header div button{
-    padding:0 9px;
+
+.db-card-header div button {
+    padding: 0 9px;
 }
-.group-name {
-    font-size: 1.3em;
+
+.group-name{
+    font-size: 1.4em;
+    white-space: nowrap;
+    width:fit-content;
+    padding:1em;
+    padding-top:.5em;
 }
+.group-option {
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+
 .db-card-header div button.active {
     border-bottom: 4px solid #216fb4;
 }
+
 .chart-layout {
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    padding-top:1em;
 }
+
 .chart-item {
     width: calc((50%) - 18px);
     height: auto;
-    flex-grow: 1;
 }
+.age-chart {
+    padding: 1em;
+    padding-left: 1.5em;
+    margin:0;
+}
+
 .chart-item:last-of-type {
     width: 100%;
     max-width: calc((100%) - 18px);
-    min-width: 20rem ;
+    min-width: 20rem;
 }
+
 .chart-title {
     text-align: center;
 }
+
 button {
     text-align: left;
-    padding:0;
+    padding: 0;
     font-family: GothamBook, Arial, Helvetica, sans-serif;
     outline: none;
 }
@@ -51,6 +78,41 @@ button {
     font-family: GothamBold, Arial, Helvetica, sans-serif;
     font-weight: 900;
 }
+
 aside {
     padding-right: 18px;
+}
+
+aside .button-item button {
+    font-size: 0.8em;
+}
+
+@media (max-width: 1168px) {
+    .pm-layout {
+        padding: 18px;
+    }
+    h1 {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 978px) {
+    .pm-layout {
+        flex-direction: column;
+    }
+    aside {
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: space-between;
+        margin: -1em;
+        margin-bottom:0px
+    }
+    aside .button-item {
+        padding: 18px;
+        padding-top: 0;
+    }
+    .chart-item {
+        width: 100%;
+        height: auto;
+    }
 }
