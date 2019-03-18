@@ -78,8 +78,4 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
             "order by c.name asc) " +
             "and c1.concept_class_id = 'Ingredient') ", nativeQuery = true)
     List<Concept> findDrugIngredientsByBrand(String query);
-
-    @Query(value = "select distinct c from Concept c left join FETCH c.criteriaRows as cr " +
-            "where cr.id in (select distinct id from Cr)")
-    List<Concept> findRolledCounts(Long parent_concept_id);
 }

@@ -123,4 +123,8 @@ public interface CriteriaDao extends CrudRepository<Criteria, Long> {
   List<Criteria> findCriteriaByTypeAndNameOrCode(@Param("type") String type,
                                                  @Param("value") String value);
 
+  @Query(value = "select * from criteria c where parent_id=" +
+          "(select parent_id from criteria where concept_id=:conceptId and synonyms like '%rank1%')" +
+          "order by cast(est_count as unsigned) desc")
+  List<Criteria> findCountCriteria(@Param("conceptId") Long conceptId);
 }
