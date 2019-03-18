@@ -69,8 +69,9 @@
 
 button {
     text-align: left;
-    padding: 0;
-    font-family: GothamBook, Arial, Helvetica, sans-serif;
+    padding:0;
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+
     outline: none;
 }
 

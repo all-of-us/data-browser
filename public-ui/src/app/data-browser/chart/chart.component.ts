@@ -162,7 +162,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         min: 20,
         labels: {
           style: {
-            fontSize: '18',
+            fontSize: '12px',
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -189,11 +189,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
-            fontSize: '18',
+            fontSize: '12px',
+            color: '#222222',
           },
         },
         lineWidth: 1,
-        lineColor: this.dbc.AXIS_LINE_COLOR
+        lineColor: this.dbc.AXIS_LINE_COLOR,
+        tickLength: 0
       },
       zAxis: {},
       legend: {
@@ -369,10 +371,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
-        // removed inline styling
-        // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        //  },
+        style: {
+        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
         tooltip: {
           headerFormat: `<span>
         <span style="font-size:.7em;">{point.key}</span> <br/>`,
@@ -444,10 +445,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: chartType,
         backgroundColor: 'transparent',
-        // removed inline styling
-        // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        //  },
+        style: {
+        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
@@ -499,10 +499,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: 'bar',
         backgroundColor: 'transparent',
-        // removed inline styling
-        // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        //  },
+        style: {
+        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
