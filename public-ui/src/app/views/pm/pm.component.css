@@ -54,3 +54,7 @@ button {
 aside {
     padding-right: 18px;
 }
+
+.participant-count {
+    text-align: center;
+}

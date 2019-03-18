@@ -276,6 +276,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 public ConceptAnalysis apply(ConceptAnalysis ca) {
                     return new ConceptAnalysis()
                             .conceptId(ca.getConceptId())
+                            .countAnalysis(ca.getCountAnalysis())
                             .genderAnalysis(ca.getGenderAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
                             .raceEthnicityAnalysis(ca.getRaceEthnicityAnalysis())
@@ -676,7 +677,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
                     aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                 }
-                if(analysisId == GENDER_ANALYSIS_ID){
+                if (analysisId == COUNT_ANALYSIS_ID) {
+                    conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                }else if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
