@@ -25,7 +25,6 @@
               (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
           </div>
         </div>
-      </div>
         <div class="chart-layout"
           *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
           <p *ngIf="selectedConcept.conceptId === '903111' || selectedConcept.conceptId === '903120'" class="participant-count">Participant count: {{selectedConcept.analyses.countAnalysis.results[0].countValue}}</p>

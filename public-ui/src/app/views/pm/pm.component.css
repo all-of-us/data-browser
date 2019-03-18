@@ -74,6 +74,10 @@ button {
     outline: none;
 }
 
+.participant-count {
+    margin-left: 30%;
+}
+
 .active {
     font-family: GothamBold, Arial, Helvetica, sans-serif;
     font-weight: 900;
@@ -81,10 +85,6 @@ button {
 
 aside {
     padding-right: 18px;
-}
-
-.participant-count {
-    text-align: center;
 }
 
 aside .button-item button {
