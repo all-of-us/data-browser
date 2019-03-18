@@ -47,25 +47,25 @@
           <div class="info-text"><em>Note: The survey questions appear in the order in which people actually took the survey.</em> </div>
           <div class="no-results" *ngIf="searchText.value.length > 0">
             <p class="results-heading no-results" *ngIf="questions.length === 0 && !loading">
-              <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <mark>
-                  {{searchText.value}}</mark>.
+              <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
+                  {{searchText.value}}</strong>.
                 <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
                     keyword</button> </span>
               </span>
-              <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <mark>
-                  {{searchText.value}}</mark>.
+              <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <strong>
+                  {{searchText.value}}</strong>.
                 <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
                     search</button></span>
               </span>
             </p>
             <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
               <span *ngIf="searchMethod==='or'">
-                <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <mark>{{searchText.value}}</mark>.
+                <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <strong>{{searchText.value}}</strong>.
                 <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
               </span>
               <span *ngIf="searchMethod==='and'">
                 <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
-                  <mark>{{searchText.value}}</mark>.</span>
+                  <strong>{{searchText.value}}</strong>.</span>
                 <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
               </span>
             </p>
