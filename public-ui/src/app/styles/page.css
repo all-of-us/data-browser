@@ -148,7 +148,9 @@
 }
 
 .info-text {
-  font-size: 13px;
+  font-size: 16px;
+  align-items: center;
+  display: flex;
 }
 
 .graph-menu {
@@ -246,6 +248,10 @@
   cursor: pointer;
   transition: .2s background ease-out;
   padding:9px;
+}
+.tbl-exp-r *.tbl-exp-r {
+  border-left: none;
+  border-right: none;
 }
 
 .tbl-exp-r {

@@ -55,7 +55,7 @@ input#s {
 }
 
 .widget {
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;   
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     font-weight: 500;
     width: 100%;
     color: rgba(255, 255, 255, 1)
@@ -406,7 +406,7 @@ input#s {
         padding: 0;
         width: 140px;
         white-space: pre-wrap;
-        font-family: unit, Arial, Helvetica, sans-serif;
+        font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
         font-weight: 500;
         cursor: pointer;
         font-size: 0;
