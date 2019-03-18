@@ -258,15 +258,29 @@
                 </div>
               </div>
               <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-                <div class="row">
-                  <div class="col-xs-4">
-                    <span>{{graphToShow}}</span>
+                <div class="row" *ngIf="r.vocabularyId === 'SNOMED'; else NonRolledUp">
+                  <div class="col-xs-6">
+                    <div class="concept-code-info">
+                      SNOMED Code: {{r.conceptCode}} <br>
+                      OMOP Concept ID: {{r.conceptId}} <br><br>
+                      <span>Count Breakdown (SNOMED)</span> <br><br>
+                      <button class="icon-btn" (click)="expandCount(r)">
+                        <clr-icon *ngIf="!r.countExpanded" shape="caret" dir="right"></clr-icon>
+                        <clr-icon *ngIf="r.countExpanded" shape="caret" dir="down"></clr-icon>
+                      </button>
+                    </div>
                   </div>
-                  <div class="col-xs-8">
+                  <div class="col-xs-6">
                     <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
                     </app-concept-charts>
                   </div>
                 </div>
+                <ng-template #NonRolledUp>
+                  <div class="row" *ngIf="r.vocabularyId === 'SNOMED'">
+                    <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                    </app-concept-charts>
+                  </div>
+                </ng-template>
               </ng-container>
               <ng-template #NonSourceCharts>
                 <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">

@@ -201,6 +201,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
   }
+  
+  public expandCount(r: any) {
+    console.log(r);
+    r.countExpanded = !r.countExpanded;
+    console.log('count expanded');
+  }
 
   public expandRow(concepts: any[], r: any) {
     if (r.expanded) {
