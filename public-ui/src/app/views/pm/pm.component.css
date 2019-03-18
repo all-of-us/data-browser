@@ -74,6 +74,10 @@ button {
     outline: none;
 }
 
+.participant-count {
+    margin-left: 30%;
+}
+
 .active {
     font-family: GothamBold, Arial, Helvetica, sans-serif;
     font-weight: 900;
@@ -116,3 +120,4 @@ aside .button-item button {
         height: auto;
     }
 }
+

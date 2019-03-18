@@ -92,7 +92,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // and these results don't trump the search results in case they come back slower
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
-          'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence'];
+          'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
       } else {
         this.graphButtons = ['Biological Sex', 'Gender Identity',
           'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
