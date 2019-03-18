@@ -265,3 +265,27 @@
 .tbl-r {
   text-align: left;
 }
+
+/**** ##MAILCHIMP ***/
+#mc_embed_signup {
+  text-align: left;
+  background: transparent;
+  position: relative;
+}
+#mc_embed_signup .mc-field-group input {
+  height: 50px;
+  border: 1px solid;
+  margin-bottom: 0;
+  vertical-align: text-bottom;
+}
+#mc_embed_signup .clear input {
+  margin-top: .6rem;
+  margin-bottom: 1rem;
+}
+.mc-field-group {
+  margin-top: .6rem;
+}
+.mc-field-group input {
+  width: 100%;
+	max-width: 320px;
+}

@@ -6,9 +6,9 @@
 
 
 .mc-field-group input, #mce-EMAIL {
-    font-family: unit, Helvetica, sans-serif;
+    font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: .58333rem;
     border-bottom: 2px solid;
     background:white;
     padding:0.8rem;
@@ -22,7 +22,7 @@
 
 
 #colophon .footer-widget .button {
-    font-family: unit, Helvetica, sans-serif;
+    font-family: 'FFUnitStdBold', 'Helvetica', sans-serif;
     font-weight: 400;
     transition: background 150ms ease-in-out;
     background: rgba(38, 34, 98, 1);
@@ -58,13 +58,16 @@
     margin-block-start: 0;
     padding: 1rem
 }
-
 #colophon .footer-widget #mc_embed_signup {
-    text-align: center;
+    text-align: left;
     background: 0 0;
     position: relative
 }
-
+@media only screen and (min-width: 1168px) {
+  #colophon .footer-widget #mc_embed_signup {
+    text-align: center;
+  }
+}
 .button:focus, .button:hover, a:focus, a:hover, button:focus, button:hover {
     color: rgba(33, 111, 180, 1);
     cursor: pointer
@@ -150,7 +153,7 @@
 }
 
 .mc-field-group {
-    margin-top: .6rem
+    margin-top: 0;
 }
 
 .mc-field-group input {

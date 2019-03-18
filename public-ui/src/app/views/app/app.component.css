@@ -1,44 +1,18 @@
-
-
-#workbench-header {
-    height: 40px;
-    background: white;
+/* ##extra div */
+div.dark {
+  background-color: #f0f0f1;
+  padding: 2rem 0;
+  display: flex;
+	justify-content: center;
+	align-items: center;
 }
-#social {
-    text-align: right;
+div.dark img {
+	float: left;
+	margin-right: 1rem;
+	height: 70px;
+	width: auto;
 }
-
-footer {
-    background: url('/assets/backgrounds/background-pattern_invert.png');
-    height: 200px;
-    background-position-y: 1rem;
-   
-}
-
-.banner-container {
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content:space-evenly;
-    padding: 1rem;
-}
-
-.banner-btn {
-    cursor: pointer;
-    background: url('/assets/images/applyForAccess_btn.png');
-    width: 100px;
-    height: 100px;
-}
-.banner-btn,.banner-text{
-    display:inline-block;
-    padding:.25rem;
-
-}
-.banner-inner{
-    display: flex;
-    align-items: center;
-}
-.banner-text{
-    margin-top:0;
-
+div.dark h3,
+div.dark h4 {
+  margin-top: 0;
 }
