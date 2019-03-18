@@ -713,6 +713,10 @@ definitions:
       conceptId:
         description: concept id
         type: string
+      countAnalysis:
+        description: count analysis
+        type: object
+        $ref: "#/definitions/Analysis"
       genderAnalysis:
         description: gender analysis
         type: object
