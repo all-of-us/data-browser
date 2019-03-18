@@ -62,12 +62,11 @@
 }
 
 #db-desc {
-  text-align: justify;
   padding: 18px;
   padding-bottom:63px;
   margin: 0 auto;
   line-height: 2.0;
-  font-family: GothamLight,sans-serif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-size:20px;
 }
 
