@@ -44,7 +44,7 @@
 }
 
 .body-default, p {
-  font-family: GothamLight,sans-serif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -197,7 +197,7 @@
 
 .tbl-r-group {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   width: 30rem;
 }
@@ -263,7 +263,7 @@
 }
 
 .tbl-d.first {
-  width:50%;
+  width: 30%;
   min-width: 10rem;
 }
 

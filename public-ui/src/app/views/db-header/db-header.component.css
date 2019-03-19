@@ -84,7 +84,8 @@ input#s {
 }
 
 .widget-header .widget a {
-    text-decoration: none
+    text-decoration: none;
+    color: rgba(33,111,180,1);
 }
 
 :after {
@@ -357,7 +358,6 @@ input#s {
     }
     .icon_search img {
         width: 22px;
-        vertical-align: text-bottom;
         margin-right: 1rem;
         cursor: pointer;
         display: inline-block
@@ -395,7 +395,7 @@ input#s {
         color: #fff;
     }
     ul.main-menu li.icon_search a:hover {
-        background: 0 0
+        background: 0 0;
     }
     ul.sub-menu li[class*=icon_]:hover {
         border-bottom: rgba(38, 34, 98, 1) solid 2px;
@@ -404,7 +404,6 @@ input#s {
     #menu-primary ul.sub-menu li[class*=icon_] {
         display: inline-block;
         padding: 0;
-        width: 140px;
         white-space: pre-wrap;
         font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
         font-weight: 500;
@@ -427,6 +426,16 @@ input#s {
         padding-bottom: 24px;
         width: auto;
     }
+    #menu-primary ul.sub-menu li {
+  display: inline-block;
+  padding: 0 30px;
+  width: 160px;
+  white-space: pre-wrap;
+}
+    #menu-primary ul.sub-menu li.skinny {
+      width: 125px;
+      padding: 0 30px;
+  }
     #menu-primary li.icon_search ul.sub-menu li {
         width: auto;
         padding: 1rem
@@ -444,8 +453,8 @@ input#s {
     #menu-primary>li a {
         width: 100%;
         padding: 18px;
-        font-family: FFUnitStdMedium, Helvetica, sans-serif;
-        font-weight: 500;
+        font-family: 'FFUnitStdMedium', 'Helvetica', sans-serif;
+        font-weight: normal;
     }
     .main-menu>li:hover>ul {
         left: 0;
@@ -460,14 +469,14 @@ input#s {
         top: 60px!important
     }
     #menu-primary ul.sub-menu li[class*=icon_] a img {
-        width: 50px;
+        height: 50px;
         margin: 0 auto .5rem;
         display: block
     }
     #searchform {
         width: 20rem;
         margin: 0 auto;
-        padding-top: 0;
+
     }
 }
 
@@ -479,4 +488,8 @@ input#s {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     padding: 13px;
+    bottom: 40px;
+    position: absolute;
+    left: 65%;
+
 }
