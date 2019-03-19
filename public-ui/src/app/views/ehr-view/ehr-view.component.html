@@ -239,7 +239,7 @@
             <div class="row-expansion" *ngIf="r.expanded" #chartElement>
               <div class="graph-menu">
                 <div *ngFor="let g of graphButtons"
-                     [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g)" class="chart-choice">
+                     [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g, r)" class="chart-choice">
                   <span>{{g}}</span>
                   <clr-tooltip>
                     <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -249,8 +249,31 @@
                   </clr-tooltip>
                 </div>
               </div>
-              <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-              </app-concept-charts>
+              <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
+                <div class="row" *ngIf="r.vocabularyId === 'SNOMED'; else NonRolledUp">
+                  <div class="col-xs-6">
+                    SNOMED Code: {{r.conceptCode}} <br>
+                    OMOP Concept Id: {{r.conceptId}} <br>
+                    <br>
+                    Count Breakdown ({{r.vocabularyId}})
+                    <br>
+                  </div>
+                  <div class="col-xs-6">
+                    <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                    </app-concept-charts>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #NonRolledUp>
+                <div class="row" *ngIf="r.vocabularyId === 'SNOMED'">
+                  <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                  </app-concept-charts>
+                </div>
+              </ng-template>
+              <ng-template #NonSourceCharts>
+                <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                </app-concept-charts>
+              </ng-template>
             </div>
 
           </div>

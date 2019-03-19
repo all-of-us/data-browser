@@ -48,6 +48,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   showTopConcepts = false;
   medlinePlusLink: string;
   graphButtons = [];
+  graphType = GraphType;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -88,10 +89,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.totalParticipants = this.ehrDomain.participantCount;
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
-          'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
+          'Gender Identity', 'Race / Ethnicity', 'Age', 'Sources'];
       } else {
         this.graphButtons = ['Biological Sex', 'Gender Identity',
-          'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
+          'Race / Ethnicity', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
@@ -171,11 +172,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectGraph(g) {
+  public selectGraph(g, r: any) {
     this.chartEl.nativeElement.scrollIntoView(
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
+    if (this.graphToShow === GraphType.Sources) {
+      console.log('here');
+      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
+        .subscribe({
+          next: result => {
+            console.log(result);
+          }
+        }));
+    }
   }
 
   public toggleSynonyms(conceptId) {
