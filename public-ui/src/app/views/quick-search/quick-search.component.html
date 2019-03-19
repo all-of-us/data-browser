@@ -123,7 +123,7 @@
     </div>
     <h5 class="result-heading secondary-display"
       *ngIf="showDataType(PROGRAM_PHYSICAL_MEASUREMENTS) && matchPhysicalMeasurements(searchText.value)>0"> Program
-      Phyiscal Measurements: </h5>
+      Physical Measurements: </h5>
     <div class="result-boxes"
       *ngIf="showDataType(PROGRAM_PHYSICAL_MEASUREMENTS) && matchPhysicalMeasurements(searchText.value)>0">
       <div id="pm-box" class="result-box">
@@ -142,7 +142,11 @@
             Use this tool to browse distributions of measurement values and counts,
             grouped by age at occurrence and gender, for each program physical measurement.</span>
         </p>
-        <span *ngIf="searchText.value">matching physical measurements</span>
+        <div class="result-stat">
+          {{matchPhysicalMeasurements(searchText.value)}}
+        </div>
+        <span *ngIf="searchText.value; else no_search_value_pm">matching physical measurements</span>
+        <ng-template #no_search_value_pm><span>physical measurements</span></ng-template>
         <div class="result-bottom">
           <a class="result-bottom-link" [routerLink]="['physical-measurements']"
             [queryParams]="{searchString: searchText.value}"> View Program Physical Measurements </a>

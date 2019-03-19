@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
 import {AchillesResult} from '../../../publicGenerated/model/achillesResult';
@@ -35,6 +36,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   selectedGroup: ConceptGroup;
   selectedConcept: ConceptWithAnalysis;
   domainType = DomainType.PHYSICAL_MEASUREMENTS;
+  searchString = '';
 
   // we save the total gender counts
   femaleCount = 0;
@@ -42,7 +44,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   otherCount = 0;
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
-              private tooltipText: TooltipService) {
+              private tooltipText: TooltipService, private route: ActivatedRoute) {
 
   }
 
@@ -51,9 +53,16 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.searchString = params.searchString || null;
+    });
     this.loadingStack.push(true);
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
+      if (this.searchString) {
+        this.conceptGroups = this.conceptGroups.filter(conceptGroup =>
+          conceptGroup.groupName.toLowerCase().includes(this.searchString.toLowerCase()));
+      }
       this.selectedGroup = this.conceptGroups[0];
       // wait 1ms before triggering the graphs.
       setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
