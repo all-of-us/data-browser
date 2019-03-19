@@ -174,6 +174,7 @@ paths:
           description: A collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
   /v1/databrowser/domain-totals:
     get:
       tags:
@@ -186,6 +187,25 @@ paths:
           description: A collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
+  /v1/databrowser/getCriteriaRolledCounts:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the rolled up count from criteria
+      operationId: "getCriteriaRolledCounts"
+      parameters:
+        - in: query
+          name: conceptId
+          type: integer
+          format: int64
+          required: true
+          description: parent concept id
+      responses:
+        200:
+          description: Rolled up counts of concept
+          schema:
+            $ref: "#/definitions/Criteria"
 
   /v1/databrowser/searchConcepts:
     post:
@@ -305,6 +325,34 @@ definitions:
           items:
             $ref: "#/definitions/Concept"
           description: standard concepts associated with the matched concept
+
+  Criteria:
+    type: object
+    required:
+      - id
+      - parentId
+      - type
+      - name
+      - path
+    properties:
+      id:
+        description: Primary identifier which is unique within a CDR version.
+        type: integer
+        format: int64
+      parentId:
+        description: The parent id of the criteria. 0 if this is the root node of a criteria tree
+        type: integer
+        format: int64
+      type:
+        description: type of this criteria
+        type: string
+      name:
+        description: concept name
+        type: string
+      path:
+        description: path of concept in the criteria tree
+        type: string
+
   ConfigResponse:
     type: object
     required:
