@@ -28,23 +28,27 @@ ENVIRONMENTS = {
   TEST_PROJECT => {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_test.json",
-    :cdr_versions_json => "cdr_versions_test.json"
+    :cdr_versions_json => "cdr_versions_test.json",
+    :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com"
   },
   "aou-db-staging" => {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_staging.json",
-    :cdr_versions_json => "cdr_versions_staging.json"
+    :cdr_versions_json => "cdr_versions_staging.json",
+    :api_base_path => "https://api-dot-aou-db-staging.appspot.com"
   },
   "aou-db-stable" => {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
     :config_json => "config_stable.json",
-    :cdr_versions_json => "cdr_versions_stable.json"
+    :cdr_versions_json => "cdr_versions_stable.json",
+    :api_base_path => "https://public.api.stable.fake-research-aou.org"
   },
   "aou-db-prod" => {
     :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb",
     :config_json => "config_prod.json",
-    :cdr_versions_json => "cdr_versions_prod.json"
-    }
+    :cdr_versions_json => "cdr_versions_prod.json",
+    :api_base_path => "https://public.api.researchallofus.org"
+  }
 }
 
 def run_inline_or_log(dry_run, args)
@@ -71,6 +75,13 @@ def get_cdr_sql_project(project)
     raise ArgumentError.new("project #{project} lacks a valid env configuration")
   end
   return ENVIRONMENTS[project][:cdr_sql_instance].split(":")[0]
+end
+
+def get_api_base_path(project)
+  unless ENVIRONMENTS.fetch(project, {}).has_key?(:api_base_path)
+    raise ArgumentError.new("project #{project} lacks a valid env configuration")
+  end
+  return ENVIRONMENTS[project][:api_base_path]
 end
 
 def ensure_docker(cmd_name, args)
@@ -320,10 +331,24 @@ Common.register_command({
 
 def run_integration_tests(cmd_name, *args)
   ensure_docker cmd_name, args
-  common = Common.new
-  ServiceAccountContext.new(TEST_PROJECT).run do
-    common.run_inline %W{gradle integration} + args
+  op = WbOptionsParser.new(cmd_name, args)
+  op.opts.env = 'local'
+  op.add_option(
+    "--env [local|aou-db-test|...]",
+    ->(opts, v) { opts.env = v},
+    "Environment to execute the test against, defaults to local"
+  )
+  op.parse.validate
+
+  api_base = 'http://localhost:8083'
+  if op.opts.env != 'local'
+    api_base = get_api_base_path(op.opts.env)
   end
+  ENV['DB_API_BASE_PATH'] = api_base
+
+  common = Common.new
+  common.status "Executing integration tests against '#{api_base}'"
+  common.run_inline %W{gradle integration} + op.remaining
 end
 
 Common.register_command({
