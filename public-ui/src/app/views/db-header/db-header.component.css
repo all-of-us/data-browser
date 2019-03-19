@@ -143,13 +143,26 @@ input#s {
     padding-left: 1rem;
     padding-bottom: 18px;
     visibility: visible;
+    font-family: 'FFUnitStdMedium', 'Helvetica', sans-serif;
+    font-weight: normal;
+}
+#menu-mobile li.main-menu-item-second {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 13px 0;
+    position: relative;
+}
+#menu-mobile li.main-menu-item-second a {
+    text-transform: uppercase;
+    font-size: 19.8px;
 }
 
 #menu-mobile li.main-menu-item {
     display: block;
     width: 100%;
     text-align: left;
-    padding: 18px 0;
+    padding: 13px 0;
     position: relative;
 }
 
@@ -196,12 +209,14 @@ input#s {
 #menu-mobile ul.sub-menu li[class*=icon_] {
     display: block;
     margin-left: 1rem;
-    padding: 18px 0;
+    padding: 13px 0;
     white-space: normal;
     margin: 0;
     width: 100%;
 }
-
+#menu-mobile ul.sub-menu li[class*=icon_]:first-child {
+  padding-top: 20px;
+}
 #menu-mobile ul.sub-menu li[class*=icon_] a {
     text-transform: capitalize;
     font-size: 19.8px;
