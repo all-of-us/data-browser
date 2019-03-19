@@ -22,7 +22,10 @@ h5.secondary-display {
     padding:18px;
     padding-top:36px;
 }
-
+.results-grid {
+  min-width: 810px;
+    background: white;
+}
 .aka-text {
     width: 170px;
     font-family: FFUnitStdLightItalic, Arial, Helvetica, sans-serif;

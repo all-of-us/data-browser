@@ -105,8 +105,13 @@ strong {
 }
 
 #pm-box {
-    max-width: calc(((100%/12)*5));
+    max-width: 100%;
     padding-top:9px;
+}
+@media only screen and (min-width: 1168px) {
+  #pm-box {
+      max-width: calc(((100%/12)*5));
+    }
 }
 #pm-box .result-body {
     margin: 0;
