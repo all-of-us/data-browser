@@ -251,6 +251,7 @@
 .tbl-exp-r *.tbl-exp-r {
   border-left: none;
   border-right: none;
+  padding: 0.5rem 0;
 }
 
 .tbl-exp-r {
