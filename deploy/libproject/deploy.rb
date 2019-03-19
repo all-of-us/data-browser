@@ -298,6 +298,12 @@ def deploy(cmd_name, args)
     jira_client.create_ticket(op.opts.project, from_version,
                               op.opts.git_version, op.opts.circle_url)
   end
+
+  value = common.run %W{../public-api/project.rb integration --project #{op.opts.project}}
+  maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'}"
+  if not value.success?
+    exit value.exitstatus
+  end
 end
 
 Common.register_command({
