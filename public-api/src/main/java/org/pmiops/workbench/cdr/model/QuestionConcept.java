@@ -35,20 +35,19 @@ public class QuestionConcept {
     public static Map<String, String> ethnicityStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> raceEthnicityStratumNameMap = new HashMap<String, String>();
 
-    public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"1","2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+    public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8", "9"}));
 
     /* Todo Find right place for these static things to be generated from db if possible and live */
     public static void setAgeStratumNameMap() {
-        ageStratumNameMap.put("1", "<20");
-        ageStratumNameMap.put("2", "20");
-        ageStratumNameMap.put("3", "30");
-        ageStratumNameMap.put("4", "40");
-        ageStratumNameMap.put("5", "50");
-        ageStratumNameMap.put("6", "60");
-        ageStratumNameMap.put("7", "70");
-        ageStratumNameMap.put("8", "80");
-        ageStratumNameMap.put("9", "90");
-        ageStratumNameMap.put("10", "100");
+        ageStratumNameMap.put("2", "18-29");
+        ageStratumNameMap.put("3", "30-39");
+        ageStratumNameMap.put("4", "40-49");
+        ageStratumNameMap.put("5", "50-59");
+        ageStratumNameMap.put("6", "60-69");
+        ageStratumNameMap.put("7", "70-79");
+        ageStratumNameMap.put("8", "80-89");
+        ageStratumNameMap.put("9", "90+");
+
     }
 
     public static void setGenderStratumNameMap() {
