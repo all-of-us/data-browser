@@ -848,8 +848,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
-        if(uniqueAgeDeciles.size() < 10){
-            Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"1","2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+        if(uniqueAgeDeciles.size() < 8){
+            Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
             completeAgeDeciles.removeAll(uniqueAgeDeciles);
             for(String missingAgeDecile: completeAgeDeciles){
                 AchillesResult missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, 0L, 0L);
