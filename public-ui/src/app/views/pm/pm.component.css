@@ -8,6 +8,7 @@
 }
 .db-card {
     width:100%;
+    overflow-x: scroll;
 }
 .db-card-header {
     display: flex;
@@ -15,7 +16,7 @@
     align-items: baseline;
     width: 100%;
     flex-wrap: wrap;
-    
+
 }
 
 .db-card-header div button {
@@ -121,4 +122,3 @@ aside .button-item button {
         height: auto;
     }
 }
-
