@@ -34,6 +34,7 @@ strong {
 
 .results {
     padding-top: 36px;
+    min-width: 810px;
 }
 
 .toggle-link, .toggle-link:link, .toggle-link:visited {
