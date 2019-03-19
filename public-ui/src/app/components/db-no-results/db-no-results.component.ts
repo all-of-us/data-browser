@@ -10,6 +10,8 @@ export class DbNoResultsComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
+    console.log(this.searchText);
+    
   }
 
 }
