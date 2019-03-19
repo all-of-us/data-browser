@@ -34,7 +34,8 @@ strong {
 
 .results {
     padding-top: 36px;
-    min-width: 810px;
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .toggle-link, .toggle-link:link, .toggle-link:visited {
@@ -99,6 +100,10 @@ strong {
 
 .question-result:first-of-type {
     border-top: none;
+}
+.question-result .tbl {
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .see-answers {
