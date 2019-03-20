@@ -187,6 +187,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .subscribe({
           next: result => {
             console.log(result);
+            //TODO ui tree results prep needed for tree
+            // if group = 0 => criteria does not have a child else if group = 1 criteria row has children and needs a expand button
           }
         }));
     }
