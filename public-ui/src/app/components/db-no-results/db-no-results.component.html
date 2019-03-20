@@ -1,14 +1,18 @@
-<h5 class="no-results"> No results match your search.: {{searchText.value}} </h5>
-<span *ngIf="loading" class="spinner spinner-md"> </span>
+<h5 class="no-results"> No results in this domain that match your search.</h5>
+<p>Searching whole site for <strong>{{searchText.value}}</strong></p>
+<div *ngIf="loading" class="loading-dots">
+		<div class="dot"></div>
+		<div class="dot"></div>
+		<div class="dot"></div>
+    <div class="dot"></div>
+</div>
 <div *ngIf="results && results.domainInfos.length > 0">
     <div *ngFor="let domain of results.domainInfos ">
-        <span (click)="viewEhrDomain(domain)" [routerLink]="['/ehr/' + domain.name]" >{{domain.standardConceptCount}} results available in the domain: {{domain.name}}</span>
+        <span (click)="viewEhrDomain(domain)" >{{domain.standardConceptCount}} results available in the domain: {{domain.name}}</span>
     </div>
-
 </div>
 <div *ngIf="results && results.surveyModules.length > 0">
     <div *ngFor="let survey of results.surveyModules ">
         {{survey.questionCount}} related questions in survey: {{survey.name}}
     </div>
-
 </div>

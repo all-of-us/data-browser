@@ -1,0 +1,30 @@
+.loading-dots {
+    width:2rem;
+    display:flex;
+    height:auto;
+    justify-content:space-between;
+  }
+  .loading-dots .dot {
+    width:.25rem;
+    height:.25rem;
+    background:transparent;
+    border-radius: 50%;
+    animation:load 1s linear infinite alternate;
+  }
+  .loading-dots .dot:first-of-type{
+    animation-delay: .25s;
+  }
+  .loading-dots .dot:nth-of-type(2){
+    animation-delay: .5s;
+  }
+  .loading-dots .dot:nth-of-type(3){
+    animation-delay: .75s;
+  }
+  .loading-dots .dot:nth-of-type(4){
+    animation-delay: 1s;
+  }
+  
+  @keyframes load {
+    from{background:transparent}
+    to{background:#302c70}
+  }

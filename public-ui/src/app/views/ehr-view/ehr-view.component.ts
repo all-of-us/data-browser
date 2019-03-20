@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
@@ -53,12 +53,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private api: DataBrowserService,
-    private tooltipText: TooltipService
+    private tooltipText: TooltipService,
   ) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
+    console.log(this.router.onSameUrlNavigation);
+    
+    this.router.events.subscribe(e => {
+      console.log(e, 'eeeEEE');
+      this.ngOnInit();
+      
+    })
   }
   ngOnInit() {
     // Get total participants

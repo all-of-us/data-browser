@@ -7,31 +7,39 @@ import { DataBrowserService, DomainInfosAndSurveyModulesResponse, ApiModule } fr
   styleUrls: ['./db-no-results.component.css']
 })
 export class DbNoResultsComponent implements OnChanges {
-  @Input() searchText: string;
+  @Input() searchText;
   results;
   loading;
   prevSearchText: string;
-  constructor(private api: DataBrowserService, private router: Router) { }
+  constructor(private api: DataBrowserService, private router: Router) {
+  }
 
   ngOnChanges() {
     this.prevSearchText = localStorage.getItem('searchText');
+    if (!this.prevSearchText) {
+      this.prevSearchText = '';
+    } else {
+      this.searchText.setValue(this.prevSearchText);
+    }
     if (this.searchText) {
       this.loading = true;
-      this.api.getDomainSearchResults(this.searchText.value).subscribe(results =>{
-        this.results = results;
-        console.log(this.results, this.searchText.value);
-        this.loading=false;
-      });
+      localStorage.setItem('searchText', this.searchText.value);
+      this.searchDomains(this.searchText.value);
     }
   }
 
   public viewEhrDomain(r) {
-    console.log(r);
-    
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    // this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
+    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
   }
 
+  public searchDomains(query: string) {
+    this.api.getDomainSearchResults(query).subscribe(results => {
+      this.results = results;
+      console.log(this.results, query);
+      this.loading = false;
+    });
+  }
 
 }
