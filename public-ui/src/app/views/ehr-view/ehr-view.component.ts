@@ -62,8 +62,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     });
     console.log(this.router.onSameUrlNavigation);
     this.router.events.subscribe(e => {
-      console.log(e, 'eeeEEE');
-      this.ngOnInit();
+      this.searchDomain(this.searchText.value)
     });
   }
   ngOnInit() {
