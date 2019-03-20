@@ -76,12 +76,8 @@ public class GoogleAnalyticsService {
     }
 
     @VisibleForTesting
-    URL getGoogleAnalyticsEndpoint() {
-        try {
-            return new URL("http", "www.google-analytics.com", "/collect");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    URL getGoogleAnalyticsEndpoint() throws MalformedURLException {
+        return new URL("http", "www.google-analytics.com", "/collect");
     }
 
     @VisibleForTesting

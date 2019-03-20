@@ -31,7 +31,7 @@ public class GoogleAnalyticsServiceTest {
     private GoogleAnalyticsService trackingService;
 
     @Mock
-    URLFetchService fetchService;
+    private URLFetchService fetchService;
 
     @Before
     public void setUp() {
@@ -76,7 +76,7 @@ public class GoogleAnalyticsServiceTest {
         verify(fetchService, times(0)).fetch(any(HTTPRequest.class));
     }
 
-    private HTTPResponse buildResponse(int responseCode) {
+    private HTTPResponse buildResponse(int responseCode) throws Exception {
         return new HTTPResponse(
                 responseCode,
                 "".getBytes(),
