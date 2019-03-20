@@ -37,6 +37,7 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 (<any>window).StackTrace = StackTrace;
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
+import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import {DbConfigService} from './utils/db-config.service';
 import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -44,7 +45,6 @@ import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
-import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 
 function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
