@@ -28,6 +28,8 @@ public class ConfigController implements ConfigApiDelegate {
             .enforceRegistered(config.auth.enforceRegistered)
             .requireSignIn(config.auth.requireSignIn)
             .dataBrowserIsSafe(true) // change to false for emergency shutdown of frontend
-            .publicApiKeyForErrorReports(config.server.publicApiKeyForErrorReports));
+            .publicApiKeyForErrorReports(config.server.publicApiKeyForErrorReports)
+            .gaId(config.server.gaId)
+            .clientId(config.server.clientId));
   }
 }

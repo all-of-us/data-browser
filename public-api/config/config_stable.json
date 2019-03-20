@@ -8,6 +8,8 @@
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-rw-stable.appspot.com",
     "publicApiKeyForErrorReports": "AIzaSyA4gOEvyJRkhIbW0x0Y7PkIowOSIK_Tous",
     "debugEndpoints": false,
-    "projectId": "aou-db-stable"
+    "projectId": "aou-db-stable",
+    "gaId": "UA-116298798-5",
+    "clientId": "56507752110-ovdus1lkreopsfhlovejvfgmsosveda6.apps.googleusercontent.com"
   }
 }
