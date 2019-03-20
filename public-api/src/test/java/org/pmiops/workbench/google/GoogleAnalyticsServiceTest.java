@@ -39,7 +39,7 @@ public class GoogleAnalyticsServiceTest {
         config.server = new WorkbenchConfig.ServerConfig();
         config.server.clientId = "testClientId";
         config.server.gaId = "testGaId";
-        trackingService = new GoogleAnalyticsService(Providers.of(config));
+        trackingService = new GoogleAnalyticsServiceImpl(Providers.of(config));
         trackingService.setUrlFetchService(fetchService);
     }
 

@@ -1,47 +1,18 @@
 package org.pmiops.workbench.google;
 
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPMethod;
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.common.annotations.VisibleForTesting;
-import org.pmiops.workbench.config.WorkbenchConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Provider;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Generic service class that can be used to send server-side events to GA for processing.
  * See https://cloud.google.com/appengine/docs/standard/java/google-analytics for the source
  * of most of this code.
  */
-@SuppressWarnings("WeakerAccess")
-@Service
-public class GoogleAnalyticsService {
-
-    private final String gaTrackingId;
-    private final String gaClientId;
-    private final HTTPHeader header =
-            new HTTPHeader("Content-Type", "application/x-www-form-urlencoded");
-    private URLFetchService urlFetchService;
-
-    @Autowired
-    public GoogleAnalyticsService(Provider<WorkbenchConfig> configProvider) {
-        this.gaTrackingId = configProvider.get().server.gaId;
-        this.gaClientId = configProvider.get().server.clientId;
-        setUrlFetchService(getUrlFetchService());
-    }
+public interface GoogleAnalyticsService {
 
     /**
      * Posts an Event Tracking message to Google Analytics.
@@ -55,63 +26,13 @@ public class GoogleAnalyticsService {
      * @return int value of the http response.
      * @exception IOException if the URL could not be posted to
      */
-    public int trackEventToGoogleAnalytics(
-            String category, String action, String label, String value) throws IOException {
-        Map<String, String> map = new LinkedHashMap<>();
-        map.put("v", "1");             // Version.
-        map.put("tid", this.gaTrackingId);
-        map.put("cid", this.gaClientId);
-        map.put("t", "event");         // Event hit type.
-        map.put("ec", encode(category, true));
-        map.put("ea", encode(action, true));
-        map.put("el", encode(label, false));
-        map.put("ev", encode(value, false));
-
-        HTTPRequest request = new HTTPRequest(getGoogleAnalyticsEndpoint(), HTTPMethod.POST);
-        request.addHeader(this.header);
-        request.setPayload(getPostData(map));
-
-        HTTPResponse httpResponse = urlFetchService.fetch(request);
-        return httpResponse.getResponseCode();
-    }
+    int trackEventToGoogleAnalytics(
+            String category, String action, String label, String value) throws IOException;
 
     @VisibleForTesting
-    URL getGoogleAnalyticsEndpoint() throws MalformedURLException {
-        return new URL("http", "www.google-analytics.com", "/collect");
-    }
+    URL getGoogleAnalyticsEndpoint() throws MalformedURLException;
 
     @VisibleForTesting
-    void setUrlFetchService(URLFetchService fetchService) {
-        this.urlFetchService = fetchService;
-    }
+    void setUrlFetchService(URLFetchService fetchService);
 
-    private URLFetchService getUrlFetchService() {
-        return URLFetchServiceFactory.getURLFetchService();
-    }
-
-    private static byte[] getPostData(Map<String, String> map) {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            sb.append(entry.getKey());
-            sb.append('=');
-            sb.append(entry.getValue());
-            sb.append('&');
-        }
-        if (sb.length() > 0) {
-            sb.setLength(sb.length() - 1); // Remove the trailing &.
-        }
-        return sb.toString().getBytes(StandardCharsets.UTF_8);
-    }
-
-    private static String encode(String value, boolean required)
-            throws UnsupportedEncodingException {
-        if (value == null) {
-            if (required) {
-                throw new IllegalArgumentException("Required parameter not set.");
-            }
-            return "";
-        }
-        return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
-    }
-    
 }
