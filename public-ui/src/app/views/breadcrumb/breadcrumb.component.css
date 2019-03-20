@@ -10,6 +10,7 @@
   font-family: FFUnitStdMedium,Arial, Helvetica, sans-serif;
   font-size: 18px;
   padding: 18px;
+  text-transform: capitalize;
 }
 
 .breadcrumb {
