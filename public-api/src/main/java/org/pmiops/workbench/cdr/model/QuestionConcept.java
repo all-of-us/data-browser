@@ -131,6 +131,7 @@ public class QuestionConcept {
 
     public static void setRaceEthnicityStratunNameMap() {
         raceEthnicityStratumNameMap.put("903070", "Other");
+        raceEthnicityStratumNameMap.put("903096", "Skip");
         raceEthnicityStratumNameMap.put("903079", "Prefer Not To Answer");
         raceEthnicityStratumNameMap.put("1586141", "American Indian or Alaska Native");
         raceEthnicityStratumNameMap.put("1586142", "Asian");

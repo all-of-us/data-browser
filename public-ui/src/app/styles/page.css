@@ -112,9 +112,12 @@
   background: #DAE6ED;
   padding: 18px;
   border-radius: 5px;
-  min-width:20rem;
 }
-
+@media only screen and (min-width: 1168px) {
+  #db-search-bar {
+    min-width:20rem;
+  }
+}
 #db-search-bar input {
   min-width: calc((100%/12)*10);
   padding: 18px;
@@ -247,10 +250,13 @@
   cursor: pointer;
   transition: .2s background ease-out;
   padding:9px;
+  min-width: 810px;
 }
 .tbl-exp-r *.tbl-exp-r {
   border-left: none;
   border-right: none;
+  padding: 0.5rem 0;
+  min-width: auto;
 }
 
 .tbl-exp-r:last-of-type {
@@ -264,11 +270,15 @@
 
 .tbl-d.first {
   width: 30%;
-  min-width: 10rem;
 }
-
+@media only screen and (min-width: 1168px) {
+  .tbl-d.first {
+    min-width:10rem;
+  }
+}
 .tbl-r {
   text-align: left;
+  min-width: 810px;
 }
 
 /**** ##MAILCHIMP ***/

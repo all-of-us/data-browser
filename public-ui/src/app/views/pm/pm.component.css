@@ -8,6 +8,7 @@
 }
 .db-card {
     width:100%;
+    overflow-x: scroll;
 }
 .db-card-header {
     display: flex;
@@ -15,7 +16,7 @@
     align-items: baseline;
     width: 100%;
     flex-wrap: wrap;
-    
+
 }
 
 .db-card-header div button {
@@ -76,7 +77,9 @@ button {
 }
 
 .participant-count {
-    margin-left: 30%;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 18px
 }
 
 .active {
@@ -121,4 +124,3 @@ aside .button-item button {
         height: auto;
     }
 }
-
