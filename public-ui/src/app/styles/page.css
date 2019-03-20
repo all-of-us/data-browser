@@ -110,7 +110,7 @@
 #db-search-bar {
   flex-grow: 1;
   background: #DAE6ED;
-  padding: 18px;
+  padding: 9px;
   border-radius: 5px;
 }
 @media only screen and (min-width: 1168px) {
