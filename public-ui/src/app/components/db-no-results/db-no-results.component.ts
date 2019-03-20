@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiModule, DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 @Component({
@@ -8,6 +8,7 @@ import { ApiModule, DataBrowserService, DomainInfosAndSurveyModulesResponse } fr
 })
 export class DbNoResultsComponent implements OnChanges {
   @Input() searchText;
+  @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
   loading;
   prevSearchText: string;
@@ -29,8 +30,13 @@ export class DbNoResultsComponent implements OnChanges {
   }
 
   public viewEhrDomain(r) {
+    const payload = {
+      domain: r,
+      searchText: this.searchText.value
+    };
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
+    this.newDomain.emit(payload);
     this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
   }
 

@@ -259,7 +259,7 @@
                 </div>
               </div>
               <div *ngIf="!loading && items.length === 0" class="results-grid">
-                <app-db-no-results [searchText] = "searchText"></app-db-no-results>
+                <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
               </div>
             </div>
           </div>

@@ -61,18 +61,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = params.id;
     });
     console.log(this.router.onSameUrlNavigation);
-    this.router.events.subscribe(e => {
-      this.searchDomain(this.searchText.value)
-    });
   }
   ngOnInit() {
     this.items = [];
 
     // Get search text from localStorage
     this.prevSearchText = localStorage.getItem('searchText');
-    if (!this.prevSearchText) {
-      this.prevSearchText = '';
-    }
     this.searchText.setValue(this.prevSearchText);
     const obj = localStorage.getItem('ehrDomain');
     if (obj) {
@@ -240,5 +234,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     let percent: number = count / this.totalParticipants;
     percent = parseFloat(percent.toFixed(4));
     return percent * 100;
+  }
+
+  public changeResults(e) {
+    localStorage.setItem('searchText', e.searchText);
+    localStorage.setItem('ehrDomain', JSON.stringify(e.domain));
+    this.ngOnInit();
   }
 }
