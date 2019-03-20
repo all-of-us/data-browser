@@ -61,11 +61,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit() {
-    // Get total participants
-    this.subscriptions.push(
-      this.api.getParticipantCount().subscribe(result => this.totalParticipants = result.countValue)
-    );
-
     this.items = [];
 
     // Get search text from localStorage
@@ -90,6 +85,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // a empty search returns top ordered by count_value desc
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
+      this.totalParticipants = this.ehrDomain.participantCount;
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
           'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
