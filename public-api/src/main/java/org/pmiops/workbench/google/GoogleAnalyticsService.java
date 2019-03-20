@@ -76,7 +76,7 @@ public class GoogleAnalyticsService {
     }
 
     @VisibleForTesting
-    protected URL getGoogleAnalyticsEndpoint() {
+    URL getGoogleAnalyticsEndpoint() {
         try {
             return new URL("http", "www.google-analytics.com", "/collect");
         } catch (MalformedURLException e) {
@@ -85,7 +85,7 @@ public class GoogleAnalyticsService {
     }
 
     @VisibleForTesting
-    protected void setUrlFetchService(URLFetchService fetchService) {
+    void setUrlFetchService(URLFetchService fetchService) {
         this.urlFetchService = fetchService;
     }
 
