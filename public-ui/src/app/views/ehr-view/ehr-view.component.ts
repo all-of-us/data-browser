@@ -61,12 +61,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = params.id;
     });
     console.log(this.router.onSameUrlNavigation);
-    
     this.router.events.subscribe(e => {
       console.log(e, 'eeeEEE');
       this.ngOnInit();
-      
-    })
+    });
   }
   ngOnInit() {
     // Get total participants

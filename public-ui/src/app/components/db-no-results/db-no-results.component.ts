@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataBrowserService, DomainInfosAndSurveyModulesResponse, ApiModule } from 'publicGenerated';
+import { ApiModule, DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
