@@ -250,11 +250,13 @@
   cursor: pointer;
   transition: .2s background ease-out;
   padding:9px;
+  min-width: 810px;
 }
 .tbl-exp-r *.tbl-exp-r {
   border-left: none;
   border-right: none;
   padding: 0.5rem 0;
+  min-width: auto;
 }
 
 .tbl-exp-r:last-of-type {
@@ -276,6 +278,7 @@
 }
 .tbl-r {
   text-align: left;
+  min-width: 810px;
 }
 
 /**** ##MAILCHIMP ***/

@@ -23,8 +23,9 @@ h5.secondary-display {
     padding-top:36px;
 }
 .results-grid {
-  min-width: 810px;
+    width: 100%;
     background: white;
+    overflow-x: scroll;
 }
 .aka-text {
     width: 170px;

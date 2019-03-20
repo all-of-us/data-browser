@@ -34,7 +34,8 @@ strong {
 
 .results {
     padding-top: 36px;
-    min-width: 810px;
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .toggle-link, .toggle-link:link, .toggle-link:visited {
@@ -44,12 +45,18 @@ strong {
 .survey-head {
     display: flex;
     position: relative;
-    margin-bottom: calc( 18px *4)
+    margin-bottom: calc( 18px *4);
+    flex-wrap: wrap;
 }
 
 .stat-container {
     display: flex;
     flex-direction: column;
+}
+@media only screen and (max-width: 767px) {
+    .stat-container {
+      flex-basis: 100%;
+    }
 }
 
 .stat-container .info-text {
@@ -70,11 +77,16 @@ strong {
 }
 
 .pdf-link {
-    position: absolute;
-    right: 0;
-    top: 0;
+    padding-top: 1rem;
 }
-
+@media only screen and (min-width: 768px) {
+  .pdf-link {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding-top: 0;
+  }
+}
 .survey-results {
     position: relative;
 }
@@ -99,6 +111,10 @@ strong {
 
 .question-result:first-of-type {
     border-top: none;
+}
+.question-result .tbl {
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .see-answers {
