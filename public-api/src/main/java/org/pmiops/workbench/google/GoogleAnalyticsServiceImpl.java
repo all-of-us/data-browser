@@ -51,6 +51,7 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      * @return int value of the http response.
      * @exception IOException if the URL could not be posted to
      */
+    @Override
     public int trackEventToGoogleAnalytics(
             String category, String action, String label, String value) throws IOException {
         try {
