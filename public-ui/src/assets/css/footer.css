@@ -94,7 +94,7 @@
 }
 
 .widget {
-    font-family: unit, Helvetica, sans-serif;
+    font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
     font-weight: 400;
     font-size: .8rem;
     width: 100%;
@@ -102,7 +102,7 @@
 }
 
 .widget em {
-    font-family: unit, Helvetica, sans-serif;
+    font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
     font-style: italic;
 }
 

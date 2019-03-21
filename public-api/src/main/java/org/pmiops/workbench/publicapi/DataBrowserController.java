@@ -300,6 +300,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 public ConceptAnalysis apply(ConceptAnalysis ca) {
                     return new ConceptAnalysis()
                             .conceptId(ca.getConceptId())
+                            .countAnalysis(ca.getCountAnalysis())
                             .genderAnalysis(ca.getGenderAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
                             .raceEthnicityAnalysis(ca.getRaceEthnicityAnalysis())
@@ -700,7 +701,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
                     aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                 }
-                if(analysisId == GENDER_ANALYSIS_ID){
+                if (analysisId == COUNT_ANALYSIS_ID) {
+                    conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                }else if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
@@ -901,8 +904,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
-        if(uniqueAgeDeciles.size() < 10){
-            Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"1","2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+        if(uniqueAgeDeciles.size() < 8){
+            Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
             completeAgeDeciles.removeAll(uniqueAgeDeciles);
             for(String missingAgeDecile: completeAgeDeciles){
                 AchillesResult missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, 0L, 0L);

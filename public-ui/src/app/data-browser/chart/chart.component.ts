@@ -90,7 +90,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         style: {
           padding: 0,
           borderRadius: 3,
-          fontSize: '18px',
+          fontSize: '12px',
           color: '#262262'
         },
         // formatter: function(tooltip) {
@@ -162,7 +162,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         min: 20,
         labels: {
           style: {
-            fontSize: '18',
+            fontSize: '12px',
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -189,11 +189,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
-            fontSize: '18',
+            fontSize: '12px',
+            color: '#222222',
           },
         },
         lineWidth: 1,
-        lineColor: this.dbc.AXIS_LINE_COLOR
+        lineColor: this.dbc.AXIS_LINE_COLOR,
+        tickLength: 0
       },
       zAxis: {},
       legend: {
@@ -331,7 +333,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
-      tooltip: { pointFormat: '<b>{point.y} </b>' },
+      tooltip: { pointFormat: '{point.y}' },
     };
   }
 
@@ -369,14 +371,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
-        // removed inline styling
-        // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        //  },
+        style: {
+        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
         tooltip: {
-          headerFormat: `<span>
-        <span style="font-size:.7em;">{point.key}</span> <br/>`,
-          pointFormat: '<b>{point.y}</b></span>'
+          headerFormat: '<span>{point.key} <br/>',
+          pointFormat: '{point.y}</span>'
         },
       },
       title: { text: null, style: this.dbc.CHART_TITLE_STYLE },
@@ -444,10 +444,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: chartType,
         backgroundColor: 'transparent',
-        // removed inline styling
-        // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        //  },
+        style: {
+        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
@@ -456,7 +455,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: '<span style="font-size:.7em"> <b> {point.y}</b> {point.name} </span></span>',
+        pointFormat: '{point.y} {point.name}</span>',
       }
     };
   }
@@ -499,10 +498,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: 'bar',
         backgroundColor: 'transparent',
-        // removed inline styling
-        // style: {
-        //  fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        //  },
+        style: {
+        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: series,
@@ -511,8 +509,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: `<span style="font-size:.7em">
-        <b> {point.y}</b> {point.name}s </span></span>`
+        pointFormat: '{point.y} {point.name}s </span>'
       }
     };
   }
@@ -567,8 +564,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: `<span style="font-size:.7em">
-        {point.name}</span> <br/ ><b> {point.y}</b></span>`
+        pointFormat: '{point.name}<br/ > {point.y}</span>'
       }
     };
   }
@@ -645,8 +641,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       pointWidth: this.pointWidth,
       xAxisTitle: unit,
       tooltip: {
-        headerFormat: '<span style="font-size: 10px">{point.key} ' + unit + '</span><br/>',
-        pointFormat: '<b> {point.y} participants </b> '
+        headerFormat: '{point.key} ' + unit + '<br/>',
+        pointFormat: '{point.y} participants'
       },
     };
   }

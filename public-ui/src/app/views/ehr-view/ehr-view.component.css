@@ -2,7 +2,15 @@
     margin: auto auto;
     width: 100%;
 }
-
+h5.secondary-display {
+  font-size: 20px;
+  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+  font-weight: 100;
+}
+.highcharts-root {
+  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+  font-size: .6rem;
+}
 .page-header {
     padding: 18px
 }
@@ -14,7 +22,11 @@
     padding:18px;
     padding-top:36px;
 }
-
+.results-grid {
+    width: 100%;
+    background: white;
+    overflow-x: scroll;
+}
 .aka-text {
     width: 170px;
     font-family: FFUnitStdLightItalic, Arial, Helvetica, sans-serif;
@@ -29,7 +41,7 @@
 }
 
 #domain-name {
-    font-size: 18px;
+    font-size: 20px;
     line-height: 18px;
     display: inline;
 }
@@ -49,6 +61,7 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    padding: 1rem 0;
 }
 
 .top-concepts-chart {

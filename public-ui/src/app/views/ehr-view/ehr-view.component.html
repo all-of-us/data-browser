@@ -5,7 +5,7 @@
   <div class="search-bar-container">
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" autofocus>
+      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
     </div>
   </div>
   <div class="row ">
@@ -24,8 +24,7 @@
           <!-- Top summary boxes -- only show if have results -->
 
           <h5 id="domain-summary" class="secondary-display">
-            <a class="toggle-link" (click)="toggleTopConcepts()"> Top 10 Medical Concepts by Descending Participant
-              Counts
+            <a class="toggle-link" (click)="toggleTopConcepts()">Top 10 Conditions by Descending Participant Counts
               <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
               <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
             </a>
@@ -90,8 +89,7 @@
               </clr-tooltip>
             </div>
             <div class="tbl-r-group">
-              <div class="tbl-d body-lead info-text"> Participants of <b>
-                {{totalParticipants | number}}</b>
+              <div class="tbl-d body-lead info-text"> Participants of {{totalParticipants | number}}
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                   <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
@@ -285,12 +283,8 @@
             </div>
 
           </div>
-          <div class="results-grid">
-            <div *ngIf="!loading && items.length === 0">
-              <div class="">
+          <div *ngIf="!loading && items.length === 0" class="results-grid">
                 <h5 class="no-results"> No results match your search. </h5>
-              </div>
-            </div>
           </div>
         </div>
       </div>

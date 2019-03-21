@@ -55,7 +55,7 @@ input#s {
 }
 
 .widget {
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;   
+    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     font-weight: 500;
     width: 100%;
     color: rgba(255, 255, 255, 1)
@@ -84,7 +84,8 @@ input#s {
 }
 
 .widget-header .widget a {
-    text-decoration: none
+    text-decoration: none;
+    color: rgba(33,111,180,1);
 }
 
 :after {
@@ -142,13 +143,26 @@ input#s {
     padding-left: 1rem;
     padding-bottom: 18px;
     visibility: visible;
+    font-family: 'FFUnitStdMedium', 'Helvetica', sans-serif;
+    font-weight: normal;
+}
+#menu-mobile li.main-menu-item-second {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 13px 0;
+    position: relative;
+}
+#menu-mobile li.main-menu-item-second a {
+    text-transform: uppercase;
+    font-size: 19.8px;
 }
 
 #menu-mobile li.main-menu-item {
     display: block;
     width: 100%;
     text-align: left;
-    padding: 18px 0;
+    padding: 13px 0;
     position: relative;
 }
 
@@ -195,12 +209,14 @@ input#s {
 #menu-mobile ul.sub-menu li[class*=icon_] {
     display: block;
     margin-left: 1rem;
-    padding: 18px 0;
+    padding: 13px 0;
     white-space: normal;
     margin: 0;
     width: 100%;
 }
-
+#menu-mobile ul.sub-menu li[class*=icon_]:first-child {
+  padding-top: 20px;
+}
 #menu-mobile ul.sub-menu li[class*=icon_] a {
     text-transform: capitalize;
     font-size: 19.8px;
@@ -357,7 +373,6 @@ input#s {
     }
     .icon_search img {
         width: 22px;
-        vertical-align: text-bottom;
         margin-right: 1rem;
         cursor: pointer;
         display: inline-block
@@ -387,15 +402,14 @@ input#s {
     #menu-primary li.icon_search {
         display: inline-block
     }
-    ul.main-menu li.main-menu-item:hover {
+    ul.main-menu>li:hover {
         background: rgba(38, 34, 98, 1);
-        transition: all .8s ease
     }
     ul.main-menu li.main-menu-item:hover a {
         color: #fff;
     }
     ul.main-menu li.icon_search a:hover {
-        background: 0 0
+        background: 0 0;
     }
     ul.sub-menu li[class*=icon_]:hover {
         border-bottom: rgba(38, 34, 98, 1) solid 2px;
@@ -403,16 +417,14 @@ input#s {
     }
     #menu-primary ul.sub-menu li[class*=icon_] {
         display: inline-block;
-        padding: 0;
-        width: 140px;
-        white-space: pre-wrap;
-        font-family: unit, Arial, Helvetica, sans-serif;
+        white-space: initial;
+        font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
         font-weight: 500;
         cursor: pointer;
         font-size: 0;
-        line-height: 1.5;
-        padding-bottom: 1px;
-        margin: -1.2rem 0;
+        line-height: 1.2;
+        padding: 1rem 0px 0;
+        margin: 0;
     }
     #menu-primary ul.sub-menu li img:hover+a {
         background: 0 0;
@@ -427,6 +439,16 @@ input#s {
         padding-bottom: 24px;
         width: auto;
     }
+    #menu-primary ul.sub-menu li {
+  display: inline-block;
+  padding: 0 30px;
+  width: 160px;
+  white-space: pre-wrap;
+}
+    #menu-primary ul.sub-menu li.skinny {
+      width: 125px;
+      padding: 1rem 30px 0;
+  }
     #menu-primary li.icon_search ul.sub-menu li {
         width: auto;
         padding: 1rem
@@ -444,8 +466,8 @@ input#s {
     #menu-primary>li a {
         width: 100%;
         padding: 18px;
-        font-family: FFUnitStdMedium, Helvetica, sans-serif;
-        font-weight: 500;
+        font-family: 'FFUnitStdMedium', 'Helvetica', sans-serif;
+        font-weight: normal;
     }
     .main-menu>li:hover>ul {
         left: 0;
@@ -460,15 +482,42 @@ input#s {
         top: 60px!important
     }
     #menu-primary ul.sub-menu li[class*=icon_] a img {
-        width: 50px;
+        height: 50px;
         margin: 0 auto .5rem;
-        display: block
+        display: block;
+        vertical-align: initial;
+    }
+    #menu-primary img {
+        vertical-align: initial;
     }
     #searchform {
         width: 20rem;
         margin: 0 auto;
-        padding-top: 0;
+
     }
+    .site-nav-container .site-branding-nav .main-navigation .main-menu li.menu-item-has-children:nth-child(1):hover > a:after {
+        border-style: solid;
+        content: " ";
+        border-color: transparent;
+        border-top-color: rgba(38,34,98,1);
+        border-width: 10px;
+        margin-left: -1.5rem;
+        z-index: 8889;
+	      position: absolute;
+	      top: calc(100% - 6px);
+}
+
+.site-nav-container .site-branding-nav .main-navigation .main-menu li.menu-item-has-children:nth-child(2):hover > a:after {
+	  border-style: solid;
+    content: " ";
+    border-color: transparent;
+    border-top-color: rgba(38,34,98,1);
+    border-width: 10px;
+    margin-left: -4.6rem;
+    z-index: 8889;
+	  position: absolute;
+	  top: calc(100% - 6px);
+}
 }
 
 #searchsubmit {
@@ -479,4 +528,8 @@ input#s {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     padding: 13px;
+    bottom: 40px;
+    position: absolute;
+    left: 65%;
+
 }

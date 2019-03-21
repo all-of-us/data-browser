@@ -15,4 +15,8 @@ div.dark img {
 div.dark h3,
 div.dark h4 {
   margin-top: 0;
+  font-family: 'FFUnitStdBold', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-size: 1rem;
+  color: #302C71;
 }

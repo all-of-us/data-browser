@@ -44,7 +44,7 @@
 }
 
 .body-default, p {
-  font-family: GothamLight,sans-serif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -62,12 +62,11 @@
 }
 
 #db-desc {
-  text-align: justify;
   padding: 18px;
   padding-bottom:63px;
   margin: 0 auto;
   line-height: 2.0;
-  font-family: GothamLight,sans-serif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-size:20px;
 }
 
@@ -113,9 +112,12 @@
   background: #DAE6ED;
   padding: 18px;
   border-radius: 5px;
-  min-width:20rem;
 }
-
+@media only screen and (min-width: 1168px) {
+  #db-search-bar {
+    min-width:20rem;
+  }
+}
 #db-search-bar input {
   min-width: calc((100%/12)*10);
   padding: 18px;
@@ -148,7 +150,9 @@
 }
 
 .info-text {
-  font-size: 13px;
+  font-size: 16px;
+  align-items: center;
+  display: flex;
 }
 
 .graph-menu {
@@ -196,7 +200,7 @@
 
 .tbl-r-group {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   width: 30rem;
 }
@@ -246,9 +250,16 @@
   cursor: pointer;
   transition: .2s background ease-out;
   padding:9px;
+  min-width: 810px;
+}
+.tbl-exp-r *.tbl-exp-r {
+  border-left: none;
+  border-right: none;
+  padding: 0.5rem 0;
+  min-width: auto;
 }
 
-.tbl-exp-r {
+.tbl-exp-r:last-of-type {
   border-bottom: 1px solid #CCCCCC;
 }
 
@@ -258,12 +269,16 @@
 }
 
 .tbl-d.first {
-  width:50%;
-  min-width: 10rem;
+  width: 30%;
 }
-
+@media only screen and (min-width: 1168px) {
+  .tbl-d.first {
+    min-width:10rem;
+  }
+}
 .tbl-r {
   text-align: left;
+  min-width: 810px;
 }
 
 /**** ##MAILCHIMP ***/
