@@ -510,7 +510,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
-        addGenderStratum(genderAnalysis);
+        addGenderStratum(genderAnalysis,1);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
     }
 
@@ -680,7 +680,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (analysisId == COUNT_ANALYSIS_ID) {
                     conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_ANALYSIS_ID){
-                    addGenderStratum(aa);
+                    addGenderStratum(aa,2);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
@@ -822,11 +822,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return bins;
     }
 
-    public void addGenderStratum(AchillesAnalysis aa){
+    public void addGenderStratum(AchillesAnalysis aa, int stratum){
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName =ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
-                ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
+                if (stratum == 1) {
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum1()));
+                } else if (stratum == 2) {
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
+                }
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
