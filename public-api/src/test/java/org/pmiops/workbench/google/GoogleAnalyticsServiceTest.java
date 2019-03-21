@@ -11,6 +11,7 @@ import org.pmiops.workbench.Providers;
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -39,8 +40,7 @@ public class GoogleAnalyticsServiceTest {
         config.server = new WorkbenchConfig.ServerConfig();
         config.server.clientId = "testClientId";
         config.server.gaId = "testGaId";
-        trackingService = new GoogleAnalyticsServiceImpl(Providers.of(config));
-        trackingService.setUrlFetchService(fetchService);
+        trackingService = new GoogleAnalyticsServiceImpl(Providers.of(config), fetchService);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class GoogleAnalyticsServiceTest {
         return new HTTPResponse(
                 responseCode,
                 "".getBytes(),
-                trackingService.getGoogleAnalyticsEndpoint(),
+                new URL("http", "www.google-analytics.com", "/collect"),
                 new ArrayList<>()
         );
     }

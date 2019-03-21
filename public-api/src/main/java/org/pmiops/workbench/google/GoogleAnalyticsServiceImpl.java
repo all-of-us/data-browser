@@ -5,8 +5,7 @@ import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.common.annotations.VisibleForTesting;
+import com.google.appengine.repackaged.com.google.common.base.Preconditions;
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Service class that can be used to send server-side events to GA for processing.
+ * See https://cloud.google.com/appengine/docs/standard/java/google-analytics for the source
+ * of most of this code.
+ */
 @Service
 public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
 
@@ -30,9 +34,9 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
     private final Provider<WorkbenchConfig> configProvider;
 
     @Autowired
-    public GoogleAnalyticsServiceImpl(Provider<WorkbenchConfig> configProvider) {
+    public GoogleAnalyticsServiceImpl(Provider<WorkbenchConfig> configProvider, URLFetchService urlFetchService) {
         this.configProvider = configProvider;
-        setUrlFetchService(getUrlFetchService());
+        this.urlFetchService = urlFetchService;
     }
 
     /**
@@ -49,15 +53,22 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      */
     public int trackEventToGoogleAnalytics(
             String category, String action, String label, String value) throws IOException {
+        try {
+            Preconditions.checkNotNull(category);
+            Preconditions.checkNotNull(action);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("category and action are required values");
+        }
+
         Map<String, String> map = new LinkedHashMap<>();
         map.put("v", "1");             // Version.
         map.put("tid", configProvider.get().server.gaId);
         map.put("cid", configProvider.get().server.clientId);
         map.put("t", "event");         // Event hit type.
-        map.put("ec", encode(category, true));
-        map.put("ea", encode(action, true));
-        map.put("el", encode(label, false));
-        map.put("ev", encode(value, false));
+        map.put("ec", encode(category));
+        map.put("ea", encode(action));
+        map.put("el", encode(label));
+        map.put("ev", encode(value));
 
         HTTPRequest request = new HTTPRequest(getGoogleAnalyticsEndpoint(), HTTPMethod.POST);
         request.addHeader(this.header);
@@ -67,18 +78,8 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
         return httpResponse.getResponseCode();
     }
 
-    @VisibleForTesting
-    public URL getGoogleAnalyticsEndpoint() throws MalformedURLException {
+    private URL getGoogleAnalyticsEndpoint() throws MalformedURLException {
         return new URL("http", "www.google-analytics.com", "/collect");
-    }
-
-    @VisibleForTesting
-    public void setUrlFetchService(URLFetchService fetchService) {
-        this.urlFetchService = fetchService;
-    }
-
-    private URLFetchService getUrlFetchService() {
-        return URLFetchServiceFactory.getURLFetchService();
     }
 
     private static byte[] getPostData(Map<String, String> map) {
@@ -95,14 +96,11 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
         return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    private static String encode(String value, boolean required)
-            throws UnsupportedEncodingException {
+    private static String encode(String value) throws UnsupportedEncodingException {
         if (value == null) {
-            if (required) {
-                throw new IllegalArgumentException("Required parameter not set.");
-            }
             return "";
         }
         return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
     }
+
 }
