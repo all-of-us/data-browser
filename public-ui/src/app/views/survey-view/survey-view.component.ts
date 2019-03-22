@@ -50,8 +50,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.prevSearchText = localStorage.getItem('searchText');
-    console.log(this.prevSearchText,'previous searchTEXt');
-    
+    console.log(this.prevSearchText, 'previous searchTEXt');
+
     this.loading = true;
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
