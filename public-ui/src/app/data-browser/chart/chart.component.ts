@@ -665,7 +665,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         seperateResults[a.stratum4] = a.countValue;
       }
     }
-    for (let k in seperateResults) {
+    for (const k in seperateResults) {
       data.push({name: k, y: seperateResults[k], thisCtrl: this});
       data.push({name: 'No', y: this.participantCount - seperateResults[k], thisCtrl: this});
     }
