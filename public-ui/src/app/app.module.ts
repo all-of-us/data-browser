@@ -42,10 +42,10 @@ import {DbConfigService} from './utils/db-config.service';
 import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
+import { EmergencyComponent } from './views/emergency/emergency.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
-import { EmergencyComponent } from './views/emergency/emergency.component';
 
 function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
