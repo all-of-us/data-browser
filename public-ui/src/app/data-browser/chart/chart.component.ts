@@ -650,15 +650,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
     };
   }
-  
+
   public makePregnancyChartOptions() {
-    let data = [];
-    let cats = [];
-  
+    const data = [];
+    const cats = [];
+
     let results = this.analysis.results.concat([]);
-    
-    var seperateResults = {}
-  
+    let seperateResults = {};
+
     for (const a of results) {
       if (a.stratum4 in seperateResults) {
         seperateResults[a.stratum4] += a.countValue;
@@ -666,7 +665,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         seperateResults[a.stratum4] = a.countValue;
       }
     }
-    for (let k in seperateResults) {
+    for (const k in seperateResults) {
       data.push({name: k, y: seperateResults[k], thisCtrl: this});
       data.push({name: 'No', y: this.participantCount - seperateResults[k], thisCtrl: this});
     }
@@ -694,7 +693,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         pointFormat: '{point.y} {point.name}</span>',
       }
     };
-    
   }
 
   public getChartTitle(domainType: string) {
