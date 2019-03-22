@@ -666,8 +666,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     }
     for (const k in seperateResults) {
-      data.push({name: k, y: seperateResults[k], thisCtrl: this});
-      data.push({name: 'No', y: this.participantCount - seperateResults[k], thisCtrl: this});
+      if (seperateResults[k]) {
+        data.push({name: k, y: seperateResults[k], thisCtrl: this});
+        data.push({name: 'No', y: this.participantCount - seperateResults[k], thisCtrl: this});
+      }
     }
     for (const d of data) {
       cats.push(d.name);
