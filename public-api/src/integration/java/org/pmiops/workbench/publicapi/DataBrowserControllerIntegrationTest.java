@@ -60,21 +60,18 @@ public class DataBrowserControllerIntegrationTest {
   @Test
   public void testGenderCount() throws Exception {
     Analysis resp = api.getGenderAnalysis();
-    // TODO: These are empty - is that expected??
-    // assertThat(resp.getDistResults()).isNotEmpty();
-    // assertThat(resp.getResults()).isNotEmpty();
+    assertThat(resp.getResults()).isNotEmpty();
   }
 
   @Test
   public void testParticipantCount() throws Exception {
     AchillesResult resp = api.getParticipantCount();
     assertThat(resp.getCountValue()).isGreaterThan(0L);
-    // TODO: Source count was 0 in test env - expected for synthetic data?
   }
 
   @Test
   public void testConceptAnalysisResults() throws Exception {
-    // These concept IDs are hardcoded by the data browser in all environments, so must exist.
+    // These concept IDs are hardcoded by the data browser in all environments, so they must exist.
     List<String> concepts = ImmutableList.of("903118", "903115", "903133");
     List<String> gotConcepts = api.getConceptAnalysisResults(concepts, null).getItems()
         .stream()
