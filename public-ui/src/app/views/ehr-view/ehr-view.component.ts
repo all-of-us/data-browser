@@ -45,7 +45,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   synonymString = {};
   /* Show different graphs depending on domain we are in */
   graphToShow = GraphType.BiologicalSex;
-  showTopConcepts = false;
+  showTopConcepts:boolean;
   medlinePlusLink: string;
   graphButtons = [];
 
@@ -105,14 +105,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
-           this.toggleTopConcepts();
           }
         }));
-      // Set to loading as long as they are typing
-    //   this.subscriptions.push(this.searchText.valueChanges.subscribe(
-    //     (query) => this.loading = true));
-    // }
+      this.subscriptions.push(this.searchText.valueChanges.subscribe(
+        (query) => localStorage.setItem('searchText', query) ));
       }
+      this.showTopConcepts = true;
   }
 
 
@@ -136,7 +134,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     // Set the localStorage to empty so making a new search here does not follow to other pages
     // localStorage.setItem('searchText', '');
     this.loading = false;
-    this.toggleTopConcepts();
   }
 
   private searchDomain(query: string) {
