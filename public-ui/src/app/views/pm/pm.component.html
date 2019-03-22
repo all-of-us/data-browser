@@ -7,15 +7,7 @@
           class="btn btn-link"> {{item.groupName}} </button>
       </div>
     </aside>
-    <div *ngIf="loading()" class="loading white-card-box ">
-      <div class="row flex-items-xs-middle">
-        <div class="col-xs-12">
-          <span class="spinner spinner-lg hidden-sm-down">Loading ...</span>
-          <span class="spinner spinner-md hidden-md-up hidden-xs-down"></span>
-          <span class="spinner spinner-sm hidden-sm-up"></span>
-        </div>
-      </div>
-    </div>
+    <app-db-spinner [loading]="loading()"></app-db-spinner>
     <div class="db-card" *ngIf="!loading()">
       <div class="db-card-inner">
         <div class="db-card-header">

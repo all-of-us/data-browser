@@ -37,6 +37,7 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 (<any>window).StackTrace = StackTrace;
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
+import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import {DbConfigService} from './utils/db-config.service';
 import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -87,6 +88,7 @@ export function getConfigService(http: Http) {
     PageTemplateSignedOutComponent,
     PhysicalMeasurementsComponent,
     SurveyChartComponent,
+    DbSpinnerComponent,
   ],
   providers: [
     {
