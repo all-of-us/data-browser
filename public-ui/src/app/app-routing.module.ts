@@ -32,7 +32,8 @@ const routes: Routes = [
   {
     path: 'error',
     pathMatch: 'full',
-    component: EmergencyComponent
+    component: EmergencyComponent,
+    data: { title: 'ERROR' }
   },
   {
     path: '',
