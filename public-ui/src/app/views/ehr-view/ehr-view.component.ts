@@ -34,7 +34,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchResult: ConceptListResponse;
   items: any[] = [];
   standardConcepts: any[] = [];
-  loading = true;
+  loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
   private searchRequest: SearchConceptsRequest;
@@ -109,9 +109,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
       // Set to loading as long as they are typing
-      this.subscriptions.push(this.searchText.valueChanges.subscribe(
-        (query) => this.loading = true));
-    }
+    //   this.subscriptions.push(this.searchText.valueChanges.subscribe(
+    //     (query) => this.loading = true));
+    // }
+      }
   }
 
 
