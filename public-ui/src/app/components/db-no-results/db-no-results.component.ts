@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiModule, DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
+import { DbConfigService } from '../../utils/db-config.service';
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
@@ -12,7 +13,10 @@ export class DbNoResultsComponent implements OnChanges {
   results;
   loading;
   prevSearchText: string;
-  constructor(private api: DataBrowserService, private router: Router) {
+  constructor(
+    private api: DataBrowserService,
+    private router: Router,
+    private dbc: DbConfigService) {
   }
 
   ngOnChanges() {
@@ -29,7 +33,8 @@ export class DbNoResultsComponent implements OnChanges {
     }
   }
 
-  public viewEhrDomain(r) {
+  public newEhrDomain(r) {
+    // payload is the domain info that we are switching to
     const payload = {
       domain: r,
       searchText: this.searchText.value
@@ -37,7 +42,39 @@ export class DbNoResultsComponent implements OnChanges {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     this.newDomain.emit(payload);
-    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
+  }
+
+  public goToResult(r) {
+    console.log(r, 'r is passed');
+    console.log(this.results, 'check r against');
+
+    if (this.results && this.results.domainInfos) {
+      this.results.domainInfos.forEach(domain  => {
+        if (r.domain === domain.domain) {
+          const payload = {
+            domain: r,
+            searchText: this.searchText.value
+          };
+          localStorage.setItem('ehrDomain', JSON.stringify(r));
+          this.newDomain.emit(payload);
+          this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
+        }
+      });
+
+    }
+     if (this.results && this.results.surveyModules) {
+      this.results.surveyModules.forEach(survey  => {
+        if (r.conceptId === survey.conceptId) {
+          localStorage.setItem('surveyModule', JSON.stringify(r));
+          localStorage.setItem('searchText', this.searchText.value);
+          this.dbc.conceptIdNames.forEach(idName => {
+            if (r.conceptId === idName.conceptId) {
+              this.router.navigateByUrl('survey/' + idName.conceptName);
+            }
+          });
+        }
+      });
+    }
   }
 
   public searchDomains(query: string) {

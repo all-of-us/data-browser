@@ -8,11 +8,11 @@
 </div>
 <div *ngIf="results && results.domainInfos.length > 0">
     <div *ngFor="let domain of results.domainInfos ">
-        <span (click)="viewEhrDomain(domain)" >{{domain.standardConceptCount}} results available in the domain: {{domain.name}}</span>
+        <span (click)="goToResult(domain)" >{{domain.standardConceptCount}} results available in the domain: {{domain.name}}</span>
     </div>
 </div>
 <div *ngIf="results && results.surveyModules.length > 0">
-    <div *ngFor="let survey of results.surveyModules ">
+    <div (click)="goToResult(survey)" *ngFor="let survey of results.surveyModules ">
         {{survey.questionCount}} related questions in survey: {{survey.name}}
     </div>
 </div>

@@ -36,6 +36,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   searchMethod = 'or';
   /* Show answers toggle */
   showAnswer = {};
+  prevSearchText = '';
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -48,7 +49,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.prevSearchText = localStorage.getItem('searchText');
+    console.log(this.prevSearchText,'previous searchTEXt');
+    
     this.loading = true;
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
@@ -57,11 +60,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.surveyConceptId = survey.conceptId;
       this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
     }
-    this.searchText.setValue(localStorage.getItem('searchText'));
-    if (!this.searchText.value) {
-      this.searchText.setValue('');
-    }
-
+    this.searchText.setValue(this.prevSearchText);
     this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
       next: x => {
         this.surveyResult = x;

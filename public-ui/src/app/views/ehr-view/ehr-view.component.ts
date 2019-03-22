@@ -133,7 +133,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     this.top10Results = this.searchResult.items.slice(0, 10);
     // Set the localStorage to empty so making a new search here does not follow to other pages
-    localStorage.setItem('searchText', '');
+    // localStorage.setItem('searchText', '');
     this.loading = false;
     this.toggleTopConcepts();
   }
@@ -238,6 +238,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public changeResults(e) {
     localStorage.setItem('searchText', e.searchText);
+    console.log(e.searchText);
     localStorage.setItem('ehrDomain', JSON.stringify(e.domain));
     this.ngOnInit();
   }
