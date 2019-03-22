@@ -1,0 +1,52 @@
+:host {
+    padding-left:1em;
+}
+.hasChildren {
+    position: relative;
+}
+
+.hasChildren::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top:.05em;
+    left:-1.05em;
+    width: .6em;
+    height: .6em;
+    border-right: .125em solid gray;
+    border-bottom: .125em solid gray;
+    border-radius: .1em;
+    transform-origin:  80% 80%;
+    transform: rotate(-45deg);
+}
+
+.hasChildren.opened::before {
+    transition: .1s transform linear;
+    transform: rotate(45deg);
+}
+
+.noChildren {
+    position: relative;
+    
+}
+.noChildren::before{
+    content: '';
+    display: block;
+    position: absolute;
+    width:.4em;
+    left:-.5em;
+    height:.1em;
+    background: gray;
+    top:calc((50%) + .1em)
+
+}
+
+.children {
+    margin-left: 1.5em;
+    margin-bottom:-1rem;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    justify-content: space-evenly;
+}
+

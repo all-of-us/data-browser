@@ -15,7 +15,7 @@ import { ConceptListResponse } from '../../../publicGenerated/model/conceptListR
 import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../publicGenerated/model/standardConceptFilter';
 import { GraphType } from '../../utils/enum-defs';
-import {TooltipService} from '../../utils/tooltip.service';
+import { TooltipService } from '../../utils/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
@@ -49,6 +49,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   medlinePlusLink: string;
   graphButtons = [];
   graphType = GraphType;
+  treeData: any[];
+  expanded: boolean = true;
+  childTest=[];
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -107,7 +110,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
-           this.toggleTopConcepts();
+            this.toggleTopConcepts();
           }
         }));
       // Set to loading as long as they are typing
@@ -178,17 +181,54 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.resetSelectedGraphs();
     this.graphToShow = g;
     if (this.graphToShow === GraphType.Sources) {
-      console.log('here');
+      console.log(r.conceptId,'conceptID');
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
         .subscribe({
           next: result => {
-            console.log(result);
+            this.treeData = [result.parent];
+            this.treeData['children'] = result.children.items;
+            console.log(this.treeData, 'treeData');
+            // for (let i = 0; i < this.treeData[0].children.length; i++) {
+            //   const child = this.treeData[0].children[i];
+              // this.buildTreeNode(child, child.parentId);
+            }
             //TODO ui tree results prep needed for tree
             // if group = 0 => criteria does not have a child else if group = 1 criteria row has children and needs a expand button
           }
         }));
     }
-  }
+  
+
+  public log(thing){
+    console.log(thing,'log from templete');
+    }
+
+
+
+  // public buildTreeNode(child,parentId) {
+  //   console.log(parentId);
+  //   this.treeData[0].children.forEach(item => {
+  //     if(child.id == item.id){
+  //       if (child.group) {
+  //         item['children']= [];
+  //         this.subscriptions.push(this.api.getCriteriaChildren(child.id)
+  //           .subscribe({
+  //             next: res => {
+  //               res.items.forEach(gChild => {
+  //                 // console.log(child,gChild,"pair");
+  //                 item.children.push(gChild);
+  //                 this.buildTreeNode(gChild, gChild.parentId);
+  //                 // console.log(child,'pushed');
+  //               });
+  //             }
+  //           }));
+  //         }
+  //     } else {
+        
+  //     }
+  //   });
+
+  // }
 
   public toggleSynonyms(conceptId) {
     this.showMoreSynonyms[conceptId] = !this.showMoreSynonyms[conceptId];

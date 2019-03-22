@@ -1,0 +1,8 @@
+<span [ngClass]="[node.children ? 'hasChildren':'noChildren' , opened ? 'opened':'']"
+  (click)="selectEvents.emit($event);opened=!opened">{{node.id}}</span>
+<div class="children" *ngIf="node.children && opened">
+  <div *ngFor="let child of node.children" class="child">
+    <app-recursive-tree [node]="child" [selectedNode]="selectedNode" (click)="selectEvents.emit($event);">
+    </app-recursive-tree>
+  </div>
+</div>

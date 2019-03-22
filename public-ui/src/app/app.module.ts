@@ -38,6 +38,8 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
 import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
+import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
+import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import {DbConfigService} from './utils/db-config.service';
 import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -91,6 +93,8 @@ export function getConfigService(http: Http) {
     SurveyChartComponent,
     DbSpinnerComponent,
     EmergencyComponent,
+    SourceTreeComponent,
+    RecursiveTreeComponent,
   ],
   providers: [
     {
