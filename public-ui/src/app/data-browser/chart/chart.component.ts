@@ -25,6 +25,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() sources = false;
   @Input() genderId: string; // Hack until measurement design of graphs gender overlay
   @Input() domainType: DomainType;
+  @Input() participantCount = 0;
   @Output() resultClicked = new EventEmitter<any>();
   chartOptions: any = null;
   constructor(private dbc: DbConfigService) {
@@ -275,6 +276,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
+      if (this.chartType && this.chartType === 'pregnancyChart') {
+        return this.makePregnancyChartOptions();
+      }
       return this.makeMeasurementChartOptions();
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
@@ -645,6 +649,52 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         pointFormat: '{point.y} participants'
       },
     };
+  }
+  
+  public makePregnancyChartOptions() {
+    let data = [];
+    let cats = [];
+  
+    let results = this.analysis.results.concat([]);
+    
+    var seperateResults = {}
+  
+    for (const a of results) {
+      if (a.stratum4 in seperateResults) {
+        seperateResults[a.stratum4] += a.countValue;
+      } else {
+        seperateResults[a.stratum4] = a.countValue;
+      }
+    }
+    for (let k in seperateResults) {
+      data.push({name: k, y: seperateResults[k], thisCtrl: this});
+      data.push({name: 'No', y: this.participantCount - seperateResults[k], thisCtrl: this});
+    }
+    for (const d of data) {
+      cats.push(d.name);
+    }
+    const series = {
+      name: 'pregnancy', colorByPoint: true, data: data, colors: [this.dbc.COLUMN_COLOR],
+    };
+    return {
+      chart: {
+        type: 'column',
+        backgroundColor: 'transparent',
+        style: {
+          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+        },
+      },
+      title: { text: 'pregnancy chart', style: this.dbc.CHART_TITLE_STYLE },
+      series: series,
+      categories: cats,
+      pointWidth: this.pointWidth,
+      xAxisTitle: null,
+      tooltip: {
+        headerFormat: '<span> ',
+        pointFormat: '{point.y} {point.name}</span>',
+      }
+    };
+    
   }
 
   public getChartTitle(domainType: string) {
