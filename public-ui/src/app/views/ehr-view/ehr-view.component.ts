@@ -45,7 +45,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   synonymString = {};
   /* Show different graphs depending on domain we are in */
   graphToShow = GraphType.BiologicalSex;
-  showTopConcepts:boolean;
+  showTopConcepts: boolean;
   medlinePlusLink: string;
   graphButtons = [];
 
