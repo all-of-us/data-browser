@@ -1,18 +1,20 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiModule, DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
+import { ISubscription } from 'rxjs/Subscription';
 import { DbConfigService } from '../../utils/db-config.service';
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
   styleUrls: ['./db-no-results.component.css']
 })
-export class DbNoResultsComponent implements OnChanges {
+export class DbNoResultsComponent implements OnChanges, OnDestroy {
   @Input() searchText;
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
   loading;
   prevSearchText: string;
+  private subscriptions: ISubscription[] = [];
   constructor(
     private api: DataBrowserService,
     private router: Router,
@@ -31,6 +33,11 @@ export class DbNoResultsComponent implements OnChanges {
       localStorage.setItem('searchText', this.searchText.value);
       this.searchDomains(this.searchText.value);
     }
+  }
+  ngOnDestroy() {
+    for (const s of this.subscriptions) {
+      s.unsubscribe();
+  }
   }
 
   public newEhrDomain(r) {
@@ -78,11 +85,11 @@ export class DbNoResultsComponent implements OnChanges {
   }
 
   public searchDomains(query: string) {
-    this.api.getDomainSearchResults(query).subscribe(results => {
+    this.subscriptions.push(this.api.getDomainSearchResults(query).subscribe(results => {
       this.results = results;
       console.log(this.results, query);
       this.loading = false;
-    });
+    }));
   }
 
 }
