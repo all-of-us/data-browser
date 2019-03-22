@@ -45,6 +45,7 @@ import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
+import { EmergencyComponent } from './views/emergency/emergency.component';
 
 function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
@@ -89,6 +90,7 @@ export function getConfigService(http: Http) {
     PhysicalMeasurementsComponent,
     SurveyChartComponent,
     DbSpinnerComponent,
+    EmergencyComponent,
   ],
   providers: [
     {
