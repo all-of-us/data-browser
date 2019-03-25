@@ -1,3 +1,10 @@
+.no-results {
+  margin-top:-1rem;
+  padding:1rem;
+}
+h5{
+  padding-bottom:1em;
+}
 .loading-dots {
     width:2rem;
     display:flex;
@@ -22,6 +29,9 @@
   }
   .loading-dots .dot:nth-of-type(4){
     animation-delay: 1s;
+  }
+  a:link,a:visited,a{
+    color:#2aa3d8!important;
   }
   
   @keyframes load {

@@ -6,7 +6,7 @@ import { DbConfigService } from '../../utils/db-config.service';
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
-  styleUrls: ['./db-no-results.component.css']
+  styleUrls: ['./db-no-results.component.css', '../../styles/template.css']
 })
 export class DbNoResultsComponent implements OnChanges, OnDestroy {
   @Input() searchText;
@@ -30,14 +30,21 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
     }
     if (this.searchText) {
       this.loading = true;
-      localStorage.setItem('searchText', this.searchText.value);
-      this.searchDomains(this.searchText.value);
-    }
+      this.subscriptions.push(this.searchText.valueChanges
+        .debounceTime(300)
+        .distinctUntilChanged()
+        .subscribe(
+        (query) => {
+          localStorage.setItem('searchText', query);
+        }));
+        this.searchDomains(this.searchText.value);
+      }
   }
+
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
-  }
+    }
   }
 
   public newEhrDomain(r) {
@@ -56,7 +63,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
     console.log(this.results, 'check r against');
 
     if (this.results && this.results.domainInfos) {
-      this.results.domainInfos.forEach(domain  => {
+      this.results.domainInfos.forEach(domain => {
         if (r.domain === domain.domain) {
           const payload = {
             domain: r,
@@ -69,8 +76,8 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
       });
 
     }
-     if (this.results && this.results.surveyModules) {
-      this.results.surveyModules.forEach(survey  => {
+    if (this.results && this.results.surveyModules) {
+      this.results.surveyModules.forEach(survey => {
         if (r.conceptId === survey.conceptId) {
           localStorage.setItem('surveyModule', JSON.stringify(r));
           localStorage.setItem('searchText', this.searchText.value);
