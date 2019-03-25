@@ -9,7 +9,7 @@ import { SourceTreeComponent as TreeNode } from '../source-tree/source-tree.comp
   styleUrls: ['./recursive-tree.component.css']
 })
 export class RecursiveTreeComponent implements OnChanges, OnDestroy {
-  @Input() node: TreeNode;
+  @Input() node:any;
   @Input() selectedNode: TreeNode;
   @Output() selectEvents = new EventEmitter<TreeNode>();
   opened = false;
@@ -18,7 +18,6 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   constructor(private api: DataBrowserService) { }
 
   ngOnChanges() {
-   
     if (this.node.group) {
       this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
         .subscribe({

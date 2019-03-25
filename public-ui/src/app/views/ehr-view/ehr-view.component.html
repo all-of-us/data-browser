@@ -8,10 +8,11 @@
   <div class="search-bar-container">
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
+      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto"
+        autofocus>
     </div>
   </div>
-<app-db-spinner [loading]="loading"></app-db-spinner>
+  <app-db-spinner [loading]="loading"></app-db-spinner>
   <div class="results">
     <a class="btn btn-link btn-sm" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
@@ -255,27 +256,14 @@
                     <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
                       <div class="row" *ngIf="r.vocabularyId === 'SNOMED'; else NonRolledUp">
                         <div class="col-xs-6">
-                          
-                          <!-- <clr-tree-node *ngFor="let node of treeData">
-                            <clr-icon shape="folder"></clr-icon>
-                            {{node.id}}
-                            <ng-template [(clrIfExpanded)]="expanded">
-                              <clr-tree-node *ngFor="let child of node.children">
-                                <button class="clr-treenode-link">
-                                  <clr-icon shape="check"></clr-icon>
-                                  {{child.id}}
-                                </button>
-                              </clr-tree-node>
-                            </ng-template>
-                          </clr-tree-node> -->
-                          SNOMED Code: {{r.conceptCode}} <br>
-                          OMOP Concept Id: {{r.conceptId}} <br>
-                          <br>
-                          Count Breakdown ({{r.vocabularyId}})
-                          <br>
-                          <div *ngFor="let node of treeData" class="tree-top">
+                          <aside class="source-tree">
+                            <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
+                            <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
+                            <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})</p>
+                            <div *ngFor="let node of treeData" class="tree-top">
                               <app-source-tree [rootNode]="node"></app-source-tree>
-                          </div>
+                            </div>
+                          </aside>
                         </div>
                         <div class="col-xs-6">
                           <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
@@ -294,7 +282,6 @@
                       </app-concept-charts>
                     </ng-template>
                   </div>
-
                 </div>
                 <div class="results-grid">
                   <div *ngIf="!loading && items.length === 0">

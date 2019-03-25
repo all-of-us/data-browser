@@ -51,7 +51,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphType = GraphType;
   treeData: any[];
   expanded: boolean = true;
-  childTest=[];
+  childTest = [];
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -181,7 +181,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.resetSelectedGraphs();
     this.graphToShow = g;
     if (this.graphToShow === GraphType.Sources) {
-      console.log(r.conceptId,'conceptID');
+      console.log(r.conceptId, 'conceptID');
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
         .subscribe({
           next: result => {
@@ -190,18 +190,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             console.log(this.treeData, 'treeData');
             // for (let i = 0; i < this.treeData[0].children.length; i++) {
             //   const child = this.treeData[0].children[i];
-              // this.buildTreeNode(child, child.parentId);
-            }
-            //TODO ui tree results prep needed for tree
-            // if group = 0 => criteria does not have a child else if group = 1 criteria row has children and needs a expand button
+            // this.buildTreeNode(child, child.parentId);
           }
+          //TODO ui tree results prep needed for tree
+          // if group = 0 => criteria does not have a child else if group = 1 criteria row has children and needs a expand button
         }));
     }
-  
+  }
 
-  public log(thing){
-    console.log(thing,'log from templete');
-    }
+
+
+  public log(thing) {
+    console.log(thing, 'log from templete');
+  }
 
 
 
@@ -224,7 +225,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   //           }));
   //         }
   //     } else {
-        
+
   //     }
   //   });
 

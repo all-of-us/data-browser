@@ -1,6 +1,4 @@
-:host {
-    padding-left:1em;
-}
+
 .hasChildren {
     position: relative;
 }
@@ -29,23 +27,15 @@
     position: relative;
     
 }
-.noChildren::before{
-    content: '';
-    display: block;
-    position: absolute;
-    width:.4em;
-    left:-.5em;
-    height:.1em;
-    background: gray;
-    top:calc((50%) + .1em)
-
+.blue-text {
+    color:#216fb4;
 }
 
 .children {
     margin-left: 1.5em;
-    margin-bottom:-1rem;
     display: flex;
     flex-direction: column;
+    font-size: .7rem;
     height: fit-content;
     justify-content: space-evenly;
 }
