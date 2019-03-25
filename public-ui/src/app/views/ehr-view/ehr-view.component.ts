@@ -15,7 +15,7 @@ import { ConceptListResponse } from '../../../publicGenerated/model/conceptListR
 import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../publicGenerated/model/standardConceptFilter';
 import { GraphType } from '../../utils/enum-defs';
-import {TooltipService} from '../../utils/tooltip.service';
+import { TooltipService } from '../../utils/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
@@ -63,6 +63,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     console.log(this.router.onSameUrlNavigation);
   }
   ngOnInit() {
+    this.loadPage();
+  }
+
+
+  ngOnDestroy() {
+    for (const s of this.subscriptions) {
+      s.unsubscribe();
+    }
+    this.initSearchSubscription.unsubscribe();
+  }
+
+
+  public loadPage() {
     this.items = [];
 
     // Get search text from localStorage
@@ -108,20 +121,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
       this.subscriptions.push(this.searchText.valueChanges.subscribe(
-        (query) => localStorage.setItem('searchText', query) ));
-      }
-      this.showTopConcepts = true;
-  }
-
-
-  ngOnDestroy() {
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
+        (query) => localStorage.setItem('searchText', query)));
     }
-    this.initSearchSubscription.unsubscribe();
+    this.showTopConcepts = true;
   }
 
-  private searchCallback(results: any) {
+  public searchCallback(results: any) {
     this.searchResult = results;
     this.items = this.searchResult.items;
     for (const concept of this.items) {
@@ -136,7 +141,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  private searchDomain(query: string) {
+  public searchDomain(query: string) {
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
@@ -236,8 +241,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public changeResults(e) {
     localStorage.setItem('searchText', e.searchText);
-    console.log(e.searchText);
+    console.log(this.ehrDomain, 'this still working?');
     localStorage.setItem('ehrDomain', JSON.stringify(e.domain));
-    this.ngOnInit();
+    this.searchDomain(e.searchText);
+    this.totalParticipants = this.ehrDomain.participantCount;
+    console.log(this.totalParticipants, 'this still working?');
+    this.loadPage();
   }
 }

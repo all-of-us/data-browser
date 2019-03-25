@@ -34,28 +34,18 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
         .debounceTime(300)
         .distinctUntilChanged()
         .subscribe(
-        (query) => {
-          localStorage.setItem('searchText', query);
-        }));
-        this.searchDomains(this.searchText.value);
-      }
+          (query: string) => {
+            localStorage.setItem('searchText', query);
+            this.searchDomains(this.searchText.value);
+          }));
+      this.searchDomains(this.searchText.value);
+    }
   }
 
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
     }
-  }
-
-  public newEhrDomain(r) {
-    // payload is the domain info that we are switching to
-    const payload = {
-      domain: r,
-      searchText: this.searchText.value
-    };
-    localStorage.setItem('ehrDomain', JSON.stringify(r));
-    localStorage.setItem('searchText', this.prevSearchText);
-    this.newDomain.emit(payload);
   }
 
   public goToResult(r) {
@@ -74,7 +64,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
           this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
         }
       });
-
     }
     if (this.results && this.results.surveyModules) {
       this.results.surveyModules.forEach(survey => {
@@ -83,6 +72,12 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
           localStorage.setItem('searchText', this.searchText.value);
           this.dbc.conceptIdNames.forEach(idName => {
             if (r.conceptId === idName.conceptId) {
+              const payload = {
+                domain: r,
+                searchText: this.searchText.value
+              };
+              localStorage.setItem('surveyModule', JSON.stringify(r));
+              this.newDomain.emit(payload);
               this.router.navigateByUrl('survey/' + idName.conceptName);
             }
           });
