@@ -299,9 +299,9 @@ def deploy(cmd_name, args)
                               op.opts.git_version, op.opts.circle_url)
   end
 
-  value = common.run %W{../public-api/project.rb integration --project #{op.opts.project}}
+  value = common.run %W{../public-api/project.rb integration --env #{op.opts.project}}
   maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'}"
-  if not value.success?
+  unless value.success?
     exit value.exitstatus
   end
 end
