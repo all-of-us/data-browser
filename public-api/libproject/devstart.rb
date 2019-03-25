@@ -568,6 +568,11 @@ def cloudsql_import(cmd_name, *args)
       ->(opts, v) { opts.bucket = v},
       "Name of the GCS bucket containing the SQL dump"
   )
+  op.add_option(
+        "--file [file]",
+        ->(opts, v) { opts.file = v},
+        "Name of the file to be imported"
+    )
   op.parse.validate
 
   ServiceAccountContext.new(op.opts.project).run do
@@ -575,7 +580,7 @@ def cloudsql_import(cmd_name, *args)
     #common.run_inline %W{docker-compose run db-cloudsql-import} + args
     common.run_inline %W{docker-compose run db-cloudsql-import
           --project #{op.opts.project} --instance #{op.opts.instance} --database #{op.opts.database}
-          --bucket #{op.opts.bucket}}
+          --bucket #{op.opts.bucket} --file #{op.opts.file}}
   end
 end
 

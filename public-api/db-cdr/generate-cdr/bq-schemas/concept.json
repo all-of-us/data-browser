@@ -57,6 +57,6 @@
 	{
 		"mode": "NULLABLE",
 		"name": "can_select",
-		"type": "BOOL"
+		"type": "INTEGER"
 	}
 ]

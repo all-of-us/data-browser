@@ -7,6 +7,6 @@
   {
     "mode": "REQUIRED",
     "name": "flag",
-    "type": "STRING"
+    "type": "INTEGER"
   }
 ]
