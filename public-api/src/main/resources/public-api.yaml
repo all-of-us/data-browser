@@ -379,8 +379,7 @@ definitions:
         type: boolean
       selectable:
         description: boolean field which represents if the criteria is selectable
-        type: integer
-        format: int32
+        type: boolean
       count:
         description: count
         type: integer

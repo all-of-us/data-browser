@@ -169,8 +169,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     return new org.pmiops.workbench.model.Criteria()
                             .id(criteria.getId())
                             .parentId(criteria.getParentId())
+                            .type(criteria.getType())
+                            .subtype(criteria.getType())
+                            .code(criteria.getCode())
+                            .name(criteria.getName())
                             .group(criteria.getGroup())
+                            .selectable(criteria.getSelectable())
                             .count(Long.valueOf(criteria.getCount()))
+                            .domainId(criteria.getDomainId())
+                            .conceptId(criteria.getConceptId())
                             .path(criteria.getPath());
                 }
             };
