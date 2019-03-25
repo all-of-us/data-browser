@@ -241,11 +241,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public changeResults(e) {
     localStorage.setItem('searchText', e.searchText);
-    console.log(this.ehrDomain, 'this still working?');
     localStorage.setItem('ehrDomain', JSON.stringify(e.domain));
     this.searchDomain(e.searchText);
-    this.totalParticipants = this.ehrDomain.participantCount;
-    console.log(this.totalParticipants, 'this still working?');
     this.loadPage();
   }
 }

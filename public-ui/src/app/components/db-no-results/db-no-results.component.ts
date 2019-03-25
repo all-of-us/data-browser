@@ -49,9 +49,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public goToResult(r) {
-    console.log(r, 'r is passed');
-    console.log(this.results, 'check r against');
-
     if (this.results && this.results.domainInfos) {
       this.results.domainInfos.forEach(domain => {
         if (r.domain === domain.domain) {
@@ -89,7 +86,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   public searchDomains(query: string) {
     this.subscriptions.push(this.api.getDomainSearchResults(query).subscribe(results => {
       this.results = results;
-      console.log(this.results, query);
       this.loading = false;
     }));
   }
