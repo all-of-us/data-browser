@@ -19,7 +19,7 @@ public interface AchillesAnalysisDao extends CrudRepository<AchillesAnalysis, Lo
     List<AchillesAnalysis> findConceptAnalysisResults(String concept_id,List<Long> analysisIds);
 
     @Query(value = "select a from AchillesAnalysis a left join FETCH a.results r where a.analysisId=?1")
-    AchillesAnalysis findAnalysisById(Long analysisId);
+    AchillesAnalysis findSpecificAnalysis(Long analysisId);
 
 }
 

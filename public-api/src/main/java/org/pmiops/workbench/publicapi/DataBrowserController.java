@@ -548,7 +548,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getRaceAnalysis(){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
+        AchillesAnalysis raceAnalysis = achillesAnalysisDao.findSpecificAnalysis(RACE_ANALYSIS);
         addRaceStratum(raceAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
     }
@@ -556,7 +556,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getEthnicityAnalysis(){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
+        AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findSpecificAnalysis(ETHNICITY_ANALYSIS);
         addEthnicityStratum(ethnicityAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
     }
@@ -792,7 +792,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
 
             if(isMeasurement){
-                AchillesAnalysis measurementDistAnalysis = achillesAnalysisDao.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
+                AchillesAnalysis measurementDistAnalysis = achillesAnalysisDao.findSpecificAnalysis(MEASUREMENT_DIST_ANALYSIS_ID);
                 List<AchillesResultDist> achillesResultDistList = achillesResultDistDao.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
                 HashMap<String,List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
                 List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
