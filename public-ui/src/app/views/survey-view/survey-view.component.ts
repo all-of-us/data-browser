@@ -218,7 +218,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public filterResults() {
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
-    this.questions = this.surveyResult.items;
+    if (this.surveyResult) {
+      this.questions = this.surveyResult.items;
+    }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
     }
@@ -263,7 +265,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public changeResults(e) {
-    localStorage.setItem('searchText', e.searchText);
-    this.ngOnInit();
+    this.loadPage();
   }
 }

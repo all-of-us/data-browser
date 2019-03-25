@@ -240,9 +240,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public changeResults(e) {
-    localStorage.setItem('searchText', e.searchText);
-    localStorage.setItem('ehrDomain', JSON.stringify(e.domain));
-    this.searchDomain(e.searchText);
     this.loadPage();
   }
 }
