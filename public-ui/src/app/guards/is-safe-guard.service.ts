@@ -24,8 +24,8 @@ export class IsSafeGuard implements CanActivate, CanActivateChild {
       if (config.dataBrowserIsSafe) {
         return Observable.from([true]);
       }
-        this.router.navigate(['/error']);
-        return Observable.from([false]);
+      this.router.navigate(['/error']);
+      return Observable.from([false]);
     });
   }
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
