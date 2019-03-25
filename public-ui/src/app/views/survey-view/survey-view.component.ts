@@ -257,4 +257,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
   }
+
+  public changeResults(e) {
+    localStorage.setItem('searchText', e.searchText);
+    this.ngOnInit();
+  }
 }
