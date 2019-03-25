@@ -49,6 +49,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadPage();
+  }
+
+  ngOnDestroy() {
+    for (const s of this.subscriptions) {
+      s.unsubscribe();
+    }
+  }
+
+  public loadPage() {
     this.prevSearchText = localStorage.getItem('searchText');
     this.loading = true;
     // Get the survey from local storage the user clicked on on a previous page
@@ -135,12 +145,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
       (query) => localStorage.setItem('searchText', query) ));
-  }
-
-  ngOnDestroy() {
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
-    }
   }
 
   public countPercentage(countValue: number) {
