@@ -79,7 +79,7 @@ cri_anc_table_check=\\bcriteria_ancestor\\b
 
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
-create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map)
+create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions)
 
 for t in "${create_tables[@]}"
 do
@@ -88,7 +88,7 @@ do
 done
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for workbench app
-load_tables=(domain_info survey_module achilles_analysis unit_map survey_question_map)
+load_tables=(domain_info survey_module achilles_analysis unit_map survey_question_map filter_conditions)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -453,11 +453,13 @@ echo "Inserting concept table data ... "
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\`
 (concept_id, concept_name, domain_id, vocabulary_id, concept_class_id, standard_concept,
-concept_code, count_value, prevalence, source_count_value, synonyms)
+concept_code, count_value, prevalence, source_count_value, synonyms, can_select)
 select c.concept_id, c.concept_name, c.domain_id, c.vocabulary_id, c.concept_class_id, c.standard_concept, c.concept_code,
-0 as count_value , 0.0 as prevalence, 0 as source_count_value,concat(cast(c.concept_id as string),'|',string_agg(replace(cs.concept_synonym_name,'|','||'),'|')) as synonyms
-from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs
-on c.concept_id=cs.concept_id group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code"
+0 as count_value , 0.0 as prevalence, 0 as source_count_value,concat(cast(c.concept_id as string),'|',string_agg(replace(cs.concept_synonym_name,'|','||'),'|')) as synonyms,
+(case when (c.concept_id in (select distinct concept_id from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\`)
+and (select flag from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\` where concept_id = c.concept_id)=0) then 0 else 1 end) as can_select
+from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id
+group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code"
 
 # Update counts and prevalence in concept
 q="select count_value from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a where a.analysis_id = 1"
@@ -601,7 +603,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.est_count
 from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='CM' and cr.synonyms like '%rank1%') as sub_cr
-where sub_cr.concept_id = c.concept_id and c.domain_id = 'Condition' "
+where sub_cr.concept_id = c.concept_id and c.domain_id = 'Condition' and c.vocabulary_id = 'SNOMED' "
 
 echo "Updating rolled up counts of snomed procedures in concept"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -609,7 +611,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.est_count
 from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='PCS' and cr.synonyms like '%rank1%') as sub_cr
-where sub_cr.concept_id = c.concept_id and c.domain_id = 'Procedure' "
+where sub_cr.concept_id = c.concept_id and c.domain_id = 'Procedure' and c.vocabulary_id = 'SNOMED' "
 
 echo "Updating rolled up counts of snomed measurements in concept"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -617,4 +619,4 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.est_count
 from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='MEAS' and cr.synonyms like '%rank1%') as sub_cr
-where sub_cr.concept_id = c.concept_id and c.domain_id = 'Measurement' "
+where sub_cr.concept_id = c.concept_id and c.domain_id = 'Measurement' and c.vocabulary_id = 'SNOMED' "

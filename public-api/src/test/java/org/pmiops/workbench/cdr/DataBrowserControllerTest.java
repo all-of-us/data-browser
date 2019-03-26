@@ -569,6 +569,7 @@ public class DataBrowserControllerTest {
     result.setSynonymsStr(
         String.valueOf(concept.getConceptId()) + '|' +
             Joiner.on("|").join(concept.getConceptSynonyms()));
+    result.setCanSelect(1);
     return result;
   }
 
