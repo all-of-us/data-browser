@@ -37,6 +37,7 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 (<any>window).StackTrace = StackTrace;
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
+import { DbNoResultsComponent } from './components/db-no-results/db-no-results.component';
 import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import {DbConfigService} from './utils/db-config.service';
 import {TooltipService} from './utils/tooltip.service';
@@ -89,6 +90,7 @@ export function getConfigService(http: Http) {
     PageTemplateSignedOutComponent,
     PhysicalMeasurementsComponent,
     SurveyChartComponent,
+    DbNoResultsComponent,
     DbSpinnerComponent,
     EmergencyComponent,
   ],
