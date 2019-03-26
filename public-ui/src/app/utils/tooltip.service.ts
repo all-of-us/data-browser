@@ -7,17 +7,17 @@ export class TooltipService {
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
     'sex assigned at birth or to a person’s secondary sex characteristics.';
-  ehrAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at \n' +
-    'which medical concepts first occurred in participants \n' +
-    ' electronic health records. For example, if a medical concept occurred in a \n' +
-    'participant’s record at age 25 and again at age 43, 45 and 47 \n' +
-    'the participant is included once in the bar chart at the age of first occurrence, age 25.';
+  ehrAgeChartHelpText = `The age bar chart displays a binned distribution
+   of the ages at which medical concepts first occurred in participants
+    electronic health records. For example, if a medical concept occurred
+   in a participant’s record at age 25 and again at age 43, 45 and 47 the participant is
+    included once in the bar chart at the age of first occurrence, age 25.`;
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
     'ages at which the participants took the indicated survey.';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
-  raceEthnicityChartHelpText = 'Race/ethnicity are categories that describe groups to \n' +
-    'which individuals belong, identify with, or belong in the eyes of the community.';
+  raceEthnicityChartHelpText =`Race / ethnicity are categories that describe groups to which
+   individuals identify with or belong in the eyes of the community`;
   sourcesChartHelpText = 'Individual health records often contain medical ' +
     'information that means the same thing ' +
     'but may be recorded in many different ways. \n' +
