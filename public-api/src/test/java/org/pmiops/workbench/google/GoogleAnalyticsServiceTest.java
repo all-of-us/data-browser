@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 public class GoogleAnalyticsServiceTest {
 
+    private static final String CID = "555";
     private static final String CATEGORY = "category";
     private static final String ACTION = "action";
     private static final String LABEL = "label";
@@ -38,7 +39,6 @@ public class GoogleAnalyticsServiceTest {
     public void setUp() {
         WorkbenchConfig config = new WorkbenchConfig();
         config.server = new WorkbenchConfig.ServerConfig();
-//        config.server.clientId = "testClientId";
         config.server.gaId = "testGaId";
         trackingService = new GoogleAnalyticsServiceImpl(Providers.of(config), fetchService);
     }
@@ -47,7 +47,7 @@ public class GoogleAnalyticsServiceTest {
     public void testSuccessResponse() throws Exception {
         when(fetchService.fetch(any(HTTPRequest.class))).thenReturn(buildResponse(SUCCESS));
         int responseCode = trackingService
-                .trackEventToGoogleAnalytics(CATEGORY, ACTION, LABEL, VALUE);
+                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, LABEL, VALUE);
         assertThat(responseCode).isEqualTo(SUCCESS);
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
@@ -56,7 +56,7 @@ public class GoogleAnalyticsServiceTest {
     public void testFailureResponse() throws Exception {
         when(fetchService.fetch(any(HTTPRequest.class))).thenReturn(buildResponse(FAILURE));
         int responseCode = trackingService
-                .trackEventToGoogleAnalytics(CATEGORY, ACTION, LABEL, VALUE);
+                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, LABEL, VALUE);
         assertThat(responseCode).isEqualTo(FAILURE);
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
@@ -65,14 +65,14 @@ public class GoogleAnalyticsServiceTest {
     public void testRequiredParametersSuccess() throws Exception {
         when(fetchService.fetch(any(HTTPRequest.class))).thenReturn(buildResponse(SUCCESS));
         int responseCode = trackingService
-                .trackEventToGoogleAnalytics(CATEGORY, ACTION, null, null);
+                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, null, null);
         assertThat(responseCode).isEqualTo(SUCCESS);
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void testRequiredParametersFailure() throws Exception {
-        trackingService.trackEventToGoogleAnalytics(null, null, null, null);
+        trackingService.trackEventToGoogleAnalytics(null, null, null, null, null);
         verify(fetchService, times(0)).fetch(any(HTTPRequest.class));
     }
 

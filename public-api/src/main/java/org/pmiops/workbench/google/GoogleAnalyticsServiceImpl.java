@@ -19,6 +19,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Service class that can be used to send server-side events to GA for processing.
@@ -44,6 +45,10 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      * See https://developers.google.com/analytics/devguides/collection/gtagjs/events
      * for a list of default GA events.
      *
+     * TODO: The 'cid' value is set via GA client code in a cookie. Look into how to retrieve it
+     * programmatically. See: https://support.google.com/analytics/answer/6205850?hl=en
+     * @param cid nullable Google Analytics Client ID that represents the user's unique browser
+     *            device configuration. Uses a default value ("555") if not provided.
      * @param category the required event category, e.g. 'engagement'
      * @param action the required event action, e.g. 'search'
      * @param label the optional event label, e.g. 'search_term'
@@ -53,13 +58,15 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      */
     @Override
     public int trackEventToGoogleAnalytics(
-            String category, String action, String label, String value) throws NullPointerException, IOException {
+            String cid, String category, String action, String label, String value)
+            throws NullPointerException, IOException {
+        String defaultCid = Optional.ofNullable(cid).orElse("555");
         Preconditions.checkNotNull(category);
         Preconditions.checkNotNull(action);
         Map<String, String> map = new LinkedHashMap<>();
         map.put("v", "1");             // Version.
         map.put("tid", configProvider.get().server.gaId);
-        map.put("cid", "555");         // TODO: Look into how to get this from the request.
+        map.put("cid", defaultCid);
         map.put("t", "event");         // Event hit type.
         map.put("ec", encode(category));
         map.put("ea", encode(action));
