@@ -53,14 +53,9 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      */
     @Override
     public int trackEventToGoogleAnalytics(
-            String category, String action, String label, String value) throws IOException {
-        try {
-            Preconditions.checkNotNull(category);
-            Preconditions.checkNotNull(action);
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException("category and action are required values");
-        }
-
+            String category, String action, String label, String value) throws NullPointerException, IOException {
+        Preconditions.checkNotNull(category);
+        Preconditions.checkNotNull(action);
         Map<String, String> map = new LinkedHashMap<>();
         map.put("v", "1");             // Version.
         map.put("tid", configProvider.get().server.gaId);

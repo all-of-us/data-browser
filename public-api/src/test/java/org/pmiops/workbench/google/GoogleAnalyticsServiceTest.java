@@ -70,7 +70,7 @@ public class GoogleAnalyticsServiceTest {
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testRequiredParametersFailure() throws Exception {
         trackingService.trackEventToGoogleAnalytics(null, null, null, null);
         verify(fetchService, times(0)).fetch(any(HTTPRequest.class));
