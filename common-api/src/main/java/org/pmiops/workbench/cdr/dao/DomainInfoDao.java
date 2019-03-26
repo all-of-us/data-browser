@@ -36,7 +36,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
       // move these searches to a more suitable technology, e.g. Elasticsearch.
       "    UNION DISTINCT " +
       "    (select domain_id, concept_id from concept " +
-      "     where concept_id in (?2))) c1 " +
+      "     where concept_id in (?2) and can_select=1)) c1 " +
       "  group by c1.domain_id) c " +
       "ON d.domain_id = c.domain_id " +
       "order by d.domain_id")
