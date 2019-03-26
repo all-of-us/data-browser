@@ -16,7 +16,7 @@ export class TooltipService {
     'ages at which the participants took the indicated survey.';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
-  raceEthnicityChartHelpText =`Race / ethnicity are categories that describe groups to which
+  raceEthnicityChartHelpText = `Race / ethnicity are categories that describe groups to which
    individuals identify with or belong in the eyes of the community`;
   sourcesChartHelpText = 'Individual health records often contain medical ' +
     'information that means the same thing ' +
