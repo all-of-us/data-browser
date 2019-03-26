@@ -135,6 +135,10 @@ h5.secondary-display {
 #answer-result {
     width: calc(47%);
 }
+h5.secondary-display {
+    padding:18px;
+    font-size:1.3em;
+}
 
 @media (max-width: 600px) {
     .chart-choice {

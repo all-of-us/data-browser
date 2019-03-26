@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiModule, DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
+import { DataBrowserService } from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
 import { DbConfigService } from '../../utils/db-config.service';
 @Component({
