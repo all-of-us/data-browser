@@ -21,7 +21,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
   @Query(nativeQuery=true,
       value="select " +
       "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
-      "0 all_concept_count, c.count standard_concept_count, 0 participant_count " +
+      "0 all_concept_count, c.count standard_concept_count, d.participant_count participant_count " +
       "from domain_info d " +
       "join (" +
       "  select c1.domain_id, count(*) as count " +
