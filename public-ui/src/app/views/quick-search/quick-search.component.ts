@@ -48,11 +48,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     SURVEY_DATATYPE = 'surveys';
     PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
     pmConceptGroups: ConceptGroup[];
-    conceptIdNames = [
-      { conceptId: 1585855, conceptName: 'Lifestyle' },
-      { conceptId: 1585710, conceptName: 'Overall Health' },
-      { conceptId: 1586134, conceptName: 'The Basics' }
-    ];
+
 
     private subscriptions: ISubscription[] = [];
 
@@ -67,6 +63,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+      localStorage.clear();
       this.dbc.getPmGroups().subscribe(results => {
         this.pmConceptGroups = results;
       });
@@ -183,7 +180,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewSurvey(r) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.conceptIdNames.forEach(idName => {
+    this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
         this.router.navigateByUrl('survey/' + idName.conceptName);
       }

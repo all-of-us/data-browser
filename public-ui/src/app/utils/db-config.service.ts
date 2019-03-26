@@ -98,6 +98,12 @@ export class DbConfigService {
   pmGroups: ConceptGroup[] = [];
   genderAnalysis: Analysis;
 
+  conceptIdNames = [
+    { conceptId: 1585855, conceptName: 'Lifestyle' },
+    { conceptId: 1585710, conceptName: 'Overall Health' },
+    { conceptId: 1586134, conceptName: 'The Basics' }
+  ];
+
   constructor(private api: DataBrowserService) {
     // Load up common simple data needed on pages
     // Get Demographic totals

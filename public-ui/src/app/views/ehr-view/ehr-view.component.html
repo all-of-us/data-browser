@@ -10,7 +10,7 @@
     </div>
   </div>
   <app-db-spinner [loading]="loading"></app-db-spinner>
-  <div class="results">
+  <div *ngIf="items.length > 0" class="results">
     <a class="btn btn-link btn-sm" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
         <div class="db-card">
@@ -19,8 +19,7 @@
               <!-- Top summary boxes -- only show if have results -->
 
               <h5 id="domain-summary" class="secondary-display">
-                <a class="toggle-link" (click)="toggleTopConcepts()"> Top 10 Medical Concepts by Descending Participant
-                  Counts
+                <a class="toggle-link" (click)="toggleTopConcepts()">Top 10 {{title}} by Descending Participant Counts
                   <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
                   <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
                 </a>
@@ -290,4 +289,9 @@
             </div>
           </div>
         </div>
+  </div>
+  <div *ngIf="!loading && items.length === 0">
+      <h5 class="secondary-display"> No results in this domain that match your search.</h5>
+    <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
+  </div>
   </div>

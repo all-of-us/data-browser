@@ -36,6 +36,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   searchMethod = 'or';
   /* Show answers toggle */
   showAnswer = {};
+  prevSearchText = '';
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -48,7 +49,17 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadPage();
+  }
 
+  ngOnDestroy() {
+    for (const s of this.subscriptions) {
+      s.unsubscribe();
+    }
+  }
+
+  public loadPage() {
+    this.prevSearchText = localStorage.getItem('searchText');
     this.loading = true;
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
@@ -57,11 +68,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.surveyConceptId = survey.conceptId;
       this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
     }
-    this.searchText.setValue(localStorage.getItem('searchText'));
-    if (!this.searchText.value) {
-      this.searchText.setValue('');
-    }
-
+    this.searchText.setValue(this.prevSearchText);
     this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
       next: x => {
         this.surveyResult = x;
@@ -137,13 +144,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
-      (query) => this.loading = true ));
-  }
-
-  ngOnDestroy() {
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
-    }
+      (query) => localStorage.setItem('searchText', query) ));
   }
 
   public countPercentage(countValue: number) {
@@ -217,7 +218,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public filterResults() {
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
-    this.questions = this.surveyResult.items;
+    if (this.surveyResult) {
+      this.questions = this.surveyResult.items;
+    }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
     }
@@ -259,5 +262,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.subChartEl2.nativeElement.scrollIntoView(
         { behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
+  }
+
+  public changeResults(e) {
+    this.loadPage();
   }
 }
