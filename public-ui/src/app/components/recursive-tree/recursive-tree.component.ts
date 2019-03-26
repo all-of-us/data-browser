@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.service';
-import { SourceTreeComponent as TreeNode } from '../source-tree/source-tree.component';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -10,8 +9,6 @@ import { SourceTreeComponent as TreeNode } from '../source-tree/source-tree.comp
 })
 export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   @Input() node: any;
-  @Input() selectedNode: TreeNode;
-  @Output() selectEvents = new EventEmitter<TreeNode>();
   opened = false;
   loading = true;
   private subscriptions: ISubscription[] = [];
