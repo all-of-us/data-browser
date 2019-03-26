@@ -59,7 +59,7 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("v", "1");             // Version.
         map.put("tid", configProvider.get().server.gaId);
-        map.put("cid", configProvider.get().server.clientId);
+        map.put("cid", "555");         // TODO: Look into how to get this from the request.
         map.put("t", "event");         // Event hit type.
         map.put("ec", encode(category));
         map.put("ea", encode(action));

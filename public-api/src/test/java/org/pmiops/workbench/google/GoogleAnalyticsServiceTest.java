@@ -38,7 +38,7 @@ public class GoogleAnalyticsServiceTest {
     public void setUp() {
         WorkbenchConfig config = new WorkbenchConfig();
         config.server = new WorkbenchConfig.ServerConfig();
-        config.server.clientId = "testClientId";
+//        config.server.clientId = "testClientId";
         config.server.gaId = "testGaId";
         trackingService = new GoogleAnalyticsServiceImpl(Providers.of(config), fetchService);
     }

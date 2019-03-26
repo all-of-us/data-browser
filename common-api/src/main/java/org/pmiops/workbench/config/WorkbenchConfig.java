@@ -21,6 +21,5 @@ public class WorkbenchConfig {
     public String publicApiKeyForErrorReports;
     public String projectId;
     public String gaId;
-    public String clientId;
   }
 }
