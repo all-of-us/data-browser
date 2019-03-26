@@ -9,7 +9,6 @@
     "publicApiKeyForErrorReports": "AIzaSyAkMIMIzUwv02RBK-A7cE1PbPpDJ2MTNtk",
     "debugEndpoints": false,
     "projectId": "aou-db-staging",
-    "gaId": "UA-116298798-4",
-    "clientId": "657299777109-kvb5qafr70bl01i6bnpgsiq5nt6v1o8u.apps.googleusercontent.com"
+    "gaId": "UA-116298798-4"
   }
 }
