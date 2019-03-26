@@ -10,6 +10,7 @@ import org.pmiops.workbench.config.WorkbenchConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.inject.Provider;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -57,9 +58,8 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      * @exception IOException if the URL could not be posted to
      */
     @Override
-    public int trackEventToGoogleAnalytics(
-            String cid, String category, String action, String label, String value)
-            throws NullPointerException, IOException {
+    public int trackEventToGoogleAnalytics(@Nullable String cid, String category, String action,
+                                           String label, String value) throws IOException {
         String defaultCid = Optional.ofNullable(cid).orElse("555");
         Preconditions.checkNotNull(category);
         Preconditions.checkNotNull(action);
