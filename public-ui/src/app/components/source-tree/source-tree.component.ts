@@ -25,7 +25,6 @@ export class SourceTreeComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.rootNode,'root');
   }
 
 

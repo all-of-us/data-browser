@@ -50,7 +50,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphButtons = [];
   graphType = GraphType;
   treeData: any[];
-  expanded: boolean = true;
+  expanded = true;
   childTest = [];
 
   @ViewChild('chartElement') chartEl: ElementRef;
@@ -187,49 +187,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           next: result => {
             this.treeData = [result.parent];
             this.treeData['children'] = result.children.items;
-            console.log(this.treeData, 'treeData');
-            // for (let i = 0; i < this.treeData[0].children.length; i++) {
-            //   const child = this.treeData[0].children[i];
-            // this.buildTreeNode(child, child.parentId);
           }
-          //TODO ui tree results prep needed for tree
-          // if group = 0 => criteria does not have a child else if group = 1 criteria row has children and needs a expand button
         }));
     }
   }
-
-
-
-  public log(thing) {
-    console.log(thing, 'log from templete');
-  }
-
-
-
-  // public buildTreeNode(child,parentId) {
-  //   console.log(parentId);
-  //   this.treeData[0].children.forEach(item => {
-  //     if(child.id == item.id){
-  //       if (child.group) {
-  //         item['children']= [];
-  //         this.subscriptions.push(this.api.getCriteriaChildren(child.id)
-  //           .subscribe({
-  //             next: res => {
-  //               res.items.forEach(gChild => {
-  //                 // console.log(child,gChild,"pair");
-  //                 item.children.push(gChild);
-  //                 this.buildTreeNode(gChild, gChild.parentId);
-  //                 // console.log(child,'pushed');
-  //               });
-  //             }
-  //           }));
-  //         }
-  //     } else {
-
-  //     }
-  //   });
-
-  // }
 
   public toggleSynonyms(conceptId) {
     this.showMoreSynonyms[conceptId] = !this.showMoreSynonyms[conceptId];
