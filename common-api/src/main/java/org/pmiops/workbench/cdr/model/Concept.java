@@ -32,6 +32,7 @@ public class Concept {
     private float prevalence;
     private List<String> synonyms = new ArrayList<>();
     private String synonymsStr;
+    private int canSelect;
 
     public Concept() {}
 
@@ -76,6 +77,20 @@ public class Concept {
 
     public Concept conceptName(String conceptName) {
         this.conceptName = conceptName;
+        return this;
+    }
+
+    @Column(name = "can_select")
+    public int getCanSelect() {
+        return canSelect;
+    }
+
+    public void setCanSelect(int canSelect) {
+        this.canSelect = canSelect;
+    }
+
+    public Concept canSelect(int canSelect) {
+        this.canSelect = canSelect;
         return this;
     }
 
@@ -250,7 +265,7 @@ public class Concept {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence);
+        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect);
     }
 
     @Override

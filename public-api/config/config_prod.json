@@ -9,6 +9,7 @@
     "workbenchApiBaseUrl": "https:\/\/api.workbench.researchallofus.org",
     "publicApiKeyForErrorReports": "AIzaSyAtXrWsPSJDOaOrdwYcpDKNDXeiTuTi_88",
     "debugEndpoints": false,
-    "projectId": "aou-db-prod"
+    "projectId": "aou-db-prod",
+    "gaId": "UA-116298798-6"
   }
 }
