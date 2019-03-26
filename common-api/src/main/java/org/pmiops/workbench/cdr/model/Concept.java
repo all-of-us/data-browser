@@ -32,7 +32,6 @@ public class Concept {
     private float prevalence;
     private List<String> synonyms = new ArrayList<>();
     private String synonymsStr;
-    private String path;
 
     public Concept() {}
 
@@ -48,8 +47,7 @@ public class Concept {
                 .count(a.getCountValue())
                 .sourceCountValue(a.getSourceCountValue())
                 .prevalence(a.getPrevalence())
-                .synonymsStr(a.getSynonymsStr())
-                .path(a.getPath());
+                .synonymsStr(a.getSynonymsStr());
     }
 
     @Id
@@ -215,18 +213,6 @@ public class Concept {
         }
     }
 
-    @Column(name = "path")
-    public String getPath() {
-        return path;
-    }
-    public void setPath(String path) {
-        this.path = path;
-    }
-    public Concept path(String path) {
-        this.path = path;
-        return this;
-    }
-
     public Concept synonymsStr(String synonymsStr) {
         setSynonymsStr(synonymsStr);
         return this;
@@ -264,7 +250,7 @@ public class Concept {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, path);
+        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence);
     }
 
     @Override

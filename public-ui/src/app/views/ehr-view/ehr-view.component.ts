@@ -184,7 +184,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.resetSelectedGraphs();
     this.graphToShow = g;
     if (this.graphToShow === GraphType.Sources) {
-      console.log(r.conceptId, 'conceptID');
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
         .subscribe({
           next: result => {
