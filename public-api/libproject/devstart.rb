@@ -494,9 +494,57 @@ Common.register_command({
   :fn => ->() { run_local_data_migrations() }
 })
 
+def make_bq_denormalized_tables(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/make-bq-denormalized-tables.sh} + args
+end
+
+Common.register_command({
+  :invocation => "make-bq-denormalized-tables",
+  :description => "make-bq-denormalized-tables --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates big query denormalized tables for search and review. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { make_bq_denormalized_tables(*args) }
+})
+
+def make_bq_denormalized_review(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/make-bq-denormalized-review.sh} + args
+end
+
+Common.register_command({
+  :invocation => "make-bq-denormalized-review",
+  :description => "make-bq-denormalized-review --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates big query denormalized tables for review. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { make_bq_denormalized_review(*args) }
+})
+
+def make_bq_denormalized_search(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/make-bq-denormalized-search.sh} + args
+end
+
+Common.register_command({
+  :invocation => "make-bq-denormalized-search",
+  :description => "make-bq-denormalized-search --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates big query denormalized search. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { make_bq_denormalized_search(*args) }
+})
+
+def generate_criteria_table(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-criteria-table.sh} + args
+end
+
+Common.register_command({
+  :invocation => "generate-criteria-table",
+  :description => "generate-criteria-table --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates the criteria table in big query. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { generate_criteria_table(*args) }
+})
+
 def generate_public_cdr_counts(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-generate-public-cdr-counts} + args
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-public-cdr-counts.sh} + args
 end
 
 Common.register_command({
@@ -533,7 +581,7 @@ def generate_cloudsql_db(cmd_name, *args)
 
   ServiceAccountContext.new(op.opts.project).run do
     common = Common.new
-    common.run_inline %W{docker-compose run db-generate-cloudsql-db
+    common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-cloudsql-db.sh
           --project #{op.opts.project} --instance #{op.opts.instance} --database #{op.opts.database}
           --bucket #{op.opts.bucket}}
   end
@@ -590,7 +638,7 @@ Import bucket of files or a single file in a bucket to a cloudsql database",
 
 def generate_local_cdr_db(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-generate-local-cdr-db} + args
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-local-cdr-db.sh} + args
 end
 
 Common.register_command({
@@ -603,7 +651,7 @@ Creates and populates local mysql database from data in bucket made by generate-
 
 def generate_local_count_dbs(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-generate-local-count-dbs} + args
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-local-count-dbs.sh} + args
 end
 
 Common.register_command({
@@ -616,7 +664,7 @@ Creates and populates local mysql databases cdr<VERSION> and public<VERSION> fro
 
 def mysqldump_db(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-mysqldump-local-db} + args
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/make-mysqldump.sh} + args
 end
 
 
