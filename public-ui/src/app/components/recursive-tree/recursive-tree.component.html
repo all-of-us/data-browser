@@ -2,7 +2,7 @@
   (click)="selectEvents.emit($event);opened=!opened"><span>{{node.name}}</span> <span class="blue-text">({{node.count | number}})</span></span>
 <div class="children" *ngIf="node.children && opened">
   <div *ngFor="let child of node.children" class="child">
-    <app-recursive-tree [node]="child" [selectedNode]="selectedNode" (click)="selectEvents.emit($event);">
+    <app-recursive-tree [node]="child">
     </app-recursive-tree>
   </div>
 </div>
