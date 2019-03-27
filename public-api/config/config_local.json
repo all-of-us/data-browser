@@ -9,6 +9,7 @@
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-workbench-test.appspot.com",
     "publicApiKeyForErrorReports": "",
     "debugEndpoints": false,
-    "projectId": "aou-db-test"
+    "projectId": "aou-db-test",
+    "gaId": "UA-116298798-4"
   }
 }
