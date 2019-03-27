@@ -255,9 +255,12 @@
                             <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
                             <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
                             <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})</p>
-                            <div *ngFor="let node of treeData" class="tree-top">
-                              <app-source-tree [rootNode]="node"></app-source-tree>
-                            </div>
+                            <app-db-spinner [loading]="treeLoading" [dots]="true"></app-db-spinner>
+                            <ng-container *ngIf="!treeLoading">
+                              <div *ngFor="let node of treeData" class="tree-top">
+                                <app-source-tree [loading]="treeLoading" [rootNode]="node"></app-source-tree>
+                              </div>
+                            </ng-container>
                           </aside>
                         </div>
                         <div class="col-xs-6">
@@ -278,11 +281,9 @@
                     </ng-template>
                   </div>
                 </div>
-                <div class="results-grid">
-                  <div *ngIf="!loading && items.length === 0">
-                    <div class="">
-                      <h5 class="no-results"> No results match your search. </h5>
-                    </div>
+                <div *ngIf="!loading && items.length === 0">
+                  <div class="">
+                    <h5 class="no-results"> No results match your search. </h5>
                   </div>
                 </div>
               </div>
@@ -291,7 +292,7 @@
         </div>
   </div>
   <div *ngIf="!loading && items.length === 0">
-      <h5 class="secondary-display"> No results in this domain that match your search.</h5>
+    <h5 class="secondary-display"> No results in this domain that match your search.</h5>
     <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
   </div>
-  </div>
+</div>

@@ -52,6 +52,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   childTest = [];
+  treeLoading = false;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -184,11 +185,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.resetSelectedGraphs();
     this.graphToShow = g;
     if (this.graphToShow === GraphType.Sources) {
+      this.treeLoading = true;
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
-        .subscribe({
+      .subscribe({
           next: result => {
             this.treeData = [result.parent];
-            this.treeData['children'] = result.children.items;
+            this.treeLoading = false;
           }
         }));
     }

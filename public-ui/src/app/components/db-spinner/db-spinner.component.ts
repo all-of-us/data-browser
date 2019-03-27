@@ -7,5 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class DbSpinnerComponent {
   @Input() loading: boolean;
+  @Input() dots: boolean;
   constructor() { }
 }

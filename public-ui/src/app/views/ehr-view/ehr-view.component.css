@@ -140,6 +140,11 @@ h5.secondary-display {
     font-size:1.3em;
 }
 
+  @keyframes load {
+    from{background:transparent}
+    to{background:#302c70}
+  }
+
 @media (max-width: 600px) {
     .chart-choice {
         font-size: 4vw;
