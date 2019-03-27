@@ -255,12 +255,7 @@
                             <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
                             <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
                             <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})</p>
-                            <div *ngIf="treeLoading" class="loading-dots">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                              </div>
+                            <app-db-spinner [loading]="treeLoading" [dots]="true"></app-db-spinner>
                             <ng-container *ngIf="!treeLoading">
                               <div *ngFor="let node of treeData" class="tree-top">
                                 <app-source-tree [loading]="treeLoading" [rootNode]="node"></app-source-tree>

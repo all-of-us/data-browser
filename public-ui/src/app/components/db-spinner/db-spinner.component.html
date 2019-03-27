@@ -1,3 +1,10 @@
-<div *ngIf="loading" class="spinner-container">
+<div *ngIf="loading && !dots" class="spinner-container">
   <span class="spinner"></span>
 </div>
+
+<div *ngIf="loading && dots" class="loading-dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>

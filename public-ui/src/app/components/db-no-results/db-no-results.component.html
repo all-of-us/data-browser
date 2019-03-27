@@ -1,11 +1,6 @@
 <div class="no-results">
     <p *ngIf="loading">Searching whole site for <strong>{{searchText.value}}</strong></p>
-    <div *ngIf="loading" class="loading-dots">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
+    <app-db-spinner [loading]="loading" [dots]="true"></app-db-spinner>
     <div *ngIf="results && results.domainInfos.length > 0">
         <div *ngFor="let domain of results.domainInfos ">
             <span (click)="goToResult(domain)">{{domain.standardConceptCount}} results available in the domain:

@@ -4,12 +4,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 @Component({
   selector: 'app-source-tree',
   template:
-    `<div *ngIf="loading" class="loading-dots">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
+    `<app-db-spinner [loading]="loading" [dots]="true"></app-db-spinner>
     <app-recursive-tree *ngIf="!loading"
       [node]="rootNode"></app-recursive-tree>
   `,
