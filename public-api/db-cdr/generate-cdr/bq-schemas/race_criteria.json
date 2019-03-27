@@ -5,8 +5,8 @@
         "type": "INTEGER"
       }, 
       {
-        "mode": "REQUIRED", 
-        "name": "parent_id", 
+        "mode": "REQUIRED",
+        "name": "parent_id",
         "type": "INTEGER"
       }, 
       {
@@ -20,33 +20,33 @@
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE", 
+        "mode": "NULLABLE",
         "name": "code",
         "type": "STRING"
       }, 
       {
-        "mode": "NULLABLE", 
+        "mode": "NULLABLE",
         "name": "name",
         "type": "STRING"
       }, 
       {
-        "mode": "NULLABLE", 
-        "name": "is_group", 
-        "type": "INTEGER"
-      }, 
-      {
-        "mode": "NULLABLE", 
-        "name": "is_selectable", 
+        "mode": "NULLABLE",
+        "name": "is_group",
         "type": "INTEGER"
       }, 
       {
         "mode": "NULLABLE",
-        "name": "est_count", 
+        "name": "is_selectable",
+        "type": "INTEGER"
+      }, 
+      {
+        "mode": "NULLABLE",
+        "name": "est_count",
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "domain_id", 
+        "name": "domain_id",
         "type": "STRING"
       },
       {

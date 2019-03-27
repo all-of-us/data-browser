@@ -31,11 +31,11 @@
       }, 
       {
         "mode": "NULLABLE", 
-        "name": "is_group", 
+        "name": "is_group",
         "type": "INTEGER"
       }, 
       {
-        "mode": "NULLABLE", 
+        "mode": "NULLABLE",
         "name": "is_selectable", 
         "type": "INTEGER"
       }, 
@@ -46,7 +46,7 @@
       },
       {
         "mode": "NULLABLE",
-        "name": "domain_id", 
+        "name": "domain_id",
         "type": "STRING"
       },
       {
