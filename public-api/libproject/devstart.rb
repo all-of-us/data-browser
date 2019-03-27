@@ -542,6 +542,43 @@ Generates the criteria table in big query. Used by cohort builder. Must be run o
   :fn => ->(*args) { generate_criteria_table(*args) }
 })
 
+def generate_gi_criteria_table(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-gi-criteria-table.sh} + args
+end
+
+Common.register_command({
+  :invocation => "generate-gi-criteria-table",
+  :description => "generate-gi-criteria-table --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates the criteria table in big query. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { generate_gi_criteria_table(*args) }
+})
+
+def generate_re_criteria_table(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-re-criteria-table.sh} + args
+end
+
+Common.register_command({
+  :invocation => "generate-re-criteria-table",
+  :description => "generate-re-criteria-table --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates the criteria table in big query. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { generate_re_criteria_table(*args) }
+})
+
+def generate_age_criteria_table(*args)
+  common = Common.new
+  common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-age-criteria-table.sh} + args
+end
+
+Common.register_command({
+  :invocation => "generate-age-criteria-table",
+  :description => "generate-age-criteria-table --bq-project <PROJECT> --bq-dataset <DATASET>
+Generates the criteria table in big query. Used by cohort builder. Must be run once when a new cdr is released",
+  :fn => ->(*args) { generate_age_criteria_table(*args) }
+})
+
+
 def generate_public_cdr_counts(*args)
   common = Common.new
   common.run_inline %W{docker-compose run db-make-bq-tables ./generate-cdr/generate-public-cdr-counts.sh} + args

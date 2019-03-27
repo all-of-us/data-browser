@@ -76,10 +76,14 @@ cri_table_check=\\bcriteria\\b
 cri_attr_table_check=\\bcriteria_attribute\\b
 cri_rel_table_check=\\bcriteria_relationship\\b
 cri_anc_table_check=\\bcriteria_ancestor\\b
+gi_criteria_check=\\gi_criteria\\b
+age_criteria_check=\\age_criteria\\b
+re_criteria_check=\\race_criteria\\b
+gender_criteria_check=\\gender_criteria\\b
 
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
-create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map)
+create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map gender_criteria gi_criteria race_criteria age_criteria)
 
 for t in "${create_tables[@]}"
 do
@@ -363,6 +367,86 @@ if [[ $tables =~ $cri_table_check ]]; then
         where crit.id = ct.id"
 fi
 
+if [[ $tables =~ gi_criteria_check ]]; then
+    echo "Inserting gender identity criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.gi_criteria\`
+     (id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1)
+    SELECT id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1
+    FROM \`$BQ_PROJECT.$BQ_DATASET.gender_identity_criteria\`
+    "
+    echo "Updating criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.gi_criteria\` ct
+    set ct.synonyms = crit.synonyms
+    from (
+    select min(id) as id, '[rank1]' as synonyms
+    from \`$BQ_PROJECT.$BQ_DATASET.gi_criteria\`
+    where est_count != -1
+    group by name, stratum_1, type, subtype) as crit
+    where crit.id = ct.id"
+fi
+
+if [[ $tables =~ gender_criteria_check ]]; then
+    echo "Inserting gender criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.gender_criteria\`
+     (id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1)
+    SELECT id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1
+    FROM \`$BQ_PROJECT.$BQ_DATASET.gender_criteria\`
+    "
+    echo "Updating gender criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.gender_criteria\` ct
+    set ct.synonyms = crit.synonyms
+    from (
+    select min(id) as id, '[rank1]' as synonyms
+    from \`$BQ_PROJECT.$BQ_DATASET.gender_criteria\`
+    where est_count != -1
+    group by name, stratum_1, type, subtype) as crit
+    where crit.id = ct.id"
+fi
+
+if [[ $tables =~ re_criteria_check ]]; then
+    echo "Inserting race ethnicity criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.race_criteria\`
+     (id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1)
+    SELECT id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1
+    FROM \`$BQ_PROJECT.$BQ_DATASET.race_criteria\`
+    "
+    echo "Updating race ethnicity criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.race_criteria\` ct
+    set ct.synonyms = crit.synonyms
+    from (
+    select min(id) as id, '[rank1]' as synonyms
+    from \`$BQ_PROJECT.$BQ_DATASET.race_criteria\`
+    where est_count != -1
+    group by name, stratum_1, type, subtype) as crit
+    where crit.id = ct.id"
+fi
+
+if [[ $tables =~ age_criteria_check ]]; then
+    echo "Inserting age criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.age_criteria\`
+     (id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1)
+    SELECT id, parent_id, type, subtype, code, name, is_group, is_selectable, est_count, domain_id, concept_id, has_attribute, path, stratum_1
+    FROM \`$BQ_PROJECT.$BQ_DATASET.age_criteria\`
+    "
+    echo "Updating age criteria"
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.age_criteria\` ct
+    set ct.synonyms = crit.synonyms
+    from (
+    select min(id) as id, '[rank1]' as synonyms
+    from \`$BQ_PROJECT.$BQ_DATASET.age_criteria\`
+    where est_count != -1
+    group by name, stratum_1, type, subtype) as crit
+    where crit.id = ct.id"
+fi
+
 ######################
 # criteria_attribute #
 ######################
@@ -498,6 +582,22 @@ group by c.domain_id) c
 where d.domain_id = c.domain_id
 "
 
+# Set all_concept_count and standard_concept_count on domain_info
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
+set d.all_concept_count = c.all_concept_count, d.standard_concept_count = c.standard_concept_count from
+(select c.domain_id as domain_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
+SUM(CASE WHEN c.standard_concept IN ('S', 'C') THEN 1 ELSE 0 END) as standard_concept_count from
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c
+join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d2
+on d2.domain_id = c.domain_id
+and (c.count_value > 0 or c.source_count_value > 0)
+where c.domain_id='Measurement' and c.concept_id not in (3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148,
+903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553)
+group by c.domain_id) c
+where d.domain_id = c.domain_id
+"
+
 # Set participant counts for each domain
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
@@ -618,3 +718,45 @@ set c.count_value=sub_cr.est_count
 from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='MEAS' and cr.synonyms like '%rank1%') as sub_cr
 where sub_cr.concept_id = c.concept_id and c.domain_id = 'Measurement' "
+
+################################################
+# Updating rolled up counts in achilles results
+################################################
+echo "updating biological sex rolled up counts in achilles results"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar
+set ar.count_value=sub.est_count
+from (select concept_id, gcr.stratum_1, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.gender_criteria\` gcr join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1
+on ar1.stratum_1=cast(gcr.concept_id as string) and gcr.stratum_1=ar1.stratum_2 and ar1.analysis_id=3101 and gcr.type='SNOMED' where gcr.synonyms like '%rank1%'
+group by gcr.concept_id, gcr.stratum_1, est_count) sub
+where ar.analysis_id=3101 and ar.stratum_2=sub.stratum_1 and ar.stratum_1=cast(sub.concept_id as string)"
+
+echo "updating biological sex rolled up counts in achilles results"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar
+set ar.count_value=sub.est_count
+from (select concept_id, gcr.stratum_1, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.gi_criteria\` gcr join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1
+      on ar1.stratum_1=cast(gcr.concept_id as string) and gcr.stratum_1=ar1.stratum_2 and ar1.analysis_id=3107 and gcr.type='SNOMED'
+      where gcr.synonyms like '%rank1%'
+group by gcr.concept_id, gcr.stratum_1, est_count) sub
+where ar.analysis_id=3107 and ar.stratum_2=sub.stratum_1 and ar.stratum_1=cast(sub.concept_id as string)"
+
+echo "updating biological sex rolled up counts in achilles results"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar
+set ar.count_value=sub.est_count
+from (select concept_id, gcr.stratum_1, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.age_criteria\` gcr join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1
+      on ar1.stratum_1=cast(gcr.concept_id as string) and gcr.stratum_1=ar1.stratum_2 and ar1.analysis_id=3102 and gcr.type='SNOMED'
+      where gcr.synonyms like '%rank1%'
+group by gcr.concept_id, gcr.stratum_1, est_count) sub
+where ar.analysis_id=3102 and ar.stratum_2=sub.stratum_1 and ar.stratum_1=cast(sub.concept_id as string)"
+
+echo "updating biological sex rolled up counts in achilles results"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar
+set ar.count_value=sub.est_count
+from (select concept_id, gcr.stratum_1, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.race_criteria\` gcr join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1
+      on ar1.stratum_1=cast(gcr.concept_id as string) and gcr.stratum_1=ar1.stratum_2 and ar1.analysis_id=3108 and gcr.type='SNOMED'
+      where gcr.synonyms like '%rank1%'
+group by gcr.concept_id, gcr.stratum_1, est_count) sub
+where ar.analysis_id=3108 and ar.stratum_2=sub.stratum_1 and ar.stratum_1=cast(sub.concept_id as string)"
