@@ -1,7 +1,7 @@
 [
       {
-        "mode": "REQUIRED", 
-        "name": "id", 
+        "mode": "REQUIRED",
+        "name": "id",
         "type": "INTEGER"
       }, 
       {
@@ -10,8 +10,8 @@
         "type": "INTEGER"
       }, 
       {
-        "mode": "NULLABLE", 
-        "name": "type", 
+        "mode": "NULLABLE",
+        "name": "type",
         "type": "STRING"
       },
       {
@@ -21,12 +21,12 @@
       },
       {
         "mode": "NULLABLE", 
-        "name": "code", 
+        "name": "code",
         "type": "STRING"
       }, 
       {
         "mode": "NULLABLE", 
-        "name": "name", 
+        "name": "name",
         "type": "STRING"
       }, 
       {
@@ -40,12 +40,12 @@
         "type": "INTEGER"
       }, 
       {
-        "mode": "NULLABLE", 
+        "mode": "NULLABLE",
         "name": "est_count", 
         "type": "INTEGER"
       },
       {
-        "mode": "NULLABLE", 
+        "mode": "NULLABLE",
         "name": "domain_id", 
         "type": "STRING"
       },
