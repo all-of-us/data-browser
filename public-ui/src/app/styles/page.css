@@ -110,7 +110,7 @@
 #db-search-bar {
   flex-grow: 1;
   background: #DAE6ED;
-  padding: 18px;
+  padding: 9px;
   border-radius: 5px;
 }
 @media only screen and (min-width: 1168px) {
@@ -303,4 +303,23 @@
 .mc-field-group input {
   width: 100%;
 	max-width: 320px;
+}
+.tree-top {
+  padding:1em;
+  padding-top:0;
+  overflow: scroll;
+  height: 11rem;
+}
+.source-tree {
+  width: calc((100%/12)*10);
+  margin: 0 auto;
+  padding:1em;
+  width: 90%;
+  text-align: left;
+}
+.source-tree p {
+  margin:0;
+}
+.tree-heading {
+  padding-top:1em;
 }

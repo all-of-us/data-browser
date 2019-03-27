@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
@@ -15,7 +15,7 @@ import { ConceptListResponse } from '../../../publicGenerated/model/conceptListR
 import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../publicGenerated/model/standardConceptFilter';
 import { GraphType } from '../../utils/enum-defs';
-import {TooltipService} from '../../utils/tooltip.service';
+import { TooltipService } from '../../utils/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
@@ -34,7 +34,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchResult: ConceptListResponse;
   items: any[] = [];
   standardConcepts: any[] = [];
-  loading = true;
+  loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
   private searchRequest: SearchConceptsRequest;
@@ -45,29 +45,46 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   synonymString = {};
   /* Show different graphs depending on domain we are in */
   graphToShow = GraphType.BiologicalSex;
-  showTopConcepts = false;
+  showTopConcepts: boolean;
   medlinePlusLink: string;
   graphButtons = [];
+  graphType = GraphType;
+  treeData: any[];
+  expanded = true;
+  childTest = [];
+  treeLoading = false;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private api: DataBrowserService,
-    private tooltipText: TooltipService
+    private tooltipText: TooltipService,
   ) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
+    console.log(this.router.onSameUrlNavigation);
   }
   ngOnInit() {
+    this.loadPage();
+  }
+
+
+  ngOnDestroy() {
+    for (const s of this.subscriptions) {
+      s.unsubscribe();
+    }
+    this.initSearchSubscription.unsubscribe();
+  }
+
+
+  public loadPage() {
     this.items = [];
 
     // Get search text from localStorage
     this.prevSearchText = localStorage.getItem('searchText');
-    if (!this.prevSearchText) {
-      this.prevSearchText = '';
-    }
     this.searchText.setValue(this.prevSearchText);
     const obj = localStorage.getItem('ehrDomain');
     if (obj) {
@@ -88,10 +105,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.totalParticipants = this.ehrDomain.participantCount;
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
-          'Gender Identity', 'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
+          'Gender Identity', 'Race / Ethnicity', 'Age', 'Sources'];
       } else {
         this.graphButtons = ['Biological Sex', 'Gender Identity',
-          'Race / Ethnicity', 'Age at First Occurrence in Participant Record'];
+          'Race / Ethnicity', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
         this.searchCallback(results));
@@ -106,24 +123,16 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
-           this.toggleTopConcepts();
+            this.toggleTopConcepts();
           }
         }));
-      // Set to loading as long as they are typing
       this.subscriptions.push(this.searchText.valueChanges.subscribe(
-        (query) => this.loading = true));
+        (query) => localStorage.setItem('searchText', query)));
     }
+    this.showTopConcepts = true;
   }
 
-
-  ngOnDestroy() {
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
-    }
-    this.initSearchSubscription.unsubscribe();
-  }
-
-  private searchCallback(results: any) {
+  public searchCallback(results: any) {
     this.searchResult = results;
     this.items = this.searchResult.items;
     for (const concept of this.items) {
@@ -134,12 +143,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     this.top10Results = this.searchResult.items.slice(0, 10);
     // Set the localStorage to empty so making a new search here does not follow to other pages
-    localStorage.setItem('searchText', '');
+    // localStorage.setItem('searchText', '');
     this.loading = false;
-    this.toggleTopConcepts();
   }
 
-  private searchDomain(query: string) {
+  public searchDomain(query: string) {
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
@@ -171,11 +179,21 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectGraph(g) {
+  public selectGraph(g, r: any) {
     this.chartEl.nativeElement.scrollIntoView(
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
+    if (this.graphToShow === GraphType.Sources) {
+      this.treeLoading = true;
+      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
+      .subscribe({
+          next: result => {
+            this.treeData = [result.parent];
+            this.treeLoading = false;
+          }
+        }));
+    }
   }
 
   public toggleSynonyms(conceptId) {
@@ -235,5 +253,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     let percent: number = count / this.totalParticipants;
     percent = parseFloat(percent.toFixed(4));
     return percent * 100;
+  }
+
+  public changeResults(e) {
+    this.loadPage();
   }
 }

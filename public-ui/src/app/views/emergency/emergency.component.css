@@ -1,0 +1,11 @@
+:host {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+h1{
+    text-align: center;
+    padding:1em;
+    color:#333073;
+}
