@@ -8,6 +8,7 @@
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-rw-staging.appspot.com",
     "publicApiKeyForErrorReports": "AIzaSyAkMIMIzUwv02RBK-A7cE1PbPpDJ2MTNtk",
     "debugEndpoints": false,
-    "projectId": "aou-db-staging"
+    "projectId": "aou-db-staging",
+    "gaId": "UA-116298798-4"
   }
 }
