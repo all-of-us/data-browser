@@ -17,12 +17,13 @@
         <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
       </div>
     </div>
-    <section class="results">
+    <app-db-spinner [loading]="loading"></app-db-spinner>
+    <section *ngIf="questions.length > 0 && !loading" class="results">
       <a class="btn btn-link btn-sm" [routerLink]="['']">
         < Back to main search </a> <div class="db-card">
           <div class="survey-head">
             <div class="stat-container">
-              <h2 class="secondary-display" *ngIf="!loading">
+              <h2 class="secondary-display">
                 {{survey.participantCount | number }}
               </h2>
               <p class="info-text">
@@ -30,10 +31,9 @@
               </p>
             </div>
             <div class="stat-container">
-              <h2 *ngIf="!loading" class="secondary-display">
+              <h2 class="secondary-display">
                 <span>{{ surveyResult.items.length }} </span>
               </h2>
-              <span *ngIf="loading" class="spinner spinner-md"> </span>
               <p class="info-text">
                 Questions
               </p>
@@ -43,32 +43,6 @@
                 <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
               </a>
             </div>
-          </div>
-          <div class="info-text"><em>Note: The survey questions appear in the order in which people actually took the survey.</em> </div>
-          <div class="no-results" *ngIf="searchText.value.length > 0">
-            <p class="results-heading no-results" *ngIf="questions.length === 0 && !loading">
-              <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
-                  {{searchText.value}}</strong>.
-                <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
-                    keyword</button> </span>
-              </span>
-              <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <strong>
-                  {{searchText.value}}</strong>.
-                <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
-                    search</button></span>
-              </span>
-            </p>
-            <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
-              <span *ngIf="searchMethod==='or'">
-                <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <strong>{{searchText.value}}</strong>.
-                <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
-              </span>
-              <span *ngIf="searchMethod==='and'">
-                <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
-                  <strong>{{searchText.value}}</strong>.</span>
-                <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
-              </span>
-            </p>
           </div>
           <div class="survey-results" *ngIf="resultsComplete">
             <div class="question-result" *ngFor="let q of questions, let i = index">
@@ -286,8 +260,32 @@
         </div>
   </section>
 </div>
-
-
+<div class="no-results" *ngIf="questions.length === 0 && !loading">
+    <p class="results-heading no-results">
+      <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
+          {{searchText.value}}</strong>.
+        <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
+            keyword</button> </span>
+      </span>
+      <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <strong>
+          {{searchText.value}}</strong>.
+        <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
+            search</button></span>
+      </span>
+    </p>
+    <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
+      <span *ngIf="searchMethod==='or'">
+        <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <strong>{{searchText.value}}</strong>.
+        <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
+      </span>
+      <span *ngIf="searchMethod==='and'">
+        <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
+          <strong>{{searchText.value}}</strong>.</span>
+        <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
+      </span>
+    </p>
+    <app-db-no-results (newDomain)="changeResults($event)"[searchText]="searchText"></app-db-no-results>
+  </div>
 <!-- Todo show general totals for demographics of who took the survey -->
 <!--
   <div class="row">

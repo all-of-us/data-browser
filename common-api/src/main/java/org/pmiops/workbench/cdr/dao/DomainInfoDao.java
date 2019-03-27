@@ -18,17 +18,29 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
    * @param query the exact query that the user entered
    * @param conceptId the converted ID value for the query, or null
    */
-  @Query(value="select new org.pmiops.workbench.cdr.model.DomainInfo(\n" +
-      "d.domain, d.domainId, d.name, d.description,\n" +
-      "d.conceptId, 0L, COUNT(*), 0L)\n" +
-      "from DomainInfo d\n" +
-      "join Concept c ON d.domainId = c.domainId\n" +
-      "where (c.countValue > 0 or c.sourceCountValue > 0) and \n" +
-      "(matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
-      "c.standardConcept IN ('S', 'C')) or c.conceptId in (?3) or c.conceptCode = ?2\n" +
-      "group by d.domain, d.domainId, d.name, d.description, d.conceptId\n" +
-      "order by d.domainId")
-  List<DomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds);
+  @Query(nativeQuery=true,
+      value="select " +
+      "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
+      "0 all_concept_count, c.count standard_concept_count, d.participant_count participant_count " +
+      "from domain_info d " +
+      "join (" +
+      "  select c1.domain_id, count(*) as count " +
+      "  from (" +
+      "    (select domain_id, concept_id from concept " +
+      "     where (count_value > 0 or source_count_value > 0) and " +
+      "       match(concept_name, concept_code, vocabulary_id, synonyms) against (?1 in boolean mode) > 0 and " +
+      "       standard_concept IN ('S', 'C') and can_select=1) " +
+      // An OR of these different conditions would be easier, but MySQL will not leverage the full
+      // text index to perform the match, bringing performance to a crawl (~10ms vs ~8s). Using the
+      // union results in usage of the fulltext index in the first subquery. In the future we should
+      // move these searches to a more suitable technology, e.g. Elasticsearch.
+      "    UNION DISTINCT " +
+      "    (select domain_id, concept_id from concept " +
+      "     where concept_id in (?2) and can_select=1)) c1 " +
+      "  group by c1.domain_id) c " +
+      "ON d.domain_id = c.domain_id " +
+      "order by d.domain_id")
+  List<DomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, List<Long> conceptIds);
 
   /**
    * Returns domain metadata and concept counts for domains, matching only standard concepts by name,
@@ -44,7 +56,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
       "join Concept c ON d.domainId = c.domainId\n" +
       "where (c.countValue > 0 or c.sourceCountValue > 0) \n" +
       "and matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
-      "c.standardConcept IN ('S', 'C')\n" +
+      "c.standardConcept IN ('S', 'C') and c.canSelect=1\n" +
       "group by d.domain, d.domainId, d.name, d.description, d.conceptId\n" +
       "order by d.domainId")
   List<DomainInfo> findStandardConceptCounts(String matchExpression);
@@ -63,6 +75,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
       "join Concept c ON d.domainId = c.domainId\n" +
       "where (c.countValue > 0 or c.sourceCountValue > 0) \n" +
       "and matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0\n" +
+          "and c.canSelect = 1\n"+
       "group by d.domain, d.domainId, d.name, d.description, d.conceptId\n" +
       "order by d.domainId")
   List<DomainInfo> findAllMatchConceptCounts(String matchExpression);

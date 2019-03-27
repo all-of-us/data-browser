@@ -173,6 +173,10 @@ where participant_count > 0"
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.unit_map\` "
 
+#Drop filter_conditions table
+bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.filter_conditions\` "
+
 # Updating domain_id of few survey questions from measurement to observation to avoid confusion in display
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`

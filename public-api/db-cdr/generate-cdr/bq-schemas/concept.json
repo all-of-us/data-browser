@@ -1,48 +1,48 @@
 [
 	{
-	"mode": "REQUIRED", 
-	"name": "concept_id", 
-	"type": "INTEGER"
+		"mode": "REQUIRED",
+		"name": "concept_id",
+		"type": "INTEGER"
 	}, 
 	{
-	"mode": "REQUIRED", 
-	"name": "concept_name", 
-	"type": "STRING"
+		"mode": "REQUIRED",
+		"name": "concept_name",
+		"type": "STRING"
 	}, 
 	{
-	"mode": "REQUIRED", 
-	"name": "domain_id", 
-	"type": "STRING"
+		"mode": "REQUIRED",
+		"name": "domain_id",
+		"type": "STRING"
 	}, 
 	{
-	"mode": "REQUIRED", 
-	"name": "vocabulary_id", 
-	"type": "STRING"
+		"mode": "REQUIRED",
+		"name": "vocabulary_id",
+		"type": "STRING"
 	}, 
 	{
-	"mode": "REQUIRED", 
-	"name": "concept_class_id", 
-	"type": "STRING"
+		"mode": "REQUIRED",
+		"name": "concept_class_id",
+		"type": "STRING"
 	}, 
 	{
-	"mode": "NULLABLE", 
-	"name": "standard_concept", 
-	"type": "STRING"
+		"mode": "NULLABLE",
+		"name": "standard_concept",
+		"type": "STRING"
 	}, 
 	{
-	"mode": "REQUIRED", 
-	"name": "concept_code", 
-	"type": "STRING"
+		"mode": "REQUIRED",
+		"name": "concept_code",
+		"type": "STRING"
 	},
 	{
-	"mode": "NULLABLE", 
-	"name": "count_value", 
-	"type": "INTEGER"
+		"mode": "NULLABLE",
+		"name": "count_value",
+		"type": "INTEGER"
 	},
 	{
-	"mode": "NULLABLE", 
-	"name": "prevalence", 
-	"type": "FLOAT"
+		"mode": "NULLABLE",
+		"name": "prevalence",
+		"type": "FLOAT"
 	},
 	{
 		"mode": "NULLABLE",
@@ -56,7 +56,7 @@
 	},
 	{
 		"mode": "NULLABLE",
-		"name": "path",
-		"type": "STRING"
+		"name": "can_select",
+		"type": "INTEGER"
 	}
 ]

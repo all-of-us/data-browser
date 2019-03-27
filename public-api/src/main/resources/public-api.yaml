@@ -157,6 +157,44 @@ paths:
           schema:
             $ref: "#/definitions/Analysis"
 
+  /v1/databrowser/getCriteriaRolledCounts:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the rolled up count from criteria
+      operationId: "getCriteriaRolledCounts"
+      parameters:
+        - in: query
+          name: conceptId
+          type: integer
+          format: int64
+          required: true
+          description: parent concept id
+      responses:
+        200:
+          description: Rolled up counts of concept
+          schema:
+            $ref: "#/definitions/CriteriaParentResponse"
+
+  /v1/databrowser/getCriteriaChildren:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the children when parent concept is expanded in ui
+      operationId: "getCriteriaChildren"
+      parameters:
+        - in: query
+          name: parentId
+          type: integer
+          format: int64
+          required: true
+          description: parent id
+      responses:
+        200:
+          description: Criteria children
+          schema:
+            $ref: "#/definitions/CriteriaListResponse"
+
   /v1/databrowser/domain-search:
     get:
       tags:
@@ -289,22 +327,23 @@ definitions:
           type: "string"
 
   ConceptListResponse:
-      type: object
-      required:
-        - items
-      properties:
+    type: object
+    required:
+      - items
+    properties:
+      items:
+        type: "array"
         items:
-          type: "array"
-          items:
-            $ref: "#/definitions/Concept"
-        matchType:
-          description: match column type on which concept search was successful
-          $ref: "#/definitions/MatchType"
-        standardConcepts:
-          type: "array"
-          items:
-            $ref: "#/definitions/Concept"
-          description: standard concepts associated with the matched concept
+          $ref: "#/definitions/Concept"
+      matchType:
+        description: match column type on which concept search was successful
+        $ref: "#/definitions/MatchType"
+      standardConcepts:
+        type: "array"
+        items:
+          $ref: "#/definitions/Concept"
+        description: standard concepts associated with the matched concept
+
   ConfigResponse:
     type: object
     required:
@@ -319,6 +358,9 @@ definitions:
       requireSignIn:
         type: boolean
         description: Whether workbench sign in is required to use the data browser.
+      dataBrowserIsSafe:      
+        type: boolean
+        description: Whether the data is safe to show. An emergency page will show if set to false. 
       enforceRegistered:
         type: boolean
         description: |
@@ -329,6 +371,81 @@ definitions:
         description: |
           Stackdriver API key for error reporting, scoped to a particular
           domain. If unset, Stackdriver error reporting should be disabled.
+
+  Criteria:
+    type: object
+    required:
+      - id
+      - parentId
+      - type
+      - name
+      - path
+    properties:
+      id:
+        description: Primary identifier which is unique within a CDR version.
+        type: integer
+        format: int64
+      parentId:
+        description: The parent id of the criteria. 0 if this is the root node of a criteria tree
+        type: integer
+        format: int64
+      type:
+        description: type of this criteria
+        type: string
+      subtype:
+        description: sub type of this criteria
+        type: string
+      code:
+        description: concept code
+        type: string
+      name:
+        description: concept name
+        type: string
+      group:
+        description: boolean field which represents if the criteria has children
+        type: boolean
+      selectable:
+        description: boolean field which represents if the criteria is selectable
+        type: boolean
+      count:
+        description: count
+        type: integer
+        format: int64
+      domainId:
+        description: domain id
+        type: string
+      conceptId:
+        description: concept id
+        type: string
+      path:
+        description: path of concept in the criteria tree
+        type: string
+      synonyms:
+        description: synonyms
+        type: string
+
+  CriteriaListResponse:
+    type: object
+    required:
+      - items
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/Criteria"
+
+  CriteriaParentResponse:
+    type: object
+    required:
+      - items
+    properties:
+      parent:
+        description: parent row
+        $ref: "#/definitions/Criteria"
+      children:
+        description: children row
+        $ref: "#/definitions/CriteriaListResponse"
+
   QuestionConcept:
     type: object
     required:

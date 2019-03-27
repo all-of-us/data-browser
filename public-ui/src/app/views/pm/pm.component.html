@@ -7,15 +7,7 @@
           class="btn btn-link"> {{item.groupName}} </button>
       </div>
     </aside>
-    <div *ngIf="loading()" class="loading white-card-box ">
-      <div class="row flex-items-xs-middle">
-        <div class="col-xs-12">
-          <span class="spinner spinner-lg hidden-sm-down">Loading ...</span>
-          <span class="spinner spinner-md hidden-md-up hidden-xs-down"></span>
-          <span class="spinner spinner-sm hidden-sm-up"></span>
-        </div>
-      </div>
-    </div>
+    <app-db-spinner [loading]="loading()"></app-db-spinner>
     <div class="db-card" *ngIf="!loading()">
       <div class="db-card-inner">
         <div class="db-card-header">
@@ -29,17 +21,27 @@
         <div class="chart-layout"
           *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
           <!-- Loop through the genders we have results for showing the graph -->
-          <div class="chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
-            <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
+          <ng-container *ngIf="selectedConcept.conceptId !== '903120'; else pregnancyChart">
+            <div class="chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
+              <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
               selectedConcept.analyses.measurementValueGenderAnalysis" class="chart-title">
-              {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</div>
-            <app-chart *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
+                {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</div>
+              <app-chart *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
                          selectedConcept.analyses.measurementValueGenderAnalysis" [genderId]="gender.stratum2"
-              [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
-              [chartType]="selectedConcept.chartType"
-              [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]">
-            </app-chart>
-          </div>
+                         [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
+                         [chartType]="selectedConcept.chartType"
+                         [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]">
+              </app-chart>
+            </div>
+          </ng-container>
+          <ng-template #pregnancyChart>
+            <div class="chart-item">
+              <app-chart *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [chartType]="'pregnancyChart'"
+                         [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
+              [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue">
+              </app-chart>
+            </div>
+          </ng-template>
           <!-- show Age totals -->
           <div class="chart-item age-chart" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
             <div>{{ageChartTitle}}

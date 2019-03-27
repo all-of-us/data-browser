@@ -28,7 +28,7 @@ object Pages {
     val domainTotals: HttpRequestBuilder = http("domain-totals").get("/v1/databrowser/domain-totals")
     def domainSearch (searchTerm: String): HttpRequestBuilder = {
       def encodedTerm: String = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString).toLowerCase
-      http("domain-totals").get("/v1/databrowser/domain-totals?searchWord=" + encodedTerm)
+      http("domain-search").get("/v1/databrowser/domain-search?searchWord=" + encodedTerm)
     }
     def searchConcepts(postBody: String): HttpRequestBuilder = {
       http("search-concepts")
