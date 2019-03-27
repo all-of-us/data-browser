@@ -1,4 +1,5 @@
-<span class="tree-row" [ngClass]="[node.children ? 'hasChildren':'noChildren' , opened ? 'opened':'']"
+<ng-container *ngIf="node">
+  <span class="tree-row" [ngClass]="[node.children ? 'hasChildren':'noChildren' , opened ? 'opened':'']"
   (click)="opened=!opened"><span>{{node.name}}</span> <span class="blue-text">({{node.count | number}})</span></span>
 <div class="children" *ngIf="node.children && opened">
   <div *ngFor="let child of node.children" class="child">
@@ -6,3 +7,8 @@
     </app-recursive-tree>
   </div>
 </div>
+</ng-container>
+
+<ng-container *ngIf="!node">
+ no data found
+</ng-container>

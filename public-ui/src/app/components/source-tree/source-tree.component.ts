@@ -21,7 +21,6 @@ export class SourceTreeComponent implements OnChanges {
   open = true;
 
   constructor() {
-  
   }
 
   ngOnChanges() {
