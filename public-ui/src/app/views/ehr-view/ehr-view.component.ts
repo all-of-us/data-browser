@@ -14,6 +14,7 @@ import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
 import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../publicGenerated/model/standardConceptFilter';
+import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
 
@@ -61,6 +62,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: DataBrowserService,
     private tooltipText: TooltipService,
+              public dbc: DbConfigService,
   ) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
@@ -134,6 +136,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public searchCallback(results: any) {
     this.searchResult = results;
+    this.searchResult.items = this.searchResult.items.filter(
+      x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
