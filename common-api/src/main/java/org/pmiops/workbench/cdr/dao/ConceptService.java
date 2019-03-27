@@ -196,6 +196,9 @@ public class ConceptService {
                         predicates.add(criteriaBuilder.or(
                                 countPredicates.toArray(new Predicate[0])));
                     }
+
+                    predicates.add(criteriaBuilder.greaterThan(root.get("canSelect"), 0));
+
                     criteriaQuery.distinct(true);
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 };

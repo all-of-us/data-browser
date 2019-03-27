@@ -16,6 +16,7 @@ import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
+import org.pmiops.workbench.cdr.dao.CriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
@@ -371,6 +372,8 @@ public class DataBrowserControllerTest {
     @Autowired
     private ConceptDao conceptDao;
     @Autowired
+    private CriteriaDao criteriaDao;
+    @Autowired
     private CdrVersionDao cdrVersionDao;
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
@@ -397,8 +400,9 @@ public class DataBrowserControllerTest {
     public void setUp() {
         saveData();
         ConceptService conceptService = new ConceptService(entityManager, conceptDao);
-        dataBrowserController = new DataBrowserController(conceptService, conceptDao, domainInfoDao,
-            surveyModuleDao, achillesResultDao, achillesAnalysisDao, achillesResultDistDao, entityManager,
+        dataBrowserController = new DataBrowserController(conceptService, conceptDao,
+                criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
+                achillesAnalysisDao, achillesResultDistDao, entityManager,
             () -> cdrVersion);
     }
 
@@ -569,6 +573,7 @@ public class DataBrowserControllerTest {
     result.setSynonymsStr(
         String.valueOf(concept.getConceptId()) + '|' +
             Joiner.on("|").join(concept.getConceptSynonyms()));
+    result.setCanSelect(1);
     return result;
   }
 
