@@ -182,7 +182,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', this.prevSearchText);
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
-        this.router.navigateByUrl('survey/' + idName.conceptName);
+        this.router.navigateByUrl('survey/' + idName.conceptName.toLowerCase().replace(' ', '-'));
       }
     });
   }
@@ -190,7 +190,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
+    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase().replace(' ', '-' ));
   }
 
   public matchPhysicalMeasurements(searchString: string) {
