@@ -4,7 +4,7 @@
 set -xeuo pipefail
 IFS=$'\n\t'
 
-USAGE="./generate-clousql-cdr/run-measurement-queries.sh --bq-project <PROJECT> --bq-dataset <DATASET> --workbench-project <PROJECT>"
+USAGE="./generate-clousql-cdr/generate_criteria_stratum.sh --bq-project <PROJECT> --bq-dataset <DATASET> --workbench-project <PROJECT>"
 USAGE="$USAGE --cdr-version=YYYYMMDD"
 
 while [ $# -gt 0 ]; do
