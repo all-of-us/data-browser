@@ -44,7 +44,7 @@ then
   exit 1
 fi
 
-echo "creating criteria_stratum table"
+echo "creating criteria_stratum table rows for snomed measurements"
 
 echo "Inserting child counts for biological sex analysis from achilles results"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
