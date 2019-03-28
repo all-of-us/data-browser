@@ -5,11 +5,11 @@ import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
 } from 'ngx-responsive';
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.service';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
 import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
@@ -52,7 +52,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphType = GraphType;
   treeData: any[];
   expanded = true;
-  childTest = [];
   treeLoading = false;
 
   @ViewChild('chartElement') chartEl: ElementRef;
@@ -67,7 +66,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
     });
-    console.log(this.router.onSameUrlNavigation);
   }
   ngOnInit() {
     this.loadPage();
@@ -75,10 +73,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
+    if (this.subscriptions) {
+      for (const s of this.subscriptions) {
+        s.unsubscribe();
+      }
     }
-    this.initSearchSubscription.unsubscribe();
+    if (this.initSearchSubscription) {
+      this.initSearchSubscription.unsubscribe();
+    }
   }
 
 
@@ -87,17 +89,17 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
     // Get search text from localStorage
     this.prevSearchText = localStorage.getItem('searchText');
-    this.searchText.setValue(this.prevSearchText);
-    const obj = localStorage.getItem('ehrDomain');
-    if (obj) {
-      this.ehrDomain = JSON.parse(obj);
-      this.subTitle = 'Keyword: ' + this.searchText;
-      this.title = this.ehrDomain.name;
-    } else {
-      /* Error. We need a db Domain object. */
-      this.title = 'Keyword: ' + this.searchText;
-      this.title = 'Error - no result for domain selected';
+    if (!this.prevSearchText) {
+      this.prevSearchText = '';
     }
+    this.searchText.setValue(this.prevSearchText);
+    const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
+    // if no domainObj or if the domain in the obj doesn't match the route
+    if (!domainObj || domainObj.domain !== this.domainId) {
+      this.getThisDomain(domainObj);
+    }
+    this.setDomain();
+
     if (this.ehrDomain) {
       // Set the graphs we want to show for this domain
       // Run search initially to filter to domain,
@@ -132,6 +134,30 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         (query) => localStorage.setItem('searchText', query)));
     }
     this.showTopConcepts = true;
+  }
+
+  private setDomain() {
+    const obj = localStorage.getItem('ehrDomain');
+    if (obj) {
+      this.ehrDomain = JSON.parse(obj);
+      this.subTitle = 'Keyword: ' + this.searchText;
+      this.title = this.ehrDomain.name;
+    }
+  }
+
+  // get the current ehr domain by its route
+  public getThisDomain(domainObj: object) {
+    this.subscriptions.push(
+      this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
+        (data: DomainInfosAndSurveyModulesResponse) => {
+          data.domainInfos.forEach(domain => {
+            if (domain.domain.toLowerCase() === this.domainId) {
+              localStorage.setItem('ehrDomain', JSON.stringify(domain));
+              this.setDomain();
+            }
+          });
+        })
+    );
   }
 
   public searchCallback(results: any) {

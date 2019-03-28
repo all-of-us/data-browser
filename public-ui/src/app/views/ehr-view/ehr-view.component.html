@@ -278,7 +278,7 @@
         </div>
   </div>
 </div>
-<div *ngIf="!loading && items.length === 0">
+<div *ngIf="!loading && items.length === 0 && searchText.length > 0">
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
