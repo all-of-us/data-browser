@@ -10,6 +10,6 @@
   </div>
   <div *ngFor="let breadcrumb of breadcrumbs; let last = last"
     [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}">
-    <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label }}</a>
+    <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label.replace('-',' ') }}</a>
   </div>
 </div>
