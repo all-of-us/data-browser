@@ -60,4 +60,10 @@ export class SurveyChartComponent implements OnInit {
       return this.tooltipText.sourcesChartHelpText;
     }
   }
+  public toolTipPos(g) {
+    if (g === 'Biological Sex') {
+      return 'bottom-right';
+    }
+    return 'bottom-left';
+  }
 }

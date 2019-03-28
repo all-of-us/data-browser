@@ -5,7 +5,7 @@
     <span>{{g}}</span>
     <clr-tooltip>
       <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+      <clr-tooltip-content clrPosition={{toolTipPos(g)}} clrSize="lg" *clrIfOpen>
         <div class="tooltip-label">{{showToolTip(g)}}</div>
       </clr-tooltip-content>
     </clr-tooltip>
