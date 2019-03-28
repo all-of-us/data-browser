@@ -112,7 +112,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   // Organize genders and set the chart title for the gender charts for simple display
   organizeGenders(analysis: Analysis) {
     // No need to do anything if only one gender
-    if (!analysis && analysis.results.length <= 1) {
+    if (!analysis ||  analysis.results.length <= 1) {
       return;
     }
     const results = [];
