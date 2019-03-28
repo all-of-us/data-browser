@@ -18,7 +18,12 @@
 		"mode": "REQUIRED",
 		"name": "stratum_2",
 		"type": "STRING"
-	}, 
+	},
+	{
+		"mode": "REQUIRED",
+		"name": "domain",
+		"type": "STRING"
+	},
 	{
 		"mode": "REQUIRED",
 		"name": "count_value",

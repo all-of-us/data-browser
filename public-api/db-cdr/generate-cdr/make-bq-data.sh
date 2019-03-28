@@ -621,4 +621,21 @@ from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criter
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='MEAS' and cr.synonyms like '%rank1%') as sub_cr
 where sub_cr.concept_id = c.concept_id and c.domain_id = 'Measurement' and c.vocabulary_id = 'SNOMED' "
 
+####################
+# criteria stratum #
+####################
+# Fill criteria stratum to get rolled up counts
+if ./generate-cdr/generate_criteria_stratum.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+then
+    echo "Criteria stratum generated"
+else
+    echo "FAILED To generate criteria stratum"
+    exit 1
+fi
 
+echo "Updating counts in achilles results with the ones generated in criteria stratum"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
+set c.count_value=sub_cr.count_value
+from (select analysis_id, concept_id, stratum_1 as stratum, domain, count_value from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr) as sub_cr
+where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"
