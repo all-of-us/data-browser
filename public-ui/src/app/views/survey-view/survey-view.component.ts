@@ -169,13 +169,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
-          console.log(data, 'supdata');
-
           data.surveyModules.forEach(survey => {
             survey['route'] = survey.name.replace(' ', '-');
-            console.log(survey.route.toLowerCase(), this.domainId.toLowerCase());
             if (survey.route.toLowerCase() === this.domainId.toLowerCase()) {
-              console.log(survey.route.toLowerCase(),this.domainId,'them should match');
               localStorage.setItem('surveyModule', JSON.stringify(survey));
               this.setSurvey();
             }
