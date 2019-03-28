@@ -5,10 +5,10 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService, QuestionConcept, SurveyModule, DomainInfosAndSurveyModulesResponse } from '../../../publicGenerated';
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../publicGenerated';
+import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
-import { DbConfigService } from '../../utils/db-config.service';
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
