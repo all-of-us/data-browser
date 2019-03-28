@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Runs measurement queries to populate count db of measurement data for cloudsql in BigQuery
+# Run queries to populate criteria stratum counts
 set -xeuo pipefail
 IFS=$'\n\t'
 
