@@ -62,7 +62,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: DataBrowserService,
     private tooltipText: TooltipService,
-              public dbc: DbConfigService,
+    public dbc: DbConfigService,
   ) {
     this.route.params.subscribe(params => {
       this.domainId = params.id;
@@ -191,7 +191,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (this.graphToShow === GraphType.Sources) {
       this.treeLoading = true;
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
-      .subscribe({
+        .subscribe({
           next: result => {
             this.treeData = [result.parent];
             this.treeLoading = false;
@@ -214,7 +214,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (g === 'Race / Ethnicity') {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
-    if (g === 'Age at First Occurrence in Participant Record') {
+    if (g === 'Age') {
       return this.tooltipText.ehrAgeChartHelpText;
     }
     if (g === 'Sources') {
@@ -223,6 +223,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (g === 'Values') {
       return this.tooltipText.valueChartHelpText;
     }
+  }
+  public toolTipPos(g) {
+    if (g === 'Biological Sex') {
+      return 'bottom-right';
+    }
+    return 'bottom-left';
   }
 
   public resetSelectedGraphs() {
