@@ -7,17 +7,16 @@ export class TooltipService {
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
     'sex assigned at birth or to a person’s secondary sex characteristics.';
-  ehrAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at \n' +
-    'which medical concepts first occurred in participants \n' +
-    ' electronic health records. For example, if a medical concept occurred in a \n' +
-    'participant’s record at age 25 and again at age 43, 45 and 47 \n' +
-    'the participant is included once in the bar chart at the age of first occurrence, age 25.';
+  ehrAgeChartHelpText = `The age bar chart displays a binned distribution of the ages at which
+   medical concepts first occurred in participants' electronic health records. For example, if
+   a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
+   the participant is included once in the bar chart at the age of first occurrence, age 25.`;
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
     'ages at which the participants took the indicated survey.';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
-  raceEthnicityChartHelpText = 'Race/ethnicity are categories that describe groups to \n' +
-    'which individuals belong, identify with, or belong in the eyes of the community.';
+  raceEthnicityChartHelpText = `Race / ethnicity are categories that describe groups to which
+   individuals identify with or belong in the eyes of the community.`;
   sourcesChartHelpText = 'Individual health records often contain medical ' +
     'information that means the same thing ' +
     'but may be recorded in many different ways. \n' +
@@ -47,21 +46,22 @@ export class TooltipService {
   pregnancy status and wheelchair use.`;
   domainHelpText = {
     'condition': 'Medical concepts that describe the ' +
-    'health status of an individual, ' +
-    'such as medical diagnoses, are found in the conditions domain.',
+      'health status of an individual, ' +
+      'such as medical diagnoses, are found in the conditions domain.',
     'drug': 'Medical concepts that capture information about the utilization of a ' +
-    'drug when ingested or otherwise introduced into ' +
-    'the body are captured by the drug exposures domain.',
+      'drug when ingested or otherwise introduced into ' +
+      'the body are captured by the drug exposures domain.',
     'measurement': 'Medical concepts that capture values resulting from ' +
-    'examinations or tests are captured by the measurements domain. ' +
-    'The measurements domain may include vital signs, lab values, ' +
-    'quantitative findings from pathology reports, etc.',
+      'examinations or tests are captured by the measurements domain. ' +
+      'The measurements domain may include vital signs, lab values, ' +
+      'quantitative findings from pathology reports, etc.',
     'procedure': 'Medical concepts that capture information related to activities or ' +
-    'processes that are ordered or carried out on individuals for ' +
-    'diagnostic or therapeutic purposes are captured by the procedures domain.',
-    'the basics' : this.theBasicsSurvey,
-    'overall health' : this.overallHealthSurvey,
-    'lifestyle' : this.lifestyleSurvey};
+      'processes that are ordered or carried out on individuals for ' +
+      'diagnostic or therapeutic purposes are captured by the procedures domain.',
+    'the basics': this.theBasicsSurvey,
+    'overall health': this.overallHealthSurvey,
+    'lifestyle': this.lifestyleSurvey
+  };
   conceptCodeHelpText = 'The concept code is an additional piece of information that\n' +
     'can be utilized to find medical concepts in the All of Us data set. Concept codes are\n' +
     'specific to the All of Us Research Program data and are assigned ' +
@@ -88,6 +88,21 @@ export class TooltipService {
     'temperature might have a value of 96.8 degrees. ' +
     'Values can also be reported in different units, ' +
     'such as Fahrenheit or Celsius for body temperature.';
+  participantCountHelpText = `The overall participant count listed in the header for this column
+   includes all participants that have at least one medical concept from this domain in their
+   electronic health record (EHR). Participants may have more than one medical concept from
+   this domain in their records but they will only be counted once. The count returned for
+   each medical concept result (each row) is a count of participants with at least one mention
+   of the medical concept in their record. Participants may have more than one mention of a
+   medical concept in their record but will only be counted once. All participant counts are
+   approximate to protect participant privacy. Participant counts are rounded to the nearest
+   multiple of 20. Participant counts of 0 - 20 are returned as ≤ 20.`;
+  vocabularyCodeHelpText = `Individual health records often contain medical information that means
+   the same thing but may be recorded in many different ways.
+   Source concepts are the way the data was originally represented in a patient’s record.
+   The vocabulary code listed here is a standard vocabulary code for the medical
+   nformation. Standard codes are ways of representing data that is recorded many
+   different ways in original patient records but essentially means the same thing.`;
   constructor() { }
 
 }
