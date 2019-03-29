@@ -12,6 +12,7 @@ import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
+import { Domain } from '../../../publicGenerated/model/domain';
 import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../utils/db-config.service';
@@ -151,7 +152,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
-            const thisDomain = domain.domain as string;
+            const thisDomain = Domain[domain.domain] as string;
             if (thisDomain.toLowerCase() === this.domainId) {
               localStorage.setItem('ehrDomain', JSON.stringify(domain));
               this.setDomain();
