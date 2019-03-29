@@ -5,14 +5,28 @@ strong {
 .search-icon-container {
     display: flex;
     flex-wrap: wrap;
+    flex-flow: column;
+}
+@media only screen and (min-width: 768px) {
+.search-icon-container {
     flex-flow: row;
+}
 }
 .iconlinks {
     display: flex;
     flex-flow: row;
+    align-items: center;
+justify-content: flex-end;
+flex-basis: 100%;
 }
-.icons {
-    flex-basis: 33%;
+@media only screen and (min-width: 768px) {
+.iconlinks {
+  justify-content: center;
+}
+}
+.icons img {
+  width: 120px;
+  margin-left: 1rem;
 }
 .search {
     display: flex;
