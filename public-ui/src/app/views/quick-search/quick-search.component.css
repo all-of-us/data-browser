@@ -39,6 +39,7 @@ strong {
 }
 
 .result-box {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     min-width: calc(((100%/12)*3) - 14px);
