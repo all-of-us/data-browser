@@ -202,7 +202,7 @@
                     </clr-tooltip>
                   </div>
                   <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
-                    *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,110)"
+                    *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
                     [searchTerm]="prevSearchText">
                   </app-highlight-search>
                   <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
