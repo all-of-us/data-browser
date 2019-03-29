@@ -5,10 +5,10 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService, QuestionConcept, SurveyModule, DomainInfosAndSurveyModulesResponse } from '../../../publicGenerated';
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../publicGenerated';
+import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
-import { DbConfigService } from '../../utils/db-config.service';
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -170,8 +170,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.surveyModules.forEach(survey => {
-            survey['route'] = survey.name.replace(' ', '-');
-            if (survey.route.toLowerCase() === this.domainId.toLowerCase()) {
+            surveyObj = survey as object;
+            const surveyRoute = survey.name.replace(' ', '-');
+            if (surveyRoute.toLowerCase() === this.domainId.toLowerCase()) {
               localStorage.setItem('surveyModule', JSON.stringify(survey));
               this.setSurvey();
             }
