@@ -513,7 +513,6 @@ img {
   padding-bottom: 4rem;
   background-attachment: fixed;
   background-color: #f6f6f8;
-  min-height: 90vh;
 }
 
 input[type=text], input[type=password] {
