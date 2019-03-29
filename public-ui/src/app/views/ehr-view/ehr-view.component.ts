@@ -152,7 +152,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
-            const thisDomain = Domain[domain.domain] as string;
+            const thisDomain = Domain[domain.domain];
             if (thisDomain.toLowerCase() === this.domainId) {
               localStorage.setItem('ehrDomain', JSON.stringify(domain));
               this.setDomain();
