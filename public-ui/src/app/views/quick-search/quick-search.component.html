@@ -11,22 +11,32 @@
        </p>
     </div>
   </div>
-  <div class="search">
-    <div class="search-title">
-      <span class="secondary-display">{{title}}</span>
-      <clr-tooltip>
-        <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
-        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-          <div class="tooltip-label">{{subTitle}}
-          </div>
-        </clr-tooltip-content>
-      </clr-tooltip>
-    </div>
-    <div id="db-search-bar">
-      <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
-    </div>
-  </div>
+  <div class="search-icon-container">
+    <div class="search">
+      <div class="search-title">
+        <span class="secondary-display">{{title}}</span>
+        <clr-tooltip>
+          <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-label">{{subTitle}}
+            </div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+      </div>
+      <div id="db-search-bar">
+        <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+        <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
+      </div>
+    </div><!-- .search -->
+    <div class="iconlinks">
+      <div class="icons"><a href="#" alt="FAQs"><img src="/assets/icons/icons_faq.png" /></a>
+      </div>
+      <div class="icons"><a href="#" alt="Introductory Videos"><img src="/assets/icons/icons_introductoryvideo.png" /></a>
+      </div>
+      <div class="icons"><a href="#" alt="User Guide"><img src="/assets/icons/icons_userguide.png" /></a>
+      </div>
+    </div><!-- .iconlinks -->
+  </div><!-- .search-icon-container -->
   <!-- todo: better loading icon -->
   <div class="row" *ngIf="loading">
     <div class="col-xs-12 flex-xs-middle" style="text-align: center">

@@ -2,12 +2,24 @@ strong {
     font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     color: #302C71;
 }
-
+.search-icon-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: row;
+}
+.iconlinks {
+    display: flex;
+    flex-flow: row;
+}
+.icons {
+    flex-basis: 33%;
+}
 .search {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     padding:18px;
+    flex-flow: column;
 }
 
 .search-title {
