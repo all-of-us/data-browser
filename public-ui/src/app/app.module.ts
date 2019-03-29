@@ -41,6 +41,7 @@ import { DbNoResultsComponent } from './components/db-no-results/db-no-results.c
 import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
+import { ChartOptions } from './utils/chartOptions';
 import {DbConfigService} from './utils/db-config.service';
 import {TooltipService} from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -110,6 +111,7 @@ export function getConfigService(http: Http) {
       useFactory: getConfiguration
     },
     DbConfigService,
+    ChartOptions,
     TooltipService,
     ServerConfigService,
     {

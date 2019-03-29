@@ -4,6 +4,7 @@ import * as highcharts from 'highcharts';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
+import { ChartOptions } from '../../utils/chartOptions';
 import { DbConfigService } from '../../utils/db-config.service';
 import { DomainType } from '../../utils/enum-defs';
 
@@ -28,7 +29,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() participantCount = 0;
   @Output() resultClicked = new EventEmitter<any>();
   chartOptions: any = null;
-  constructor(private dbc: DbConfigService) {
+  constructor(private dbc: DbConfigService, private chartOpt: ChartOptions) {
     highcharts.setOptions({
       lang: { thousandsSep: ',' },
     });
@@ -66,144 +67,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    return {
-      chart: options.chart,
-      lang: {
-        noData: {
-          style: {
-            fontWeight: 'bold',
-            fontSize: '15px',
-            color: '#303030'
-          }
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      title: '',
-      subtitle: {},
-      tooltip: {
-        followPointer: true,
-        backgroundColor: '#f0f2f3',
-        borderWidth: 0,
-        borderRadius: 10,
-        shadow: false,
-        style: {
-          padding: 0,
-          borderRadius: 3,
-          fontSize: '12px',
-          color: '#262262'
-        },
-        // formatter: function(tooltip) {
-        //   if (this.point.y <= 20) {
-        //     return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
-        //   }
-        //   // If not <= 20, use the default formatter
-        //   return tooltip.defaultFormatter.call(this, tooltip);
-        // }
-      },
-      plotOptions: {
-        series: {
-          animation: {
-            duration: 100,
-          },
-          pointWidth: options.pointWidth ? options.pointWidth : null,
-          minPointLength: 3,
-          events: {
-            click: event => {
-              // Todo handle click and log events in analytics
-              // console.log('plot options clicked ', event.point);
-            }
-          },
-        },
-        pie: {
-          borderColor: null,
-          slicedOffset: 4,
-          size:  '100%',
-          dataLabels: {
-            enabled: true,
-            style: this.isGenderIdentityAnalysis()
-              ? this.dbc.GI_DATA_LABEL_STYLE : this.dbc.DATA_LABEL_STYLE,
-            distance: this.isGenderIdentityAnalysis() ? 3 : -50,
-            formatter: function () {
-              if (this.percentage < 1) {
-                return this.point.name + ' ' + Number(this.percentage).toFixed(1) + '%';
-              }
-              return this.point.name + ' ' + Number(this.percentage).toFixed(0) + '%';
-            }
-          }
-        },
-        column: {
-          shadow: false,
-          borderColor: null,
-          colorByPoint: true,
-          groupPadding: 0,
-          pointPadding: 0,
-          dataLabels: {
-            enabled: false,
-          },
-          events: {},
-        },
-        bar: {
-          shadow: false,
-          borderColor: null,
-          colorByPoint: true,
-          groupPadding: 0,
-          pointPadding: 0,
-          dataLabels: {
-            enabled: false,
-          },
-          events: {}
-        }
-      },
-      yAxis: {
-        title: {
-          text: null
-        },
-        min: 20,
-        labels: {
-          style: {
-            fontSize: '12px',
-          },
-          formatter: function () {
-            const label = this.axis.defaultLabelFormatter.call(this);
-            // Change <= 20 count to display '<= 20'
-            if (label <= 20) {
-              return '&#8804; 20';
-            }
-            return label;
-          },
-          useHTML: true,
-        },
-        lineWidth: 1,
-        lineColor: this.dbc.AXIS_LINE_COLOR,
-        gridLineColor: this.backgroundColor
-      },
-      xAxis: {
-        title: {
-          text: options.xAxisTitle ? options.xAxisTitle : null
-        },
-        categories: options.categories,
-        // type: 'category',
-        labels: {
-          align: 'right',
-          reserveSpace: true,
-          style: {
-            whiteSpace: 'wrap',
-            fontSize: '12px',
-            color: '#222222',
-          },
-        },
-        lineWidth: 1,
-        lineColor: this.dbc.AXIS_LINE_COLOR,
-        tickLength: 0
-      },
-      zAxis: {},
-      legend: {
-        enabled: false
-      },
-      series: [options.series],
-    };
+    return this.chartOpt.makeOptions(options, '', {},
+      options.pointWidth ? options.pointWidth : null,
+      this.isGenderIdentityAnalysis()
+        ? this.dbc.GI_DATA_LABEL_STYLE : this.dbc.DATA_LABEL_STYLE,
+      this.isGenderIdentityAnalysis() ? 3 : -50,
+      this.backgroundColor,
+      options.xAxisTitle ? options.xAxisTitle : null, options.categories,
+      [options.series]);
   }
 
   public makeChartOptions() {
@@ -277,6 +148,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       if (this.chartType && this.chartType === 'pregnancyChart') {
+        this.makeStackedChartOptions();
         return this.makePregnancyChartOptions();
       }
       return this.makeMeasurementChartOptions();
@@ -287,7 +159,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
-
   public makeCountChartOptions(results: any, analysisName: string) {
     let data = [];
     let cats = [];
@@ -570,6 +441,27 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         headerFormat: '<span> ',
         pointFormat: '{point.name}<br/ > {point.y}</span>'
       }
+    };
+  }
+
+  public makeStackedChartOptions() {
+    const gender_cats = this.analysis.results.map(item => item.stratum3)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    const value_cats = this.analysis.results.map(item => item.stratum4)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    const data = []
+    for (const g of gender_cats) {
+      const temp = [];
+      for (let gr of this.analysis.results.filter(x => x.stratum3 === g)) {
+        temp.push({ name: gr.stratum4, y: gr.countValue, thisCtrl: this, result: gr });
+      }
+      data.push(temp);
+    }
+    const series: any = {
+      name: this.analysis.analysisName,
+      colorByPoint: true,
+      data: data,
+      colors: [this.dbc.GENDER_PM_COLOR],
     };
   }
 
