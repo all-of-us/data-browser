@@ -1,13 +1,14 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {ISubscription} from 'rxjs/Subscription';
-import {DataBrowserService, QuestionConcept, SurveyModule } from '../../../publicGenerated';
-import {GraphType} from '../../utils/enum-defs';
-import {TooltipService} from '../../utils/tooltip.service';
+import { ISubscription } from 'rxjs/Subscription';
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../publicGenerated';
+import { DbConfigService } from '../../utils/db-config.service';
+import { GraphType } from '../../utils/enum-defs';
+import { TooltipService } from '../../utils/tooltip.service';
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -18,7 +19,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   graphButtons = ['Biological Sex', 'Gender Identity', 'Race / Ethnicity',
     'Age When Survey Was Taken'];
   domainId: string;
-  title ;
+  title;
   subTitle;
   surveys: SurveyModule[] = [];
   survey;
@@ -42,9 +43,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
 
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
-              private tooltipText: TooltipService) {
+    private tooltipText: TooltipService,
+    public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
-      this.domainId = params.id;
+      this.domainId = params.id.toLowerCase();
     });
   }
 
@@ -60,14 +62,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public loadPage() {
     this.prevSearchText = localStorage.getItem('searchText');
-    this.loading = true;
-    // Get the survey from local storage the user clicked on on a previous page
-    const obj = localStorage.getItem('surveyModule');
-    if (obj) {
-      const survey = JSON.parse(obj);
-      this.surveyConceptId = survey.conceptId;
-      this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
+    if (!this.prevSearchText) {
+      this.prevSearchText = '';
     }
+    this.loading = true;
+    const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
+    if (surveyObj) {
+      surveyObj['route'] = surveyObj['name'].toLowerCase().replace(' ', '-');
+    }
+    // if no surveyObj or if the survey in the obj doesn't match the route
+    if (!surveyObj || surveyObj.route !== this.domainId) {
+      this.getThisSurvey(surveyObj);
+    }
+    this.setSurvey();
     this.searchText.setValue(this.prevSearchText);
     this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
       next: x => {
@@ -82,7 +89,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           }
           // Get did not answer count for question and count % for each answer
           // Todo -- add this to api maybe
-          let didNotAnswerCount  = this.survey.participantCount;
+          let didNotAnswerCount = this.survey.participantCount;
           q.selectedAnalysis = q.genderAnalysis;
           for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
@@ -91,7 +98,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               for (const subQuestion of a.subQuestions) {
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
                 for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
-                filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
+                  filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                   for (const question of subResult.subQuestions) {
                     question.selectedAnalysis = question.genderAnalysis;
                   }
@@ -100,10 +107,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             }
           }
           const result = q.countAnalysis.surveyQuestionResults[0];
-          if (didNotAnswerCount < 0 ) { didNotAnswerCount = 0; }
+          if (didNotAnswerCount < 0) { didNotAnswerCount = 0; }
           const notAnswerPercent = this.countPercentage(didNotAnswerCount);
           const didNotAnswerResult = {
-            analysisId : result.analysisId,
+            analysisId: result.analysisId,
             countValue: didNotAnswerCount,
             countPercent: notAnswerPercent,
             stratum1: result.stratum1,
@@ -117,7 +124,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
         this.questions = this.surveyResult.items;
         // Sort count value desc
-        for (const q of this.questions ) {
+        for (const q of this.questions) {
           q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
             if (a1.countValue > a2.countValue) { return -1; }
             if (a1.countValue < a2.countValue) { return 1; }
@@ -140,16 +147,43 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.searchText.valueChanges
         .debounceTime(400)
         .distinctUntilChanged()
-        .subscribe((query) => { this.filterResults(); } ));
+        .subscribe((query) => { this.filterResults(); }));
 
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
-      (query) => localStorage.setItem('searchText', query) ));
+      (query) => localStorage.setItem('searchText', query)));
+  }
+
+  public setSurvey() {
+    // Get the survey from local storage the user clicked on on a previous page
+    const obj = localStorage.getItem('surveyModule');
+    if (obj) {
+
+      const survey = JSON.parse(obj);
+      this.surveyConceptId = survey.conceptId;
+      this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
+    }
+  }
+  // get the current survey  by its route
+  public getThisSurvey(surveyObj: object) {
+    this.subscriptions.push(
+      this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
+        (data: DomainInfosAndSurveyModulesResponse) => {
+          data.surveyModules.forEach(survey => {
+            surveyObj = survey as object;
+            const surveyRoute = survey.name.replace(' ', '-');
+            if (surveyRoute === this.domainId.toUpperCase()) {
+              localStorage.setItem('surveyModule', JSON.stringify(survey));
+              this.setSurvey();
+            }
+          });
+        })
+    );
   }
 
   public countPercentage(countValue: number) {
     if (!countValue || countValue <= 0) { return 0; }
-    let percent: number = countValue / this.survey.participantCount ;
+    let percent: number = countValue / this.survey.participantCount;
     percent = parseFloat(percent.toFixed(4));
     return percent * 100;
   }
@@ -165,9 +199,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     // If doing an and search match all words
     if (this.searchMethod === 'and') {
       for (const w of words) {
-        if (q.conceptName.toLowerCase().indexOf(w.toLowerCase()) === -1  &&
+        if (q.conceptName.toLowerCase().indexOf(w.toLowerCase()) === -1 &&
           q.countAnalysis.surveyQuestionResults.filter(r =>
-            r.stratum4.toLowerCase().indexOf(w.toLowerCase()) === -1 )) {
+            r.stratum4.toLowerCase().indexOf(w.toLowerCase()) === -1)) {
           return false;
         }
       }
@@ -212,7 +246,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (results.length > 0) {
       return true;
     }
-    return false ;
+    return false;
   }
 
   public filterResults() {
@@ -236,7 +270,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public toggleAnswer(qid) {
-    if (! this.showAnswer[qid] ) {
+    if (!this.showAnswer[qid]) {
       this.showAnswer[qid] = true;
     } else {
       this.showAnswer[qid] = false;
