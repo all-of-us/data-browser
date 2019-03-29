@@ -410,11 +410,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum5];
+        color = this.dbc.COLUMN_COLOR;
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.GENDER_IDENTITY_COLORS[a.stratum2];
+        color = this.dbc.COLUMN_COLOR;
       }
       data.push({
         name: a.analysisStratumName
@@ -472,7 +472,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const a of results) {
       data.push({
         name: a.analysisStratumName
-        , y: a.countValue, sliced: true, color: '#216fb4'
+        , y: a.countValue, sliced: true, color: this.dbc.COLUMN_COLOR
       });
       cats.push(a.analysisStratumName);
     }
