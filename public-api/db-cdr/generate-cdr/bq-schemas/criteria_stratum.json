@@ -11,11 +11,6 @@
 	},
 	{
 		"mode": "REQUIRED",
-		"name": "is_standard",
-		"type": "INTEGER"
-	},
-	{
-		"mode": "REQUIRED",
 		"name": "stratum_1",
 		"type": "INTEGER"
 	}, 

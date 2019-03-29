@@ -12,8 +12,8 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --bq-project) BQ_PROJECT=$2; shift 2;;
     --bq-dataset) BQ_DATASET=$2; shift 2;;
-    --workbench-project) WORKBENCH_PROJECT=$2; shift 2;;
-    --workbench-dataset) WORKBENCH_DATASET=$2; shift 2;;
+    --workbench-project) OUTPUT_PROJECT=$2; shift 2;;
+    --workbench-dataset) OUTPUT_DATASET=$2; shift 2;;
     -- ) shift; break ;;
     * ) break ;;
   esac
@@ -31,14 +31,14 @@ then
   exit 1
 fi
 
-if [ -z "${WORKBENCH_PROJECT}" ]
+if [ -z "${OUTPUT_PROJECT}" ]
 then
   echo "Usage: $USAGE"
   exit 1
 
 fi
 
-if [ -z "${WORKBENCH_DATASET}" ]
+if [ -z "${OUTPUT_DATASET}" ]
 then
   echo "Usage: $USAGE"
   exit 1
@@ -488,6 +488,7 @@ and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.subtype='CM
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
 echo "gender identity child concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 select concept_id, gi, 'gender_identity', 'Condition', cnt, 3107
 from
@@ -519,6 +520,7 @@ and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.subtype='CM
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
 echo "race ethnicity child concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 select concept_id, race, 'race_ethnicity', 'Condition', cnt, 3108
 from

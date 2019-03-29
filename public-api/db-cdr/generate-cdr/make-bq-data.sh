@@ -633,9 +633,23 @@ else
     exit 1
 fi
 
+echo "Inserting rows in achilles results for the concepts that are not in there and that have rolled up counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
+with in_concepts as
+(select distinct stratum_1 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1 where ar1.analysis_id in (3101,3102,3107,3108) and ar1.stratum_3 in ('Condition','Procedure','Measurement')
+)
+select 0,cr.analysis_id,cast(cr.concept_id as string),cast(cr.stratum_1 as string),cr.domain,count_value,0 from
+\`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
+where cast(concept_id as string) not in (select * from in_concepts)
+"
+
 echo "Updating counts in achilles results with the ones generated in criteria stratum"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
-set c.count_value=sub_cr.count_value
-from (select analysis_id, concept_id, stratum_1 as stratum, domain, count_value from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr) as sub_cr
+set c.count_value=sub_cr.cnt
+from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
+group by analysis_id, concept_id, stratum, domain) as sub_cr
 where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"
