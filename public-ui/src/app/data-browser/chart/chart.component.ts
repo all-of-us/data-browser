@@ -449,10 +449,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       .filter((value, index, self) => self.indexOf(value) === index);
     const value_cats = this.analysis.results.map(item => item.stratum4)
       .filter((value, index, self) => self.indexOf(value) === index);
-    const data = []
+    const data = [];
     for (const g of gender_cats) {
       const temp = [];
-      for (let gr of this.analysis.results.filter(x => x.stratum3 === g)) {
+      for (const gr of this.analysis.results.filter(x => x.stratum3 === g)) {
         temp.push({ name: gr.stratum4, y: gr.countValue, thisCtrl: this, result: gr });
       }
       data.push(temp);
