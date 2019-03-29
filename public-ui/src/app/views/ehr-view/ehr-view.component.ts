@@ -97,7 +97,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
     // if no domainObj or if the domain in the obj doesn't match the route
     if (!domainObj || domainObj.domain !== this.domainId) {
-      this.getThisDomain(domainObj);
+      this.getThisDomain();
     }
     this.setDomain();
 
@@ -144,10 +144,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.subTitle = 'Keyword: ' + this.searchText;
       this.title = this.ehrDomain.name;
     }
+    if (!obj) {
+      this.getThisDomain();
+    }
   }
 
   // get the current ehr domain by its route
-  public getThisDomain(domainObj: object) {
+  public getThisDomain() {
     this.subscriptions.push(
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
