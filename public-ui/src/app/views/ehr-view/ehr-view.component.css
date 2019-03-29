@@ -47,8 +47,11 @@ h5.secondary-display {
 }
 
 .medline-link {
-    font-size: 14px;
-    color: black;
+  font-size: 14px;
+  color: #262262;
+  background: #f6f6f8;
+  border-radius: 10px;
+  padding: .5rem 1rem;
 }
 
 #domain-summary {
