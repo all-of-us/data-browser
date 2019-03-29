@@ -1,0 +1,12 @@
+.m-layout{
+    display:flex;
+    align-items: center;
+    widows: 100%;
+}
+.m-layout aside {
+    transform: rotate(-90deg);
+    width: calc((100%/12)*1);
+}
+.m-layout app-chart {
+    width: calc((100%/12)*11);
+}
