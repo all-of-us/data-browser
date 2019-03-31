@@ -21,9 +21,8 @@ object Configuration {
     }
   }
   val userRampUpTimes: Map[Int, FiniteDuration] = Map(
-    10 -> (10 seconds),
-    100 -> (60 seconds),
-    1000 -> (120 seconds)
-  )
+    2 -> (10 seconds),
+    4 -> (1 minutes),
+    8 -> (2 minutes))
 
 }

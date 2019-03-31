@@ -36,6 +36,11 @@ object Pages {
         .header("Content-Type", "application/json")
         .body(StringBody(postBody))
     }
+    def surveyModules (conceptId: String): HttpRequestBuilder = {
+      http("survey-results")
+        .get("/v1/databrowser/survey-results?survey_concept_id=" + conceptId)
+    }
+    val theBasics: HttpRequestBuilder = surveyModules("1586134")
   }
 
   object Home {
@@ -67,6 +72,11 @@ object Pages {
         .exec(APIs.searchConcepts(Json.stringify(postMap)))
         .pause(Configuration.defaultPause)
     }
+  }
+
+  object ViewSurveys {
+    val view: ChainBuilder = exec(APIs.config)
+      .exec(APIs.theBasics.check(status.is(session => 200)))
   }
 
 }

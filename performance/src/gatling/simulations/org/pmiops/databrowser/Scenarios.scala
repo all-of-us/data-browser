@@ -13,6 +13,7 @@ case class ConfigurableScenario(name: String,
 
 sealed trait UserScenario { val name: String }
 case object HomePage extends UserScenario { val name = "Home Page" }
+case object Surveys extends UserScenario { val name = "Surveys" }
 case object UserStorySmoking extends UserScenario { val name = "User Story: Smoking" }
 
 /**
@@ -28,6 +29,9 @@ object Scenarios {
 
   val homePage: ScenarioBuilder = scenario(HomePage.name)
     .exec(Pages.Home.home)
+
+  val surveysPage: ScenarioBuilder = scenario(Surveys.name)
+    .exec(Pages.ViewSurveys.view)
 
   val searchSmoke: ScenarioBuilder = scenario(UserStorySmoking.name)
     .exec(Pages.Home.home)
@@ -45,9 +49,13 @@ object Scenarios {
     }
   }
 
-  val configuredScenarios: List[ConfigurableScenario] = List(
-    ConfigurableScenario(HomePage.name, homePage, 10, 10 seconds),
-    ConfigurableScenario(UserStorySmoking.name, searchSmoke, 10, 10 seconds)
-  ) ::: domainSearchApiScenarios
+  val configuredScenarios: List[ConfigurableScenario] = domainSearchApiScenarios ++
+    Configuration.userRampUpTimes.flatMap { t =>
+      List(
+        ConfigurableScenario(HomePage.name, homePage, t._1, t._2),
+        ConfigurableScenario(UserStorySmoking.name, searchSmoke, t._1, t._2),
+        ConfigurableScenario(Surveys.name, surveysPage, t._1, t._2)
+      )
+    }
 
 }

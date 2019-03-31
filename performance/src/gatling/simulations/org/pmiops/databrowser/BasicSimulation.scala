@@ -12,6 +12,7 @@ class BasicSimulation extends Simulation {
 
   val httpConf: HttpProtocolBuilder = http.
     baseUrl(config.defaultUrl).
+    disableCaching.
     userAgentHeader(config.userAgentHeader)
 
   def globalAssertions: List[Assertion] = List(
@@ -21,7 +22,7 @@ class BasicSimulation extends Simulation {
 
   setUp(
     Scenarios.configuredScenarios.map { cs =>
-      cs.builder.inject(rampUsers(cs.users) during cs.time)
+      cs.builder.inject(constantUsersPerSec(cs.users) during cs.time)
     })
     .assertions(globalAssertions)
     .protocols(httpConf)
