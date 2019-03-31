@@ -509,7 +509,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string) {
-    
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -639,7 +638,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
     };
   }
-  
+
   public getChartTitle(domainType: string) {
     if (domainType === DomainType.EHR) {
       return 'Age at First Occurrence in EHR.';
