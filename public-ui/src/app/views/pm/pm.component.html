@@ -21,7 +21,7 @@
         <div class="chart-layout"
           *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
           <!-- Loop through the genders we have results for showing the graph -->
-          <ng-container *ngIf="selectedConcept.conceptId !== '903120'; else pregnancyChart">
+          <ng-container *ngIf="['903120','903111'].indexOf(selectedConcept.conceptId) === -1; else stackedChart">
             <div class="chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
               <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
               selectedConcept.analyses.measurementValueGenderAnalysis" class="chart-title">
@@ -30,13 +30,14 @@
                          selectedConcept.analyses.measurementValueGenderAnalysis" [genderId]="gender.stratum2"
                          [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
                          [chartType]="selectedConcept.chartType"
-                         [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]">
+                         [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
+                         [conceptId]="selectedConcept.conceptId">
               </app-chart>
             </div>
           </ng-container>
-          <ng-template #pregnancyChart>
+          <ng-template #stackedChart>
             <div class="chart-item">
-              <app-chart *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [chartType]="'pregnancyChart'"
+              <app-chart *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [conceptId]="selectedConcept.conceptId"
                          [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
               [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue">
               </app-chart>

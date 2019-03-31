@@ -21,6 +21,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() pointWidth = 15;   // Optional width of bar or point or box plot
   @Input() backgroundColor = 'transparent'; // Optional background color
   @Input() chartTitle: string;
+  @Input() conceptId: string;
   @Input() chartType: string;
   @Input() sources = false;
   @Input() genderId: string; // Hack until measurement design of graphs gender overlay
@@ -42,8 +43,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.surveyAnalysis.surveyQuestionResults.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
-        }
-      }
+    }
+  }
   // renderChart after 1ms to fill container
   ngAfterViewInit() {
     setTimeout(() => {
@@ -51,7 +52,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.chartOptions = this.hcChartOptions();
       }
     }, 1);
-   }
+  }
 
   public isGenderIdentityAnalysis() {
     return this.analysis ?
@@ -68,18 +69,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     return {
       chart: options.chart,
-      lang: {
-        noData: {
-          style: {
-            fontWeight: 'bold',
-            fontSize: '15px',
-            color: '#303030'
-          }
-        }
-      },
-      credits: {
-        enabled: false
-      },
+      lang: this.dbc.lang,
+      credits: this.dbc.credits,
       title: '',
       subtitle: {},
       tooltip: {
@@ -109,11 +100,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           },
           pointWidth: options.pointWidth ? options.pointWidth : null,
           minPointLength: 3,
+          stacking: this.isPregnancyOrWheelChair() ? 'normal' : null,
           events: {
-            click: event => {
-              // Todo handle click and log events in analytics
-              // console.log('plot options clicked ', event.point);
-            }
           },
         },
         pie: {
@@ -136,12 +124,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         column: {
           shadow: false,
           borderColor: null,
-          colorByPoint: true,
+          colorByPoint: this.isPregnancyOrWheelChair() ? false : true,
           groupPadding: 0,
           pointPadding: 0,
           dataLabels: {
             enabled: false,
           },
+          stacking: this.isPregnancyOrWheelChair() ? 'normal' : null,
           events: {},
         },
         bar: {
@@ -202,7 +191,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       legend: {
         enabled: false
       },
-      series: [options.series],
+      series: options.series,
     };
   }
 
@@ -247,12 +236,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.analysis.analysisName, this.analysis.analysisName);
     }
     if (this.surveyAnalysis &&
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
       return this.makeRaceEthnicityChartOptions(
-      this.surveyAnalysis.surveyQuestionResults.filter(
-        r => r.stratum4 === this.selectedResult.stratum4),
-      this.selectedResult.stratum4,
-      this.surveyAnalysis.analysisName);
+        this.surveyAnalysis.surveyQuestionResults.filter(
+          r => r.stratum4 === this.selectedResult.stratum4),
+        this.selectedResult.stratum4,
+        this.surveyAnalysis.analysisName);
     }
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
@@ -264,7 +253,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
-      'stratum2');
+        'stratum2');
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
@@ -276,8 +265,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
-      if (this.chartType && this.chartType === 'pregnancyChart') {
-        return this.makePregnancyChartOptions();
+      if (this.isPregnancyOrWheelChair()) {
+        return this.makeStackedChartOptions();
       }
       return this.makeMeasurementChartOptions();
     }
@@ -333,7 +322,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     return {
       chart: { type: 'column' },
       title: { text: null },
-      series: series,
+      series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
@@ -376,7 +365,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
         style: {
-        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
         },
         tooltip: {
           headerFormat: '<span>{point.key} <br/>',
@@ -384,7 +373,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         },
       },
       title: { text: null, style: this.dbc.CHART_TITLE_STYLE },
-      series: series,
+      series: [series],
       categories: cats,
       pointPadding: 0.25,
       minPointLength: 3,
@@ -449,11 +438,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: chartType,
         backgroundColor: 'transparent',
         style: {
-        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
         },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
-      series: series,
+      series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
@@ -503,11 +492,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: 'bar',
         backgroundColor: 'transparent',
         style: {
-        fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
         },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
-      series: series,
+      series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
@@ -520,7 +509,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string) {
-
+    
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -562,7 +551,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         style: this.dbc.CHART_TITLE_STYLE
       },
       color: this.dbc.COLUMN_COLOR,
-      series: series,
+      series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
@@ -640,7 +629,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     return {
       chart: { type: 'bar', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
-      series: series,
+      series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: unit,
@@ -650,53 +639,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
     };
   }
-
-  public makePregnancyChartOptions() {
-    const data = [];
-    const cats = [];
-
-    const results = this.analysis.results.concat([]);
-    const seperateResults = {};
-
-    for (const a of results) {
-      if (a.stratum4 in seperateResults) {
-        seperateResults[a.stratum4] += a.countValue;
-      } else {
-        seperateResults[a.stratum4] = a.countValue;
-      }
-    }
-    for (const k in seperateResults) {
-      if (seperateResults[k]) {
-        data.push({name: k, y: seperateResults[k], thisCtrl: this});
-        data.push({name: 'No', y: this.participantCount - seperateResults[k], thisCtrl: this});
-      }
-    }
-    for (const d of data) {
-      cats.push(d.name);
-    }
-    const series = {
-      name: 'pregnancy', colorByPoint: true, data: data, colors: [this.dbc.COLUMN_COLOR],
-    };
-    return {
-      chart: {
-        type: 'column',
-        backgroundColor: 'transparent',
-        style: {
-          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
-        },
-      },
-      title: { text: 'pregnancy chart', style: this.dbc.CHART_TITLE_STYLE },
-      series: series,
-      categories: cats,
-      pointWidth: this.pointWidth,
-      xAxisTitle: null,
-      tooltip: {
-        headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name}</span>',
-      }
-    };
-  }
-
+  
   public getChartTitle(domainType: string) {
     if (domainType === DomainType.EHR) {
       return 'Age at First Occurrence in EHR.';
@@ -705,5 +648,39 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     } else if (domainType === DomainType.PHYSICAL_MEASUREMENTS) {
       return 'Age When Physical Measurement Was Taken';
     }
+  }
+
+  public makeStackedChartOptions() {
+    const series = [];
+    const cats = [];
+    for (const a of this.analysis.results) {
+      series.push({name: a.analysisStratumName, data: [a.countValue]});
+      if (cats.indexOf(a.stratum4) === -1) {
+        cats.push(a.stratum4);
+      }
+    }
+    return {
+      chart: { type: 'column', backgroundColor: this.backgroundColor },
+      title: { text: this.chartTitle },
+      series: series,
+      categories: cats,
+      xAxis: {
+        categories: cats,
+      },
+      pointWidth: this.pointWidth,
+      xAxisTitle: '',
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+        },
+      },
+    };
+  }
+
+  public isPregnancyOrWheelChair() {
+    if (['903111', '903120'].indexOf(this.conceptId) > -1) {
+      return true;
+    }
+    return false;
   }
 }

@@ -41,8 +41,8 @@ import { DbNoResultsComponent } from './components/db-no-results/db-no-results.c
 import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
-import {DbConfigService} from './utils/db-config.service';
-import {TooltipService} from './utils/tooltip.service';
+import { DbConfigService } from './utils/db-config.service';
+import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { EmergencyComponent } from './views/emergency/emergency.component';
