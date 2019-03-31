@@ -500,6 +500,21 @@ group by c.domain_id) c
 where d.domain_id = c.domain_id
 "
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
+set d.all_concept_count = c.all_concept_count, d.standard_concept_count = c.standard_concept_count from
+(select c.domain_id as domain_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
+SUM(CASE WHEN c.standard_concept IN ('S', 'C') THEN 1 ELSE 0 END) as standard_concept_count from
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c
+join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d2
+on d2.domain_id = c.domain_id
+and (c.count_value > 0 or c.source_count_value > 0)
+where c.domain_id='Measurement' and c.concept_id not in (3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148,
+903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553)
+group by c.domain_id) c
+where d.domain_id = c.domain_id
+"
+
 # Set participant counts for each domain
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d

@@ -18,6 +18,7 @@ public class DomainInfo {
   public static final Function<DomainInfo, org.pmiops.workbench.model.DomainInfo> TO_CLIENT_DOMAIN_INFO =
       (domain) -> new org.pmiops.workbench.model.DomainInfo()
           .domain(domain.getDomainEnum())
+          .domain_name(domain.getDomainId())
           .name(domain.getName())
           .description(domain.getDescription())
           .allConceptCount(domain.getAllConceptCount())
