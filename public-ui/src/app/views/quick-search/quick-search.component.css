@@ -28,6 +28,23 @@ flex-basis: 100%;
   width: 120px;
   margin-left: 1rem;
 }
+#db-search-bar {
+  flex-grow: 1;
+  background: #DAE6ED;
+  padding: 9px;
+  border-radius: 5px;
+  width: 100%;
+}
+@media only screen and (min-width: 768px) {
+  #db-search-bar {
+    width: 36vw;
+  }
+}
+#db-search-bar input {
+  min-width: calc((100%/12)*10);
+  padding: 18px;
+  font-size: 18px;
+}
 .search {
     display: flex;
     flex-wrap: wrap;
