@@ -2,31 +2,41 @@
   <div class="db-header">
     <div>
       <h1 id='db-title' class="primary-display ">Data Browser</h1>
-      <p id="db-desc" class="body-default">The Data Browser provides interactive views of the publicly available
-        <em>All of Us</em> Research Program participant data. Currently, participant provided
-         information, including surveys
-       and physical measurements taken at the time of participant enrollment
-       (“program physical measurements”), as well as electronic health record (EHR) data are
-        available. The <em>All of Us</em> Research Program data resource will grow to include
-         more data types over time.</p>
+      <p id="db-desc" class="body-default">
+         The Data Browser provides interactive views of the publicly available <em>All of Us</em> Research Program participant data. Currently, participant provided information, including surveys and physical measurements taken at the time of participant enrollment (“program physical measurements”), as well as electronic health record (EHR) data are available. The <em>All of Us</em> Research Program data resource will grow to include more data types over time.
+<br /><br />
+         There may be a delay of several months between the time a participant consents and the time his/her record is included in the <em>All of Us</em> data that is visible in the Data Browser. The delay is a result of the time it takes for participant data to be collected, transferred to the Data and Research Center and curated. As a result, the overall participant counts within the Data Browser are lower than the overall enrollment numbers for the program.
+<br /><br />
+         In order to protect participant privacy, the data is limited to aggregate counts and summary demographic information for medical concepts, survey responses and physical measurements.
+       </p>
     </div>
   </div>
-  <div class="search">
-    <div class="search-title">
-      <span class="secondary-display">{{title}}</span>
-      <clr-tooltip>
-        <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
-        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-          <div class="tooltip-label">{{subTitle}}
-          </div>
-        </clr-tooltip-content>
-      </clr-tooltip>
-    </div>
-    <div id="db-search-bar">
-      <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
-    </div>
-  </div>
+  <div class="search-icon-container">
+    <div class="search">
+      <div class="search-title">
+        <span class="secondary-display">{{title}}</span>
+        <clr-tooltip>
+          <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-label">{{subTitle}}
+            </div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+      </div>
+      <div id="db-search-bar">
+        <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+        <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
+      </div>
+    </div><!-- .search -->
+    <div class="iconlinks">
+      <div class="icons"><a href="#" alt="FAQs"><img src="/assets/icons/icons_faqs.png" /><span>FAQs</span></a>
+      </div>
+      <div class="icons"><a href="#" alt="Introductory Videos"><img src="/assets/icons/icons_introductoryvideo.png" /><span>Introductory Video</span></a>
+      </div>
+      <div class="icons"><a href="#" alt="User Guide"><img src="/assets/icons/icons_userguide.png" /><span>User Guide</span></a>
+      </div>
+    </div><!-- .iconlinks -->
+  </div><!-- .search-icon-container -->
   <!-- todo: better loading icon -->
   <div class="row" *ngIf="loading">
     <div class="col-xs-12 flex-xs-middle" style="text-align: center">
