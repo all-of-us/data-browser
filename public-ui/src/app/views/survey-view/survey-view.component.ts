@@ -38,6 +38,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   /* Show answers toggle */
   showAnswer = {};
   prevSearchText = '';
+  multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;

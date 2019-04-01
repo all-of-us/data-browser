@@ -103,6 +103,8 @@ export class TooltipService {
    The vocabulary code listed here is a standard vocabulary code for the medical
    nformation. Standard codes are ways of representing data that is recorded many
    different ways in original patient records but essentially means the same thing.`;
+  surveyParticipantCountHelpText = `Participants could select more than one answer.
+  Total Counts may be greater than 100%.`;
   constructor() { }
 
 }
