@@ -48,6 +48,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     SURVEY_DATATYPE = 'surveys';
     PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
     pmConceptGroups: ConceptGroup[];
+    physicalMeasurementsFound = true;
 
 
     private subscriptions: ISubscription[] = [];
@@ -162,6 +163,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public searchDomains(query: string) {
+    this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query) > 0 ? true : false ;
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
