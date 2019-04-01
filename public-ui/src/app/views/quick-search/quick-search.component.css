@@ -16,16 +16,19 @@ strong {
     display: flex;
     flex-flow: row;
     align-items: center;
-justify-content: flex-end;
+justify-content: center;
 flex-basis: 100%;
 }
 @media only screen and (min-width: 768px) {
 .iconlinks {
-  justify-content: center;
+  justify-content: flex-end;
+  margin-right: 1rem;
+  align-items: flex-end;
+  margin-bottom: .5rem;
 }
 }
 .icons img {
-  width: 120px;
+  width: 100px;
   margin-left: 1rem;
 }
 #db-search-bar {
