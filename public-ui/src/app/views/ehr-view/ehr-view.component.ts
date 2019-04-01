@@ -116,12 +116,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
         this.graphButtons = ['Values', 'Biological Sex',
           'Gender Identity', 'Race / Ethnicity', 'Age', 'Sources'];
-      }
-      else {
+      } else {
         this.graphButtons = ['Biological Sex', 'Gender Identity',
           'Race / Ethnicity', 'Age', 'Sources'];
       }
-      this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results => this.searchCallback(results));
+      this.initSearchSubscription = this.searchDomain(this.prevSearchText)
+      .subscribe(results => this.searchCallback(results));
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(300)
@@ -135,13 +135,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             this.toggleTopConcepts();
           }
         }));
-      this.subscriptions.push(this.searchText.valueChanges.subscribe((query) => localStorage.setItem('searchText', query)));
+      this.subscriptions.push(this.searchText.valueChanges
+        .subscribe((query) => localStorage.setItem('searchText', query)));
     }
   }
 
   private setDomain() {
     const obj = localStorage.getItem('ehrDomain');
-    const searchText = localStorage.getItem('searchText')
+    const searchText = localStorage.getItem('searchText');
     if (obj) {
       this.ehrDomain = JSON.parse(obj);
       this.subTitle = 'Keyword: ' + this.searchText;
