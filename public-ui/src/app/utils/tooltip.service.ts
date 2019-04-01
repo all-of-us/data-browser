@@ -15,8 +15,13 @@ export class TooltipService {
     'ages at which the participants took the indicated survey.';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
-  raceEthnicityChartHelpText = `Race / ethnicity are categories that describe groups to which
-   individuals identify with or belong in the eyes of the community.`;
+  raceEthnicityChartHelpText = `“Race” refers to physical differences that groups and cultures
+  consider socially significant, while “ethnicity” refers to shared culture, such as language,
+  ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
+  as separate questions, recent data from the Census Bureau determined that combining the
+  question leads to better understanding of the question as well as improving the accuracy of
+  resulting data on race and ethnicity. Participants are able to select more than one
+  race/ethnicity which can lead to the bar charts totaling more than 100%.`;
   sourcesChartHelpText = 'Individual health records often contain medical ' +
     'information that means the same thing ' +
     'but may be recorded in many different ways. \n' +
