@@ -261,7 +261,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
   public toolTipPos(g) {
-    if (g === 'Biological Sex') {
+    if (g === 'Biological Sex' || g === 'Values') {
       return 'bottom-right';
     }
     return 'bottom-left';
