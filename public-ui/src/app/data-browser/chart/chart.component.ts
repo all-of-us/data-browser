@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges , Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import * as highcharts from 'highcharts';
 
 import { Analysis } from '../../../publicGenerated/model/analysis';
@@ -106,7 +106,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         pie: {
           borderColor: null,
           slicedOffset: 4,
-          size:  '100%',
+          size: '100%',
           dataLabels: {
             enabled: true,
             style: this.isGenderIdentityAnalysis()
@@ -283,14 +283,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       cats.push(a.stratum4);
     }
     data = data.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
+      if (a.name > b.name) {
+        return 1;
       }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -333,14 +333,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const cats = [];
     // Sort by count value
     this.concepts = this.concepts.sort((a, b) => {
-        if (a.countValue < b.countValue) {
-          return 1;
-        }
-        if (a.countValue > b.countValue) {
-          return -1;
-        }
-        return 0;
+      if (a.countValue < b.countValue) {
+        return 1;
       }
+      if (a.countValue > b.countValue) {
+        return -1;
+      }
+      return 0;
+    }
     );
     for (const a of this.concepts) {
       data.push({
@@ -381,7 +381,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public makeGenderChartOptions(results: any, analysisName: string,
-                                seriesName: string, chartType: string) {
+    seriesName: string, chartType: string) {
     let data = [];
     let cats = [];
     // LOOP CREATES DYNAMIC CHART VARS
@@ -410,14 +410,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       cats.push(a.analysisStratumName);
     }
     data = data.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
+      if (a.name > b.name) {
+        return 1;
       }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -464,14 +464,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       cats.push(a.analysisStratumName);
     }
     data = data.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
+      if (a.name > b.name) {
+        return 1;
       }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    }
     );
     cats = cats.sort((a, b) => {
       if (a > b) {
@@ -506,7 +506,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public makeAgeChartOptions(results: any, analysisName: string,
-                             seriesName: string, ageDecileStratum: string) {
+    seriesName: string, ageDecileStratum: string) {
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -515,16 +515,16 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       seriesName = 'Age at First Occurrence in Participant Record';
     }
     results = results.sort((a, b) => {
-        const anum = Number(a[ageDecileStratum]);
-        const bnum = Number(b[ageDecileStratum]);
-        if (anum > bnum) {
-          return 1;
-        }
-        if (anum < bnum) {
-          return -1;
-        }
-        return 0;
+      const anum = Number(a[ageDecileStratum]);
+      const bnum = Number(b[ageDecileStratum]);
+      if (anum > bnum) {
+        return 1;
       }
+      if (anum < bnum) {
+        return -1;
+      }
+      return 0;
+    }
     );
     const data = [];
     const cats = [];
@@ -605,6 +605,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       // thisCtrl.resultClicked.emit(event.point.result);
     };
     // Unit for measurements is in stratum5
+    if (this.analysis.unitName === 'cm') {
+      this.analysis.unitName = 'centimeter';
+    }
     const unit = this.analysis.unitName ? this.analysis.unitName : '';
     const series: any = {
       name: this.analysis.analysisName,
@@ -620,7 +623,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series.pointPadding = 0;
       series.borderWidth = 0;
       series.groupPadding = 0;
-      series.pointWidth = 18 ;
+      series.pointWidth = 18;
       series.shadow = false;
     }
     return {
