@@ -137,13 +137,20 @@ export class DbConfigService {
         if (label <= 20) {
           return '&#8804; 20';
         }
-      return label;
+        return label;
       },
       useHTML: true,
     },
-  lineWidth: 1,
-  lineColor: this.AXIS_LINE_COLOR,
-  gridLineColor: 'transparent'
+    lineWidth: 1,
+    lineColor: this.AXIS_LINE_COLOR,
+    gridLineColor: 'transparent'
+  };
+
+  routeToDomainMap = {
+    conditions: { name: 'condition', domain: 'conditions' },
+    drugexposures: { name: 'drug exposures', domain: 'drug' },
+    measurements: { name: 'measurements', domain: 'measurement' },
+    procedures: { name: 'procedures', domain: 'procedure' },
   };
 
   constructor(private api: DataBrowserService) {

@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import { environment } from '../../../environments/environment';
+import { DbConfigService } from '../../utils/db-config.service';
 
 export interface Breadcrumb {
   label: string;
@@ -23,7 +24,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   allOfUs = environment.researchAllOfUsUrl;
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router) {}
+    private router: Router,
+    private dbc: DbConfigService) {}
 
   /**
    * Generate a breadcrumb using the default label and url. Uses the route's
