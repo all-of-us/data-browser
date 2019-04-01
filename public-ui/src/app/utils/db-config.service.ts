@@ -105,6 +105,44 @@ export class DbConfigService {
     { conceptId: 1585710, conceptName: 'Overall Health' },
     { conceptId: 1586134, conceptName: 'The Basics' }
   ];
+  // chart options
+  lang = {
+    noData: {
+      style: {
+        fontWeight: 'bold',
+        fontSize: '15px',
+        color: '#303030'
+      }
+    }
+  };
+
+  credits = {
+    enabled: false
+  };
+
+  yAxis = {
+    title: {
+      text: null
+    },
+    min: 20,
+    labels: {
+      style: {
+        fontSize: '12px',
+      },
+      formatter: function () {
+        const label = this.axis.defaultLabelFormatter.call(this);
+        // Change <= 20 count to display '<= 20'
+        if (label <= 20) {
+          return '&#8804; 20';
+        }
+      return label;
+      },
+      useHTML: true,
+    },
+  lineWidth: 1,
+  lineColor: this.AXIS_LINE_COLOR,
+  gridLineColor: 'transparent'
+  };
 
   constructor(private api: DataBrowserService) {
     // Load up common simple data needed on pages

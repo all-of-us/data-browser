@@ -781,6 +781,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             unitSeperateAnalysis.add(aa);
                         }
                     }
+                    addGenderStratum(aa,3);
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                 }else if(analysisId == MEASUREMENT_AGE_ANALYSIS_ID){
@@ -891,6 +892,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum1()));
                 } else if (stratum == 2) {
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
+                } else if (stratum == 3) {
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
                 }
             }
         }
