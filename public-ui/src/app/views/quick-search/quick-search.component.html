@@ -22,6 +22,10 @@
         </clr-tooltip-content>
       </clr-tooltip>
     </div>
+    <span class="result-body-item" *ngIf="creationTime">
+      Data based on Curated Data Repository (CDR) dated
+      {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}} with {{numParticipants | number}} total participants.
+    </span>
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
       <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>

@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
+import {
+  CdrVersion, DataBrowserService, DomainInfosAndSurveyModulesResponse
+} from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -11,6 +13,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
 import { TooltipService } from '../../utils/tooltip.service';
+import {Domain} from "../../../publicGenerated/model/domain";
 
 
 
@@ -48,7 +51,9 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     SURVEY_DATATYPE = 'surveys';
     PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
     pmConceptGroups: ConceptGroup[];
-
+    numParticipants: any;
+    creationTime: any;
+    cdrName: any;
 
     private subscriptions: ISubscription[] = [];
 
@@ -108,6 +113,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             result => this.totalParticipants = result.countValue)
       );
 
+      this.api.getCdrVersionUsed().subscribe(
+        (result: CdrVersion) => {
+          this.numParticipants = result.numParticipants;
+          this.creationTime = new Date(result.creationTime);
+          this.cdrName = result.name;
+        });
       // Do initial search if we have search text
       if (this.prevSearchText) {
         this.subscriptions.push(
