@@ -100,7 +100,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           },
           pointWidth: options.pointWidth ? options.pointWidth : null,
           minPointLength: 3,
-          stacking: this.isPregnancyOrWheelChair() ? 'normal' : null,
           events: {
           },
         },
@@ -124,13 +123,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         column: {
           shadow: false,
           borderColor: null,
-          colorByPoint: this.isPregnancyOrWheelChair() ? false : true,
+          colorByPoint: true,
           groupPadding: 0,
           pointPadding: 0,
           dataLabels: {
             enabled: false,
           },
-          stacking: this.isPregnancyOrWheelChair() ? 'normal' : null,
           events: {},
         },
         bar: {
@@ -266,7 +264,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       if (this.isPregnancyOrWheelChair()) {
-        return this.makeStackedChartOptions();
+        return this.makeStackedChartOptions(this.analysis.analysisName);
       }
       return this.makeMeasurementChartOptions();
     }
@@ -649,30 +647,32 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  public makeStackedChartOptions() {
-    const series = [];
+  public makeStackedChartOptions(seriesName: string) {
+    const data = [];
     const cats = [];
+    const color = this.dbc.COLUMN_COLOR;
     for (const a of this.analysis.results) {
-      series.push({name: a.analysisStratumName, data: [a.countValue]});
-      if (cats.indexOf(a.stratum4) === -1) {
-        cats.push(a.stratum4);
-      }
+      data.push({
+        name: a.stratum4,
+        y: a.countValue, color: color,
+      });
+      cats.push(a.analysisStratumName);
     }
+    const series = {
+      name: seriesName,
+      colorByPoint: true,
+      data: data,
+    };
     return {
       chart: { type: 'column', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
-      series: series,
+      series: [series],
       categories: cats,
       xAxis: {
         categories: cats,
       },
       pointWidth: this.pointWidth,
       xAxisTitle: '',
-      plotOptions: {
-        series: {
-          stacking: 'normal',
-        },
-      },
     };
   }
 
