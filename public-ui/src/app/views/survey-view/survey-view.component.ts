@@ -68,21 +68,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
     if (surveyObj) {
-      surveyObj['route'] = surveyObj['name'].toLowerCase().replace(' ', '-');
       this.surveyConceptId = surveyObj.conceptId;
-    }
-    // if no surveyObj or if the survey in the obj doesn't match the route
-    if (!surveyObj) {
-      this.getThisSurvey();
-    }
-    this.setSurvey();
-    this.searchText.setValue(this.prevSearchText);
-    if (this.surveyConceptId) {
       this.getSurveyResults();
     } else {
       this.getThisSurvey();
     }
-
+    this.setSurvey();
+    this.searchText.setValue(this.prevSearchText);
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges
@@ -175,8 +167,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.surveyConceptId = survey.conceptId;
       this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
       this.getSurveyResults();
-    } else {
-      this.getThisSurvey();
     }
   }
   // get the current survey  by its route
