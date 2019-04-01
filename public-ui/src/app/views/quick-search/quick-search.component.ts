@@ -13,9 +13,6 @@ import { ISubscription } from 'rxjs/Subscription';
 import {ConceptGroup} from '../../utils/conceptGroup';
 import {DbConfigService} from '../../utils/db-config.service';
 import { TooltipService } from '../../utils/tooltip.service';
-import {Domain} from "../../../publicGenerated/model/domain";
-
-
 
 @Component({
     selector: 'app-quick-search',
