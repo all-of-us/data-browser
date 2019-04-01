@@ -79,7 +79,7 @@ cri_anc_table_check=\\bcriteria_ancestor\\b
 
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
-create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions)
+create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum)
 
 for t in "${create_tables[@]}"
 do
@@ -500,6 +500,21 @@ group by c.domain_id) c
 where d.domain_id = c.domain_id
 "
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
+set d.all_concept_count = c.all_concept_count, d.standard_concept_count = c.standard_concept_count from
+(select c.domain_id as domain_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
+SUM(CASE WHEN c.standard_concept IN ('S', 'C') THEN 1 ELSE 0 END) as standard_concept_count from
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c
+join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d2
+on d2.domain_id = c.domain_id
+and (c.count_value > 0 or c.source_count_value > 0)
+where c.domain_id='Measurement' and c.concept_id not in (3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148,
+903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553)
+group by c.domain_id) c
+where d.domain_id = c.domain_id
+"
+
 # Set participant counts for each domain
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
@@ -620,3 +635,36 @@ set c.count_value=sub_cr.est_count
 from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='MEAS' and cr.synonyms like '%rank1%') as sub_cr
 where sub_cr.concept_id = c.concept_id and c.domain_id = 'Measurement' and c.vocabulary_id = 'SNOMED' "
+
+####################
+# criteria stratum #
+####################
+# Fill criteria stratum to get rolled up counts
+if ./generate-cdr/generate_criteria_stratum.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+then
+    echo "Criteria stratum generated"
+else
+    echo "FAILED To generate criteria stratum"
+    exit 1
+fi
+
+echo "Inserting rows in achilles results for the concepts that are not in there and that have rolled up counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
+with in_concepts as
+(select distinct stratum_1 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1 where ar1.analysis_id in (3101,3102,3107,3108) and ar1.stratum_3 in ('Condition','Procedure','Measurement')
+)
+select 0,cr.analysis_id,cast(cr.concept_id as string),cast(cr.stratum_1 as string),cr.domain,count_value,0 from
+\`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
+where cast(concept_id as string) not in (select * from in_concepts)
+"
+
+echo "Updating counts in achilles results with the ones generated in criteria stratum"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
+set c.count_value=sub_cr.cnt
+from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
+group by analysis_id, concept_id, stratum, domain) as sub_cr
+where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"

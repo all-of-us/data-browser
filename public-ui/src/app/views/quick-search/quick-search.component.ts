@@ -51,6 +51,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     numParticipants: any;
     creationTime: any;
     cdrName: any;
+    physicalMeasurementsFound = true;
 
     private subscriptions: ISubscription[] = [];
 
@@ -170,6 +171,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public searchDomains(query: string) {
+    this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query) > 0 ? true : false ;
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
