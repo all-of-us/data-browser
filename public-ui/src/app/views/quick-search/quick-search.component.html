@@ -122,10 +122,10 @@
       </div>
     </div>
     <h5 class="result-heading secondary-display"
-      *ngIf="showDataType(PROGRAM_PHYSICAL_MEASUREMENTS) && matchPhysicalMeasurements(searchText.value)>0"> Program
+      *ngIf="!loading"> Program
       Phyiscal Measurements: </h5>
     <div class="result-boxes"
-      *ngIf="showDataType(PROGRAM_PHYSICAL_MEASUREMENTS) && matchPhysicalMeasurements(searchText.value)>0">
+      *ngIf="physicalMeasurementsFound && !loading">
       <div id="pm-box" class="result-box">
         <p class="result-box-title">
           Physical Measurements
@@ -140,13 +140,13 @@
           <span>Participants have the option to provide a standard set of physical measurements as part
             of the enrollment process (“program physical measurements”).</span>
         </p>
-        <span *ngIf="searchText.value">matching physical measurements</span>
+        <span *ngIf="searchText.value">matching physical measurements.</span>
         <div class="result-bottom">
           <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
         </div>
       </div>
-
     </div>
+    <h6 *ngIf="!physicalMeasurementsFound && !loading">  No Phyiscal Measurement Results.</h6>
   </section>
 
 </div>
