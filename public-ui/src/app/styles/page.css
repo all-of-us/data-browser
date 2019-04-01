@@ -112,11 +112,10 @@
   background: #DAE6ED;
   padding: 9px;
   border-radius: 5px;
-  width: 100%;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1168px) {
   #db-search-bar {
-    width: 36vw;
+    min-width:20rem;
   }
 }
 #db-search-bar input {
