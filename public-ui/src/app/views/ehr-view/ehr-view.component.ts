@@ -101,7 +101,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     this.setDomain();
 
-    if (this.ehrDomain) {
+    this.domainSetup(this.ehrDomain);
+    this.showTopConcepts = true;
+  }
+
+  private domainSetup(domain) {
+    if (domain) {
       // Set the graphs we want to show for this domain
       // Run search initially to filter to domain,
       // a empty search returns top ordered by count_value desc
@@ -115,9 +120,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.graphButtons = ['Biological Sex', 'Gender Identity',
           'Race / Ethnicity', 'Age', 'Sources'];
       }
-      this.initSearchSubscription = this.searchDomain(this.prevSearchText).subscribe(results =>
-        this.searchCallback(results));
-
+      this.initSearchSubscription = this.searchDomain(this.prevSearchText)
+      .subscribe(results => this.searchCallback(results));
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(300)
@@ -131,18 +135,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             this.toggleTopConcepts();
           }
         }));
-      this.subscriptions.push(this.searchText.valueChanges.subscribe(
-        (query) => localStorage.setItem('searchText', query)));
+      this.subscriptions.push(this.searchText.valueChanges
+        .subscribe((query) => localStorage.setItem('searchText', query)));
     }
-    this.showTopConcepts = true;
   }
 
   private setDomain() {
     const obj = localStorage.getItem('ehrDomain');
+    const searchText = localStorage.getItem('searchText');
     if (obj) {
       this.ehrDomain = JSON.parse(obj);
       this.subTitle = 'Keyword: ' + this.searchText;
       this.title = this.ehrDomain.name;
+      this.domainSetup(this.ehrDomain);
     }
     if (!obj) {
       this.getThisDomain();

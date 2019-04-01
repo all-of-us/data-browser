@@ -68,14 +68,26 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
     if (surveyObj) {
-      surveyObj['route'] = surveyObj['name'].toLowerCase().replace(' ', '-');
-    }
-    // if no surveyObj or if the survey in the obj doesn't match the route
-    if (!surveyObj || surveyObj.route !== this.domainId) {
-      this.getThisSurvey(surveyObj);
+      this.surveyConceptId = surveyObj.conceptId;
+      this.getSurveyResults();
+    } else {
+      this.getThisSurvey();
     }
     this.setSurvey();
     this.searchText.setValue(this.prevSearchText);
+    // Filter when text value changes
+    this.subscriptions.push(
+      this.searchText.valueChanges
+        .debounceTime(400)
+        .distinctUntilChanged()
+        .subscribe((query) => { this.filterResults(); }));
+
+    // Set to loading as long as they are typing
+    this.subscriptions.push(this.searchText.valueChanges.subscribe(
+      (query) => localStorage.setItem('searchText', query)));
+  }
+
+  private getSurveyResults() {
     this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
       next: x => {
         this.surveyResult = x;
@@ -107,7 +119,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             }
           }
           const result = q.countAnalysis.surveyQuestionResults[0];
-          if (didNotAnswerCount < 0) { didNotAnswerCount = 0; }
+          if (didNotAnswerCount < 0) {
+            didNotAnswerCount = 0;
+          }
           const notAnswerPercent = this.countPercentage(didNotAnswerCount);
           const didNotAnswerResult = {
             analysisId: result.analysisId,
@@ -121,17 +135,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           };
           q.countAnalysis.surveyQuestionResults.push(didNotAnswerResult);
         }
-
         this.questions = this.surveyResult.items;
         // Sort count value desc
         for (const q of this.questions) {
           q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
-            if (a1.countValue > a2.countValue) { return -1; }
-            if (a1.countValue < a2.countValue) { return 1; }
+            if (a1.countValue > a2.countValue) {
+              return -1;
+            }
+            if (a1.countValue < a2.countValue) {
+              return 1;
+            }
             return 0;
           });
         }
-
         this.filterResults();
         this.loading = false;
       },
@@ -141,38 +157,26 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       },
       complete: () => { this.resultsComplete = true; }
     }));
-
-    // Filter when text value changes
-    this.subscriptions.push(
-      this.searchText.valueChanges
-        .debounceTime(400)
-        .distinctUntilChanged()
-        .subscribe((query) => { this.filterResults(); }));
-
-    // Set to loading as long as they are typing
-    this.subscriptions.push(this.searchText.valueChanges.subscribe(
-      (query) => localStorage.setItem('searchText', query)));
   }
 
   public setSurvey() {
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
     if (obj) {
-
       const survey = JSON.parse(obj);
       this.surveyConceptId = survey.conceptId;
       this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
+      this.getSurveyResults();
     }
   }
   // get the current survey  by its route
-  public getThisSurvey(surveyObj: object) {
+  public getThisSurvey() {
     this.subscriptions.push(
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.surveyModules.forEach(survey => {
-            surveyObj = survey as object;
-            const surveyRoute = survey.name.replace(' ', '-');
-            if (surveyRoute === this.domainId.toUpperCase()) {
+            const surveyRoute = survey.name.replace(' ', '-').toLowerCase();
+            if (surveyRoute === this.domainId) {
               localStorage.setItem('surveyModule', JSON.stringify(survey));
               this.setSurvey();
             }
