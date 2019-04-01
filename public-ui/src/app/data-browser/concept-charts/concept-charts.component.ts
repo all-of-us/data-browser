@@ -81,7 +81,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     if (!this.analyses) {
       return;
     }
-    if (this.showGraph === GraphType.Values) {
+    if (this.showGraph === GraphType.Values && this.analyses.genderAnalysis) {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
     this.unitNames = [];

@@ -97,6 +97,8 @@ export class DbConfigService {
     'font-weight': '300', 'textOutline': 'none'
   };
 
+  MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
+
   pmGroups: ConceptGroup[] = [];
   genderAnalysis: Analysis;
 
