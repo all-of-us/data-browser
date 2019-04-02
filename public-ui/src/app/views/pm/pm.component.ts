@@ -35,6 +35,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   selectedGroup: ConceptGroup;
   selectedConcept: ConceptWithAnalysis;
   domainType = DomainType.PHYSICAL_MEASUREMENTS;
+  searchText: string = null;
 
   // we save the total gender counts
   femaleCount = 0;
@@ -51,10 +52,12 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.searchText = localStorage.getItem('searchText'));
     this.loadingStack.push(true);
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
-      this.selectedGroup = this.conceptGroups[0];
+      this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
+        conceptgroup.groupName.toLowerCase().includes(this.searchText.toLowerCase()))[0];
       // wait 1ms before triggering the graphs.
       setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
       this.loadingStack.pop();
