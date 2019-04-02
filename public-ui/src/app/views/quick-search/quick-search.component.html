@@ -152,14 +152,16 @@
               of the enrollment process (“program physical measurements”).
           </span>
           <span class="result-body-item">
-            <span *ngIf="searchText.value; else noSearchPm;">{{physicalMeasurementsFound}} matching physical measurements.</span>
+            <ng-container *ngIf="searchText.value; else noSearchPm;">
+              <span class="result-stat">{{physicalMeasurementsFound}}</span> matching physical measurements.
+            </ng-container>
             <ng-template #noSearchPm>
-              <span>{{physicalMeasurementsFound}} physical measurements.</span>
+              <span class="result-stat">{{physicalMeasurementsFound}}</span> physical measurements.
             </ng-template>
-          </span>
           <div class="result-bottom">
             <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
           </div>
+          </span>
         </div>
       </div>
     </div>
