@@ -88,13 +88,13 @@ union all
 select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, p.gender_concept_id as gender,
 cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_concept_id > 0 and m.unit_concept_id = 0 and m.unit_source_value is not null
 union all
 select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,p.gender_concept_id as gender,
 cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
 m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and m.unit_concept_id = 0 and m.unit_source_value is not null
@@ -156,12 +156,12 @@ and unit_concept_id != 0
 union all
 select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_concept_id > 0 and m.unit_concept_id = 0 and m.unit_source_value is not null
 union all
 select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_source_concept_id > 0
 and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and m.unit_concept_id = 0 and m.unit_source_value is not null
@@ -240,14 +240,14 @@ union all
 select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, CAST(floor((extract(year from m.measurement_date) - p.year_of_birth)/10) AS STRING) as age_decile,
 cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_concept_id > 0 and floor((extract(year from m.measurement_date) - p.year_of_birth)/10) >=3
 and m.unit_concept_id = 0 and m.unit_source_value is not null
 union all
 select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, CAST(floor((extract(year from m.measurement_date) - p.year_of_birth)/10) AS STRING) as age_decile,
 cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_source_concept_id > 0
 and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and floor((extract(year from m.measurement_date) - p.year_of_birth)/10) >=3
@@ -256,14 +256,14 @@ union all
 select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, '2' as age_decile,
 cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_concept_id > 0 and (extract(year from m.measurement_date) - p.year_of_birth) >= 18 and (extract(year from m.measurement_date) - p.year_of_birth) < 30
 and m.unit_concept_id = 0 and m.unit_source_value is not null
 union all
 select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,'2' as age_decile,
 cast(value_as_number as float64) as count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
 where m.value_as_number is not null and m.measurement_source_concept_id > 0
 and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and (extract(year from m.measurement_date) - p.year_of_birth) >= 18 and (extract(year from m.measurement_date) - p.year_of_birth) < 30
@@ -611,7 +611,7 @@ count(distinct p1.person_id) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
 join measurement_quartile_data on m1.measurement_concept_id=concept
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m1.unit_source_value)=lower(um.unit_source_value) or m1.unit_concept_id=um.unit_concept_id
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender and (cast(m1.unit_concept_id as string)=unit or cast(um.unit_concept_id as string)=unit)
 group by stratum_1, stratum_2, stratum_3, stratum_4
@@ -655,7 +655,7 @@ round((case when m1.value_as_number < p10_value then p10_value
 COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
 join measurement_quartile_data on m1.measurement_source_concept_id=concept
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m1.unit_source_value)=lower(um.unit_source_value) or m1.unit_concept_id=um.unit_concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
 where m1.measurement_source_concept_id > 0
 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
@@ -750,7 +750,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  join measurement_quartile_data ar on
  m1.measurement_concept_id=ar.concept
  join  \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
- join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
+ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m1.unit_source_value)=lower(um.unit_source_value) or m1.unit_concept_id=um.unit_concept_id
  where m1.measurement_concept_id > 0
  and m1.value_as_number is not null
  and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age_decile
@@ -800,7 +800,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  join measurement_quartile_data ar on
  m1.measurement_source_concept_id=ar.concept
  join  \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
- join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
+ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m1.unit_source_value)=lower(um.unit_source_value) or m1.unit_concept_id=um.unit_concept_id
  where m1.measurement_source_concept_id > 0 and
  m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
  and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age_decile
@@ -863,7 +863,7 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m1 join \`${BQ_PROJECT}.${BQ_DA
 join measurement_quartile_data ar on
 m1.measurement_concept_id=ar.concept
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m1.unit_source_value)=lower(um.unit_source_value) or m1.unit_concept_id=um.unit_concept_id
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null
 and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age_decile
@@ -912,7 +912,7 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m1 join \`${BQ_PROJECT}.${BQ_DA
 join measurement_quartile_data ar on
 m1.measurement_source_concept_id=ar.concept
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on m1.unit_source_value=um.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m1.unit_source_value)=lower(um.unit_source_value) or m1.unit_concept_id=um.unit_concept_id
 where m1.measurement_source_concept_id > 0 and
 m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and floor((extract(year from m1.measurement_date) - p1.year_of_birth)/10)=ar.age_decile
@@ -1012,9 +1012,9 @@ select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as co
 (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
 on co2.person_id=p1.person_id
 where co2.measurement_source_concept_id=m.measurement_concept_id
-and co2.unit_concept_id=0 and co2.unit_source_value=unit_source_value and p1.gender_concept_id=p.gender_concept_id) as source_count_value
+and co2.unit_concept_id=0 and lower(co2.unit_source_value)=lower(unit_source_value) and p1.gender_concept_id=p.gender_concept_id) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on um.unit_source_value=m.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(um.unit_source_value)=lower(m.unit_source_value)
 where m.measurement_concept_id!=0 and m.unit_source_value is not null and m.unit_concept_id = 0
 group by m.measurement_concept_id,um.unit_concept_id,p.gender_concept_id
 union all
@@ -1040,7 +1040,7 @@ select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string
 cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
 count(distinct p.person_id) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on um.unit_source_value=m.unit_source_value
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(um.unit_source_value)=lower(m.unit_source_value)
 where m.measurement_source_concept_id > 0 and
 m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 and m.unit_concept_id = 0 and m.unit_source_value is not null
