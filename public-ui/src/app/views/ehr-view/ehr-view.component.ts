@@ -65,12 +65,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     public dbc: DbConfigService,
   ) {
     this.route.params.subscribe(params => {
-      if (this.dbc.routeToDomainMap[params.id]) {
-        this.domainId = this.dbc.routeToDomainMap[params.id].domain;
-      }
+      this.domainId = params.id;
     });
   }
   ngOnInit() {
+    const test = this.dbc.getDomainFromRoute(this.domainId);
+    console.log(test);
     this.loadPage();
   }
 

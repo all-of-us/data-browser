@@ -192,9 +192,18 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewEhrDomain(r) {
+
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    this.router.navigateByUrl('ehr/' + r.domain.toLowerCase().replace(' ', '-' ));
+    for (const item in this.dbc.routeToDomainMap) {
+      if (this.dbc.routeToDomainMap.hasOwnProperty(item)) {
+       if (this.dbc.routeToDomainMap[item].domain === r.domain.toLowerCase()) {
+        this.router.navigateByUrl('ehr/' +
+        this.dbc.routeToDomainMap[item].route.toLowerCase().replace(' ', '-' ));
+       }
+      }
+    }
+    
   }
 
   public matchPhysicalMeasurements(searchString: string) {

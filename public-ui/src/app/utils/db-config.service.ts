@@ -146,12 +146,12 @@ export class DbConfigService {
     gridLineColor: 'transparent'
   };
 
-  routeToDomainMap = {
-    conditions: { name: 'condition', domain: 'conditions' },
-    drugexposures: { name: 'drug exposures', domain: 'drug' },
-    measurements: { name: 'measurements', domain: 'measurement' },
-    procedures: { name: 'procedures', domain: 'procedure' },
-  };
+  routeToDomainMap = [
+    { route: 'conditions', domain: 'condition' },
+    { route: 'drug-exposures', domain: 'drug' },
+    { route: 'measurements', domain: 'measurement' },
+    { route: 'procedures', domain: 'procedure' },
+  ];
 
   constructor(private api: DataBrowserService) {
     // Load up common simple data needed on pages
@@ -160,6 +160,16 @@ export class DbConfigService {
       this.genderAnalysis = result;
     });
 
+  }
+  public getDomainFromRoute(routeParam: string) {
+    let test: string;
+    this.routeToDomainMap.forEach(item => {
+      if (routeParam === item.route) {
+        console.log(routeParam,item.route);
+        test = item.domain;
+      }
+      return test;
+    });
   }
 
   getPmGroups(): Observable<ConceptGroup[]> {
