@@ -56,8 +56,12 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.loadingStack.push(true);
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
-      this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
-        conceptgroup.groupName.toLowerCase().includes(this.searchText.toLowerCase()))[0];
+      if (this.searchText) {
+        this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
+          conceptgroup.groupName.toLowerCase().includes(this.searchText.toLowerCase()))[0];
+      } else {
+          this.selectedGroup = this.conceptGroups[0];
+      }
       // wait 1ms before triggering the graphs.
       setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
       this.loadingStack.pop();
