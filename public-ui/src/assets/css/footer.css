@@ -165,70 +165,6 @@
     clear: both
 }
 
-.logo {
-    display: inline-block;
-    width: 85%
-}
-
-.site-logo {
-    max-width: 264px
-}
-
-.nih-logo {
-    display: none
-}
-
-#nav-icon {
-    width: 60px;
-    height: 45px;
-    position: relative;
-    z-index: 2;
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0) scale(.4);
-    cursor: pointer
-}
-
-#nav-icon span {
-    display: block;
-    position: absolute;
-    height: 9px;
-    width: 100%;
-    background: #262262;
-    border-radius: 9px;
-    opacity: 1;
-    left: 0;
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0)
-}
-
-#nav-icon span:nth-child(1) {
-    top: 0;
-    -webkit-transform-origin: left center;
-    -moz-transform-origin: left center;
-    -o-transform-origin: left center;
-    transform-origin: left center
-}
-
-#nav-icon span:nth-child(2) {
-    top: 18px;
-    -webkit-transform-origin: left center;
-    -moz-transform-origin: left center;
-    -o-transform-origin: left center;
-    transform-origin: left center
-}
-
-#nav-icon span:nth-child(3) {
-    top: 36px;
-    -webkit-transform-origin: left center;
-    -moz-transform-origin: left center;
-    -o-transform-origin: left center;
-    transform-origin: left center
-}
-
 .social-navigation ul.social-links-menu {
     margin: .5rem 0 0;
     padding: 0
@@ -268,26 +204,7 @@
 }
 
 @media only screen and (min-width:768px) {
-    .logo {
-        width: 50%
-    }
-    .site-logo {
-        display: inline-block;
-        width: 50%;
-        padding-right: .5rem
-    }
-    .nih-logo {
-        display: inline-block;
-        width: 40%;
-        border-left: solid 2px;
-        padding-left: 1rem
-    }
-    .nih-logo img, .site-logo img {
-        vertical-align: bottom
-    }
-    .nih-logo img {
-        max-height: 32px
-    }
+    
 }
 
 @media only screen and (min-width:1168px) {
