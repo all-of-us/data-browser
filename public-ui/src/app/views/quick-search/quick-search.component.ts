@@ -161,7 +161,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.surveyResults = results.surveyModules;
     this.loading = false;
   }
-  
+
   public searchDomains(query: string) {
     this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query);
     this.prevSearchText = query;
@@ -196,7 +196,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', this.prevSearchText);
     this.router.navigateByUrl('ehr/' + r.domain.toLowerCase().replace(' ', '-' ));
   }
-  
+
   public matchPhysicalMeasurements(searchString: string) {
       if (!this.pmConceptGroups) {
         return 0;

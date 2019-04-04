@@ -52,7 +52,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.searchText = localStorage.getItem('searchText'));
+    this.searchText = localStorage.getItem('searchText');
     this.loadingStack.push(true);
     this.dbc.getPmGroups().subscribe(results => {
       this.conceptGroups = results;
