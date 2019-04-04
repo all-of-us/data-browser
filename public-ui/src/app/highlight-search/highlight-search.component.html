@@ -1,5 +1,5 @@
-<ng-container *ngIf="isSource"><b> Source </b></ng-container>
-<ng-container *ngIf="isStandard"><b> Standard </b></ng-container>
+<ng-container *ngIf="isSource"><b> Exact source match: <br> </b></ng-container>
+<ng-container *ngIf="isStandard"><b> Standard concept match: <br> </b></ng-container>
 <ng-container *ngIf="indNum">{{indNum}}. </ng-container>
 <ng-container *ngIf="searchTerm; else noSearchTerm">
     <span [class.highlight]="matchString.test(word.toLowerCase())" *ngFor="let word of words">{{word}}</span>
