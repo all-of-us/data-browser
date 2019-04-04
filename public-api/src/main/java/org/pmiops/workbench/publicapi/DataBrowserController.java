@@ -1,5 +1,6 @@
 package org.pmiops.workbench.publicapi;
 
+import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Collections;
 import java.util.TreeSet;
+import java.io.IOException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.inject.Provider;
@@ -87,6 +89,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private Provider<CdrVersion> defaultCdrVersionProvider;
     @Autowired
     private ConceptService conceptService;
+    @Autowired
+    private GoogleAnalyticsServiceImpl googleAnalyticsService;
 
     public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
     public static final long COUNT_ANALYSIS_ID = 3000;
@@ -526,6 +530,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
         }else{
+            try{
+                googleAnalyticsService.trackEventToGoogleAnalytics(null, "engagement", "search", "searchTerm", searchConceptsRequest.getQuery());
+            } catch (IOException ioException) {
+
+            }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }
