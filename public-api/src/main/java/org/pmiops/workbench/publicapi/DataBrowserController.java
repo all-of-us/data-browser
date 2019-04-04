@@ -98,10 +98,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long MEASUREMENT_DIST_ANALYSIS_ID = 1815;
 
     public static final long MEASUREMENT_GENDER_DIST_ANALYSIS_ID = 1815;
-    public static final long MEASUREMENT_AGE_DIST_ANALYSIS_ID = 1816;
 
     public static final long MEASUREMENT_GENDER_ANALYSIS_ID = 1900;
-    public static final long MEASUREMENT_AGE_ANALYSIS_ID = 1901;
     public static final long MEASUREMENT_GENDER_UNIT_ANALYSIS_ID = 1910;
 
     public static final long MALE = 8507;
@@ -687,11 +685,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(COUNT_ANALYSIS_ID);
         analysisIds.add(ETHNICITY_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_GENDER_ANALYSIS_ID);
-        analysisIds.add(MEASUREMENT_AGE_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_DIST_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_GENDER_UNIT_ANALYSIS_ID);
 
-        List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,MEASUREMENT_AGE_DIST_ANALYSIS_ID) ),conceptIds);
+        List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
 
         Multimap<Long, AchillesResultDist> distResultsByAnalysisId = null;
         if(overallDistResults != null){
@@ -735,7 +732,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
 
                 //aa.setUnitName(unitName);
-                if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && analysisId != MEASUREMENT_AGE_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
+                if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
                     aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                 }
                 if (analysisId == COUNT_ANALYSIS_ID) {
@@ -784,30 +781,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     addGenderStratum(aa,3);
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
-                }else if(analysisId == MEASUREMENT_AGE_ANALYSIS_ID){
-                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
-                    List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
-                    HashMap<String,List<AchillesResultDist>> distResults = analysisDistResults.get(MEASUREMENT_AGE_DIST_ANALYSIS_ID);
-                    if (distResults != null) {
-                        List<AchillesResultDist> conceptDistResults = distResults.get(conceptId);
-                        if(conceptDistResults != null) {
-                            Multimap<String,AchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults,AchillesResultDist::getStratum2);
-                            for(String unit: results.keySet()){
-                                AchillesAnalysis unitAgeAnalysis = new AchillesAnalysis(aa);
-                                unitAgeAnalysis.setResults(results.get(unit));
-                                unitAgeAnalysis.setUnitName(unit);
-                                if(!unit.equalsIgnoreCase("no unit")) {
-                                    processMeasurementAgeDecileMissingBins(MEASUREMENT_AGE_DIST_ANALYSIS_ID,unitAgeAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
-                                }
-                                addAgeStratum(unitAgeAnalysis,conceptId);
-                                unitSeperateAnalysis.add(unitAgeAnalysis);
-                            }
-                        }else {
-                            unitSeperateAnalysis.add(aa);
-                        }
-                    }
-                    isMeasurement = true;
-                    conceptAnalysis.setMeasurementValueAgeAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                 }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
                     Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
                     List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
@@ -1197,34 +1170,5 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        for(float remaining: binRanges2){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "2", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
-        for(float remaining: binRanges3){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "3", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
-
-        for(float remaining: binRanges4){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "4", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
-        for(float remaining: binRanges5){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "5", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
-        for(float remaining: binRanges6){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "6", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
-        for(float remaining: binRanges7){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "7", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
-        for(float remaining: binRanges8){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "8", null, String.valueOf(remaining), null, 0L, 0L);
-            aa.addResult(achillesResult);
-        }
     }
 }

@@ -628,14 +628,6 @@ from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criter
 where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='PCS' and cr.synonyms like '%rank1%') as sub_cr
 where sub_cr.concept_id = c.concept_id and c.domain_id = 'Procedure' and c.vocabulary_id = 'SNOMED' "
 
-echo "Updating rolled up counts of snomed measurements in concept"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set c.count_value=sub_cr.est_count
-from (select concept_id, est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
-where cr.concept_id = concept_id and cr.type='SNOMED' and cr.subtype='MEAS' and cr.synonyms like '%rank1%') as sub_cr
-where sub_cr.concept_id = c.concept_id and c.domain_id = 'Measurement' and c.vocabulary_id = 'SNOMED' "
-
 ####################
 # criteria stratum #
 ####################
@@ -654,7 +646,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 with in_concepts as
-(select distinct stratum_1 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1 where ar1.analysis_id in (3101,3102,3107,3108) and ar1.stratum_3 in ('Condition','Procedure','Measurement')
+(select distinct stratum_1 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1 where ar1.analysis_id in (3101,3102,3107,3108) and ar1.stratum_3 in ('Condition','Procedure')
 )
 select 0,cr.analysis_id,cast(cr.concept_id as string),cast(cr.stratum_1 as string),cr.domain,count_value,0 from
 \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
