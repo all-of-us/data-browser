@@ -63,7 +63,6 @@ paths:
         - dataBrowser
       description: Gets the cdr versions
       operationId: "getCdrVersionUsed"
-      security: []
       parameters: []
       responses:
         200:
