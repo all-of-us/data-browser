@@ -531,9 +531,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }else{
             try{
-                googleAnalyticsService.trackEventToGoogleAnalytics(null, "engagement", "search", "searchTerm", searchConceptsRequest.getQuery());
+                System.out.println(googleAnalyticsService.trackEventToGoogleAnalytics(null, "engagement", "search", "searchTerm", searchConceptsRequest.getQuery()));
             } catch (IOException ioException) {
-
+                System.out.println("catching exception");
             }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
