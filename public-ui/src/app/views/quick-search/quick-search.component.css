@@ -86,6 +86,10 @@ strong {
     padding-left: 0;
 }
 
+.cdr-info {
+    font-size: 14px;
+}
+
 .result-boxes {
     display: flex;
     flex-wrap: wrap;

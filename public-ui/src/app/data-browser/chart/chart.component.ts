@@ -587,10 +587,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         bVal = Number(b.name);
       }
       if (aVal > bVal) {
-        return 1;
+        return -1;
       }
       if (aVal < bVal) {
-        return -1;
+        return 1;
       }
       return 0;
     });
