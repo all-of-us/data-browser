@@ -15,7 +15,7 @@
     <sql dbms="mysql">
       ALTER TABLE criteria
       ADD FULLTEXT INDEX name_code_index
-      (concept_name,concept_code);
+      (name,code);
     </sql>
   </changeSet>
 
