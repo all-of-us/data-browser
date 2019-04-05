@@ -12,6 +12,8 @@ export class DbHeaderComponent implements OnInit {
   openAbout = false;
   openDataTools = false;
   openSearch = false;
+  openDAboutResearch = false;
+  openDData = false;
   allOfUsUrl: string;
 
   constructor() {}
