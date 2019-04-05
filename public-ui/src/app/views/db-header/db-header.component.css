@@ -63,6 +63,22 @@ a:hover, a:link, a:visited a:active, a {
     color: rgba(38, 34, 98, 1);
     vertical-align: middle;
     margin-right: 1rem;
+    margin-top: -.4rem;
+}
+
+#menu-mobile li ul.sub-menu li.menu-item-has-children::before {
+    content: '\25BC';
+position: relative;
+cursor: pointer;
+float: right;
+margin-right: 3rem;
+margin-top: -.4rem;
+}
+
+li.flip::after,
+li.flip::before {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 #menu-mobile li ul.sub-menu {
@@ -313,11 +329,12 @@ margin-bottom: .5rem;
   text-transform: uppercase;
   color: #262262;
 }
-
+.site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu > li > ul.sub-menu {
+  display: none;
+}
 .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu {
   list-style: none;
   padding-left: 1rem;
-  display: none;
 }
 .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
   display:block;
@@ -331,7 +348,7 @@ margin-bottom: .5rem;
   content: '\25bc';
   font-size: 1.1rem;
   float: right;
-  margin-top: -.2rem;
+  margin-top: -.4rem;
 }
 @media only screen and (min-width: 1168px) {
   .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu {

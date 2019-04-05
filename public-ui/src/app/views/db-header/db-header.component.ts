@@ -20,6 +20,11 @@ export class DbHeaderComponent implements OnInit {
     this.allOfUsUrl = environment.researchAllOfUsUrl;
   }
 
+  public searchHub(form) {
+    console.log(form,"this is the form");
+    window.location.href = `https://www.staging.researchallofus.org/?s=${form.value.s}`;
+  }
+
   public toggleTopMenu() {
     this.openTopMenu = !this.openTopMenu;
   }

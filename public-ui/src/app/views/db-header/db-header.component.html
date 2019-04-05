@@ -34,9 +34,9 @@
                 <li class="main-menu-item menu-item-has-children">
                   <a href="{{allOfUsUrl}}/about/">About</a>
                     <ul class="sub-menu">
-                      <li class="menu-item menu-item-has-children">
+                      <li [ngClass]="openDAboutResearch?'flip':''" (click)="openDAboutResearch = !openDAboutResearch" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
-                          <ul class="sub-menu">
+                          <ul [hidden]="!openDAboutResearch" class="sub-menu">
                             <li class="menu-item">
                               <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
                             </li>
@@ -54,11 +54,11 @@
                   <a href="{{allOfUsUrl}}/data/">Data</a>
                     <ul class="sub-menu">
                       <li class="menu-item">
-                        <a href="https://databrowser.researchallofus.org/">Data Browser</a>
+                        <a [routerLink]="['']">Data Browser</a>
                       </li>
-                      <li class="menu-item menu-item-has-children">
+                      <li [ngClass]="openDData?'flip':''" (click)="openDData = !openDData" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
-                          <ul class="sub-menu">
+                          <ul [hidden]="!openDData" class="sub-menu">
                             <li class="menu-item">
                               <a href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
                             </li>
@@ -79,17 +79,17 @@
                   <a><img src="/assets/icons/icon_search.png" /></a>
                     <ul class="sub-menu">
                       <li class="menu-item">
-                        <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/"><input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
+                        <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform" action="https://www.staging.researchallofus.org/"><input ngModel type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
                       </li>
                     </ul>
                 </li>
               </ul>
               <!-- ** Mobile Menu **-->
               <ul *ngIf="openTopMenu"  id="menu-mobile">
-                  <li (click)="openAbout = !openAbout" class="main-menu-item menu-item-has-children">
+                  <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout" class="main-menu-item menu-item-has-children">
                     <a href="'{{allOfUsUrl}}/about/">About</a>
                       <ul [hidden]="!openAbout" class="sub-menu">
-                        <li (click)="openAboutResearch = !openAboutResearch" class="menu-item menu-item-has-children">
+                        <li [ngClass]="openAboutResearch?'flip':''" (click)="$event.stopPropagation();openAboutResearch = !openAboutResearch" class="menu-item menu-item-has-children">
                           <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
                             <ul [hidden]="!openAboutResearch" class="sub-menu">
                               <li class="menu-item">
@@ -105,13 +105,13 @@
                         </li>
                       </ul>
                   </li>
-                  <li (click)="openDataTools = !openDataTools" class="main-menu-item menu-item-has-children">
+                  <li [ngClass]="openDataTools?'flip':''" (click)="openDataTools = !openDataTools" class="main-menu-item menu-item-has-children">
                     <a href="{{allOfUsUrl}}/data/">Data</a>
                       <ul [hidden]="!openDataTools" class="sub-menu">
                         <li class="menu-item">
-                          <a href="https://databrowser.researchallofus.org/">Data Browser</a>
+                          <a [routerLink]="['']">Data Browser</a>
                         </li>
-                        <li (click)="openDataToolsMethods = !openDataToolsMethods" class="menu-item menu-item-has-children">
+                        <li [ngClass]="openDataToolsMethods?'flip':''" (click)="$event.stopPropagation();openDataToolsMethods = !openDataToolsMethods" class="menu-item menu-item-has-children">
                           <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                             <ul [hidden]="!openDataToolsMethods" class="sub-menu">
                               <li class="menu-item">
