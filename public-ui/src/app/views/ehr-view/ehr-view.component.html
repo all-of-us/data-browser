@@ -240,7 +240,14 @@
                         <aside class="source-tree">
                           <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
                           <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
-                          <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})</p>
+                          <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
+                            <clr-tooltip>
+                              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                              <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                                <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
+                              </clr-tooltip-content>
+                            </clr-tooltip>
+                          </p>
                           <app-db-spinner [loading]="treeLoading" [dots]="true"></app-db-spinner>
                           <ng-container *ngIf="!treeLoading">
                             <div *ngFor="let node of treeData" class="tree-top">

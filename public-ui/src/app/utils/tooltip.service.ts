@@ -110,6 +110,12 @@ export class TooltipService {
    different ways in original patient records but essentially means the same thing.`;
   surveyParticipantCountHelpText = `Participants could select more than one answer.
   Total Counts may be greater than 100%.`;
+  rolledUpConceptsHelpText = `Each concept in the hierarchy including the top level concept
+   returns a count of unique participants with at least one mention of the medical concept in
+    their records. As a result, within a hierarchy, participants may be counted for more than one
+    medical concept in the hierarchy, but never more than once for the same concept. As a result,
+     the sum total of counts for the descendants in the tree may be more than the count
+     returned for the top level concept.`;
   constructor() { }
 
 }
