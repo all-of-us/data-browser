@@ -1,6 +1,8 @@
 package org.pmiops.workbench.publicapi;
 
 import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
+import org.springframework.scheduling.annotation.Async;
+import java.util.concurrent.Future;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import org.springframework.scheduling.annotation.AsyncResult;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
@@ -497,6 +500,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
         }
 
+        searchTrackEvent("Search", "DomainSearch", query);
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
@@ -530,11 +534,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
         }else{
-            try{
-                System.out.println(googleAnalyticsService.trackEventToGoogleAnalytics(null, "engagement", "search", "searchTerm", searchConceptsRequest.getQuery()));
-            } catch (IOException ioException) {
-                System.out.println("catching exception");
-            }
+            searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery());
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }
@@ -1264,5 +1264,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             AchillesResult achillesResult = new AchillesResult(MEASUREMENT_AGE_ANALYSIS_ID, conceptId, "8", null, String.valueOf(remaining), null, 0L, 0L);
             aa.addResult(achillesResult);
         }
+    }
+
+    @Async("asyncExecutor")
+    public Future<String> searchTrackEvent(String category, String event, String label) {
+        int response = -1;
+        try{
+            response = googleAnalyticsService.trackEventToGoogleAnalytics(null, category, event, label);
+        } catch (IOException ioException) {
+            response = -1;
+        }
+        return new AsyncResult<String>(String.valueOf(response));
     }
 }

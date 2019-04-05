@@ -59,7 +59,7 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
      */
     @Override
     public int trackEventToGoogleAnalytics(@Nullable String cid, String category, String action,
-                                           String label, String value) throws IOException {
+                                           String label) throws IOException {
         String defaultCid = Optional.ofNullable(cid).orElse("555");
         Preconditions.checkNotNull(category);
         Preconditions.checkNotNull(action);
@@ -71,7 +71,6 @@ public class GoogleAnalyticsServiceImpl implements GoogleAnalyticsService {
         map.put("ec", encode(category));
         map.put("ea", encode(action));
         map.put("el", encode(label));
-        map.put("ev", encode(value));
 
         HTTPRequest request = new HTTPRequest(getGoogleAnalyticsEndpoint(), HTTPMethod.POST);
         request.addHeader(this.header);
