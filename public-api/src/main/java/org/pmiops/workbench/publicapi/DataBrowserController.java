@@ -1270,7 +1270,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Async("asyncExecutor")
     public Future<String> searchTrackEvent(String category, String event, String label) {
         int response = -1;
-        try{
+        try {
             response = googleAnalyticsService.trackEventToGoogleAnalytics(null, category, event, label);
         } catch (IOException ioException) {
             response = -1;
