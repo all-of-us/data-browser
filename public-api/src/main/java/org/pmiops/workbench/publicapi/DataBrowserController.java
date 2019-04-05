@@ -3,7 +3,6 @@ package org.pmiops.workbench.publicapi;
 import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
 import org.springframework.scheduling.annotation.Async;
 import java.util.logging.Logger;
-import java.util.concurrent.Future;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -63,7 +62,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import org.springframework.scheduling.annotation.AsyncResult;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
