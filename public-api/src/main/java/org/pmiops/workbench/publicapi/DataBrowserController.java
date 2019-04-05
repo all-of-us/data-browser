@@ -93,7 +93,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private ConceptService conceptService;
     @Autowired
-    private GoogleAnalyticsServiceImpl googleAnalyticsService;
+    private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
 
     public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
     public static final long COUNT_ANALYSIS_ID = 3000;
