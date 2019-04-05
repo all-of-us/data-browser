@@ -223,6 +223,7 @@ and stratum_4=stratum_5"
 
 # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
 # We do net yet generate the binned source counts of standard concepts
+# This query only generates counts of measurements that have unit_concept_id
 echo "Getting measurements binned gender value counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -326,6 +327,7 @@ group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
 # We do net yet generate the binned source counts of standard concepts
+# This query only generates counts of measurements that have unit_concept_id 0 and unit_source_value (being considered) by joining on the manual made unit_map table
 echo "Getting measurements binned gender value counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -535,6 +537,7 @@ group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 # 1900 Measurement string value counts (This query generates counts, source counts of the value and gender combination. It gets bin size from joining the achilles_results)
 # We do not yet generate the source counts of standard concepts
+# This query generates counts of measurements that do not have unit at all
 echo "Getting measurements unbinned gender value counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
