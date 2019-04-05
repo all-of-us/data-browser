@@ -2,6 +2,7 @@ package org.pmiops.workbench.publicapi;
 
 import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
 import org.springframework.scheduling.annotation.Async;
+import java.util.logging.Logger;
 import java.util.concurrent.Future;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -94,6 +95,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private ConceptService conceptService;
     @Autowired
     private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
+
+    private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
     public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
     public static final long COUNT_ANALYSIS_ID = 3000;
@@ -1268,13 +1271,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Async("asyncExecutor")
-    public Future<String> searchTrackEvent(String category, String event, String label) {
-        int response = -1;
+    public void searchTrackEvent(String category, String event, String label) {
         try {
-            response = googleAnalyticsService.trackEventToGoogleAnalytics(null, category, event, label);
+            googleAnalyticsServiceImpl.trackEventToGoogleAnalytics(null, category, event, label);
         } catch (IOException ioException) {
-            response = -1;
+            logger.severe(String.format("Unable to trigger track event for the search term %s", label));
         }
-        return new AsyncResult<String>(String.valueOf(response));
     }
 }
