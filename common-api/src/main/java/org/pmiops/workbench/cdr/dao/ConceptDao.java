@@ -73,8 +73,7 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
             "where c.type = 'DRUG' " +
             "and c.subtype in ('BRAND') " +
             "and c.is_selectable = 1 " +
-            "and (upper(c.name) like upper(concat('%',?1,'%')) " +
-            "or upper(c.code) like upper(concat('%',?1,'%'))) " +
+            "and match(c.name, c.code) against(?1 in boolean mode) > 0 " +
             "order by c.name asc) " +
             "and c1.concept_class_id = 'Ingredient') ", nativeQuery = true)
     List<Concept> findDrugIngredientsByBrand(String query);

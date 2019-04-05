@@ -1934,11 +1934,11 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with pm_concepts as
 (select measurement_concept_id as concept,co.person_id as person
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and c.concept_id not in (3036277,903118,903115,3025315,903135,903136,903126,903111,42528957)),
+where c.concept_id in (3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148, 903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553)),
 pm_source_concepts as
 (select measurement_source_concept_id as concept,co.person_id as person
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on co.measurement_source_concept_id=c.concept_id
-where c.vocabulary_id != 'PPI' and c.concept_id in (3036277,903133,903118,903115,3025315,903121,903135,903136,903126,903111,42528957,903120)
+where c.concept_id in (3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148, 903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553)
 and co.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)),
 concepts as
 (select * from pm_concepts union all select * from pm_source_concepts)
