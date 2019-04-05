@@ -497,7 +497,7 @@ img {
 }
 
 @media only screen and (min-width: 1168px) {
- .breadcrumbs {
+ .breadcrumbs, .site-branding {
   margin: 0 calc(10%);
   padding: 0 0.7rem;
 }
