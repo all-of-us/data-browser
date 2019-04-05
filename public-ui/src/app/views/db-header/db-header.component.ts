@@ -21,7 +21,6 @@ export class DbHeaderComponent implements OnInit {
   }
 
   public searchHub(form) {
-    console.log(form,"this is the form");
     window.location.href = `https://www.staging.researchallofus.org/?s=${form.value.s}`;
   }
 
