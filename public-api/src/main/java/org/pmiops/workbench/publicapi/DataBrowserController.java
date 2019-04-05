@@ -1,11 +1,8 @@
 package org.pmiops.workbench.publicapi;
 
 import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
-<<<<<<< HEAD
 import org.springframework.scheduling.annotation.Async;
 import java.util.concurrent.Future;
-=======
->>>>>>> 5b3ae45f0d5dcf6ee9959653fbc6c9e033c7b40a
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -537,15 +534,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
         }else{
-<<<<<<< HEAD
+            // This call triggers the event to post the data to google analytics endpoint
             searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery());
-=======
-            try{
-                System.out.println(googleAnalyticsService.trackEventToGoogleAnalytics(null, "engagement", "search", "searchTerm", searchConceptsRequest.getQuery()));
-            } catch (IOException ioException) {
-                System.out.println("catching exception");
-            }
->>>>>>> 5b3ae45f0d5dcf6ee9959653fbc6c9e033c7b40a
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }
