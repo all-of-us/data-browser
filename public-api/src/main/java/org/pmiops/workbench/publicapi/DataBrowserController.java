@@ -132,7 +132,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                  AchillesResultDao achillesResultDao,
                                  AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
                                  EntityManager entityManager, Provider<CdrVersion> defaultCdrVersionProvider,
-                                 CdrVersionDao cdrVersionDao) {
+                                 CdrVersionDao cdrVersionDao,
+                                 GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
@@ -144,6 +145,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.entityManager = entityManager;
         this.defaultCdrVersionProvider = defaultCdrVersionProvider;
         this.cdrVersionDao = cdrVersionDao;
+        this.googleAnalyticsServiceImpl = googleAnalyticsServiceImpl;
     }
 
     /**
