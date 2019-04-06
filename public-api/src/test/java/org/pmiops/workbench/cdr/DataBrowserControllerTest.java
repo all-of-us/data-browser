@@ -392,7 +392,6 @@ public class DataBrowserControllerTest {
     private AchillesResultDistDao achillesResultDistDao;
     @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
     private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
 
     private CdrVersion cdrVersion;
