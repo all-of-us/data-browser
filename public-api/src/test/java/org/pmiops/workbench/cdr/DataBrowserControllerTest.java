@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
-import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
@@ -392,8 +391,7 @@ public class DataBrowserControllerTest {
     private AchillesResultDistDao achillesResultDistDao;
     @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
-    private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
+
 
     private CdrVersion cdrVersion;
     private DataBrowserController dataBrowserController;
@@ -405,7 +403,7 @@ public class DataBrowserControllerTest {
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistDao, entityManager,
-            () -> cdrVersion, cdrVersionDao, googleAnalyticsServiceImpl);
+            () -> cdrVersion, cdrVersionDao);
     }
 
 

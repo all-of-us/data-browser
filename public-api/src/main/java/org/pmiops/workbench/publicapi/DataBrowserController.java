@@ -132,8 +132,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                  AchillesResultDao achillesResultDao,
                                  AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
                                  EntityManager entityManager, Provider<CdrVersion> defaultCdrVersionProvider,
-                                 CdrVersionDao cdrVersionDao,
-                                 GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl) {
+                                 CdrVersionDao cdrVersionDao) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
@@ -145,7 +144,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.entityManager = entityManager;
         this.defaultCdrVersionProvider = defaultCdrVersionProvider;
         this.cdrVersionDao = cdrVersionDao;
-        this.googleAnalyticsServiceImpl = googleAnalyticsServiceImpl;
     }
 
     /**
@@ -503,7 +501,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
         }
 
-        searchTrackEvent("Search", "DomainSearch", query);
+        if (googleAnalyticsServiceImpl != null) {
+            searchTrackEvent("Search", "DomainSearch", query);
+        }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
@@ -538,7 +538,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }else{
             // This call triggers the event to post the data to google analytics endpoint
-            searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery());
+            if (googleAnalyticsServiceImpl != null) {
+                searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery());
+            }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }
