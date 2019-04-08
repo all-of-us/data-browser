@@ -163,17 +163,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public showDataType(showType) {
     return !this.loading && (!this.dataType || this.dataType === showType);
   }
-  public setEhrUrl(r) {
-    for (const item in this.dbc.routeToDomainMap) {
-      if (this.dbc.routeToDomainMap.hasOwnProperty(item)) {
-        if (this.dbc.routeToDomainMap[item].domain === r.domain.toLowerCase()) {
-          const url = 'ehr/' +
-            this.dbc.routeToDomainMap[item].route.toLowerCase().replace(' ', '-');
-          return url;
-        }
-      }
-    }
-  }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
     this.domainResults = results.domainInfos;
@@ -213,15 +202,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
-    for (const item in this.dbc.routeToDomainMap) {
-      if (this.dbc.routeToDomainMap.hasOwnProperty(item)) {
-        if (this.dbc.routeToDomainMap[item].domain === r.domain.toLowerCase()) {
-          const url = 'ehr/' +
-            this.dbc.routeToDomainMap[item].route.toLowerCase().replace(' ', '-');
-          this.router.navigateByUrl(url);
-        }
-      }
-    }
+    const url = 'ehr/' +
+      this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
+  }
+
+  public setEhrUrl(r) {
+    const url = 'ehr/' +
+      this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
+    return url;
   }
 
   public matchPhysicalMeasurements(searchString: string) {

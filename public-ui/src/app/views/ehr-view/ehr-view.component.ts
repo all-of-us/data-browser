@@ -64,12 +64,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     private tooltipText: TooltipService,
     public dbc: DbConfigService,
   ) {
-    this.route.params.subscribe(params => {
-      this.domainId = params.id;
-    });
   }
   ngOnInit() {
-    this.getDomainFromRoute(this.domainId);
+    this.route.params.subscribe(params => {
+      this.domainId = this.dbc.routeToDomain[params.id];
+    });
     this.loadPage();
   }
 
@@ -85,14 +84,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getDomainFromRoute(routeParam: string) {
-    this.dbc.routeToDomainMap.forEach(item => {
-      if (routeParam === item.route) {
-        console.log(routeParam, item.route);
-        this.domainId = item.domain;
-      }
-    });
-  }
 
   public loadPage() {
     this.items = [];

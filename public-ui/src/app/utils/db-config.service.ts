@@ -146,12 +146,18 @@ export class DbConfigService {
     gridLineColor: 'transparent'
   };
 
-  routeToDomainMap = [
-    { route: 'conditions', domain: 'condition' },
-    { route: 'drug-exposures', domain: 'drug' },
-    { route: 'measurements', domain: 'measurement' },
-    { route: 'procedures', domain: 'procedure' },
-  ];
+  routeToDomain = {
+    'conditions': 'condition',
+    'drug-exposures': 'drug',
+    'measurements': 'measurement',
+    'procedures': 'procedure'
+  };
+  domainToRoute = {
+    'condition': 'conditions',
+    'drug': 'drug-exposures',
+    'measurement': 'measurements',
+    'procedure': 'procedures'
+  };
 
   constructor(private api: DataBrowserService) {
     // Load up common simple data needed on pages
