@@ -86,10 +86,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public getDomainFromRoute(routeParam: string) {
-    let test: string;
     this.dbc.routeToDomainMap.forEach(item => {
       if (routeParam === item.route) {
-        console.log(routeParam,item.route);
+        console.log(routeParam, item.route);
         this.domainId = item.domain;
       }
     });
