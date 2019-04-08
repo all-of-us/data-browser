@@ -5,12 +5,12 @@ import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
 } from 'ngx-responsive';
+import { environment } from 'environments/environment';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
-import { environment } from 'environments/environment';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../publicGenerated/model/domain';

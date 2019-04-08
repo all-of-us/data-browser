@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@a
 import { Router } from '@angular/router';
 import { DataBrowserService } from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
+import {environment} from '../../../environments/environment';
 import { DbConfigService } from '../../utils/db-config.service';
-import {environment} from "../../../environments/environment";
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
@@ -85,7 +85,8 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    this.subscriptions.push(this.api.getDomainSearchResults(query, environment.publicUiUrl + this.router.url).subscribe(results => {
+    this.subscriptions.push(this.api.getDomainSearchResults(query,
+      environment.publicUiUrl + this.router.url).subscribe(results => {
       this.results = results;
       this.loading = false;
     }));
