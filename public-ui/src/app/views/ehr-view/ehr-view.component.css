@@ -99,6 +99,7 @@ h5.secondary-display {
     font-weight: 400;
     position: relative;
     z-index: 100;
+    padding-left: 0.5%;
 }
 
 .row-selected {

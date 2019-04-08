@@ -61,7 +61,6 @@ paths:
     get:
       tags:
         - dataBrowser
-
       description: Gets the cdr versions
       operationId: "getCdrVersionUsed"
       parameters: []
@@ -69,7 +68,7 @@ paths:
         200:
           description: Default cdr version
           schema:
-            $ref: "#/definitions/CdrVersion"
+            "$ref": "#/definitions/CdrVersion"
 
   /v1/databrowser/survey-results:
     get:

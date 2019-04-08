@@ -48,10 +48,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     SURVEY_DATATYPE = 'surveys';
     PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
     pmConceptGroups: ConceptGroup[];
+    physicalMeasurementsFound: number;
     numParticipants: any;
     creationTime: any;
     cdrName: any;
-    physicalMeasurementsFound = true;
 
     private subscriptions: ISubscription[] = [];
 
@@ -71,6 +71,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       localStorage.removeItem('searchText');
       this.dbc.getPmGroups().subscribe(results => {
         this.pmConceptGroups = results;
+        this.physicalMeasurementsFound = this.matchPhysicalMeasurements(this.prevSearchText);
       });
         // Set title based on datatype
       if (this.dataType === this.EHR_DATATYPE) {
@@ -105,7 +106,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         this.prevSearchText = '';
       }
       this.searchText.setValue(this.prevSearchText);
-
       this.subscriptions.push(
         this.api.getParticipantCount().subscribe(
             result => this.totalParticipants = result.countValue)
@@ -171,7 +171,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query) > 0 ? true : false ;
+    this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query);
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
@@ -206,12 +206,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public matchPhysicalMeasurements(searchString: string) {
-    if (!this.pmConceptGroups) {
-      return 0;
-    } else if (!searchString) {
-      return this.pmConceptGroups.length;
-    }
-    return this.pmConceptGroups.filter(conceptgroup =>
-      conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
+      if (!this.pmConceptGroups) {
+        return 0;
+      } else if (!searchString) {
+        return this.pmConceptGroups.length;
+      }
+      return this.pmConceptGroups.filter(conceptgroup =>
+        conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
   }
 }

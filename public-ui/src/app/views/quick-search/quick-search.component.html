@@ -23,6 +23,10 @@
           </clr-tooltip-content>
         </clr-tooltip>
       </div>
+      <span class="result-body-item cdr-info" *ngIf="creationTime">
+      Data based on Curated Data Repository (CDR) dated
+      {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}} with {{numParticipants | number}} total participants.
+      </span>
       <div id="db-search-bar">
         <clr-icon shape="search" class="is-info search-icon"></clr-icon>
         <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
@@ -87,7 +91,7 @@
             <a [routerLink]="'ehr/'+r.domain.toLowerCase()" *ngIf="!searchText.value" class="result-bottom-link"
               (click)="viewEhrDomain(r)">
               View Top 100 </a>
-            <a [routerLink]="'ehr/'+r.domain.toLowerCase()" *ngIf="searchText.value" class="result-body-link"
+            <a [routerLink]="'ehr/'+r.domain.toLowerCase()" *ngIf="searchText.value" class="result-bottom-link"
               (click)="viewEhrDomain(r)"> View Results </a>
           </div>
         </div>
@@ -139,7 +143,7 @@
       *ngIf="!loading"> Program
       Phyiscal Measurements: </h5>
     <div class="result-boxes"
-      *ngIf="physicalMeasurementsFound && !loading">
+      *ngIf="physicalMeasurementsFound > 0 && !loading">
       <div id="pm-box" class="result-box">
         <p class="result-box-title">
           Physical Measurements
@@ -150,17 +154,26 @@
             </clr-tooltip-content>
           </clr-tooltip>
         </p>
-        <p class="result-body">
-          <span>Participants have the option to provide a standard set of physical measurements as part
-            of the enrollment process (“program physical measurements”).</span>
-        </p>
-        <span *ngIf="searchText.value">matching physical measurements.</span>
-        <div class="result-bottom">
-          <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+        <div class="result-body">
+          <span class="result-body-item">
+            Participants have the option to provide a standard set of physical measurements as part
+              of the enrollment process (“program physical measurements”).
+          </span>
+          <span class="result-body-item">
+            <ng-container *ngIf="searchText.value; else noSearchPm;">
+              <span class="result-stat">{{physicalMeasurementsFound}}</span> matching physical measurements.
+            </ng-container>
+            <ng-template #noSearchPm>
+              <span class="result-stat">{{physicalMeasurementsFound}}</span> physical measurements.
+            </ng-template>
+          <div class="result-bottom">
+            <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+          </div>
+          </span>
         </div>
       </div>
     </div>
-    <h6 *ngIf="!physicalMeasurementsFound && !loading">  No Phyiscal Measurement Results.</h6>
+    <h6 *ngIf="physicalMeasurementsFound > 0 && !loading">  No Phyiscal Measurement Results.</h6>
   </section>
 
 </div>

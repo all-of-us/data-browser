@@ -1,5 +1,5 @@
     <div id="masthead" class="site-header">
-
+      <div class="headwrap">
         <div class="site-branding-container">
             <div class="site-branding">
               <div class="logo">
@@ -7,6 +7,8 @@
                       src="/assets/db-images/allofus_research-hub_color.png"
                       class="custom-logo" alt="All of Us Research Hub" itemprop="logo" /></a>
                 </div>
+                <div class="divider">
+		            </div>
                 <div class="nih-logo">
                   <a href="https://allofus.nih.gov/" target="_blank">
                     <img alt="National Institute of Health All of Us Research Program" class="nih_header"
@@ -14,168 +16,126 @@
                   </a>
                 </div>
               </div><!-- .logo -->
-
-
-              <aside class="widget-area widget-header" role="complementary" aria-label="Header Learn More">
-                <div class="widget-column header-widget-1">
-                  <section id="text-2" class="widget widget_text">
-                    <div class="textwidget">
-                      <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
-                          rel="noopener">JoinAllofUs.org</a></p>
-                      <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank"
-                          rel="noopener">AllofUs.nih.gov</a></p>
-                    </div>
-                  </section>
-                </div>
-              </aside><!-- .widget-area -->
-
+              </div><!-- .site-branding -->
               <div class="mobile-nav">
                 <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
                   <span></span>
                   <span></span>
                   <span></span>
                 </div>
-              </div>
-            </div><!-- .site-branding -->
-          </div><!-- .layout-wrap -->
+              </div><!-- .mobile-nav -->
+        </div><!-- .site-branding-container -->
 
       <div class="site-nav-container">
         <div class="site-branding-nav">
           <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
             <div class="menu-primary-container">
               <ul class="main-menu" id="menu-primary">
-                <li id="menu-item-89" class="icon_about main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-89">
+                <li class="main-menu-item menu-item-has-children">
                   <a href="{{allOfUsUrl}}/about/">About</a>
-        <ul class="sub-menu">
-          <li id="menu-item-92" class="icon_program-overview skinny">
+                    <ul class="sub-menu">
+                      <li [ngClass]="openDAboutResearch?'flip':''" (click)="openDAboutResearch = !openDAboutResearch" class="menu-item menu-item-has-children">
+                        <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
+                          <ul [hidden]="!openDAboutResearch" class="sub-menu">
+                            <li class="menu-item">
+                              <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
+                            </li>
+                          </ul>
+                      </li>
+                      <li class="menu-item">
+                        <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
+                      </li>
+                      <li class="menu-item">
+                        <a href="{{allOfUsUrl}}/about/updates/">Updates</a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="main-menu-item menu-item-has-children">
+                  <a href="{{allOfUsUrl}}/data/">Data</a>
+                    <ul class="sub-menu">
+                      <li class="menu-item">
+                        <a [routerLink]="['']">Data Browser</a>
+                      </li>
+                      <li [ngClass]="openDData?'flip':''" (click)="openDData = !openDData" class="menu-item menu-item-has-children">
+                        <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
+                          <ul [hidden]="!openDData" class="sub-menu">
+                            <li class="menu-item">
+                              <a href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
+                            </li>
+                          </ul>
+                      </li>
+                      <li class="menu-item">
+                        <a href="{{allOfUsUrl}}/data/workbench/">Workbench</a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="main-menu-item">
+                  <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
+                </li>
+                <li class="icon_search main-menu-item menu-item-has-children">
+                  <a><img src="/assets/icons/icon_search.png" /></a>
+                    <ul class="sub-menu">
+                      <li class="menu-item">
+                        <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform" action="https://www.staging.researchallofus.org/"><input ngModel type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
+                      </li>
+                    </ul>
+                </li>
+              </ul>
+              <!-- ** Mobile Menu **-->
+              <ul *ngIf="openTopMenu"  id="menu-mobile">
+                  <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout" class="main-menu-item menu-item-has-children">
+                    <a href="'{{allOfUsUrl}}/about/">About</a>
+                      <ul [hidden]="!openAbout" class="sub-menu">
+                        <li [ngClass]="openAboutResearch?'flip':''" (click)="$event.stopPropagation();openAboutResearch = !openAboutResearch" class="menu-item menu-item-has-children">
+                          <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
+                            <ul [hidden]="!openAboutResearch" class="sub-menu">
+                              <li class="menu-item">
+                                <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
+                              </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item">
+                          <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
+                        </li>
+                        <li class="menu-item">
+                          <a href="{{allOfUsUrl}}/about/updates/">Updates</a>
+                        </li>
+                      </ul>
+                  </li>
+                  <li [ngClass]="openDataTools?'flip':''" (click)="openDataTools = !openDataTools" class="main-menu-item menu-item-has-children">
+                    <a href="{{allOfUsUrl}}/data/">Data</a>
+                      <ul [hidden]="!openDataTools" class="sub-menu">
+                        <li class="menu-item">
+                          <a [routerLink]="['']">Data Browser</a>
+                        </li>
+                        <li [ngClass]="openDataToolsMethods?'flip':''" (click)="$event.stopPropagation();openDataToolsMethods = !openDataToolsMethods" class="menu-item menu-item-has-children">
+                          <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
+                            <ul [hidden]="!openDataToolsMethods" class="sub-menu">
+                              <li class="menu-item">
+                                <a href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                              </li>
+                              <li class="menu-item">
+                                <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
+                              </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item">
+                          <a href="{{allOfUsUrl}}/data/workbench/">Workbench</a>
+                        </li>
+                      </ul>
+                  </li>
+                  <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
+                  <li class="main-menu-item-second">
+                    <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/"><input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
+                  </li>
+                </ul><!-- #mobile-menu -->
+            </div><!-- .menu-primary-container -->
+          </nav><!-- .main-navigation -->
+        </div><!-- .site-branding-nav -->
+      </div><!-- .site-nav-container -->
 
-          <a href="{{allOfUsUrl}}/about/program-overview/">
-            <img src="/assets/icons/icon_program-overview.png" alt="">Program Overview</a>
-        </li>
-          <li id="menu-item-90" class="icon_how-the-hub">
-
-          <a href="{{allOfUsUrl}}/about/how-the-research-hub-works/">
-            <img src="/assets/icons/icon_how-the-hub.png" alt="">About the All of Us Research Hub</a>
-        </li>
-          <li id="menu-item-93" class="icon_researchers-as-partners">
-
-          <a href="{{allOfUsUrl}}/about/researchers-as-partners/">
-            <img src="/assets/icons/icon_researchers-as-partners.png" alt="">Researchers as Partners</a>
-        </li>
-          <li id="menu-item-91" class="icon_privacy-security">
-
-          <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">
-            <img src="/assets/icons/icon_privacy-security.png" alt="">Privacy &#038; Security Protocols</a>
-        </li>
-        </ul>
-        </li>
-        <li id="menu-item-94" class="main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-94">
-          <a href="{{allOfUsUrl}}/data-research-tools/">Data &#038; Research Tools</a>
-        <ul class="sub-menu">
-          <li id="menu-item-97" class="icon_data-sources skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/data-sources/">
-              <img src="/assets/icons/icon_data-sources.png" alt="">Data Sources</a>
-          </li>
-          <li id="menu-item-98" class="icon_help skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/methods/">
-              <img src="/assets/icons/icon_methods.png" alt="">Methods<br class="mobile-hide" /><br class="mobile-hide" /></a>
-          </li>
-          <li id="menu-item-96" class="icon_data-snapshots skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/data-snapshots/">
-              <img src="/assets/icons/icon_data-snapshots.png" alt="">Data Snapshots</a>
-          </li>
-            <li id="menu-item-99" class="icon_survey-explorer skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/survey-explorer/">
-              <img src="/assets/icons/icon_survey-explorer.png" alt="">Survey Explorer</a>
-          </li>
-          <li id="menu-item-95" class="icon_data-browser fake-active skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/data-browser/">
-                <img src="/assets/icons/icon_data-browser.png" alt="">Data Browser</a>
-          </li>
-          <li id="menu-item-98" class="icon_help skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/workbench/">
-              <img src="/assets/icons/icon_workbench.png" alt="">Workbench<br class="mobile-hide" /><br class="mobile-hide" /></a>
-          </li>
-          <li id="menu-item-98" class="icon_help skinny">
-            <a href="{{allOfUsUrl}}/data-research-tools/help-and-support/">
-              <img src="/assets/icons/icon_help.png" alt="">Help and Support</a>
-          </li>
-        </ul>
-        </li>
-        <li id="menu-item-100" class="main-menu-item"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
-        <li id="menu-item-100" class="main-menu-item"><a href="{{allOfUsUrl}}/updates/">Updates</a></li>
-        </ul>
-
-
-          <!-- •••••••••••Mobile Menu•••••••••••••••••••••••••      -->
-          <!-- •••••••••••••••••••••••••      -->
-
-          <ul *ngIf="openTopMenu"  id="menu-mobile">
-              <li (click)="openAbout = !openAbout" id="menu-item-89" class="icon_about main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-89">
-                <a href="'{{allOfUsUrl}}/about/">About</a>
-      <ul [hidden]="!openAbout" class="sub-menu">
-        <li id="menu-item-92" class="icon_program-overview skinny">
-
-        <a href="{{allOfUsUrl}}/about/program-overview/">
-          Program Overview</a>
-      </li>
-        <li id="menu-item-90" class="icon_how-the-hub">
-
-        <a href="{{allOfUsUrl}}/about/how-the-research-hub-works/">
-          About the All of Us Research Hub</a>
-      </li>
-        <li id="menu-item-93" class="icon_researchers-as-partners">
-
-        <a href="{{allOfUsUrl}}/about/researchers-as-partners/">
-        Researchers as Partners</a>
-      </li>
-        <li id="menu-item-91" class="icon_privacy-security">
-
-        <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">
-          Privacy &#038; Security Protocols</a>
-      </li>
-      </ul>
-      </li>
-      <li (click)="openDataTools = !openDataTools" id="menu-item-94" class="main-menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-94">
-        <a href="{{allOfUsUrl}}/data-research-tools/">Data &#038; Research Tools</a>
-      <ul [hidden]="!openDataTools" class="sub-menu">
-        <li id="menu-item-97" class="icon_data-sources skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/data-sources/">
-            Data Sources</a>
-        </li>
-        <li id="menu-item-98" class="icon_help skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/methods/">
-            Methods</a>
-        </li>
-        <li id="menu-item-96" class="icon_data-snapshots skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/data-snapshots/">
-            Data Snapshots</a>
-        </li>
-          <li id="menu-item-99" class="icon_survey-explorer skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/survey-explorer/">
-            Survey Explorer</a>
-        </li>
-        <li id="menu-item-95" class="icon_data-browser fake-active skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/data-browser/">
-              Data Browser</a>
-        </li>
-        <li id="menu-item-98" class="icon_help skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/workbench/">
-            Workbench</a>
-        </li>
-        <li id="menu-item-98" class="icon_help skinny">
-          <a href="{{allOfUsUrl}}/data-research-tools/help-and-support/">
-            Help and Support</a>
-        </li>
-      </ul>
-      </li>
-      <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
-      <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/updates/">Updates</a></li>
-
-      </ul>
-        </div>
-          </nav><!-- #site-navigation -->
-        </div><!-- .site-branding -->
-      </div><!-- .layout-wrap -->
-
-      </div><!-- #masthead -->
+    </div><!-- .headwrap -->
+  </div><!-- #masthead -->
