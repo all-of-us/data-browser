@@ -46,6 +46,7 @@ import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { EmergencyComponent } from './views/emergency/emergency.component';
+import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
@@ -97,6 +98,7 @@ export function getConfigService(http: Http) {
     EmergencyComponent,
     SourceTreeComponent,
     RecursiveTreeComponent,
+    IntroVidsComponent,
   ],
   providers: [
     {

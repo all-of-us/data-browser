@@ -6,6 +6,7 @@ import { IsSafeGuard } from './guards/is-safe-guard.service';
 import { SignInGuard } from './guards/sign-in-guard.service';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { EmergencyComponent } from './views/emergency/emergency.component';
+import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { LoginComponent } from './views/login/login.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
@@ -80,6 +81,16 @@ const routes: Routes = [
             title: 'Physical Measurements from Enrollment',
             breadcrumb: {
               value: 'physical measurements'
+            }
+          }
+        },
+        {
+          path: 'introductory-videos',
+          component: IntroVidsComponent,
+          data: {
+            title: 'Introductory Videos',
+            breadcrumb: {
+              value: 'introductory videos'
             }
           }
         }
