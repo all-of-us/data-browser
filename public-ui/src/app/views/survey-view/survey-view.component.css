@@ -2,11 +2,8 @@ strong {
     font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
     color: #302C71;
 }
-.title-container {
+.title-container p{
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
 }
 
 .desc-container {
