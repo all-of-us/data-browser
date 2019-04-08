@@ -84,10 +84,10 @@
             </span>
           </span>
           <div class="result-body-item">
-            <a [routerLink]="'ehr/'+r.domain.toLowerCase()" *ngIf="!searchText.value" class="result-bottom-link"
+            <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
               (click)="viewEhrDomain(r)">
               View Top 100 </a>
-            <a [routerLink]="'ehr/'+r.domain.toLowerCase()" *ngIf="searchText.value" class="result-bottom-link"
+            <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link"
               (click)="viewEhrDomain(r)"> View Results </a>
           </div>
         </div>

@@ -64,11 +64,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     private tooltipText: TooltipService,
     public dbc: DbConfigService,
   ) {
-    this.route.params.subscribe(params => {
-      this.domainId = params.id;
-    });
   }
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.domainId = this.dbc.routeToDomain[params.id];
+    });
     this.loadPage();
   }
 
@@ -121,7 +121,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           'Race / Ethnicity', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
-      .subscribe(results => this.searchCallback(results));
+        .subscribe(results => this.searchCallback(results));
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(300)
