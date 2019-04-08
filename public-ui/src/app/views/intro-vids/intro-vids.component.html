@@ -4,11 +4,14 @@
   <ng-container *ngFor="let video of videos">
     <h2 class="secondary-display">{{video.title}}</h2>
     <div class="vid-container">
-      <video controls>
+      <video poster="{{video.poster}}"controls >
         <ng-container *ngFor='let src of video.src'>
           <source src="{{src.url}}" type="{{src.type}}" />
         </ng-container>
-      </video> 
+          Sorry, your browser doesn't support embedded videos,
+          but don't worry, you can <a href="{{video.downloadUrl}}">download it</a>
+          and watch it with your favorite video player!
+      </video>
     </div>
   </ng-container>
 </div>

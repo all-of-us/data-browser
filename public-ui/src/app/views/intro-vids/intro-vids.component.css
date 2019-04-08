@@ -13,3 +13,6 @@
     height:auto;
     outline: none;
 }
+.vid-container video::-webkit-media-controls-panel {
+    background-image: none !important;
+ }
