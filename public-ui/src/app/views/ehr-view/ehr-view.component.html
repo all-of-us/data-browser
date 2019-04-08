@@ -237,7 +237,7 @@
                     </div>
                   </div>
                   <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-                    <div class="row" *ngIf="r.vocabularyId === 'SNOMED'; else NonRolledUp">
+                    <div class="row" *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
                       <div class="col-xs-6">
                         <aside class="source-tree">
                           <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
@@ -265,7 +265,7 @@
                     </div>
                   </ng-container>
                   <ng-template #NonRolledUp>
-                    <div class="row" *ngIf="r.vocabularyId === 'SNOMED'">
+                    <div class="row">
                       <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
                       </app-concept-charts>
                     </div>

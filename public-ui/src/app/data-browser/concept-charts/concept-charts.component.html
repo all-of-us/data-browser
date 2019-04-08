@@ -23,7 +23,7 @@
   <ng-container *ngIf="displayMeasurementGraphs">
     <div class="chart" *ngFor="let gender of genderResults">
       <div class="m-layout">
-      <aside>
+      <aside *ngIf="toDisplayMeasurementGenderAnalysis.results.length > 0">
       {{gender.analysisStratumName}}
     </aside>
       <app-chart
