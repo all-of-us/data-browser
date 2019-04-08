@@ -19,10 +19,10 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "styles.css",
         "../node_modules/@clr/icons/clr-icons.min.css",
         "../node_modules/@clr/ui/clr-ui.min.css",
-        "../node_modules/nouislider/distribute/nouislider.min.css",
-        "styles.css"
+        "../node_modules/nouislider/distribute/nouislider.min.css"
       ],
       "scripts": [
         "../node_modules/mutationobserver-shim/dist/mutationobserver.min.js",
