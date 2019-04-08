@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from 'environments/environment';
 import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
@@ -207,7 +206,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1
     };
     this.prevSearchText = query;
-    return this.api.searchConcepts(this.searchRequest, environment.publicUiUrl + this.router.url);
+    return this.api.searchConcepts(this.searchRequest, window.location.href);
   }
 
   public toggleSources(row) {

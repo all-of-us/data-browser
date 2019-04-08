@@ -6,7 +6,6 @@ export const testEnvironmentBase = {
   tcellapikey: 'AQEBBAEkx4iE2KxNyI7Wx08EwU1ycTM7E4FMSmaibbMUQxNU6uQvuAJt7fyABAtFYSYfgEE',
   publicApiUrl: 'https://api-dot-aou-db-test.appspot.com',
   workbenchUrl: 'https://all-of-us-workbench-test.appspot.com',
-  publicUiUrl: 'https://aou-db-test.appspot.com/',
   researchAllOfUsUrl: 'https://staging.researchallofus.org',
   gaId: 'UA-116298798-4',
 };
