@@ -63,6 +63,9 @@ definitions:
         type: string
       name:
         type: string
+      numParticipants:
+        type: integer
+        format: int32
       creationTime:
         type: integer
         format: int64

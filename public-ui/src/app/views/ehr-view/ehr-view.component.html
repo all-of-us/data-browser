@@ -200,25 +200,27 @@
                       </clr-tooltip-content>
                     </clr-tooltip>
                   </div>
-                  <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
-                    *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
-                    [searchTerm]="prevSearchText">
-                  </app-highlight-search>
-                  <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
-                      *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
-                      [searchTerm]="prevSearchText">
-                  </app-highlight-search>
-                  <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-less"
-                      *ngIf="synonymString[r.conceptId].length > 110 && showMoreSynonyms[r.conceptId]; else seeMore">
-                    See
-                    Less
-                  </a>
-                  <ng-template #seeMore>
-                    <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-more"
-                      *ngIf="synonymString[r.conceptId].length > 100"> See More
-                      <clr-icon shape="ellipsis-horizontal"></clr-icon>
+                  <div>
+                    <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
+                                          *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
+                                          [searchTerm]="prevSearchText">
+                    </app-highlight-search>
+                    <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
+                                          *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
+                                          [searchTerm]="prevSearchText">
+                    </app-highlight-search>
+                    <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-less"
+                       *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
+                      See
+                      Less
                     </a>
-                  </ng-template>
+                    <ng-template #seeMore>
+                      <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-more"
+                         *ngIf="synonymString[r.conceptId].length > 100"> See More
+                        <clr-icon shape="ellipsis-horizontal"></clr-icon>
+                      </a>
+                    </ng-template>
+                  </div>
                 </div>
 
                 <div class="row-expansion" *ngIf="r.expanded" #chartElement>
@@ -240,7 +242,14 @@
                         <aside class="source-tree">
                           <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
                           <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
-                          <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})</p>
+                          <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
+                            <clr-tooltip>
+                              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                              <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                                <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
+                              </clr-tooltip-content>
+                            </clr-tooltip>
+                          </p>
                           <app-db-spinner [loading]="treeLoading" [dots]="true"></app-db-spinner>
                           <ng-container *ngIf="!treeLoading">
                             <div *ngFor="let node of treeData" class="tree-top">

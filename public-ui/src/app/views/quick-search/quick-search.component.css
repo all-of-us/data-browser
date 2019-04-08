@@ -1,13 +1,69 @@
 strong {
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
     color: #302C71;
+}
+
+.search-icon-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+}
+.icons img {
+    width: 100px;
+}
+
+.icons {
+    width: 100px;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icons a {
+    text-align: center;
+}
+
+.iconlinks {
+    position: relative;
+    top: 2rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 100%;
+}
+
+#db-search-bar {
+    flex-grow: 1;
+    background: #DAE6ED;
+    padding: 9px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    .search-icon-container {
+        flex-flow: row;
+    }
+    #db-search-bar {
+        width: 36vw;
+    }
+}
+
+
+
+#db-search-bar input {
+    min-width: calc((100%/12)*10);
+    padding: 18px;
+    font-size: 18px;
 }
 
 .search {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    padding:18px;
+    padding: 18px;
+    flex-flow: column;
 }
 
 .search-title {
@@ -20,7 +76,7 @@ strong {
 }
 
 .results {
-    padding:18px;
+    padding: 18px;
 }
 
 .result-heading {
@@ -28,6 +84,10 @@ strong {
     margin: 0;
     padding: 9px;
     padding-left: 0;
+}
+
+.cdr-info {
+    font-size: 14px;
 }
 
 .result-boxes {
@@ -55,13 +115,10 @@ strong {
     color: #337AB7;
     font-family: FFUnitStdMedium, Arial, Helvetica, sans-serif;
     display: flex;
-    padding-bottom:3px;
-    margin:0;
+    padding-bottom: 3px;
+    margin: 0;
 }
 
-.result-box-title .info-icon {
-
-}
 
 .result-box:last-of-type {
     margin-right: 0;
@@ -69,7 +126,7 @@ strong {
 
 .result-stat {
     color: #302C71;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 35px;
@@ -78,7 +135,7 @@ strong {
 
 .result-body {
     color: #302C71;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
     font-size: 14px;
     height: 100%;
     display: flex;
@@ -88,8 +145,9 @@ strong {
 .result-body-item {
     padding: 6px 0;
 }
+
 .result-body-item:last-child {
-    margin-top:auto;
+    margin-top: auto;
 }
 
 .result-bottom-link {
@@ -101,42 +159,50 @@ strong {
 .result-bottom-link:hover {
     color: #262262;
 }
+
 .result-bottom-link:hover {
-    color:#262262;
+    color: #262262;
 }
+
 #pm-box {
     max-width: 100%;
     padding-top: 9px;
 }
+
 @media only screen and (min-width: 768px) {
-  #pm-box {
-    max-width: calc(50%);
-  }
+    #pm-box {
+        max-width: calc(50%);
+    }
 }
 
 @media only screen and (min-width: 1168px) {
-  #pm-box {
-      max-width: calc(((100%/12)*5));
+    #pm-box {
+        max-width: calc(((100%/12)*5));
     }
 }
+
 @media only screen and (min-width: 1168px) {
-  #pm-box {
-      max-width: calc(((100%/12)*5));
+    #pm-box {
+        max-width: calc(((100%/12)*5));
     }
 }
+
 #pm-box .result-body {
     margin: 0;
 }
 
 #pm-box .result-body {
     margin: 0;
-    padding-top:9px;
+    padding-top: 9px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+    .iconlinks {
+        margin-bottom:.5em;
+    }
     .result-box {
         min-width: calc(((100%/12)*6) - 9px);
-        margin-bottom:18px;
+        margin-bottom: 18px;
     }
     .result-box:nth-of-type(2) {
         margin-right: 0;

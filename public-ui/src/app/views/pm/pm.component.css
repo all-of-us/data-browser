@@ -51,6 +51,7 @@
 .chart-item {
     width: calc((50%) - 18px);
     height: auto;
+    flex-grow:1;
 }
 .age-chart {
     padding: 1em;
