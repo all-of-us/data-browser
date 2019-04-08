@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'environments/environment';
 import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
 } from 'ngx-responsive';
-import { environment } from 'environments/environment';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
