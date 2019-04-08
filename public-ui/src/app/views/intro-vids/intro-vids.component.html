@@ -1,3 +1,14 @@
-<p>
-  intro-vids works!
-</p>
+<div class="db-container">
+  <h1 class="primary-display">Introductory Videos</h1>
+
+  <ng-container *ngFor="let video of videos">
+    <h2 class="secondary-display">{{video.title}}</h2>
+    <div class="vid-container">
+      <video controls>
+        <ng-container *ngFor='let src of video.src'>
+          <source src="{{src.url}}" type="{{src.type}}" />
+        </ng-container>
+      </video> 
+    </div>
+  </ng-container>
+</div>
