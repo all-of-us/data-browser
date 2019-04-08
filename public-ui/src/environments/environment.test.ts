@@ -4,4 +4,5 @@ export const environment = {
   ...testEnvironmentBase,
   displayTag: 'Test',
   debug: false,
+  publicUiUrl: 'https://aou-db-test.appspot.com',
 };

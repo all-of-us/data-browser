@@ -10,6 +10,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
+import { environment } from 'environments/environment';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../publicGenerated/model/domain';
@@ -206,7 +207,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1
     };
     this.prevSearchText = query;
-    return this.api.searchConcepts(this.searchRequest);
+    return this.api.searchConcepts(this.searchRequest, environment.publicUiUrl + this.router.url);
   }
 
   public toggleSources(row) {

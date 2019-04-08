@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { environment } from 'environments/environment';
 import {
   CdrVersion, DataBrowserService, DomainInfosAndSurveyModulesResponse
 } from 'publicGenerated';
@@ -186,7 +187,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
       return resultsObservable;
     }
-    return this.api.getDomainSearchResults(query);
+    return this.api.getDomainSearchResults(query, environment.publicUiUrl + this.router.url);
   }
 
   public viewSurvey(r) {
