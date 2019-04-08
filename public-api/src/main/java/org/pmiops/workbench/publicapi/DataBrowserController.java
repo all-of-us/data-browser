@@ -576,7 +576,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Concept> conceptList = new ArrayList(concepts.getContent());
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery(), conceptList.stream().map(Concept::getConceptId).collect(Collectors.toList()));
+            List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrandNotInConceptIds(searchConceptsRequest.getQuery(), conceptList.stream().map(Concept::getConceptId).collect(Collectors.toList()));
 
             if(drugMatchedConcepts.size() > 0) {
                 conceptList.addAll(drugMatchedConcepts);
