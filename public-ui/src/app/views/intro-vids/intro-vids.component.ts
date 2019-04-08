@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-intro-vids',
   templateUrl: './intro-vids.component.html',
   styleUrls: ['../../styles/template.css', './intro-vids.component.css']
 })
-export class IntroVidsComponent implements OnInit {
+export class IntroVidsComponent {
 
   videos = [{
     title: 'Participant Intro',
@@ -40,11 +40,6 @@ export class IntroVidsComponent implements OnInit {
       url: '/assets/videos/big_buck_bunny.webm',
       type: 'video/webm'
     }],
-  },
-  ];
-  constructor() { }
-
-  ngOnInit() {
-  }
+  }];
 
 }
