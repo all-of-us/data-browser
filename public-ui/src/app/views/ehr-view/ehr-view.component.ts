@@ -69,8 +69,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit() {
-    const test = this.dbc.getDomainFromRoute(this.domainId);
-    console.log(test);
+    this.getDomainFromRoute(this.domainId);
     this.loadPage();
   }
 
@@ -86,6 +85,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getDomainFromRoute(routeParam: string) {
+    let test: string;
+    this.dbc.routeToDomainMap.forEach(item => {
+      if (routeParam === item.route) {
+        console.log(routeParam,item.route);
+        this.domainId = item.domain;
+      }
+    });
+  }
 
   public loadPage() {
     this.items = [];

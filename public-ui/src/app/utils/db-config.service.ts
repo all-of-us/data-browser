@@ -161,16 +161,6 @@ export class DbConfigService {
     });
 
   }
-  public getDomainFromRoute(routeParam: string) {
-    let test: string;
-    this.routeToDomainMap.forEach(item => {
-      if (routeParam === item.route) {
-        console.log(routeParam,item.route);
-        test = item.domain;
-      }
-      return test;
-    });
-  }
 
   getPmGroups(): Observable<ConceptGroup[]> {
     /* What we want here is a function that will load the pm groups from the database one time
