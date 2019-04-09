@@ -1,8 +1,9 @@
 strong {
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-family: GothamBook, Arial, sans-serif;
     color: #302C71;
 }
-.title-container p{
+
+.title-container {
     width: 100%;
 }
 
@@ -50,9 +51,10 @@ strong {
     display: flex;
     flex-direction: column;
 }
+
 @media only screen and (max-width: 767px) {
     .stat-container {
-      flex-basis: 100%;
+        flex-basis: 100%;
     }
 }
 
@@ -76,20 +78,22 @@ strong {
 .pdf-link {
     padding-top: 1rem;
 }
+
 @media only screen and (min-width: 768px) {
-  .pdf-link {
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding-top: 0;
-  }
+    .pdf-link {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding-top: 0;
+    }
 }
+
 .survey-results {
     position: relative;
 }
 
 .no-results {
-    padding:1em;
+    padding: 1em;
 }
 
 .question-result {
@@ -102,13 +106,14 @@ strong {
 }
 
 .question-result .question-text {
-    font-family: FFUnitStdBold, Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     color: #262262;
 }
 
 .question-result:first-of-type {
     border-top: none;
 }
+
 .question-result .tbl {
     width: 100%;
     overflow-x: scroll;

@@ -363,7 +363,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
         style: {
-          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+          fontFamily: 'GothamBook, Arial, sans-serif',
         },
         tooltip: {
           headerFormat: '<span>{point.key} <br/>',
@@ -436,7 +436,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: chartType,
         backgroundColor: 'transparent',
         style: {
-          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+          fontFamily: 'GothamBook, Arial, sans-serif',
         },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
@@ -490,7 +490,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         type: 'bar',
         backgroundColor: 'transparent',
         style: {
-          fontFamily: 'Gotham A, Gotham B, Helvetica Neue, sans-serif;',
+          fontFamily: 'GothamBook, Arial, sans-serif',
         },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },

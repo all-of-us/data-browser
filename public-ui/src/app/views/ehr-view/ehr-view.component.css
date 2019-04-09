@@ -2,34 +2,40 @@
     margin: auto auto;
     width: 100%;
 }
+
 h5.secondary-display {
-  font-size: 20px;
-  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
-  font-weight: 100;
+    font-size: 20px;
+    font-family: GothamBook, Arial, sans-serif;
+    font-weight: 100;
 }
+
 .highcharts-root {
-  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
-  font-size: .6rem;
+    font-family: GothamBook, Arial, sans-serif;
+    font-size: .6rem;
 }
+
 .page-header {
     padding: 18px
 }
+
 .search-bar-container {
-    padding:18px;
+    padding: 18px;
 }
 
 .results {
-    padding:18px;
-    padding-top:36px;
+    padding: 18px;
+    padding-top: 36px;
 }
+
 .results-grid {
     width: 100%;
     background: white;
     overflow-x: scroll;
 }
+
 .aka-text {
     width: 170px;
-    font-family: FFUnitStdLightItalic, Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     font-style: italic;
     color: rgb(150 150 150);
     display: flex;
@@ -47,12 +53,12 @@ h5.secondary-display {
 }
 
 .medline-link {
-  font-size: 14px;
-  color: #262262;
-  background: #f6f6f8;
-  border-radius: 10px;
-  padding: .5rem 1rem;
-  line-height: 1.5;
+    font-size: 14px;
+    color: #262262;
+    background: #f6f6f8;
+    border-radius: 10px;
+    padding: .5rem 1rem;
+    line-height: 1.5;
 }
 
 #domain-summary {
@@ -140,15 +146,20 @@ h5.secondary-display {
 #answer-result {
     width: calc(47%);
 }
+
 h5.secondary-display {
-    padding:18px;
-    font-size:1.3em;
+    padding: 18px;
+    font-size: 1.3em;
 }
 
-  @keyframes load {
-    from{background:transparent}
-    to{background:#302c70}
-  }
+@keyframes load {
+    from {
+        background: transparent
+    }
+    to {
+        background: #302c70
+    }
+}
 
 @media (max-width: 600px) {
     .chart-choice {

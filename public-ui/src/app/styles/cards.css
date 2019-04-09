@@ -1,7 +1,7 @@
 .card {
     border-radius: 5px;
     box-shadow: none;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-family: GothamBook, Arial, sans-serif;
     border: 1px solid #979797;
     background-color: #FFFFFF;
 }
@@ -25,10 +25,8 @@
     line-height: 14px;
 }
 
-
-
 .card-text {
-    color: rgba(0,0,0,0.87);
+    color: rgba(0, 0, 0, 0.87);
     font-weight: 300;
     font-size: 14px;
     line-height: 18px;
@@ -38,7 +36,9 @@
     font-size: 12px;
     line-height: 16px;
 }
+
 /* Stat card with big number in it */
+
 .card.stats-card {
     min-width: 336px;
     padding-top: 36px;
@@ -47,18 +47,20 @@
 }
 
 .stats-card .card-block {
-    border-bottom:none;
+    border-bottom: none;
     margin-bottom: 0;
 }
+
 .stats-card .card-title {
     font-size: 20px;
     color: #302C71;
-    font-weight :300;
+    font-weight: 300;
 }
+
 .card-stat {
-    font-size:48px;
-    color: rgba(0,0,0,0.87);
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: GothamBook, Arial, sans-serif;
     font-weight: 300;
     line-height: 55px;
 }
@@ -68,7 +70,3 @@
     bottom: 0px;
     left: .50rem;
 }
-
-
-
-
