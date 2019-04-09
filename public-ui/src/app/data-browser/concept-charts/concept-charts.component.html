@@ -24,8 +24,8 @@
     <div class="chart" *ngFor="let gender of genderResults">
       <div class="m-layout">
       <aside *ngIf="toDisplayMeasurementGenderAnalysis.results.length > 0">
-      {{gender.analysisStratumName}}
-    </aside>
+        {{gender.analysisStratumName}} - {{fetchChartTitle(gender)}}
+      </aside>
       <app-chart
               *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2)"
               [genderId]="gender.stratum2"

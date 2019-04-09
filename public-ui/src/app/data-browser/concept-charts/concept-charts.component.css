@@ -5,7 +5,7 @@
 }
 .m-layout aside {
     transform: rotate(-90deg);
-    width: calc((100%/12)*1);
+    width: calc((100%/4)*0.70);
 }
 .m-layout app-chart {
     width: calc((100%/12)*11);
