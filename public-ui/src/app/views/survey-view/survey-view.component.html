@@ -111,7 +111,7 @@
 
                       <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
                         <button class="icon-btn" *ngIf="!a.subQuestions">
-                          <clr-icon shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                          <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                         </button>
                         <button class="icon-btn" *ngIf="a.subQuestions">
                           <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
@@ -181,7 +181,7 @@
 
                             <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
                               <button class="icon-btn" *ngIf="!sqa.subQuestions">
-                                <clr-icon shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                                <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                               </button>
                               <button class="icon-btn" *ngIf="sqa.subQuestions">
                                 <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
@@ -250,7 +250,7 @@
 
                                   <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
                                     <button class="icon-btn" *ngIf="!sqa2.subQuestions">
-                                      <clr-icon shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                                      <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                     </button>
                                     <button class="icon-btn" *ngIf="sqa2.subQuestions">
                                       <clr-icon *ngIf="!sqa2.subExpanded" shape="caret" dir="right"></clr-icon>
