@@ -44,14 +44,14 @@
 }
 
 .body-default, p {
-  font-family: 'GothamBook','Arial', sans-serif;
+  font-family: 'GothamBook', 'Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
   line-height: 1.5;
   font-size: 18px;
   letter-spacing: normal;
-  text-align: left;
+  text-align: left;Î
   color: #262262;
 }
 
@@ -63,11 +63,11 @@
 
 #db-desc {
   padding: 18px;
-  padding-bottom:63px;
+  padding-bottom: 63px;
   margin: 0 auto;
   line-height: 2.0;
-  font-family: 'GothamBook','Arial', sans-serif;
-  font-size:20px;
+  font-family: 'GothamBook', 'Arial', sans-serif;
+  font-size: 20px;
 }
 
 #db-sub-desc {
@@ -113,11 +113,13 @@
   padding: 9px;
   border-radius: 5px;
 }
+
 @media only screen and (min-width: 1168px) {
   #db-search-bar {
-    min-width:20rem;
+    min-width: 20rem;
   }
 }
+
 #db-search-bar input {
   min-width: calc((100%/12)*10);
   padding: 18px;
@@ -179,7 +181,7 @@
   position: absolute;
   width: 100%;
   height: 5px;
-  right:0;
+  right: 0;
   background: #216fb4;
   bottom: -5px;
   border-radius: 5px;
@@ -249,9 +251,10 @@
   border-bottom: none;
   cursor: pointer;
   transition: .2s background ease-out;
-  padding:9px;
+  padding: 9px;
   min-width: 810px;
 }
+
 .tbl-exp-r *.tbl-exp-r {
   border-left: none;
   border-right: none;
@@ -271,55 +274,66 @@
 .tbl-d.first {
   width: 30%;
 }
+
 @media only screen and (min-width: 1168px) {
   .tbl-d.first {
-    min-width:10rem;
+    min-width: 10rem;
   }
 }
+
 .tbl-r {
   text-align: left;
   min-width: 810px;
 }
 
 /**** ##MAILCHIMP ***/
+
 #mc_embed_signup {
   text-align: left;
   background: transparent;
   position: relative;
 }
+
 #mc_embed_signup .mc-field-group input {
   height: 50px;
   border: 1px solid;
   margin-bottom: 0;
   vertical-align: text-bottom;
 }
+
 #mc_embed_signup .clear input {
   margin-top: .6rem;
   margin-bottom: 1rem;
 }
+
 .mc-field-group {
   margin-top: .6rem;
 }
+
 .mc-field-group input {
   width: 100%;
-	max-width: 320px;
+  max-width: 320px;
 }
+
 .tree-top {
-  padding:1em;
-  padding-top:0;
+  padding: 1em;
+  padding-top: 0;
   overflow: scroll;
   height: 11rem;
 }
+
 .source-tree {
   width: calc((100%/12)*10);
   margin: 0 auto;
-  padding:1em;
+  padding: 1em;
   width: 90%;
   text-align: left;
 }
+
 .source-tree p {
-  margin:0;
+  margin: 0;
 }
+
 .tree-heading {
-  padding-top:1em;
+  padding-top: 1em;
 }
