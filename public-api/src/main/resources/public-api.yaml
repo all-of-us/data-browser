@@ -361,6 +361,9 @@ definitions:
       matchType:
         description: match column type on which concept search was successful
         $ref: "#/definitions/MatchType"
+      matchedConceptName:
+        description: matched concept name
+        type: string
       standardConcepts:
         type: "array"
         items:

@@ -561,10 +561,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             String conceptId = String.valueOf(con.getConceptId());
 
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
-                response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
-
                 List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
                 response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+            }
+
+            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
+                response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
+                response.setMatchedConceptName(con.getConceptName());
             }
 
         }
