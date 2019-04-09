@@ -637,6 +637,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<QuestionConceptListResponse> getSurveyResults(String surveyConceptId, String query, String routeUrl) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         //Trigger the search event for the search in any of the survey pages
+        //Since there is no way to trigger the event from the client side for now, hitting this api to trigger the event
         if (surveyConceptId == null && !Strings.isNullOrEmpty(query) && !Strings.isNullOrEmpty(routeUrl) && googleAnalyticsServiceImpl != null) {
             searchTrackEvent("DataBrowserSearch", "SurveySearch", query, routeUrl);
             QuestionConceptListResponse resp = new QuestionConceptListResponse();
