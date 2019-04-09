@@ -500,7 +500,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         if (googleAnalyticsServiceImpl != null) {
-            searchTrackEvent("Search", "DomainSearch", query, routeUrl);
+            searchTrackEvent("DataBrowserSearch", "DomainSearch", query, routeUrl);
         }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
@@ -537,7 +537,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }else{
             // This call triggers the event to post the data to google analytics endpoint
             if (googleAnalyticsServiceImpl != null) {
-                searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
+                searchTrackEvent("DataBrowserSearch", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
             }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
