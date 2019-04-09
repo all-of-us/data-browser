@@ -157,10 +157,10 @@
           </span>
           <span class="result-body-item">
             <ng-container *ngIf="searchText.value; else noSearchPm;">
-              <span class="result-stat">{{physicalMeasurementsFound}}</span> matching physical measurements.
+              <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
             </ng-container>
             <ng-template #noSearchPm>
-              <span class="result-stat">{{physicalMeasurementsFound}}</span> physical measurements.
+              <div class="result-stat">{{physicalMeasurementsFound}}</div> physical measurements
             </ng-template>
           <div class="result-bottom">
             <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
@@ -169,7 +169,7 @@
         </div>
       </div>
     </div>
-    <h6 *ngIf="physicalMeasurementsFound > 0 && !loading">  No Phyiscal Measurement Results.</h6>
+    <h6 *ngIf="physicalMeasurementsFound === 0 && !loading"> No Program Physical Measurement Results.</h6>
   </section>
 
 </div>
