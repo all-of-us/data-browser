@@ -81,7 +81,7 @@ public class DataBrowserControllerIntegrationTest {
 
   @Test
   public void testDomainSearch_smoke() throws Exception {
-    DomainInfosAndSurveyModulesResponse resp = api.getDomainSearchResults("smoke");
+    DomainInfosAndSurveyModulesResponse resp = api.getDomainSearchResults("smoke", "local/ehr");
     assertThat(resp.getDomainInfos()).isNotEmpty();
     assertThat(resp.getSurveyModules()).isNotEmpty();
   }
@@ -92,7 +92,7 @@ public class DataBrowserControllerIntegrationTest {
     ConceptListResponse resp = api.searchConcepts(new SearchConceptsRequest()
         .domain(Domain.MEASUREMENT)
         .minCount(1)
-        .maxResults(maxResults));
+        .maxResults(maxResults),"local/ehr/measurement");
     assertThat(resp.getItems()).isNotEmpty();
     assertThat(resp.getItems().size()).isAtMost(maxResults);
     for (Concept c : resp.getItems()) {
