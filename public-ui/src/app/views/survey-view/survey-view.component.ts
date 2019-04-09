@@ -306,7 +306,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public changeResults(e) {
     this.loadPage();
   }
-  
+
   public changeAutoInsertText(q: QuestionConcept) {
     if (q.conceptId === 1585704) {
       q.conceptName = q.conceptName.replace('[INSERT LANGUAGE FROM SU01j]', '');
