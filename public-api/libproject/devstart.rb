@@ -200,7 +200,7 @@ def run_local_migrations()
     common.run_inline %W{./run-migrations.sh main}
   end
   Dir.chdir('db-cdr') do
-    common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
+    common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public --version-flag public}
   end
   common.run_inline %W{gradle :tools:loadConfig -Pconfig_key=main -Pconfig_file=../config/config_local.json}
   common.run_inline %W{gradle :tools:loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json}
