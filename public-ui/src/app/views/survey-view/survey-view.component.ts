@@ -267,6 +267,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
+      gtag('set', 'page', window.location.href);
       gtag('send', {
         hitType: 'event',
         eventCategory: 'DataBrowserSearch',
