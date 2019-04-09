@@ -481,7 +481,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query){
+    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, String routeUrl){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
@@ -500,7 +500,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         if (googleAnalyticsServiceImpl != null) {
-            searchTrackEvent("Search", "DomainSearch", query);
+            searchTrackEvent("Search", "DomainSearch", query, routeUrl);
         }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
@@ -515,7 +515,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
+    public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest, String routeUrl){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         Integer maxResults = searchConceptsRequest.getMaxResults();
         if(maxResults == null || maxResults == 0){
@@ -537,7 +537,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }else{
             // This call triggers the event to post the data to google analytics endpoint
             if (googleAnalyticsServiceImpl != null) {
-                searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery());
+                searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
             }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
@@ -576,7 +576,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Concept> conceptList = new ArrayList(concepts.getContent());
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+            List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrandNotInConceptIds(searchConceptsRequest.getQuery(), conceptList.stream().map(Concept::getConceptId).collect(Collectors.toList()));
 
             if(drugMatchedConcepts.size() > 0) {
                 conceptList.addAll(drugMatchedConcepts);
@@ -1217,9 +1217,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Async("asyncExecutor")
-    public void searchTrackEvent(String category, String event, String label) {
+    public void searchTrackEvent(String category, String event, String label, String page) {
         try {
-            googleAnalyticsServiceImpl.trackEventToGoogleAnalytics(null, category, event, label);
+            googleAnalyticsServiceImpl.trackEventToGoogleAnalytics(null, category, event, label, page);
         } catch (IOException ioException) {
             logger.severe(String.format("Unable to trigger track event for the search term %s", label));
         }

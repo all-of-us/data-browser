@@ -206,7 +206,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1
     };
     this.prevSearchText = query;
-    return this.api.searchConcepts(this.searchRequest);
+    return this.api.searchConcepts(this.searchRequest, window.location.href);
   }
 
   public toggleSources(row) {

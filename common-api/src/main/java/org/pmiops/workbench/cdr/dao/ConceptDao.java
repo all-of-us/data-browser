@@ -77,4 +77,16 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
             "order by c.name asc) " +
             "and c1.concept_class_id = 'Ingredient') ", nativeQuery = true)
     List<Concept> findDrugIngredientsByBrand(String query);
+
+    @Query(value = "select distinct c1.* from concept_relationship cr " +
+            "join concept c1 on (cr.concept_id_2 = c1.concept_id " +
+            "and cr.concept_id_1 in (" +
+            "select distinct c.concept_id from criteria c\n" +
+            "where c.type = 'DRUG' " +
+            "and c.subtype in ('BRAND') " +
+            "and c.is_selectable = 1 " +
+            "and match(c.name, c.code) against(?1 in boolean mode) > 0 " +
+            "order by c.name asc) " +
+            "and c1.concept_class_id = 'Ingredient') and cr.concept_id_2 not in (?2) ", nativeQuery = true)
+    List<Concept> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
 }

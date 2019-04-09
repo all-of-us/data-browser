@@ -47,7 +47,7 @@ public class GoogleAnalyticsServiceTest {
     public void testSuccessResponse() throws Exception {
         when(fetchService.fetch(any(HTTPRequest.class))).thenReturn(buildResponse(SUCCESS));
         int responseCode = trackingService
-                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, LABEL);
+                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, LABEL, "test");
         assertThat(responseCode).isEqualTo(SUCCESS);
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
@@ -56,7 +56,7 @@ public class GoogleAnalyticsServiceTest {
     public void testFailureResponse() throws Exception {
         when(fetchService.fetch(any(HTTPRequest.class))).thenReturn(buildResponse(FAILURE));
         int responseCode = trackingService
-                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, LABEL);
+                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, LABEL, "test");
         assertThat(responseCode).isEqualTo(FAILURE);
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
@@ -65,14 +65,14 @@ public class GoogleAnalyticsServiceTest {
     public void testRequiredParametersSuccess() throws Exception {
         when(fetchService.fetch(any(HTTPRequest.class))).thenReturn(buildResponse(SUCCESS));
         int responseCode = trackingService
-                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, null);
+                .trackEventToGoogleAnalytics(CID, CATEGORY, ACTION, null, null);
         assertThat(responseCode).isEqualTo(SUCCESS);
         verify(fetchService, times(1)).fetch(any(HTTPRequest.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void testRequiredParametersFailure() throws Exception {
-        trackingService.trackEventToGoogleAnalytics(null, null, null, null);
+        trackingService.trackEventToGoogleAnalytics(null, null, null, null, null);
         verify(fetchService, times(0)).fetch(any(HTTPRequest.class));
     }
 
