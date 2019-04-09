@@ -50,7 +50,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService) {
-    gtag('config', environment.gaId, 'auto');
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
@@ -267,7 +266,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
-      gtag('set', 'page', window.location.href);
       gtag('event', 'SurveySearch', {
         'event_category': 'DataBrowserSearch',
         'event_label': this.searchText.value
