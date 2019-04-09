@@ -127,7 +127,8 @@
                   <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
                       <h6 class="sub-question-text">
-                        <clr-icon shape="child-arrow" size="25"></clr-icon> {{changeAutoInsertText(subQuestion)}}
+                        <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion)" [searchTerm]="searchText.value">
+                      </app-highlight-search>
                       </h6>
                       <div class="tbl-r sub-tbl-1">
                         <div class="tbl-d first display-body info-text survey-question-heading">
@@ -196,7 +197,8 @@
                         <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
                           <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
                             <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
-                              <clr-icon shape="child-arrow" size="25"></clr-icon> {{changeAutoInsertText(subQuestion2)}}
+                              <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion2)" [searchTerm]="searchText.value">
+                            </app-highlight-search>
                             </h6>
                             <div class="tbl-r">
                               <div class="tbl-d first display-body info-text survey-question-heading">
