@@ -106,7 +106,7 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [
     SignInGuard,
-    IsSafeGuard
+    IsSafeGuard,
   ]
 })
 export class AppRoutingModule {

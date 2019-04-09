@@ -5,10 +5,14 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
+import { environment } from '../../../environments/environment';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../publicGenerated';
 import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
+
+declare let gtag: Function;
+
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -46,6 +50,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService) {
+    gtag('config', environment.gaId, 'auto');
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
@@ -262,6 +267,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
+      gtag('send', {
+        hitType: 'event',
+        eventCategory: 'DataBrowserSearch',
+        eventAction: 'SurveySearch',
+        eventLabel: this.searchText.value,
+      });
     }
     this.loading = false;
   }
