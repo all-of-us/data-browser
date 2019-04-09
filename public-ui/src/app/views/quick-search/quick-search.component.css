@@ -1,5 +1,5 @@
 strong {
-    font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
+    font-family: GothamBook, Arial, sans-serif;
     color: #302C71;
 }
 
@@ -8,6 +8,7 @@ strong {
     flex-wrap: wrap;
     flex-flow: column;
 }
+
 .icons img {
     width: 100px;
 }
@@ -49,8 +50,6 @@ strong {
         width: 36vw;
     }
 }
-
-
 
 #db-search-bar input {
     min-width: calc((100%/12)*10);
@@ -113,12 +112,11 @@ strong {
 
 .result-box-title {
     color: #337AB7;
-    font-family: FFUnitStdMedium, Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     display: flex;
     padding-bottom: 3px;
     margin: 0;
 }
-
 
 .result-box:last-of-type {
     margin-right: 0;
@@ -126,7 +124,7 @@ strong {
 
 .result-stat {
     color: #302C71;
-    font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
+    font-family: GothamBook, Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 35px;
@@ -135,7 +133,7 @@ strong {
 
 .result-body {
     color: #302C71;
-    font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
+    font-family: GothamBook, Arial, sans-serif;
     font-size: 14px;
     height: 100%;
     display: flex;
@@ -198,7 +196,7 @@ strong {
 
 @media (max-width: 1000px) {
     .iconlinks {
-        margin-bottom:.5em;
+        margin-bottom: .5em;
     }
     .result-box {
         min-width: calc(((100%/12)*6) - 9px);

@@ -1,7 +1,7 @@
 /* primary display */
 
 .primary-display, h1 {
-  font-family: FFUnitStdMedium, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 36.8px;
   font-weight: normal;
   font-style: normal;
@@ -12,7 +12,7 @@
 }
 
 .secondary-display, h2 {
-  font-family: FFUnitStdMedium, sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 27px;
@@ -23,7 +23,7 @@
 }
 
 .body-lead {
-  font-family: 'Gotham A', 'Gotham B', 'GothamBook', 'Helvetica Neue', sans-serif;
+  font-family: 'GothamBook', 'Arial', sans-serif;
   font-size: 20px;
   font-weight: normal;
   font-style: normal;
@@ -33,7 +33,7 @@
 }
 
 .display-body {
-  font-family: FFUnitStdLight, sans-serif;
+  font-family: 'Arial', sans-serif;
   font-size: 22px;
   font-weight: 500;
   font-style: normal;
@@ -44,7 +44,7 @@
 }
 
 .body-default, p {
-  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-family: 'GothamBook','Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -66,7 +66,7 @@
   padding-bottom:63px;
   margin: 0 auto;
   line-height: 2.0;
-  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-family: 'GothamBook','Arial', sans-serif;
   font-size:20px;
 }
 

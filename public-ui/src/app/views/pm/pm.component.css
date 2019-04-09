@@ -6,32 +6,34 @@
 .pm-layout {
     display: flex;
 }
+
 .db-card {
-    width:100%;
+    width: 100%;
     overflow-x: scroll;
 }
+
 .db-card-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     width: 100%;
     flex-wrap: wrap;
-
 }
 
 .db-card-header div button {
     padding: 0 9px;
 }
 
-.group-name{
+.group-name {
     font-size: 1.4em;
     white-space: nowrap;
-    width:fit-content;
-    padding:1em;
-    padding-top:.5em;
+    width: fit-content;
+    padding: 1em;
+    padding-top: .5em;
 }
+
 .group-option {
-    width:100%;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -45,18 +47,19 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding-top:1em;
+    padding-top: 1em;
 }
 
 .chart-item {
     width: calc((50%) - 18px);
     height: auto;
-    flex-grow:1;
+    flex-grow: 1;
 }
+
 .age-chart {
     padding: 1em;
     padding-left: 1.5em;
-    margin:0;
+    margin: 0;
 }
 
 .chart-item:last-of-type {
@@ -71,9 +74,8 @@
 
 button {
     text-align: left;
-    padding:0;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
-
+    padding: 0;
+    font-family: GothamBook, Arial, sans-serif;
     outline: none;
 }
 
@@ -114,7 +116,7 @@ aside .button-item button {
         display: flex;
         justify-content: space-between;
         margin: -1em;
-        margin-bottom:0px
+        margin-bottom: 0px
     }
     aside .button-item {
         padding: 18px;

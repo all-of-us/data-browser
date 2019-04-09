@@ -9,7 +9,7 @@
     background: #262262;
     padding: .5rem .5rem;
     text-align: center;
-    font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 20px;
     letter-spacing: .14px;
     text-transform: uppercase;
@@ -23,7 +23,7 @@
 button, a.btn {
     font-size: 12px;
     font-weight: 500;
-    font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+    font-family: GothamBook, Arial, sans-serif;
     line-height: 14px;
 }
 

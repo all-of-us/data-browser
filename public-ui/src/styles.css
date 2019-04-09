@@ -427,40 +427,16 @@ a:hover {
 }
 
 @font-face {
-  font-family: "GothamMedium";
-  src: url("/assets/fonts/GothamMedium.eot"); /* IE9 Compat Modes */
-  src: url("/assets/fonts/GothamMedium.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-    url("/assets/fonts/GothamMedium.otf") format("opentype"), /* Open Type Font */
-    url("/assets/fonts/GothamMedium.svg") format("svg"), /* Legacy iOS */
-    url("/assets/fonts/GothamMedium.ttf") format("truetype"), /* Safari, Android, iOS */
-    url("/assets/fonts/GothamMedium.woff") format("woff"), /* Modern Browsers */
-    url("/assets/fonts/GothamMedium.woff2") format("woff2"); /* Modern Browsers */
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "GothamLight";
-  src: url("/assets/fonts/GothamLight.eot"); /* IE9 Compat Modes */
-  src: url("/assets/fonts/GothamLight.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-    url("/assets/fonts/GothamLight.otf") format("opentype"), /* Open Type Font */
-    url("/assets/fonts/GothamLight.svg") format("svg"), /* Legacy iOS */
-    url("/assets/fonts/GothamLight.ttf") format("truetype"), /* Safari, Android, iOS */
-    url("/assets/fonts/GothamLight.woff") format("woff"), /* Modern Browsers */
-    url("/assets/fonts/GothamLight.woff2") format("woff2"); /* Modern Browsers */
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "GothamBold";
-  src: url("/assets/fonts/GothamBold.eot"); /* IE9 Compat Modes */
+  src: url("/assets/fonts/GothamBold.eot");
+  /* IE9 Compat Modes */
   src: url("/assets/fonts/GothamBold.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-    url("/assets/fonts/GothamBold.otf") format("opentype"), /* Open Type Font */
-    url("/assets/fonts/GothamBold.svg") format("svg"), /* Legacy iOS */
-    url("/assets/fonts/GothamBold.ttf") format("truetype"), /* Safari, Android, iOS */
-    url("/assets/fonts/GothamBold.woff") format("woff"), /* Modern Browsers */
-    url("/assets/fonts/GothamBold.woff2") format("woff2"); /* Modern Browsers */
+  url("/assets/fonts/GothamBold.otf") format("opentype"), /* Open Type Font */
+  url("/assets/fonts/GothamBold.svg") format("svg"), /* Legacy iOS */
+  url("/assets/fonts/GothamBold.ttf") format("truetype"), /* Safari, Android, iOS */
+  url("/assets/fonts/GothamBold.woff") format("woff"), /* Modern Browsers */
+  url("/assets/fonts/GothamBold.woff2") format("woff2");
+  /* Modern Browsers */
   font-weight: normal;
   font-style: normal;
 }
@@ -472,7 +448,7 @@ a:hover {
 body {
   background-color: #E0E0E1;
   /* overflow-x: hidden; */
-  font-family: 'Gotham A','Gotham B','GothamBook','Helvetica Neue', sans-serif;
+  font-family: GothamBook, Arial, sans-serif;
   font-size: 18px;
   color: #262262;
   line-height: 1.5;
@@ -497,15 +473,14 @@ img {
 }
 
 @media only screen and (min-width: 1168px) {
- .breadcrumbs {
-  margin: 0 calc(10%);
-  padding: 0 0.7rem;
-}
-
-/* outside container desktop */
-.db-container {
-  margin: 0 calc(10%);
-}
+  .breadcrumbs {
+    margin: 0 calc(10%);
+    padding: 0 0.7rem;
+  }
+  /* outside container desktop */
+  .db-container {
+    margin: 0 calc(10%);
+  }
 }
 
 .main-bg {
@@ -518,8 +493,9 @@ img {
 input[type=text], input[type=password] {
   border: 1px solid #9a9a9a;
 }
+
 .push-footer {
-  height:100vh;
+  height: 100vh;
 }
 
 input[type=text]:focus, input[type=password]:focus {
