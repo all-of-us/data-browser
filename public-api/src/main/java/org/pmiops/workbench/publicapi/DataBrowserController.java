@@ -500,7 +500,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         if (googleAnalyticsServiceImpl != null) {
-            searchTrackEvent("Search", "DomainSearch", query, routeUrl);
+            searchTrackEvent("DataBrowserSearch", "DomainSearch", query, routeUrl);
         }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
@@ -537,7 +537,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }else{
             // This call triggers the event to post the data to google analytics endpoint
             if (googleAnalyticsServiceImpl != null) {
-                searchTrackEvent("Search", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
+                searchTrackEvent("DataBrowserSearch", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
             }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
@@ -634,8 +634,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<QuestionConceptListResponse> getSurveyResults(String surveyConceptId) {
+    public ResponseEntity<QuestionConceptListResponse> getSurveyResults(String surveyConceptId, String query, String routeUrl) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        //Trigger the search event for the search in any of the survey pages
+        if (surveyConceptId == null && !Strings.isNullOrEmpty(query) && !Strings.isNullOrEmpty(routeUrl) && googleAnalyticsServiceImpl != null) {
+            searchTrackEvent("DataBrowserSearch", "SurveySearch", query, routeUrl);
+            QuestionConceptListResponse resp = new QuestionConceptListResponse();
+            return ResponseEntity.ok(resp);
+        }
         /* Set up the age and gender names */
         // Too slow and concept names wrong so we hardcode list
         // List<Concept> genders = conceptDao.findByConceptClassId("Gender");

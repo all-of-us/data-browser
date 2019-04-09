@@ -89,7 +89,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   private getSurveyResults() {
-    this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
+    this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString(), null, null).subscribe({
       next: x => {
         this.surveyResult = x;
         this.survey = this.surveyResult.survey;
@@ -262,6 +262,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
+      this.subscriptions.push(this.api.getSurveyResults(null, this.searchText.value, window.location.href).subscribe());
     }
     this.loading = false;
   }

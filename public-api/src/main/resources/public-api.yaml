@@ -81,8 +81,18 @@ paths:
         - in: query
           name: survey_concept_id
           type: string
-          required: true
+          required: false
           description: survey concept id
+        - in: query
+          name: searchTerm
+          type: string
+          required: false
+          description: search term
+        - in: query
+          name: routeUrl
+          type: string
+          required: false
+          description: route url in which the event has occurred
       responses:
         200:
           description: A collection of survey modules
