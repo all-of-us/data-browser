@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import {
   CdrVersion, DataBrowserService, DomainInfosAndSurveyModulesResponse
 } from 'publicGenerated';
@@ -11,6 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
+import { environment } from '../../../environments/environment';
 import { ConceptGroup } from '../../utils/conceptGroup';
 import { DbConfigService } from '../../utils/db-config.service';
 import { TooltipService } from '../../utils/tooltip.service';
