@@ -569,7 +569,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
                 response.setMatchedConceptName(con.getConceptName());
             }
-
         }
 
         if(response.getMatchType() == null && response.getStandardConcepts() == null){
