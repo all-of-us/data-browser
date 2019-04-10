@@ -60,6 +60,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     private router: Router,
     public dbc: DbConfigService,
     public tooltipText: TooltipService) {
+    this.dbc.getGenderAnalysisResults();
     this.route.params.subscribe(params => {
       this.dataType = params.dataType;
     });
