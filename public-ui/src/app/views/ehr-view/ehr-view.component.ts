@@ -10,6 +10,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
+import { MatchType } from '../../../publicGenerated';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../publicGenerated/model/domain';
@@ -302,5 +303,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public changeResults(e) {
     this.loadPage();
+  }
+
+  public getTerm() {
+    if (this.searchResult.matchType === MatchType.ID ||
+      this.searchResult.matchType === MatchType.CODE) {
+      return this.searchResult.matchedConceptName;
+    }
+    return this.searchText.value;
   }
 }
