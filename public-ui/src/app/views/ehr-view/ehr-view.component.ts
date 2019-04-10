@@ -10,6 +10,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
+import { MatchType } from '../../../publicGenerated';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../publicGenerated/model/domain';
@@ -54,8 +55,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
-  matchType: string;
-  matchedConceptName: string;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -177,7 +176,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
-    this.matchType = this.searchResult.matchType.toString();
     this.matchedConceptName = this.searchResult.matchedConceptName;
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
@@ -310,8 +308,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public getTerm() {
-    if (this.matchType === 'CONCEPT_ID' || this.matchType === 'CONCEPT_CODE') {
-      return this.matchedConceptName;
+    if (this.searchResult.matchType === MatchType.ID || this.searchResult.matchType === MatchType.CODE) {
+      return this.searchResult.matchedConceptName;
     }
     return this.searchText.value;
   }
