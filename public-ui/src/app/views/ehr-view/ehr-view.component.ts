@@ -135,7 +135,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({
-          next: results => this.searchCallback(results)
+          next: results => this.searchCallback(results),
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
