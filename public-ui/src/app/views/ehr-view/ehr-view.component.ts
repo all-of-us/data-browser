@@ -55,6 +55,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
+  searchString: string;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -69,6 +70,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
+    });
+    this.route.queryParams.subscribe(params => {
+      this.prevSearchText = params.searchString;
     });
     this.loadPage();
   }
@@ -90,9 +94,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.items = [];
 
     // Get search text from localStorage
-    this.prevSearchText = localStorage.getItem('searchText');
     if (!this.prevSearchText) {
-      this.prevSearchText = '';
+      this.prevSearchText = localStorage.getItem('searchText');
     }
     this.searchText.setValue(this.prevSearchText);
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
@@ -128,7 +131,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({
-          next: results => this.searchCallback(results),
+          next: results => this.searchCallback(results)
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
@@ -171,6 +174,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { searchString: this.searchText.value },
+        queryParamsHandling: 'merge'
+      });
     this.searchResult = results;
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
