@@ -69,6 +69,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     localStorage.removeItem('searchText');
+    this.dbc.getGenderAnalysisResults();
     this.dbc.getPmGroups().subscribe(results => {
       this.pmConceptGroups = results;
       this.physicalMeasurementsFound = this.matchPhysicalMeasurements(this.prevSearchText);

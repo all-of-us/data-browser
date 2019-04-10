@@ -160,12 +160,14 @@ export class DbConfigService {
   };
 
   constructor(private api: DataBrowserService) {
+  }
+
+  getGenderAnalysisResults() {
     // Load up common simple data needed on pages
     // Get Demographic totals
     this.api.getGenderAnalysis().subscribe(result => {
       this.genderAnalysis = result;
     });
-
   }
 
   getPmGroups(): Observable<ConceptGroup[]> {
