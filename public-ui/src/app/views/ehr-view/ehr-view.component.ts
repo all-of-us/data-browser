@@ -176,7 +176,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
-    this.matchedConceptName = this.searchResult.matchedConceptName;
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
     }
