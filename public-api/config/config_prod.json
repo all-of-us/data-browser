@@ -3,7 +3,7 @@
   "auth": {
     "gsuiteDomain": "researchallofus.org",
     "requireSignIn": true,
-    "enforceRegistered": true
+    "enforceRegistered": false
   },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api.workbench.researchallofus.org",
