@@ -34,9 +34,9 @@
                 <li class="main-menu-item menu-item-has-children">
                   <a href="{{allOfUsUrl}}/about/">About</a>
                     <ul class="sub-menu">
-                      <li [ngClass]="openDAboutResearch?'flip':''" (click)="openDAboutResearch = !openDAboutResearch" class="menu-item menu-item-has-children">
+                      <li [ngClass]="openDAboutResearch?'flip':''" (click)="$event.stopPropagation();openDAboutResearch = !openDAboutResearch" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
-                          <ul [hidden]="!openDAboutResearch" class="sub-menu">
+                          <ul [hidden]="!openDAboutResearch" class="sub-menu" (click)="$event.stopPropagation();">
                             <li class="menu-item">
                               <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
                             </li>
@@ -56,7 +56,7 @@
                       <li class="menu-item">
                         <a [routerLink]="['']">Data Browser</a>
                       </li>
-                      <li [ngClass]="openDData?'flip':''" (click)="openDData = !openDData" class="menu-item menu-item-has-children">
+                      <li [ngClass]="openDData?'flip':''" (click)="$event.stopPropagation();openDData = !openDData" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                           <ul [hidden]="!openDData" class="sub-menu">
                             <li class="menu-item">
