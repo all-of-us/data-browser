@@ -59,10 +59,10 @@
                       <li [ngClass]="openDData?'flip':''" (click)="$event.stopPropagation();openDData = !openDData" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                           <ul [hidden]="!openDData" class="sub-menu">
-                            <li class="menu-item">
-                              <a href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                            <li class="menu-item" (click)="$event.stopPropagation()">
+                              <a  href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
                             </li>
-                            <li class="menu-item">
+                            <li (click)="$event.stopPropagation()" class="menu-item">
                               <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
                             </li>
                           </ul>
