@@ -72,7 +72,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
-      this.prevSearchText = params.searchString;
+      if (params['searchString']) {
+        this.prevSearchText = params.searchString;
+      } else {
+        this.prevSearchText = '';
+      }
     });
     this.loadPage();
   }
@@ -174,13 +178,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.route,
-        queryParams: { searchString: this.searchText.value },
-        queryParamsHandling: 'merge'
-      });
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { searchString: this.searchText.value }
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     this.searchResult = results;
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);

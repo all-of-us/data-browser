@@ -55,7 +55,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.domainId = params.id.toLowerCase();
     });
     this.route.queryParams.subscribe(params => {
-      this.prevSearchText = params.searchString;
+      if (params['searchString']) {
+        this.prevSearchText = params.searchString;
+      } else {
+        this.prevSearchText = '';
+      }
     });
   }
 
@@ -262,13 +266,21 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.route,
-        queryParams: { searchString: this.searchText.value },
-        queryParamsHandling: 'merge'
-      });
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { searchString: this.searchText.value },
+          queryParamsHandling: 'merge'
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
     if (this.surveyResult) {
