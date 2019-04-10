@@ -191,7 +191,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions" #subChartElement1>
+                        <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
                           <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"></app-survey-chart>
                         </div>
                         <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
@@ -261,8 +261,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions"
-                                   #subChartElement2>
+                              <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions">
                                 <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"></app-survey-chart>
                               </div>
                             </div>
