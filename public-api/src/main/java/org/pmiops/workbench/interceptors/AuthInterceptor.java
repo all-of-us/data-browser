@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.privateworkbench.PrivateWorkbenchService;
-import org.pmiops.workbench.privateworkbench.model.IdVerificationStatus;
 import org.pmiops.workbench.privateworkbench.model.Profile;
+import org.pmiops.workbench.privateworkbench.model.DataAccessLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpHeaders;
@@ -83,8 +83,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     Profile profile = privateWorkbenchService.getMe();
     if (config.auth.enforceRegistered &&
-        profile.getIdVerificationStatus() != IdVerificationStatus.VERIFIED) {
-      log.warning("Account has not been id verified");
+        profile.getDataAccessLevel() != DataAccessLevel.REGISTERED) {
+      log.warning("Account does not have registered access");
       response.sendError(HttpServletResponse.SC_FORBIDDEN);
       return false;
     }
