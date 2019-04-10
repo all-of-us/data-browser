@@ -23,7 +23,7 @@ export class DbHeaderComponent implements OnInit {
   }
 
   public searchHub(form) {
-    window.location.href = `https://www.staging.researchallofus.org/?s=${form.value.s}`;
+    window.location.href = `${this.allOfUsUrl}/?s=${form.value.s}`;
   }
 
   public toggleTopMenu() {
