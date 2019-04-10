@@ -308,6 +308,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public changeResults(e) {
     this.loadPage();
   }
+
   public getTerm() {
     if (this.matchType === 'CONCEPT_ID' || this.matchType === 'CONCEPT_CODE') {
       return this.matchedConceptName;
