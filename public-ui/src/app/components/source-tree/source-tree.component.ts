@@ -16,7 +16,7 @@ import { Component, Input, OnChanges } from '@angular/core';
   styleUrls: ['./source-tree.component.css']
 })
 export class SourceTreeComponent {
-  @Input() rootNode: object;
+  @Input() rootNode;
   @Input() loading = true;
   opened = false;
 }
