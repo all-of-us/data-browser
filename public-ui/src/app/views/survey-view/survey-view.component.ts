@@ -300,19 +300,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     sqa.subExpanded = !sqa.subExpanded;
   }
 
-  public getGraphIntoView(elementName: string) {
-    if (elementName === 'chartElement') {
-      this.chartEl.nativeElement.scrollIntoView(
-        { behavior: 'smooth', block: 'nearest', inline: 'start' });
-    } else if (elementName === 'subChartElement1') {
-      this.subChartEl1.nativeElement.scrollIntoView(
-        { behavior: 'smooth', block: 'nearest', inline: 'start' });
-    } else if (elementName === 'subChartElement2') {
-      this.subChartEl2.nativeElement.scrollIntoView(
-        { behavior: 'smooth', block: 'nearest', inline: 'start' });
-    }
-  }
-
   public changeResults(e) {
     this.loadPage();
   }
