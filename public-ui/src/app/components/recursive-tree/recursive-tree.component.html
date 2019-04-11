@@ -1,14 +1,16 @@
 <ng-container *ngIf="node">
-  <span class="tree-row" [ngClass]="[node.children ? 'hasChildren':'noChildren' , opened ? 'opened':'']"
-  (click)="opened=!opened"><span>{{node.name}}</span> <span class="blue-text">({{node.count | number}})</span></span>
-<div class="children" *ngIf="node.children && opened">
-  <div *ngFor="let child of node.children" class="child">
-    <app-recursive-tree [node]="child">
-    </app-recursive-tree>
-  </div>
-</div>
+  <app-db-spinner [loading]="loading && opened && node.group" [dots]="true"></app-db-spinner>
+  <ng-container *ngIf="node.children && opened">
+    <div *ngFor="let child of node.children; let index = index" class="child">
+      <span class="tree-row" [ngClass]="[child.group ? 'hasChildren':'noChildren' , subOpened && childIndex == index ? 'opened':'']"
+        (click)="$event.stopPropagation();openUp(index,child,node.children)"><span>{{child.name}}</span> <span class="blue-text">
+          ({{child.count | number}})</span></span>
+      <app-recursive-tree class="child" *ngIf="childIndex == index" [childIndex]="index" [opened]="subOpened" [node]="child">
+      </app-recursive-tree>
+    </div>
+  </ng-container>
 </ng-container>
 
 <ng-container *ngIf="!node">
- no data found
+  no data found
 </ng-container>

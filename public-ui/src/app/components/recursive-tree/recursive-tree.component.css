@@ -31,12 +31,12 @@
     color:#216fb4;
 }
 
-.children {
+.child{
     margin-left: 1.5em;
-    display: flex;
-    flex-direction: column;
     font-size: .7rem;
     height: fit-content;
-    justify-content: space-evenly;
 }
 
+app-db-spinner {
+    padding: .25rem;
+}
