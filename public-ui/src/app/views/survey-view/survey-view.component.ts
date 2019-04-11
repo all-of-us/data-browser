@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -49,9 +49,17 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private api: DataBrowserService,
     private tooltipText: TooltipService,
-    public dbc: DbConfigService) {
+    public dbc: DbConfigService,
+              private router: Router) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.prevSearchText = params.search;
+      } else {
+        this.prevSearchText = '';
+      }
     });
   }
 
@@ -66,9 +74,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public loadPage() {
-    this.prevSearchText = localStorage.getItem('searchText');
     if (!this.prevSearchText) {
-      this.prevSearchText = '';
+      this.prevSearchText = localStorage.getItem('searchText');
     }
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
@@ -261,6 +268,21 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { search: this.searchText.value },
+          queryParamsHandling: 'merge'
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
     if (this.surveyResult) {

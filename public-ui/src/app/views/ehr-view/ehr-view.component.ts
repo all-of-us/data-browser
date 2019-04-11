@@ -55,6 +55,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
+  search: string;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -69,6 +70,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.prevSearchText = params.search;
+      } else {
+        this.prevSearchText = '';
+      }
     });
     this.loadPage();
   }
@@ -90,9 +98,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.items = [];
 
     // Get search text from localStorage
-    this.prevSearchText = localStorage.getItem('searchText');
     if (!this.prevSearchText) {
-      this.prevSearchText = '';
+      this.prevSearchText = localStorage.getItem('searchText');
     }
     this.searchText.setValue(this.prevSearchText);
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
@@ -171,6 +178,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { search: this.searchText.value }
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     this.searchResult = results;
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
