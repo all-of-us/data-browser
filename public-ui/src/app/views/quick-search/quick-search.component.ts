@@ -193,27 +193,21 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     return this.api.getDomainSearchResults(query, window.location.href);
   }
 
-  public viewSurvey(r, search: string) {
+  public viewSurvey(r) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
-        if (search) {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')],
-            { queryParams: { search: search } });
-        } else {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')]);
-        }
+        this.router.navigateByUrl('survey/' + idName.conceptName.toLowerCase().replace(' ', '-'));
       }
     });
   }
 
-  public viewEhrDomain(r, search: string) {
+  public viewEhrDomain(r) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
-    this.router.navigate([url], { queryParams: { search: search } });
   }
 
   public setEhrUrl(r) {

@@ -85,10 +85,10 @@
           </span>
           <div class="result-body-item">
             <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
-              (click)="viewEhrDomain(r, searchText.value)">
+              (click)="viewEhrDomain(r)">
               View Top 100 </a>
-            <a [routerLink]="[setEhrUrl(r)]" [queryParams]="{search: searchText.value}" *ngIf="searchText.value" class="result-bottom-link"
-              (click)="viewEhrDomain(r, searchText.value)"> View Results </a>
+            <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link"
+              (click)="viewEhrDomain(r)"> View Results </a>
           </div>
         </div>
       </div>
@@ -124,9 +124,9 @@
             <span>{{r.description}}</span>
           </div>
           <div class="result-body-item">
-            <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r, null)">
+            <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
               View Complete Survey </a>
-            <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r, searchText.value)"> View Results </a>
+            <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r)"> View Results </a>
           </div>
         </div>
       </div>
