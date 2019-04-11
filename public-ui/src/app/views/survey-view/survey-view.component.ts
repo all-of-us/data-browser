@@ -110,11 +110,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.selectedAnalysis = q.genderAnalysis;
           // TODO not displaying the branching logic of race/ ethnicity question for now,
           // might want to remove with when final decision on how to display them is made.
-          if (q.conceptId === 1586140) {
-            for (const a of q.countAnalysis.surveyQuestionResults) {
-              a.subQuestions = null;
-            }
-          }
           for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
