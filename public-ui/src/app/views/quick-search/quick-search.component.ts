@@ -10,6 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
+import { environment } from '../../../environments/environment';
 import { ConceptGroup } from '../../utils/conceptGroup';
 import { DbConfigService } from '../../utils/db-config.service';
 import { TooltipService } from '../../utils/tooltip.service';
@@ -52,6 +53,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   numParticipants: any;
   creationTime: any;
   cdrName: any;
+  allOfUsUrl: string;
 
   private subscriptions: ISubscription[] = [];
 
@@ -70,6 +72,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     localStorage.removeItem('searchText');
+    this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.dbc.getPmGroups().subscribe(results => {
       this.pmConceptGroups = results;
       this.physicalMeasurementsFound = this.matchPhysicalMeasurements(this.prevSearchText);
