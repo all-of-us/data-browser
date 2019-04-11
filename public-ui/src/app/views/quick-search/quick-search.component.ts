@@ -190,14 +190,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     return this.api.getDomainSearchResults(query, window.location.href);
   }
 
-  public viewSurvey(r, searchString: string) {
+  public viewSurvey(r, search: string) {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
-        if (searchString) {
+        if (search) {
           this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')],
-            { queryParams: { searchString: searchString } });
+            { queryParams: { search: search } });
         } else {
           this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')]);
         }
@@ -205,12 +205,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  public viewEhrDomain(r, searchString: string) {
+  public viewEhrDomain(r, search: string) {
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
-    this.router.navigate([url], { queryParams: { searchString: searchString } });
+    this.router.navigate([url], { queryParams: { search: search } });
   }
 
   public setEhrUrl(r) {

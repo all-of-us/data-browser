@@ -55,8 +55,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.domainId = params.id.toLowerCase();
     });
     this.route.queryParams.subscribe(params => {
-      if (params['searchString']) {
-        this.prevSearchText = params.searchString;
+      if (params['search']) {
+        this.prevSearchText = params.search;
       } else {
         this.prevSearchText = '';
       }
@@ -271,7 +271,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         [],
         {
           relativeTo: this.route,
-          queryParams: { searchString: this.searchText.value },
+          queryParams: { search: this.searchText.value },
           queryParamsHandling: 'merge'
         });
     } else {

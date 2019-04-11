@@ -55,7 +55,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
-  searchString: string;
+  search: string;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -72,8 +72,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
-      if (params['searchString']) {
-        this.prevSearchText = params.searchString;
+      if (params['search']) {
+        this.prevSearchText = params.search;
       } else {
         this.prevSearchText = '';
       }
@@ -183,7 +183,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         [],
         {
           relativeTo: this.route,
-          queryParams: { searchString: this.searchText.value }
+          queryParams: { search: this.searchText.value }
         });
     } else {
       this.router.navigate(
