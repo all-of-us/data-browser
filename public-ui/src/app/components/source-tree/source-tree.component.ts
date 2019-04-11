@@ -11,8 +11,8 @@ import { Component, Input, OnChanges } from '@angular/core';
       <span>{{rootNode.name}}</span>
     </span>
     <span class="blue-text">({{rootNode.count | number}})</span>
-    <app-recursive-tree *ngIf="!loading" [opened]="opened" [node]="rootNode"></app-recursive-tree>
-  `,
+      <app-recursive-tree *ngIf="!loading" [opened]="opened" [node]="rootNode">
+      </app-recursive-tree>`,
   styleUrls: ['./source-tree.component.css']
 })
 export class SourceTreeComponent {

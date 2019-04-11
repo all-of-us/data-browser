@@ -8,6 +8,7 @@
 }
 
 .loading-dots {
+    margin-top:.25rem;
     width:2rem;
     display:flex;
     height:auto;
