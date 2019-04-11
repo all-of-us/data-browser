@@ -33,7 +33,6 @@ strong {
 .results {
     padding-top: 36px;
     width: 100%;
-    overflow-x: scroll;
 }
 
 .toggle-link, .toggle-link:link, .toggle-link:visited {
@@ -175,4 +174,13 @@ strong {
 .sub-table-2 {
     margin-left: 2%;
     width: 98%;
+}
+
+@media (max-width: 900px) {
+    .results {
+        overflow-x: scroll;
+    }
+    .question-result .tbl {
+        overflow-x: scroll;
+    }
 }
