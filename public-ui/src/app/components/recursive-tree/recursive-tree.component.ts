@@ -17,8 +17,6 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   constructor(private api: DataBrowserService) { }
 
   ngOnChanges() {
-    console.log(this.opened, this.node);
-
     if (this.node && this.node.group) {
       this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
         .subscribe({
@@ -37,11 +35,13 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
       s.unsubscribe();
     }
   }
-  openUp(i, node, nodes) {
-    this.childIndex = nodes.findIndex(x => x);
-    if (i === this.childIndex) {
-      this.subOpened = !this.subOpened;
+  openUp(index, node, nodes) {
+    for (let i = 0; i < nodes.length; i++) {
+      const item = nodes[i];
+      if (item === node && i === index) {
+        this.childIndex = i;
+        this.subOpened = !this.subOpened;
+      }
     }
   }
-
 }
