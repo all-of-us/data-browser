@@ -9,7 +9,6 @@
 
 .db-card {
     width: 100%;
-    overflow-x: scroll;
 }
 
 .db-card-header {
@@ -125,5 +124,10 @@ aside .button-item button {
     .chart-item {
         width: 100%;
         height: auto;
+    }
+}
+@media (max-width: 550px) {
+    .db-card {
+        overflow-x: scroll;
     }
 }

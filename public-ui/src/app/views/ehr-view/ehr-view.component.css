@@ -30,7 +30,6 @@ h5.secondary-display {
 .results-grid {
     width: 100%;
     background: white;
-    overflow-x: scroll;
 }
 
 .aka-text {
@@ -165,5 +164,10 @@ h5.secondary-display {
     .chart-choice {
         font-size: 4vw;
         padding: 2px;
+    }
+}
+@media (max-width: 900px) {
+    .results-grid {
+        overflow-x: scroll;
     }
 }
