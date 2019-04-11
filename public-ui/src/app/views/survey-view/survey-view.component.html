@@ -47,7 +47,14 @@
           <div class="survey-results" *ngIf="resultsComplete">
             <div class="question-result" *ngFor="let q of questions, let i = index">
               <div class="secondary-display">
-                <div class="box-title"> Question {{q.actualQuestionNumber}}</div>
+                <div class="box-title"> Question {{q.actualQuestionNumber}}
+                  <clr-tooltip *ngIf="q.conceptId === 1586140">
+                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                    <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
+                      <div class="tooltip-label">{{tooltipText.raceEthnicityQuestionHelpText}}</div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
+                </div>
                 <div class="body-default">
                   <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
                 </app-highlight-search>
