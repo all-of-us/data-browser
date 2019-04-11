@@ -118,9 +118,10 @@ export class TooltipService {
      returned for the top level concept.`;
   raceEthnicityQuestionHelpText = `The All of Us Research Program defines race as a person’s
   self-identification with one or more social groups. An individual can report as White, Black or
-  African American, Asian, American Indian and Alaska Native, Native Hawaiian and Other Pacific Islander,
-  or some other race. Survey respondents may report multiple races. Ethnicity determines whether a person
-  is of Hispanic origin or not. Hispanics may report as any race.`;
+  African American, Asian, American Indian and Alaska Native, Native Hawaiian and Other
+  Pacific Islander, or some other race. Survey respondents may report multiple races.
+  Ethnicity determines whether a person is of Hispanic origin or not. Hispanics may report
+  as any race.`;
   constructor() { }
 
 }
