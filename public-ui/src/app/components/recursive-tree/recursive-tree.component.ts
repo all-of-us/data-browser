@@ -36,8 +36,6 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
     }
   }
   openUp(index, node, nodes) {
-    console.log(index, node, nodes);
-    
     for (let i = 0; i < nodes.length; i++) {
       const item = nodes[i];
       if (item === node && i === index) {
