@@ -9,35 +9,35 @@ export class IntroVidsComponent {
 
   videos = [{
     title: 'Participant Intro',
-    downloadUrl: '/assets/videos/big_buck_bunny.mp4',
+    downloadUrl: '',
     poster: '/assets/videos/video_poster.png',
     src: [{
-      url: '/assets/videos/big_buck_bunny.mp4',
+      url: '',
       type: 'video/mp4'
     },
     {
-      url: '/assets/videos/big_buck_bunny.ogv',
+      url: '',
       type: 'video/ogg'
     },
     {
-      url: '/assets/videos/big_buck_bunny.webm',
+      url: '',
       type: 'video/webm'
     }],
   },
   {
     title: 'Researcher Intro',
-    downloadUrl: '/assets/videos/big_buck_bunny.mp4',
+    downloadUrl: '',
     poster: '/assets/videos/video_poster.png',
     src: [{
-      url: '/assets/videos/big_buck_bunny.mp4',
+      url: '',
       type: 'video/mp4'
     },
     {
-      url: '/assets/videos/big_buck_bunny.ogv',
+      url: '',
       type: 'video/ogg'
     },
     {
-      url: '/assets/videos/big_buck_bunny.webm',
+      url: '',
       type: 'video/webm'
     }],
   }];
