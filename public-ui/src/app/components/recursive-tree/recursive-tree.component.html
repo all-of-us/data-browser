@@ -8,7 +8,7 @@
           class="blue-text">
           ({{child.count | number}})</span></span>
       <app-recursive-tree class="child" *ngIf="childIndex == index && subOpened" [childIndex]="index"
-        [opened]="childIndex == index ? true:false && subOpened" [node]="child">
+        [opened]="childIndex == index && subOpened" [node]="child">
       </app-recursive-tree>
     </div>
   </ng-container>
