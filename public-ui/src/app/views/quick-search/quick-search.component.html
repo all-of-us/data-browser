@@ -61,7 +61,7 @@
       </clr-tooltip>
     </h5>
     <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
-      <div (click)="viewEhrDomain(r)" class="result-box" *ngFor="let r of domainResults">
+      <div [routerLink]="setEhrUrl(r)" (click)="viewEhrDomain(r)" class="result-box" *ngFor="let r of domainResults">
         <p class="result-box-title">
           {{r.name}}
           <clr-tooltip>
@@ -98,7 +98,7 @@
     </div>
     <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
     <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
-      <div class="result-box" *ngFor="let r of surveyResults">
+      <div (click)="viewSurvey(r)" class="result-box" *ngFor="let r of surveyResults">
         <p class="result-box-title">
           {{r.name}}
           <clr-tooltip>
@@ -138,7 +138,7 @@
     <h5 class="result-heading secondary-display"
       *ngIf="!loading"> Program
       Phyiscal Measurements: </h5>
-    <div class="result-boxes"
+    <div [routerLink]="['physical-measurements']" class="result-boxes"
       *ngIf="physicalMeasurementsFound > 0 && !loading">
       <div id="pm-box" class="result-box">
         <p class="result-box-title">
