@@ -117,7 +117,7 @@
                       </div>
 
                       <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                        <button class="icon-btn" *ngIf="!a.subQuestions">
+                        <button class="icon-btn" *ngIf="!a.subQuestions && a.stratum4 != 'Did not answer'">
                           <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                         </button>
                         <button class="icon-btn" *ngIf="a.subQuestions">
