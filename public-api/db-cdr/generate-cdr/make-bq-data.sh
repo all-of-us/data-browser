@@ -645,12 +645,11 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
 insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
-with in_concepts as
-(select distinct stratum_1 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar1 where ar1.analysis_id in (3101,3102,3107,3108) and ar1.stratum_3 in ('Condition','Procedure')
-)
-select 0,cr.analysis_id,cast(cr.concept_id as string),cast(cr.stratum_1 as string),cr.domain,count_value,0 from
-\`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
-where cast(concept_id as string) not in (select * from in_concepts)
+SELECT 0,t1.analysis_id,cast(t1.concept_id as string),cast(t1.stratum_1 as string),t1.domain,t1.count_value,0
+FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` t1
+LEFT JOIN \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` t2 ON t2.stratum_1 = cast(t1.concept_id as string)
+WHERE t2.stratum_1 IS NULL
+group by t1.analysis_id, t1.concept_id, t1.stratum_1,t1.domain,t1.count_value;
 "
 
 echo "Updating counts in achilles results with the ones generated in criteria stratum"
