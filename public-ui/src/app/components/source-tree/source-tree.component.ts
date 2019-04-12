@@ -18,5 +18,5 @@ import { Component, Input, OnChanges } from '@angular/core';
 export class SourceTreeComponent {
   @Input() rootNode;
   @Input() loading = true;
-  opened = false;
+  opened = true;
 }

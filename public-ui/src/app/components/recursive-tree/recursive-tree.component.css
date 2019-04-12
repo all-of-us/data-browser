@@ -32,11 +32,11 @@
 }
 
 .child{
-    margin-left: 1.5em;
+    margin-left: .5em;
     font-size: .7rem;
     height: fit-content;
 }
 
-app-db-spinner {
-    padding: .25rem;
+app-recursive-tree {
+    display:table;
 }

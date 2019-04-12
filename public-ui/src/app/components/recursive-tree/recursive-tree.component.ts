@@ -40,7 +40,7 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
       const item = nodes[i];
       if (item === node && i === index) {
         this.childIndex = i;
-        this.subOpened = !this.subOpened;
+        this.subOpened = true;
       }
     }
   }
