@@ -683,7 +683,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (conceptPath.size() == 3) {
                     int questionConceptId = conceptPath.get(0);
                     int resultConceptId = conceptPath.get(1);
-
+                    System.out.println(questionConceptId);
                     org.pmiops.workbench.model.QuestionConcept mainQuestion = convertedQuestions.stream().filter(mq -> mq.getConceptId() == questionConceptId).collect(Collectors.toList()).get(0);
                     SurveyQuestionResult matchingSurveyResult = mainQuestion.getCountAnalysis().getSurveyQuestionResults().stream().filter(mr -> mr.getStratum3().equals(String.valueOf(resultConceptId))).collect(Collectors.toList()).get(0);
                     List<org.pmiops.workbench.model.QuestionConcept> mappedSubQuestions = matchingSurveyResult.getSubQuestions();

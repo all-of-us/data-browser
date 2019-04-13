@@ -1541,17 +1541,18 @@ group by co1.measurement_source_concept_id, stratum_2
 "
 
 # Set the survey answer count for all the survey questions that belong to each module
+# For all questions except basics q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,
-Count(*) as count_value, 0 as source_count_value
+Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -1561,7 +1562,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,cast(sq.question_order_number as string) stratum_5,
-Count(*) as count_value,0 as source_count_value
+Count(distinct o.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
