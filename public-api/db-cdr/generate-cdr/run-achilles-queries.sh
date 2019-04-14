@@ -1570,7 +1570,7 @@ where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id n
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Set the survey answer count for basics q2 for the categories american indian, middle eastern, none of these, pacific islander
+# Set the rolled survey answer count for basics q2 for the categories american indian, middle eastern, none of these, pacific islander
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1615,7 +1615,7 @@ where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,o.value_as_number,c.concept_name,p.gender_concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey question answers count by gender for q2
+# Survey question answers count by gender for q2 unrolled
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1790,7 +1790,7 @@ and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=3 and 
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  30+ yr old deciles for q2 unrolled categories
+# Survey Question Answer Count by age decile  30+ yr old deciles for q2 rolled categories
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1807,7 +1807,7 @@ and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=3 and 
 group by sm.concept_id,o.observation_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  90+ yr old deciles
+# Survey Question Answer Count by age decile  90+ yr old deciles for all questions except q2 in basics
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1824,7 +1824,7 @@ and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=9
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  90+ yr old deciles
+# Survey Question Answer Count by age decile  90+ yr old deciles for unrolled categories of q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1841,7 +1841,7 @@ and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=9
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  90+ yr old deciles
+# Survey Question Answer Count by age decile  90+ yr old deciles for rolled categories of q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1858,7 +1858,7 @@ and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=9
 group by sm.concept_id,o.observation_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1
+# Survey Question Answer Count by age decile  <20 yr old decile 1 for all questions except q2 basics
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1876,7 +1876,7 @@ and (extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1
+# Survey Question Answer Count by age decile  <20 yr old decile 1 for unrolled categories of q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1894,7 +1894,7 @@ and (extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1
+# Survey Question Answer Count by age decile  <20 yr old decile 1 for rolled categories of q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
