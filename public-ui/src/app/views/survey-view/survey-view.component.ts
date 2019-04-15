@@ -20,8 +20,7 @@ declare let gtag: Function;
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  graphButtons = ['Biological Sex', 'Gender Identity',
-    'Age When Survey Was Taken'];
+  graphButtons = ['Biological Sex', 'Age When Survey Was Taken'];
   domainId: string;
   title;
   subTitle;
