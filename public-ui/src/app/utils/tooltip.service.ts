@@ -122,6 +122,9 @@ export class TooltipService {
   Pacific Islander, or some other race. Survey respondents may report multiple races.
   Ethnicity determines whether a person is of Hispanic origin or not. Hispanics may report
   as any race.`;
+  q2RolledCategoriesHelpText = `“Other” includes the following categories: American Indian
+  or Alaska Native, Middle Eastern or North African,
+  Native Hawaiian or other Pacific Islander, and None of these describe me.`;
   constructor() { }
 
 }
