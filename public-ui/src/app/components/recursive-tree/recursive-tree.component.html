@@ -1,6 +1,6 @@
 <span class="tree-row" [ngClass]="[node.group ? 'hasChildren':'noChildren' , opened ? 'opened':'']"
   (click)="opened=!opened"><span>{{node.name}}</span> <span class="blue-text">({{node.count | number}})</span></span>
-<app-db-spinner [loading]="loading && opened" [dots]="true"></app-db-spinner>
+<app-db-spinner [loading]="node.group && loading && opened" [dots]="true"></app-db-spinner>
 <div class="children" *ngIf="node.children && opened">
   <div *ngFor="let child of node.children" class="child">
     <app-recursive-tree [node]="child">
