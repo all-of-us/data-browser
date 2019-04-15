@@ -253,7 +253,7 @@
                           <app-db-spinner [loading]="treeLoading" [dots]="true"></app-db-spinner>
                           <ng-container *ngIf="!treeLoading">
                             <div *ngFor="let node of treeData" class="tree-top">
-                              <app-source-tree [loading]="treeLoading" [rootNode]="node"></app-source-tree>
+                              <app-source-tree [rootNode]="node"></app-source-tree>
                             </div>
                           </ng-container>
                         </aside>

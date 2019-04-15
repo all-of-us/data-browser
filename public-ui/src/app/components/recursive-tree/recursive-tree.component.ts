@@ -9,15 +9,13 @@ import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.ser
 })
 export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   @Input() node: any;
-  @Input() opened: boolean;
-  @Input() childIndex: number;
-  loading = true;
-  subOpened = false;
+  @Input() opened = false;
+  @Input() loading = true;
   private subscriptions: ISubscription[] = [];
   constructor(private api: DataBrowserService) { }
 
   ngOnChanges() {
-    if (this.node && this.node.group) {
+    if (this.node.group) {
       this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
         .subscribe({
           next: result => {
@@ -27,21 +25,13 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
             }
           }
         })
-      );
-    }
+        );
+      }
   }
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
     }
   }
-  openUp(index, node, nodes) {
-    for (let i = 0; i < nodes.length; i++) {
-      const item = nodes[i];
-      if (item === node && i === index) {
-        this.childIndex = i;
-        this.subOpened = true;
-      }
-    }
-  }
+
 }
