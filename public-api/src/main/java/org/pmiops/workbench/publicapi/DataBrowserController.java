@@ -456,6 +456,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         List<Criteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId));
         Criteria parent = criteriaList.get(0);
+        if (criteriaList.size() >= 1) {
+            criteriaList.remove(parent);
+        }
         CriteriaParentResponse response = new CriteriaParentResponse();
         response.setParent(TO_CLIENT_CRITERIA.apply(parent));
         Multimap<Long, Criteria> parentCriteria = Multimaps
