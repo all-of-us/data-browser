@@ -485,7 +485,7 @@ group by co1.condition_source_concept_id,stratum_2"
 #group by co1.cause_concept_id,
 #	stratum_2"
 #
-## Death (3102)	Number of persons with a death by death cause concept id by  age decile  <20 yr old decile 1 */
+## Death (3102)	Number of persons with a death by death cause concept id by  age decile 18-30 yr old decile 1 */
 #bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 #"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 #(id, analysis_id, stratum_1, stratum_2, count_value)
@@ -1858,7 +1858,7 @@ and floor((extract(year from o.observation_date) - p.year_of_birth)/10) >=9
 group by sm.concept_id,o.observation_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1 for all questions except q2 basics
+# Survey Question Answer Count by age decile 18-30 yr old decile 1 for all questions except q2 basics
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1876,7 +1876,7 @@ and (extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1 for unrolled categories of q2
+# Survey Question Answer Count by age decile  18-30 yr old decile 1 for unrolled categories of q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1894,7 +1894,7 @@ and (extract(year from o.observation_date) - p.year_of_birth) >= 18 and (extract
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1 for rolled categories of q2
+# Survey Question Answer Count by age decile 18-30 yr old decile 1 for rolled categories of q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
@@ -1946,7 +1946,7 @@ group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum
 order by CAST(sq.question_order_number as int64) asc"
 
 
-# Survey Question Answer Count by age decile  <20 yr old decile 1(value as number not null)
+# Survey Question Answer Count by age decile 18-30 yr old decile 1(value as number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
