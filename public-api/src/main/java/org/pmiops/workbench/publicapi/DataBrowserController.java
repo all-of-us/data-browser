@@ -455,19 +455,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         List<Criteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId));
+        Criteria parent = criteriaList.get(0);
         CriteriaParentResponse response = new CriteriaParentResponse();
+        response.setParent(TO_CLIENT_CRITERIA.apply(parent));
         Multimap<Long, Criteria> parentCriteria = Multimaps
                 .index(criteriaList, Criteria::getParentId);
-        for(Long parentId: parentCriteria.keySet()){
-            List<Criteria> value = new ArrayList<>(parentCriteria.get(parentId));
-            if(value.size() == 1){
-                response.setParent(TO_CLIENT_CRITERIA.apply(value.get(0)));
-            } else {
-                CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-                criteriaListResponse.setItems(value.stream().map(TO_CLIENT_CRITERIA).collect(Collectors.toList()));
-                response.setChildren(criteriaListResponse);
-            }
-        }
+        CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
+        criteriaListResponse.setItems(parentCriteria.get(parent.getParentId()).stream().map(TO_CLIENT_CRITERIA).collect(Collectors.toList()));
+        response.setChildren(criteriaListResponse);
         return ResponseEntity.ok(response);
     }
 
