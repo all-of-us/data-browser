@@ -31,12 +31,12 @@
     color:#216fb4;
 }
 
-.child{
-    margin-left: .5em;
+.children {
+    margin-left: 1.5em;
+    display: flex;
+    flex-direction: column;
     font-size: .7rem;
     height: fit-content;
+    justify-content: space-evenly;
 }
 
-app-recursive-tree {
-    display:table;
-}
