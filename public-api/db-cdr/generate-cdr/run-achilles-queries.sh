@@ -306,7 +306,7 @@ CAST(floor((extract(year from condition_start_date) - p1.year_of_birth)/10) AS S
 COUNT(distinct p1.person_id) as count_value,
 COUNT(distinct p1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id where floor((extract(year from condition_start_date) - p1.year_of_birth)/10) >=3 and floor((extract(year from condition_start_date) - p1.year_of_birth)/10) < 9
-and co1.condition_concept_id != co1.condition_source_concept_id
+and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id, stratum_2"
 
 #Get conditions by age decile id 3102 for the 18-29 group labeled as 2
@@ -335,7 +335,7 @@ COUNT(distinct p1.PERSON_ID) as source_count_value from
 on p1.person_id = co1.person_id
 where (extract(year from condition_start_date) - p1.year_of_birth) > 18
 and (extract(year from condition_start_date) - p1.year_of_birth) < 30
-and co1.condition_concept_id != co1.condition_source_concept_id
+and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id,stratum_2"
 
 # Get the 90+ condition age decile counts
@@ -361,7 +361,7 @@ CAST(floor((extract(year from condition_start_date) - p1.year_of_birth)/10) AS S
 COUNT(distinct p1.person_id) as count_value,
 COUNT(distinct p1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id where floor((extract(year from condition_start_date) - p1.year_of_birth)/10) >=9
-and co1.condition_concept_id != co1.condition_source_concept_id
+and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id, stratum_2"
 
 
@@ -388,7 +388,7 @@ CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING)
 COUNT(distinct p1.person_id) as count_value,
 COUNT(distinct p1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3 and floor((extract(year from current_date()) - p1.year_of_birth)/10) < 9
-and co1.condition_concept_id != co1.condition_source_concept_id
+and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id, stratum_2"
 
 # 90+
@@ -414,7 +414,7 @@ CAST(floor((extract(year from current_date()) - p1.year_of_birth)/10) AS STRING)
 COUNT(distinct p1.person_id) as count_value,
 COUNT(distinct p1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=9
-and co1.condition_concept_id != co1.condition_source_concept_id
+and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id, stratum_2"
 
 #Get conditions by age decile id 3106 for the 18-29 group labeled as 2
@@ -441,7 +441,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co1
 on p1.person_id = co1.person_id
 where (extract(year from current_date()) - p1.year_of_birth) > 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
-and co1.condition_concept_id != co1.condition_source_concept_id
+and co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`)
 group by co1.condition_source_concept_id,stratum_2"
 
 # No death data now per Kayla. Later when we have more data
@@ -621,7 +621,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
 where (floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) >=3 and floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) <9)
-and co1.procedure_concept_id != co1.procedure_source_concept_id
+and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
 # 600 age 90+
@@ -648,7 +648,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from co1.procedure_date) - p1.year_of_birth)/10) >=9
-and co1.procedure_concept_id != co1.procedure_source_concept_id
+and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
 # 600 age 18-29
@@ -678,6 +678,7 @@ COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DAT
 on p1.person_id = co1.person_id
 where (extract(year from co1.procedure_date) - p1.year_of_birth) >= 18 and
 (extract(year from co1.procedure_date) - p1.year_of_birth) < 30
+and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
 # 3106 current age histogram data
@@ -703,7 +704,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3 and floor((extract(year from current_date()) - p1.year_of_birth)/10) < 9
-and co1.procedure_concept_id != co1.procedure_source_concept_id
+and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
 # 3106 current age histogram data 90+
@@ -729,7 +730,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,
 COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=9
-and co1.procedure_concept_id != co1.procedure_source_concept_id
+and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
 # 3106 age 18-29
@@ -758,6 +759,7 @@ COUNT(distinct p1.PERSON_ID) as source_count_value from \`${BQ_PROJECT}.${BQ_DAT
 on p1.person_id = co1.person_id
 where (extract(year from current_date()) - p1.year_of_birth) >= 18 and
 (extract(year from current_date()) - p1.year_of_birth) < 30
+and co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\`)
 group by co1.procedure_source_concept_id, stratum_2"
 
 # Drugs
@@ -878,7 +880,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as sour
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) >=3 and floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) < 9
-and co1.drug_concept_id != co1.drug_source_concept_id
+and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
 # Drug age 90+
@@ -903,7 +905,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as sour
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from co1.drug_exposure_start_date) - p1.year_of_birth)/10) >=9
-and co1.drug_concept_id != co1.drug_source_concept_id
+and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
 # Drug age decile
@@ -931,7 +933,8 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
 where (extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) >= 18 and
-(extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) < 30 and co1.drug_concept_id != drug_source_concept_id
+(extract(year from co1.drug_exposure_start_date) - p1.year_of_birth) < 30
+and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
 # 3106 Drug current age
@@ -956,7 +959,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as sour
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3 and floor((extract(year from current_date()) - p1.year_of_birth)/10) < 9
-and co1.drug_concept_id != co1.drug_source_concept_id
+and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
 # 3106 Drug current age 90+
@@ -981,7 +984,7 @@ COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as sour
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
 where floor((extract(year from current_date()) - p1.year_of_birth)/10) >=9
-and co1.drug_concept_id != co1.drug_source_concept_id
+and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
 # 3106 Drug current age decile 2
@@ -1010,7 +1013,8 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co1
 on p1.person_id = co1.person_id
 where (extract(year from current_date()) - p1.year_of_birth) >= 18 and
-(extract(year from current_date()) - p1.year_of_birth) < 30 and co1.drug_concept_id != drug_source_concept_id
+(extract(year from current_date()) - p1.year_of_birth) < 30
+and co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\`)
 group by co1.drug_source_concept_id, stratum_2"
 
 # 800	(3000) Number of persons with at least one observation occurrence, by observation_concept_id
@@ -1142,7 +1146,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
 where co1.observation_source_concept_id > 0 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) >=3 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) < 9
-and co1.observation_concept_id != co1.observation_source_concept_id
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
@@ -1171,7 +1175,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
 where co1.observation_source_concept_id > 0 and floor((extract(year from co1.observation_date) - p1.year_of_birth)/10) >=9
-and co1.observation_concept_id != co1.observation_source_concept_id
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
@@ -1197,7 +1201,8 @@ COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as sour
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and (extract(year from co1.observation_date) - p1.year_of_birth) >= 18 and (extract(year from co1.observation_date) - p1.year_of_birth) < 30 and co1.observation_concept_id != co1.observation_source_concept_id
+where co1.observation_concept_id > 0 and (extract(year from co1.observation_date) - p1.year_of_birth) >= 18 and (extract(year from co1.observation_date) - p1.year_of_birth) < 30
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
@@ -1226,7 +1231,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
 where co1.observation_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3 and floor((extract(year from current_date()) - p1.year_of_birth)/10) < 9
-and co1.observation_concept_id != co1.observation_source_concept_id
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
@@ -1255,7 +1260,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
 where co1.observation_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=9
-and co1.observation_concept_id != co1.observation_source_concept_id
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
@@ -1281,7 +1286,8 @@ COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as sour
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
 on p1.person_id = co1.person_id
-where co1.observation_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30 and co1.observation_concept_id != co1.observation_source_concept_id
+where co1.observation_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, stratum_2
 "
 
@@ -1396,7 +1402,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
 where co1.measurement_source_concept_id > 0 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) >=3 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) < 9
-and co1.measurement_concept_id!=co1.measurement_source_concept_id
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2"
 
 # Measurement by age deciles 90+
@@ -1424,7 +1430,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
 where co1.measurement_source_concept_id > 0 and floor((extract(year from co1.measurement_date) - p1.year_of_birth)/10) >=9
-and co1.measurement_concept_id!=co1.measurement_source_concept_id
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2"
 
 # Measurement  18 - 29 yr old decile 2
@@ -1452,7 +1458,8 @@ COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_source_concept_id > 0 and (extract(year from co1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from co1.measurement_date) - p1.year_of_birth) < 30 and co1.measurement_concept_id!=co1.measurement_source_concept_id
+where co1.measurement_source_concept_id > 0 and (extract(year from co1.measurement_date) - p1.year_of_birth) >= 18 and (extract(year from co1.measurement_date) - p1.year_of_birth) < 30
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2
 "
 
@@ -1481,7 +1488,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
 where co1.measurement_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=3 and floor((extract(year from current_date()) - p1.year_of_birth)/10) < 9
-and co1.measurement_concept_id!=co1.measurement_source_concept_id
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2"
 
 # 3106 Measurement by current age deciles 90+
@@ -1509,7 +1516,7 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
 where co1.measurement_source_concept_id > 0 and floor((extract(year from current_date()) - p1.year_of_birth)/10) >=9
-and co1.measurement_concept_id!=co1.measurement_source_concept_id
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2"
 
 # 3106 Measurement  current age histogram 18 - 29 yr old decile 2
@@ -1536,7 +1543,8 @@ COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co1
 on p1.person_id = co1.person_id
-where co1.measurement_source_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30 and co1.measurement_concept_id!=co1.measurement_source_concept_id
+where co1.measurement_source_concept_id > 0 and (extract(year from current_date()) - p1.year_of_birth) >= 18 and (extract(year from current_date()) - p1.year_of_birth) < 30
+and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`)
 group by co1.measurement_source_concept_id, stratum_2
 "
 
