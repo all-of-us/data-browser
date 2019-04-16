@@ -1,6 +1,6 @@
 <div class="survey-graph-menu">
   <div *ngFor="let g of graphButtons"
-       [ngClass]="{'active':graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,question)"
+       [ngClass]="{'active':question.graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,question)"
        class="survey-chart-choice">
     <span>{{g}}</span>
     <clr-tooltip>
@@ -13,5 +13,5 @@
 </div>
 <div class="chart">
   <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
-             [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="graphToShow"></app-chart>
+             [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
 </div>

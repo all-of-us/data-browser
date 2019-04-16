@@ -27,6 +27,7 @@ export class SurveyChartComponent implements OnInit {
   public selectGraph(g, q: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
+    q.graphToShow = this.graphToShow;
     switch (g) {
       case GraphType.GenderIdentity:
         q.selectedAnalysis = q.genderIdentityAnalysis;
