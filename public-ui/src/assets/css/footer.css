@@ -1,9 +1,71 @@
-
-.footer-container p {
-    color: white;
-    line-height: 1.3;
+#colophon .widget p {
+    color: #fff;
+    font-size: 16px;
+}
+#colophon .widget-column:not(.footer-boiler) .widget p {
+  font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
+  font-weight: normal;
+}
+#colophon .site-info *,
+#colophon .widget-column.footer-boiler .widget * {
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-weight: normal;
+  font-size: 15px;
+}
+#colophon .widget-column .widget p em {
+  font-family: 'FFUnitStdItalic', 'Helvetica', sans-serif;
+  font-style: normal;
+}
+#colophon .widget-column .widget p strong {
+  font-family: 'FFUnitStdBold', 'Helvetica', sans-serif;
+  font-weight: normal;
+}
+.widget ul {
+  padding: 0;
+  list-style: none;
 }
 
+#colophon .widget-column {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+#colophon .site-info {
+  color: rgba(255,255,255,1);
+  text-align: center;
+}
+#colophon a {
+  color: rgba(190,225,255,1);
+  font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
+  font-weight: normal;
+}
+#colophon strong a,
+#colophon a strong {
+  font-family: 'FFUnitStdBold', 'Helvetica', sans-serif;
+  font-weight: normal;
+}
+#colophon a:hover,
+#colophon a:focus {
+  color: #ffffff;
+}
+.footer-widget .widget a {
+  text-decoration: none;
+}
+.footer-boiler .widget a {
+  text-decoration: underline;
+}
+#colophon .footer-widget .button {
+  min-width: auto;
+  background-color: #ffffff;
+  color: rgba(38,34,98,1);
+  padding: .3rem;
+  width: 100%;
+  max-width: 160px;
+}
+.footer-container p {
+    color: white;
+    line-height: 1.5;
+}
 
 .mc-field-group input, #mce-EMAIL {
     font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
@@ -58,15 +120,25 @@
     margin-block-start: 0;
     padding: 1rem
 }
-#colophon .footer-widget #mc_embed_signup {
-    text-align: left;
-    background: 0 0;
-    position: relative
+#mc_embed_signup {
+  text-align: center;
+  background: transparent;
+  position: relative;
 }
-@media only screen and (min-width: 1168px) {
-  #colophon .footer-widget #mc_embed_signup {
-    text-align: center;
-  }
+#colophon .footer-widget #mc_embed_signup {
+  text-align: left;
+  background: transparent;
+  position: relative;
+}
+#mc_embed_signup .mc-field-group input {
+  height: 50px;
+  min-width: 290px;
+  border: 1px solid;
+  margin-bottom: 5px;
+  vertical-align: text-bottom;
+}
+#mc_embed_signup .clear input {
+  margin-top: 0;
 }
 .button:focus, .button:hover, a:focus, a:hover, button:focus, button:hover {
     color: rgba(33, 111, 180, 1);
@@ -142,14 +214,8 @@
     background-color: #fff;
     color: rgba(38, 34, 98, 1);
     padding: .3rem;
-    margin-top: .6rem;
     width: 100%;
     max-width: 160px
-}
-
-#colophon .footer-widget p {
-    margin-top: 0.6rem;
-    margin-block-end: 0;
 }
 
 .mc-field-group {
@@ -185,7 +251,11 @@
     color: #fff;
     opacity: .6
 }
-
+.social-navigation ul.social-links-menu li:nth-child(1) a svg {
+    width: 28px;
+    height: 28px;
+    padding-bottom: 2px;
+}
 .social-navigation ul.social-links-menu li a svg {
     display: block;
     width: 32px;
@@ -204,7 +274,7 @@
 }
 
 @media only screen and (min-width:768px) {
-    
+
 }
 
 @media only screen and (min-width:1168px) {

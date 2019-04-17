@@ -461,7 +461,7 @@ img {
   max-width: 100%;
   position: relative
 }
-
+/*
 .widget>* {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -471,7 +471,7 @@ img {
   margin: 0;
   text-rendering: optimizeLegibility
 }
-
+*/
 @media only screen and (min-width: 1168px) {
   .breadcrumbs {
     margin: 0 calc(10%);
