@@ -125,12 +125,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             }
           }
           const result = q.countAnalysis.surveyQuestionResults[0];
-          let notAnswerPercent = 0;
           if (didNotAnswerCount <= 0) {
             didNotAnswerCount = 20;
-          } else {
-            notAnswerPercent = this.countPercentage(didNotAnswerCount);
           }
+          const notAnswerPercent = this.countPercentage(didNotAnswerCount);
           const didNotAnswerResult = {
             analysisId: result.analysisId,
             countValue: didNotAnswerCount,

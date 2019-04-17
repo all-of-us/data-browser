@@ -115,7 +115,14 @@
                       </div>
 
                       <div class="info-text tbl-d display-body info-text">
-                        <label class="participant-count">{{a.countValue | number}} </label>
+                        <div class="participant-count" *ngIf="a.countValue <= 20; else Non20Counts;">
+                          &le; {{a.countValue | number}}
+                        </div>
+                        <ng-template #Non20Counts>
+                          <div class="body-lead info-text tbl-d">
+                            {{a.countValue | number}}
+                          </div>
+                        </ng-template>
                       </div>
 
                       <div class=" info-text tbl-d display-body info-text">
@@ -186,7 +193,14 @@
                             </div>
 
                             <div class="info-text tbl-d display-body info-text">
-                              <label class="participant-count">{{sqa.countValue | number}} </label>
+                              <label class="participant-count" *ngIf="sqa.countValue <= 20; else Non20Counts;">
+                                &le; {{sqa.countValue | number}}
+                              </label>
+                              <ng-template #Non20Counts>
+                                <label class="body-lead info-text tbl-d">
+                                  {{sqa.countValue | number}}
+                                </label>
+                              </ng-template>
                             </div>
 
                             <div class=" info-text tbl-d display-body info-text">
