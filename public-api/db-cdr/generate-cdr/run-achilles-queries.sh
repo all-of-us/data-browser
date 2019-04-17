@@ -96,7 +96,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 with person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
 group by person_id,age
 )
@@ -277,7 +277,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with condition_age as
 (select condition_occurrence_id,
-ceil(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by condition_occurrence_id,age
 ),
@@ -318,7 +318,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -514,7 +514,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value,source_count_value)
 with procedure_age as
 (select procedure_occurrence_id,
-ceil(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by procedure_occurrence_id,age
 ),
@@ -556,7 +556,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value,source_count_value)
 with current_person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -695,7 +695,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with drug_age as
 (select drug_exposure_id,
-ceil(TIMESTAMP_DIFF(drug_exposure_start_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(drug_exposure_start_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by drug_exposure_id,age
 ),
@@ -737,7 +737,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -884,7 +884,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2,stratum_3, count_value, source_count_value)
 with ob_age as
 (select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -926,7 +926,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2,stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -1055,7 +1055,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with m_age as
 (select measurement_id,
-ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by measurement_id,age
 ),
@@ -1097,7 +1097,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -1413,7 +1413,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1446,7 +1446,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1478,7 +1478,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1509,7 +1509,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1783,7 +1783,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1815,7 +1815,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 with current_person_age as
 (select person_id,
-ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
