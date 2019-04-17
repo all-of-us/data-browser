@@ -96,12 +96,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 with person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
 group by person_id,age
 )
@@ -282,12 +277,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with condition_age as
 (select condition_occurrence_id,
-case when extract(month from condition_start_date) < (month_of_birth) and extract(day from condition_start_date) < (day_of_birth) then
-(DATE_DIFF(condition_start_date, extract(date from birth_datetime), year) -1)
-when extract(month from condition_start_date) > (month_of_birth) and extract(day from condition_start_date) > (day_of_birth) then
-(DATE_DIFF(condition_start_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(condition_start_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by condition_occurrence_id,age
 ),
@@ -328,12 +318,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -529,12 +514,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value,source_count_value)
 with procedure_age as
 (select procedure_occurrence_id,
-case when extract(month from procedure_date) < (month_of_birth) and extract(day from procedure_date) < (day_of_birth) then
-(DATE_DIFF(procedure_date, extract(date from birth_datetime), year) -1)
-when extract(month from procedure_date) > (month_of_birth) and extract(day from procedure_date) > (day_of_birth) then
-(DATE_DIFF(procedure_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(procedure_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by procedure_occurrence_id,age
 ),
@@ -576,12 +556,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value,source_count_value)
 with current_person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -720,12 +695,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with drug_age as
 (select drug_exposure_id,
-case when extract(month from drug_exposure_start_date) < (month_of_birth) and extract(day from drug_exposure_start_date) < (day_of_birth) then
-(DATE_DIFF(drug_exposure_start_date, extract(date from birth_datetime), year) -1)
-when extract(month from drug_exposure_start_date) > (month_of_birth) and extract(day from drug_exposure_start_date) > (day_of_birth) then
-(DATE_DIFF(drug_exposure_start_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(drug_exposure_start_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(drug_exposure_start_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by drug_exposure_id,age
 ),
@@ -767,12 +737,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -919,12 +884,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2,stratum_3, count_value, source_count_value)
 with ob_age as
 (select observation_id,
-case when extract(month from observation_date) < (month_of_birth) and extract(day from observation_date) < (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) -1)
-when extract(month from observation_date) > (month_of_birth) and extract(day from observation_date) > (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -966,12 +926,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2,stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -1100,12 +1055,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with m_age as
 (select measurement_id,
-case when extract(month from measurement_date) < (month_of_birth) and extract(day from measurement_date) < (day_of_birth) then
-(DATE_DIFF(measurement_date, extract(date from birth_datetime), year) -1)
-when extract(month from measurement_date) > (month_of_birth) and extract(day from measurement_date) > (day_of_birth) then
-(DATE_DIFF(measurement_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(measurement_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by measurement_id,age
 ),
@@ -1147,12 +1097,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with current_person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
@@ -1468,12 +1413,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-case when extract(month from observation_date) < (month_of_birth) and extract(day from observation_date) < (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) -1)
-when extract(month from observation_date) > (month_of_birth) and extract(day from observation_date) > (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1506,12 +1446,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-case when extract(month from observation_date) < (month_of_birth) and extract(day from observation_date) < (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) -1)
-when extract(month from observation_date) > (month_of_birth) and extract(day from observation_date) > (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1543,12 +1478,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-case when extract(month from observation_date) < (month_of_birth) and extract(day from observation_date) < (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) -1)
-when extract(month from observation_date) > (month_of_birth) and extract(day from observation_date) > (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1579,12 +1509,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-case when extract(month from observation_date) < (month_of_birth) and extract(day from observation_date) < (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) -1)
-when extract(month from observation_date) > (month_of_birth) and extract(day from observation_date) > (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1858,12 +1783,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with survey_age as
 (
 select observation_id,
-case when extract(month from observation_date) < (month_of_birth) and extract(day from observation_date) < (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) -1)
-when extract(month from observation_date) > (month_of_birth) and extract(day from observation_date) > (day_of_birth) then
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(observation_date, extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
@@ -1895,12 +1815,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 with current_person_age as
 (select person_id,
-case when extract(month from current_date()) < (month_of_birth) and extract(day from current_date()) < (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) -1)
-when extract(month from current_date()) > (month_of_birth) and extract(day from current_date()) > (day_of_birth) then
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year) +1)
-else
-(DATE_DIFF(current_date(), extract(date from birth_datetime), year)) end as age
+ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365) as age
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 group by person_id,age
 ),
