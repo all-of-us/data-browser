@@ -1,0 +1,16 @@
+:host {
+    display:flex;
+}
+.left {
+    width: calc((100%/12)*3);
+    padding: 1rem;
+    background: #a27db7;
+    color: white;
+    display: flex;
+    justify-content: center;
+    /* font-family: GothamBold, Arial, sans-serif; */
+}
+.right {
+    background: rgba(162, 125, 183, .3);
+    width: calc((100%/12)*9);
+}
