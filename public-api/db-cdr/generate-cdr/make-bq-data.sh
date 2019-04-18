@@ -473,6 +473,20 @@ from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` r
 where r.analysis_id in (3000,2,4,5) and CAST(r.stratum_1 as int64) > "0" group by r.stratum_1) as r
 where r.concept_id = c.concept_id"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+set c.count_value = r.count
+from  (select r.concept_id, est_count as count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` r
+where r.type='SNOMED' and r.subtype='CM' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
+where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+set c.count_value = r.count
+from  (select r.concept_id, est_count as count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` r
+where r.type='SNOMED' and r.subtype='PCS' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
+where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
+
 #Concept prevalence (based on count value and not on source count value)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\`
@@ -608,28 +622,6 @@ join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.domain\` d2
 on d2.domain_id = c.domain_id
 and (c.count_value > 0 or c.source_count_value > 0)
 group by d2.domain_id,c.vocabulary_id"
-
-######################################
-# Updating rolled up counts in concept
-######################################
-echo "Updating rolled up counts of snomed conditions in concept"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set c.count_value=cr.est_count
-from (select cr.concept_id,est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
-WHERE cr.type='SNOMED' and cr.subtype='CM' and cr.synonyms like '%rank1%'
-group by cr.concept_id,est_count) as cr
-where c.concept_id=cr.concept_id and c.domain_id = 'Condition' and c.vocabulary_id = 'SNOMED' "
-
-
-echo "Updating rolled up counts of snomed procedures in concept"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set c.count_value=cr.est_count
-from (select cr.concept_id,est_count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` cr
-WHERE cr.type='SNOMED' and cr.subtype='PCS' and cr.synonyms like '%rank1%'
-group by cr.concept_id,est_count) as cr
-where c.concept_id=cr.concept_id and c.domain_id = 'Procedure' and c.vocabulary_id = 'SNOMED' "
 
 ####################
 # criteria stratum #
