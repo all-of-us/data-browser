@@ -46,7 +46,7 @@ public class QuestionConcept {
         ageStratumNameMap.put("6", "60-69");
         ageStratumNameMap.put("7", "70-79");
         ageStratumNameMap.put("8", "80-89");
-        ageStratumNameMap.put("9", "90+");
+        ageStratumNameMap.put("9", "89+");
 
     }
 
