@@ -17,6 +17,16 @@
                 </div>
               </div><!-- .logo -->
               </div><!-- .site-branding -->
+              <div class="header-widget">
+						          <aside class="widget-area widget-header">
+									      <div class="widget-column header-widget-1">
+                          <section id="text-2" class="widget widget_text">
+                            <div class="textwidget"><p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank" rel="noopener">JoinAllofUs.org</a></p>
+<p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a></p></div>
+                          </section>
+                        </div>
+                      </aside><!-- .widget-area -->
+					    </div><!-- .header-widget -->
               <div class="mobile-nav">
                 <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
                   <span></span>
@@ -34,19 +44,22 @@
                 <li class="main-menu-item menu-item-has-children">
                   <a href="{{allOfUsUrl}}/about/">About</a>
                     <ul class="sub-menu">
+                      <li class="menu-item">
+                        <a href="{{allOfUsUrl}}/about/about-the-research-hub/">About the Research Hub</a>
+                      </li>
                       <li [ngClass]="openDAboutResearch?'flip':''" (click)="$event.stopPropagation();openDAboutResearch = !openDAboutResearch" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
                           <ul [hidden]="!openDAboutResearch" class="sub-menu" (click)="$event.stopPropagation();">
                             <li class="menu-item">
-                              <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
+                              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
                             </li>
                           </ul>
                       </li>
                       <li class="menu-item">
-                        <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
+                        <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
                       </li>
                       <li class="menu-item">
-                        <a href="{{allOfUsUrl}}/about/updates/">Updates</a>
+                        <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
                       </li>
                     </ul>
                 </li>
@@ -54,16 +67,19 @@
                   <a href="{{allOfUsUrl}}/data/">Data</a>
                     <ul class="sub-menu">
                       <li class="menu-item">
+                        <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
+                      </li>
+                      <li class="menu-item">
                         <a [routerLink]="['']">Data Browser</a>
                       </li>
                       <li [ngClass]="openDData?'flip':''" (click)="$event.stopPropagation();openDData = !openDData" class="menu-item menu-item-has-children">
                         <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                           <ul [hidden]="!openDData" class="sub-menu">
                             <li class="menu-item" (click)="$event.stopPropagation()">
-                              <a  href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
                             </li>
                             <li (click)="$event.stopPropagation()" class="menu-item">
-                              <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
+                              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
                             </li>
                           </ul>
                       </li>
@@ -76,7 +92,9 @@
                   <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
                 </li>
                 <li class="icon_search main-menu-item menu-item-has-children">
-                  <a><img src="/assets/icons/icon_search.png" /></a>
+                  <a><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" fill-rule="evenodd" stroke="#262262" stroke-linejoin="round" stroke-width="3">
+					        <path fill="none" d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z"/>
+					        <path stroke-linecap="round" d="M13.848 13.848l5.84 5.84"/></svg></a>
                     <ul class="sub-menu">
                       <li class="menu-item">
                         <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform" action="https://www.staging.researchallofus.org/"><input ngModel type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
@@ -89,11 +107,14 @@
                   <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout" class="main-menu-item menu-item-has-children">
                     <a href="'{{allOfUsUrl}}/about/">About</a>
                       <ul [hidden]="!openAbout" class="sub-menu">
+                        <li class="menu-item">
+                          <a href="{{allOfUsUrl}}/about/about-the-research-hub/">About the Research Hub</a>
+                        </li>
                         <li [ngClass]="openAboutResearch?'flip':''" (click)="$event.stopPropagation();openAboutResearch = !openAboutResearch" class="menu-item menu-item-has-children">
                           <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
                             <ul [hidden]="!openAboutResearch" class="sub-menu">
                               <li class="menu-item">
-                                <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
+                                <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
                               </li>
                             </ul>
                         </li>
@@ -101,7 +122,7 @@
                           <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
                         </li>
                         <li class="menu-item">
-                          <a href="{{allOfUsUrl}}/about/updates/">Updates</a>
+                          <a href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
                         </li>
                       </ul>
                   </li>
@@ -109,16 +130,19 @@
                     <a href="{{allOfUsUrl}}/data/">Data</a>
                       <ul [hidden]="!openDataTools" class="sub-menu">
                         <li class="menu-item">
+                          <a href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
+                        </li>
+                        <li class="menu-item">
                           <a [routerLink]="['']">Data Browser</a>
                         </li>
                         <li [ngClass]="openDataToolsMethods?'flip':''" (click)="$event.stopPropagation();openDataToolsMethods = !openDataToolsMethods" class="menu-item menu-item-has-children">
                           <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                             <ul [hidden]="!openDataToolsMethods" class="sub-menu">
                               <li class="menu-item">
-                                <a href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                                <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
                               </li>
                               <li class="menu-item">
-                                <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
+                                <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
                               </li>
                             </ul>
                         </li>
