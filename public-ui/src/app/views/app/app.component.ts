@@ -168,7 +168,8 @@ export class AppComponent implements OnInit {
   private setGTagInBody() {
     const s = this.doc.createElement('noscript');
     s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id="`
-      + environment.gtagId +  `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+      + environment.gtagId +
+      `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
     const body = this.doc.getElementsByTagName('body')[0];
     body.appendChild(s);
   }
