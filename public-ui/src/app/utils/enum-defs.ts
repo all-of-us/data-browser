@@ -1,5 +1,5 @@
 export enum GraphType {
-  BiologicalSex = 'Biological Sex',
+  BiologicalSex = 'Sex Assigned at Birth',
   GenderIdentity = 'Gender Identity',
   RaceEthnicity = 'Race / Ethnicity',
   Age = 'Age',
