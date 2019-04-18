@@ -51,15 +51,15 @@
                         <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
                           <ul [hidden]="!openDAboutResearch" class="sub-menu" (click)="$event.stopPropagation();">
                             <li class="menu-item">
-                              <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
+                              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
                             </li>
                           </ul>
                       </li>
                       <li class="menu-item">
-                        <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
+                        <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
                       </li>
                       <li class="menu-item">
-                        <a href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
+                        <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
                       </li>
                     </ul>
                 </li>
@@ -67,7 +67,7 @@
                   <a href="{{allOfUsUrl}}/data/">Data</a>
                     <ul class="sub-menu">
                       <li class="menu-item">
-                        <a href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
+                        <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
                       </li>
                       <li class="menu-item">
                         <a [routerLink]="['']">Data Browser</a>
@@ -76,10 +76,10 @@
                         <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                           <ul [hidden]="!openDData" class="sub-menu">
                             <li class="menu-item" (click)="$event.stopPropagation()">
-                              <a  href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
                             </li>
                             <li (click)="$event.stopPropagation()" class="menu-item">
-                              <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
+                              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
                             </li>
                           </ul>
                       </li>
@@ -114,7 +114,7 @@
                           <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
                             <ul [hidden]="!openAboutResearch" class="sub-menu">
                               <li class="menu-item">
-                                <a href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
+                                <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher Workshops and Public Input</a>
                               </li>
                             </ul>
                         </li>
@@ -139,10 +139,10 @@
                           <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
                             <ul [hidden]="!openDataToolsMethods" class="sub-menu">
                               <li class="menu-item">
-                                <a href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+                                <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
                               </li>
                               <li class="menu-item">
-                                <a href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
+                                <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
                               </li>
                             </ul>
                         </li>
