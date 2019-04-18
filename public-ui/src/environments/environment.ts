@@ -5,4 +5,5 @@ export const environment = {
   displayTag: 'Local->Test',
   workbenchUrl: 'http://localhost:4200',
   debug: true,
+  gtagId: 'GTM-MDMBS2P'
 };
