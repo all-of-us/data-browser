@@ -142,7 +142,7 @@ export class AppComponent implements OnInit {
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
   }
-  
+
   private setGtagManager() {
     const s = this.doc.createElement('script');
     s.type = 'text/javascript';
@@ -164,10 +164,11 @@ export class AppComponent implements OnInit {
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
   }
-  
+
   private setGTagInBody() {
     const s = this.doc.createElement('noscript');
-    s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id="` + environment.gtagId +  `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+    s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id="`
+      + environment.gtagId +  `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
     const body = this.doc.getElementsByTagName('body')[0];
     body.appendChild(s);
   }
