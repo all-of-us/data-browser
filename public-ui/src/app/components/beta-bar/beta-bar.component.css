@@ -12,10 +12,12 @@ a {
 
 .left {
     width: calc((100%/12)*3);
-    padding: 1em;
     background: #a27db7;
     color: white;
     display: flex;
+    padding: 0 1rem;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .left span {
@@ -25,14 +27,34 @@ a {
 .right {
     padding: 1em;
     padding-left: 2rem;
-    width: calc((100%/12)*9);
+    width: calc((100%/12) * 9);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.right a {
+    width: fit-content;
+    white-space: nowrap;
 }
 
 @media only screen and (min-width: 1168px) {
+    .right {
+        padding-right: calc(10%);
+    }
     .left {
         padding-left: calc(10%);
     }
+    .right a {
+        padding-right: 1rem;
+    }
     .left span {
         padding-left: 1rem;
+    }
+}
+
+@media only screen and (max-width: 680px) {
+    .right a {
+        flex-grow: 1;
     }
 }
