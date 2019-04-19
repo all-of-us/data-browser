@@ -117,6 +117,11 @@ set count_value =
     end
 where count_value > 0"
 
+# Delete bad values from overall health q 10 (Check the data and remove this query when safe)
+bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+"delete from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` where stratum_2='1585747'
+ and safe_cast(stratum_4 as int64) >= 0 and safe_cast(stratum_4 as int64) <= 10 "
+
 
 #delete concepts with 0 count / source count value
 
