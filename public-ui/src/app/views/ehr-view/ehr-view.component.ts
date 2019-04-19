@@ -116,9 +116,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
       if (this.ehrDomain.name.toLowerCase() === 'measurements') {
-        this.graphButtons = ['Values', 'Biological Sex', 'Age', 'Sources'];
+        this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
       } else {
-        this.graphButtons = ['Biological Sex', 'Age', 'Sources'];
+        this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
         .subscribe(results => this.searchCallback(results));
