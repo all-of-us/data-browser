@@ -473,29 +473,6 @@ from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` r
 where r.analysis_id in (3000,2,4,5) and CAST(r.stratum_1 as int64) > "0" group by r.stratum_1) as r
 where r.concept_id = c.concept_id"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set c.count_value = r.count
-from  (select r.concept_id, est_count as count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` r
-where r.type='SNOMED' and r.subtype='CM' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
-where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set c.count_value = r.count
-from  (select r.concept_id, est_count as count from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria\` r
-where r.type='SNOMED' and r.subtype='PCS' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
-where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
-
-#Concept prevalence (based on count value and not on source count value)
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\`
-set prevalence =
-case when count_value > 0 then round(count_value/$person_count, 2)
-     when source_count_value > 0 then round(source_count_value/$person_count, 2)
-     else 0.00 end
-where count_value > 0 or source_count_value > 0"
-
 ##########################################
 # domain info updates                    #
 ##########################################
