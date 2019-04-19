@@ -1,0 +1,38 @@
+:host {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    font-size: .8em;
+    background: rgba(162, 125, 183, .2);
+}
+
+a {
+    color: #007cbb;
+}
+
+.left {
+    width: calc((100%/12)*3);
+    padding: 1em;
+    background: #a27db7;
+    color: white;
+    display: flex;
+}
+
+.left span {
+    padding-left: .5rem;
+}
+
+.right {
+    padding: 1em;
+    padding-left: 2rem;
+    width: calc((100%/12)*9);
+}
+
+@media only screen and (min-width: 1168px) {
+    .left {
+        padding-left: calc(10%);
+    }
+    .left span {
+        padding-left: 1rem;
+    }
+}

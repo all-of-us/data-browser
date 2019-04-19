@@ -37,6 +37,7 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 (<any>window).StackTrace = StackTrace;
 
 import {ConfigService, DataBrowserService} from 'publicGenerated';
+import { BetaBarComponent } from './components/beta-bar/beta-bar.component';
 import { DbNoResultsComponent } from './components/db-no-results/db-no-results.component';
 import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
@@ -99,6 +100,7 @@ export function getConfigService(http: Http) {
     SourceTreeComponent,
     RecursiveTreeComponent,
     IntroVidsComponent,
+    BetaBarComponent,
   ],
   providers: [
     {
