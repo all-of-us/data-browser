@@ -933,7 +933,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Set<String> uniqueAgeDeciles = new TreeSet<String>();
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
-            uniqueAgeDeciles.add(ar.getStratum2());
+            if (ar.getStratum2() != null && !ar.getStratum2().equals('0')) {
+                uniqueAgeDeciles.add(ar.getStratum2());
+            }
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
             }
@@ -943,7 +945,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
             completeAgeDeciles.removeAll(uniqueAgeDeciles);
             for(String missingAgeDecile: completeAgeDeciles){
-                AchillesResult missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, 0L, 0L);
+                AchillesResult missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, 20L, 20L);
                 missingResult.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(missingAgeDecile));
                 aa.getResults().add(missingResult);
             }

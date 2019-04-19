@@ -85,13 +85,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           fontSize: '12px',
           color: '#262262'
         },
-        // formatter: function(tooltip) {
-        //   if (this.point.y <= 20) {
-        //     return this.point.name + ' <= ' + '<b>' + this.point.y + '</b>';
-        //   }
-        //   // If not <= 20, use the default formatter
-        //   return tooltip.defaultFormatter.call(this, tooltip);
-        // }
+        formatter: function(tooltip) {
+            if (this.point.y <= 20) {
+               return this.point.name + '<b> <= ' + this.point.y + '</b>';
+             }
+             // If not <= 20, use the default formatter
+             return tooltip.defaultFormatter.call(this, tooltip);
+        }
       },
       plotOptions: {
         series: {
