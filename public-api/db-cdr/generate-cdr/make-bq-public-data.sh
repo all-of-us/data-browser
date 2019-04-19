@@ -76,6 +76,30 @@ fi
 q="select count_value from \`${PUBLIC_PROJECT}.${PUBLIC_DATASET}.achilles_results\` a where a.analysis_id = 1"
 person_count=$(bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql "$q" |  tr -dc '0-9')
 
+bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+"Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
+set c.count_value = r.count
+from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.criteria\` r
+where r.type='SNOMED' and r.subtype='CM' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
+where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
+
+bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+"Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
+set c.count_value = r.count
+from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.criteria\` r
+where r.type='SNOMED' and r.subtype='PCS' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
+where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
+
+#Concept prevalence (based on count value and not on source count value)
+bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+"Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`
+set prevalence =
+case when count_value > 0 then round(count_value/$person_count, 2)
+     when source_count_value > 0 then round(source_count_value/$person_count, 2)
+     else 0.00 end
+where count_value > 0 or source_count_value > 0"
+
+
 # achilles_results
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
@@ -143,7 +167,7 @@ set est_count =
     case when est_count < ${BIN_SIZE}
         then ${BIN_SIZE}
     else
-        cast(ROUND(est_count / ${BIN_SIZE}) * ${BIN_SIZE} as int64)
+        cast(CEIL(est_count / ${BIN_SIZE}) * ${BIN_SIZE} as int64)
     end
 where est_count > 0"
 
