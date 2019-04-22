@@ -933,7 +933,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Set<String> uniqueAgeDeciles = new TreeSet<String>();
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
-            if (ar.getStratum2() != null && !ar.getStratum2().equals('0')) {
+            if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
                 uniqueAgeDeciles.add(ar.getStratum2());
             }
             if (analysisStratumName == null || analysisStratumName.equals("")) {
