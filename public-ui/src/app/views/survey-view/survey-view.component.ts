@@ -278,15 +278,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public filterResults() {
     if (this.searchText.value) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'domainPageSearch',
         'category': 'Search Inside Domain' + ' ' + this.survey.name,
         'landingSearchTerm': this.searchText.value
       });
     } else {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'top100',
         'category': 'Top 100',
         'action': 'Click',

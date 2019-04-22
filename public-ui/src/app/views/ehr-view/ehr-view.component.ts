@@ -190,15 +190,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public searchDomain(query: string) {
     if (query) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'domainPageSearch',
         'category': 'Search Inside Domain' + ' ' + this.ehrDomain.domain,
         'landingSearchTerm': query
       });
     } else {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'top100',
         'category': 'Top 100',
         'action': 'Click',

@@ -176,8 +176,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    window['dataLayer'].push({
       'event': 'searchOnLandingPage',
       'category': 'search across domains',
       'landingSearchTerm': query
@@ -201,8 +200,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewSurvey(r) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    window['dataLayer'].push({
       'event': 'domainTileClick',
       'domain': r.name
     });
@@ -216,8 +214,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewEhrDomain(r) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    window['dataLayer'].push({
       'event': 'domainTileClick',
       'domain': r.domain
     });
@@ -244,8 +241,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public fetchLandingPageSubtitle() {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    window['dataLayer'].push({
       'event': 'tooltipsHover',
       'category': 'Tooltips hover',
       'tooltipsHoverAction': 'Tooltip Homepage search across data'
@@ -255,8 +251,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public triggerHelpEvent(label: string) {
     if (label === 'FAQ') {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'HelpEvent',
         'category': 'FAQs',
         'helpAction': 'click',
@@ -264,8 +259,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
       window.location.href = this.allOfUsUrl + '/frequently-asked-questions/';
     } else if (label === 'IntroVideos') {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'HelpEvent',
         'category': 'Intro videos',
         'helpAction': 'click',
@@ -273,8 +267,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
       this.router.navigate(['introductory-videos']);
     } else if (label === 'UserGuide') {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window['dataLayer'].push({
         'event': 'HelpEvent',
         'category': 'User Guide',
         'helpAction': 'click',
