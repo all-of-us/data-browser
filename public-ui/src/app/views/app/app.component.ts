@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    window['dataLayer'] = window['dataLayer'] || {};
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
     this.serverConfigService.getConfig().subscribe((config) => {
