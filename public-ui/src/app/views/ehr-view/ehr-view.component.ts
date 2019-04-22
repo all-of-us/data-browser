@@ -68,6 +68,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit() {
+    window['dataLayer'] = window['dataLayer'] || {};
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });

@@ -69,6 +69,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window['dataLayer'] = window['dataLayer'] || {};
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     localStorage.removeItem('searchText');

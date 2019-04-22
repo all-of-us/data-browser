@@ -53,6 +53,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window['dataLayer'] = window['dataLayer'] || {};
     this.loadPage();
   }
 
