@@ -188,6 +188,22 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
+    if (query) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'domainPageSearch',
+        'category': 'Search Inside Domain' + ' ' + this.ehrDomain.domain,
+        'landingSearchTerm': query
+      });
+    } else {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'top100',
+        'category': 'Top 100',
+        'action': 'Click',
+        'label': this.ehrDomain.domain
+      });
+    }
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
