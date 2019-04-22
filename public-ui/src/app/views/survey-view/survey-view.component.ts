@@ -119,8 +119,26 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                   for (const question of subResult.subQuestions) {
                     question.selectedAnalysis = question.genderAnalysis;
+                    question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
+                      if (a1.countValue > a2.countValue) {
+                        return -1;
+                      }
+                      if (a1.countValue < a2.countValue) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                 }
+                subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
+                  if (a1.countValue > a2.countValue) {
+                    return -1;
+                  }
+                  if (a1.countValue < a2.countValue) {
+                    return 1;
+                  }
+                  return 0;
+                });
               }
             }
           }
