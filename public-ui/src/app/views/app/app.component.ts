@@ -142,7 +142,7 @@ export class AppComponent implements OnInit {
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
   }
-  
+
   private setGtagManager() {
     const s = this.doc.createElement('script');
     s.type = 'text/javascript';
