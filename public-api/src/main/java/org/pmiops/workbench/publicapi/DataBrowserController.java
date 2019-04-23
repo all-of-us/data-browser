@@ -455,17 +455,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         List<Criteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId));
-        Criteria parent = criteriaList.get(0);
-        if (criteriaList.size() >= 1) {
-            criteriaList.remove(parent);
-        }
         CriteriaParentResponse response = new CriteriaParentResponse();
-        response.setParent(TO_CLIENT_CRITERIA.apply(parent));
-        Multimap<Long, Criteria> parentCriteria = Multimaps
-                .index(criteriaList, Criteria::getParentId);
-        CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-        criteriaListResponse.setItems(parentCriteria.get(parent.getParentId()).stream().map(TO_CLIENT_CRITERIA).collect(Collectors.toList()));
-        response.setChildren(criteriaListResponse);
+        if (criteriaList.size() > 0) {
+            Criteria parent = criteriaList.get(0);
+            if (criteriaList.size() >= 1) {
+                criteriaList.remove(parent);
+            }
+            response.setParent(TO_CLIENT_CRITERIA.apply(parent));
+            Multimap<Long, Criteria> parentCriteria = Multimaps
+                    .index(criteriaList, Criteria::getParentId);
+            CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
+            criteriaListResponse.setItems(parentCriteria.get(parent.getParentId()).stream().map(TO_CLIENT_CRITERIA).collect(Collectors.toList()));
+            response.setChildren(criteriaListResponse);
+            return ResponseEntity.ok(response);
+        }
         return ResponseEntity.ok(response);
     }
 
