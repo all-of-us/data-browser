@@ -318,11 +318,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     return q.conceptName;
   }
-  
+
   public addDidNotAnswerResult(results: any[], participantCount: number) {
     let didNotAnswerCount = participantCount;
-    for (const result of results) {
-      didNotAnswerCount = didNotAnswerCount - result.countValue;
+    for (const r of results) {
+      didNotAnswerCount = didNotAnswerCount - r.countValue;
     }
     const result = results[0];
     if (didNotAnswerCount <= 0) {
