@@ -125,7 +125,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       return 0;
                     });
                     question.countAnalysis.surveyQuestionResults.push(
-                      this.addDidNotAnswerResult(question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
+                      this.addDidNotAnswerResult(
+                        question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
                     );
                   }
                 }
@@ -139,13 +140,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   return 0;
                 });
                 subQuestion.countAnalysis.surveyQuestionResults.push(
-                  this.addDidNotAnswerResult(subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
+                  this.addDidNotAnswerResult(
+                    subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
                 );
               }
             }
           }
           q.countAnalysis.surveyQuestionResults.push(
-            this.addDidNotAnswerResult(q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
+            this.addDidNotAnswerResult(
+              q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
         }
         this.questions = this.surveyResult.items;
         // Sort count value desc
