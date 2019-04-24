@@ -33,20 +33,12 @@ a {
     flex-wrap: wrap;
 }
 
-.right a {
-    width: fit-content;
-    white-space: nowrap;
-}
-
 @media only screen and (min-width: 1168px) {
     .right {
         padding-right: calc(10%);
     }
     .left {
         padding-left: calc(10%);
-    }
-    .right a {
-        padding-right: 1rem;
     }
     .left span {
         padding-left: 1rem;
