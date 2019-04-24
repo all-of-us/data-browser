@@ -103,9 +103,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           if (q.questions && q.questions.length > 0) {
             q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
           }
-          // Get did not answer count for question and count % for each answer
-          // Todo -- add this to api maybe
-          let didNotAnswerCount = this.survey.participantCount;
           q.selectedAnalysis = q.genderAnalysis;
           // TODO not displaying the branching logic of race/ ethnicity question for now,
           // might want to remove with when final decision on how to display them is made.
