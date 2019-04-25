@@ -184,7 +184,7 @@
   color: #262262;
 }
 
-.chart-choice.active::after {
+.survey-chart-choice.active::after, .chart-choice.active::after {
   content: '';
   position: absolute;
   width: 100%;
