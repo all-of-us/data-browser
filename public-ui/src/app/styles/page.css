@@ -172,6 +172,10 @@
   cursor: pointer;
 }
 
+.chart-choice .tooltip {
+  margin-left:.25rem;
+}
+
 .chart-choice:hover {
   color: #262262;
 }
@@ -210,7 +214,10 @@
 .tbl-r-group .tbl-d:last-of-type {
   width: 5rem;
   white-space: nowrap;
-  text-align: right;
+  text-align: center;
+}
+.tbl-r-group .tbl-d:last-of-type button {
+  width:100%;
 }
 
 .tbl-r.tbl-head {
