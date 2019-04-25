@@ -191,7 +191,7 @@
   height: 5px;
   right: 0;
   background: #216fb4;
-  bottom: -5px;
+  bottom: 0px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -218,7 +218,10 @@
 .tbl-r-group .tbl-d:last-of-type {
   width: 5rem;
   white-space: nowrap;
-  text-align: right;
+  text-align: center;
+}
+.tbl-r-group .tbl-d:last-of-type button {
+  width:100%;
 }
 
 .tbl-r.tbl-head {
