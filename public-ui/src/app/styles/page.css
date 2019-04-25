@@ -176,11 +176,15 @@
   margin-left:.25rem;
 }
 
+.survey-chart-choice .tooltip {
+  margin-left:.25rem;
+}
+
 .chart-choice:hover {
   color: #262262;
 }
 
-.chart-choice.active::after {
+.survey-chart-choice.active::after, .chart-choice.active::after {
   content: '';
   position: absolute;
   width: 100%;
