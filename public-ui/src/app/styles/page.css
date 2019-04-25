@@ -176,6 +176,10 @@
   margin-left:.25rem;
 }
 
+.survey-chart-choice .tooltip {
+  margin-left:.25rem;
+}
+
 .chart-choice:hover {
   color: #262262;
 }
