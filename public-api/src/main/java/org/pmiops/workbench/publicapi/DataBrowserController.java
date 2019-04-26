@@ -500,9 +500,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
         }
 
-        if (googleAnalyticsServiceImpl != null) {
-            searchTrackEvent("DataBrowserSearch", "DomainSearch", query, routeUrl);
-        }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
@@ -536,10 +533,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
         }else{
-            // This call triggers the event to post the data to google analytics endpoint
-            if (googleAnalyticsServiceImpl != null) {
-                searchTrackEvent("DataBrowserSearch", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
-            }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }

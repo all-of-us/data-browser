@@ -96,7 +96,9 @@ export class AppComponent implements OnInit {
         this.setTitleFromRoute(event);
       });
 
-    this.setGTagManager();
+    //this.setGtag();
+    this.setTagManager();
+    this.setTagManagerInBody();
     this.setTCellAgent();
   }
 
@@ -119,7 +121,7 @@ export class AppComponent implements OnInit {
    * This first injects Google's gtag script via iife, then secondarily defines
    * the global gtag function.
    */
-  private setGTagManager() {
+  private setGtag() {
     const s = this.doc.createElement('script');
     s.type = 'text/javascript';
     s.innerHTML =
@@ -139,6 +141,34 @@ export class AppComponent implements OnInit {
       'gtag(\'config\', \'' + environment.gaId + '\');';
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
+  }
+  
+  private setTagManager() {
+    const s = this.doc.createElement('script');
+    s.type = 'text/javascript';
+    s.innerHTML =
+      '(function(w,d,s,l,i){' +
+      'w[l]=w[l]||[];' +
+      'w[l].push({\'gtm.start\':new Date().getTime(),event:\'gtm.js\'});' +
+      'var f=d.getElementsByTagName(s)[0];' +
+      'var j=d.createElement(s);' +
+      'var dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';' +
+      'j.async=true;' +
+      'j.src=\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl;' +
+      'f.parentNode.insertBefore(j,f);' +
+      '})' +
+      '(window, document, \'script\', \'dataLayer\', \'' + environment.gtmId + '\');';
+    const head = this.doc.getElementsByTagName('head')[0];
+    head.appendChild(s);
+  }
+  
+  private setTagManagerInBody() {
+    const s = this.doc.createElement('noscript');
+    s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`
+      + environment.gtmId +
+      `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+    const body = this.doc.getElementsByTagName('body')[0];
+    body.appendChild(s);
   }
 
   private setTCellAgent(): void {

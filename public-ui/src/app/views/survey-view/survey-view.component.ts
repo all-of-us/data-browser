@@ -11,8 +11,6 @@ import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
 
-declare let gtag: Function;
-
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -55,6 +53,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window['dataLayer'] = window['dataLayer'] || {};
     this.loadPage();
   }
 
@@ -278,6 +277,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+    if (this.searchText.value) {
+      window['dataLayer'].push({
+        'event': 'domainPageSearch',
+        'category': 'Search',
+        'action': 'Search Inside Survey' + ' ' + this.survey.name,
+        'landingSearchTerm': this.searchText.value
+      });
+    }
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
     if (this.surveyResult) {
@@ -285,10 +292,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
-      gtag('event', 'SurveySearch', {
-        'event_category': 'DataBrowserSearch',
-        'event_label': this.searchText.value
-      });
     }
     this.loading = false;
   }

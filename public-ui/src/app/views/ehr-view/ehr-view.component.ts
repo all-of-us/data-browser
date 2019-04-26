@@ -68,6 +68,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit() {
+    window['dataLayer'] = window['dataLayer'] || {};
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
@@ -188,6 +189,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
+    if (query) {
+      window['dataLayer'].push({
+        'event': 'domainPageSearch',
+        'category': 'Search',
+        'action': 'Search Inside Domain' + ' ' + this.ehrDomain.name,
+        'landingSearchTerm': query
+      });
+    }
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='

@@ -69,6 +69,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window['dataLayer'] = window['dataLayer'] || {};
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     localStorage.removeItem('searchText');
@@ -175,6 +176,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public searchDomains(query: string) {
+    if (query) {
+      window['dataLayer'].push({
+        'event': 'searchOnLandingPage',
+        'category': 'Search',
+        'action': 'Homepage Search Across Data',
+        'landingSearchTerm': query
+      });
+    }
     this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query);
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
@@ -194,6 +203,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewSurvey(r) {
+    if (!this.prevSearchText) {
+      window['dataLayer'].push({
+        'event': 'domainTileClick',
+        'category': 'Top 100',
+        'action': 'Click',
+        'label': r.name
+      });
+    }
     localStorage.setItem('surveyModule', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     this.dbc.conceptIdNames.forEach(idName => {
@@ -204,6 +221,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewEhrDomain(r) {
+    if (!this.prevSearchText) {
+      window['dataLayer'].push({
+        'event': 'domainTileClick',
+        'category': 'Top 100',
+        'action': 'Click',
+        'label': r.name
+      });
+    }
     localStorage.setItem('ehrDomain', JSON.stringify(r));
     localStorage.setItem('searchText', this.prevSearchText);
     const url = 'ehr/' +
@@ -224,5 +249,43 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
     return this.pmConceptGroups.filter(conceptgroup =>
       conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
+  }
+  
+  public hoverOnTooltip() {
+    window['dataLayer'].push({
+      'event': 'tooltipsHover',
+      'category': 'Tooltips',
+      'action': 'Hover',
+      'label': 'Homepage Search Across Data',
+      'tooltipsHoverAction': 'Tooltip Homepage search across data'
+    });
+  }
+  
+  public iconClickEvent(iconString: string) {
+    if (iconString === 'faq') {
+      window['dataLayer'].push({
+        'event': 'HelpEvent',
+        'category': 'Help',
+        'action': 'Click',
+        'label': 'FAQS'
+      });
+      window.location.href = this.allOfUsUrl+'/frequently-asked-questions/';
+    } else if (iconString === 'introVideos') {
+      window['dataLayer'].push({
+        'event': 'HelpEvent',
+        'category': 'Help',
+        'action': 'Click',
+        'label': 'Intro Videos'
+      });
+      this.router.navigate(['introductory-videos']);
+    } else if (iconString === 'userGuide') {
+      window['dataLayer'].push({
+        'event': 'HelpEvent',
+        'category': 'Help',
+        'action': 'Click',
+        'label': 'User Guide'
+      });
+      //Do not do anything yet
+    }
   }
 }
