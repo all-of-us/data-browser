@@ -206,7 +206,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     if (!this.prevSearchText) {
       window['dataLayer'].push({
         'event': 'domainTileClick',
-        'category': 'Top 100',
+        'category': 'Domain Tile',
         'action': 'Click',
         'label': r.name
       });
@@ -224,7 +224,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     if (!this.prevSearchText) {
       window['dataLayer'].push({
         'event': 'domainTileClick',
-        'category': 'Top 100',
+        'category': 'Domain Tile',
         'action': 'Click',
         'label': r.name
       });

@@ -154,7 +154,9 @@ export class AppComponent implements OnInit {
       'var j=d.createElement(s);' +
       'var dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';' +
       'j.async=true;' +
-      'j.src=\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl;' +
+      'j.src=\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl+ ' +
+      '\'&gtm_auth=' + environment.gtmAuth + 'gtm_preview=' + environment.gtmPreview +
+      '&gtm_cookies_win=x\';' +
       'f.parentNode.insertBefore(j,f);' +
       '})' +
       '(window, document, \'script\', \'dataLayer\', \'' + environment.gtmId + '\');';
@@ -165,7 +167,8 @@ export class AppComponent implements OnInit {
   private setTagManagerInBody() {
     const s = this.doc.createElement('noscript');
     s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`
-      + environment.gtmId +
+      + environment.gtmId + '&gtm_auth=' + environment.gtmAuth +
+      `&gtm_preview=` + environment.gtmPreview + `&gtm_cookies_win=x"` +
       `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
     const body = this.doc.getElementsByTagName('body')[0];
     body.appendChild(s);

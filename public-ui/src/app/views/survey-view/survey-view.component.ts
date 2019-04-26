@@ -304,11 +304,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.filterResults();
   }
 
-  public toggleAnswer(qid) {
-    if (!this.showAnswer[qid]) {
-      this.showAnswer[qid] = true;
+  public toggleAnswer(q: any) {
+    if (!this.showAnswer[q.conceptId]) {
+      this.showAnswer[q.conceptId] = true;
     } else {
-      this.showAnswer[qid] = false;
+      this.showAnswer[q.conceptId] = false;
+    }
+    if (this.showAnswer[q.conceptId]) {
+      window['dataLayer'].push({
+        'event': 'conceptClick',
+        'category': 'Survey Question',
+        'action': 'Expand to see answers',
+        'label': q.conceptName + ' - ' + this.survey.name,
+        'landingSearchTerm': this.prevSearchText
+      });
     }
   }
 
@@ -329,5 +338,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       q.conceptName = q.conceptName.replace('[INSERT LANGUAGE FROM SU01j]', '');
     }
     return q.conceptName;
+  }
+  
+  public downloadPdf() {
+    window['dataLayer'].push({
+      'event': 'surveyPdfDownload',
+      'category': 'Download',
+      'action': 'Survey ' + ' ' + this.survey.name + ' pdf download'
+    });
   }
 }

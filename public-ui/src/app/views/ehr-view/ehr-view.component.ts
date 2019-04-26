@@ -281,6 +281,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public expandRow(concepts: any[], r: any) {
+    window['dataLayer'].push({
+      'event': 'conceptClick',
+      'category': 'Concept',
+      'action': 'Click',
+      'label': r.conceptName + ' - ' + r.domainId,
+      'landingSearchTerm': this.prevSearchText
+    });
     if (r.expanded) {
       r.expanded = false;
       return;
