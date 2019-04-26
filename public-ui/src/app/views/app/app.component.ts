@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
         this.setTitleFromRoute(event);
       });
 
-    //this.setGtag();
+    // this.setGtag();
     this.setTagManager();
     this.setTagManagerInBody();
     this.setTCellAgent();
@@ -142,7 +142,7 @@ export class AppComponent implements OnInit {
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
   }
-  
+
   private setTagManager() {
     const s = this.doc.createElement('script');
     s.type = 'text/javascript';
@@ -163,7 +163,7 @@ export class AppComponent implements OnInit {
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
   }
-  
+
   private setTagManagerInBody() {
     const s = this.doc.createElement('noscript');
     s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`

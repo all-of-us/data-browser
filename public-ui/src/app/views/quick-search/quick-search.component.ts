@@ -250,7 +250,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     return this.pmConceptGroups.filter(conceptgroup =>
       conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
   }
-  
+
   public hoverOnTooltip() {
     window['dataLayer'].push({
       'event': 'tooltipsHover',
@@ -260,7 +260,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       'tooltipsHoverAction': 'Tooltip Homepage search across data'
     });
   }
-  
+
   public iconClickEvent(iconString: string) {
     if (iconString === 'faq') {
       window['dataLayer'].push({
@@ -269,7 +269,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         'action': 'Click',
         'label': 'FAQS'
       });
-      window.location.href = this.allOfUsUrl+'/frequently-asked-questions/';
+      window.location.href = this.allOfUsUrl + '/frequently-asked-questions/';
     } else if (iconString === 'introVideos') {
       window['dataLayer'].push({
         'event': 'HelpEvent',
@@ -285,7 +285,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         'action': 'Click',
         'label': 'User Guide'
       });
-      //Do not do anything yet
+      // Do not do anything yet
     }
   }
 }

@@ -339,7 +339,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     return q.conceptName;
   }
-  
+
   public downloadPdf() {
     window['dataLayer'].push({
       'event': 'surveyPdfDownload',
