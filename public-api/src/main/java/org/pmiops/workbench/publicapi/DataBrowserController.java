@@ -89,8 +89,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private Provider<CdrVersion> defaultCdrVersionProvider;
     @Autowired
     private ConceptService conceptService;
-    @Autowired
-    private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
