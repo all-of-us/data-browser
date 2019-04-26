@@ -149,6 +149,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.countAnalysis.surveyQuestionResults.push(
             this.addDidNotAnswerResult(
               q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
+          
         }
         this.questions = this.surveyResult.items;
         // Sort count value desc

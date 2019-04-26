@@ -172,18 +172,26 @@
   cursor: pointer;
 }
 
+.chart-choice .tooltip {
+  margin-left:.25rem;
+}
+
+.survey-chart-choice .tooltip {
+  margin-left:.25rem;
+}
+
 .chart-choice:hover {
   color: #262262;
 }
 
-.chart-choice.active::after {
+.survey-chart-choice.active::after, .chart-choice.active::after {
   content: '';
   position: absolute;
   width: 100%;
   height: 5px;
   right: 0;
   background: #216fb4;
-  bottom: -5px;
+  bottom: 0px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -210,7 +218,10 @@
 .tbl-r-group .tbl-d:last-of-type {
   width: 5rem;
   white-space: nowrap;
-  text-align: right;
+  text-align: center;
+}
+.tbl-r-group .tbl-d:last-of-type button {
+  width:100%;
 }
 
 .tbl-r.tbl-head {
