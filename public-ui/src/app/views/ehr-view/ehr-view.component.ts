@@ -316,7 +316,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public getTopResultsSize() {
     if (this.top10Results.length < 10 && this.top10Results.length > 1) {
       return this.top10Results.length + ' ' + this.title;
-    } else if (this.top10Results.length == 1) {
+    } else if (this.top10Results.length === 1) {
       return this.top10Results.length + ' ' + this.title.slice(0, -1);
     }
     return 10;
