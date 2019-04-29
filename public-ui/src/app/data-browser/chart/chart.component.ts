@@ -83,6 +83,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
              return tooltip.defaultFormatter.call(this, tooltip);
         },
         useHTML: true,
+        backgroundColor: '#f0f2f3',
+        borderWidth: '0',
+        shadow: false
       },
       plotOptions: {
         series: {
