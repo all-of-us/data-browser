@@ -537,13 +537,6 @@ a a:link a:visited {
   cursor: pointer;
 }
 
-.highcharts-tooltip>span {
-  background: #f6f6f8;
-  border-radius: 3px;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
-  padding: 8px;
-}
-
 /* get rid of margins on small screens */
 
 @media (max-width: 978px) {
