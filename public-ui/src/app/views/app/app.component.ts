@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
         }
         this.setTitleFromRoute(event);
       });
-    
+
     this.setTagManager();
     this.setTCellAgent();
   }
