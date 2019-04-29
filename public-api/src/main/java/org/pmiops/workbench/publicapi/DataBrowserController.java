@@ -919,11 +919,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             for(String missingGender: completeGenderStratumList){
                 AchillesResult missingResult = null;
                 if (stratum == 1) {
-                    missingResult = new AchillesResult(GENDER_ANALYSIS_ID, missingGender, null, null, null, null, 20L, 20L);
+                    missingResult = new AchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, 20L, 20L);
                 } else if (stratum == 2) {
-                    missingResult = new AchillesResult(GENDER_ANALYSIS_ID, conceptId, missingGender, null, null, null, 20L, 20L);
+                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, null, null, 20L, 20L);
                 } else if (stratum == 3) {
-                    missingResult = new AchillesResult(GENDER_ANALYSIS_ID, conceptId, null, missingGender, null, null, 20L, 20L);
+                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, null, missingGender, null, null, 20L, 20L);
                 }
                 missingResult.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(missingGender));
                 aa.getResults().add(missingResult);
