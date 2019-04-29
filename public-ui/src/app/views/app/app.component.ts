@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
       'var dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';' +
       'j.async=true;' +
       'j.src=\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl+ ' +
-      '\'&gtm_auth=' + environment.gtmAuth + 'gtm_preview=' + environment.gtmPreview +
+      '\'&gtm_auth=' + environment.gtmAuth + '&gtm_preview=' + environment.gtmPreview +
       '&gtm_cookies_win=x\';' +
       'f.parentNode.insertBefore(j,f);' +
       '})' +
