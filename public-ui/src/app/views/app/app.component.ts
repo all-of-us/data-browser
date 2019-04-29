@@ -95,10 +95,8 @@ export class AppComponent implements OnInit {
         }
         this.setTitleFromRoute(event);
       });
-
-    // this.setGtag();
+    
     this.setTagManager();
-    this.setTagManagerInBody();
     this.setTCellAgent();
   }
 
@@ -118,31 +116,8 @@ export class AppComponent implements OnInit {
 
   /**
    * Setting the Google Analytics ID here.
-   * This first injects Google's gtag script via iife, then secondarily defines
-   * the global gtag function.
+   * This first injects Google's gtm script via iife.
    */
-  private setGtag() {
-    const s = this.doc.createElement('script');
-    s.type = 'text/javascript';
-    s.innerHTML =
-      '(function(w,d,s,l,i){' +
-      'w[l]=w[l]||[];' +
-      'var f=d.getElementsByTagName(s)[0];' +
-      'var j=d.createElement(s);' +
-      'var dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';' +
-      'j.async=true;' +
-      'j.src=\'https://www.googletagmanager.com/gtag/js?id=\'+i+dl;' +
-      'f.parentNode.insertBefore(j,f);' +
-      '})' +
-      '(window, document, \'script\', \'dataLayer\', \'' + environment.gaId + '\');' +
-      'window.dataLayer = window.dataLayer || [];' +
-      'function gtag(){dataLayer.push(arguments);}' +
-      'gtag(\'js\', new Date());' +
-      'gtag(\'config\', \'' + environment.gaId + '\');';
-    const head = this.doc.getElementsByTagName('head')[0];
-    head.appendChild(s);
-  }
-
   private setTagManager() {
     const s = this.doc.createElement('script');
     s.type = 'text/javascript';
@@ -162,16 +137,14 @@ export class AppComponent implements OnInit {
       '(window, document, \'script\', \'dataLayer\', \'' + environment.gtmId + '\');';
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
-  }
-
-  private setTagManagerInBody() {
-    const s = this.doc.createElement('noscript');
-    s.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`
+    // Set gtag manager in body in case script in head is not activated
+    const script = this.doc.createElement('noscript');
+    script.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`
       + environment.gtmId + '&gtm_auth=' + environment.gtmAuth +
       `&gtm_preview=` + environment.gtmPreview + `&gtm_cookies_win=x"` +
       `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
     const body = this.doc.getElementsByTagName('body')[0];
-    body.appendChild(s);
+    body.appendChild(script);
   }
 
   private setTCellAgent(): void {

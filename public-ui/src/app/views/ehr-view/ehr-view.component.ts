@@ -68,7 +68,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit() {
-    window['dataLayer'] = window['dataLayer'] || {};
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
@@ -190,12 +189,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public searchDomain(query: string) {
     if (query) {
-      window['dataLayer'].push({
-        'event': 'domainPageSearch',
-        'category': 'Search',
-        'action': 'Search Inside Domain' + ' ' + this.ehrDomain.name,
-        'landingSearchTerm': query
-      });
+      this.dbc.triggerSearchEvent('domainPageSearch', 'Search',
+        'Search Inside Domain ' + this.ehrDomain.name, null, query, null);
     }
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
@@ -281,13 +276,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public expandRow(concepts: any[], r: any) {
-    window['dataLayer'].push({
-      'event': 'conceptClick',
-      'category': 'Concept',
-      'action': 'Click',
-      'label': r.conceptName + ' - ' + r.domainId,
-      'landingSearchTerm': this.prevSearchText
-    });
+    this.dbc.triggerSearchEvent('conceptClick', 'Concept', 'Click',
+      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
     if (r.expanded) {
       r.expanded = false;
       return;

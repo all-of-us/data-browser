@@ -53,7 +53,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    window['dataLayer'] = window['dataLayer'] || {};
     this.loadPage();
   }
 
@@ -278,12 +277,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public filterResults() {
     if (this.searchText.value) {
-      window['dataLayer'].push({
-        'event': 'domainPageSearch',
-        'category': 'Search',
-        'action': 'Search Inside Survey' + ' ' + this.survey.name,
-        'landingSearchTerm': this.searchText.value
-      });
+      this.dbc.triggerSearchEvent('domainPageSearch', 'Search',
+        'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
     }
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
@@ -311,13 +306,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.showAnswer[q.conceptId] = false;
     }
     if (this.showAnswer[q.conceptId]) {
-      window['dataLayer'].push({
-        'event': 'conceptClick',
-        'category': 'Survey Question',
-        'action': 'Expand to see answers',
-        'label': q.conceptName + ' - ' + this.survey.name,
-        'landingSearchTerm': this.prevSearchText
-      });
+      this.dbc.triggerSearchEvent('conceptClick', 'Survey Question', 'Expand to see answers',
+        q.conceptName + ' - ' + this.survey.name,  this.prevSearchText, null);
     }
   }
 
@@ -341,10 +331,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public downloadPdf() {
-    window['dataLayer'].push({
-      'event': 'surveyPdfDownload',
-      'category': 'Download',
-      'action': 'Survey ' + ' ' + this.survey.name + ' pdf download'
-    });
+    this.dbc.triggerSearchEvent('surveyPdfDownload', 'Download',
+      'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
   }
 }
