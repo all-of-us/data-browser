@@ -609,7 +609,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
-        addGenderStratum(genderAnalysis,1);
+        addGenderStratum(genderAnalysis,1, "0");
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
     }
 
@@ -777,7 +777,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (analysisId == COUNT_ANALYSIS_ID) {
                     conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_ANALYSIS_ID){
-                    addGenderStratum(aa,2);
+                    addGenderStratum(aa,2, conceptId);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
@@ -817,7 +817,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             unitSeperateAnalysis.add(aa);
                         }
                     }
-                    addGenderStratum(aa,3);
+                    addGenderStratum(aa,3, conceptId);
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                 }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
@@ -896,17 +896,37 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return bins;
     }
 
-    public void addGenderStratum(AchillesAnalysis aa, int stratum){
+    public void addGenderStratum(AchillesAnalysis aa, int stratum, String conceptId){
+        Set<String> uniqueGenderStratums = new TreeSet<String>();
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName =ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 if (stratum == 1) {
+                    uniqueGenderStratums.add(ar.getStratum1());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum1()));
                 } else if (stratum == 2) {
+                    uniqueGenderStratums.add(ar.getStratum2());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
                 } else if (stratum == 3) {
+                    uniqueGenderStratums.add(ar.getStratum3());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
                 }
+            }
+        }
+        if(uniqueGenderStratums.size() < 3) {
+            Set<String> completeGenderStratumList = new TreeSet<String>(Arrays.asList(new String[] {"8507", "8532", "0"}));
+            completeGenderStratumList.removeAll(uniqueGenderStratums);
+            for(String missingGender: completeGenderStratumList){
+                AchillesResult missingResult = null;
+                if (stratum == 1) {
+                    missingResult = new AchillesResult(GENDER_ANALYSIS_ID, missingGender, null, null, null, null, 20L, 20L);
+                } else if (stratum == 2) {
+                    missingResult = new AchillesResult(GENDER_ANALYSIS_ID, conceptId, missingGender, null, null, null, 20L, 20L);
+                } else if (stratum == 3) {
+                    missingResult = new AchillesResult(GENDER_ANALYSIS_ID, conceptId, null, missingGender, null, null, 20L, 20L);
+                }
+                missingResult.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(missingGender));
+                aa.getResults().add(missingResult);
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
