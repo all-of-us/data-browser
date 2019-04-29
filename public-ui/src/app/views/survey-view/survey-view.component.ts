@@ -277,7 +277,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public filterResults() {
     if (this.searchText.value) {
-      this.dbc.triggerSearchEvent('domainPageSearch', 'Search',
+      this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
     }
     localStorage.setItem('searchText', this.searchText.value);
@@ -306,7 +306,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.showAnswer[q.conceptId] = false;
     }
     if (this.showAnswer[q.conceptId]) {
-      this.dbc.triggerSearchEvent('conceptClick', 'Survey Question', 'Expand to see answers',
+      this.dbc.triggerEvent('conceptClick', 'Survey Question', 'Expand to see answers',
         q.conceptName + ' - ' + this.survey.name,  this.prevSearchText, null);
     }
   }
@@ -331,7 +331,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public downloadPdf() {
-    this.dbc.triggerSearchEvent('surveyPdfDownload', 'Download',
+    this.dbc.triggerEvent('surveyPdfDownload', 'Download',
       'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
   }
 }

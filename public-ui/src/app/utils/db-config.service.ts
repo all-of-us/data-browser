@@ -326,7 +326,7 @@ export class DbConfigService {
     analysis.results = results;
   }
 
-  public triggerSearchEvent(eventName: string, eventCategory: string, eventAction: string,
+  public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
                             eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
       'event': eventName,

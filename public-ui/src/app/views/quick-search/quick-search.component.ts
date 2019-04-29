@@ -176,7 +176,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public searchDomains(query: string) {
     if (query) {
-      this.dbc.triggerSearchEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data',
+      this.dbc.triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data',
         null, query, null);
     }
     this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query);
@@ -199,7 +199,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public viewSurvey(r) {
     if (!this.prevSearchText) {
-      this.dbc.triggerSearchEvent('domainTileClick', 'Domain Tile', 'Click',
+      this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
     }
     localStorage.setItem('surveyModule', JSON.stringify(r));
@@ -213,7 +213,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public viewEhrDomain(r) {
     if (!this.prevSearchText) {
-      this.dbc.triggerSearchEvent('domainTileClick', 'Domain Tile', 'Click',
+      this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
     }
     localStorage.setItem('ehrDomain', JSON.stringify(r));
@@ -239,12 +239,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public hoverOnTooltip() {
-    this.dbc.triggerSearchEvent('tooltipsHover', 'Tooltips', 'Hover',
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       'Homepage Search Across Data', null, 'Tooltip Homepage search across data');
   }
 
   public iconClickEvent(iconString: string) {
-    this.dbc.triggerSearchEvent('HelpEvent', 'Help', 'Click',
+    this.dbc.triggerEvent('HelpEvent', 'Help', 'Click',
       iconString, null, null);
   }
 }

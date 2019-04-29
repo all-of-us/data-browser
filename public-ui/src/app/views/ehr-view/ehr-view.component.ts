@@ -189,7 +189,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public searchDomain(query: string) {
     if (query) {
-      this.dbc.triggerSearchEvent('domainPageSearch', 'Search',
+      this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Domain ' + this.ehrDomain.name, null, query, null);
     }
     // Unsubscribe from our initial search subscription if this is called again
@@ -276,7 +276,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public expandRow(concepts: any[], r: any) {
-    this.dbc.triggerSearchEvent('conceptClick', 'Concept', 'Click',
+    this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
     if (r.expanded) {
       r.expanded = false;
