@@ -39,7 +39,6 @@ export class DbConfigService {
   RACE_ANALYSIS_ID = 3103;
   TO_SUPPRESS_PMS = [3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148,
     903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553];
-  
   /* Colors for chart */
 
   GENDER_COLORS = {
@@ -96,12 +95,10 @@ export class DbConfigService {
     'color': '#f6f6f8', 'font-family': 'GothamBook', 'font-size': '22px',
     'font-weight': '300', 'textOutline': 'none'
   };
-
   MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
 
   pmGroups: ConceptGroup[] = [];
   genderAnalysis: Analysis;
-  
   conceptIdNames = [
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
@@ -328,7 +325,7 @@ export class DbConfigService {
     if (none) { results.push(none); }
     analysis.results = results;
   }
-  
+
   public triggerSearchEvent(eventName: string, eventCategory: string, eventAction: string,
                             eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
