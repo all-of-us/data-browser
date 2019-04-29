@@ -11,8 +11,6 @@ import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
 
-declare let gtag: Function;
-
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
@@ -278,6 +276,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+    if (this.searchText.value) {
+      this.dbc.triggerEvent('domainPageSearch', 'Search',
+        'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
+    }
     localStorage.setItem('searchText', this.searchText.value);
     this.loading = true;
     if (this.surveyResult) {
@@ -285,10 +287,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
-      gtag('event', 'SurveySearch', {
-        'event_category': 'DataBrowserSearch',
-        'event_label': this.searchText.value
-      });
     }
     this.loading = false;
   }
@@ -301,11 +299,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.filterResults();
   }
 
-  public toggleAnswer(qid) {
-    if (!this.showAnswer[qid]) {
-      this.showAnswer[qid] = true;
+  public toggleAnswer(q: any) {
+    if (!this.showAnswer[q.conceptId]) {
+      this.showAnswer[q.conceptId] = true;
     } else {
-      this.showAnswer[qid] = false;
+      this.showAnswer[q.conceptId] = false;
+    }
+    if (this.showAnswer[q.conceptId]) {
+      this.dbc.triggerEvent('conceptClick', 'Survey Question', 'Expand to see answers',
+        q.conceptName + ' - ' + this.survey.name,  this.prevSearchText, null);
     }
   }
 
@@ -326,5 +328,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       q.conceptName = q.conceptName.replace('[INSERT LANGUAGE FROM SU01j]', '');
     }
     return q.conceptName;
+  }
+
+  public downloadPdf() {
+    this.dbc.triggerEvent('surveyPdfDownload', 'Download',
+      'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
   }
 }

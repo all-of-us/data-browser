@@ -12,8 +12,6 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
-declare let gtag: Function;
-
 const routes: Routes = [
   {
     path: 'login',
@@ -113,9 +111,6 @@ export class AppRoutingModule {
 
   constructor(public router: Router) {
     this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        gtag('config', environment.gaId, { 'page_path': event.urlAfterRedirects });
-      }
     });
   }
 }

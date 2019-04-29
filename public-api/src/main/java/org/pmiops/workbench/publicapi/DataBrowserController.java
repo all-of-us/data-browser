@@ -1,7 +1,5 @@
 package org.pmiops.workbench.publicapi;
 
-import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
-import org.springframework.scheduling.annotation.Async;
 import java.util.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -91,8 +89,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private Provider<CdrVersion> defaultCdrVersionProvider;
     @Autowired
     private ConceptService conceptService;
-    @Autowired
-    private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
@@ -500,9 +496,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
         }
 
-        if (googleAnalyticsServiceImpl != null) {
-            searchTrackEvent("DataBrowserSearch", "DomainSearch", query, routeUrl);
-        }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
@@ -536,10 +529,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
         }else{
-            // This call triggers the event to post the data to google analytics endpoint
-            if (googleAnalyticsServiceImpl != null) {
-                searchTrackEvent("DataBrowserSearch", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
-            }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }
@@ -1222,14 +1211,5 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-    }
-
-    @Async("asyncExecutor")
-    public void searchTrackEvent(String category, String event, String label, String page) {
-        try {
-            googleAnalyticsServiceImpl.trackEventToGoogleAnalytics(null, category, event, label, page);
-        } catch (IOException ioException) {
-            logger.severe(String.format("Unable to trigger track event for the search term %s", label));
-        }
     }
 }

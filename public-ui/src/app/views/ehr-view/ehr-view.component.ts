@@ -188,6 +188,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
+    if (query) {
+      this.dbc.triggerEvent('domainPageSearch', 'Search',
+        'Search Inside Domain ' + this.ehrDomain.name, null, query, null);
+    }
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
@@ -272,6 +276,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public expandRow(concepts: any[], r: any) {
+    this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
+      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
     if (r.expanded) {
       r.expanded = false;
       return;
