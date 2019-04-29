@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -67,7 +67,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.dataType = params.dataType;
     });
   }
-  
+
   ngOnInit() {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
