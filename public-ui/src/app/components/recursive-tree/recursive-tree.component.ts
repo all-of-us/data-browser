@@ -15,7 +15,7 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   constructor(private api: DataBrowserService) { }
 
   ngOnChanges() {
-    if (this.node.group) {
+    if (this.node && this.node.group) {
       this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
         .subscribe({
           next: result => {
