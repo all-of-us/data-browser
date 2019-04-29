@@ -173,7 +173,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         categories: options.categories,
         // type: 'category',
         labels: {
-          align: 'right',
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
@@ -208,7 +207,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results,
-        this.analysis.analysisName, 'Sex Assigned at Birth', 'pie');
+        this.analysis.analysisName, 'Sex Assigned at Birth', 'column');
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
@@ -449,7 +448,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: [series],
       categories: cats,
-      pointWidth: this.pointWidth,
+      pointWidth: 20,
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
