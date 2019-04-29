@@ -327,7 +327,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             align: 'right'
           }
         }
-      }
+      },
       pointWidth: this.pointWidth,
       xAxisTitle: null,
       tooltip: { pointFormat: '{point.y}' },
