@@ -330,7 +330,7 @@ export class DbConfigService {
                             eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
       'event': eventName,
-      'category': eventCategory,
+      'category': 'Data Browser ' + eventCategory,
       'action': eventAction,
       'label': eventLabel,
       'landingSearchTerm': searchTerm,
