@@ -44,14 +44,7 @@
       </div>
     </div><!-- .iconlinks -->
   </div><!-- .search-icon-container -->
-  <!-- todo: better loading icon -->
-  <div class="row" *ngIf="loading">
-    <div class="col-xs-12 flex-xs-middle" style="text-align: center">
-      <span class="spinner">
-        Loading...
-      </span>
-    </div>
-  </div>
+  <app-db-spinner [loading]="loading"></app-db-spinner>
   <section class="results">
     <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
       <clr-tooltip>
