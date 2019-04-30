@@ -110,9 +110,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
             this.addMissingBiologicalSexResults(q.genderAnalysis,
-              q.genderAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+              q.genderAnalysis.surveyQuestionResults.
+              filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
             this.addMissingAgeResults(q.ageAnalysis,
-              q.ageAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+              q.ageAnalysis.surveyQuestionResults.
+              filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
             if (a.subQuestions) {
               for (const subQuestion of a.subQuestions) {
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
@@ -132,9 +134,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     for (const subResult2 of question.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions === null)) {
                       this.addMissingBiologicalSexResults(question.genderAnalysis,
-                        question.genderAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                        question.genderAnalysis.surveyQuestionResults.
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
                       this.addMissingAgeResults(question.ageAnalysis,
-                        question.ageAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                        question.ageAnalysis.surveyQuestionResults.
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
                     }
                   }
                 }
@@ -360,7 +364,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         uniqueGenderStratums.push(result.stratum5);
       }
     }
-    let missingGenderStratums = fullGenderStratums.filter(item => uniqueGenderStratums.indexOf(item) < 0);
+    let missingGenderStratums = fullGenderStratums.
+    filter(item => uniqueGenderStratums.indexOf(item) < 0);
     for (const missingStratum of missingGenderStratums) {
       if (results.length > 0) {
         const missingResult = {
