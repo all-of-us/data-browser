@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    localStorage.removeItem('searchText');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
     this.serverConfigService.getConfig().subscribe((config) => {
@@ -160,5 +161,4 @@ export class AppComponent implements OnInit {
   onActivate() {
     window.scroll(0, 0);
   }
-
 }

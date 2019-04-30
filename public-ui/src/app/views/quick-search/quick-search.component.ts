@@ -71,7 +71,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
-    localStorage.removeItem('searchText');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.dbc.getPmGroups().subscribe(results => {
       this.pmConceptGroups = results;
