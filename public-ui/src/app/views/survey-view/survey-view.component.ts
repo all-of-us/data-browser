@@ -105,11 +105,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // Todo -- add this to api maybe
           let didNotAnswerCount = this.survey.participantCount;
           q.selectedAnalysis = q.genderAnalysis;
-          // TODO not displaying the branching logic of race/ ethnicity question for now,
           // might want to remove with when final decision on how to display them is made.
           for (const a of q.countAnalysis.surveyQuestionResults) {
             didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
+            this.addMissingBiologicalSexResults(q.genderAnalysis,
+              q.genderAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+            this.addMissingAgeResults(q.ageAnalysis,
+              q.ageAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
             if (a.subQuestions) {
               for (const subQuestion of a.subQuestions) {
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
@@ -126,6 +129,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       }
                       return 0;
                     });
+                    for (const subResult2 of question.countAnalysis.surveyQuestionResults.
+                    filter(r => r.subQuestions === null)) {
+                      this.addMissingBiologicalSexResults(question.genderAnalysis,
+                        question.genderAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                      this.addMissingAgeResults(question.ageAnalysis,
+                        question.ageAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                    }
                   }
                 }
                 subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
@@ -137,6 +147,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   }
                   return 0;
                 });
+                for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
+                filter(r => r.subQuestions === null)) {
+                  this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
+                    subQuestion.genderAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                  this.addMissingAgeResults(subQuestion.ageAnalysis,
+                    subQuestion.ageAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                }
               }
             }
           }
@@ -285,7 +302,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (this.surveyResult) {
       this.questions = this.surveyResult.items;
     }
-    if (this.searchText.value.length > 0) {
+    if (this.searchText.value && this.searchText.value.length > 0) {
       this.questions = this.questions.filter(this.searchQuestion, this);
     }
     this.loading = false;
@@ -333,5 +350,59 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public downloadPdf() {
     this.dbc.triggerEvent('surveyPdfDownload', 'Download',
       'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
+  }
+  
+  public addMissingBiologicalSexResults(genderAnalysis: any, results: any) {
+    let uniqueGenderStratums: string[] = [];
+    let fullGenderStratums = ['8507', '8532', '0'];
+    for (const result of results) {
+      if (uniqueGenderStratums.indexOf(result.stratum5) <= -1) {
+        uniqueGenderStratums.push(result.stratum5);
+      }
+    }
+    let missingGenderStratums = fullGenderStratums.filter(item => uniqueGenderStratums.indexOf(item) < 0);
+    for (const missingStratum of missingGenderStratums) {
+      if (results.length > 0) {
+        const missingResult = {
+          analysisId: genderAnalysis.analysisId,
+          countValue: 20,
+          countPercent: this.countPercentage(20),
+          stratum1: results[0].stratum1,
+          stratum2: results[0].stratum2,
+          stratum3: results[0].stratum3,
+          stratum4: results[0].stratum4,
+          stratum5: missingStratum,
+          analysisStratumName: this.dbc.GENDER_STRATUM_MAP[missingStratum]
+        };
+        genderAnalysis.surveyQuestionResults.push(missingResult);
+      }
+    }
+  }
+  
+  public addMissingAgeResults(ageAnalysis: any, results: any) {
+    let uniqueAgeStratums: string[] = [];
+    let fullAgeStratums = ['2', '3', '4', '5', '6', '7', '8', '9'];
+    for (const result of results) {
+      if (uniqueAgeStratums.indexOf(result.stratum5) <= -1) {
+        uniqueAgeStratums.push(result.stratum5);
+      }
+    }
+    let missingAgeStratums = fullAgeStratums.filter(item => uniqueAgeStratums.indexOf(item) < 0);
+    for (const missingStratum of missingAgeStratums) {
+      if (results.length > 0) {
+        const missingResult = {
+          analysisId: ageAnalysis.analysisId,
+          countValue: 20,
+          countPercent: this.countPercentage(20),
+          stratum1: results[0].stratum1,
+          stratum2: results[0].stratum2,
+          stratum3: results[0].stratum3,
+          stratum4: results[0].stratum4,
+          stratum5: missingStratum,
+          analysisStratumName: this.dbc.AGE_STRATUM_MAP[missingStratum]
+        };
+        ageAnalysis.surveyQuestionResults.push(missingResult);
+      }
+    }
   }
 }
