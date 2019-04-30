@@ -10,17 +10,17 @@ export class IntroVidsComponent {
   videos = [{
     title: 'Participant Intro',
     downloadUrl: '',
-    poster: '/assets/videos/video_poster.png',
+    poster: '/assets/videos/participant_video_poster.png',
     src: [{
-      url: '',
+      url: '/assets/videos/participant_intro.mp4',
       type: 'video/mp4'
     },
     {
-      url: '',
+      url: '/assets/videos/participant_intro.ogv',
       type: 'video/ogg'
     },
     {
-      url: '',
+      url: '/assets/videos/participant_intro.webm',
       type: 'video/webm'
     }],
   },
