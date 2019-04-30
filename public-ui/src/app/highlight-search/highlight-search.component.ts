@@ -17,23 +17,24 @@ export class HighlightSearchComponent implements OnChanges, OnDestroy {
   ngOnChanges() {
     if (!this.searchTerm) {
       this.words = [this.text];
-    }
-    let searchWords = this.searchTerm.split(new RegExp(',| '));
-    searchWords = searchWords.filter(w => w.length > 0 );
-    searchWords = searchWords.map(word => word.replace(/[&!^\/\\#,+()$~%.'":*?<>{}]/g, ''));
-    this.matchString = new RegExp(searchWords.join('|'));
-    const matches = this.text.match(new RegExp(this.matchString, 'gi'));
-    const splits = this.text.split(new RegExp(this.matchString, 'i'));
-    if (matches) {
-      this.words = [];
-      for (let i = 0; i < matches.length; i++) {
-        this.words.push(splits[i], matches[i]);
-      }
-      if (splits.length > matches.length) {
-        this.words.push(splits[splits.length - 1]);
-      }
     } else {
-      this.words = [this.text];
+      let searchWords = this.searchTerm.split(new RegExp(',| '));
+      searchWords = searchWords.filter(w => w.length > 0 );
+      searchWords = searchWords.map(word => word.replace(/[&!^\/\\#,+()$~%.'":*?<>{}]/g, ''));
+      this.matchString = new RegExp(searchWords.join('|'));
+      const matches = this.text.match(new RegExp(this.matchString, 'gi'));
+      const splits = this.text.split(new RegExp(this.matchString, 'i'));
+      if (matches) {
+        this.words = [];
+        for (let i = 0; i < matches.length; i++) {
+          this.words.push(splits[i], matches[i]);
+        }
+        if (splits.length > matches.length) {
+          this.words.push(splits[splits.length - 1]);
+        }
+      } else {
+        this.words = [this.text];
+      }
     }
   }
   ngOnDestroy() {

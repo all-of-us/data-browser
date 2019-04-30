@@ -39,6 +39,29 @@ export class DbConfigService {
   RACE_ANALYSIS_ID = 3103;
   TO_SUPPRESS_PMS = [3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148,
     903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553];
+
+  GENDER_STRATUM_MAP = {
+    '8507': 'Male',
+    '8532': 'Female',
+    '8521': 'Other',
+    '0': 'Other',
+    '8551': 'Unknown',
+    '8570': 'Ambiguous',
+    '1585849': 'None of these describe me',
+    '1585848': 'Intersex',
+  };
+
+  AGE_STRATUM_MAP = {
+    '2': '18-29',
+    '3': '30-39',
+    '4': '40-49',
+    '5': '50-59',
+    '6': '60-69',
+    '7': '70-79',
+    '8': '80-89',
+    '9': '89+'
+  };
+
   /* Colors for chart */
 
   GENDER_COLORS = {

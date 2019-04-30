@@ -208,7 +208,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeGenderChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'pie');
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'column');
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
