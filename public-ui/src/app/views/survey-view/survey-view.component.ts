@@ -359,14 +359,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public addMissingBiologicalSexResults(genderAnalysis: any, results: any) {
-    let uniqueGenderStratums: string[] = [];
-    let fullGenderStratums = ['8507', '8532', '0'];
+    const uniqueGenderStratums: string[] = [];
+    const fullGenderStratums = ['8507', '8532', '0'];
     for (const result of results) {
       if (uniqueGenderStratums.indexOf(result.stratum5) <= -1) {
         uniqueGenderStratums.push(result.stratum5);
       }
     }
-    let missingGenderStratums = fullGenderStratums.
+    const missingGenderStratums = fullGenderStratums.
     filter(item => uniqueGenderStratums.indexOf(item) < 0);
     for (const missingStratum of missingGenderStratums) {
       if (results.length > 0) {
@@ -387,14 +387,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public addMissingAgeResults(ageAnalysis: any, results: any) {
-    let uniqueAgeStratums: string[] = [];
-    let fullAgeStratums = ['2', '3', '4', '5', '6', '7', '8', '9'];
+    const uniqueAgeStratums: string[] = [];
+    const fullAgeStratums = ['2', '3', '4', '5', '6', '7', '8', '9'];
     for (const result of results) {
       if (uniqueAgeStratums.indexOf(result.stratum5) <= -1) {
         uniqueAgeStratums.push(result.stratum5);
       }
     }
-    let missingAgeStratums = fullAgeStratums.filter(item => uniqueAgeStratums.indexOf(item) < 0);
+    const missingAgeStratums = fullAgeStratums.filter(item => uniqueAgeStratums.indexOf(item) < 0);
     for (const missingStratum of missingAgeStratums) {
       if (results.length > 0) {
         const missingResult = {
