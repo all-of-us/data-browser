@@ -154,9 +154,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                 for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                 filter(r => r.subQuestions === null)) {
                   this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
-                    subQuestion.genderAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                    subQuestion.genderAnalysis.surveyQuestionResults.
+                    filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
                   this.addMissingAgeResults(subQuestion.ageAnalysis,
-                    subQuestion.ageAnalysis.surveyQuestionResults.filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                    subQuestion.ageAnalysis.surveyQuestionResults.
+                    filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
                 }
               }
             }
@@ -355,7 +357,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.dbc.triggerEvent('surveyPdfDownload', 'Download',
       'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
   }
-  
+
   public addMissingBiologicalSexResults(genderAnalysis: any, results: any) {
     let uniqueGenderStratums: string[] = [];
     let fullGenderStratums = ['8507', '8532', '0'];
@@ -383,7 +385,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   public addMissingAgeResults(ageAnalysis: any, results: any) {
     let uniqueAgeStratums: string[] = [];
     let fullAgeStratums = ['2', '3', '4', '5', '6', '7', '8', '9'];
