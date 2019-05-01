@@ -34,7 +34,8 @@
           </ng-template>
         </aside>
       <app-chart
-              *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2)"
+              *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2)
+&& toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
               [genderId]="gender.stratum2"
               [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)" [chartType]="'histogram'"
               [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"></app-chart>
