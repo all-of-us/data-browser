@@ -82,6 +82,7 @@ public class DataBrowserControllerTest {
             .domainId("Measurement")
             .countValue(456L)
             .sourceCountValue(25L)
+            .standardConcept("S")
             .prevalence(0.3F)
             .conceptSynonyms(new ArrayList<String>());
 
