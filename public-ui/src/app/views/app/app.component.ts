@@ -73,10 +73,10 @@ export class AppComponent implements OnInit {
       }
       window.location.reload();
     };
-    console.log('activatedRoute ', this.activatedRoute);
-    console.log('To override the API URLs, try:\n' +
-      'setAllOfUsApiUrl(\'https://host.example.com:1234\')\n' +
-      'setPublicApiUrl(\'https://host.example.com:5678\')');
+    // this log looks useful
+    // console.log('To override the API URLs, try:\n' +
+    //   'setAllOfUsApiUrl(\'https://host.example.com:1234\')\n' +
+    //   'setPublicApiUrl(\'https://host.example.com:5678\')');
 
     // Pick up the global site title from HTML, and (for non-prod) add a tag
     // naming the current environment.
