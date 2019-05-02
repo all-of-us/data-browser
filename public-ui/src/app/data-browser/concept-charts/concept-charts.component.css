@@ -10,3 +10,6 @@
 .m-layout app-chart {
     width: calc((100%/12)*11);
 }
+.no-source-concepts {
+    margin: auto;
+}
