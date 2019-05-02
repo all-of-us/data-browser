@@ -56,6 +56,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   expanded = true;
   treeLoading = false;
   search: string;
+  routeName: string;
+  domainNotFound: boolean;
 
   @ViewChild('chartElement') chartEl: ElementRef;
 
@@ -69,9 +71,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.routeName = params.id;
       this.domainId = this.dbc.routeToDomain[params.id];
     });
-    this.loadPage();
+    if (this.domainId) {
+      this.loadPage();
+    } else {
+      this.domainNotFound = true;
+    }
   }
 
 
