@@ -77,10 +77,13 @@
   <!-- show sources totals  if we want -->
   <!-- SOURCE COLUMN CHART -->
   <ng-container class="chart-container" *ngIf="showGraph === graphType.Sources">
-    <div class="chart" *ngIf="showGraph === graphType.Sources && sourceConcepts && sourceConcepts.length">
+    <div class="chart" *ngIf="showGraph === graphType.Sources && sourceConcepts && sourceConcepts.length > 0">
       <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'">
       </app-chart>
     </div>
+    <ng-container *ngIf="sourceConcepts.length <= 0">
+      No Source Concepts data available
+    </ng-container>
   </ng-container>
 
   <!-- show race totals  if we want -->
