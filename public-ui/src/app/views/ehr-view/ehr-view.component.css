@@ -152,10 +152,15 @@ h5.secondary-display {
 }
 
 .source-layout {
-    display:flex;
+    display: flex;
 }
+
 .source-item {
-    flex-grow:1;
+    flex-grow: 1;
+}
+
+.domain-not-found {
+    padding: 18px;
 }
 
 @keyframes load {
@@ -173,6 +178,7 @@ h5.secondary-display {
         padding: 2px;
     }
 }
+
 @media (max-width: 900px) {
     .results-grid {
         overflow-x: scroll;
