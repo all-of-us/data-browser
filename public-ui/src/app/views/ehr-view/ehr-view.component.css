@@ -158,7 +158,6 @@ h5.secondary-display {
     flex-grow:1;
 }
 
-
 @keyframes load {
     from {
         background: transparent
