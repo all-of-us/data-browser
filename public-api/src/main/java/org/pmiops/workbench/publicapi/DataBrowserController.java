@@ -1031,6 +1031,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
+        if (otherBinMax == null && otherBinMin == null) {
+            if (maleBinMin != null && femaleBinMin != null) {
+                otherBinMin = Math.min(maleBinMin, femaleBinMin);
+            }
+            if (femaleBinMax != null && maleBinMax != null) {
+                otherBinMax = Math.max(maleBinMax, femaleBinMax);
+            }
+        }
+
 
         TreeSet<Float> maleBinRanges = new TreeSet<Float>();
         TreeSet<Float> femaleBinRanges = new TreeSet<Float>();
@@ -1077,27 +1086,27 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         for(float maleRemaining: maleBinRanges){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 0L, 0L);
+            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 20L, 20L);
             aa.addResult(achillesResult);
         }
 
         for(float femaleRemaining: femaleBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
         for(float intersexRemaining: intersexBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
         for(float noneRemaining: noneBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
         for(float otherRemaining: otherBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
