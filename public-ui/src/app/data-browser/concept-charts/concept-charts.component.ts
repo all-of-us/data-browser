@@ -182,7 +182,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       if (genderResults) {
         return genderResults.countValue;
       } else {
-        return 0;
+        return 20;
       }
     } else {
       return gender.countValue;

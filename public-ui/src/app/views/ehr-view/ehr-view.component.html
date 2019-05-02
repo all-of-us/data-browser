@@ -237,8 +237,8 @@
                     </div>
                   </div>
                   <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-                    <div class="row" *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
-                      <div class="col-xs-6">
+                    <div class="source-layout" *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
+                      <div class="source-item">
                         <aside class="source-tree">
                           <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
                           <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
@@ -258,21 +258,23 @@
                           </ng-container>
                         </aside>
                       </div>
-                      <div class="col-xs-6">
+                      <div class="source-item">
                         <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
                         </app-concept-charts>
                       </div>
                     </div>
                   </ng-container>
                   <ng-template #NonRolledUp>
-                    <div class="row">
+                    <div class="source-item">
                       <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
                       </app-concept-charts>
                     </div>
                   </ng-template>
                   <ng-template #NonSourceCharts>
-                    <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-                    </app-concept-charts>
+                      <div class="source-item">
+                          <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                          </app-concept-charts>
+                      </div>
                   </ng-template>
                 </div>
               </div>
