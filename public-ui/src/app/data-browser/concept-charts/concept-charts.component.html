@@ -34,7 +34,8 @@
           </ng-template>
         </aside>
       <app-chart
-              *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2)"
+              *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2)
+&& toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
               [genderId]="gender.stratum2"
               [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)" [chartType]="'histogram'"
               [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"></app-chart>
@@ -76,10 +77,15 @@
   <!-- show sources totals  if we want -->
   <!-- SOURCE COLUMN CHART -->
   <ng-container class="chart-container" *ngIf="showGraph === graphType.Sources">
-    <div class="chart" *ngIf="showGraph === graphType.Sources && sourceConcepts && sourceConcepts.length">
+    <div class="chart" *ngIf="sourceConcepts && sourceConcepts.length > 0; else NoSourceConcepts;">
       <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'">
       </app-chart>
     </div>
+    <ng-template #NoSourceConcepts>
+      <div class="no-source-concepts">
+        No Source Concepts
+      </div>
+    </ng-template>
   </ng-container>
 
   <!-- show race totals  if we want -->
