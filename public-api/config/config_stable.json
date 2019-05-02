@@ -1,7 +1,7 @@
 {
   "auth": {
     "gsuiteDomain": "stable.fake-research-aou.org",
-    "requireSignIn": false,
+    "requireSignIn": true,
     "enforceRegistered": false
   },
   "server": {
