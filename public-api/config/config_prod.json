@@ -2,7 +2,7 @@
 {
   "auth": {
     "gsuiteDomain": "researchallofus.org",
-    "requireSignIn": true,
+    "requireSignIn": false,
     "enforceRegistered": false
   },
   "server": {
