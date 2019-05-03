@@ -36,7 +36,7 @@
                   <h5 id="domain-name" class="primary-display">
                     Showing top {{items.length}}
                   </h5>
-                  <ng-container *ngIf="!searchText.value; else no_search_term">
+                  <ng-container *ngIf="searchText.value.length === 0; else no_search_term">
                     <h5 id="domain-name" class="primary-display">
                       concepts for this domain
                       <clr-tooltip>
@@ -48,7 +48,7 @@
                     </h5>
                   </ng-container>
                   <ng-template #no_search_term>
-                    <h5 id="domain-name" class="primary-display" *ngIf="searchText.value">
+                    <h5 id="domain-name" class="primary-display" *ngIf="searchText.value.length > 0">
                       matching medical concepts
                       <clr-tooltip>
                         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -59,7 +59,7 @@
                     </h5>
                   </ng-template>
                 </span>
-                <h6 *ngIf="searchText.value" class="primary-display medline-link">Interested in general
+                <h6 *ngIf="searchText.value.length > 0" class="primary-display medline-link">Interested in general
                   health information related to "{{getTerm()}}"?
                   <br /><a href="{{medlinePlusLink}}" target="_blank">Search MedlinePlus</a></h6>
               </div>
@@ -288,7 +288,7 @@
         </div>
   </div>
 </div>
-<div *ngIf="!loading && items.length === 0 && searchText.value">
+<div *ngIf="!loading && items.length === 0 && searchText.value.length > 0">
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
