@@ -170,8 +170,12 @@ export class DbConfigService {
     'conditions': 'condition',
     'drug-exposures': 'drug',
     'measurements': 'measurement',
-    'procedures': 'procedure'
+    'procedures': 'procedure',
+    'the-basics': 'the-basics',
+    'overall-health': 'overall-health',
+    'lifestyle': 'lifestyle'
   };
+
   domainToRoute = {
     'condition': 'conditions',
     'drug': 'drug-exposures',
@@ -350,7 +354,7 @@ export class DbConfigService {
   }
 
   public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
-                            eventLabel: string, searchTerm: string, tooltipAction: string) {
+    eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
       'event': eventName,
       'category': 'Data Browser ' + eventCategory,
