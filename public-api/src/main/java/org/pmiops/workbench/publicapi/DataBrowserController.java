@@ -569,7 +569,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Concept> conceptList = new ArrayList(concepts.getContent());
 
         if(response.getStandardConcepts() != null) {
-            conceptList = conceptList.stream().filter(c -> c.getConceptId() != response.getSourceOfStandardConcepts()).collect(Collectors.toList());
+            conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
         }
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {

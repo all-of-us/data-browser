@@ -82,7 +82,6 @@ public class DataBrowserControllerTest {
             .domainId("Measurement")
             .countValue(456L)
             .sourceCountValue(25L)
-            .standardConcept("S")
             .prevalence(0.3F)
             .conceptSynonyms(new ArrayList<String>());
 
@@ -544,7 +543,7 @@ public class DataBrowserControllerTest {
         conceptsIds.add("1585855");
         ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
         List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-        assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
+        assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(2);
         assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
     }
 
