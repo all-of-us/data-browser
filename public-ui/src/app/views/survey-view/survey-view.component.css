@@ -3,6 +3,10 @@ strong {
     color: #302C71;
 }
 
+.survey-not-found {
+    line-height: 1.5rem;
+}
+
 .title-container {
     width: 100%;
 }

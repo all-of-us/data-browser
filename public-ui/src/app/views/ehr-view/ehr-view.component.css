@@ -161,6 +161,7 @@ h5.secondary-display {
 
 .domain-not-found {
     padding: 18px;
+    line-height: 1.5rem;
 }
 
 @keyframes load {

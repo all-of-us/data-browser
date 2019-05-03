@@ -1,6 +1,10 @@
 <div class="db-container">
   <div class="survey-view">
     <div class="page-header">
+        <ng-container *ngIf="surveyNotFound">
+            <h3 class="survey-not-found">The survey "{{routeName}}" was not found.<br> Seach a term below or <a [routerLink]="['']">
+              Go to main search </a> </h3>
+          </ng-container>
       <div class="title-container" *ngIf="survey && survey.conceptId">
         <h1> {{survey.name}} </h1>
         <div class="desc-container">
@@ -8,7 +12,7 @@
           <p class="info-text"><em>Click on each response to view branching logic and age and gender</em></p>
         </div>
       </div>
-      <div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
+      <div *ngIf="!surveyNotFound" class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
       </div>
     </div>
     <div class="search-bar-container">
