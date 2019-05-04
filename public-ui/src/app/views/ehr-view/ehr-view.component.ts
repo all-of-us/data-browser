@@ -37,6 +37,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchResult: ConceptListResponse;
   items: any[] = [];
   standardConcepts: any[] = [];
+  standardConceptIds: number[] = [];
   loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
@@ -180,6 +181,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchResult.standardConcepts) {
       this.standardConcepts = this.searchResult.standardConcepts;
+      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+    } else {
+      this.standardConcepts = [];
     }
     this.top10Results = this.searchResult.items.slice(0, 10);
     // Set the localStorage to empty so making a new search here does not follow to other pages

@@ -553,6 +553,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
                 List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
                 response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+                response.setSourceOfStandardConcepts(con.getConceptId());
             }
 
             if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
@@ -566,6 +567,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         List<Concept> conceptList = new ArrayList(concepts.getContent());
+
+        if(response.getStandardConcepts() != null) {
+            conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+        }
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
             List<Concept> drugMatchedConcepts = new ArrayList<>();
