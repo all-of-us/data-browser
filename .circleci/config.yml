@@ -81,6 +81,10 @@ jobs:
           working_directory: ~/data-browser/public-api
           command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
       - run:
+          name: Integration tests compile
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb gradle compileIntegration
+      - run:
           name: Unit tests
           working_directory: ~/data-browser/public-api
           command: ./project.rb test
