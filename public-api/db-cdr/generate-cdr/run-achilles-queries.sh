@@ -53,6 +53,7 @@ tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
 # We want to fetch the breakdown counts of each analysis for all of the ehr domain concepts by considering only the records that are ehr related (no ppi results are such)
 # So, instead of joining each of the query with the mapping tables we create the view which are used for ehr only count queries.
 # Mapping tables have the dataset id specified which can be used to differentiate ehr specific rows
+# Test data does not have the mapping tables, so the else block creates full views to fetch counts
 if [[ "$tables" == *"_mapping_"* ]]; then
     echo "CREATE VIEWS - v_ehr_measurement"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -95,7 +96,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     and (m.drug_concept_id > 0 or m.drug_source_concept_id > 0)"
 
 else
-    echo "CREATE VIEWS - v_ehr_condition_occurrence"
+    echo "CREATE VIEWS - v_ehr_measurement"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
     select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
@@ -1577,7 +1578,6 @@ where (o.observation_source_concept_id > 0 and o.value_source_concept_id = 0 and
 group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
-### Test data does not have the mapping tables, so this else block lets the script to fetch domain counts for test data
 # Condition Domain participant counts
 echo "Getting condition domain participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
