@@ -488,15 +488,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch (NumberFormatException e) {
             // expected
         }
-        // TODO: consider parallelizing these lookups
-        List<Long> toMatchConceptIds = new ArrayList<>();
-        toMatchConceptIds.add(conceptId);
-        List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(query);
-        if (drugMatchedConcepts.size() > 0) {
-            toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
-        }
 
-        List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
+        List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, conceptId);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domains.stream()
