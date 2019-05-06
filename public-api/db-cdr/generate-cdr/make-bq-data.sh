@@ -632,3 +632,24 @@ set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
 where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"
+
+#######################
+# Drop views created #
+#######################
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_measurement\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_rdr_measurement\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_condition_occurrence\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_procedure_occurrence\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_drug_exposure\`"
+
+
+
