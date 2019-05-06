@@ -343,7 +343,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     return q.conceptName;
   }
-  
+
   public addDidNotAnswerResult(results: any[], participantCount: number) {
     let didNotAnswerCount = participantCount;
     for (const r of results) {
@@ -367,7 +367,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     return didNotAnswerResult;
   }
 
-public downloadPdf() {
+  public downloadPdf() {
     this.dbc.triggerEvent('surveyPdfDownload', 'Download',
       'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
   }
@@ -425,4 +425,5 @@ public downloadPdf() {
         ageAnalysis.surveyQuestionResults.push(missingResult);
       }
     }
+  }
 }
