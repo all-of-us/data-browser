@@ -40,6 +40,28 @@ export class DbConfigService {
   TO_SUPPRESS_PMS = [3036277, 3025315, 3027018, 3031203, 40759207, 903107, 903126, 40765148,
     903135, 903136, 3022318, 3012888, 3004249, 903115, 903118, 3038553];
 
+  GENDER_STRATUM_MAP = {
+    '8507': 'Male',
+    '8532': 'Female',
+    '8521': 'Other',
+    '0': 'Other',
+    '8551': 'Unknown',
+    '8570': 'Ambiguous',
+    '1585849': 'None of these describe me',
+    '1585848': 'Intersex',
+  };
+
+  AGE_STRATUM_MAP = {
+    '2': '18-29',
+    '3': '30-39',
+    '4': '40-49',
+    '5': '50-59',
+    '6': '60-69',
+    '7': '70-79',
+    '8': '80-89',
+    '9': '89+'
+  };
+
   /* Colors for chart */
 
   GENDER_COLORS = {
@@ -96,12 +118,10 @@ export class DbConfigService {
     'color': '#f6f6f8', 'font-family': 'GothamBook', 'font-size': '22px',
     'font-weight': '300', 'textOutline': 'none'
   };
-
   MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
 
   pmGroups: ConceptGroup[] = [];
   genderAnalysis: Analysis;
-
   conceptIdNames = [
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
@@ -160,6 +180,7 @@ export class DbConfigService {
   };
 
   constructor(private api: DataBrowserService) {
+    window['dataLayer'] = window['dataLayer'] || {};
   }
 
   getGenderAnalysisResults() {
@@ -326,6 +347,18 @@ export class DbConfigService {
     if (intersex) { results.push(intersex); }
     if (none) { results.push(none); }
     analysis.results = results;
+  }
+
+  public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
+                            eventLabel: string, searchTerm: string, tooltipAction: string) {
+    window['dataLayer'].push({
+      'event': eventName,
+      'category': 'Data Browser ' + eventCategory,
+      'action': eventAction,
+      'label': eventLabel,
+      'landingSearchTerm': searchTerm,
+      'tooltipsHoverAction': tooltipAction
+    });
   }
 
 }

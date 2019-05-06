@@ -1,7 +1,5 @@
 package org.pmiops.workbench.publicapi;
 
-import org.pmiops.workbench.google.GoogleAnalyticsServiceImpl;
-import org.springframework.scheduling.annotation.Async;
 import java.util.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -91,8 +89,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private Provider<CdrVersion> defaultCdrVersionProvider;
     @Autowired
     private ConceptService conceptService;
-    @Autowired
-    private GoogleAnalyticsServiceImpl googleAnalyticsServiceImpl;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
@@ -500,9 +496,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
         }
 
-        if (googleAnalyticsServiceImpl != null) {
-            searchTrackEvent("DataBrowserSearch", "DomainSearch", query, routeUrl);
-        }
         List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
@@ -536,10 +529,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
         }else{
-            // This call triggers the event to post the data to google analytics endpoint
-            if (googleAnalyticsServiceImpl != null) {
-                searchTrackEvent("DataBrowserSearch", "ConceptSearch", searchConceptsRequest.getQuery(), routeUrl);
-            }
             if(standardConceptFilter == null){
                 standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
             }
@@ -564,6 +553,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
                 List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
                 response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+                response.setSourceOfStandardConcepts(con.getConceptId());
             }
 
             if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
@@ -577,6 +567,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         List<Concept> conceptList = new ArrayList(concepts.getContent());
+
+        if(response.getStandardConcepts() != null) {
+            conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+        }
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
             List<Concept> drugMatchedConcepts = new ArrayList<>();
@@ -620,7 +614,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
-        addGenderStratum(genderAnalysis,1);
+        addGenderStratum(genderAnalysis,1, "0");
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
     }
 
@@ -788,7 +782,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (analysisId == COUNT_ANALYSIS_ID) {
                     conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_ANALYSIS_ID){
-                    addGenderStratum(aa,2);
+                    addGenderStratum(aa,2, conceptId);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
@@ -828,7 +822,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             unitSeperateAnalysis.add(aa);
                         }
                     }
-                    addGenderStratum(aa,3);
+                    addGenderStratum(aa,3, conceptId);
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                 }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
@@ -907,17 +901,37 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return bins;
     }
 
-    public void addGenderStratum(AchillesAnalysis aa, int stratum){
+    public void addGenderStratum(AchillesAnalysis aa, int stratum, String conceptId){
+        Set<String> uniqueGenderStratums = new TreeSet<String>();
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName =ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 if (stratum == 1) {
+                    uniqueGenderStratums.add(ar.getStratum1());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum1()));
                 } else if (stratum == 2) {
+                    uniqueGenderStratums.add(ar.getStratum2());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
                 } else if (stratum == 3) {
+                    uniqueGenderStratums.add(ar.getStratum3());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
                 }
+            }
+        }
+        if(uniqueGenderStratums.size() < 3) {
+            Set<String> completeGenderStratumList = new TreeSet<String>(Arrays.asList(new String[] {"8507", "8532", "0"}));
+            completeGenderStratumList.removeAll(uniqueGenderStratums);
+            for(String missingGender: completeGenderStratumList){
+                AchillesResult missingResult = null;
+                if (stratum == 1) {
+                    missingResult = new AchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, 20L, 20L);
+                } else if (stratum == 2) {
+                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, null, null, 20L, 20L);
+                } else if (stratum == 3) {
+                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, null, missingGender, null, null, 20L, 20L);
+                }
+                missingResult.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(missingGender));
+                aa.getResults().add(missingResult);
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
@@ -1022,6 +1036,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
+        if (otherBinMax == null && otherBinMin == null) {
+            if (maleBinMin != null && femaleBinMin != null) {
+                otherBinMin = Math.min(maleBinMin, femaleBinMin);
+            }
+            if (femaleBinMax != null && maleBinMax != null) {
+                otherBinMax = Math.max(maleBinMax, femaleBinMax);
+            }
+        }
+
 
         TreeSet<Float> maleBinRanges = new TreeSet<Float>();
         TreeSet<Float> femaleBinRanges = new TreeSet<Float>();
@@ -1068,27 +1091,27 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         for(float maleRemaining: maleBinRanges){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 0L, 0L);
+            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 20L, 20L);
             aa.addResult(achillesResult);
         }
 
         for(float femaleRemaining: femaleBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
         for(float intersexRemaining: intersexBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
         for(float noneRemaining: noneBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
         for(float otherRemaining: otherBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 0L, 0L);
+            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 20L, 20L);
             aa.addResult(ar);
         }
 
@@ -1222,14 +1245,5 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-    }
-
-    @Async("asyncExecutor")
-    public void searchTrackEvent(String category, String event, String label, String page) {
-        try {
-            googleAnalyticsServiceImpl.trackEventToGoogleAnalytics(null, category, event, label, page);
-        } catch (IOException ioException) {
-            logger.severe(String.format("Unable to trigger track event for the search term %s", label));
-        }
     }
 }

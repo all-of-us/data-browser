@@ -75,23 +75,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       subtitle: {},
       tooltip: {
         followPointer: true,
-        backgroundColor: '#f0f2f3',
-        borderWidth: 0,
-        borderRadius: 10,
-        shadow: false,
-        style: {
-          padding: 0,
-          borderRadius: 3,
-          fontSize: '12px',
-          color: '#262262'
-        },
         formatter: function(tooltip) {
             if (this.point.y <= 20) {
-               return this.point.name + '<b> <= ' + this.point.y + '</b>';
+               return this.point.name + '<b> &le; ' + this.point.y + '</b>';
              }
              // If not <= 20, use the default formatter
              return tooltip.defaultFormatter.call(this, tooltip);
-        }
+        },
+        useHTML: true,
+        backgroundColor: '#f0f2f3',
+        borderWidth: '0',
+        shadow: false
       },
       plotOptions: {
         series: {
@@ -173,7 +167,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         categories: options.categories,
         // type: 'category',
         labels: {
-          align: 'right',
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
@@ -208,14 +201,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results,
-        this.analysis.analysisName, 'Sex Assigned at Birth', 'pie');
+        this.analysis.analysisName, 'Sex Assigned at Birth', 'column');
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'pie');
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'column');
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
@@ -322,6 +315,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       title: { text: null },
       series: [series],
       categories: cats,
+      xAxis: {
+        labels: {
+          style: {
+            align: 'right'
+          }
+        }
+      },
       pointWidth: this.pointWidth,
       xAxisTitle: null,
       tooltip: { pointFormat: '{point.y}' },
@@ -442,7 +442,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: [series],
       categories: cats,
-      pointWidth: this.pointWidth,
+      pointWidth: 20,
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',

@@ -38,7 +38,7 @@
                 Questions displayed
               </p>
             </div>
-            <div class="pdf-link">
+            <div class="pdf-link" (click)="downloadPdf()">
               <a href="{{surveyPdfUrl}}" download>
                 <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
               </a>
@@ -60,7 +60,7 @@
                 </app-highlight-search>
               </div>
               </div>
-              <div class="see-answers body-lead" (click)="toggleAnswer(q.conceptId)"> See Answers
+              <div class="see-answers body-lead" (click)="toggleAnswer(q)"> See Answers
                 <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </div>

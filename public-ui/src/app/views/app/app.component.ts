@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    localStorage.removeItem('searchText');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
     this.serverConfigService.getConfig().subscribe((config) => {
@@ -96,7 +97,7 @@ export class AppComponent implements OnInit {
         this.setTitleFromRoute(event);
       });
 
-    this.setGTagManager();
+    this.setTagManager();
     this.setTCellAgent();
   }
 
@@ -116,29 +117,35 @@ export class AppComponent implements OnInit {
 
   /**
    * Setting the Google Analytics ID here.
-   * This first injects Google's gtag script via iife, then secondarily defines
-   * the global gtag function.
+   * This first injects Google's gtm script via iife.
    */
-  private setGTagManager() {
+  private setTagManager() {
     const s = this.doc.createElement('script');
     s.type = 'text/javascript';
     s.innerHTML =
       '(function(w,d,s,l,i){' +
       'w[l]=w[l]||[];' +
+      'w[l].push({\'gtm.start\':new Date().getTime(),event:\'gtm.js\'});' +
       'var f=d.getElementsByTagName(s)[0];' +
       'var j=d.createElement(s);' +
       'var dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';' +
       'j.async=true;' +
-      'j.src=\'https://www.googletagmanager.com/gtag/js?id=\'+i+dl;' +
+      'j.src=\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl+ ' +
+      '\'&gtm_auth=' + environment.gtmAuth + '&gtm_preview=' + environment.gtmPreview +
+      '&gtm_cookies_win=x\';' +
       'f.parentNode.insertBefore(j,f);' +
       '})' +
-      '(window, document, \'script\', \'dataLayer\', \'' + environment.gaId + '\');' +
-      'window.dataLayer = window.dataLayer || [];' +
-      'function gtag(){dataLayer.push(arguments);}' +
-      'gtag(\'js\', new Date());' +
-      'gtag(\'config\', \'' + environment.gaId + '\');';
+      '(window, document, \'script\', \'dataLayer\', \'' + environment.gtmId + '\');';
     const head = this.doc.getElementsByTagName('head')[0];
     head.appendChild(s);
+    // Set gtag manager in body in case script in head is not activated
+    const script = this.doc.createElement('noscript');
+    script.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`
+      + environment.gtmId + '&gtm_auth=' + environment.gtmAuth +
+      `&gtm_preview=` + environment.gtmPreview + `&gtm_cookies_win=x"` +
+      `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+    const body = this.doc.getElementsByTagName('body')[0];
+    body.appendChild(script);
   }
 
   private setTCellAgent(): void {
@@ -154,5 +161,4 @@ export class AppComponent implements OnInit {
   onActivate() {
     window.scroll(0, 0);
   }
-
 }

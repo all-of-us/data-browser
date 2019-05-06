@@ -37,6 +37,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchResult: ConceptListResponse;
   items: any[] = [];
   standardConcepts: any[] = [];
+  standardConceptIds: number[] = [];
   loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
@@ -180,6 +181,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     if (this.searchResult.standardConcepts) {
       this.standardConcepts = this.searchResult.standardConcepts;
+      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+    } else {
+      this.standardConcepts = [];
     }
     this.top10Results = this.searchResult.items.slice(0, 10);
     // Set the localStorage to empty so making a new search here does not follow to other pages
@@ -188,6 +192,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
+    if (query) {
+      this.dbc.triggerEvent('domainPageSearch', 'Search',
+        'Search Inside Domain ' + this.ehrDomain.name, null, query, null);
+    }
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
@@ -272,6 +280,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public expandRow(concepts: any[], r: any) {
+    this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
+      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
     if (r.expanded) {
       r.expanded = false;
       return;
@@ -311,5 +321,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return this.searchResult.matchedConceptName;
     }
     return this.searchText.value;
+  }
+
+  public getTopResultsSize() {
+    if (this.top10Results.length < 10 && this.top10Results.length > 1) {
+      return this.top10Results.length + ' ' + this.title;
+    } else if (this.top10Results.length === 1) {
+      return this.top10Results.length + ' ' + this.title.slice(0, -1);
+    }
+    return 10;
   }
 }

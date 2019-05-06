@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TooltipService {
-  biologicalSexChartHelpText = 'Sex assigned at birth';
+  biologicalSexChartHelpText = `The sex assigned to a child at birth, most often based on
+  the child’s external anatomy.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +

@@ -8,4 +8,7 @@ export const environment = {
   tcellapikey: 'AQEBBAEGP2gTM2pIdJAQOIeNrm8dcTM7E4FMSmaibbMUQxNU6qy6nLPOBK8QfSvPFSsX8PQ',
   debug: false,
   gaId: 'UA-116298798-6',
+  gtmId: 'GTM-NQ9XDTW',
+  gtmAuth: 'ixtwsbMAbR3hx5st_ek2jg',
+  gtmPreview: 'env-65'
 };

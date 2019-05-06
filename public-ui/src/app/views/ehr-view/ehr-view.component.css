@@ -151,6 +151,13 @@ h5.secondary-display {
     font-size: 1.3em;
 }
 
+.source-layout {
+    display:flex;
+}
+.source-item {
+    flex-grow:1;
+}
+
 @keyframes load {
     from {
         background: transparent
