@@ -23,7 +23,7 @@
   <ng-container *ngIf="displayMeasurementGraphs">
     <div class="chart" *ngFor="let gender of genderResults">
       <div class="m-layout">
-        <aside *ngIf="toDisplayMeasurementGenderAnalysis.results.length > 0">
+        <aside *ngIf="toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results.length > 0">
           <ng-container *ngIf="fetchChartTitle(gender) > 20;then mGE20;else mLE20">
           </ng-container>
           <ng-template #mGE20>
