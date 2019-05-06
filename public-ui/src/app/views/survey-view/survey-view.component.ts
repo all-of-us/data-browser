@@ -101,13 +101,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           if (q.questions && q.questions.length > 0) {
             q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
           }
-          // Get did not answer count for question and count % for each answer
-          // Todo -- add this to api maybe
-          let didNotAnswerCount = this.survey.participantCount;
           q.selectedAnalysis = q.genderAnalysis;
           // might want to remove with when final decision on how to display them is made.
           for (const a of q.countAnalysis.surveyQuestionResults) {
-            didNotAnswerCount = didNotAnswerCount - a.countValue;
             a.countPercent = this.countPercentage(a.countValue);
             this.addMissingBiologicalSexResults(q.genderAnalysis,
               q.genderAnalysis.surveyQuestionResults.
@@ -131,6 +127,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       }
                       return 0;
                     });
+                    question.countAnalysis.surveyQuestionResults.push(
+                      this.addDidNotAnswerResult(
+                        question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
+                    );
                     for (const subResult2 of question.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions === null)) {
                       this.addMissingBiologicalSexResults(question.genderAnalysis,
@@ -151,6 +151,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   }
                   return 0;
                 });
+                subQuestion.countAnalysis.surveyQuestionResults.push(
+                  this.addDidNotAnswerResult(
+                    subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
+                );
                 for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                 filter(r => r.subQuestions === null)) {
                   this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
@@ -163,22 +167,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               }
             }
           }
-          const result = q.countAnalysis.surveyQuestionResults[0];
-          if (didNotAnswerCount <= 20) {
-            didNotAnswerCount = 20;
-          }
-          const notAnswerPercent = this.countPercentage(didNotAnswerCount);
-          const didNotAnswerResult = {
-            analysisId: result.analysisId,
-            countValue: didNotAnswerCount,
-            countPercent: notAnswerPercent,
-            stratum1: result.stratum1,
-            stratum2: result.stratum2,
-            stratum3: result.stratum3,
-            stratum4: 'Did not answer',
-            stratum5: result.stratum5
-          };
-          q.countAnalysis.surveyQuestionResults.push(didNotAnswerResult);
+          q.countAnalysis.surveyQuestionResults.push(
+            this.addDidNotAnswerResult(
+              q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
         }
         this.questions = this.surveyResult.items;
         // Sort count value desc
@@ -351,6 +342,29 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       q.conceptName = q.conceptName.replace('[INSERT LANGUAGE FROM SU01j]', '');
     }
     return q.conceptName;
+  }
+
+  public addDidNotAnswerResult(results: any[], participantCount: number) {
+    let didNotAnswerCount = participantCount;
+    for (const r of results) {
+      didNotAnswerCount = didNotAnswerCount - r.countValue;
+    }
+    const result = results[0];
+    if (didNotAnswerCount <= 0) {
+      didNotAnswerCount = 20;
+    }
+    const notAnswerPercent = this.countPercentage(didNotAnswerCount);
+    const didNotAnswerResult = {
+      analysisId: result.analysisId,
+      countValue: didNotAnswerCount,
+      countPercent: notAnswerPercent,
+      stratum1: result.stratum1,
+      stratum2: result.stratum2,
+      stratum3: '0',
+      stratum4: 'Did not answer',
+      stratum5: result.stratum5
+    };
+    return didNotAnswerResult;
   }
 
   public downloadPdf() {
