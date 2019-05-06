@@ -299,9 +299,10 @@ def deploy(cmd_name, args)
                               op.opts.git_version, op.opts.circle_url)
   end
 
-  value = common.run %W{../public-api/project.rb integration --env #{op.opts.project}}
+  err_str, value = Open3.capture2e(*(%W{../public-api/project.rb integration --env #{op.opts.project}}))
   maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'}"
   unless value.success?
+    common.error(err_str)
     exit value.exitstatus
   end
 end
