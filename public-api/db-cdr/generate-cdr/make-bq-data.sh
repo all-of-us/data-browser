@@ -640,6 +640,9 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_measurement\`"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_full_measurement\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_rdr_measurement\`"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
