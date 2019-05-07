@@ -94,7 +94,10 @@ else
     echo "CREATE VIEWS - v_ehr_condition_occurrence"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
+    select  m.operator_concept_id, m.value_as_number. m.value_as_concept_id, (case when suc.destination_unit_concept is not null then suc.destination_unit_concept else m.unit_concept_id end) as unit_concept_id,
+                m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id, m.unit_source_value, m.value_source_value
+     from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
+     left outer join `all-of-us-ehr-dev.test_vocabulary_ppi.similar_unit_concepts` suc on m.unit_concept_id = suc.source_unit_concept
     where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0"
 
     echo "CREATE VIEWS - v_ehr_condition_occurrence"
