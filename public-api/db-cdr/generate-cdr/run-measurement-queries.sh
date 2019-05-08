@@ -61,18 +61,18 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     select 0, 3000 as analysis_id,
     	CAST(co1.measurement_concept_id AS STRING) as stratum_1,
       'Measurement' as stratum_3,
-    	COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co2
+    	COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2
     	where co2.measurement_source_concept_id=co1.measurement_concept_id) as source_count_value
-    from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co1
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
     where co1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
     group by co1.measurement_concept_id
     union all
      select 0 as id,3000 as analysis_id,CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
       'Measurement' as stratum_3,
      COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co1
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
      where co1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      group by co1.measurement_source_concept_id"
 
      # Measurement concept by gender
@@ -83,10 +83,10 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      CAST(co1.measurement_concept_id AS STRING) as stratum_1,
      CAST(p1.gender_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
      COUNT(distinct p1.PERSON_ID) as count_value,
-     (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id
+     (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id
      where co2.measurement_source_concept_id=co1.measurement_concept_id and p2.gender_concept_id=p1.gender_concept_id) as source_count_value
      from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
-     \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co1
+     \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
      on p1.person_id = co1.person_id
      where co1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      group by co1.measurement_concept_id, p1.gender_concept_id
@@ -97,10 +97,10 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      COUNT(distinct p1.PERSON_ID) as count_value,
      COUNT(distinct p1.PERSON_ID) as source_count_value
      from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
-     \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co1
+     \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
      on p1.person_id = co1.person_id
      where co1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      group by co1.measurement_source_concept_id, p1.gender_concept_id"
 
      # Measurement by age deciles
@@ -110,7 +110,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      with m_age as
      (select measurement_id,
      ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
      group by measurement_id,age
      ),
      m_age_stratum as
@@ -127,11 +127,11 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      age_stratum as stratum_2,
      'Measurement' as stratum_3,
      count(distinct co1.person_id) as count_value,
-     (select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co2 join m_age_stratum ca2
+     (select COUNT(distinct co2.PERSON_ID) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2 join m_age_stratum ca2
      on co2.measurement_id = ca2.measurement_id
      where co2.measurement_source_concept_id=co1.measurement_concept_id
      and ca2.age_stratum=ca.age_stratum) as source_count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co1 join m_age_stratum ca on co1.measurement_id = ca.measurement_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1 join m_age_stratum ca on co1.measurement_id = ca.measurement_id
      where co1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      group by co1.measurement_concept_id, stratum_2
      union all
@@ -139,9 +139,9 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
      age_stratum as stratum_2,'Measurement' as stratum_3,
      COUNT(distinct co1.person_id) as count_value,
-     COUNT(distinct co1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co1 join m_age_stratum ca
+     COUNT(distinct co1.person_id) as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1 join m_age_stratum ca
      on co1.measurement_id = ca.measurement_id
-     where co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     where co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and co1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      group by co1.measurement_source_concept_id, stratum_2"
 
@@ -153,40 +153,40 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      with rawdata_1815 as
      (select measurement_concept_id as subject_id, cast(unit_concept_id as string) as unit, p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and unit_concept_id != 0
      union all
      select measurement_source_concept_id as subject_id, cast(unit_concept_id as string) as unit,p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
-     m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and unit_concept_id != 0
      union all
      select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
      where m.value_as_number is not null and m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and m.unit_concept_id = 0 and m.unit_source_value is not null
      union all
      select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
      where m.value_as_number is not null and m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
-     m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and m.unit_concept_id = 0 and m.unit_source_value is not null
      union all
      select measurement_concept_id as subject_id, cast('0' as string), p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and (m.unit_concept_id = 0 and m.unit_source_value is null)
      union all
      select measurement_source_concept_id as subject_id, cast('0' as string),p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and (m.unit_concept_id = 0 and m.unit_source_value is null)),
      overallstats as
      (select subject_id as stratum1_id, unit as stratum2_id, gender as stratum3_id, cast(avg(1.0 * count_value) as float64) as avg_value,
@@ -266,7 +266,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           end) as string) as stratum_4,
      count(distinct p1.person_id) as count_value,
      count(distinct p1.person_id) as source_count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
      join measurement_quartile_data on m1.measurement_concept_id=concept
      join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
      join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
@@ -312,12 +312,12 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           end),2)
           end) as string) as stratum_4,
      COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
      join measurement_quartile_data on m1.measurement_source_concept_id=concept
      join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
      join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
      where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
      and (m1.unit_concept_id != 0 or m1.unit_source_value is not null)
      group by stratum_1, stratum_2, stratum_3, stratum_4"
@@ -371,12 +371,12 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           end) as string) as stratum_4,
      count(distinct p1.person_id) as count_value,
      count(distinct p1.person_id) as source_count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
      join measurement_quartile_data on m1.measurement_concept_id=concept and unit='0'
      join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
      where m1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      and m1.value_as_number is not null and p1.gender_concept_id=gender
-     and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
+     and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
      group by stratum_1, stratum_2, stratum_3, stratum_4
      union all
      select 0 as id, 1900 as analysis_id,
@@ -416,13 +416,13 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           end),2)
           end) as string) as stratum_4,
      COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
-     from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
      join measurement_quartile_data on m1.measurement_source_concept_id=concept and unit='0'
      join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
      where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+     and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and m1.value_as_number is not null and p1.gender_concept_id=gender
-     and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
+     and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
      group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 
@@ -440,7 +440,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       cast(m1.value_as_concept_id as string) as stratum_5,
       count(distinct p1.person_id) as count_value,
       count(distinct p1.person_id) as source_count_value
-      FROM \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c2 on c2.concept_id=m1.value_as_concept_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
       where m1.value_as_concept_id != 0
@@ -454,13 +454,13 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       cast(m1.value_as_concept_id as string) as stratum_5,
       count(distinct p1.person_id) as count_value,
       count(distinct p1.person_id) as source_count_value
-      FROM \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m1
+      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1
       join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c2 on c2.concept_id=m1.value_as_concept_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
       where m1.value_as_concept_id != 0
       and m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-       and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+       and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
       group by stratum_1,stratum_3,stratum_4,stratum_5"
 
       # Generating biological sex counts for measurement concepts for each unit
@@ -469,59 +469,59 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
       select 0 as id, 1910 as analysis_id, cast(measurement_concept_id as string) as stratum_1, cast(unit_concept_id as string) as stratum_2, cast(p.gender_concept_id as string) as stratum_3,count(distinct p.person_id) as count_value,
-      (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+      (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
       on co2.person_id=p1.person_id
       where co2.measurement_source_concept_id=m.measurement_concept_id
       and co2.unit_concept_id=unit_concept_id and p1.gender_concept_id=p.gender_concept_id) as source_count_value
-      from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       where m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
        and unit_concept_id != 0
       group by m.measurement_concept_id,unit_concept_id,p.gender_concept_id
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit, cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
-      (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+      (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
       on co2.person_id=p1.person_id
       where co2.measurement_source_concept_id=m.measurement_concept_id
       and co2.unit_concept_id=0 and lower(co2.unit_source_value)=lower(unit_source_value) and p1.gender_concept_id=p.gender_concept_id) as source_count_value
-      from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(um.unit_source_value)=lower(m.unit_source_value)
       where m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and m.unit_source_value is not null and m.unit_concept_id = 0
       group by m.measurement_concept_id,um.unit_concept_id,p.gender_concept_id
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as concept_id, 'No unit' as unit, cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
-      (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+      (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
       on co2.person_id=p1.person_id
       where co2.measurement_source_concept_id=m.measurement_concept_id
       and p1.gender_concept_id=p.gender_concept_id and co2.unit_concept_id = 0 and co2.unit_source_value is null) as source_count_value
-      from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       where m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and unit_source_value is null and unit_concept_id = 0
       group by m.measurement_concept_id,p.gender_concept_id
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(m.unit_concept_id as string) as unit,
       cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
       count(distinct p.person_id) as source_count_value
-      from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       where m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
-      m.measurement_source_concept_id not in (select distinct measurement_concept_id from \${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+      m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
       and m.unit_concept_id != 0
       group by concept_id, unit, gender
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit,
       cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
       count(distinct p.person_id) as source_count_value
-      from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(um.unit_source_value)=lower(m.unit_source_value)
       where m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
-      m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+      m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
       and m.unit_concept_id = 0 and m.unit_source_value is not null
       group by concept_id, unit, gender
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, 'No unit' as unit,
       cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
       count(distinct p.person_id) as source_count_value
-      from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       where m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
-      m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.v_full_measurement\`)
+      m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
       and m.unit_concept_id = 0 and m.unit_source_value is null
       group by concept_id, unit, gender"
 fi
@@ -756,7 +756,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
-and and (m1.unit_concept_id != 0 or m1.unit_source_value is not null)
+and (m1.unit_concept_id != 0 or m1.unit_source_value is not null)
 group by stratum_1, stratum_2, stratum_3, stratum_4
 union all
 select 0 as id, 1900 as analysis_id,
@@ -803,7 +803,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept
 where m1.measurement_source_concept_id > 0
 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
 and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
-and and (m1.unit_concept_id != 0 or m1.unit_source_value is not null)
+and (m1.unit_concept_id != 0 or m1.unit_source_value is not null)
 group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
