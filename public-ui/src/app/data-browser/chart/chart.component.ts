@@ -639,7 +639,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: unit,
       tooltip: {
         headerFormat: '{point.key} ' + unit + '<br/>',
-        pointFormat: '{point.y} participants'
+        pointFormat: 'Test'
       },
     };
   }
