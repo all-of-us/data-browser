@@ -376,7 +376,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
      where m1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      and m1.value_as_number is not null and p1.gender_concept_id=gender
-     and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
+     and (m1.unit_concept_id = 0 and m1.unit_source_value is null)
      group by stratum_1, stratum_2, stratum_3, stratum_4
      union all
      select 0 as id, 1900 as analysis_id,
@@ -422,7 +422,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and m1.value_as_number is not null and p1.gender_concept_id=gender
-     and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
+     and (m1.unit_concept_id = 0 and m1.unit_source_value is null)
      group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 
@@ -494,7 +494,8 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       where co2.measurement_source_concept_id=m.measurement_concept_id
       and p1.gender_concept_id=p.gender_concept_id and co2.unit_concept_id = 0 and co2.unit_source_value is null) as source_count_value
       from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-      where m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and unit_source_value is null and unit_concept_id = 0
+      where m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
+      ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
       group by m.measurement_concept_id,p.gender_concept_id
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(m.unit_concept_id as string) as unit,
@@ -522,7 +523,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       where m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
       m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
-      and m.unit_concept_id = 0 and m.unit_source_value is null
+      and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
       group by concept_id, unit, gender"
 fi
 
@@ -860,7 +861,7 @@ join measurement_quartile_data on m1.measurement_concept_id=concept and unit='0'
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender
-and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
+and (m1.unit_concept_id = 0 and m1.unit_source_value is null)
 group by stratum_1, stratum_2, stratum_3, stratum_4
 union all
 select 0 as id, 1900 as analysis_id,
@@ -906,7 +907,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept
 where m1.measurement_source_concept_id > 0
 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
 and m1.value_as_number is not null and p1.gender_concept_id=gender
-and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
+and (m1.unit_concept_id = 0 and m1.unit_source_value is null)
 group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 
