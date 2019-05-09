@@ -101,7 +101,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     and (m.drug_concept_id > 0 or m.drug_source_concept_id > 0)"
 
 else
-    echo "CREATE VIEWS - v_ehr_condition_occurrence"
+    echo "CREATE VIEWS - v_ehr_measurement"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
     select  m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.destination_unit_concept is not null then suc.destination_unit_concept else m.unit_concept_id end) as unit_concept_id,

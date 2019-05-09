@@ -860,7 +860,7 @@ join measurement_quartile_data on m1.measurement_concept_id=concept and unit='0'
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender
-and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
+and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
 group by stratum_1, stratum_2, stratum_3, stratum_4
 union all
 select 0 as id, 1900 as analysis_id,
@@ -906,7 +906,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept
 where m1.measurement_source_concept_id > 0
 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
 and m1.value_as_number is not null and p1.gender_concept_id=gender
-and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
+and ((m1.unit_concept_id = 0 and m1.unit_source_value is null) or (m1.value_as_concept_id != 0))
 group by stratum_1, stratum_2, stratum_3, stratum_4"
 
 
