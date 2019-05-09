@@ -504,7 +504,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name}s </span>'
+        pointFormat: '{point.y} {point.name} </span>'
       }
     };
   }
@@ -639,7 +639,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: unit,
       tooltip: {
         headerFormat: '{point.key} ' + unit + '<br/>',
-        pointFormat: 'Test'
+        pointFormat: '{point.y} participants'
       },
     };
   }
