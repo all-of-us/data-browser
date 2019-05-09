@@ -1118,7 +1118,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     otherBinRanges.remove(Float.parseFloat(ar.getStratum4()));
                 }
                 if (analysisStratumName == null || analysisStratumName.equals("")) {
-                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
                 }
             }
 
