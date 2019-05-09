@@ -709,6 +709,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       pointWidth: this.pointWidth,
       xAxisTitle: '',
+      yAxisTitle: null,
     };
   }
 
