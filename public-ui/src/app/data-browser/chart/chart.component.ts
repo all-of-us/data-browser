@@ -273,7 +273,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     let data = [];
     let cats = [];
     for (const a of results) {
-      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a, toolTipHelpText: '<b>' + a.analysisStratumName + '</b>'});
+      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a, toolTipHelpText:
+        '<b>' + a.analysisStratumName + '</b>'});
       cats.push(a.stratum4);
     }
     data = data.sort((a, b) => {
@@ -554,7 +555,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: a.analysisStratumName,
         y: a.countValue, color: color,
-        toolTipHelpText: 'Age at First Occurrence in participant Record : ' + '<b>' +  a.analysisStratumName + '</b>',
+        toolTipHelpText: 'Age at First Occurrence in participant Record : ' +
+        '<b>' +  a.analysisStratumName + '</b>',
       });
       cats.push(a.analysisStratumName);
     }
@@ -600,7 +602,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (analysisStratumName === null) {
         analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum3];
       }
-      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a, toolTipHelpText: '<b>' + analysisStratumName + '</b>' +
+      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this,
+        result: a, toolTipHelpText: '<b>' + analysisStratumName + '</b>' +
         '<br/>' + 'Measurement Value: ' + a.stratum4});
     }
     data = data.sort((a, b) => {
