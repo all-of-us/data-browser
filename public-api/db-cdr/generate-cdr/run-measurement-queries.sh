@@ -977,7 +977,7 @@ on co2.person_id=p1.person_id
 where co2.measurement_source_concept_id=m.measurement_concept_id
 and p1.gender_concept_id=p.gender_concept_id and co2.unit_concept_id = 0 and co2.unit_source_value is null) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-where m.measurement_concept_id!=0 and unit_source_value is null and unit_concept_id = 0
+where m.measurement_concept_id!=0 and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
 group by m.measurement_concept_id,p.gender_concept_id
 union all
 select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(m.unit_concept_id as string) as unit,
@@ -1005,7 +1005,7 @@ count(distinct p.person_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
 where m.measurement_source_concept_id > 0 and
 m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and m.unit_concept_id = 0 and m.unit_source_value is null
+and ((m.unit_concept_id = 0 and m.unit_source_value is null) or (m.value_as_concept_id != 0))
 group by concept_id, unit, gender"
 
 
