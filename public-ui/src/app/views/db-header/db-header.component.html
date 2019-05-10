@@ -98,7 +98,7 @@
 					        <path stroke-linecap="round" d="M13.848 13.848l5.84 5.84"/></svg></a>
                     <ul class="sub-menu">
                       <li class="menu-item">
-                        <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform" action="https://www.staging.researchallofus.org/"><input ngModel type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
+                        <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform" action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search" type="text" value="" name="s" id="s" placeholder="search..."  size="35" autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
                       </li>
                     </ul>
                 </li>
