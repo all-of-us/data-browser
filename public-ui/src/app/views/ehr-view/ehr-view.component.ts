@@ -232,7 +232,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
-    if (this.graphToShow === GraphType.Sources && (r.domainId === 'Condition' || r.domainId === 'Procedure')) {
+    console.log(r);
+    if (this.graphToShow === GraphType.Sources &&
+      ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
+        || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
       this.treeLoading = true;
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
         .subscribe({
