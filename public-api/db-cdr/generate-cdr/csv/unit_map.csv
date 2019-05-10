@@ -302,8 +302,6 @@
 9158,"IgM phospholipid unit per milliliter"
 9161,"Bethesda unit"
 9163,"microunit per liter of thyroid stimulationg hormone (TSH)"
-9211,"minute"
-9212,"second"
 9213,"Percent Per 100 WBC [Number Fraction Units]"
 9214,"percent slope"
 9215,"percent 0 to 3 hours"
@@ -1318,7 +1316,7 @@
 4119674,"SI unit of temperature"
 4119675,"degrees F"
 4119676,"Unit of amount of substance"
-4119677,"mmol"
+9573,"mmol"
 4119678,"nmol"
 4119679,"Non-SI unit of amount of substance"
 4119680,"colony-forming unit"
@@ -2748,7 +2746,6 @@
 8815,x10^6/UL
 8815,x10^E6/uL
 8560,JDF units
-8816,Million/uL
 8816,mil/mL
 8816,million/mL
 8816,x10e6/ml
@@ -3051,7 +3048,7 @@
 8703,ppb
 8700,mg/day
 8700,mg/d
-9212,second(s)
+8555,second(s)
 9213,/100WBC
 8526,total_#
 8526,{tot}
