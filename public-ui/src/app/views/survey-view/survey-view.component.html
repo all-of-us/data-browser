@@ -20,8 +20,7 @@
     <div class="search-bar-container">
       <div id="db-search-bar">
         <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-        <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto"
-          autofocus>
+        <input type="text" aria-label="Survey Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
       </div>
     </div>
     <app-db-spinner [loading]="loading"></app-db-spinner>

@@ -37,6 +37,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchResult: ConceptListResponse;
   items: any[] = [];
   standardConcepts: any[] = [];
+  standardConceptIds: number[] = [];
   loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
@@ -182,11 +183,24 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
+    this.items = this.items.sort((a, b) => {
+        if (a.countValue > b.countValue) {
+          return -1;
+        }
+        if (a.countValue < b.countValue) {
+          return 1;
+        }
+        return 0;
+      }
+    );
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
     }
     if (this.searchResult.standardConcepts) {
       this.standardConcepts = this.searchResult.standardConcepts;
+      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+    } else {
+      this.standardConcepts = [];
     }
     this.top10Results = this.searchResult.items.slice(0, 10);
     // Set the localStorage to empty so making a new search here does not follow to other pages
@@ -217,7 +231,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1
     };
     this.prevSearchText = query;
-    return this.api.searchConcepts(this.searchRequest, window.location.href);
+    return this.api.searchConcepts(this.searchRequest);
   }
 
   public toggleSources(row) {
@@ -235,7 +249,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
-    if (this.graphToShow === GraphType.Sources) {
+    if (this.graphToShow === GraphType.Sources &&
+      ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
+        || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
       this.treeLoading = true;
       this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
         .subscribe({

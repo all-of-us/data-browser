@@ -107,7 +107,7 @@ export class TooltipService {
    the same thing but may be recorded in many different ways.
    Source concepts are the way the data was originally represented in a patient’s record.
    The vocabulary code listed here is a standard vocabulary code for the medical
-   nformation. Standard codes are ways of representing data that is recorded many
+   information. Standard codes are ways of representing data that is recorded many
    different ways in original patient records but essentially means the same thing.`;
   surveyParticipantCountHelpText = `Participants could select more than one answer.
   Total Counts may be greater than 100%.`;

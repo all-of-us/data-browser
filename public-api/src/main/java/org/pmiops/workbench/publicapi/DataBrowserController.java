@@ -478,7 +478,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, String routeUrl){
+    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
@@ -509,7 +509,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest, String routeUrl){
+    public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         Integer maxResults = searchConceptsRequest.getMaxResults();
         if(maxResults == null || maxResults == 0){
@@ -553,6 +553,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
                 List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
                 response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+                response.setSourceOfStandardConcepts(con.getConceptId());
             }
 
             if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
@@ -565,7 +566,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             response.setMatchType(MatchType.NAME);
         }
 
-        List<Concept> conceptList = new ArrayList(concepts.getContent());
+        List<Concept> conceptList = new ArrayList<>();
+
+        if (concepts != null) {
+            conceptList = new ArrayList(concepts.getContent());
+            if(response.getStandardConcepts() != null) {
+                conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+            }
+        }
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
             List<Concept> drugMatchedConcepts = new ArrayList<>();
@@ -809,6 +817,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                     unitGenderAnalysis.setUnitName(unit);
                                     if(!unit.equalsIgnoreCase("no unit")) {
                                         processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                    } else {
+                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null);
                                     }
                                     unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }
@@ -993,121 +1003,183 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public void processMeasurementGenderMissingBins(Long analysisId, AchillesAnalysis aa, String conceptId, String unitName, List<AchillesResultDist> resultDists) {
 
-        Float maleBinMin = null;
-        Float maleBinMax = null;
+        if (resultDists != null) {
+            Float maleBinMin = null;
+            Float maleBinMax = null;
 
-        Float femaleBinMin = null;
-        Float femaleBinMax = null;
+            Float femaleBinMin = null;
+            Float femaleBinMax = null;
 
-        Float intersexBinMin = null;
-        Float intersexBinMax = null;
+            Float intersexBinMin = null;
+            Float intersexBinMax = null;
 
-        Float noneBinMin = null;
-        Float noneBinMax = null;
+            Float noneBinMin = null;
+            Float noneBinMax = null;
 
-        Float otherBinMin = null;
-        Float otherBinMax = null;
+            Float otherBinMin = null;
+            Float otherBinMax = null;
 
-        for(AchillesResultDist ard:resultDists){
-            if(Integer.parseInt(ard.getStratum3())== MALE) {
-                maleBinMin = Float.valueOf(ard.getStratum4());
-                maleBinMax = Float.valueOf(ard.getStratum5());
+            for(AchillesResultDist ard:resultDists){
+                if(Integer.parseInt(ard.getStratum3())== MALE) {
+                    maleBinMin = Float.valueOf(ard.getStratum4());
+                    maleBinMax = Float.valueOf(ard.getStratum5());
+                }
+                else if(Integer.parseInt(ard.getStratum3()) == FEMALE) {
+                    femaleBinMin = Float.valueOf(ard.getStratum4());
+                    femaleBinMax = Float.valueOf(ard.getStratum5());
+                }
+                else if(Integer.parseInt(ard.getStratum3()) == INTERSEX) {
+                    intersexBinMin = Float.valueOf(ard.getStratum4());
+                    intersexBinMax = Float.valueOf(ard.getStratum5());
+                }
+                else if(Integer.parseInt(ard.getStratum3()) == NONE) {
+                    noneBinMin = Float.valueOf(ard.getStratum4());
+                    noneBinMax = Float.valueOf(ard.getStratum5());
+                }
+                else if(Integer.parseInt(ard.getStratum3()) == OTHER) {
+                    otherBinMin = Float.valueOf(ard.getStratum4());
+                    otherBinMax = Float.valueOf(ard.getStratum5());
+                }
             }
-            else if(Integer.parseInt(ard.getStratum3()) == FEMALE) {
-                femaleBinMin = Float.valueOf(ard.getStratum4());
-                femaleBinMax = Float.valueOf(ard.getStratum5());
+
+            if (femaleBinMax == null && femaleBinMin == null) {
+                if (maleBinMin != null && maleBinMax != null && otherBinMax != null && otherBinMin != null) {
+                    femaleBinMin = Math.min(maleBinMin, otherBinMin);
+                    femaleBinMax = Math.max(maleBinMax, otherBinMax);
+                } else if (maleBinMin != null && maleBinMax != null) {
+                    femaleBinMin = maleBinMin;
+                    femaleBinMax = maleBinMax;
+                } else if (otherBinMax != null && otherBinMin != null) {
+                    femaleBinMin = otherBinMin;
+                    femaleBinMax = otherBinMax;
+                }
             }
-            else if(Integer.parseInt(ard.getStratum3()) == INTERSEX) {
-                intersexBinMin = Float.valueOf(ard.getStratum4());
-                intersexBinMax = Float.valueOf(ard.getStratum5());
+
+            if (maleBinMax == null && maleBinMin == null) {
+                if (femaleBinMin != null && femaleBinMax != null && otherBinMax != null && otherBinMin != null) {
+                    maleBinMin = Math.min(femaleBinMin, otherBinMin);
+                    maleBinMax = Math.max(femaleBinMax, otherBinMax);
+                } else if (femaleBinMin != null && femaleBinMax != null) {
+                    maleBinMin = femaleBinMin;
+                    maleBinMax = femaleBinMax;
+                } else if (otherBinMax != null && otherBinMin != null) {
+                    maleBinMin = otherBinMin;
+                    maleBinMax = otherBinMax;
+                }
             }
-            else if(Integer.parseInt(ard.getStratum3()) == NONE) {
-                noneBinMin = Float.valueOf(ard.getStratum4());
-                noneBinMax = Float.valueOf(ard.getStratum5());
+
+            if (otherBinMax == null && otherBinMin == null) {
+                if (femaleBinMin != null && femaleBinMax != null && maleBinMax != null && maleBinMin != null) {
+                    otherBinMin = Math.min(femaleBinMin, maleBinMin);
+                    otherBinMax = Math.max(femaleBinMax, maleBinMax);
+                } else if (femaleBinMin != null && femaleBinMax != null) {
+                    otherBinMin = femaleBinMin;
+                    otherBinMax = femaleBinMax;
+                } else if (maleBinMin != null && maleBinMax != null) {
+                    otherBinMax = maleBinMax;
+                    otherBinMin = maleBinMin;
+                }
             }
-            else if(Integer.parseInt(ard.getStratum3()) == OTHER) {
-                otherBinMin = Float.valueOf(ard.getStratum4());
-                otherBinMax = Float.valueOf(ard.getStratum5());
+
+            TreeSet<Float> maleBinRanges = new TreeSet<Float>();
+            TreeSet<Float> femaleBinRanges = new TreeSet<Float>();
+            TreeSet<Float> intersexBinRanges = new TreeSet<Float>();
+            TreeSet<Float> noneBinRanges = new TreeSet<Float>();
+            TreeSet<Float> otherBinRanges = new TreeSet<Float>();
+
+            if(maleBinMax != null && maleBinMin != null){
+                maleBinRanges = makeBins(maleBinMin, maleBinMax);
             }
-        }
 
-        if (otherBinMax == null && otherBinMin == null) {
-            if (maleBinMin != null && femaleBinMin != null) {
-                otherBinMin = Math.min(maleBinMin, femaleBinMin);
+            if(femaleBinMax != null && femaleBinMin != null){
+                femaleBinRanges = makeBins(femaleBinMin, femaleBinMax);
             }
-            if (femaleBinMax != null && maleBinMax != null) {
-                otherBinMax = Math.max(maleBinMax, femaleBinMax);
+
+            if(intersexBinMax != null && intersexBinMin != null){
+                intersexBinRanges = makeBins(intersexBinMin, intersexBinMax);
             }
-        }
 
-
-        TreeSet<Float> maleBinRanges = new TreeSet<Float>();
-        TreeSet<Float> femaleBinRanges = new TreeSet<Float>();
-        TreeSet<Float> intersexBinRanges = new TreeSet<Float>();
-        TreeSet<Float> noneBinRanges = new TreeSet<Float>();
-        TreeSet<Float> otherBinRanges = new TreeSet<Float>();
-
-        if(maleBinMax != null && maleBinMin != null){
-            maleBinRanges = makeBins(maleBinMin, maleBinMax);
-        }
-
-        if(femaleBinMax != null && femaleBinMin != null){
-            femaleBinRanges = makeBins(femaleBinMin, femaleBinMax);
-        }
-
-        if(intersexBinMax != null && intersexBinMin != null){
-            intersexBinRanges = makeBins(intersexBinMin, intersexBinMax);
-        }
-
-        if(noneBinMax != null && noneBinMin != null){
-            noneBinRanges = makeBins(noneBinMin, noneBinMax);
-        }
-
-        if(otherBinMax != null && otherBinMin != null){
-            otherBinRanges = makeBins(otherBinMin, otherBinMax);
-        }
-
-        for(AchillesResult ar: aa.getResults()){
-            String analysisStratumName=ar.getAnalysisStratumName();
-            if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                maleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                femaleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                intersexBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                noneBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                otherBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+            if(noneBinMax != null && noneBinMin != null){
+                noneBinRanges = makeBins(noneBinMin, noneBinMax);
             }
-            if (analysisStratumName == null || analysisStratumName.equals("")) {
-                ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
+
+            if(otherBinMax != null && otherBinMin != null){
+                otherBinRanges = makeBins(otherBinMin, otherBinMax);
             }
-        }
 
-        for(float maleRemaining: maleBinRanges){
-            AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 20L, 20L);
-            aa.addResult(achillesResult);
-        }
+            for(AchillesResult ar: aa.getResults()){
+                String analysisStratumName=ar.getAnalysisStratumName();
+                if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    maleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    femaleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    intersexBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    noneBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
+                    otherBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                }
+                if (analysisStratumName == null || analysisStratumName.equals("")) {
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
+                }
+            }
 
-        for(float femaleRemaining: femaleBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 20L, 20L);
-            aa.addResult(ar);
-        }
+            for(float maleRemaining: maleBinRanges){
+                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 20L, 20L);
+                aa.addResult(achillesResult);
+            }
 
-        for(float intersexRemaining: intersexBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 20L, 20L);
-            aa.addResult(ar);
-        }
+            for(float femaleRemaining: femaleBinRanges){
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 20L, 20L);
+                aa.addResult(ar);
+            }
 
-        for(float noneRemaining: noneBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 20L, 20L);
-            aa.addResult(ar);
-        }
+            for(float intersexRemaining: intersexBinRanges){
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 20L, 20L);
+                aa.addResult(ar);
+            }
 
-        for(float otherRemaining: otherBinRanges){
-            AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 20L, 20L);
-            aa.addResult(ar);
+            for(float noneRemaining: noneBinRanges){
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 20L, 20L);
+                aa.addResult(ar);
+            }
+
+            for(float otherRemaining: otherBinRanges){
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 20L, 20L);
+                aa.addResult(ar);
+            }
+        } else {
+
+            TreeSet<AchillesResult> maleResults = new TreeSet<AchillesResult>();
+            TreeSet<AchillesResult> femaleResults = new TreeSet<AchillesResult>();
+            TreeSet<AchillesResult> otherResults = new TreeSet<AchillesResult>();
+
+            for(AchillesResult ar: aa.getResults()){
+                String analysisStratumName=ar.getAnalysisStratumName();
+                if(Long.valueOf(ar.getStratum3()) == MALE ){
+                    maleResults.add(ar);
+                }else if(Long.valueOf(ar.getStratum3()) == FEMALE ){
+                    femaleResults.add(ar);
+                }else if(Long.valueOf(ar.getStratum3()) == OTHER ){
+                    otherResults.add(ar);
+                }
+                if (analysisStratumName == null || analysisStratumName.equals("")) {
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum2()));
+                }
+            }
+
+            if (maleResults.size() == 0) {
+                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, 20L, 20L);
+                aa.addResult(achillesResult);
+            } else if (femaleResults.size() == 0) {
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, 20L, 20L);
+                aa.addResult(ar);
+            } else if (otherResults.size() == 0) {
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, 20L, 20L);
+                aa.addResult(ar);
+            }
+
         }
 
     }

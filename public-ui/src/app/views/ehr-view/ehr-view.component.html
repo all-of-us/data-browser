@@ -9,7 +9,7 @@
   <div class="search-bar-container">
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-      <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto"
+      <input type="text" aria-label="EHR Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto"
         autofocus>
     </div>
   </div>
@@ -134,7 +134,7 @@
                 <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
 
                   <div class="body-lead info-text tbl-d first"
-                    *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept !='S';else code_match_standard">
+                    *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
                     <div class="code-tooltip">
                       <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
                       </app-highlight-search>
@@ -143,9 +143,9 @@
 
                   <ng-template #code_match_standard>
                     <div class="body-lead info-text tbl-d first"
-                      *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
+                      *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
                       <div class="code-tooltip"
-                        *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.standardConcept ==='S';else code_match_not_standard">
+                        *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
                         <app-highlight-search [isStandard]="true" [text]="r.conceptName" [searchTerm]="prevSearchText">
                         </app-highlight-search>
                       </div>

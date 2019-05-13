@@ -201,6 +201,10 @@ where participant_count > 0"
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.unit_map\` "
 
+#Drop similar_unit_concepts mapping table
+bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.similar_unit_concepts\` "
+
 #Drop filter_conditions table
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.filter_conditions\` "

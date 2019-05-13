@@ -84,8 +84,8 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    this.subscriptions.push(this.api.getDomainSearchResults(query,
-      window.location.href).subscribe(results => {
+    this.subscriptions.push(this.api.getDomainSearchResults(query)
+      .subscribe(results => {
       this.results = results;
       this.loading = false;
     }));

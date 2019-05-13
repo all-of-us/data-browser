@@ -75,17 +75,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       subtitle: {},
       tooltip: {
         followPointer: true,
+        outside: true,
         formatter: function(tooltip) {
             if (this.point.y <= 20) {
-               return this.point.name + '<b> &le; ' + this.point.y + '</b>';
+               return this.point.toolTipHelpText + '<br/> <b> &le; ' + this.point.y + '</b>';
              }
              // If not <= 20, use the default formatter
-             return tooltip.defaultFormatter.call(this, tooltip);
+             return this.point.toolTipHelpText + '<br/> <b> ' + this.point.y + '</b>';
         },
         useHTML: true,
         backgroundColor: '#f0f2f3',
-        borderWidth: '0',
-        shadow: false
+        borderWidth: 0,
+        shadow: false,
+        enabled: true,
       },
       plotOptions: {
         series: {
@@ -139,7 +141,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       yAxis: {
         title: {
-          text: null
+          text: options.yAxisTitle ? options.yAxisTitle : null,
         },
         min: 20,
         labels: {
@@ -172,6 +174,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             whiteSpace: 'wrap',
             fontSize: '12px',
             color: '#222222',
+            fontWeight: 'bold',
           },
         },
         lineWidth: 1,
@@ -244,7 +247,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
-        'stratum2');
+        'stratum2', this.analysis.analysisId);
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
@@ -252,7 +255,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName,
-        this.selectedResult.stratum4, 'stratum5');
+        this.selectedResult.stratum4, 'stratum5', this.surveyAnalysis.analysisId);
     }
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
@@ -272,7 +275,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     let data = [];
     let cats = [];
     for (const a of results) {
-      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a });
+      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a, toolTipHelpText:
+        '<b>' + a.analysisStratumName + '</b>'});
       cats.push(a.stratum4);
     }
     data = data.sort((a, b) => {
@@ -324,6 +328,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       pointWidth: this.pointWidth,
       xAxisTitle: null,
+      yAxisTitle: null,
       tooltip: { pointFormat: '{point.y}' },
     };
   }
@@ -346,7 +351,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
         y: a.countValue,
-        color: this.dbc.COLUMN_COLOR
+        color: this.dbc.COLUMN_COLOR,
+        toolTipHelpText: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') '
       });
       if (!this.sources) {
         cats.push(a.conceptName);
@@ -377,6 +383,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       minPointLength: 3,
       pointWidth: 20,
       xAxisTitle: null,
+      yAxisTitle: null,
     };
   }
 
@@ -387,25 +394,47 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
+      let analysisStratumName = null;
+      let toolTipHelpText = null;
       let color = null;
       if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-        color = this.dbc.GENDER_COLORS[a.stratum2];
+        color = this.dbc.COLUMN_COLOR;
+        analysisStratumName = a.analysisStratumName;
+        if (analysisStratumName === null) {
+          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
+        }
+        toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-        color = this.dbc.GENDER_COLORS[a.stratum5];
+        color = this.dbc.COLUMN_COLOR;
+        analysisStratumName = a.analysisStratumName;
+        if (analysisStratumName === null) {
+          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
+        }
+        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+        'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
+        analysisStratumName = a.analysisStratumName;
+        if (analysisStratumName === null) {
+          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
+        }
+        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
+        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       data.push({
         name: a.analysisStratumName
-        , y: a.countValue, color: color, sliced: true
+        , y: a.countValue, color: color, sliced: true,
+        toolTipHelpText: toolTipHelpText,
       });
       cats.push(a.analysisStratumName);
     }
@@ -442,8 +471,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: [series],
       categories: cats,
-      pointWidth: 20,
+      color: this.dbc.COLUMN_COLOR,
+      pointWidth: this.pointWidth,
       xAxisTitle: null,
+      yAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.y} {point.name}</span>',
@@ -459,7 +490,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const a of results) {
       data.push({
         name: a.analysisStratumName
-        , y: a.countValue, sliced: true, color: this.dbc.COLUMN_COLOR
+        , y: a.countValue, sliced: true, color: this.dbc.COLUMN_COLOR,
+        toolTipHelpText: '<b>' + a.analysisStratumName + '</b>',
       });
       cats.push(a.analysisStratumName);
     }
@@ -487,26 +519,28 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     };
     return {
       chart: {
-        type: 'bar',
+        type: 'column',
         backgroundColor: 'transparent',
         style: {
           fontFamily: 'GothamBook, Arial, sans-serif',
         },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      color: this.dbc.COLUMN_COLOR,
       series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
+      yAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name}s </span>'
+        pointFormat: '{point.y} {point.name} </span>'
       }
     };
   }
 
   public makeAgeChartOptions(results: any, analysisName: string,
-    seriesName: string, ageDecileStratum: string) {
+    seriesName: string, ageDecileStratum: string, analysisId: number) {
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -529,10 +563,22 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const data = [];
     const cats = [];
     const color = this.dbc.COLUMN_COLOR;
+    let ageHelpText = null;
     for (const a of results) {
+      let toolTipHelpText = null;
+      if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
+        ageHelpText = seriesName;
+        toolTipHelpText = ageHelpText + ' : ' +
+        '<b>' +  a.analysisStratumName + '</b>';
+      } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+        ageHelpText = 'Age When Survey Was Taken';
+        toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          '<b> ' +  a.analysisStratumName + ' </b>';
+      }
       data.push({
         name: a.analysisStratumName,
         y: a.countValue, color: color,
+        toolTipHelpText: toolTipHelpText,
       });
       cats.push(a.analysisStratumName);
     }
@@ -552,6 +598,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: null,
+      yAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.name}<br/ > {point.y}</span>'
@@ -573,7 +620,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       results = results.filter(r => r.stratum3 === this.genderId);
     }
     for (const a of results) {
-      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this, result: a });
+      let analysisStratumName = a.analysisStratumName;
+      if (analysisStratumName === null) {
+        analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum3];
+      }
+      data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this,
+        result: a, toolTipHelpText: '<b>' + analysisStratumName + '</b>' +
+        '<br/>' + 'Measurement Value: ' + a.stratum4});
     }
     data = data.sort((a, b) => {
       let aVal: any = a.name;
@@ -633,6 +686,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: unit,
+      yAxisTitle: 'Participant Count',
       tooltip: {
         headerFormat: '{point.key} ' + unit + '<br/>',
         pointFormat: '{point.y} participants'
@@ -658,6 +712,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,
+        toolTipHelpText: a.analysisStratumName,
       });
       cats.push(a.analysisStratumName);
     }
@@ -676,6 +731,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       pointWidth: this.pointWidth,
       xAxisTitle: '',
+      yAxisTitle: null,
     };
   }
 

@@ -79,7 +79,7 @@ cri_anc_table_check=\\bcriteria_ancestor\\b
 
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
-create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum)
+create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship criteria criteria_attribute criteria_relationship criteria_ancestor domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum similar_unit_concepts)
 
 for t in "${create_tables[@]}"
 do
@@ -88,7 +88,7 @@ do
 done
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for workbench app
-load_tables=(domain_info survey_module achilles_analysis unit_map survey_question_map filter_conditions)
+load_tables=(domain_info survey_module achilles_analysis unit_map survey_question_map filter_conditions similar_unit_concepts)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -632,3 +632,24 @@ set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
 where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"
+
+#######################
+# Drop views created #
+#######################
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_measurement\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_rdr_measurement\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_condition_occurrence\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_procedure_occurrence\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_drug_exposure\`"
+
+
+
