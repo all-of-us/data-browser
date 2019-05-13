@@ -114,10 +114,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
             if (a.subQuestions) {
               for (const subQuestion of a.subQuestions) {
+                subQuestion.graphToShow = GraphType.BiologicalSex;
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
                 for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                   filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                   for (const question of subResult.subQuestions) {
+                    question.graphToShow = GraphType.BiologicalSex;
                     question.selectedAnalysis = question.genderAnalysis;
                     question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
                       if (a1.countValue > a2.countValue) {
