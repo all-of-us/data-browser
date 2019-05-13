@@ -160,8 +160,23 @@ h5.secondary-display {
 }
 
 .domain-not-found {
-    padding: 18px;
-    line-height: 1.5rem;
+    margin: 18px;
+    padding: .5rem;
+    background: #f7971c;
+    color: white;
+    font-size: .8em;
+    border-radius: 5px;
+}
+
+.error-btn {
+    color: white;
+    padding: 1px;
+}
+
+.error-btn:hover {
+    padding: 0px;
+    border: white solid 1px;
+    border-radius: 5px;
 }
 
 @keyframes load {

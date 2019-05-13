@@ -3,8 +3,8 @@
     <h2 class="primary-display">{{title}}</h2>
   </div>
   <ng-container *ngIf="domainNotFound">
-    <h3 class="domain-not-found">The domain "{{routeName}}" is not found.<br> Seach a term below or <a [routerLink]="['']">
-      Go to main search </a> </h3>
+    <h3 class="domain-not-found"><clr-icon shape="warning-standard"></clr-icon> The domain "{{routeName}}" is not found. Seach a term below or <a class="error-btn" [routerLink]="['']">
+      Click here to go to main search </a> </h3>
   </ng-container>
   <div class="search-bar-container">
     <div id="db-search-bar">
