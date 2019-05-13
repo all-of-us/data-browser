@@ -410,9 +410,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
+          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/>' +
+        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
         'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.surveyAnalysis &&
@@ -422,13 +422,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/>' +
+        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
           'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/>' +
+        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
           'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       data.push({
@@ -572,8 +572,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         '<b>' +  a.analysisStratumName + '</b>';
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
-        toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/>' + ageHelpText + ' : ' +
-          '<b>' +  a.analysisStratumName + '</b>';
+        toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          '<b> ' +  a.analysisStratumName + ' </b>';
       }
       data.push({
         name: a.analysisStratumName,
