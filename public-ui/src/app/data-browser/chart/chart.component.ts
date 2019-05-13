@@ -398,6 +398,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let color = null;
       if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
+        analysisStratumName = a.analysisStratumName;
+        if (analysisStratumName === null) {
+          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
+        }
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
