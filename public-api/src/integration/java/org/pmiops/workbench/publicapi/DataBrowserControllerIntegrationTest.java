@@ -69,7 +69,6 @@ public class DataBrowserControllerIntegrationTest {
     assertThat(resp.getCountValue()).isGreaterThan(0L);
   }
 
-
   @Test
   public void testConceptAnalysisResults() throws Exception {
     // These concept IDs are hardcoded by the data browser in all environments, so they must exist.
@@ -82,7 +81,7 @@ public class DataBrowserControllerIntegrationTest {
 
   @Test
   public void testDomainSearch_smoke() throws Exception {
-    DomainInfosAndSurveyModulesResponse resp = api.getDomainSearchResults("smoke", "local/ehr");
+    DomainInfosAndSurveyModulesResponse resp = api.getDomainSearchResults("smoke");
     assertThat(resp.getDomainInfos()).isNotEmpty();
     assertThat(resp.getSurveyModules()).isNotEmpty();
   }
@@ -93,7 +92,7 @@ public class DataBrowserControllerIntegrationTest {
     ConceptListResponse resp = api.searchConcepts(new SearchConceptsRequest()
         .domain(Domain.MEASUREMENT)
         .minCount(1)
-        .maxResults(maxResults),"local/ehr/measurement");
+        .maxResults(maxResults));
     assertThat(resp.getItems()).isNotEmpty();
     assertThat(resp.getItems().size()).isAtMost(maxResults);
     for (Concept c : resp.getItems()) {
