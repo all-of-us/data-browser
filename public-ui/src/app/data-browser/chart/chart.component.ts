@@ -78,7 +78,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         outside: true,
         formatter: function(tooltip) {
             if (this.point.y <= 20) {
-               return this.point.toolTipHelpText + '<br/> <b> ' + this.point.y + '</b>';
+               return this.point.toolTipHelpText + '<br/> <b> &le; ' + this.point.y + '</b>';
              }
              // If not <= 20, use the default formatter
              return this.point.toolTipHelpText + '<br/> <b> ' + this.point.y + '</b>';
