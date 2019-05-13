@@ -425,7 +425,7 @@ public class DataBrowserControllerTest {
     public void testAllConceptSearchEmptyQuery() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .domain(Domain.CONDITION)
-                .minCount(0), "test/ehr/condition");
+                .minCount(0));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_5,
           CLIENT_CONCEPT_6, CLIENT_CONCEPT_7);
     }
@@ -435,28 +435,28 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .domain(Domain.CONDITION)
                 .maxResults(1)
-                .minCount(0), "test/ehr/condition");
+                .minCount(0));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_5);
     }
 
     @Test
     public void testCountConceptSearchEmptyQuery() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
-                .domain(Domain.CONDITION), "test/ehr/condition");
+                .domain(Domain.CONDITION));
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_5, CLIENT_CONCEPT_6);
     }
 
     @Test
     public void testConceptSearchStandardConcept() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("002")
-                .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS), "test/ehr/condition");
+                .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
         assertThat(response.getBody().getItems()).isEmpty();
     }
 
     @Test
     public void testConceptSynonymSearch() throws Exception{
       ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
-          .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS), "test/ehr/condition");
+          .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
       // CLIENT_CONCEPT_7 excluded because it has a zero count
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
     }
@@ -502,7 +502,7 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptSearchDomainFilter() throws Exception{
-        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004").domain(Domain.CONDITION), "test/ehr/condition");
+        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004").domain(Domain.CONDITION));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
     }
 
