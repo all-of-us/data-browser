@@ -221,11 +221,6 @@ paths:
           type: string
           required: true
           description: search key word
-        - in: query
-          name: routeUrl
-          type: string
-          required: true
-          description: route url
       responses:
         200:
           description: A collection of domains and survey modules
@@ -256,10 +251,6 @@ paths:
           description: search concept request
           schema:
              $ref: "#/definitions/SearchConceptsRequest"
-        - in: query
-          name: routeUrl
-          description: url of the request origination
-          type: string
       responses:
         200:
           description: A collection of matched concepts

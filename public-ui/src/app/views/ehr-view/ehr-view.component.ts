@@ -176,6 +176,16 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
+    this.items = this.items.sort((a, b) => {
+        if (a.countValue > b.countValue) {
+          return -1;
+        }
+        if (a.countValue < b.countValue) {
+          return 1;
+        }
+        return 0;
+      }
+    );
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
     }
@@ -214,7 +224,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1
     };
     this.prevSearchText = query;
-    return this.api.searchConcepts(this.searchRequest, window.location.href);
+    return this.api.searchConcepts(this.searchRequest);
   }
 
   public toggleSources(row) {
