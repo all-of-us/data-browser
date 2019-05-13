@@ -1,10 +1,11 @@
 <div class="db-container">
   <div class="survey-view">
     <div class="page-header">
-        <ng-container *ngIf="surveyNotFound">
-            <h3 class="survey-not-found">The survey "{{routeName}}" was not found.<br> Seach a term below or <a [routerLink]="['']">
-              Go to main search </a> </h3>
-          </ng-container>
+      <ng-container *ngIf="surveyNotFound">
+        <h3 class="survey-not-found">The survey "{{routeName}}" was not found. Seach a term below or <a
+            class="error-btn" [routerLink]="['']">
+            Click here to go to main search </a> </h3>
+      </ng-container>
       <div class="title-container" *ngIf="survey && survey.conceptId">
         <h1> {{survey.name}} </h1>
         <div class="desc-container">
@@ -12,13 +13,15 @@
           <p class="info-text"><em>Click on each response to view branching logic and age and gender</em></p>
         </div>
       </div>
-      <div *ngIf="!surveyNotFound" class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
+      <div *ngIf="!surveyNotFound" class="info-text"> Note: The survey questions appear in the order in which people
+        actually took the survey.
       </div>
     </div>
     <div class="search-bar-container">
       <div id="db-search-bar">
         <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-        <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
+        <input type="text" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto"
+          autofocus>
       </div>
     </div>
     <app-db-spinner [loading]="loading"></app-db-spinner>
@@ -61,8 +64,8 @@
                 </div>
                 <div class="body-default">
                   <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
-                </app-highlight-search>
-              </div>
+                  </app-highlight-search>
+                </div>
               </div>
               <div class="see-answers body-lead" (click)="toggleAnswer(q)"> See Answers
                 <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
@@ -135,7 +138,8 @@
 
                       <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
                         <button class="icon-btn" *ngIf="!a.subQuestions && a.stratum4 != 'Did not answer'">
-                          <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                          <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart"
+                            style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                         </button>
                         <button class="icon-btn" *ngIf="a.subQuestions">
                           <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
@@ -145,14 +149,18 @@
                     </div>
                   </div>
 
-                  <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
-                    <app-survey-chart [graphButtons]="graphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a"></app-survey-chart>
+                  <div class="row-expansion"
+                    *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
+                    <app-survey-chart [graphButtons]="graphButtons" [question]="q"
+                      [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a"></app-survey-chart>
                   </div>
                   <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
                       <h6 class="sub-question-text">
-                        <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion)" [searchTerm]="searchText.value">
-                      </app-highlight-search>
+                        <clr-icon shape="child-arrow" size="25"></clr-icon>
+                        <app-highlight-search [text]="changeAutoInsertText(subQuestion)"
+                          [searchTerm]="searchText.value">
+                        </app-highlight-search>
                       </h6>
                       <div class="tbl-r sub-tbl-1">
                         <div class="tbl-d first display-body info-text survey-question-heading">
@@ -183,7 +191,8 @@
                         </div>
                       </div>
                       <div class="tbl-exp-r sub-tbl-1"
-                           *ngFor="let sqa of subQuestion.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa)">
+                        *ngFor="let sqa of subQuestion.countAnalysis.surveyQuestionResults"
+                        (click)="$event.stopPropagation();showSubAnswerGraphs(sqa)">
                         <div class="tbl-r">
                           <div class="tbl-d first display-body info-text sub-1-que">
                             <div>
@@ -213,7 +222,8 @@
 
                             <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
                               <button class="icon-btn" *ngIf="!sqa.subQuestions">
-                                <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                                <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart"
+                                  style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                               </button>
                               <button class="icon-btn" *ngIf="sqa.subQuestions">
                                 <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
@@ -222,14 +232,18 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
-                          <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"></app-survey-chart>
+                        <div class="row-expansion"
+                          *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
+                          <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion"
+                            [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"></app-survey-chart>
                         </div>
                         <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
                           <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
                             <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
-                              <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion2)" [searchTerm]="searchText.value">
-                            </app-highlight-search>
+                              <clr-icon shape="child-arrow" size="25"></clr-icon>
+                              <app-highlight-search [text]="changeAutoInsertText(subQuestion2)"
+                                [searchTerm]="searchText.value">
+                              </app-highlight-search>
                             </h6>
                             <div class="tbl-r">
                               <div class="tbl-d first display-body info-text survey-question-heading">
@@ -242,8 +256,10 @@
 
                                 <div class="info-text tbl-d display-body survey-question-heading">
                                   <label class="participant-count">Participant Count</label>
-                                  <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1">
-                                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                                  <clr-tooltip
+                                    *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1">
+                                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon">
+                                    </clr-icon>
                                     <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
                                       <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
                                     </clr-tooltip-content>
@@ -259,8 +275,8 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="tbl-exp-r"
-                                 *ngFor="let sqa2 of subQuestion2.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa2)">
+                            <div class="tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.surveyQuestionResults"
+                              (click)="$event.stopPropagation();showSubAnswerGraphs(sqa2)">
                               <div class="tbl-r">
                                 <div class="tbl-d first display-body info-text">
                                   <div>
@@ -283,7 +299,8 @@
 
                                   <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
                                     <button class="icon-btn" *ngIf="!sqa2.subQuestions">
-                                      <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                                      <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart"
+                                        style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                     </button>
                                     <button class="icon-btn" *ngIf="sqa2.subQuestions">
                                       <clr-icon *ngIf="!sqa2.subExpanded" shape="caret" dir="right"></clr-icon>
@@ -292,8 +309,11 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions">
-                                <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"></app-survey-chart>
+                              <div class="row-expansion"
+                                *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions">
+                                <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2"
+                                  [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2">
+                                </app-survey-chart>
                               </div>
                             </div>
                           </ng-container>
@@ -305,35 +325,35 @@
               </div>
             </div>
           </div>
-        </div>
+  </div>
   </section>
 </div>
-<div class="no-results" *ngIf="questions.length === 0 && !loading">
-    <p class="results-heading no-results">
-      <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
-          {{searchText.value}}</strong>.
-        <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
-            keyword</button> </span>
-      </span>
-      <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <strong>
-          {{searchText.value}}</strong>.
-        <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
-            search</button></span>
-      </span>
-    </p>
-    <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
-      <span *ngIf="searchMethod==='or'">
-        <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <strong>{{searchText.value}}</strong>.
-        <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
-      </span>
-      <span *ngIf="searchMethod==='and'">
-        <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
-          <strong>{{searchText.value}}</strong>.</span>
-        <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
-      </span>
-    </p>
-    <app-db-no-results (newDomain)="changeResults($event)"[searchText]="searchText"></app-db-no-results>
-  </div>
+<div class="no-results" *ngIf="questions.length === 0 && !loading && !surveyNotFound">
+    <p class=" results-heading no-results">
+  <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
+      {{searchText.value}}</strong>.
+    <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
+        keyword</button> </span>
+  </span>
+  <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <strong>
+      {{searchText.value}}</strong>.
+    <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
+        search</button></span>
+  </span>
+  </p>
+  <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
+    <span *ngIf="searchMethod==='or'">
+      <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <strong>{{searchText.value}}</strong>.
+      <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
+    </span>
+    <span *ngIf="searchMethod==='and'">
+      <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
+        <strong>{{searchText.value}}</strong>.</span>
+      <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
+    </span>
+  </p>
+  <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
+</div>
 <!-- Todo show general totals for demographics of who took the survey -->
 <!--
   <div class="row">
