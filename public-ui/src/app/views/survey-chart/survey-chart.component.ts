@@ -13,7 +13,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() question: any;
   @Input() selectedAnalysis: any;
   @Input() selectedResult: any;
-  graphToShow = GraphType.None;
+  graphToShow = GraphType.BiologicalSex;
 
   constructor(private tooltipText: TooltipService) { }
 
