@@ -18,12 +18,13 @@
 <div *ngIf="!loading()" class="concept-charts chart">
   <!-- show measurements binned by gender if we want -->
   <!-- Loop through the genders we have measurement results for  for showing the graph
+  <!-- Loop through the genders we have measurement results for  for showing the graph
    This looping variable is set if showMeasurements is passed in to the component-->
 
-  <ng-container *ngIf="displayMeasurementGraphs">
+  <ng-container class="chart-container" *ngIf="displayMeasurementGraphs">
     <div class="chart" *ngFor="let gender of genderResults">
       <div class="m-layout">
-        <aside *ngIf="toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results.length > 0">
+        <aside *ngIf="toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0">
           <ng-container *ngIf="fetchChartTitle(gender) > 20;then mGE20;else mLE20">
           </ng-container>
           <ng-template #mGE20>
@@ -34,19 +35,22 @@
           </ng-template>
         </aside>
       <app-chart
-              *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2)
-&& toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
+              *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) &&
+toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
               [genderId]="gender.stratum2"
               [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)" [chartType]="'histogram'"
               [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"></app-chart>
     </div>
   </div>
+    <div class="no-values" *ngIf="toDisplayMeasurementGenderAnalysis === undefined">
+      No Values Available
+    </div>
   </ng-container>
   <!-- show gender totals  if we want -->
   <!-- BIOLOGICAL P CHART -->
   <ng-container *ngIf="showGraph === graphType.BiologicalSex">
     <div class="chart" *ngIf="showGraph === graphType.BiologicalSex && analyses.genderAnalysis">
-      <app-chart [analysis]="analyses.genderAnalysis" [backgroundColor]="backgroundColor"
+      <app-chart [analysis]="analyses.genderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
                  [chartTitle]="'Sex Assigned at Birth'"> </app-chart>
     </div>
   </ng-container>

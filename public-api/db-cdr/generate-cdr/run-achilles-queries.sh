@@ -57,18 +57,24 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     echo "CREATE VIEWS - v_ehr_measurement"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm
+    select m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id,
+     m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.destination_unit_concept is not null then suc.destination_unit_concept else m.unit_concept_id end) as unit_concept_id,
+     m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id, m.unit_source_value, m.value_source_value
+     from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm
     on m.measurement_id = mm.measurement_id
+    left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.similar_unit_concepts\` suc on suc.source_unit_concept = m.unit_concept_id
     where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')
     and (m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0)"
 
-    echo "CREATE VIEWS - v_rdr_measurement"
+    echo "CREATE VIEWS - v_full_measurement_with_grouped_units"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_rdr_measurement\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` mm
-    on m.measurement_id = mm.measurement_id
-    where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%rdr%')
-    and (m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0)"
+    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` AS
+    select m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id,
+    m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.destination_unit_concept is not null then suc.destination_unit_concept else m.unit_concept_id end) as unit_concept_id,
+    m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id, m.unit_source_value, m.value_source_value
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.similar_unit_concepts\` suc
+    on suc.source_unit_concept = m.unit_concept_id
+    where (m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) or m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))"
 
     echo "CREATE VIEWS - v_ehr_condition_occurrence"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -95,10 +101,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     and (m.drug_concept_id > 0 or m.drug_source_concept_id > 0)"
 
 else
-    echo "CREATE VIEWS - v_ehr_condition_occurrence"
+    echo "CREATE VIEWS - v_ehr_measurement"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
+    select m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id,
+    m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.destination_unit_concept is not null then suc.destination_unit_concept else m.unit_concept_id end) as unit_concept_id,
+    m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id, m.unit_source_value, m.value_source_value
+    from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
+     left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.similar_unit_concepts\` suc on m.unit_concept_id = suc.source_unit_concept
     where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0"
 
     echo "CREATE VIEWS - v_ehr_condition_occurrence"

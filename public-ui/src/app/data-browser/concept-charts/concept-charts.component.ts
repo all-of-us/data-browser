@@ -91,7 +91,10 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       for (const aa of this.analyses.measurementValueGenderAnalysis) {
         this.unitNames.push(aa.unitName);
       }
-      this.showMeasurementGenderHistogram(this.unitNames[0]);
+      if (this.unitNames.length > 0) {
+        this.selectedUnit = this.unitNames[0];
+        this.showMeasurementGenderHistogram(this.unitNames[0]);
+      }
     }
   }
   ngOnChanges() {

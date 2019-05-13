@@ -75,6 +75,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       subtitle: {},
       tooltip: {
         followPointer: true,
+        outside: true,
         formatter: function(tooltip) {
             if (this.point.y <= 20) {
                return this.point.toolTipHelpText + '<br/> <b> ' + this.point.y + '</b>';
@@ -84,8 +85,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         },
         useHTML: true,
         backgroundColor: '#f0f2f3',
-        borderWidth: '0',
-        shadow: false
+        borderWidth: 0,
+        shadow: false,
+        enabled: true,
       },
       plotOptions: {
         series: {
@@ -395,18 +397,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let analysisStratumName = null;
       let color = null;
       if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-        color = this.dbc.GENDER_COLORS[a.stratum2];
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
-        }
+        color = this.dbc.COLUMN_COLOR;
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-        color = this.dbc.GENDER_COLORS[a.stratum5];
+        color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
+          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
       }
       if (this.surveyAnalysis &&
@@ -461,7 +459,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: [series],
       categories: cats,
-      pointWidth: 20,
+      color: this.dbc.COLUMN_COLOR,
+      pointWidth: this.pointWidth,
       xAxisTitle: null,
       yAxisTitle: null,
       tooltip: {
@@ -508,13 +507,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     };
     return {
       chart: {
-        type: 'bar',
+        type: 'column',
         backgroundColor: 'transparent',
         style: {
           fontFamily: 'GothamBook, Arial, sans-serif',
         },
       },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      color: this.dbc.COLUMN_COLOR,
       series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
@@ -522,7 +522,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: null,
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name}s </span>'
+        pointFormat: '{point.y} {point.name} </span>'
       }
     };
   }
