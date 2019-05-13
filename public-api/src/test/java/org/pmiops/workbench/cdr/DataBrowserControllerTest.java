@@ -464,7 +464,7 @@ public class DataBrowserControllerTest {
     @Test
     public void testConceptSearchEmptyQuery() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
-                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH), "test");
+                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_4,
             CLIENT_CONCEPT_5, CLIENT_CONCEPT_6);
     }
@@ -473,14 +473,14 @@ public class DataBrowserControllerTest {
     public void testNonStandardEmptyQuerySearch() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .query("")
-                .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS), "test");
+                .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2, CLIENT_CONCEPT_3);
     }
 
     @Test
     public void testConceptSearchNonStandardConcepts() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("7891")
-                .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS), "test");
+                .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS));
       assertThat(response.getBody().getItems()).isEmpty();
     }
 
@@ -489,14 +489,14 @@ public class DataBrowserControllerTest {
     public void testConceptSearchEmptyCount() throws Exception{
         // We can't test limiting to count > 0 with a concept name search because the match function does not work in hibernate. So we make several concepts with same concept code and one with count 0. The limit > 0 works the same weather it is code or name match.
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004")
-                .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS), "test");
+                .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_4, CLIENT_CONCEPT_6);
     }
 
     @Test
     public void testConceptIdSearch() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("456")
-                .standardConceptFilter(StandardConceptFilter.ALL_CONCEPTS), "test");
+                .standardConceptFilter(StandardConceptFilter.ALL_CONCEPTS));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
     }
 
@@ -511,7 +511,7 @@ public class DataBrowserControllerTest {
     public void testConceptCodeMatch() throws Exception {
       ResponseEntity<ConceptListResponse> response = dataBrowserController
           .searchConcepts(new SearchConceptsRequest().query("002")
-              .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH), "test");
+              .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
     }
 
