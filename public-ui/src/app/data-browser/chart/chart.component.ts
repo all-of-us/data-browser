@@ -247,7 +247,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
-        'stratum2',this.analysis.analysisId);
+        'stratum2', this.analysis.analysisId);
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
