@@ -215,7 +215,7 @@
                       Less
                     </a>
                     <ng-template #seeMore>
-                      <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-more"
+                      <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
                          *ngIf="synonymString[r.conceptId].length > 100"> See More
                         <clr-icon shape="ellipsis-horizontal"></clr-icon>
                       </a>

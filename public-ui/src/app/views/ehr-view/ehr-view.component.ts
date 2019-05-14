@@ -240,6 +240,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public selectGraph(g, r: any) {
     this.chartEl.nativeElement.scrollIntoView(
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
+    this.dbc.triggerEvent('conceptClick', 'Concept', this.graphToShow + ' Click',
+      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
     this.resetSelectedGraphs();
     this.graphToShow = g;
     if (this.graphToShow === GraphType.Sources &&
@@ -256,8 +258,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public toggleSynonyms(conceptId) {
-    this.showMoreSynonyms[conceptId] = !this.showMoreSynonyms[conceptId];
+  public toggleSynonyms(concept: any) {
+    this.showMoreSynonyms[concept.conceptId] = !this.showMoreSynonyms[concept.conceptId];
+    if (this.showMoreSynonyms[concept.conceptId]) {
+      this.dbc.triggerEvent('conceptClick', 'Concept', 'Synonyms See More',
+        concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
+    }
   }
 
   public showToolTip(g) {
