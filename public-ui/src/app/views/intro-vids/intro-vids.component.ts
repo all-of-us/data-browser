@@ -27,17 +27,17 @@ export class IntroVidsComponent {
   {
     title: 'Researcher Intro',
     downloadUrl: '',
-    poster: '/assets/videos/video_poster.png',
+    poster: '/assets/videos/researcher_video_poster.png',
     src: [{
-      url: '',
+      url: '/assets/videos/researcher_intro.mp4',
       type: 'video/mp4'
     },
     {
-      url: '',
+      url: '/assets/videos/researcher_intro.ogv',
       type: 'video/ogg'
     },
     {
-      url: '',
+      url: '/assets/videos/researcher_intro.webm',
       type: 'video/webm'
     }],
   }];
