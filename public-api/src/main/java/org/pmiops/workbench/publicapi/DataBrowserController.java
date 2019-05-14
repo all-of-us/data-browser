@@ -575,18 +575,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Concept> drugMatchedConcepts = new ArrayList<>();
-            if (conceptList.size() > 0) {
-                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrandNotInConceptIds(searchConceptsRequest.getQuery(), conceptList.stream().map(Concept::getConceptId).collect(Collectors.toList()));
-            } else {
-                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-            }
-            if(drugMatchedConcepts.size() > 0) {
-                conceptList.addAll(drugMatchedConcepts);
-            }
-        }
-
         response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
         return ResponseEntity.ok(response);
     }
