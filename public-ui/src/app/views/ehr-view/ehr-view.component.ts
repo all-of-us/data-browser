@@ -242,7 +242,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
-    this.dbc.triggerEvent('conceptClick', 'Concept Graph', 'Click On ' + this.graphToShow + ' Chart',
+    this.dbc.triggerEvent('conceptClick', 'Concept Graph',
+      'Click On ' + this.graphToShow + ' Chart',
       r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
     if (this.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
@@ -261,7 +262,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public toggleSynonyms(concept: any) {
     this.showMoreSynonyms[concept.conceptId] = !this.showMoreSynonyms[concept.conceptId];
     if (this.showMoreSynonyms[concept.conceptId]) {
-      this.dbc.triggerEvent('conceptClick', 'Concept', 'Click On See More Synonyms',
+      this.dbc.triggerEvent('conceptClick', 'Concept',
+        'Click On See More Synonyms',
         concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     }
   }
