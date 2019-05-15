@@ -156,6 +156,8 @@ h5.secondary-display {
 }
 .source-item {
     flex-grow:1;
+    width: 50%;
+    min-width: 10rem;
 }
 
 @keyframes load {
