@@ -142,6 +142,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxis: {
         title: {
           text: options.yAxisTitle ? options.yAxisTitle : null,
+          style: {
+            fontWeight: 'bold',
+          }
         },
         min: 20,
         labels: {
@@ -164,7 +167,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       xAxis: {
         title: {
-          text: options.xAxisTitle ? options.xAxisTitle : null
+          text: options.xAxisTitle ? options.xAxisTitle : null,
+          style: {
+            fontWeight: 'bold'
+          }
         },
         categories: options.categories,
         // type: 'category',
@@ -172,9 +178,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
-            fontSize: '12px',
-            color: '#222222',
-            fontWeight: 'bold',
           },
         },
         lineWidth: 1,
@@ -204,7 +207,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.analysis &&
       this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results,
-        this.analysis.analysisName, 'Sex Assigned at Birth', 'column');
+        'Sex Assigned at Birth', 'Sex Assigned at Birth', 'column');
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
@@ -246,7 +249,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }*/
     if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
-        this.analysis.results, this.analysis.analysisName, this.analysis.analysisName,
+        this.analysis.results, 'Age at First Occurrence in Participant Record', this.analysis.analysisName,
         'stratum2', this.analysis.analysisId);
     }
     if (this.surveyAnalysis &&
@@ -254,7 +257,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeAgeChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName,
+        'Age When Survey Was Taken',
         this.selectedResult.stratum4, 'stratum5', this.surveyAnalysis.analysisId);
     }
     if (this.analysis &&
@@ -327,7 +330,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
       },
       pointWidth: this.pointWidth,
-      xAxisTitle: null,
+      xAxisTitle: this.analysis.analysisName,
       yAxisTitle: null,
       tooltip: { pointFormat: '{point.y}' },
     };
@@ -368,9 +371,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: {
         type: this.sources ? 'column' : 'bar',
         backgroundColor: this.backgroundColor,
-        style: {
-          fontFamily: 'GothamBook, Arial, sans-serif',
-        },
         tooltip: {
           headerFormat: '<span>{point.key} <br/>',
           pointFormat: '{point.y}</span>'
@@ -382,8 +382,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       pointPadding: 0.25,
       minPointLength: 3,
       pointWidth: 20,
-      xAxisTitle: null,
-      yAxisTitle: null,
+      xAxisTitle: this.sources ? 'Source Concepts' : 'Top concepts',
+      yAxisTitle: 'Participant Count',
     };
   }
 
@@ -461,20 +461,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       name: seriesName, colorByPoint: true, data: data,
     };
     return {
-      chart: {
-        type: chartType,
-        backgroundColor: 'transparent',
-        style: {
-          fontFamily: 'GothamBook, Arial, sans-serif',
-        },
-      },
+      chart: { type: 'column', backgroundColor: 'transparent' },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
       series: [series],
       categories: cats,
       color: this.dbc.COLUMN_COLOR,
       pointWidth: this.pointWidth,
-      xAxisTitle: null,
-      yAxisTitle: null,
+      xAxisTitle: analysisName,
+      yAxisTitle: 'Participant Count',
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.y} {point.name}</span>',
@@ -597,8 +591,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series: [series],
       categories: cats,
       pointWidth: this.pointWidth,
-      xAxisTitle: null,
-      yAxisTitle: null,
+      xAxisTitle: this.domainType === 'physical measurements' ? seriesName : analysisName,
+      yAxisTitle: 'Participant Count',
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.name}<br/ > {point.y}</span>'
