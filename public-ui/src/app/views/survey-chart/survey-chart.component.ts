@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { DbConfigService } from '../../utils/db-config.service';
 import {GraphType} from '../../utils/enum-defs';
 import {TooltipService} from '../../utils/tooltip.service';
-import { DbConfigService } from '../../utils/db-config.service';
 
 @Component({
   selector: 'app-survey-chart',
@@ -32,8 +32,9 @@ export class SurveyChartComponent implements OnInit {
   public selectGraph(g, q: any, answer: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
-    this.dbc.triggerEvent('conceptClick', 'View Graphs', 'Expand to see graphs',
-      this.surveyName + ' - Q' + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
+    this.dbc.triggerEvent('conceptClick', 'View Graphs',
+      'Expand to see graphs', this.surveyName + ' - Q'
+      + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + this.graphToShow, this.searchTerm, null);
     q.graphToShow = this.graphToShow;
     switch (g) {
@@ -75,7 +76,7 @@ export class SurveyChartComponent implements OnInit {
     }
     return 'bottom-left';
   }
-  
+
   public hoverOnTooltip(q: any, a: any, g, event: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       this.surveyName + ' - Q' +  q.actualQuestionNumber
