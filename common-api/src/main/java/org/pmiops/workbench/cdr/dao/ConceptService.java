@@ -128,16 +128,11 @@ public class ConceptService {
                 (root, criteriaQuery, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();
                     List<Predicate> standardConceptPredicates = new ArrayList<>();
-                    standardConceptPredicates.add(criteriaBuilder.equal(root.get("standardConcept"),
-                            criteriaBuilder.literal(STANDARD_CONCEPT_CODE)));
-                    standardConceptPredicates.add(criteriaBuilder.equal(root.get("standardConcept"),
-                            criteriaBuilder.literal(CLASSIFICATION_CONCEPT_CODE)));
+                    standardConceptPredicates.add(root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE));
 
                     List<Predicate> nonStandardConceptPredicates = new ArrayList<>();
-                    nonStandardConceptPredicates.add(criteriaBuilder.notEqual(root.get("standardConcept"),
-                            criteriaBuilder.literal(STANDARD_CONCEPT_CODE)));
-                    nonStandardConceptPredicates.add(criteriaBuilder.notEqual(root.get("standardConcept"),
-                            criteriaBuilder.literal(CLASSIFICATION_CONCEPT_CODE)));
+                    nonStandardConceptPredicates.add(criteriaBuilder.not
+                            (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
                     final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
 
