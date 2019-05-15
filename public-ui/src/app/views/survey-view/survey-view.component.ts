@@ -116,7 +116,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               for (const subQuestion of a.subQuestions) {
                 subQuestion.actualQuestionNumber = 0;
                 if (subQuestion.questions && subQuestion.questions.length > 0) {
-                  subQuestion.actualQuestionNumber = subQuestion.questions[0]['questionOrderNumber'];
+                  subQuestion.actualQuestionNumber =
+                    subQuestion.questions[0]['questionOrderNumber'];
                 }
                 subQuestion.graphToShow = GraphType.BiologicalSex;
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
@@ -338,7 +339,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public showAnswerGraphs(a: any, q:any) {
+  public showAnswerGraphs(a: any, q: any) {
     a.expanded = !a.expanded;
     if (a.expanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
@@ -459,9 +460,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   public hoverOnTooltip(q: any, event: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      this.survey.name + ' - Q' +  q.actualQuestionNumber + ' - ' + event, null, 'Survey Page Tooltip');
+      this.survey.name + ' - Q' +  q.actualQuestionNumber + ' - '
+      + event, null, 'Survey Page Tooltip');
   }
 }
