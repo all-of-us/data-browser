@@ -639,6 +639,11 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set has_counts = 1
 where (c.count_value > 0 or c.source_count_value > 0)"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+set has_counts = 0
+where (c.count_value = 0 and c.source_count_value = 0)"
+
 #######################
 # Drop views created #
 #######################
