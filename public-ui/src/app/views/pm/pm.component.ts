@@ -104,5 +104,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
     this.selectedConcept = concept;
+    this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
+      concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }
 }

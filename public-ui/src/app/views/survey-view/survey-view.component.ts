@@ -114,11 +114,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
             if (a.subQuestions) {
               for (const subQuestion of a.subQuestions) {
+                subQuestion.actualQuestionNumber = 0;
+                if (subQuestion.questions && subQuestion.questions.length > 0) {
+                  subQuestion.actualQuestionNumber =
+                    subQuestion.questions[0]['questionOrderNumber'];
+                }
                 subQuestion.graphToShow = GraphType.BiologicalSex;
                 subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
                 for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                   filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                   for (const question of subResult.subQuestions) {
+                    question.actualQuestionNumber = 0;
+                    if (question.questions && question.questions.length > 0) {
+                      question.actualQuestionNumber = question.questions[0]['questionOrderNumber'];
+                    }
                     question.graphToShow = GraphType.BiologicalSex;
                     question.selectedAnalysis = question.genderAnalysis;
                     question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
@@ -323,17 +332,39 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.showAnswer[q.conceptId] = false;
     }
     if (this.showAnswer[q.conceptId]) {
-      this.dbc.triggerEvent('conceptClick', 'Survey Question', 'Expand to see answers',
-        q.conceptName + ' - ' + this.survey.name,  this.prevSearchText, null);
+      this.dbc.triggerEvent('conceptClick', 'Survey Question',
+        'Expand to see answers',
+        this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
+        +  q.conceptName,  this.prevSearchText, null);
     }
   }
 
-  public showAnswerGraphs(a: any) {
+  public showAnswerGraphs(a: any, q: any) {
     a.expanded = !a.expanded;
+    if (a.expanded) {
+      this.dbc.triggerEvent('conceptClick', 'View Graphs',
+        'Expand to see graphs', this.survey.name + ' - Q'
+        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + a.stratum4 +
+        ' - ' + ' Icon', this.prevSearchText, null);
+      this.dbc.triggerEvent('conceptClick', 'View Graphs',
+        'Expand to see graphs', this.survey.name + ' - Q'
+        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + a.stratum4 +
+        ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
+    }
   }
 
-  public showSubAnswerGraphs(sqa: any) {
+  public showSubAnswerGraphs(sqa: any, sq: any) {
     sqa.subExpanded = !sqa.subExpanded;
+    if (sqa.subExpanded) {
+      this.dbc.triggerEvent('conceptClick', 'View Graphs',
+        'Expand to see graphs', this.survey.name + ' - Q'
+        + sq.actualQuestionNumber + ' - ' +  sq.conceptName + ' - ' + sqa.stratum4 +
+        ' - ' + ' Icon', this.prevSearchText, null);
+      this.dbc.triggerEvent('conceptClick', 'View Graphs',
+        'Expand to see graphs', this.survey.name + ' - Q'
+        + sq.actualQuestionNumber + ' - ' +  sq.conceptName + ' - ' + sqa.stratum4 +
+        ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
+    }
   }
 
   public changeResults(e) {
@@ -428,5 +459,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         ageAnalysis.surveyQuestionResults.push(missingResult);
       }
     }
+  }
+
+  public hoverOnTooltip(q: any, event: string) {
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
+      this.survey.name + ' - Q' +  q.actualQuestionNumber + ' - '
+      + event, null, 'Survey Page Tooltip');
   }
 }
