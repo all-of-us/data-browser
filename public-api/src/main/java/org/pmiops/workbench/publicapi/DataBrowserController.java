@@ -1151,9 +1151,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         } else {
 
-            TreeSet<AchillesResult> maleResults = new TreeSet<AchillesResult>();
-            TreeSet<AchillesResult> femaleResults = new TreeSet<AchillesResult>();
-            TreeSet<AchillesResult> otherResults = new TreeSet<AchillesResult>();
+            List<AchillesResult> maleResults = new ArrayList<>();
+            List<AchillesResult> femaleResults = new ArrayList<>();
+            List<AchillesResult> otherResults = new ArrayList<>();
 
             for(AchillesResult ar: aa.getResults()){
                 String analysisStratumName=ar.getAnalysisStratumName();
