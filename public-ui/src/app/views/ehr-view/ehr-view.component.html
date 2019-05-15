@@ -187,7 +187,7 @@
                 <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(standardConcepts.concat(items),r)"
                   class="body-lead info-text aka" [ngClass]="{'no-b-border': r.expanded}">
                   <div *ngIf="r.conceptSynonyms;else noConceptSynonyms"
-                    (click)="$event.stopPropagation();toggleSynonyms(r.conceptId)" class="aka-text"
+                    (click)="$event.stopPropagation();toggleSynonyms(r)" class="aka-text"
                     [ngClass]="{'no-b-border': r.expanded}"><span>Also Known As</span>
                     <clr-tooltip>
                       <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info">
@@ -201,21 +201,21 @@
                     </clr-tooltip>
                   </div>
                   <div>
-                    <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
+                    <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
                                           *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
                                           [searchTerm]="prevSearchText">
                     </app-highlight-search>
-                    <app-highlight-search (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="aka-body"
+                    <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
                                           *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
                                           [searchTerm]="prevSearchText">
                     </app-highlight-search>
-                    <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-less"
+                    <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
                        *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
                       See
                       Less
                     </a>
                     <ng-template #seeMore>
-                      <a (click)="toggleSynonyms(r.conceptId);$event.stopPropagation()" class="toggle-link see-more"
+                      <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
                          *ngIf="synonymString[r.conceptId].length > 100"> See More
                         <clr-icon shape="ellipsis-horizontal"></clr-icon>
                       </a>
