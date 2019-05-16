@@ -27,7 +27,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
       "  select c1.domain_id, count(*) as count " +
       "  from (" +
       "    (select domain_id, concept_id from concept " +
-      "     where (count_value > 0 or source_count_value > 0) and " +
+      "     where has_counts > 0 and " +
       "       match(concept_name, concept_code, vocabulary_id, synonyms) against (?1 in boolean mode) > 0 and " +
       "       standard_concept IN ('S', 'C') and can_select=1) " +
       // An OR of these different conditions would be easier, but MySQL will not leverage the full

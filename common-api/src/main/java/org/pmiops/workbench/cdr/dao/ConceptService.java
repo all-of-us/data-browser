@@ -75,7 +75,7 @@ public class ConceptService {
         }
         String[] keywords = query.split("[,+\\s+]");
         List<String> temp = new ArrayList<>();
-        for (String key: keywords) {
+        for (String key : keywords) {
             String tempKey;
             // This is to exact match concept codes like 100.0, 507.01. Without this mysql was matching 100*, 507*.
             if (key.contains(".")) {
@@ -89,8 +89,7 @@ public class ConceptService {
                     temp.add(tempKey);
                 } else if (tempKey.contains("*") && tempKey.length() > 1) {
                     temp.add(toAdd);
-                }
-                else {
+                } else {
                     if (key.length() < 3) {
                         temp.add(key);
                     } else {
@@ -121,23 +120,18 @@ public class ConceptService {
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
-    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<String> vocabularyIds, List<String> domainIds, int limit, int minCount) {
+    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<String> vocabularyIds, String domainId, int limit, int minCount) {
 
 
         Specification<Concept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();
                     List<Predicate> standardConceptPredicates = new ArrayList<>();
-                    standardConceptPredicates.add(criteriaBuilder.equal(root.get("standardConcept"),
-                            criteriaBuilder.literal(STANDARD_CONCEPT_CODE)));
-                    standardConceptPredicates.add(criteriaBuilder.equal(root.get("standardConcept"),
-                            criteriaBuilder.literal(CLASSIFICATION_CONCEPT_CODE)));
+                    standardConceptPredicates.add(root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE));
 
                     List<Predicate> nonStandardConceptPredicates = new ArrayList<>();
-                    nonStandardConceptPredicates.add(criteriaBuilder.notEqual(root.get("standardConcept"),
-                            criteriaBuilder.literal(STANDARD_CONCEPT_CODE)));
-                    nonStandardConceptPredicates.add(criteriaBuilder.notEqual(root.get("standardConcept"),
-                            criteriaBuilder.literal(CLASSIFICATION_CONCEPT_CODE)));
+                    nonStandardConceptPredicates.add(criteriaBuilder.not
+                            (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
                     final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
 
@@ -160,7 +154,7 @@ public class ConceptService {
                                 ));
 
                     } else if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH)) {
-                        if(keyword != null){
+                        if (keyword != null) {
                             List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
                             standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
                                     criteriaBuilder.literal(query)));
@@ -184,19 +178,12 @@ public class ConceptService {
                     if (vocabularyIds != null) {
                         predicates.add(root.get("vocabularyId").in(vocabularyIds));
                     }
-                    if (domainIds != null) {
-                        predicates.add(root.get("domainId").in(domainIds));
+                    if (domainId != null) {
+                        predicates.add(criteriaBuilder.equal(root.get("domainId"), criteriaBuilder.literal(domainId)));
                     }
-
                     if (minCount == 1) {
-                        List<Predicate> countPredicates = new ArrayList<>();
-                        countPredicates.add(criteriaBuilder.greaterThan(root.get("countValue"), 0));
-                        countPredicates.add(criteriaBuilder.greaterThan(root.get("sourceCountValue"), 0));
-
-                        predicates.add(criteriaBuilder.or(
-                                countPredicates.toArray(new Predicate[0])));
+                        predicates.add(criteriaBuilder.greaterThan(root.get("hasCounts"), 0));
                     }
-
                     predicates.add(criteriaBuilder.greaterThan(root.get("canSelect"), 0));
 
                     criteriaQuery.distinct(true);

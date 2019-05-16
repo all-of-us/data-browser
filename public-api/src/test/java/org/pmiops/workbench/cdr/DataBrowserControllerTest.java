@@ -574,6 +574,11 @@ public class DataBrowserControllerTest {
         String.valueOf(concept.getConceptId()) + '|' +
             Joiner.on("|").join(concept.getConceptSynonyms()));
     result.setCanSelect(1);
+    if (concept.getConceptId() == 7892) {
+        result.setHasCounts(0);
+    } else {
+        result.setHasCounts(1);
+    }
     return result;
   }
 
