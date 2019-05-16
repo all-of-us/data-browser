@@ -121,7 +121,7 @@ public class ConceptService {
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
-    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<String> vocabularyIds, List<String> domainIds, int limit, int minCount) {
+    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<String> vocabularyIds, String domainId, int limit, int minCount) {
 
 
         Specification<Concept> conceptSpecification =
@@ -179,18 +179,10 @@ public class ConceptService {
                     if (vocabularyIds != null) {
                         predicates.add(root.get("vocabularyId").in(vocabularyIds));
                     }
-                    if (domainIds != null) {
-                        predicates.add(root.get("domainId").in(domainIds));
+                    if (domainId != null) {
+                        predicates.add(criteriaBuilder.equal(root.get("domainId"), criteriaBuilder.literal(domainId)));
                     }
-
-                    if (minCount == 1) {
-                        List<Predicate> countPredicates = new ArrayList<>();
-                        countPredicates.add(criteriaBuilder.greaterThan(root.get("countValue"), 0));
-                        countPredicates.add(criteriaBuilder.greaterThan(root.get("sourceCountValue"), 0));
-
-                        predicates.add(criteriaBuilder.or(
-                                countPredicates.toArray(new Predicate[0])));
-                    }
+                    predicates.add(criteriaBuilder.greaterThan(root.get("hasCounts"), 0));
 
                     predicates.add(criteriaBuilder.greaterThan(root.get("canSelect"), 0));
 

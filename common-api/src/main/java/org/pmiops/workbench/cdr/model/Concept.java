@@ -33,6 +33,7 @@ public class Concept {
     private List<String> synonyms = new ArrayList<>();
     private String synonymsStr;
     private int canSelect;
+    private int hasCounts;
 
     public Concept() {}
 
@@ -77,6 +78,20 @@ public class Concept {
 
     public Concept conceptName(String conceptName) {
         this.conceptName = conceptName;
+        return this;
+    }
+
+    @Column(name = "has_counts")
+    public int getHasCounts() {
+        return hasCounts;
+    }
+
+    public void setHasCounts(int hasCounts) {
+        this.hasCounts = hasCounts;
+    }
+
+    public Concept hasCounts(int hasCounts) {
+        this.hasCounts = hasCounts;
         return this;
     }
 
@@ -265,7 +280,7 @@ public class Concept {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect);
+        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts);
     }
 
     @Override
