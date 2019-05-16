@@ -636,13 +636,8 @@ where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.ana
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set has_counts = 1
-where (c.count_value > 0 or c.source_count_value > 0)"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set has_counts = 0
-where (c.count_value = 0 and c.source_count_value = 0)"
+set has_counts = IF(count_value > 0 or source_count_value > 0, 1, 0)
+where concept_id != 0"
 
 #######################
 # Drop views created #

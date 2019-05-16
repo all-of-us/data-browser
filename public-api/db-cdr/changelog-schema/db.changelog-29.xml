@@ -8,7 +8,6 @@
   <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-29">
     <validCheckSum>ANY</validCheckSum>
     <addColumn tableName="concept">
-      <!-- Contains the tree path of the concept -->
       <column name="has_counts" type="BOOL">
         <constraints nullable="true"/>
       </column>
