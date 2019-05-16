@@ -534,16 +534,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        List<String> domainIds = null;
+        String domainId = null;
         if (searchConceptsRequest.getDomain() != null) {
-            domainIds = ImmutableList.of(CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain()));
+            domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
         }
 
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
         Slice<Concept> concepts = null;
         concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter,
-                searchConceptsRequest.getVocabularyIds(), domainIds, maxResults, minCount);
+                searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount);
         ConceptListResponse response = new ConceptListResponse();
 
         for(Concept con : concepts.getContent()){
@@ -572,6 +572,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             conceptList = new ArrayList(concepts.getContent());
             if(response.getStandardConcepts() != null) {
                 conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+            }
+        }
+
+        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && !searchConceptsRequest.getQuery().isEmpty()) {
+            List<Concept> drugMatchedConcepts = new ArrayList<>();
+            if (conceptList.size() > 0) {
+                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrandNotInConceptIds(searchConceptsRequest.getQuery(), conceptList.stream().map(Concept::getConceptId).collect(Collectors.toList()));
+            } else {
+                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+            }
+            if(drugMatchedConcepts.size() > 0) {
+                conceptList.addAll(drugMatchedConcepts);
             }
         }
 

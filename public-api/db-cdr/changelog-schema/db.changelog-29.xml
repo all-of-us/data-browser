@@ -13,11 +13,6 @@
         <constraints nullable="true"/>
       </column>
     </addColumn>
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <indexExists tableName="concept" indexName="domain_count_index"></indexExists>
-      </not>
-    </preConditions>
     <sql dbms="mysql">
       ALTER TABLE concept
       ADD INDEX domain_count_index
