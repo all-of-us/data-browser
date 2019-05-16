@@ -339,6 +339,10 @@ definitions:
         type: "array"
         items:
           type: "string"
+      hasCounts:
+        description: boolean value which determines if this concept has counts or not
+        type: integer
+        format: int32
 
   ConceptListResponse:
     type: object
