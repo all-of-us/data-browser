@@ -71,8 +71,7 @@ public class DataBrowserControllerTest {
             .countValue(123L)
             .sourceCountValue(20L)
             .prevalence(0.2F)
-            .conceptSynonyms(new ArrayList<String>())
-            .hasCounts(1);
+            .conceptSynonyms(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_2 = new Concept()
             .conceptId(456L)
@@ -84,8 +83,7 @@ public class DataBrowserControllerTest {
             .countValue(456L)
             .sourceCountValue(25L)
             .prevalence(0.3F)
-            .conceptSynonyms(new ArrayList<String>())
-            .hasCounts(1);
+            .conceptSynonyms(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_3 = new Concept()
             .conceptId(789L)
@@ -98,8 +96,7 @@ public class DataBrowserControllerTest {
             .countValue(789L)
             .sourceCountValue(0L)
             .prevalence(0.4F)
-            .conceptSynonyms(new ArrayList<String>())
-            .hasCounts(1);
+            .conceptSynonyms(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_4 = new Concept()
             .conceptId(1234L)
@@ -112,8 +109,7 @@ public class DataBrowserControllerTest {
             .countValue(1250L)
             .sourceCountValue(99L)
             .prevalence(0.5F)
-            .conceptSynonyms(new ArrayList<String>())
-            .hasCounts(1);
+            .conceptSynonyms(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_5 = new Concept()
             .conceptId(7890L)
@@ -126,8 +122,7 @@ public class DataBrowserControllerTest {
             .countValue(7890L)
             .sourceCountValue(78L)
             .prevalence(0.9F)
-            .conceptSynonyms(new ArrayList<String>())
-            .hasCounts(1);
+            .conceptSynonyms(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_6 = new Concept()
             .conceptId(7891L)
@@ -140,8 +135,7 @@ public class DataBrowserControllerTest {
             .countValue(0L)
             .sourceCountValue(20L)
             .prevalence(0.1F)
-            .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
-            .hasCounts(1);
+            .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"));
 
   private static final Concept CLIENT_CONCEPT_7 = new Concept()
             .conceptId(7892L)
@@ -154,8 +148,7 @@ public class DataBrowserControllerTest {
             .countValue(0L)
             .sourceCountValue(0L)
             .prevalence(0.0F)
-            .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
-            .hasCounts(0);
+            .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"));
 
     private static final DomainInfo CLIENT_DOMAIN_1 = new DomainInfo()
             .domain(Domain.CONDITION)
@@ -581,7 +574,11 @@ public class DataBrowserControllerTest {
         String.valueOf(concept.getConceptId()) + '|' +
             Joiner.on("|").join(concept.getConceptSynonyms()));
     result.setCanSelect(1);
-    result.setHasCounts(concept.getHasCounts());
+    if (concept.getConceptId() == 7892) {
+        result.setHasCounts(0);
+    } else {
+        result.setHasCounts(1);
+    }
     return result;
   }
 
