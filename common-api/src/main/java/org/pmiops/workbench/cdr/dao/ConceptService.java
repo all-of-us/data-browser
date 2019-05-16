@@ -181,8 +181,9 @@ public class ConceptService {
                     if (domainId != null) {
                         predicates.add(criteriaBuilder.equal(root.get("domainId"), criteriaBuilder.literal(domainId)));
                     }
-                    predicates.add(criteriaBuilder.greaterThan(root.get("hasCounts"), 0));
-
+                    if (minCount == 1) {
+                        predicates.add(criteriaBuilder.greaterThan(root.get("hasCounts"), 0));
+                    }
                     predicates.add(criteriaBuilder.greaterThan(root.get("canSelect"), 0));
 
                     criteriaQuery.distinct(true);
