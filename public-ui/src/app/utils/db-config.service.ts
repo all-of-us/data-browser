@@ -342,7 +342,7 @@ export class DbConfigService {
         none = g;
       }
     }
-
+    console.log(other);
     // Order genders how we want to display  Male, Female , Others
     if (male) { results.push(male); }
     if (female) { results.push(female); }
