@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {capitalize} from '@angular-devkit/core/src/utils/strings';
 import * as highcharts from 'highcharts';
 
 import { Analysis } from '../../../publicGenerated/model/analysis';
@@ -6,8 +7,6 @@ import { Concept } from '../../../publicGenerated/model/concept';
 import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
 import { DbConfigService } from '../../utils/db-config.service';
 import { DomainType } from '../../utils/enum-defs';
-import {camelize} from "tslint/lib/utils";
-import {capitalize} from "@angular-devkit/core/src/utils/strings";
 
 @Component({
   selector: 'app-chart',
@@ -143,7 +142,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       yAxis: {
         title: {
-          text: camelize(options.yAxisTitle) ? camelize(options.yAxisTitle) : null,
+          text: options.yAxisTitle ? options.yAxisTitle : null,
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',
@@ -170,7 +169,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       xAxis: {
         title: {
-          text: camelize(options.xAxisTitle) ? camelize(options.xAxisTitle) : null,
+          text: options.xAxisTitle ? options.xAxisTitle : null,
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',

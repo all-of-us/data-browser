@@ -20,6 +20,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
   ageChartTitle = 'Age When Physical Measurement Was Taken';
+  biologicalSexChartTitle = 'Sex Assigned At Birth';
 
   // Todo put constants in a class for use in other views
   chartType = 'bar';

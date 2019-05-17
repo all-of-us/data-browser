@@ -50,21 +50,27 @@
 }
 
 .chart-item {
+    width: 100%;
+    max-width: calc((100%) - 18px);
+    min-width: 20rem;
+}
+
+.value-chart {
     width: calc((50%) - 18px);
     height: auto;
     flex-grow: 1;
+}
+
+.biological-sex-chart {
+    padding: 1em;
+    padding-left: 1.5em;
+    margin: 0;
 }
 
 .age-chart {
     padding: 1em;
     padding-left: 1.5em;
     margin: 0;
-}
-
-.chart-item:last-of-type {
-    width: 100%;
-    max-width: calc((100%) - 18px);
-    min-width: 20rem;
 }
 
 .chart-title {

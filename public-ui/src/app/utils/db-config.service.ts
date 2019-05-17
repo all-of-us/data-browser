@@ -321,6 +321,7 @@ export class DbConfigService {
     let male = null;
     let female = null;
     let intersex = null;
+    let other = null;
     let none = null;
 
     // No need to do anything if only one gender
@@ -333,6 +334,8 @@ export class DbConfigService {
         male = g;
       } else if (g.stratum2 === this.FEMALE_GENDER_ID) {
         female = g;
+      } else if (g.stratum2 === this.OTHER_GENDER_ID) {
+        other = g;
       } else if (g.stratum2 === this.INTERSEX_GENDER_ID) {
         intersex = g;
       } else if (g.stratum2 === this.NONE_GENDER_ID) {
@@ -343,6 +346,7 @@ export class DbConfigService {
     // Order genders how we want to display  Male, Female , Others
     if (male) { results.push(male); }
     if (female) { results.push(female); }
+    if (other) { results.push(other); }
     if (intersex) { results.push(intersex); }
     if (none) { results.push(none); }
     analysis.results = results;
