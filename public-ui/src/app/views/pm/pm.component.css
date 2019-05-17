@@ -61,13 +61,7 @@
     flex-grow: 1;
 }
 
-.biological-sex-chart {
-    padding: 1em;
-    padding-left: 1.5em;
-    margin: 0;
-}
-
-.age-chart {
+.biological-sex-chart .age-chart .value-chart{
     padding: 1em;
     padding-left: 1.5em;
     margin: 0;
