@@ -127,7 +127,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     for (const question of subResult.subQuestions) {
                       question.actualQuestionNumber = 0;
                       if (question.questions && question.questions.length > 0) {
-                        question.actualQuestionNumber = question.questions[0]['questionOrderNumber'];
+                        question.actualQuestionNumber =
+                          question.questions[0]['questionOrderNumber'];
                       }
                       question.graphToShow = GraphType.BiologicalSex;
                       question.selectedAnalysis = question.genderAnalysis;
