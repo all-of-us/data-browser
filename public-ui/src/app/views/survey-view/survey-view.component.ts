@@ -90,121 +90,123 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   private getSurveyResults() {
-    this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
-      next: x => {
-        this.surveyResult = x;
-        this.survey = this.surveyResult.survey;
-        this.surveyName = this.survey.name;
-        // Add Did not answer to each question
-        for (const q of this.surveyResult.items) {
-          q.actualQuestionNumber = 0;
-          q.graphToShow = GraphType.BiologicalSex;
-          if (q.questions && q.questions.length > 0) {
-            q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
-          }
-          q.selectedAnalysis = q.genderAnalysis;
-          // might want to remove with when final decision on how to display them is made.
-          for (const a of q.countAnalysis.surveyQuestionResults) {
-            a.countPercent = this.countPercentage(a.countValue);
-            this.addMissingBiologicalSexResults(q.genderAnalysis,
-              q.genderAnalysis.surveyQuestionResults.
-              filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
-            this.addMissingAgeResults(q.ageAnalysis,
-              q.ageAnalysis.surveyQuestionResults.
-              filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
-            if (a.subQuestions) {
-              for (const subQuestion of a.subQuestions) {
-                subQuestion.actualQuestionNumber = 0;
-                if (subQuestion.questions && subQuestion.questions.length > 0) {
-                  subQuestion.actualQuestionNumber =
-                    subQuestion.questions[0]['questionOrderNumber'];
-                }
-                subQuestion.graphToShow = GraphType.BiologicalSex;
-                subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
-                for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
+    if (this.surveyConceptId && this.surveyConceptId.toString()) {
+      this.subscriptions.push(this.api.getSurveyResults(this.surveyConceptId.toString()).subscribe({
+        next: x => {
+          this.surveyResult = x;
+          this.survey = this.surveyResult.survey;
+          this.surveyName = this.survey.name;
+          // Add Did not answer to each question
+          for (const q of this.surveyResult.items) {
+            q.actualQuestionNumber = 0;
+            q.graphToShow = GraphType.BiologicalSex;
+            if (q.questions && q.questions.length > 0) {
+              q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
+            }
+            q.selectedAnalysis = q.genderAnalysis;
+            // might want to remove with when final decision on how to display them is made.
+            for (const a of q.countAnalysis.surveyQuestionResults) {
+              a.countPercent = this.countPercentage(a.countValue);
+              this.addMissingBiologicalSexResults(q.genderAnalysis,
+                q.genderAnalysis.surveyQuestionResults.
+                filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+              this.addMissingAgeResults(q.ageAnalysis,
+                q.ageAnalysis.surveyQuestionResults.
+                filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+              if (a.subQuestions) {
+                for (const subQuestion of a.subQuestions) {
+                  subQuestion.actualQuestionNumber = 0;
+                  if (subQuestion.questions && subQuestion.questions.length > 0) {
+                    subQuestion.actualQuestionNumber =
+                      subQuestion.questions[0]['questionOrderNumber'];
+                  }
+                  subQuestion.graphToShow = GraphType.BiologicalSex;
+                  subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
+                  for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                   filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
-                  for (const question of subResult.subQuestions) {
-                    question.actualQuestionNumber = 0;
-                    if (question.questions && question.questions.length > 0) {
-                      question.actualQuestionNumber = question.questions[0]['questionOrderNumber'];
-                    }
-                    question.graphToShow = GraphType.BiologicalSex;
-                    question.selectedAnalysis = question.genderAnalysis;
-                    question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
-                      if (a1.countValue > a2.countValue) {
-                        return -1;
+                    for (const question of subResult.subQuestions) {
+                      question.actualQuestionNumber = 0;
+                      if (question.questions && question.questions.length > 0) {
+                        question.actualQuestionNumber = question.questions[0]['questionOrderNumber'];
                       }
-                      if (a1.countValue < a2.countValue) {
-                        return 1;
+                      question.graphToShow = GraphType.BiologicalSex;
+                      question.selectedAnalysis = question.genderAnalysis;
+                      question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
+                        if (a1.countValue > a2.countValue) {
+                          return -1;
+                        }
+                        if (a1.countValue < a2.countValue) {
+                          return 1;
+                        }
+                        return 0;
+                      });
+                      question.countAnalysis.surveyQuestionResults.push(
+                        this.addDidNotAnswerResult(
+                          question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
+                      );
+                      for (const subResult2 of question.countAnalysis.surveyQuestionResults.
+                      filter(r => r.subQuestions === null)) {
+                        this.addMissingBiologicalSexResults(question.genderAnalysis,
+                          question.genderAnalysis.surveyQuestionResults.
+                          filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                        this.addMissingAgeResults(question.ageAnalysis,
+                          question.ageAnalysis.surveyQuestionResults.
+                          filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
                       }
-                      return 0;
-                    });
-                    question.countAnalysis.surveyQuestionResults.push(
-                      this.addDidNotAnswerResult(
-                        question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
-                    );
-                    for (const subResult2 of question.countAnalysis.surveyQuestionResults.
-                    filter(r => r.subQuestions === null)) {
-                      this.addMissingBiologicalSexResults(question.genderAnalysis,
-                        question.genderAnalysis.surveyQuestionResults.
-                        filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
-                      this.addMissingAgeResults(question.ageAnalysis,
-                        question.ageAnalysis.surveyQuestionResults.
-                        filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
                     }
                   }
-                }
-                subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
-                  if (a1.countValue > a2.countValue) {
-                    return -1;
+                  subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
+                    if (a1.countValue > a2.countValue) {
+                      return -1;
+                    }
+                    if (a1.countValue < a2.countValue) {
+                      return 1;
+                    }
+                    return 0;
+                  });
+                  subQuestion.countAnalysis.surveyQuestionResults.push(
+                    this.addDidNotAnswerResult(
+                      subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
+                  );
+                  for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
+                  filter(r => r.subQuestions === null)) {
+                    this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
+                      subQuestion.genderAnalysis.surveyQuestionResults.
+                      filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                    this.addMissingAgeResults(subQuestion.ageAnalysis,
+                      subQuestion.ageAnalysis.surveyQuestionResults.
+                      filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
                   }
-                  if (a1.countValue < a2.countValue) {
-                    return 1;
-                  }
-                  return 0;
-                });
-                subQuestion.countAnalysis.surveyQuestionResults.push(
-                  this.addDidNotAnswerResult(
-                    subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
-                );
-                for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
-                filter(r => r.subQuestions === null)) {
-                  this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
-                    subQuestion.genderAnalysis.surveyQuestionResults.
-                    filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
-                  this.addMissingAgeResults(subQuestion.ageAnalysis,
-                    subQuestion.ageAnalysis.surveyQuestionResults.
-                    filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
                 }
               }
             }
+            q.countAnalysis.surveyQuestionResults.push(
+              this.addDidNotAnswerResult(
+                q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
           }
-          q.countAnalysis.surveyQuestionResults.push(
-            this.addDidNotAnswerResult(
-              q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
-        }
-        this.questions = this.surveyResult.items;
-        // Sort count value desc
-        for (const q of this.questions) {
-          q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
-            if (a1.countValue > a2.countValue) {
-              return -1;
-            }
-            if (a1.countValue < a2.countValue) {
-              return 1;
-            }
-            return 0;
-          });
-        }
-        this.filterResults();
-        this.loading = false;
-      },
-      error: err => {
-        console.error('Observer got an error: ' + err);
-        this.loading = false;
-      },
-      complete: () => { this.resultsComplete = true; }
-    }));
+          this.questions = this.surveyResult.items;
+          // Sort count value desc
+          for (const q of this.questions) {
+            q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
+              if (a1.countValue > a2.countValue) {
+                return -1;
+              }
+              if (a1.countValue < a2.countValue) {
+                return 1;
+              }
+              return 0;
+            });
+          }
+          this.filterResults();
+          this.loading = false;
+        },
+        error: err => {
+          console.error('Observer got an error: ' + err);
+          this.loading = false;
+        },
+        complete: () => { this.resultsComplete = true; }
+      }));
+    }
   }
 
   public setSurvey() {
