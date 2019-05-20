@@ -56,9 +56,8 @@
 }
 
 .value-chart {
-    width: calc((50%) - 18px);
+    width: calc((50%) - 18px)!important;
     height: auto;
-    flex-grow: 1;
 }
 
 .biological-sex-chart .age-chart .value-chart{
@@ -129,5 +128,12 @@ aside .button-item button {
 @media (max-width: 550px) {
     .db-card {
         overflow-x: scroll;
+    }
+}
+
+@media (max-width: 1648px) {
+    .chart-item {
+        width:100%;
+        max-width: calc((100%) - 18px);
     }
 }

@@ -57,15 +57,15 @@
             </app-chart>
           </div>
           <!-- Loop through the genders we have results for showing the graph -->
-          <div class="chart-item" *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis">
-            <div>Values
-              <clr-tooltip>
-                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                  <div class="tooltip-label">{{tooltipText.pmValueChartHelpText}}</div>
-                </clr-tooltip-content>
-              </clr-tooltip>
-            </div>
+          <div class="chart-group-title">Values
+            <clr-tooltip>
+              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+              <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                <div class="tooltip-label">{{tooltipText.pmValueChartHelpText}}</div>
+              </clr-tooltip-content>
+            </clr-tooltip>
+          </div>
+          <div class="chart-item value-chart" *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis">
           </div>
           <ng-container *ngIf="['903120','903111'].indexOf(selectedConcept.conceptId) === -1; else stackedChart">
             <div class="chart-item value-chart" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
