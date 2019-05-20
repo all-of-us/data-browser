@@ -534,16 +534,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        List<String> domainIds = null;
+        String domainId = null;
         if (searchConceptsRequest.getDomain() != null) {
-            domainIds = ImmutableList.of(CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain()));
+            domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
         }
 
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
         Slice<Concept> concepts = null;
         concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter,
-                searchConceptsRequest.getVocabularyIds(), domainIds, maxResults, minCount);
+                searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount);
         ConceptListResponse response = new ConceptListResponse();
 
         for(Concept con : concepts.getContent()){
@@ -1151,9 +1151,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         } else {
 
-            TreeSet<AchillesResult> maleResults = new TreeSet<AchillesResult>();
-            TreeSet<AchillesResult> femaleResults = new TreeSet<AchillesResult>();
-            TreeSet<AchillesResult> otherResults = new TreeSet<AchillesResult>();
+            List<AchillesResult> maleResults = new ArrayList<>();
+            List<AchillesResult> femaleResults = new ArrayList<>();
+            List<AchillesResult> otherResults = new ArrayList<>();
 
             for(AchillesResult ar: aa.getResults()){
                 String analysisStratumName=ar.getAnalysisStratumName();

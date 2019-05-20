@@ -142,6 +142,11 @@ h5.secondary-display {
     border: none;
 }
 
+.synonyms-text {
+    padding-left: 1%;
+    padding-right: 3%;
+}
+
 #answer-result {
     width: calc(47%);
 }
@@ -158,6 +163,10 @@ h5.secondary-display {
     width:100%;
     margin: 0 auto;
     flex-grow:1;
+}
+.source-item:not(:nth-of-type(2)) {
+    width: 50%;
+    min-width: 10rem;
 }
 
 
