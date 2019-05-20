@@ -10,3 +10,12 @@
 .m-layout app-chart {
     width: calc((100%/12)*11);
 }
+
+.no-source-concepts, .no-values{
+    margin-top:1rem;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    white-space: nowrap;
+}
+
