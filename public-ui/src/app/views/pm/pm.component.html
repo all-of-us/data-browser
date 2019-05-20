@@ -57,7 +57,7 @@
             </app-chart>
           </div>
           <!-- Loop through the genders we have results for showing the graph -->
-          <div class="chart-group-title">Values
+          <div class="chart-group-title" *ngIf="selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis">Values
             <clr-tooltip>
               <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
               <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
@@ -72,8 +72,7 @@
               <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.OTHER_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
               selectedConcept.analyses.measurementValueGenderAnalysis" class="chart-title">
                 {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</div>
-              <app-chart *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.OTHER_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
-                         selectedConcept.analyses.measurementValueGenderAnalysis" [genderId]="gender.stratum2"
+              <app-chart *ngIf="selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis; else NoValuesChart" [genderId]="gender.stratum2"
                          [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
                          [chartType]="selectedConcept.chartType"
                          [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
