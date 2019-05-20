@@ -58,5 +58,10 @@
 		"mode": "NULLABLE",
 		"name": "can_select",
 		"type": "INTEGER"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "has_counts",
+		"type": "INTEGER"
 	}
 ]

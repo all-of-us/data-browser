@@ -461,6 +461,7 @@ img {
   max-width: 100%;
   position: relative
 }
+
 /*
 .widget>* {
   -webkit-font-smoothing: antialiased;
@@ -472,6 +473,7 @@ img {
   text-rendering: optimizeLegibility
 }
 */
+
 @media only screen and (min-width: 1168px) {
   .breadcrumbs {
     margin: 0 calc(10%);
@@ -538,12 +540,16 @@ a a:link a:visited {
 }
 
 .source-item .concept-charts.chart {
-  margin:0;
+  margin: 0;
 }
 
-.no-source-concepts, .no-values{
+.no-source-concepts, .no-values {
   margin-top: 1%;
   margin-left: 15%;
+}
+
+.highcharts-container {
+  overflow: visible !important;
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -551,7 +557,6 @@ a a:link a:visited {
   .headwrap {
     height: 160px;
   }
-
 }
 
 /* get rid of margins on small screens */
