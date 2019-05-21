@@ -364,6 +364,9 @@ definitions:
         description: concept for which standard concepts are fetched
         type: integer
         format: int64
+      errorDesc:
+        description: If error occurred while fetching concepts, describe the error.
+        type: string
 
   ConfigResponse:
     type: object
@@ -530,6 +533,8 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/QuestionConcept"
+      errorDesc:
+        type: string
 
   SurveyQuestionMap:
     type: object
@@ -842,6 +847,8 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/SurveyModule"
+      errorDesc:
+        type: string
 
   ConceptAnalysis:
     type: object
@@ -909,6 +916,8 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/ConceptAnalysis"
+      errorDesc:
+        type: string
 
   StandardConceptFilter:
     type: string
