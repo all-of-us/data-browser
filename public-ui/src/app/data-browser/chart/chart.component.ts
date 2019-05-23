@@ -1,3 +1,4 @@
+import {capitalize} from '@angular-devkit/core/src/utils/strings';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import * as highcharts from 'highcharts';
 
@@ -144,6 +145,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           text: options.yAxisTitle ? options.yAxisTitle : null,
           style: {
             fontWeight: 'bold',
+            textTransform: 'capitalize',
           }
         },
         min: 20,
@@ -169,7 +171,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         title: {
           text: options.xAxisTitle ? options.xAxisTitle : null,
           style: {
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            textTransform: 'capitalize',
           }
         },
         categories: options.categories,

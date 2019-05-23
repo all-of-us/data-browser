@@ -1126,27 +1126,32 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
 
             for(float maleRemaining: maleBinRanges){
-                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), String.valueOf(maleRemaining), null, 20L, 20L);
+                String missingValue = String.format("%.2f", maleRemaining);
+                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), missingValue, null, 20L, 20L);
                 aa.addResult(achillesResult);
             }
 
             for(float femaleRemaining: femaleBinRanges){
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), String.valueOf(femaleRemaining), null, 20L, 20L);
+                String missingValue = String.format("%.2f", femaleRemaining);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
 
             for(float intersexRemaining: intersexBinRanges){
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), String.valueOf(intersexRemaining), null, 20L, 20L);
+                String missingValue = String.format("%.2f", intersexRemaining);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
 
             for(float noneRemaining: noneBinRanges){
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), String.valueOf(noneRemaining), null, 20L, 20L);
+                String missingValue = String.format("%.2f", noneRemaining);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
 
             for(float otherRemaining: otherBinRanges){
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), String.valueOf(otherRemaining), null, 20L, 20L);
+                String missingValue = String.format("%.2f", otherRemaining);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
         } else {
