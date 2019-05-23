@@ -348,7 +348,7 @@ export class DbConfigService {
     if (female) { results.push(female); }
     if (intersex) { results.push(intersex); }
     if (none) { results.push(none); }
-    if (other) { results.push(other)}
+    if (other) { results.push(other); }
     analysis.results = results;
   }
 
