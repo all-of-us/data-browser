@@ -233,6 +233,13 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      where analysis_id in (1815)
      and stratum_4=stratum_5"
 
+     echo "Rounding the bin values to multiples of 10"
+     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+     set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string),
+     stratum_5 = cast(cast(FLOOR(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
+     where cast(stratum_4 as float64) > 10 and cast(stratum_5 as float64) > 10 and analysis_id = 1815"
+
      # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
      # We do net yet generate the binned source counts of standard concepts
      # This query only generates counts of measurements that have unit_concept_id 0 and unit_source_value (being considered) by joining on the manual made unit_map table
@@ -243,7 +250,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      with measurement_quartile_data as
      (
      select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
-     ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+     CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10 as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
      )
      select 0 as id,1900 as analysis_id,
      CAST(m1.measurement_concept_id AS STRING) as stratum_1,
@@ -601,6 +608,13 @@ stratum_5 = cast(p90_value as string)
 where analysis_id in (1814,1815)
 and stratum_4=stratum_5"
 
+echo "Rounding the bin values to multiples of 10"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string),
+stratum_5 = cast(cast(FLOOR(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
+where cast(stratum_4 as float64) > 10 and cast(stratum_5 as float64) > 10 and analysis_id = 1815"
+
 # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
 # We do net yet generate the binned source counts of standard concepts
 # This query only generates counts of measurements that have unit_concept_id 0 and unit_source_value (being considered) by joining on the manual made unit_map table
@@ -611,7 +625,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with measurement_quartile_data as
 (
 select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
-((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10 as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
 )
 select 0 as id,1900 as analysis_id,
 CAST(m1.measurement_concept_id AS STRING) as stratum_1,
