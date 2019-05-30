@@ -216,6 +216,23 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      join overallstats o on p.stratum1_id = o.stratum1_id and p.stratum2_id = o.stratum2_id and p.stratum3_id = o.stratum3_id
      group by o.stratum1_id, o.stratum2_id, o.stratum3_id, o.total, o.min_value, o.max_value, o.avg_value, o.stdev_value"
 
+     # Update iqr_min and iqr_max in distributions for debugging purposes
+     echo "updating iqr_min and iqr_max"
+     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+     set stratum_4 = cast((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end) as string),
+     stratum_5 = cast((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end) as string)
+     where analysis_id in (1815)"
+
+     # Update iqr_min and iqr_max in distributions for debugging purposes
+     echo "updating iqr_min and iqr_max"
+     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+     set stratum_4 = cast(p10_value as string),
+     stratum_5 = cast(p90_value as string)
+     where analysis_id in (1815)
+     and stratum_4=stratum_5"
+
      # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
      # We do net yet generate the binned source counts of standard concepts
      # This query only generates counts of measurements that have unit_concept_id 0 and unit_source_value (being considered) by joining on the manual made unit_map table
