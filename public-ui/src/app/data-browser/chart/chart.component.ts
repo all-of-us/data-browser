@@ -338,29 +338,46 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public makeConceptChartOptions() {
+    console.log('here');
     const data = [];
     const cats = [];
     // Sort by count value
     this.concepts = this.concepts.sort((a, b) => {
-      if (a.countValue < b.countValue) {
-        return 1;
+      if (this.sources) {
+        if (a.sourceCountValue < b.sourceCountValue) {
+          return 1;
+        }
+        if (a.sourceCountValue > b.sourceCountValue) {
+          return -1;
+        }
+        return 0;
+      } else {
+        if (a.countValue < b.countValue) {
+          return 1;
+        }
+        if (a.countValue > b.countValue) {
+          return -1;
+        }
+        return 0;
       }
-      if (a.countValue > b.countValue) {
-        return -1;
-      }
-      return 0;
     }
     );
     for (const a of this.concepts) {
-      data.push({
-        name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
-        y: a.countValue,
-        color: this.dbc.COLUMN_COLOR,
-        toolTipHelpText: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') '
-      });
       if (!this.sources) {
+        data.push({
+          name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
+          y: a.countValue,
+          color: this.dbc.COLUMN_COLOR,
+          toolTipHelpText: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') '
+        });
         cats.push(a.conceptName);
       } else {
+        data.push({
+          name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
+          y: a.sourceCountValue,
+          color: this.dbc.COLUMN_COLOR,
+          toolTipHelpText: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') '
+        });
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
     }
