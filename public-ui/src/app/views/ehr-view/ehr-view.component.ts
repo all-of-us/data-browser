@@ -57,7 +57,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   expanded = true;
   treeLoading = false;
   search: string;
-  
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private api: DataBrowserService,
