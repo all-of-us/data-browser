@@ -57,10 +57,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   expanded = true;
   treeLoading = false;
   search: string;
-
-  @ViewChild('chartElement') chartEl: ElementRef;
-
-
+  
   constructor(private route: ActivatedRoute,
     private router: Router,
     private api: DataBrowserService,
@@ -238,8 +235,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public selectGraph(g, r: any) {
-    this.chartEl.nativeElement.scrollIntoView(
-      { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
     this.dbc.triggerEvent('conceptClick', 'Concept Graph',
@@ -307,7 +302,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return;
     }
     this.resetSelectedGraphs();
-    this.graphToShow = GraphType.BiologicalSex;
+    if (this.ehrDomain.name.toLowerCase() === 'measurements') {
+      this.graphToShow = GraphType.Values;
+    } else {
+      this.graphToShow = GraphType.BiologicalSex;
+    }
     concepts.forEach(concept => concept.expanded = false);
     r.expanded = true;
   }
