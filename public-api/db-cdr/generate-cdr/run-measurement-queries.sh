@@ -237,14 +237,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string),
-     stratum_5 = cast(cast(FLOOR(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
+     stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
      where cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
 
      echo "Rounding the bin values to multiples of 10"
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 0.1) * 0.1 as int64) as string),
-     stratum_5 = cast(cast(FLOOR(cast(stratum_5 as float64) / 0.1) * 0.1 as int64) as string)
+     stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 0.1) * 0.1 as int64) as string)
      where (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) and analysis_id = 1815"
 
      # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
@@ -257,9 +257,9 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      with measurement_quartile_data as
      (
      select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
-     case when cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10 as bin_width
-     when (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/0.1)*0.1 as bin_width
-     else ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as bin_width end from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+     case when cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10
+     when (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/0.1)*0.1
+     else ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) end as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
      )
      select 0 as id,1900 as analysis_id,
      CAST(m1.measurement_concept_id AS STRING) as stratum_1,
@@ -621,14 +621,14 @@ echo "Rounding the bin values to multiples of 10"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string),
-stratum_5 = cast(cast(FLOOR(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
+stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
 where cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
 
 echo "Rounding the bin values to multiples of 10"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 0.1) * 0.1 as int64) as string),
-stratum_5 = cast(cast(FLOOR(cast(stratum_5 as float64) / 0.1) * 0.1 as int64) as string)
+stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 0.1) * 0.1 as int64) as string)
 where (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) and analysis_id = 1815"
 
 
@@ -642,10 +642,10 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with measurement_quartile_data as
 (
 select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
-case when cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10 as bin_width
-when (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/0.1)*0.1 as bin_width
-else ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as bin_width end
-as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+case when cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10
+when (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/0.1)*0.1
+else ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) end as bin_width
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
 )
 select 0 as id,1900 as analysis_id,
 CAST(m1.measurement_concept_id AS STRING) as stratum_1,
