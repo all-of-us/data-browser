@@ -58,9 +58,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeLoading = false;
   search: string;
 
-  @ViewChild('chartElement') chartEl: ElementRef;
-
-
   constructor(private route: ActivatedRoute,
     private router: Router,
     private api: DataBrowserService,
@@ -71,13 +68,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
-    });
-    this.route.queryParams.subscribe(params => {
-      if (params['search']) {
-        this.prevSearchText = params.search;
-      } else {
-        this.prevSearchText = '';
-      }
     });
     this.loadPage();
   }
@@ -179,20 +169,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
-    if (this.searchText.value) {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          queryParams: { search: this.searchText.value }
-        });
-    } else {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route
-        });
-    }
     this.searchResult = results;
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
@@ -259,8 +235,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public selectGraph(g, r: any) {
-    this.chartEl.nativeElement.scrollIntoView(
-      { behavior: 'smooth', block: 'nearest', inline: 'start' });
     this.resetSelectedGraphs();
     this.graphToShow = g;
     this.dbc.triggerEvent('conceptClick', 'Concept Graph',
@@ -328,7 +302,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return;
     }
     this.resetSelectedGraphs();
-    this.graphToShow = GraphType.BiologicalSex;
+    if (this.ehrDomain.name.toLowerCase() === 'measurements') {
+      this.graphToShow = GraphType.Values;
+    } else {
+      this.graphToShow = GraphType.BiologicalSex;
+    }
     concepts.forEach(concept => concept.expanded = false);
     r.expanded = true;
   }
