@@ -893,9 +893,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         TreeSet<Float> bins = new TreeSet<>();
         float binWidth = (max-min)/11;
 
-        if (min >= 10 and max >= 10) {
+        if (min >= 10 && max >= 10) {
             binWidth = Math.ceil(binWidth/10)*10;
-        } else if ((max-min) <= 1 and (max-min) >= 0.1) {
+        } else if ((max-min) <= 1 && (max-min) >= 0.1) {
             binWidth = Math.ceil(binWidth/0.1)*0.1;
         }
 
