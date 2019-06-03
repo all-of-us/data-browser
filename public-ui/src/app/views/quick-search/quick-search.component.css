@@ -103,6 +103,7 @@ app-db-spinner {
 }
 
 .result-box {
+    height:fit-content;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -198,6 +199,7 @@ app-db-spinner {
         margin-bottom: .5em;
     }
     .result-box {
+        height: fit-content;
         min-width: calc(((100%/12)*6) - 9px);
         margin-bottom: 18px;
     }
