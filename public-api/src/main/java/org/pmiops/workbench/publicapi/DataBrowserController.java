@@ -1201,7 +1201,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
             }
 
-            if (type.equals("numeric")) {
+            if (("numeric").equals(type)) {
                 if (maleResults.size() == 0) {
                     AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, 20L, 20L);
                     aa.addResult(achillesResult);
@@ -1214,7 +1214,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, 20L, 20L);
                     aa.addResult(ar);
                 }
-            } else if(type.equals("text")) {
+            } else if(("text").equals(type)) {
                 if (maleResults.size() == 0) {
                     AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "Null", null, 20L, 20L);
                     aa.addResult(achillesResult);
