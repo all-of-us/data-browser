@@ -158,9 +158,10 @@ h5.secondary-display {
 
 .source-layout {
     display:flex;
+    margin: 0 2rem;
 }
 .source-item {
-    width:100%;
+    width:50%;
     margin: 0 auto;
     flex-grow:1;
 }
