@@ -9,7 +9,7 @@
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
       <not>
-        <columnExists columnName="has_counts" tableName="concept"/>
+        <columnExists tableName="concept" columnName="has_counts"/>
       </not>
     </preConditions>
     <addColumn tableName="concept">
@@ -23,7 +23,7 @@
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
       <not>
-        <indexExists tableName="concept" indexName="domain_count_index"></indexExists>
+        <indexExists tableName="concept" indexName="domain_count_index"/>
       </not>
     </preConditions>
     <sql dbms="mysql">
