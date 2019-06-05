@@ -1,6 +1,7 @@
 package org.pmiops.workbench.publicapi;
 
 import java.util.logging.Logger;
+import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -816,9 +817,26 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                     unitGenderAnalysis.setResults(results.get(unit));
                                     unitGenderAnalysis.setUnitName(unit);
                                     if(!unit.equalsIgnoreCase("no unit")) {
-                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)));
+                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
                                     } else {
-                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null);
+                                        ArrayList<AchillesResult> textValues = new ArrayList<>();
+                                        ArrayList<AchillesResult> numericValues = new ArrayList<>();
+                                        // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
+                                        for (AchillesResult result: unitGenderAnalysis.getResults()) {
+                                            if (NumberUtils.isNumber(result.getStratum4())) {
+                                                numericValues.add(result);
+                                            } else {
+                                                textValues.add(result);
+                                            }
+                                        }
+                                        if (textValues.size() > 0 && numericValues.size() > 0) {
+                                            List<AchillesResult> filteredNumericResults = unitGenderAnalysis.getResults().stream().filter(ele -> textValues.stream()
+                                                    .anyMatch(element -> element.getId()==ele.getId())).collect(Collectors.toList());
+                                            unitGenderAnalysis.setResults(filteredNumericResults);
+                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "text");
+                                        } else if (numericValues.size() > 0) {
+                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
+                                        }
                                     }
                                     unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }
@@ -1010,7 +1028,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
     }
 
-    public void processMeasurementGenderMissingBins(Long analysisId, AchillesAnalysis aa, String conceptId, String unitName, List<AchillesResultDist> resultDists) {
+    public void processMeasurementGenderMissingBins(Long analysisId, AchillesAnalysis aa, String conceptId, String unitName, List<AchillesResultDist> resultDists, String type) {
 
         if (resultDists != null) {
             Float maleBinMin = null;
@@ -1183,15 +1201,32 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
             }
 
-            if (maleResults.size() == 0) {
-                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, 20L, 20L);
-                aa.addResult(achillesResult);
-            } else if (femaleResults.size() == 0) {
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, 20L, 20L);
-                aa.addResult(ar);
-            } else if (otherResults.size() == 0) {
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, 20L, 20L);
-                aa.addResult(ar);
+            if (("numeric").equals(type)) {
+                if (maleResults.size() == 0) {
+                    AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, 20L, 20L);
+                    aa.addResult(achillesResult);
+                }
+                if (femaleResults.size() == 0) {
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, 20L, 20L);
+                    aa.addResult(ar);
+                }
+                if (otherResults.size() == 0) {
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, 20L, 20L);
+                    aa.addResult(ar);
+                }
+            } else if(("text").equals(type)) {
+                if (maleResults.size() == 0) {
+                    AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "Null", null, 20L, 20L);
+                    aa.addResult(achillesResult);
+                }
+                if (femaleResults.size() == 0) {
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "Null", null, 20L, 20L);
+                    aa.addResult(ar);
+                }
+                if (otherResults.size() == 0) {
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "Null", null, 20L, 20L);
+                    aa.addResult(ar);
+                }
             }
 
         }
