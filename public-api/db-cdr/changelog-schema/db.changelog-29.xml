@@ -7,11 +7,25 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
   <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-29">
     <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="concept" columnName="has_counts"/>
+      </not>
+    </preConditions>
     <addColumn tableName="concept">
       <column name="has_counts" type="BOOL">
         <constraints nullable="true"/>
       </column>
     </addColumn>
+  </changeSet>
+
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-30">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <indexExists tableName="concept" indexName="domain_count_index"/>
+      </not>
+    </preConditions>
     <sql dbms="mysql">
       ALTER TABLE concept
       ADD INDEX domain_count_index
