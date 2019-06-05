@@ -338,7 +338,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public makeConceptChartOptions() {
-    console.log('here');
     const data = [];
     const cats = [];
     // Sort by count value
