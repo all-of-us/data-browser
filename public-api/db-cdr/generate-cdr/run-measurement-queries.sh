@@ -249,7 +249,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
       set a.stratum_4= cast(res.min_iqr_min as string)
-      from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from `all-of-us-ehr-dev.test_vocabulary_ppi.achilles_results_dist` r
+      from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
       where r.analysis_id=1815 group by stratum_1, stratum_2) as res
       where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
@@ -257,7 +257,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
       "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
       set a.stratum_5= cast(res.min_iqr_max as string)
-      from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from `all-of-us-ehr-dev.test_vocabulary_ppi.achilles_results_dist` r
+      from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
       where r.analysis_id=1815 group by stratum_1, stratum_2) as res
       where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
@@ -653,7 +653,7 @@ echo "Make the min range of all the biological sexes same"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
 set a.stratum_4= cast(res.min_iqr_min as string)
-from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from `all-of-us-ehr-dev.test_vocabulary_ppi.achilles_results_dist` r
+from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
 where r.analysis_id=1815 group by stratum_1, stratum_2) as res
 where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
@@ -661,7 +661,7 @@ echo "Make the max range of all the biological sexes same"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
 set a.stratum_5= cast(res.min_iqr_max as string)
-from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from `all-of-us-ehr-dev.test_vocabulary_ppi.achilles_results_dist` r
+from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
 where r.analysis_id=1815 group by stratum_1, stratum_2) as res
 where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
