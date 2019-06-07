@@ -299,6 +299,7 @@ on p1.person_id = co1.person_id
 where co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\`)
 group by co1.condition_source_concept_id, p1.gender_concept_id"
 
+<< --MULTILINE-COMMENT--
 # Condition gender identity
 # Calculating the gender identity counts for condition concepts based on the answer of each person to ppi question 1585838
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -348,6 +349,7 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co
 where co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\`)
 and ob1.observation_source_concept_id=1586140
 group by co1.condition_source_concept_id, ob1.value_source_concept_id"
+--MULTILINE-COMMENT--
 
 # (400 age ) 3102 Number of persons with at least one condition occurrence, by condition_concept_id by age decile
 # Age Deciles : They will be  18-29 , 30-39, 40-49, 50-59, 60-69, 70-79, 80-89, 89+
@@ -537,6 +539,7 @@ on p1.person_id = co1.person_id
 where co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\`)
 group by co1.procedure_source_concept_id,p1.gender_concept_id"
 
+<< --MULTILINE-COMMENT--
 #  3107 Gender identity
 # Calculates gender identity counts for procedure concepts based on the people' answer to ppi question 1585838
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -590,6 +593,7 @@ on ob1.person_id = co1.person_id
 where co1.procedure_source_concept_id not in (select distinct procedure_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\`)
 and ob1.observation_source_concept_id=1586140
 group by co1.procedure_source_concept_id,ob1.value_source_concept_id"
+--MULTILINE-COMMENT--
 
 
 # 600 age
@@ -719,6 +723,7 @@ on p1.person_id = co1.person_id
 where co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\`)
 group by co1.drug_source_concept_id,p1.gender_concept_id"
 
+<< --MULTILINE-COMMENT--
 # Drug gender identity
 # Calculates gender identity counts for drug concepts based on the people' answer to ppi question 1585838
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -772,6 +777,7 @@ on ob1.person_id = co1.person_id
 where co1.drug_source_concept_id not in (select distinct drug_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\`)
 and ob1.observation_source_concept_id=1586140
 group by co1.drug_source_concept_id,ob1.value_source_concept_id"
+--MULTILINE-COMMENT--
 
 # Drug age
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -906,6 +912,7 @@ where co1.observation_source_concept_id > 0
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 group by co1.observation_source_concept_id, p1.gender_concept_id"
 
+<< --MULTILINE-COMMENT--
 # Observation 3107 concept by gender identity
 # Calculates gender identity counts for observation concepts based on the people' answer to ppi question 1585838
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -961,6 +968,7 @@ where co1.observation_source_concept_id > 0
 and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
 and ob1.observation_source_concept_id=1586140
 group by co1.observation_source_concept_id, ob1.value_source_concept_id"
+--MULTILINE-COMMENT--
 
 # Observation (3102)	Number of persons with   concept id by  age decile  30+ yr old deciles
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1104,6 +1112,7 @@ and co1.measurement_source_concept_id not in (select distinct measurement_concep
 and ob1.observation_source_concept_id=1585838
 group by co1.measurement_source_concept_id, ob1.value_source_concept_id"
 
+<< --MULTILINE-COMMENT--
 # Measurement concept by race ethnicity
 # Calculates race ethnicity counts for measurement concepts based on the people' answer to ppi question 1586140
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1132,6 +1141,7 @@ where co1.measurement_source_concept_id > 0
 and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
 and ob1.observation_source_concept_id=1586140
 group by co1.measurement_source_concept_id, ob1.value_source_concept_id"
+--MULTILINE-COMMENT--
 
 # Measurement by age deciles
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1619,6 +1629,13 @@ select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, c
     0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\`"
 
+echo "Getting physical measurement participant counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+select 0 as id,3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
+count(distinct person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`
+where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)"
 
 # Count of people who took each survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1650,6 +1667,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
 group by sm.concept_id, p1.gender_concept_id"
 
+<< --MULTILINE-COMMENT--
 # Gender identity breakdown of people who took each survey (Row for combinations of each survey and gender)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -1679,6 +1697,7 @@ On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0) and p1.observation_source_concept_id=1586140
 group by sm.concept_id, p1.value_source_concept_id"
+--MULTILINE-COMMENT--
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
