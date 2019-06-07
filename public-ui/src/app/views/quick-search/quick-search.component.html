@@ -3,12 +3,21 @@
     <div>
       <h1 id='db-title' class="primary-display ">Data Browser</h1>
       <p id="db-desc" class="body-default">
-         The Data Browser provides interactive views of the publicly available <em>All of Us</em> Research Program participant data. Currently, participant provided information, including surveys and physical measurements taken at the time of participant enrollment (“program physical measurements”), as well as electronic health record (EHR) data are available. The <em>All of Us</em> Research Program data resource will grow to include more data types over time.
-<br /><br />
-         There may be a delay of several months between the time participants consent and the time their record is included in the <em>All of Us</em> data that is visible in the Data Browser. The delay is a result of the time it takes for participant data to be collected, transferred to the Data and Research Center and curated. As a result, the overall participant counts within the Data Browser are lower than the overall enrollment numbers for the program.
-<br /><br />
-         In order to protect participant privacy, the data is limited to aggregate counts and summary demographic information for medical concepts, survey responses and physical measurements.
-       </p>
+        The Data Browser provides interactive views of the publicly available <em>All of Us</em> Research Program
+        participant data. Currently, participant provided information, including surveys and physical measurements taken
+        at the time of participant enrollment (“program physical measurements”), as well as electronic health record
+        (EHR) data are available. The <em>All of Us</em> Research Program data resource will grow to include more data
+        types over time.
+        <br /><br />
+        There may be a delay of several months between the time participants consent and the time their record is
+        included in the <em>All of Us</em> data that is visible in the Data Browser. The delay is a result of the time
+        it takes for participant data to be collected, transferred to the Data and Research Center and curated. As a
+        result, the overall participant counts within the Data Browser are lower than the overall enrollment numbers for
+        the program.
+        <br /><br />
+        In order to protect participant privacy, the data is limited to aggregate counts and summary demographic
+        information for medical concepts, survey responses and physical measurements.
+      </p>
     </div>
   </div>
   <div class="search-icon-container">
@@ -25,22 +34,27 @@
       </div>
       <div id="db-search-bar">
         <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-        <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto">
+        <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search"
+          [formControl]="searchText" style="height:auto">
       </div>
       <span class="result-body-item cdr-info" *ngIf="creationTime">
-          Data based on Curated Data Repository (CDR) dated
-          {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}} with {{numParticipants | number}} total participants.
-          </span>
+        Data based on Curated Data Repository (CDR) dated
+        {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}} with
+        {{numParticipants | number}} total participants.
+      </span>
     </div><!-- .search -->
     <div class="iconlinks">
       <div class="icons" (click)="iconClickEvent('FAQ')">
-        <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs" alt="FAQs"><img alt="FAQs" src="/assets/icons/icons_faqs.png" /><span>FAQs</span></a>
+        <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs" alt="FAQs"><img alt="FAQs"
+            src="/assets/icons/icons_faqs.png" /><span>FAQs</span></a>
       </div>
       <div class="icons" (click)="iconClickEvent('Intro-Videos')">
-        <a [routerLink]="['introductory-videos']" alt="Introductory Videos"><img alt="Introductory Videos" src="/assets/icons/icons_introductoryvideo.png" /><span>Introductory Videos</span></a>
+        <a [routerLink]="['introductory-videos']" alt="Introductory Videos"><img alt="Introductory Videos"
+            src="/assets/icons/icons_introductoryvideo.png" /><span>Introductory Videos</span></a>
       </div>
       <div class="icons" (click)="iconClickEvent('User-Guide')">
-        <a href="../../../assets/pdf/Databrowser_Tutorial_4_26_2019.pdf" target="_blank" alt="User Guide"><img  alt="User Guide" src="/assets/icons/icons_userguide.png" /><span>User Guide</span></a>
+        <a href="../../../assets/pdf/Databrowser_Tutorial_4_26_2019.pdf" target="_blank" alt="User Guide"><img
+            alt="User Guide" src="/assets/icons/icons_userguide.png" /><span>User Guide</span></a>
       </div>
     </div><!-- .iconlinks -->
   </div><!-- .search-icon-container -->
@@ -79,13 +93,13 @@
             <span><strong> {{r.participantCount | number}}</strong> participants in this domain
             </span>
           </span>
-          <div class="result-body-item">
-            <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
-              (click)="viewEhrDomain(r)">
-              View Top 100 </a>
-            <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link"
-              (click)="viewEhrDomain(r)"> View Results </a>
-          </div>
+        </div>
+        <div class="result-box-link">
+          <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
+            (click)="viewEhrDomain(r)">
+            View Top 100 </a>
+          <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
+            View Results </a>
         </div>
       </div>
       <div class="col col-xs-12" *ngIf="! domainResults || domainResults.length === 0">
@@ -113,26 +127,25 @@
             <span *ngIf="!searchText.value">survey questions</span>
           </div>
           <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
-              <span><strong> {{r.participantCount | number}}</strong> participants in this domain
-              </span>
+            <span><strong> {{r.participantCount | number}}</strong> participants in this domain
             </span>
+          </span>
           <div class="result-body-item">
             <span>{{r.description}}</span>
           </div>
-          <div class="result-body-item">
+        </div>
+          <div class="result-box-link">
             <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
               View Complete Survey </a>
             <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r)"> View Results </a>
           </div>
-        </div>
       </div>
       <!-- toDO: style noresults -->
       <div class="col-xs-12" *ngIf="! surveyResults || surveyResults.length === 0">
         <h6> No Survey Results.</h6>
       </div>
     </div>
-    <h5 class="result-heading secondary-display"
-      *ngIf="!loading"> Program
+    <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
       Physical Measurements: </h5>
     <div [routerLink]="['physical-measurements']" class="result-boxes"
       *ngIf="physicalMeasurementsFound > 0 && !loading">
@@ -149,7 +162,7 @@
         <div class="result-body">
           <span class="result-body-item">
             Participants have the option to provide a standard set of physical measurements as part
-              of the enrollment process (“program physical measurements”).
+            of the enrollment process (“program physical measurements”).
           </span>
           <span class="result-body-item">
             <ng-container *ngIf="searchText.value; else noSearchPm;">
@@ -158,9 +171,10 @@
             <ng-template #noSearchPm>
               <div class="result-stat">{{physicalMeasurementsFound}}</div> physical measurements
             </ng-template>
-          <div class="result-bottom">
-            <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
-          </div>
+            <div class="result-bottom">
+              <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements
+              </a>
+            </div>
           </span>
         </div>
       </div>
