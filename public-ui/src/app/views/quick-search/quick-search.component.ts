@@ -170,7 +170,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
     this.domainResults = results.domainInfos.filter(domain => domain.name.toLowerCase() !== 'pm');
-    let physicalMeasurementDomainInfo = results.domainInfos.filter(domain => domain.name.toLowerCase() === 'pm');
+    const physicalMeasurementDomainInfo =
+      results.domainInfos.filter(domain => domain.name.toLowerCase() === 'pm');
     if (physicalMeasurementDomainInfo && physicalMeasurementDomainInfo.length > 0) {
       this.pmParticipantCount = physicalMeasurementDomainInfo[0].participantCount;
     }
