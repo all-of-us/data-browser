@@ -144,7 +144,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     // Search when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges
-        .debounceTime(300)
+        .debounceTime(1000)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomains(query))
         .subscribe((data: DomainInfosAndSurveyModulesResponse) => {

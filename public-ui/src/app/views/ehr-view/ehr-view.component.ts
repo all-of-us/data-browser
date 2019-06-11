@@ -122,7 +122,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .subscribe(results => this.searchCallback(results));
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
-        .debounceTime(300)
+        .debounceTime(1000)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({

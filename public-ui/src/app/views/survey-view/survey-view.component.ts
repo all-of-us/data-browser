@@ -80,7 +80,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges
-        .debounceTime(400)
+        .debounceTime(1000)
         .distinctUntilChanged()
         .subscribe((query) => { this.filterResults(); }));
 
