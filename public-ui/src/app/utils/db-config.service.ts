@@ -168,13 +168,13 @@ export class DbConfigService {
   routeToDomain = {
     'conditions': 'condition',
     'drug-exposures': 'drug',
-    'measurements': 'measurement',
+    'labs-and-measurements': 'measurement',
     'procedures': 'procedure'
   };
   domainToRoute = {
     'condition': 'conditions',
     'drug': 'drug-exposures',
-    'measurement': 'measurements',
+    'measurement': 'labs-and-measurements',
     'procedure': 'procedures'
   };
 
