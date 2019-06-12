@@ -122,7 +122,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .subscribe(results => this.searchCallback(results));
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
-        .debounceTime(300)
+        .debounceTime(1500)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({
@@ -169,6 +169,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
+    if (this.prevSearchText && this.prevSearchText.length >= 3 &&
+      results && results.items && results.items.length > 0) {
+      this.dbc.triggerEvent('domainPageSearch', 'Search',
+        'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+    } else if (this.prevSearchText && this.prevSearchText.length >= 3 &&
+      results && (!results.items || results.items.length <= 0)) {
+      this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
+        'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+    }
     this.searchResult = results;
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
@@ -199,10 +208,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
-    if (query) {
-      this.dbc.triggerEvent('domainPageSearch', 'Search',
-        'Search Inside Domain ' + this.ehrDomain.name, null, query, null);
-    }
     // Unsubscribe from our initial search subscription if this is called again
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
