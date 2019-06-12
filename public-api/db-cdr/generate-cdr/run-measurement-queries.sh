@@ -151,7 +151,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,min_value,max_value,avg_value,stdev_value,median_value,p10_value,p25_value,p75_value,p90_value)
      with rawdata_1815 as
-     (select measurement_concept_id as subject_id, cast(unit_concept_id as string) as unit, p.gender_concept_id as gender,
+    (select measurement_concept_id as subject_id, cast(unit_concept_id as string) as unit, p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and unit_concept_id != 0
@@ -220,32 +220,47 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      echo "updating iqr_min and iqr_max"
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-     set stratum_4 = cast((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end) as string),
-     stratum_5 = cast((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end) as string)
+     set stratum_4 = cast(ROUND((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end),2) as string),
+     stratum_5 = cast(ROUND((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end),2) as string)
      where analysis_id in (1815)"
 
      # Update iqr_min and iqr_max in distributions for debugging purposes
      echo "updating iqr_min and iqr_max"
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-     set stratum_4 = cast(p10_value as string),
-     stratum_5 = cast(p90_value as string)
+     set stratum_4 = cast(ROUND(p10_value,2) as string),
+     stratum_5 = cast(ROUND(p90_value,2) as string)
      where analysis_id in (1815)
      and stratum_4=stratum_5"
 
      echo "Rounding the bin values to multiples of 10"
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-     set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string),
-     stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
-     where cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
+     set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string)
+     where cast(stratum_4 as float64) >= 10 and analysis_id = 1815"
 
      echo "Rounding the bin values to multiples of 10"
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-     set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 0.1) * 0.1 as int64) as string),
-     stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 0.1) * 0.1 as int64) as string)
-     where (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) and analysis_id = 1815"
+     set stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
+     where cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
+
+     echo "Make the min range of all the biological sexes same"
+     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
+      set a.stratum_4= cast(res.min_iqr_min as string)
+      from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
+      where r.analysis_id=1815 group by stratum_1, stratum_2) as res
+      where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
+
+      echo "Make the max range of all the biological sexes same"
+      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+      "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
+      set a.stratum_5= cast(res.min_iqr_max as string)
+      from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
+      where r.analysis_id=1815 group by stratum_1, stratum_2) as res
+      where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
+
 
      # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
      # We do net yet generate the binned source counts of standard concepts
@@ -257,9 +272,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      with measurement_quartile_data as
      (
      select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
-     case when cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10
-     when (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/0.1)*0.1
-     else ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) end as bin_width from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+     case
+          when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 5
+          then ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/5)*5
+          when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 0.1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 1
+          then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/0.1)*0.1,1)
+          else ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),1) end
+     as bin_width
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
      )
      select 0 as id,1900 as analysis_id,
      CAST(m1.measurement_concept_id AS STRING) as stratum_1,
@@ -470,42 +490,42 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,min_value,max_value,avg_value,stdev_value,median_value,p10_value,p25_value,p75_value,p90_value)
 with rawdata_1815 as
 (select measurement_concept_id as subject_id, cast(unit_concept_id as string) as unit, p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-where m.value_as_number is not null and m.measurement_concept_id > 0 and unit_concept_id != 0
-union all
-select measurement_source_concept_id as subject_id, cast(unit_concept_id as string) as unit,p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
-m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and unit_concept_id != 0
-union all
-select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
-where m.value_as_number is not null and m.measurement_concept_id > 0 and m.unit_concept_id = 0 and m.unit_source_value is not null
-union all
-select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
-where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
-m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and m.unit_concept_id = 0 and m.unit_source_value is not null
-union all
-select measurement_concept_id as subject_id, cast('0' as string), p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-where m.value_as_number is not null and m.measurement_concept_id > 0 and (m.unit_concept_id = 0 and m.unit_source_value is null)
-union all
-select measurement_source_concept_id as subject_id, cast('0' as string),p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-where m.value_as_number is not null and m.measurement_source_concept_id > 0
-and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and (m.unit_concept_id = 0 and m.unit_source_value is null)),
+ cast(value_as_number as float64) as count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and unit_concept_id != 0
+ union all
+ select measurement_source_concept_id as subject_id, cast(unit_concept_id as string) as unit,p.gender_concept_id as gender,
+ cast(value_as_number as float64) as count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+ where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
+ m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
+ and unit_concept_id != 0
+ union all
+ select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, p.gender_concept_id as gender,
+ cast(value_as_number as float64) as count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and m.unit_concept_id = 0 and m.unit_source_value is not null
+ union all
+ select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,p.gender_concept_id as gender,
+ cast(value_as_number as float64) as count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
+ where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
+ m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
+ and m.unit_concept_id = 0 and m.unit_source_value is not null
+ union all
+ select measurement_concept_id as subject_id, cast('0' as string), p.gender_concept_id as gender,
+ cast(value_as_number as float64) as count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and (m.unit_concept_id = 0 and m.unit_source_value is null)
+ union all
+ select measurement_source_concept_id as subject_id, cast('0' as string),p.gender_concept_id as gender,
+ cast(value_as_number as float64) as count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+ where m.value_as_number is not null and m.measurement_source_concept_id > 0
+ and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
+ and (m.unit_concept_id = 0 and m.unit_source_value is null)),
 overallstats as
 (select subject_id as stratum1_id, unit as stratum2_id, gender as stratum3_id, cast(avg(1.0 * count_value) as float64) as avg_value,
 cast(stddev(count_value) as float64) as stdev_value, min(count_value) as min_value, max(count_value) as max_value,
@@ -604,33 +624,46 @@ group by o.stratum1_id, o.stratum2_id, o.total, o.min_value, o.max_value, o.avg_
 echo "updating iqr_min and iqr_max"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-set stratum_4 = cast((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end) as string),
-stratum_5 = cast((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end) as string)
-where analysis_id in (1814,1815)"
+set stratum_4 = cast(ROUND((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end),2) as string),
+stratum_5 = cast(ROUND((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end),2) as string)
+where analysis_id in (1815)"
 
 # Update iqr_min and iqr_max in distributions for debugging purposes
 echo "updating iqr_min and iqr_max"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-set stratum_4 = cast(p10_value as string),
-stratum_5 = cast(p90_value as string)
-where analysis_id in (1814,1815)
+set stratum_4 = cast(ROUND(p10_value,2) as string),
+stratum_5 = cast(ROUND(p90_value,2) as string)
+where analysis_id in (1815)
 and stratum_4=stratum_5"
 
 echo "Rounding the bin values to multiples of 10"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string),
-stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
-where cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
+set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string)
+where cast(stratum_4 as float64) >= 10 and analysis_id = 1815"
 
 echo "Rounding the bin values to multiples of 10"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
-set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 0.1) * 0.1 as int64) as string),
-stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 0.1) * 0.1 as int64) as string)
-where (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) and analysis_id = 1815"
+set stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
+where cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
 
+echo "Make the min range of all the biological sexes same"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
+set a.stratum_4= cast(res.min_iqr_min as string)
+from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
+where r.analysis_id=1815 group by stratum_1, stratum_2) as res
+where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
+
+echo "Make the max range of all the biological sexes same"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
+set a.stratum_5= cast(res.min_iqr_max as string)
+from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
+where r.analysis_id=1815 group by stratum_1, stratum_2) as res
+where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
 # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
 # We do net yet generate the binned source counts of standard concepts
@@ -642,9 +675,13 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with measurement_quartile_data as
 (
 select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
-case when cast(stratum_4 as float64) >= 10 and cast(stratum_5 as float64) >= 10 then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/10)*10
-when (cast(stratum_5 as float64) - cast(stratum_4 as float64) <= 1) and  (cast(stratum_5 as float64) - cast(stratum_4 as float64) >= 0.1) then CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/0.1)*0.1
-else ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) end as bin_width
+case
+     when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 5
+     then ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/5)*5
+     when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 0.1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 1
+     then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/0.1)*0.1,1)
+     else ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),1) end
+as bin_width
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
 )
 select 0 as id,1900 as analysis_id,
@@ -862,4 +899,4 @@ where stratum_2 = 'No matching concept'"
 echo "Replacing no matching concept unit name to no unit"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` set stratum_2 = 'No unit'
-where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910 "
+where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910"

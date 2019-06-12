@@ -103,10 +103,11 @@ app-db-spinner {
 }
 
 .result-box {
-    height:fit-content;
+    /* height:auto; */
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     min-width: calc(((100%/12)*3) - 14px);
     max-width: calc(((100%/12)*3) - 18px);
     margin-right: 18px;
@@ -121,6 +122,7 @@ app-db-spinner {
     color: #337AB7;
     font-family: Arial, sans-serif;
     display: flex;
+    padding:18px;
     padding-bottom: 3px;
     margin: 0;
 }
@@ -142,9 +144,14 @@ app-db-spinner {
     color: #302C71;
     font-family: GothamBook, Arial, sans-serif;
     font-size: 14px;
-    height: 100%;
+    padding:18px;
+    padding-top:0px;
     display: flex;
     flex-direction: column;
+}
+.result-box-link {
+    padding:18px;
+    padding-top:0;
 }
 
 .result-body-item {
@@ -200,7 +207,7 @@ app-db-spinner {
         margin-bottom: .5em;
     }
     .result-box {
-        height: fit-content;
+        height: auto;
         min-width: calc(((100%/12)*6) - 9px);
         margin-bottom: 18px;
     }
