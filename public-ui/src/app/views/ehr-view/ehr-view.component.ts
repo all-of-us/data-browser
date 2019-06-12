@@ -113,7 +113,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
-      if (this.ehrDomain.name.toLowerCase() === 'measurements') {
+      if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
         this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
       } else {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
@@ -302,7 +302,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return;
     }
     this.resetSelectedGraphs();
-    if (this.ehrDomain.name.toLowerCase() === 'measurements') {
+    if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
       this.graphToShow = GraphType.Values;
     } else {
       this.graphToShow = GraphType.BiologicalSex;
