@@ -110,7 +110,6 @@ app-db-spinner {
     min-width: calc(((100%/12)*3) - 14px);
     max-width: calc(((100%/12)*3) - 18px);
     margin-right: 18px;
-    padding: 18px;
     border-radius: 5px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
