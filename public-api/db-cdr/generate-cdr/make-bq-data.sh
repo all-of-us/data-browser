@@ -516,6 +516,15 @@ where r.analysis_id = 3000 and r.stratum_1 = CAST(d.concept_id AS STRING)
 and r.stratum_3 = d.domain_id
 and r.stratum_2 is null"
 
+# Set participant counts for physical measurements
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
+set d.participant_count = r.count_value from
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` r
+where r.analysis_id = 3000 and r.stratum_3 = 'Physical Measurements'
+and d.domain_id='Physical Measurements' "
+
+
 ##########################################
 # survey count updates                   #
 ##########################################

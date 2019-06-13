@@ -721,6 +721,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
+
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
@@ -907,30 +908,37 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
     }
 
-    public TreeSet<Float> makeBins(Float min,Float max) {
-        TreeSet<Float> bins = new TreeSet<>();
+    public ArrayList<Float> makeBins(Float min,Float max) {
+        TreeSet<String> bins = new TreeSet<>();
         float binWidth = (max-min)/11;
 
-        if (min >= 10 && max >= 10) {
-            double tempBinWidth = Math.ceil(binWidth/10)*10;
-            binWidth = (float)tempBinWidth;
-        } else if ((max-min) <= 1 && (max-min) >= 0.1) {
-            double tempBinWidth = Math.ceil(binWidth/0.1)*0.1;
-            binWidth = (float)tempBinWidth;
+        if (binWidth >= 5) {
+            binWidth = Math.round(binWidth/5)*5;
+        } else {
+            binWidth = Float.parseFloat(String.valueOf(Math.round(binWidth * 10.0) / 10.0));
         }
 
-        bins.add(Float.valueOf(String.format("%.2f", min+binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+2*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+3*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+4*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+5*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+6*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+7*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+8*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+9*binWidth)));
-        bins.add(Float.valueOf(String.format("%.2f", min+10*binWidth)));
-        bins.add(max);
-        return bins;
+        bins.add(String.format("%.2f", min));
+
+        bins.add(String.format("%.2f", min+binWidth));
+        bins.add(String.format("%.2f", min+2*binWidth));
+        bins.add(String.format("%.2f", min+3*binWidth));
+        bins.add(String.format("%.2f", min+4*binWidth));
+        bins.add(String.format("%.2f", min+5*binWidth));
+        bins.add(String.format("%.2f", min+6*binWidth));
+        bins.add(String.format("%.2f", min+7*binWidth));
+        bins.add(String.format("%.2f", min+8*binWidth));
+        bins.add(String.format("%.2f", min+9*binWidth));
+        bins.add(String.format("%.2f", min+10*binWidth));
+        bins.add(String.format("%.2f", min+11*binWidth));
+
+        List<String> trimmedBins = new ArrayList<>();
+
+        for(String s:bins) {
+            trimmedBins.add(s.indexOf(".") < 0 ? s : s.replaceAll("0*$", "").replaceAll("\\.$", ""));
+        }
+
+        return new ArrayList<Float>(trimmedBins.stream().map(Float::parseFloat).collect(Collectors.toList()));
     }
 
     public void addGenderStratum(AchillesAnalysis aa, int stratum, String conceptId){
@@ -1108,11 +1116,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
             }
 
-            TreeSet<Float> maleBinRanges = new TreeSet<Float>();
-            TreeSet<Float> femaleBinRanges = new TreeSet<Float>();
-            TreeSet<Float> intersexBinRanges = new TreeSet<Float>();
-            TreeSet<Float> noneBinRanges = new TreeSet<Float>();
-            TreeSet<Float> otherBinRanges = new TreeSet<Float>();
+            ArrayList<Float> maleBinRanges = new ArrayList<Float>();
+            ArrayList<Float> femaleBinRanges = new ArrayList<Float>();
+            ArrayList<Float> intersexBinRanges = new ArrayList<Float>();
+            ArrayList<Float> noneBinRanges = new ArrayList<Float>();
+            ArrayList<Float> otherBinRanges = new ArrayList<Float>();
 
             if(maleBinMax != null && maleBinMin != null){
                 maleBinRanges = makeBins(maleBinMin, maleBinMax);
@@ -1153,31 +1161,61 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
 
             for(float maleRemaining: maleBinRanges){
-                String missingValue = String.format("%.2f", maleRemaining);
+                String missingValue = null;
+                if (maleRemaining == (long)maleRemaining) {
+                    missingValue = String.format("%d",(long)maleRemaining);
+                } else {
+                    missingValue = String.format("%.2f", maleRemaining);
+                }
+                missingValue = trimTrailingZeroDecimals(missingValue);
                 AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), missingValue, null, 20L, 20L);
                 aa.addResult(achillesResult);
             }
 
             for(float femaleRemaining: femaleBinRanges){
-                String missingValue = String.format("%.2f", femaleRemaining);
+                String missingValue = null;
+                if (femaleRemaining == (long)femaleRemaining) {
+                    missingValue = String.format("%d",(long)femaleRemaining);
+                } else {
+                    missingValue = String.format("%.2f", femaleRemaining);
+                }
+                missingValue = trimTrailingZeroDecimals(missingValue);
                 AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
 
             for(float intersexRemaining: intersexBinRanges){
-                String missingValue = String.format("%.2f", intersexRemaining);
+                String missingValue = null;
+                if (intersexRemaining == (long)intersexRemaining) {
+                    missingValue = String.format("%d",(long)intersexRemaining);
+                } else {
+                    missingValue = String.format("%.2f", intersexRemaining);
+                }
+                missingValue = trimTrailingZeroDecimals(missingValue);
                 AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
 
             for(float noneRemaining: noneBinRanges){
-                String missingValue = String.format("%.2f", noneRemaining);
+                String missingValue = null;
+                if (noneRemaining == (long)noneRemaining) {
+                    missingValue = String.format("%d",(long)noneRemaining);
+                } else {
+                    missingValue = String.format("%.2f", noneRemaining);
+                }
+                missingValue = trimTrailingZeroDecimals(missingValue);
                 AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
 
             for(float otherRemaining: otherBinRanges){
-                String missingValue = String.format("%.2f", otherRemaining);
+                String missingValue = null;
+                if (otherRemaining == (long)otherRemaining) {
+                    missingValue = String.format("%d",(long)otherRemaining);
+                } else {
+                    missingValue = String.format("%.2f", otherRemaining);
+                }
+                missingValue = trimTrailingZeroDecimals(missingValue);
                 AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), missingValue, null, 20L, 20L);
                 aa.addResult(ar);
             }
@@ -1307,13 +1345,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        TreeSet<Float> binRanges2 = new TreeSet<Float>();
-        TreeSet<Float> binRanges3 = new TreeSet<Float>();
-        TreeSet<Float> binRanges4 = new TreeSet<Float>();
-        TreeSet<Float> binRanges5 = new TreeSet<Float>();
-        TreeSet<Float> binRanges6 = new TreeSet<Float>();
-        TreeSet<Float> binRanges7 = new TreeSet<Float>();
-        TreeSet<Float> binRanges8 = new TreeSet<Float>();
+        ArrayList<Float> binRanges2 = new ArrayList<Float>();
+        ArrayList<Float> binRanges3 = new ArrayList<Float>();
+        ArrayList<Float> binRanges4 = new ArrayList<Float>();
+        ArrayList<Float> binRanges5 = new ArrayList<Float>();
+        ArrayList<Float> binRanges6 = new ArrayList<Float>();
+        ArrayList<Float> binRanges7 = new ArrayList<Float>();
+        ArrayList<Float> binRanges8 = new ArrayList<Float>();
 
 
         if(decileRanges.get("2") != null){
@@ -1361,5 +1399,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
+    }
+
+    public String trimTrailingZeroDecimals(String s) {
+        String trimmedValue = null;
+        if (s != null) {
+            trimmedValue = s.indexOf(".") < 0 ? s : s.replaceAll("0*$", "").replaceAll("\\.$", "");
+        }
+        return trimmedValue;
     }
 }

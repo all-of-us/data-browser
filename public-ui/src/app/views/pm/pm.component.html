@@ -34,9 +34,11 @@
             <div class="chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
               <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
               selectedConcept.analyses.measurementValueGenderAnalysis" class="chart-title">
-                {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</div>
-              <app-chart *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
-                         selectedConcept.analyses.measurementValueGenderAnalysis" [genderId]="gender.stratum2"
+                <span class="chart-title" *ngIf="gender.countValue > 20; else PmChartTitleLE20">
+                  {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</span>
+                <ng-template #PmChartTitleLE20>{{gender.analysisStratumName}} – &le; {{gender.countValue.toLocaleString()}}</ng-template>
+              </div>
+              <app-chart [genderId]="gender.stratum2"
                          [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
                          [chartType]="selectedConcept.chartType"
                          [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
