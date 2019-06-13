@@ -147,9 +147,9 @@
     </div>
     <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
       Physical Measurements: </h5>
-    <div [routerLink]="['physical-measurements']" class="result-boxes"
+    <div class="result-boxes"
       *ngIf="physicalMeasurementsFound > 0 && !loading">
-      <div id="pm-box" class="result-box">
+      <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
         <p class="result-box-title">
           Physical Measurements
           <clr-tooltip>
