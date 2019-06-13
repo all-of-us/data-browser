@@ -107,11 +107,4 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }
-  
-  fetchChartTitle(count: number) {
-    if (count <= 20) {
-      return '<=' + count;
-    }
-    return count;
-  }
 }
