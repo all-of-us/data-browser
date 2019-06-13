@@ -299,7 +299,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
            when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
            when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
            when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-           else iqr_max
+           else iqr_min+11*bin_width
           end),2)
      else
      round((case when m1.value_as_number < p10_value then p10_value
@@ -314,7 +314,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
            when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-           else p90_value
+           else p10_value+11*((p90_value-p10_value)/11)
           end),2)
           end) as string) as stratum_4,
      count(distinct p1.person_id) as count_value,
@@ -346,7 +346,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
            when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
            when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
            when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-           else iqr_max
+           else iqr_min+11*bin_width
           end),2)
      else
      round((case when m1.value_as_number < p10_value then p10_value
@@ -361,7 +361,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
            when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-           else p90_value
+           else p10_value+11*((p90_value-p10_value)/11)
           end),2)
           end) as string) as stratum_4,
      COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
@@ -702,7 +702,7 @@ round((case when m1.value_as_number < iqr_min then iqr_min
       when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
       when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
       when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-      else iqr_max
+      else iqr_min+11*bin_width
      end),2)
 else
 round((case when m1.value_as_number < p10_value then p10_value
@@ -717,7 +717,7 @@ round((case when m1.value_as_number < p10_value then p10_value
       when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-      else p90_value
+      else p10_value+11*((p90_value-p10_value)/11)
      end),2)
      end) as string) as stratum_4,
 count(distinct p1.person_id) as count_value,
@@ -749,7 +749,7 @@ round((case when m1.value_as_number < iqr_min then iqr_min
       when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
       when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
       when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-      else iqr_max
+      else iqr_min+11*bin_width
      end),2)
 else
 round((case when m1.value_as_number < p10_value then p10_value
@@ -764,7 +764,7 @@ round((case when m1.value_as_number < p10_value then p10_value
       when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-      else p90_value
+      else p10_value+11*((p90_value-p10_value)/11)
      end),2)
      end) as string) as stratum_4,
 COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
