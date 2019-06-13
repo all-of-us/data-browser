@@ -914,8 +914,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         if (binWidth >= 5) {
             binWidth = Math.round(binWidth/5)*5;
-        } else if (binWidth >= 0.1 && binWidth <= 1) {
-            binWidth = Float.parseFloat(String.valueOf(Math.round(binWidth * 10.0) / 10.0));
         } else {
             binWidth = Float.parseFloat(String.valueOf(Math.round(binWidth * 10.0) / 10.0));
         }
