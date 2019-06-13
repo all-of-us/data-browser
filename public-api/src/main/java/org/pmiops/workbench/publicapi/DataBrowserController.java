@@ -1404,9 +1404,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     public String trimTrailingZeroDecimals(String s) {
+        String trimmedValue = null;
         if (s != null) {
-            s = s.indexOf(".") < 0 ? s : s.replaceAll("0*$", "").replaceAll("\\.$", "");
+            trimmedValue = s.indexOf(".") < 0 ? s : s.replaceAll("0*$", "").replaceAll("\\.$", "");
         }
-        return s;
+        return trimmedValue;
     }
 }
