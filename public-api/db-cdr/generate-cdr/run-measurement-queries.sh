@@ -288,7 +288,6 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      cast(
      (case when iqr_min != iqr_max then
      round((case when m1.value_as_number < iqr_min then iqr_min
-           when m1.value_as_number > iqr_max then iqr_max
            when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
            when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
            when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
@@ -303,7 +302,6 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           end),2)
      else
      round((case when m1.value_as_number < p10_value then p10_value
-           when m1.value_as_number > p90_value then p90_value
            when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
@@ -335,7 +333,6 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      cast(
      (case when iqr_min != iqr_max then
      round((case when m1.value_as_number < iqr_min then iqr_min
-           when m1.value_as_number > iqr_max then iqr_max
            when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
            when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
            when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
@@ -350,7 +347,6 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           end),2)
      else
      round((case when m1.value_as_number < p10_value then p10_value
-           when m1.value_as_number > p90_value then p90_value
            when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
            when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
@@ -691,7 +687,6 @@ CAST(p1.gender_concept_id AS STRING) as stratum_3,
 cast(
 (case when iqr_min != iqr_max then
 round((case when m1.value_as_number < iqr_min then iqr_min
-      when m1.value_as_number > iqr_max then iqr_max
       when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
       when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
       when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
@@ -706,7 +701,6 @@ round((case when m1.value_as_number < iqr_min then iqr_min
      end),2)
 else
 round((case when m1.value_as_number < p10_value then p10_value
-      when m1.value_as_number > p90_value then p90_value
       when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
@@ -738,7 +732,6 @@ CAST(p1.gender_concept_id AS STRING) as stratum_3,
 cast(
 (case when iqr_min != iqr_max then
 round((case when m1.value_as_number < iqr_min then iqr_min
-      when m1.value_as_number > iqr_max then iqr_max
       when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
       when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
       when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
@@ -753,7 +746,6 @@ round((case when m1.value_as_number < iqr_min then iqr_min
      end),2)
 else
 round((case when m1.value_as_number < p10_value then p10_value
-      when m1.value_as_number > p90_value then p90_value
       when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
       when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
