@@ -345,7 +345,8 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      CAST(p1.gender_concept_id AS STRING) as stratum_3,
      cast(
      (case when iqr_min != iqr_max then
-     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+          round((case when m1.value_as_number < iqr_min then iqr_min
+                when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
                 when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
                 when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
                 when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
@@ -711,7 +712,8 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
 cast(
 (case when iqr_min != iqr_max then
-when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+     round((case when m1.value_as_number < iqr_min then iqr_min
+           when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
            when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
            when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
            when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
@@ -750,7 +752,7 @@ when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_
            else p10_value+17*((p90_value-p10_value)/11)
           end),2)
      else m1.value_as_number
-     end) as string) as stratum_4,
+          end) as string) as stratum_4,
 count(distinct p1.person_id) as count_value,
 count(distinct p1.person_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
@@ -768,7 +770,8 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
 cast(
 (case when iqr_min != iqr_max then
-when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+     round((case when m1.value_as_number < iqr_min then iqr_min
+           when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
            when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
            when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
            when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
