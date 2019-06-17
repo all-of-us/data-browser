@@ -256,10 +256,10 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       echo "Make the max range of all the biological sexes same"
       bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
       "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
-      set a.stratum_5= cast(res.min_iqr_max as string)
-      from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
-      where r.analysis_id=1815 group by stratum_1, stratum_2) as res
-      where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
+          set a.stratum_5= cast(res.min_iqr_max as string)
+          from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
+          where r.analysis_id=1815 group by stratum_1, stratum_2) as res
+          where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
 
      # 1900 Measurement numeric value counts (This query generates counts, source counts of the binned value and gender combination. It gets bin size from joining the achilles_results)
@@ -288,32 +288,45 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      cast(
      (case when iqr_min != iqr_max then
      round((case when m1.value_as_number < iqr_min then iqr_min
-           when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
-           when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
-           when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
-           when m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width then iqr_min+4*bin_width
-           when m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width then iqr_min+5*bin_width
-           when m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width then iqr_min+6*bin_width
-           when m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width then iqr_min+7*bin_width
-           when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
-           when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
-           when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-           else iqr_min+11*bin_width
-          end),2)
-     else
+           when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+           when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
+           when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
+           when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
+           when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < iqr_max then iqr_min+5*bin_width
+           when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < iqr_max then iqr_min+6*bin_width
+           when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < iqr_max then iqr_min+7*bin_width
+           when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < iqr_max then iqr_min+8*bin_width
+           when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < iqr_max then iqr_min+9*bin_width
+           when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < iqr_max then iqr_min+10*bin_width
+           when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < iqr_max then iqr_min+11*bin_width
+           when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < iqr_max then iqr_min+12*bin_width
+           when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < iqr_max then iqr_min+13*bin_width
+           when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < iqr_max then iqr_min+14*bin_width
+           when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < iqr_max then iqr_min+15*bin_width
+           when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < iqr_max then iqr_min+16*bin_width
+           else iqr_min+17*bin_width
+           end),2)
+     when p10_value != p90_value then
      round((case when m1.value_as_number < p10_value then p10_value
-           when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11) then p10_value+4*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11) then p10_value+5*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11) then p10_value+6*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11) then p10_value+7*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-           else p10_value+11*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
+           else p10_value+17*((p90_value-p10_value)/11)
           end),2)
+     else m1.value_as_number
           end) as string) as stratum_4,
      count(distinct p1.person_id) as count_value,
      count(distinct p1.person_id) as source_count_value
@@ -332,33 +345,45 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      CAST(p1.gender_concept_id AS STRING) as stratum_3,
      cast(
      (case when iqr_min != iqr_max then
-     round((case when m1.value_as_number < iqr_min then iqr_min
-           when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
-           when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
-           when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
-           when m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width then iqr_min+4*bin_width
-           when m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width then iqr_min+5*bin_width
-           when m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width then iqr_min+6*bin_width
-           when m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width then iqr_min+7*bin_width
-           when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
-           when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
-           when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-           else iqr_min+11*bin_width
-          end),2)
-     else
-     round((case when m1.value_as_number < p10_value then p10_value
-           when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11) then p10_value+4*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11) then p10_value+5*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11) then p10_value+6*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11) then p10_value+7*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
-           when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-           else p10_value+11*((p90_value-p10_value)/11)
-          end),2)
+     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+                when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
+                when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
+                when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
+                when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < iqr_max then iqr_min+5*bin_width
+                when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < iqr_max then iqr_min+6*bin_width
+                when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < iqr_max then iqr_min+7*bin_width
+                when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < iqr_max then iqr_min+8*bin_width
+                when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < iqr_max then iqr_min+9*bin_width
+                when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < iqr_max then iqr_min+10*bin_width
+                when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < iqr_max then iqr_min+11*bin_width
+                when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < iqr_max then iqr_min+12*bin_width
+                when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < iqr_max then iqr_min+13*bin_width
+                when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < iqr_max then iqr_min+14*bin_width
+                when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < iqr_max then iqr_min+15*bin_width
+                when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < iqr_max then iqr_min+16*bin_width
+                else iqr_min+17*bin_width
+                end),2)
+          when p10_value != p90_value then
+          round((case when m1.value_as_number < p10_value then p10_value
+                when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
+                when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
+                else p10_value+17*((p90_value-p10_value)/11)
+               end),2)
+          else m1.value_as_number
           end) as string) as stratum_4,
      COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
@@ -686,33 +711,45 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
 cast(
 (case when iqr_min != iqr_max then
-round((case when m1.value_as_number < iqr_min then iqr_min
-      when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
-      when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
-      when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
-      when m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width then iqr_min+4*bin_width
-      when m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width then iqr_min+5*bin_width
-      when m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width then iqr_min+6*bin_width
-      when m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width then iqr_min+7*bin_width
-      when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
-      when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
-      when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-      else iqr_min+11*bin_width
-     end),2)
-else
-round((case when m1.value_as_number < p10_value then p10_value
-      when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11) then p10_value+4*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11) then p10_value+5*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11) then p10_value+6*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11) then p10_value+7*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-      else p10_value+11*((p90_value-p10_value)/11)
-     end),2)
+when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+           when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
+           when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
+           when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
+           when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < iqr_max then iqr_min+5*bin_width
+           when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < iqr_max then iqr_min+6*bin_width
+           when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < iqr_max then iqr_min+7*bin_width
+           when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < iqr_max then iqr_min+8*bin_width
+           when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < iqr_max then iqr_min+9*bin_width
+           when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < iqr_max then iqr_min+10*bin_width
+           when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < iqr_max then iqr_min+11*bin_width
+           when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < iqr_max then iqr_min+12*bin_width
+           when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < iqr_max then iqr_min+13*bin_width
+           when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < iqr_max then iqr_min+14*bin_width
+           when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < iqr_max then iqr_min+15*bin_width
+           when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < iqr_max then iqr_min+16*bin_width
+           else iqr_min+17*bin_width
+           end),2)
+     when p10_value != p90_value then
+     round((case when m1.value_as_number < p10_value then p10_value
+           when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
+           else p10_value+17*((p90_value-p10_value)/11)
+          end),2)
+     else m1.value_as_number
      end) as string) as stratum_4,
 count(distinct p1.person_id) as count_value,
 count(distinct p1.person_id) as source_count_value
@@ -731,33 +768,45 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
 cast(
 (case when iqr_min != iqr_max then
-round((case when m1.value_as_number < iqr_min then iqr_min
-      when m1.value_as_number between iqr_min and iqr_min+bin_width then iqr_min+bin_width
-      when m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width then iqr_min+2*bin_width
-      when m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width then iqr_min+3*bin_width
-      when m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width then iqr_min+4*bin_width
-      when m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width then iqr_min+5*bin_width
-      when m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width then iqr_min+6*bin_width
-      when m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width then iqr_min+7*bin_width
-      when m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width then iqr_min+8*bin_width
-      when m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width then iqr_min+9*bin_width
-      when m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width then iqr_min+10*bin_width
-      else iqr_min+11*bin_width
-     end),2)
-else
-round((case when m1.value_as_number < p10_value then p10_value
-      when m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11) then p10_value+((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11) then p10_value+2*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11) then p10_value+3*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11) then p10_value+4*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11) then p10_value+5*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11) then p10_value+6*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11) then p10_value+7*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11) then p10_value+8*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11) then p10_value+9*((p90_value-p10_value)/11)
-      when m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11) then p10_value+10*((p90_value-p10_value)/11)
-      else p10_value+11*((p90_value-p10_value)/11)
-     end),2)
+when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max then iqr_min+bin_width
+           when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < iqr_max then iqr_min+2*bin_width
+           when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < iqr_max then iqr_min+3*bin_width
+           when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < iqr_max then iqr_min+4*bin_width
+           when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < iqr_max then iqr_min+5*bin_width
+           when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < iqr_max then iqr_min+6*bin_width
+           when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < iqr_max then iqr_min+7*bin_width
+           when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < iqr_max then iqr_min+8*bin_width
+           when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < iqr_max then iqr_min+9*bin_width
+           when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < iqr_max then iqr_min+10*bin_width
+           when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < iqr_max then iqr_min+11*bin_width
+           when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < iqr_max then iqr_min+12*bin_width
+           when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < iqr_max then iqr_min+13*bin_width
+           when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < iqr_max then iqr_min+14*bin_width
+           when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < iqr_max then iqr_min+15*bin_width
+           when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < iqr_max then iqr_min+16*bin_width
+           else iqr_min+17*bin_width
+           end),2)
+     when p10_value != p90_value then
+     round((case when m1.value_as_number < p10_value then p10_value
+           when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
+           when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
+           else p10_value+17*((p90_value-p10_value)/11)
+          end),2)
+     else m1.value_as_number
      end) as string) as stratum_4,
 COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id

@@ -229,6 +229,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public setEhrUrl(r) {
+    console.log(r);
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
     return url;
