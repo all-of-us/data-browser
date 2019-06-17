@@ -722,6 +722,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const data = [];
     const cats = [];
     const color = this.dbc.COLUMN_COLOR;
+    const order = ['8507', '8532', '0'];
+    this.analysis.results.sort(function(a, b) {
+      return order.indexOf(a.stratum3) - order.indexOf(b.stratum3);
+    });
     for (const a of this.analysis.results) {
       data.push({
         name: a.stratum4,
