@@ -63,6 +63,16 @@ const routes: Routes = [
           }
         },
         {
+          path: 'survey/:id/:searchString',
+          component: SurveyViewComponent,
+          data: {
+            title: 'View Full Results',
+            breadcrumb: {
+              value: ':id survey',
+            }
+          }
+        },
+        {
           path: 'ehr/:id',
           component: EhrViewComponent,
           data: {
