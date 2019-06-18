@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -40,15 +40,17 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   showAnswer = {};
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
+  searchFromUrl: string;
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
 
-  constructor(private route: ActivatedRoute, private api: DataBrowserService,
+  constructor(private route: ActivatedRoute,private router: Router, private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
+      this.searchFromUrl = params.searchString;
     });
   }
 
@@ -64,8 +66,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public loadPage() {
     if (!this.prevSearchText) {
-      this.prevSearchText = '';
-      this.prevSearchText = localStorage.getItem('searchText');
+      if (this.searchFromUrl) {
+        this.prevSearchText = this.searchFromUrl;
+        localStorage.setItem('searchText', this.searchFromUrl);
+      } else {
+        this.prevSearchText = '';
+        this.prevSearchText = localStorage.getItem('searchText');
+      }
     }
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
@@ -82,7 +89,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.searchText.valueChanges
         .debounceTime(1500)
         .distinctUntilChanged()
-        .subscribe((query) => { this.filterResults(); }));
+        .subscribe((query) => {
+          this.router.navigate(
+            ['survey/' + this.domainId.toLowerCase() + '/' + query]
+          );
+          this.filterResults();
+        }));
 
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
@@ -109,10 +121,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               a.countPercent = this.countPercentage(a.countValue);
               this.addMissingBiologicalSexResults(q.genderAnalysis,
                 q.genderAnalysis.surveyQuestionResults.
-                filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
               this.addMissingAgeResults(q.ageAnalysis,
                 q.ageAnalysis.surveyQuestionResults.
-                filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
               if (a.subQuestions) {
                 for (const subQuestion of a.subQuestions) {
                   subQuestion.actualQuestionNumber = 0;
@@ -123,7 +135,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   subQuestion.graphToShow = GraphType.BiologicalSex;
                   subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
-                  filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
+                    filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                     for (const question of subResult.subQuestions) {
                       question.actualQuestionNumber = 0;
                       if (question.questions && question.questions.length > 0) {
@@ -146,13 +158,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                           question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
                       );
                       for (const subResult2 of question.countAnalysis.surveyQuestionResults.
-                      filter(r => r.subQuestions === null)) {
+                        filter(r => r.subQuestions === null)) {
                         this.addMissingBiologicalSexResults(question.genderAnalysis,
                           question.genderAnalysis.surveyQuestionResults.
-                          filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
                         this.addMissingAgeResults(question.ageAnalysis,
                           question.ageAnalysis.surveyQuestionResults.
-                          filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
                       }
                     }
                   }
@@ -170,13 +182,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
                   );
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
-                  filter(r => r.subQuestions === null)) {
+                    filter(r => r.subQuestions === null)) {
                     this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
                       subQuestion.genderAnalysis.surveyQuestionResults.
-                      filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
                     this.addMissingAgeResults(subQuestion.ageAnalysis,
                       subQuestion.ageAnalysis.surveyQuestionResults.
-                      filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
                   }
                 }
               }
@@ -338,7 +350,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.dbc.triggerEvent('conceptClick', 'Survey Question',
         'Expand to see answers',
         this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
-        +  q.conceptName,  this.prevSearchText, null);
+        + q.conceptName, this.prevSearchText, null);
     }
   }
 
@@ -347,11 +359,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (a.expanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
-        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + a.stratum4 +
+        + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
         ' - ' + ' Icon', this.prevSearchText, null);
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
-        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + a.stratum4 +
+        + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
         ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
     }
   }
@@ -361,11 +373,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (sqa.subExpanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
-        + sq.actualQuestionNumber + ' - ' +  sq.conceptName + ' - ' + sqa.stratum4 +
+        + sq.actualQuestionNumber + ' - ' + sq.conceptName + ' - ' + sqa.stratum4 +
         ' - ' + ' Icon', this.prevSearchText, null);
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
-        + sq.actualQuestionNumber + ' - ' +  sq.conceptName + ' - ' + sqa.stratum4 +
+        + sq.actualQuestionNumber + ' - ' + sq.conceptName + ' - ' + sqa.stratum4 +
         ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
     }
   }
@@ -418,7 +430,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
     }
     const missingGenderStratums = fullGenderStratums.
-    filter(item => uniqueGenderStratums.indexOf(item) < 0);
+      filter(item => uniqueGenderStratums.indexOf(item) < 0);
     for (const missingStratum of missingGenderStratums) {
       if (results.length > 0) {
         const missingResult = {
@@ -466,7 +478,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public hoverOnTooltip(q: any, event: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      this.survey.name + ' - Q' +  q.actualQuestionNumber + ' - '
+      this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
       + event, null, 'Survey Page Tooltip');
   }
 }
