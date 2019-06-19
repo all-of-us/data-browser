@@ -30,14 +30,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
     }
     if (this.searchText) {
       this.loading = true;
-      this.subscriptions.push(this.searchText.valueChanges
-        .debounceTime(300)
-        .distinctUntilChanged()
-        .subscribe(
-          (query: string) => {
-            localStorage.setItem('searchText', query);
-            this.searchDomains(this.searchText.value);
-          }));
       this.searchDomains(this.searchText.value);
     }
   }
@@ -58,7 +50,9 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
           };
           localStorage.setItem('ehrDomain', JSON.stringify(r));
           this.newDomain.emit(payload);
-          this.router.navigateByUrl('ehr/' + r.domain.toLowerCase());
+          this.router.navigateByUrl(
+            'ehr/' + this.dbc.domainToRoute[r.domain.toLowerCase()] + '/' + this.searchText.value
+            );
         }
       });
     }
