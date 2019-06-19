@@ -89,7 +89,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.searchText.setValue(this.prevSearchText);
     if (this.prevSearchText && this.prevSearchText != null) {
       this.router.navigate(
-        ['survey/' + this.domainId.toLowerCase() + '/' + this.prevSearchText];
+        ['survey/' + this.domainId.toLowerCase() + '/' + this.prevSearchText]
       );
     }
     // Filter when text value changes
@@ -98,9 +98,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         .debounceTime(1500)
         .distinctUntilChanged()
         .subscribe((query) => {
-          //this.router.navigate(
-            //['survey/' + this.domainId.toLowerCase() + '/' + query]
-          //);
+          // this.router.navigate(
+            // ['survey/' + this.domainId.toLowerCase() + '/' + query]
+          // );
           this.filterResults();
         }));
 
