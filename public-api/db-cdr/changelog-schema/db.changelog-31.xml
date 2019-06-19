@@ -8,12 +8,29 @@
   <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-31">
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
+        <columnExists tableName="achilles_results" columnName="count_value"/>
+        <columnExists tableName="achilles_results" columnName="source_count_value"/>
+    </preConditions>
+    <dropColumn tableName="achilles_results" columnName="count_value"/>
+    <dropColumn tableName="achilles_results" columnName="source_count_value"/>
+  </changeSet>
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-32">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
       <not>
         <columnExists tableName="achilles_results" columnName="stratum_6"/>
+        <columnExists tableName="achilles_results" columnName="count_value"/>
+        <columnExists tableName="achilles_results" columnName="source_count_value"/>
       </not>
     </preConditions>
     <addColumn tableName="achilles_results">
       <column name="stratum_6" type="VARCHAR(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="count_value" type="BIGINT">
+        <constraints nullable="true"/>
+      </column>
+      <column name="source_count_value" type="BIGINT">
         <constraints nullable="true"/>
       </column>
     </addColumn>
