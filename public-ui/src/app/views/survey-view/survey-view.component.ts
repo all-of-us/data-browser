@@ -45,7 +45,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
 
-  constructor(private route: ActivatedRoute,private router: Router, private api: DataBrowserService,
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
