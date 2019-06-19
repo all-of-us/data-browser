@@ -56,7 +56,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
-  search: string;
+  searchFromUrl: string;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -65,13 +65,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     public dbc: DbConfigService,
   ) {
   }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
+      this.searchFromUrl = params.searchString;
     });
     this.loadPage();
   }
-
 
   ngOnDestroy() {
     if (this.subscriptions) {
@@ -87,11 +88,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public loadPage() {
     this.items = [];
-
     // Get search text from localStorage
     if (!this.prevSearchText) {
-      this.prevSearchText = '';
-      this.prevSearchText = localStorage.getItem('searchText');
+      if (this.searchFromUrl) {
+        this.prevSearchText = this.searchFromUrl;
+      } else {
+        this.prevSearchText = '';
+        this.prevSearchText = localStorage.getItem('searchText');
+      }
     }
     this.searchText.setValue(this.prevSearchText);
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
@@ -100,7 +104,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.getThisDomain();
     }
     this.setDomain();
-
     this.domainSetup(this.ehrDomain);
     this.showTopConcepts = true;
   }
@@ -183,14 +186,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
     this.items = this.items.sort((a, b) => {
-        if (a.countValue > b.countValue) {
-          return -1;
-        }
-        if (a.countValue < b.countValue) {
-          return 1;
-        }
-        return 0;
+      if (a.countValue > b.countValue) {
+        return -1;
       }
+      if (a.countValue < b.countValue) {
+        return 1;
+      }
+      return 0;
+    }
     );
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
@@ -208,16 +211,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
-    // Unsubscribe from our initial search subscription if this is called again
+    if (query != null) {
+      this.router.navigate(
+        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + query]
+      );
+    }
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
       + query;
+    // Unsubscribe from our initial search subscription if this is called again
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
     }
     const maxResults = 100;
     this.loading = true;
-
     this.searchRequest = {
       query: query,
       domain: this.ehrDomain.domain.toUpperCase(),
@@ -288,6 +295,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return this.tooltipText.valueChartHelpText;
     }
   }
+
   public toolTipPos(g) {
     if (g === 'Biological Sex' || g === 'Values') {
       return 'bottom-right';
