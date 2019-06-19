@@ -106,10 +106,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.setDomain();
     this.domainSetup(this.ehrDomain);
     this.showTopConcepts = true;
-    if (this.searchFromUrl) {
-      this.searchDomain(this.searchFromUrl);
-      localStorage.setItem('searchText', this.searchFromUrl);
-    }
   }
 
   private domainSetup(domain) {
