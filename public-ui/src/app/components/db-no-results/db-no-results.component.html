@@ -1,19 +1,19 @@
 <div class="no-results">
     <p *ngIf="loading">Searching whole site for <strong>{{searchText.value}}</strong></p>
     <app-db-spinner [loading]="loading" [dots]="true"></app-db-spinner>
-    <div *ngIf="results && results.domainInfos.length > 0">
+    <div *ngIf="results && results.domainInfos && results.domainInfos.length > 0">
         <div *ngFor="let domain of results.domainInfos ">
-            <span (click)="goToResult(domain)">{{domain.standardConceptCount}} results available in the domain:
+            <span *ngIf="domain.name.toLowerCase() !== 'physical measurements'" (click)="goToResult(domain)">{{domain.standardConceptCount}} results available in the domain:
                 <a>{{domain.name}}</a></span>
         </div>
     </div>
-    <div *ngIf="results && results.surveyModules.length > 0">
+    <div *ngIf="results && results.surveyModules && results.surveyModules.length > 0">
         <div (click)="goToResult(survey)" *ngFor="let survey of results.surveyModules ">
             {{survey.questionCount}} related questions in survey: <a>{{survey.name}}</a>
         </div>
     </div>
     <div *ngIf="pmResults && pmResults.length > 0">
-        <div *ngFor="let domain of pmResults ">
+        <div *ngFor="let domain of pmResults">
             <span (click)="goToPMResult(domain)">{{domain.standardConceptCount}} results available in the domain:
                 <a>{{domain.name}}</a></span>
         </div>

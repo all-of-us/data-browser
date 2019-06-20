@@ -9,7 +9,7 @@ import { DbConfigService } from '../../utils/db-config.service';
   templateUrl: './db-no-results.component.html',
   styleUrls: ['./db-no-results.component.css', '../../styles/template.css']
 })
-export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
+export class DbNoResultsComponent implements OnChanges, OnDestroy {
   @Input() searchText;
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
@@ -21,11 +21,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
     private api: DataBrowserService,
     private router: Router,
     private dbc: DbConfigService) {
-  }
-
-  ngOnInit() {
-    this.dbc.getPmGroups().subscribe(results => {
-    });
   }
 
   ngOnChanges() {
@@ -88,13 +83,8 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
     this.subscriptions.push(this.api.getDomainSearchResults(query)
       .subscribe(results => {
         this.results = results;
+        this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');
         this.loading = false;
-        const physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
-        if (physicalMeasurementsFound >= 1) {
-          this.pmResults.push({domain: 8, name: 'Physical Measurments', description: '',
-            standardConceptCount: physicalMeasurementsFound,
-            participantCount: 0, allConceptCount: physicalMeasurementsFound});
-        }
       }));
   }
 

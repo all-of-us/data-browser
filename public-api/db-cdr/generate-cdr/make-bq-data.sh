@@ -88,7 +88,7 @@ do
 done
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for workbench app
-load_tables=(domain_info survey_module achilles_analysis unit_map survey_question_map filter_conditions similar_unit_concepts)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions similar_unit_concepts)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do

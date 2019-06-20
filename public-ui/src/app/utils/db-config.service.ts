@@ -181,6 +181,8 @@ export class DbConfigService {
 
   constructor(private api: DataBrowserService) {
     window['dataLayer'] = window['dataLayer'] || {};
+    this.getPmGroups().subscribe(results => {
+    });
   }
 
   getGenderAnalysisResults() {
@@ -366,7 +368,7 @@ export class DbConfigService {
   }
 
   public matchPhysicalMeasurements(searchString: string) {
-    if (!this.pmGroups) {
+    if (!this.pmGroups || this.pmGroups.length === 0) {
       return 0;
     } else if (!searchString) {
       return this.pmGroups.length;
