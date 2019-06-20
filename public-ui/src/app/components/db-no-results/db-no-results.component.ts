@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataBrowserService } from 'publicGenerated';
+import {DataBrowserService, DomainInfosAndSurveyModulesResponse} from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
 import { DbConfigService } from '../../utils/db-config.service';
+import {environment} from "../../../environments/environment";
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
@@ -13,12 +14,18 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
   loading;
+  pmResults:any = [];
   prevSearchText: string;
   private subscriptions: ISubscription[] = [];
   constructor(
     private api: DataBrowserService,
     private router: Router,
     private dbc: DbConfigService) {
+  }
+  
+  ngOnInit() {
+    this.dbc.getPmGroups().subscribe(results => {
+    });
   }
 
   ngOnChanges() {
@@ -80,9 +87,20 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   public searchDomains(query: string) {
     this.subscriptions.push(this.api.getDomainSearchResults(query)
       .subscribe(results => {
-      this.results = results;
-      this.loading = false;
-    }));
+        this.results = results;
+        this.loading = false;
+        const physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
+        if (physicalMeasurementsFound >= 1) {
+          this.pmResults.push({domain: 8, name: 'Physical Measurments', description: '', standardConceptCount: physicalMeasurementsFound,
+            participantCount: 0, allConceptCount: physicalMeasurementsFound});
+        }
+      }));
+  }
+  
+  public goToPMResult(r) {
+    this.router.navigateByUrl(
+      'physical-measurements/' + '/' + this.searchText.value
+    );
   }
 
 }

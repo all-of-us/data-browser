@@ -120,6 +120,7 @@ export class DbConfigService {
   MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
 
   pmGroups: ConceptGroup[] = [];
+  physicalMeasurementsFound: Number;
   genderAnalysis: Analysis;
   conceptIdNames = [
     { conceptId: 1585855, conceptName: 'Lifestyle' },
@@ -352,7 +353,7 @@ export class DbConfigService {
     analysis.results = results;
   }
 
-  public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
+  triggerEvent(eventName: string, eventCategory: string, eventAction: string,
                             eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
       'event': eventName,
@@ -362,6 +363,16 @@ export class DbConfigService {
       'landingSearchTerm': searchTerm,
       'tooltipsHoverAction': tooltipAction
     });
+  }
+  
+  matchPhysicalMeasurements(searchString: string) {
+    if (!this.pmGroups) {
+      return 0;
+    } else if (!searchString) {
+      return this.pmGroups.length;
+    }
+    return this.pmGroups.filter(conceptgroup =>
+      conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
   }
 
 }

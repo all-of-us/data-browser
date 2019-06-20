@@ -12,4 +12,10 @@
             {{survey.questionCount}} related questions in survey: <a>{{survey.name}}</a>
         </div>
     </div>
+    <div *ngIf="pmResults && pmResults.length > 0">
+        <div *ngFor="let domain of pmResults ">
+            <span (click)="goToPMResult(domain)">{{domain.standardConceptCount}} results available in the domain:
+                <a>{{domain.name}}</a></span>
+        </div>
+    </div>
 </div>
