@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import {DataBrowserService, DomainInfosAndSurveyModulesResponse} from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
@@ -14,7 +14,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
   loading;
-  pmResults:any = [];
+  pmResults: any = [];
   prevSearchText: string;
   private subscriptions: ISubscription[] = [];
   constructor(
@@ -22,7 +22,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
     private router: Router,
     private dbc: DbConfigService) {
   }
-  
+
   ngOnInit() {
     this.dbc.getPmGroups().subscribe(results => {
     });
@@ -97,7 +97,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
         }
       }));
   }
-  
+
   public goToPMResult(r) {
     this.router.navigateByUrl(
       'physical-measurements/' + '/' + this.searchText.value

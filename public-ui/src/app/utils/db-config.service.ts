@@ -364,7 +364,7 @@ export class DbConfigService {
       'tooltipsHoverAction': tooltipAction
     });
   }
-  
+
   matchPhysicalMeasurements(searchString: string) {
     if (!this.pmGroups) {
       return 0;
