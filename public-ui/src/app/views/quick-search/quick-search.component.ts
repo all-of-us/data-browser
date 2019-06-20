@@ -129,7 +129,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             return this.searchCallback(data);
           }));
     }
-    
     // Get domain totals only once so if they erase search we can load them
     this.subscriptions.push(
       this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
