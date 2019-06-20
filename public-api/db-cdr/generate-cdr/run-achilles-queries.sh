@@ -1137,7 +1137,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
-and sq.sub=2 and sq.level=5
+and sq.sub=1 and sq.level=5
 and exists
 (select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
@@ -1151,7 +1151,7 @@ select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 union all
 select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from sub_1_questions_count
 union all
-select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from sub_2_questions_count;"
+select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from sub_2_questions_count"
 
 # Survey question answers count by gender for q2 unrolled
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
