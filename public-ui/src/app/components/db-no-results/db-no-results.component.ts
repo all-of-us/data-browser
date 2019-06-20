@@ -1,15 +1,15 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {DataBrowserService, DomainInfosAndSurveyModulesResponse} from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
 import { DbConfigService } from '../../utils/db-config.service';
-import {environment} from "../../../environments/environment";
+
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
   styleUrls: ['./db-no-results.component.css', '../../styles/template.css']
 })
-export class DbNoResultsComponent implements OnChanges, OnDestroy {
+export class DbNoResultsComponent implements OnChanges, OnDestroy, OnInit {
   @Input() searchText;
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
@@ -91,7 +91,8 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
         this.loading = false;
         const physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
         if (physicalMeasurementsFound >= 1) {
-          this.pmResults.push({domain: 8, name: 'Physical Measurments', description: '', standardConceptCount: physicalMeasurementsFound,
+          this.pmResults.push({domain: 8, name: 'Physical Measurments', description: '',
+            standardConceptCount: physicalMeasurementsFound,
             participantCount: 0, allConceptCount: physicalMeasurementsFound});
         }
       }));
