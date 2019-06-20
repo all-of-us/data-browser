@@ -353,7 +353,7 @@ export class DbConfigService {
     analysis.results = results;
   }
 
-  triggerEvent(eventName: string, eventCategory: string, eventAction: string,
+  public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
                             eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
       'event': eventName,
@@ -365,7 +365,7 @@ export class DbConfigService {
     });
   }
 
-  matchPhysicalMeasurements(searchString: string) {
+  public matchPhysicalMeasurements(searchString: string) {
     if (!this.pmGroups) {
       return 0;
     } else if (!searchString) {
