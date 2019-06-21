@@ -120,6 +120,7 @@ export class DbConfigService {
   MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
 
   pmGroups: ConceptGroup[] = [];
+  physicalMeasurementsFound: Number;
   genderAnalysis: Analysis;
   conceptIdNames = [
     { conceptId: 1585855, conceptName: 'Lifestyle' },
@@ -180,6 +181,8 @@ export class DbConfigService {
 
   constructor(private api: DataBrowserService) {
     window['dataLayer'] = window['dataLayer'] || {};
+    this.getPmGroups().subscribe(results => {
+    });
   }
 
   getGenderAnalysisResults() {
@@ -362,6 +365,16 @@ export class DbConfigService {
       'landingSearchTerm': searchTerm,
       'tooltipsHoverAction': tooltipAction
     });
+  }
+
+  public matchPhysicalMeasurements(searchString: string) {
+    if (!this.pmGroups || this.pmGroups.length === 0) {
+      return 0;
+    } else if (!searchString) {
+      return this.pmGroups.length;
+    }
+    return this.pmGroups.filter(conceptgroup =>
+      conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
   }
 
 }
