@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataBrowserService } from 'publicGenerated';
+import {DataBrowserService} from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
 import { DbConfigService } from '../../utils/db-config.service';
+
 @Component({
   selector: 'app-db-no-results',
   templateUrl: './db-no-results.component.html',
@@ -13,6 +14,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
   loading;
+  pmResults: any = [];
   prevSearchText: string;
   private subscriptions: ISubscription[] = [];
   constructor(
@@ -80,9 +82,16 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   public searchDomains(query: string) {
     this.subscriptions.push(this.api.getDomainSearchResults(query)
       .subscribe(results => {
-      this.results = results;
-      this.loading = false;
-    }));
+        this.results = results;
+        this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');
+        this.loading = false;
+      }));
+  }
+
+  public goToPMResult(r) {
+    this.router.navigateByUrl(
+      'physical-measurements/' + '/' + this.searchText.value
+    );
   }
 
 }

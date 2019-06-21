@@ -49,7 +49,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   EHR_DATATYPE = 'ehr';
   SURVEY_DATATYPE = 'surveys';
   PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
-  pmConceptGroups: ConceptGroup[];
   physicalMeasurementsFound: number;
   numParticipants: any;
   creationTime: any;
@@ -74,8 +73,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.dbc.getPmGroups().subscribe(results => {
-      this.pmConceptGroups = results;
-      this.physicalMeasurementsFound = this.matchPhysicalMeasurements(this.prevSearchText);
     });
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
@@ -175,6 +172,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     if (physicalMeasurementDomainInfo && physicalMeasurementDomainInfo.length > 0) {
       this.pmParticipantCount = physicalMeasurementDomainInfo[0].participantCount;
+      if (this.searchText.value) {
+        this.physicalMeasurementsFound = physicalMeasurementDomainInfo[0].standardConceptCount;
+      } else {
+        this.physicalMeasurementsFound = physicalMeasurementDomainInfo[0].allConceptCount;
+      }
     }
     this.surveyResults = results.surveyModules;
     this.loading = false;
@@ -185,7 +187,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.dbc.triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data',
         null, query, null);
     }
-    this.physicalMeasurementsFound = this.matchPhysicalMeasurements(query);
+    this.physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
@@ -232,16 +234,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
     return url;
-  }
-
-  public matchPhysicalMeasurements(searchString: string) {
-    if (!this.pmConceptGroups) {
-      return 0;
-    } else if (!searchString) {
-      return this.pmConceptGroups.length;
-    }
-    return this.pmConceptGroups.filter(conceptgroup =>
-      conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
   }
 
   public hoverOnTooltip() {

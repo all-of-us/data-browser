@@ -33,3 +33,4 @@
 3112,"Age at occurrence","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","column","counts"
 3113,"Gender Identity","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_identity_concept_id","column","counts"
 3114,"Race ethnicity","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","race_ethnicity_concept_id","column","counts"
+100,"Physical Measurements Concept Group Metadata","group_title","group_name","concept_1","concept_2","concept_3","",""
