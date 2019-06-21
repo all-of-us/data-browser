@@ -118,6 +118,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.surveyName = this.survey.name;
           // Add Did not answer to each question
           for (const q of this.surveyResult.items) {
+            if (q.conceptId === 1585838) {
+              console.log(q);
+            }
             q.actualQuestionNumber = 0;
             q.graphToShow = GraphType.BiologicalSex;
             if (q.questions && q.questions.length > 0) {
