@@ -118,9 +118,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.surveyName = this.survey.name;
           // Add Did not answer to each question
           for (const q of this.surveyResult.items) {
-            if (q.conceptId === 1585838) {
-              console.log(q);
-            }
             q.actualQuestionNumber = 0;
             q.graphToShow = GraphType.BiologicalSex;
             if (q.questions && q.questions.length > 0) {
@@ -145,6 +142,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   }
                   subQuestion.graphToShow = GraphType.BiologicalSex;
                   subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
+                  subQuestion.countAnalysis.surveyQuestionResults =
+                    subQuestion.countAnalysis.surveyQuestionResults.
+                    filter(r => r.stratum6.indexOf(a.stratum3) > -1);
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                     for (const question of subResult.subQuestions) {
@@ -153,6 +153,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         question.actualQuestionNumber =
                           question.questions[0]['questionOrderNumber'];
                       }
+                      question.countAnalysis.surveyQuestionResults =
+                        question.countAnalysis.surveyQuestionResults.
+                        filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
                       question.graphToShow = GraphType.BiologicalSex;
                       question.selectedAnalysis = question.genderAnalysis;
                       question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
