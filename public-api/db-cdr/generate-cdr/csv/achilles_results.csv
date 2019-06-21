@@ -1,9 +1,9 @@
-analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value
-3200,"blood-pressure","Mean Blood Pressure","903118","903115","","",0,0
-3200,"height","Height","903133","","","",0,0
-3200,"weight","Weight","903121","","","",0,0
-3200,"mean-heart-rate","Mean heart rate","903126","","","",0,0
-3200,"mean-hip","Mean hip circumference","903136","","","",0,0
-3200,"mean-waist","Mean waist circumference","903135","","","",0,0
-3200,"pregnancy","Pregnancy","903120","","","",0,0
-3200,"wheel-chair","Wheel chair use","903111","","","",0,0
+id,analysis_id,"stratum_1","stratum_2","stratum_3","stratum_4","stratum_5","stratum_6",count_value,source_count_value
+1,100,"blood-pressure","Mean Blood Pressure","903118","903115","","",0,0
+2,100,"height","Height","903133","","","",0,0
+3,100,"weight","Weight","903121","","","",0,0
+4,100,"mean-heart-rate","Mean heart rate","903126","","","",0,0
+5,100,"mean-hip","Mean hip circumference","903136","","","",0,0
+6,100,"mean-waist","Mean waist circumference","903135","","","",0,0
+7,100,"pregnancy","Pregnancy","903120","","","",0,0
+8,100,"wheel-chair","Wheel chair use","903111","","","",0,0

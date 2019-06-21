@@ -41,7 +41,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
       "ON d.domain_id = c.domain_id " +
       "    UNION DISTINCT " +
       "    select domain,domain_id,name,description,concept_id,8 as all_concept_count," +
-      "    (select count(*) from achilles_results where analysis_id=3200 and stratum_2 like CONCAT('%', ?2, '%')) as standard_concept_count,participant_count" +
+      "    (select count(*) from achilles_results where analysis_id=100 and stratum_2 like CONCAT('%', ?2, '%')) as standard_concept_count,participant_count" +
       "    from domain_info where domain=8" +
       "    order by domain_id")
   List<DomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds);
