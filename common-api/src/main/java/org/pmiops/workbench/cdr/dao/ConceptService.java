@@ -168,13 +168,9 @@ public class ConceptService {
                             } catch (NumberFormatException e) {
                                 // Not a long, don't try to match it to a concept ID.
                             }
-                            conceptMatch.add(
+                            standardOrCodeOrIdMatch.add(
                                     criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
-                            predicates.add(
-                                    criteriaBuilder.and(
-                                            criteriaBuilder.or(conceptMatch.toArray(new Predicate[0]))),
-                                            criteriaBuilder.and(nonStandardConceptPredicates.toArray(new Predicate[0]))
-                                    ));
+                            predicates.add(criteriaBuilder.or(conceptMatch.toArray(new Predicate[0])));
                             predicates.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
                         } else {
                             predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
