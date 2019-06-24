@@ -154,24 +154,30 @@ public class ConceptService {
 
                     } else if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH)) {
                         if (keyword != null) {
-                            List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
-                            List<Predicate> conceptMatch = new ArrayList<>();
-                            predicates.remove(predicates.size()-1);
-                            conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
-                            conceptMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
-                                    criteriaBuilder.literal(query)));
-                            try {
-                                long conceptId = Long.parseLong(query);
-                                conceptMatch.add(criteriaBuilder.equal(root.get("conceptId"),
+                            if(keyword != null){
+                                List<Predicate> conceptCodeMatch = new ArrayList<>();
+                                List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
+                                predicates.remove(predicates.size()-1);
+                                List<Predicate> conceptMatch = new ArrayList<>();
+                                conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                                conceptMatch.add(
+                                        criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                                conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
+                                standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
+                                        criteriaBuilder.literal(query)));
+                                try {
+                                    long conceptId = Long.parseLong(query);
+                                    standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
 
-                                        criteriaBuilder.literal(conceptId)));
-                            } catch (NumberFormatException e) {
-                                // Not a long, don't try to match it to a concept ID.
+                                            criteriaBuilder.literal(conceptId)));
+                                } catch (NumberFormatException e) {
+                                    // Not a long, don't try to match it to a concept ID.
+                                }
+                                conceptCodeMatch.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
+                                predicates.add(criteriaBuilder.or(conceptCodeMatch.toArray(new Predicate[0])));
+                            } else {
+                                predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                             }
-                            standardOrCodeOrIdMatch.add(
-                                    criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
-                            predicates.add(criteriaBuilder.or(conceptMatch.toArray(new Predicate[0])));
-                            predicates.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
                         } else {
                             predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                         }
