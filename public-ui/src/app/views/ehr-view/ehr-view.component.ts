@@ -223,14 +223,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
     }
-    const maxResults = 100;
+    const maxResults = 50;
     this.loading = true;
     this.searchRequest = {
       query: query,
       domain: this.ehrDomain.domain.toUpperCase(),
       standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
       maxResults: maxResults,
-      minCount: 1
+      minCount: 1,
+      pageNumber: 10,
     };
     this.prevSearchText = query;
     return this.api.searchConcepts(this.searchRequest);
