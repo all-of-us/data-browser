@@ -594,6 +594,9 @@ definitions:
       stratum5:
         description: stratum 5
         type: string
+      stratum6:
+        description: stratum6
+        type: string
       analysisStratumName:
         description: stratum 5 Name
         type: string
@@ -644,6 +647,9 @@ definitions:
           type: string
         stratum5:
           description: stratum 5
+          type: string
+        stratum6:
+          description: stratum6
           type: string
         analysisStratumName:
           description: stratum 5 Name
