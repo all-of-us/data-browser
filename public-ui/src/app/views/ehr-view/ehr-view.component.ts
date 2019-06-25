@@ -179,7 +179,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.api.getDomainSearchResults(query)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
-          domainResults = domainResults.filter(d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
             this.numPages = Math.ceil(this.totalResults/50);
