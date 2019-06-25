@@ -169,7 +169,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       });
                       question.countAnalysis.surveyQuestionResults.push(
                         this.addDidNotAnswerResult(
-                          question.countAnalysis.surveyQuestionResults, subQuestion.countValue)
+                          question.countAnalysis.surveyQuestionResults, subResult.countValue)
                       );
                       for (const subResult2 of question.countAnalysis.surveyQuestionResults.
                         filter(r => r.subQuestions === null)) {
