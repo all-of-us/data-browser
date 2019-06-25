@@ -57,6 +57,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   expanded = true;
   treeLoading = false;
   searchFromUrl: string;
+  totalResults: number;
+  numPages: number;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -171,6 +173,31 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     );
   }
 
+  public getNumberOfPages(query: string) {
+    let domainResults = null;
+    if (query && query != null) {
+      this.subscriptions.push(this.api.getDomainSearchResults(query)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults/50);
+          }
+        }));
+    } else {
+      this.subscriptions.push(this.api.getDomainTotals()
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults/50);
+          }
+        }));
+    }
+  }
+  
   public searchCallback(results: any) {
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
@@ -216,6 +243,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + query]
       );
     }
+    this.getNumberOfPages(query);
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
       + query;
@@ -231,7 +259,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
       maxResults: maxResults,
       minCount: 1,
-      pageNumber: 10,
+      pageNumber: 0,
     };
     this.prevSearchText = query;
     return this.api.searchConcepts(this.searchRequest);

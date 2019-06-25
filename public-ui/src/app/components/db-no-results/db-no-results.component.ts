@@ -84,6 +84,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
       .subscribe(results => {
         this.results = results;
         this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');
+        this.pmResults = this.pmResults.filter(d => d.standardConceptCount > 0);
         this.loading = false;
       }));
   }

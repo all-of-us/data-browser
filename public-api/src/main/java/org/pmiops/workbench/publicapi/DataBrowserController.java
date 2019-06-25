@@ -57,7 +57,6 @@ import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
@@ -543,11 +542,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
-        Page<Concept> concepts = null;
+        Slice<Concept> concepts = null;
         concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter,
                 searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
                 (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber());
-        System.out.println(concepts.getTotalPages());
         ConceptListResponse response = new ConceptListResponse();
 
         for(Concept con : concepts.getContent()){
