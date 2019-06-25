@@ -129,10 +129,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               a.countPercent = this.countPercentage(a.countValue, this.survey.participantCount);
               this.addMissingBiologicalSexResults(q.genderAnalysis,
                 q.genderAnalysis.surveyQuestionResults.
-                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3), this.survey.participantCount);
+                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+                this.survey.participantCount);
               this.addMissingAgeResults(q.ageAnalysis,
                 q.ageAnalysis.surveyQuestionResults.
-                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3), this.survey.participantCount);
+                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+                this.survey.participantCount);
               if (a.subQuestions) {
                 for (const subQuestion of a.subQuestions) {
                   subQuestion.actualQuestionNumber = 0;
@@ -175,10 +177,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         filter(r => r.subQuestions === null)) {
                         this.addMissingBiologicalSexResults(question.genderAnalysis,
                           question.genderAnalysis.surveyQuestionResults.
-                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3), subResult.countValue);
+                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3),
+                          subResult.countValue);
                         this.addMissingAgeResults(question.ageAnalysis,
                           question.ageAnalysis.surveyQuestionResults.
-                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3), subResult.countValue);
+                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3),
+                          subResult.countValue);
                       }
                     }
                   }
@@ -199,10 +203,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     filter(r => r.subQuestions === null)) {
                     this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
                       subQuestion.genderAnalysis.surveyQuestionResults.
-                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3), a.countValue);
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
+                      a.countValue);
                     this.addMissingAgeResults(subQuestion.ageAnalysis,
                       subQuestion.ageAnalysis.surveyQuestionResults.
-                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3), a.countValue);
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
+                      a.countValue);
                   }
                 }
               }
