@@ -183,22 +183,23 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
-            this.numPages = Math.ceil(this.totalResults/50);
+            this.numPages = Math.ceil(this.totalResults / 50);
           }
         }));
     } else {
       this.subscriptions.push(this.api.getDomainTotals()
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
-          domainResults = domainResults.filter(d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
-            this.numPages = Math.ceil(this.totalResults/50);
+            this.numPages = Math.ceil(this.totalResults / 50);
           }
         }));
     }
   }
-  
+
   public searchCallback(results: any) {
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
