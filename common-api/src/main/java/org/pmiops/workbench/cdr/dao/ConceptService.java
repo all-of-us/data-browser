@@ -134,18 +134,17 @@ public class ConceptService {
                             (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
                     final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
+                    Expression<Double> matchExp = null;
 
                     if (keyword != null) {
-                        Expression<Double> matchExp = criteriaBuilder.function("matchConcept", Double.class,
+                        matchExp = criteriaBuilder.function("matchConcept", Double.class,
                                 root.get("conceptName"), root.get("conceptCode"), root.get("vocabularyId"),
                                 root.get("synonymsStr"), criteriaBuilder.literal(keyword));
                         predicates.add(criteriaBuilder.greaterThan(matchExp, 0.0));
                     }
 
                     if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_CONCEPTS)) {
-                        predicates.add(
-                                criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0]))
-                        );
+                            predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                     } else if (standardConceptFilter.equals(StandardConceptFilter.NON_STANDARD_CONCEPTS)) {
                         predicates.add(
                                 criteriaBuilder.or(
@@ -155,20 +154,30 @@ public class ConceptService {
 
                     } else if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH)) {
                         if (keyword != null) {
-                            List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
-                            standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
-                                    criteriaBuilder.literal(query)));
-                            try {
-                                long conceptId = Long.parseLong(query);
-                                standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
+                            if(keyword != null){
+                                List<Predicate> conceptCodeMatch = new ArrayList<>();
+                                List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
+                                predicates.remove(predicates.size()-1);
+                                List<Predicate> conceptMatch = new ArrayList<>();
+                                conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                                conceptMatch.add(
+                                        criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                                conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
+                                standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
+                                        criteriaBuilder.literal(query)));
+                                try {
+                                    long conceptId = Long.parseLong(query);
+                                    standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
 
-                                        criteriaBuilder.literal(conceptId)));
-                            } catch (NumberFormatException e) {
-                                // Not a long, don't try to match it to a concept ID.
+                                            criteriaBuilder.literal(conceptId)));
+                                } catch (NumberFormatException e) {
+                                    // Not a long, don't try to match it to a concept ID.
+                                }
+                                conceptCodeMatch.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
+                                predicates.add(criteriaBuilder.or(conceptCodeMatch.toArray(new Predicate[0])));
+                            } else {
+                                predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                             }
-                            standardOrCodeOrIdMatch.add(
-                                    criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
-                            predicates.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
                         } else {
                             predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                         }

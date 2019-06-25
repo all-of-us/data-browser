@@ -126,13 +126,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             q.selectedAnalysis = q.genderAnalysis;
             // might want to remove with when final decision on how to display them is made.
             for (const a of q.countAnalysis.surveyQuestionResults) {
-              a.countPercent = this.countPercentage(a.countValue);
+              a.countPercent = this.countPercentage(a.countValue, this.survey.participantCount);
               this.addMissingBiologicalSexResults(q.genderAnalysis,
                 q.genderAnalysis.surveyQuestionResults.
-                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+                this.survey.participantCount);
               this.addMissingAgeResults(q.ageAnalysis,
                 q.ageAnalysis.surveyQuestionResults.
-                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
+                  filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+                this.survey.participantCount);
               if (a.subQuestions) {
                 for (const subQuestion of a.subQuestions) {
                   subQuestion.actualQuestionNumber = 0;
@@ -142,6 +144,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   }
                   subQuestion.graphToShow = GraphType.BiologicalSex;
                   subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
+                  subQuestion.countAnalysis.surveyQuestionResults =
+                    subQuestion.countAnalysis.surveyQuestionResults.
+                    filter(r => r.stratum6.indexOf(a.stratum3) > -1);
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                     for (const question of subResult.subQuestions) {
@@ -150,6 +155,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         question.actualQuestionNumber =
                           question.questions[0]['questionOrderNumber'];
                       }
+                      question.countAnalysis.surveyQuestionResults =
+                        question.countAnalysis.surveyQuestionResults.
+                        filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
                       question.graphToShow = GraphType.BiologicalSex;
                       question.selectedAnalysis = question.genderAnalysis;
                       question.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
@@ -169,10 +177,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         filter(r => r.subQuestions === null)) {
                         this.addMissingBiologicalSexResults(question.genderAnalysis,
                           question.genderAnalysis.surveyQuestionResults.
-                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3),
+                          subResult.countValue);
                         this.addMissingAgeResults(question.ageAnalysis,
                           question.ageAnalysis.surveyQuestionResults.
-                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3));
+                            filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3),
+                          subResult.countValue);
                       }
                     }
                   }
@@ -193,10 +203,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     filter(r => r.subQuestions === null)) {
                     this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
                       subQuestion.genderAnalysis.surveyQuestionResults.
-                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
+                      a.countValue);
                     this.addMissingAgeResults(subQuestion.ageAnalysis,
                       subQuestion.ageAnalysis.surveyQuestionResults.
-                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3));
+                        filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
+                      a.countValue);
                   }
                 }
               }
@@ -256,9 +268,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     );
   }
 
-  public countPercentage(countValue: number) {
+  public countPercentage(countValue: number, totalCount: number) {
     if (!countValue || countValue <= 0) { return 0; }
-    let percent: number = countValue / this.survey.participantCount;
+    let percent: number = countValue / totalCount;
     percent = parseFloat(percent.toFixed(4));
     return percent * 100;
   }
@@ -410,7 +422,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (didNotAnswerCount <= 0) {
       didNotAnswerCount = 20;
     }
-    const notAnswerPercent = this.countPercentage(didNotAnswerCount);
+    const notAnswerPercent = this.countPercentage(didNotAnswerCount, participantCount);
     const didNotAnswerResult = {
       analysisId: result.analysisId,
       countValue: didNotAnswerCount,
@@ -429,7 +441,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       'Survey ' + ' ' + this.survey.name + ' pdf download', null, null, null);
   }
 
-  public addMissingBiologicalSexResults(genderAnalysis: any, results: any) {
+  public addMissingBiologicalSexResults(genderAnalysis: any, results: any, totalCount: number) {
     const uniqueGenderStratums: string[] = [];
     const fullGenderStratums = ['8507', '8532', '0'];
     for (const result of results) {
@@ -444,7 +456,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         const missingResult = {
           analysisId: genderAnalysis.analysisId,
           countValue: 20,
-          countPercent: this.countPercentage(20),
+          countPercent: this.countPercentage(20, totalCount),
           stratum1: results[0].stratum1,
           stratum2: results[0].stratum2,
           stratum3: results[0].stratum3,
@@ -457,7 +469,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public addMissingAgeResults(ageAnalysis: any, results: any) {
+  public addMissingAgeResults(ageAnalysis: any, results: any, totalCount: number) {
     const uniqueAgeStratums: string[] = [];
     const fullAgeStratums = ['2', '3', '4', '5', '6', '7', '8', '9'];
     for (const result of results) {
@@ -471,7 +483,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         const missingResult = {
           analysisId: ageAnalysis.analysisId,
           countValue: 20,
-          countPercent: this.countPercentage(20),
+          countPercent: this.countPercentage(20, totalCount),
           stratum1: results[0].stratum1,
           stratum2: results[0].stratum2,
           stratum3: results[0].stratum3,
