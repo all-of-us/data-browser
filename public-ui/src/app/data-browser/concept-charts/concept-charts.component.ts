@@ -85,11 +85,32 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
     this.unitNames = [];
+    let unitCounts = [];
     if (this.analyses && this.analyses.measurementValueGenderAnalysis
       && this.showGraph === GraphType.Values) {
       this.displayMeasurementGraphs = true;
-      for (const aa of this.analyses.measurementValueGenderAnalysis) {
-        this.unitNames.push(aa.unitName);
+      for (const aa of this.analyses.measurementGenderCountAnalysis) {
+        let sumCount = 0;
+        for (const ar of aa.results) {
+          sumCount = sumCount + ar.countValue;
+        }
+        unitCounts.push({ name: aa.unitName, count : sumCount});
+      }
+      unitCounts = unitCounts.sort((a, b) => {
+          if (a.count < b.count) {
+            return 1;
+          }
+          if (a.count > b.count) {
+            return -1;
+          }
+          return 0;
+        }
+      );
+      this.unitNames = unitCounts.map(d => d.name);
+      let noUnit = this.unitNames.filter(n => n.toLowerCase() === 'no unit');
+      this.unitNames = this.unitNames.filter(n => n.toLowerCase() !== 'no unit');
+      if (noUnit.length > 0) {
+        this.unitNames.push(noUnit[0]);
       }
       if (this.unitNames.length > 0) {
         this.selectedUnit = this.unitNames[0];
