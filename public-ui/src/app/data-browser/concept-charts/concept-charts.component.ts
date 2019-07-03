@@ -107,7 +107,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         }
       );
       this.unitNames = unitCounts.map(d => d.name);
-      let noUnit = this.unitNames.filter(n => n.toLowerCase() === 'no unit');
+      const noUnit = this.unitNames.filter(n => n.toLowerCase() === 'no unit');
       this.unitNames = this.unitNames.filter(n => n.toLowerCase() !== 'no unit');
       if (noUnit.length > 0) {
         this.unitNames.push(noUnit[0]);
