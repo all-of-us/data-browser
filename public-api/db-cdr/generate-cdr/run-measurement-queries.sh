@@ -276,7 +276,13 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 5
           then ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/5)*5
           when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 0.1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 1
-          then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/0.1)*0.1,1)
+          then ROUND(CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/0.1)*0.1,1)
+          when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 2
+          then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/2)*2,1)
+          when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 2 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 3
+          then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/3)*3,1)
+          when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 3 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 5
+          then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/5)*5,1)
           else ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),1) end
      as bin_width
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
@@ -749,6 +755,33 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
 where cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
 
+echo "Rounding bin values to one decimal"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+set stratum_4 = CAST(ROUND(safe_cast(stratum_4 as float64),1) as string)
+where safe_cast(stratum_4 as int64) is null"
+
+echo "Rounding bin values to one decimal"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+set stratum_5 = CAST(ROUND(safe_cast(stratum_5 as float64),1) as string)
+where safe_cast(stratum_5 as int64) is null"
+
+echo "Rounding bin values to one decimal"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+set stratum_4 = CAST(ROUND(cast(stratum_4 as float64)) as string)
+where safe_cast(stratum_4 as int64) is null
+and cast(stratum_4 as float64) > 1"
+
+echo "Rounding bin values to one decimal"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
+set stratum_5 = CAST(ROUND(cast(stratum_5 as float64)) as string)
+where safe_cast(stratum_5 as int64) is null
+and cast(stratum_5 as float64) > 1"
+
+
 echo "Make the min range of all the biological sexes same"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
@@ -776,11 +809,17 @@ with measurement_quartile_data as
 (
 select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,min_value,max_value,p10_value,p25_value,p75_value,p90_value,
 case
-     when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 5
-     then ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/5)*5
-     when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 0.1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 1
-     then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/0.1)*0.1,1)
-     else ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),1) end
+       when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 5
+       then ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as int64)/5)*5
+       when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 0.1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 1
+       then ROUND(CEIL(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/0.1)*0.1,1)
+       when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 1 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 2
+       then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/2)*2,1)
+       when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 2 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 3
+       then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/3)*3,1)
+       when ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) >= 3 AND ((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) <= 5
+       then ROUND(ROUND(cast(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11) as float64)/5)*5,1)
+       else ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),1) end
 as bin_width
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
 ),
