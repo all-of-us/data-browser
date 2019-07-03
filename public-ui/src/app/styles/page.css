@@ -196,6 +196,12 @@
   cursor: pointer;
 }
 
+.unit-choice.active {
+  border-style: solid;
+  border-color: #BEE1FF;
+  border-radius: 2px 2px 2px 2px;
+}
+
 .aka {
   transition: .1s background ease-in;
   cursor: pointer;
