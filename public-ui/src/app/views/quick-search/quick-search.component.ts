@@ -30,7 +30,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
      available. The AoU Research Program data resource will grow to include
       more data types over time.`;
   title = 'Search Across Data Types';
-  subTitle = 'Conduct a search across all AoU Research Program data types, ' +
+  subTitle1 = 'Conduct a search across all ';
+  subTitle2 = 'Research Program data types, ' +
     'including surveys, ' +
     'physical measurements taken at the time of participant enrollment ' +
     ' (“program physical measurements”), ' +
