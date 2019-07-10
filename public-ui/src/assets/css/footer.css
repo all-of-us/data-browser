@@ -209,6 +209,10 @@
     text-decoration: underline
 }
 
+.allofus-italics {
+    font-style: italic;
+}
+
 #colophon .footer-widget .button {
     min-width: auto;
     background-color: #fff;
