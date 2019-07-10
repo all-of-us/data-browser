@@ -1332,17 +1332,17 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Float binWidth = (float)0;
 
         if (((bMax - bMin)/11) >= 5) {
-            binWidth = (float)Math.round(((bMax-bMin)/11)/5)*5;
+            binWidth = (float) (Math.round(((bMax-bMin)/11)/5)*5);
         } else if (((bMax-bMin)/11) >= 0.1 && ((bMax-bMin)/11) <= 1) {
-            binWidth = (float)Math.round(Math.ceil((float)(((bMax-bMin)/11))/0.1)*0.1)*10.0/10.0;
+            binWidth = (float) (Math.round(Math.ceil((float)(((bMax-bMin)/11))/0.1)*0.1)*10.0/10.0);
         } else if (((bMax-bMin)/11) >= 1 && ((bMax-bMin)/11) <= 2) {
-            binWidth = (float)Math.round(Math.round((float)(((bMax-bMin)/11))/2)*2)*10.0/10.0;
+            binWidth = (float) (Math.round(Math.round((float)(((bMax-bMin)/11))/2)*2)*10.0/10.0);
         } else if (((bMax-bMin)/11) >= 2 && ((bMax-bMin)/11) <= 3) {
-            binWidth = (float)Math.round(Math.round((float)(((bMax-bMin)/11))/3)*3)*10.0/10.0;
+            binWidth = (float) (Math.round(Math.round((float)(((bMax-bMin)/11))/3)*3)*10.0/10.0);
         } else if (((bMax-bMin)/11) >= 3 && ((bMax-bMin)/11) <= 5) {
-            binWidth = (float)Math.round(Math.round((float)(((bMax-bMin)/11))/5)*5)*10.0/10.0;
+            binWidth = (float) (Math.round(Math.round((float)(((bMax-bMin)/11))/5)*5)*10.0/10.0);
         } else {
-            binWidth = (float)Math.round(((bMax-bMin)/11))*10.0/10.0;
+            binWidth = (float) (Math.round(((bMax-bMin)/11))*10.0/10.0);
         }
 
         return binWidth;
