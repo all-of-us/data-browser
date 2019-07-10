@@ -55,7 +55,7 @@
                     </clr-tooltip-content>
                   </clr-tooltip>
                 </div>
-                <div class="body-default">
+                <div class="body-default font-bold">
                   <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
                 </app-highlight-search>
               </div>
@@ -182,7 +182,7 @@
                       <div class="tbl-exp-r sub-tbl-1"
                            *ngFor="let sqa of subQuestion.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa, subQuestion)">
                         <div class="tbl-r">
-                          <div class="tbl-d first display-body info-text sub-1-que survey-answer-level-1" [ngClass]="{'active':a.expanded && sqa.subQuestions && sqa.subExpanded}">
+                          <div class="tbl-d first display-body info-text sub-1-que survey-answer-level-1" [ngClass]="{'active':a.expanded && sqa.subExpanded}">
                             <div>
                               <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value">
                               </app-highlight-search>
