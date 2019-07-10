@@ -210,6 +210,8 @@ li.flip::before {
         display: block;
     }
     #menu-primary {
+        width: fit-content;
+        float:right;
         display: flex;
     }
     .mobile-nav, #menu-mobile {
@@ -306,14 +308,8 @@ li.flip::before {
     }
   }
   @media only screen and (min-width: 1168px) {
-    .headwrap {
-
-    }
     .headwrap .site-nav-container {
       padding: 0 calc(10%);
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
       background: #f0f0f1;
     }
     .headwrap .site-branding-container {
