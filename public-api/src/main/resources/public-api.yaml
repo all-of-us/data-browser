@@ -698,6 +698,9 @@ definitions:
       stratum5:
         description: stratum 5
         type: string
+      stratum6:
+        description: stratum 6
+        type: string
       countValue:
         description: count
         type: integer

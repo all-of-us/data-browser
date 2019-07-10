@@ -36,6 +36,11 @@
       },
       {
         "mode": "NULLABLE",
+        "name": "stratum_6",
+        "type": "STRING"
+      },
+      {
+        "mode": "NULLABLE",
         "name": "count_value",
         "type": "INTEGER"
       },

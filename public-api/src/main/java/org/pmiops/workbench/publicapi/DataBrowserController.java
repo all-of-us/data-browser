@@ -437,6 +437,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum3(o.getStratum3())
                             .stratum4(o.getStratum4())
                             .stratum5(o.getStratum5())
+                            .stratum6(o.getStratum6())
                             .countValue(o.getCountValue())
                             .minValue(o.getMinValue())
                             .maxValue(o.getMaxValue())
@@ -910,15 +911,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
     }
 
-    public ArrayList<Float> makeBins(Float min,Float max) {
+    public ArrayList<Float> makeBins(Float min,Float max, Float binWidth) {
         TreeSet<String> bins = new TreeSet<>();
-        float binWidth = (max-min)/11;
-
-        if (binWidth >= 5) {
-            binWidth = Math.round(binWidth/5)*5;
-        } else {
-            binWidth = Float.parseFloat(String.valueOf(Math.round(binWidth * 10.0) / 10.0));
-        }
 
         bins.add(String.format("%.2f", min));
 
@@ -1056,26 +1050,38 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             Float otherBinMin = null;
             Float otherBinMax = null;
 
+            Float maleBinWidth = null;
+            Float femaleBinWidth = null;
+            Float noneBinWidth = null;
+            Float intersexBinWidth = null;
+            Float otherBinWidth = null;
+
             for(AchillesResultDist ard:resultDists){
                 if(Integer.parseInt(ard.getStratum3())== MALE) {
                     maleBinMin = Float.valueOf(ard.getStratum4());
                     maleBinMax = Float.valueOf(ard.getStratum5());
+                    maleBinWidth = Float.valueOf(ard.getStratum6());
+
                 }
                 else if(Integer.parseInt(ard.getStratum3()) == FEMALE) {
                     femaleBinMin = Float.valueOf(ard.getStratum4());
                     femaleBinMax = Float.valueOf(ard.getStratum5());
+                    femaleBinWidth = Float.valueOf(ard.getStratum6());
                 }
                 else if(Integer.parseInt(ard.getStratum3()) == INTERSEX) {
                     intersexBinMin = Float.valueOf(ard.getStratum4());
                     intersexBinMax = Float.valueOf(ard.getStratum5());
+                    intersexBinWidth = Float.valueOf(ard.getStratum6());
                 }
                 else if(Integer.parseInt(ard.getStratum3()) == NONE) {
                     noneBinMin = Float.valueOf(ard.getStratum4());
                     noneBinMax = Float.valueOf(ard.getStratum5());
+                    noneBinWidth = Float.valueOf(ard.getStratum6());
                 }
                 else if(Integer.parseInt(ard.getStratum3()) == OTHER) {
                     otherBinMin = Float.valueOf(ard.getStratum4());
                     otherBinMax = Float.valueOf(ard.getStratum5());
+                    otherBinWidth = Float.valueOf(ard.getStratum6());
                 }
             }
 
@@ -1083,12 +1089,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (maleBinMin != null && maleBinMax != null && otherBinMax != null && otherBinMin != null) {
                     femaleBinMin = Math.min(maleBinMin, otherBinMin);
                     femaleBinMax = Math.max(maleBinMax, otherBinMax);
+                    femaleBinWidth = normalizeBinWidth(femaleBinMin, femaleBinMax);
                 } else if (maleBinMin != null && maleBinMax != null) {
                     femaleBinMin = maleBinMin;
                     femaleBinMax = maleBinMax;
+                    femaleBinWidth = maleBinWidth;
                 } else if (otherBinMax != null && otherBinMin != null) {
                     femaleBinMin = otherBinMin;
                     femaleBinMax = otherBinMax;
+                    femaleBinWidth = otherBinWidth;
                 }
             }
 
@@ -1096,12 +1105,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (femaleBinMin != null && femaleBinMax != null && otherBinMax != null && otherBinMin != null) {
                     maleBinMin = Math.min(femaleBinMin, otherBinMin);
                     maleBinMax = Math.max(femaleBinMax, otherBinMax);
+                    maleBinWidth = normalizeBinWidth(maleBinMin, maleBinMax);
                 } else if (femaleBinMin != null && femaleBinMax != null) {
                     maleBinMin = femaleBinMin;
                     maleBinMax = femaleBinMax;
+                    maleBinWidth = femaleBinWidth;
                 } else if (otherBinMax != null && otherBinMin != null) {
                     maleBinMin = otherBinMin;
                     maleBinMax = otherBinMax;
+                    maleBinWidth = otherBinWidth;
                 }
             }
 
@@ -1109,12 +1121,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 if (femaleBinMin != null && femaleBinMax != null && maleBinMax != null && maleBinMin != null) {
                     otherBinMin = Math.min(femaleBinMin, maleBinMin);
                     otherBinMax = Math.max(femaleBinMax, maleBinMax);
+                    otherBinWidth = normalizeBinWidth(otherBinMin, otherBinMax);
                 } else if (femaleBinMin != null && femaleBinMax != null) {
                     otherBinMin = femaleBinMin;
                     otherBinMax = femaleBinMax;
+                    otherBinWidth = femaleBinWidth;
                 } else if (maleBinMin != null && maleBinMax != null) {
                     otherBinMax = maleBinMax;
                     otherBinMin = maleBinMin;
+                    otherBinWidth = maleBinWidth;
                 }
             }
 
@@ -1125,23 +1140,23 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             ArrayList<Float> otherBinRanges = new ArrayList<Float>();
 
             if(maleBinMax != null && maleBinMin != null){
-                maleBinRanges = makeBins(maleBinMin, maleBinMax);
+                maleBinRanges = makeBins(maleBinMin, maleBinMax, maleBinWidth);
             }
 
             if(femaleBinMax != null && femaleBinMin != null){
-                femaleBinRanges = makeBins(femaleBinMin, femaleBinMax);
+                femaleBinRanges = makeBins(femaleBinMin, femaleBinMax, femaleBinWidth);
             }
 
             if(intersexBinMax != null && intersexBinMin != null){
-                intersexBinRanges = makeBins(intersexBinMin, intersexBinMax);
+                intersexBinRanges = makeBins(intersexBinMin, intersexBinMax, intersexBinWidth);
             }
 
             if(noneBinMax != null && noneBinMin != null){
-                noneBinRanges = makeBins(noneBinMin, noneBinMax);
+                noneBinRanges = makeBins(noneBinMin, noneBinMax, noneBinWidth);
             }
 
             if(otherBinMax != null && otherBinMin != null){
-                otherBinRanges = makeBins(otherBinMin, otherBinMax);
+                otherBinRanges = makeBins(otherBinMin, otherBinMax, otherBinWidth);
             }
 
             for(AchillesResult ar: aa.getResults()){
@@ -1305,109 +1320,31 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return seperatedResults;
     }
 
-    public void processMeasurementAgeDecileMissingBins(Long analysisId, AchillesAnalysis aa, String conceptId, String unitNam, List<AchillesResultDist> distRows) {
-
-        HashMap<String,ArrayList<Float>>  decileRanges = new HashMap<>();
-
-        for(AchillesResultDist ard:distRows){
-            if(Integer.parseInt(ard.getStratum3())== '2') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("2",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-            else if(Integer.parseInt(ard.getStratum3()) == '3') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("3",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-            else if(Integer.parseInt(ard.getStratum3()) == '4') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("4",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-            else if(Integer.parseInt(ard.getStratum3()) == '5') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("5",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-            else if(Integer.parseInt(ard.getStratum3()) == '6') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("6",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-            else if(Integer.parseInt(ard.getStratum3()) == '7') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("7",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-            else if(Integer.parseInt(ard.getStratum3()) == '8') {
-                Float binMin = Float.valueOf(ard.getStratum4());
-                Float binMax = Float.valueOf(ard.getStratum5());
-                decileRanges.put("8",new ArrayList<Float>( Arrays.asList(binMin,binMax) ));
-            }
-        }
-
-        ArrayList<Float> binRanges2 = new ArrayList<Float>();
-        ArrayList<Float> binRanges3 = new ArrayList<Float>();
-        ArrayList<Float> binRanges4 = new ArrayList<Float>();
-        ArrayList<Float> binRanges5 = new ArrayList<Float>();
-        ArrayList<Float> binRanges6 = new ArrayList<Float>();
-        ArrayList<Float> binRanges7 = new ArrayList<Float>();
-        ArrayList<Float> binRanges8 = new ArrayList<Float>();
-
-
-        if(decileRanges.get("2") != null){
-            binRanges2 = makeBins(decileRanges.get("2").get(0), decileRanges.get("2").get(1));
-        }
-        if(decileRanges.get("3") != null){
-            binRanges3 = makeBins(decileRanges.get("3").get(0), decileRanges.get("3").get(1));
-        }
-        if(decileRanges.get("4") != null){
-            binRanges4 = makeBins(decileRanges.get("4").get(0), decileRanges.get("4").get(1));
-        }
-        if(decileRanges.get("5") != null){
-            binRanges5 = makeBins(decileRanges.get("5").get(0), decileRanges.get("5").get(1));
-        }
-        if(decileRanges.get("6") != null){
-            binRanges6 = makeBins(decileRanges.get("6").get(0), decileRanges.get("6").get(1));
-        }
-        if(decileRanges.get("7") != null){
-            binRanges7 = makeBins(decileRanges.get("7").get(0), decileRanges.get("7").get(1));
-        }
-        if(decileRanges.get("8") != null){
-            binRanges8 = makeBins(decileRanges.get("8").get(0), decileRanges.get("8").get(1));
-        }
-
-        for(AchillesResult ar: aa.getResults()){
-            String analysisStratumName=ar.getAnalysisStratumName();
-            if(ar.getStratum2().equals("2") && binRanges2.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges2.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("3") && binRanges3.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges3.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("4") && binRanges4.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges4.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("5") && binRanges5.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges5.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("6") && binRanges6.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges6.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("7") && binRanges7.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges7.remove(Float.parseFloat(ar.getStratum4()));
-            }else if(ar.getStratum2().equals("8") && binRanges8.contains(Float.parseFloat(ar.getStratum4()))){
-                binRanges8.remove(Float.parseFloat(ar.getStratum4()));
-            }
-
-            if (analysisStratumName == null || analysisStratumName.equals("")) {
-                ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
-            }
-        }
-
-    }
-
     public String trimTrailingZeroDecimals(String s) {
         String trimmedValue = null;
         if (s != null) {
             trimmedValue = s.indexOf(".") < 0 ? s : s.replaceAll("0*$", "").replaceAll("\\.$", "");
         }
         return trimmedValue;
+    }
+
+    public float normalizeBinWidth(Float bMin, Float bMax) {
+        Float binWidth = (float)0;
+
+        if (((bMax - bMin)/11) >= 5) {
+            binWidth = (float)Math.round(((bMax-bMin)/11)/5)*5;
+        } else if (((bMax-bMin)/11) >= 0.1 && ((bMax-bMin)/11) <= 1) {
+            binWidth = (float)Math.round(Math.ceil((float)(((bMax-bMin)/11))/0.1)*0.1)*10.0/10.0;
+        } else if (((bMax-bMin)/11) >= 1 && ((bMax-bMin)/11) <= 2) {
+            binWidth = (float)Math.round(Math.round((float)(((bMax-bMin)/11))/2)*2)*10.0/10.0;
+        } else if (((bMax-bMin)/11) >= 2 && ((bMax-bMin)/11) <= 3) {
+            binWidth = (float)Math.round(Math.round((float)(((bMax-bMin)/11))/3)*3)*10.0/10.0;
+        } else if (((bMax-bMin)/11) >= 3 && ((bMax-bMin)/11) <= 5) {
+            binWidth = (float)Math.round(Math.round((float)(((bMax-bMin)/11))/5)*5)*10.0/10.0;
+        } else {
+            binWidth = (float)Math.round(((bMax-bMin)/11))*10.0/10.0;
+        }
+
+        return binWidth;
     }
 }
