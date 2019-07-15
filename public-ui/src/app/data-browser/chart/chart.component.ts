@@ -642,31 +642,31 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         result: a, toolTipHelpText: '<b>' + analysisStratumName + '</b>' +
         '<br/>' + 'Measurement Value: ' + a.stratum4, binWidth: a.stratum6});
     }
-    let lessThanData = data.filter(
-      d => d.name.indexOf("< ") >= 0);
-    let greaterThanData = data.filter(
-      d => d.name.indexOf(">= ") >= 0);
+    const lessThanData = data.filter(
+      d => d.name.indexOf('< ') >= 0);
+    const greaterThanData = data.filter(
+      d => d.name.indexOf('>= ') >= 0);
     data = data.filter(
-      d => d.name.indexOf("< ") === -1);
+      d => d.name.indexOf('< ') === -1);
     data = data.filter(
-      d => d.name.indexOf(">= ") === -1);
+      d => d.name.indexOf('>= ') === -1);
     data = data.sort((a, b) => {
       let aVal: any = a.name;
       let bVal: any = b.name;
       // Sort  numeric data as number
-      if (a.name.indexOf(" - ") > 0) {
-        aVal = a.name.split(" - ")[1];
-      } else if(a.name.indexOf("< ") >= 0) {
-        aVal = a.name.replace("< ","");
-      } else if(a.name.indexOf(">= ") >= 0) {
-        aVal = a.name.replace(">= ","");
+      if (a.name.indexOf(' - ') > 0) {
+        aVal = a.name.split(' - ')[1];
+      } else if(a.name.indexOf('< ') >= 0) {
+        aVal = a.name.replace('< ','');
+      } else if(a.name.indexOf('>= ') >= 0) {
+        aVal = a.name.replace('>= ','');
       }
-      if (b.name.indexOf(" - ") > 0) {
-        bVal = b.name.split(" - ")[1];
-      } else if(b.name.indexOf("< ") >= 0) {
-        bVal = b.name.replace("< ","");
-      } else if(b.name.indexOf(">= ") >= 0) {
-        bVal = b.name.replace(">= ","");
+      if (b.name.indexOf(' - ') > 0) {
+        bVal = b.name.split(' - ')[1];
+      } else if(b.name.indexOf('< ') >= 0) {
+        bVal = b.name.replace('< ','');
+      } else if(b.name.indexOf('>= ') >= 0) {
+        bVal = b.name.replace('>= ','');
       }
       if (isNaN(Number(aVal))) {
         // Don't do anything
@@ -708,7 +708,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     }
     for (let d of data) {
-      if (d.name.indexOf(" - ") >= 0 || d.name.indexOf("< ") >= 0 || d.name.indexOf(">= ") >= 0){
+      if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0){
         //Do not need to do anything
       } else {
         if (isNaN(Number(d.name))) {
@@ -821,7 +821,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   
   public getNumDecimals (value: any) {
     if ((value % 1) != 0)
-      return value.toString().split(".")[1].length;
+      return value.toString().split('.')[1].length;
     return 0;
   }
 }
