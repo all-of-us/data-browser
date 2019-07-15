@@ -439,9 +439,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
         if (a.countValue <= 20) {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' + '<br/> Participant Count: ';
+          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
+            '</b>' + '<br/> Participant Count: ';
         } else {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' + '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
+          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
+            '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
         }
       }
       if (this.surveyAnalysis &&
