@@ -670,8 +670,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (isNaN(Number(aVal))) {
         // Don't do anything
-      }
-      else {
+      } else {
         // Make a number so sort works
         aVal = Number(aVal);
         bVal = Number(bVal);
@@ -686,9 +685,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     });
     if (lessThanData.length > 0 && greaterThanData.length > 0) {
       data[0] = greaterThanData[0];
-      data[data.length-1] = lessThanData[0];
-    } else if (lessThanData.length > 0 ) {
-      data[data.length-1] = lessThanData[0];
+      data[data.length - 1] = lessThanData[0];
+    } else if (lessThanData.length > 0) {
+      data[data.length - 1] = lessThanData[0];
     } else if (greaterThanData.length > 0 ) {
       data[0] = greaterThanData[0];
     }
