@@ -708,7 +708,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     }
     for (const d of data) {
-      if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0){
+      if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0) {
         // Do not need to do anything
       } else {
         if (isNaN(Number(d.name))) {
