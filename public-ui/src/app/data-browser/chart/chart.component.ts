@@ -700,14 +700,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
       }
       if (lessThanData.length === 0) {
-        if (isNaN(Number(data[data.length-1].name))) {
+        if (isNaN(Number(data[data.length - 1].name))) {
           // Don't do anything
         } else {
-          data[data.length-1].name = '< ' + data[data.length-1].name;
+          data[data.length - 1].name = '< ' + data[data.length - 1].name;
         }
       }
     }
-    for (let d of data) {
+    for (const d of data) {
       if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0){
         // Do not need to do anything
       } else {
@@ -715,7 +715,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           // Do not do anything
         } else {
           if (Number(d.binWidth) > 0) {
-            d.name = d.name + ' - ' + String((Number(d.name) + Number(d.binWidth)).toFixed(this.getNumDecimals(String(d.binWidth))));
+            d.name = d.name + ' - ' + String((Number(d.name) +
+              Number(d.binWidth)).toFixed(this.getNumDecimals(String(d.binWidth))));
           }
         }
       }
@@ -818,10 +819,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     return false;
   }
-  
+
   public getNumDecimals (value: any) {
-    if ((value % 1) != 0)
+    if ((value % 1) !== 0) {
       return value.toString().split('.')[1].length;
+    }
     return 0;
   }
 }
