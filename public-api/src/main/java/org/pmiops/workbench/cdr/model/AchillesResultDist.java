@@ -16,6 +16,7 @@ public class AchillesResultDist  {
     private String stratum3;
     private String stratum4;
     private String stratum5;
+    private String stratum6;
     private Long countValue;
     private Float minValue;
     private Float maxValue;
@@ -96,6 +97,18 @@ public class AchillesResultDist  {
     }
     public AchillesResultDist stratum4(String val) {
         this.stratum4 = val;
+        return this;
+    }
+
+    @Column(name="stratum_6")
+    public String getStratum6() {
+        return stratum6;
+    }
+    public void setStratum6(String stratum6) {
+        this.stratum6 = stratum6;
+    }
+    public AchillesResultDist stratum6(String val) {
+        this.stratum6 = val;
         return this;
     }
 
@@ -265,11 +278,12 @@ public class AchillesResultDist  {
                 Objects.equals(stratum3, that.stratum3) &&
                 Objects.equals(stratum4, that.stratum4) &&
                 Objects.equals(stratum5, that.stratum5) &&
+                Objects.equals(stratum6, that.stratum6) &&
                 Objects.equals(countValue, that.countValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(analysisId, stratum1, stratum2, stratum3, stratum4, stratum5, countValue, minValue, maxValue, avgValue);
+        return Objects.hash(analysisId, stratum1, stratum2, stratum3, stratum4, stratum5, stratum6, countValue, minValue, maxValue, avgValue);
     }
 }

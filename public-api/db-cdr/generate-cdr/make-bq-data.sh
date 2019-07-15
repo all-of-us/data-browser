@@ -475,6 +475,16 @@ where r.analysis_id in (3000,2,4,5) and CAST(r.stratum_1 as int64) > "0" group b
 where r.concept_id = c.concept_id"
 
 ##########################################
+# Remove units from achilles_results if no values #
+##########################################
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar1
+where ar1.analysis_id=1910 and NOT EXISTS
+(select * from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar2 where ar2.stratum_1=ar1.stratum_1
+and  ar2.stratum_2=ar1.stratum_2 and  ar2.stratum_3=ar1.stratum_3 and analysis_id=1900)"
+
+
+##########################################
 # domain info updates                    #
 ##########################################
 

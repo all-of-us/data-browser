@@ -640,18 +640,40 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this,
         result: a, toolTipHelpText: '<b>' + analysisStratumName + '</b>' +
-        '<br/>' + 'Measurement Value: ' + a.stratum4});
+        '<br/>' + 'Measurement Value: ' + a.stratum4, binWidth: a.stratum6});
     }
+    const lessThanData = data.filter(
+      d => d.name.indexOf('< ') >= 0);
+    const greaterThanData = data.filter(
+      d => d.name.indexOf('>= ') >= 0);
+    data = data.filter(
+      d => d.name.indexOf('< ') === -1);
+    data = data.filter(
+      d => d.name.indexOf('>= ') === -1);
     data = data.sort((a, b) => {
       let aVal: any = a.name;
       let bVal: any = b.name;
       // Sort  numeric data as number
-      if (isNaN(Number(a.name))) {
+      if (a.name.indexOf(' - ') > 0) {
+        aVal = a.name.split(' - ')[1];
+      } else if (a.name.indexOf('< ') >= 0) {
+        aVal = a.name.replace('< ', '');
+      } else if (a.name.indexOf('>= ') >= 0) {
+        aVal = a.name.replace('>= ', '');
+      }
+      if (b.name.indexOf(' - ') > 0) {
+        bVal = b.name.split(' - ')[1];
+      } else if (b.name.indexOf('< ') >= 0) {
+        bVal = b.name.replace('< ', '');
+      } else if (b.name.indexOf('>= ') >= 0) {
+        bVal = b.name.replace('>= ', '');
+      }
+      if (isNaN(Number(aVal))) {
         // Don't do anything
       } else {
         // Make a number so sort works
         aVal = Number(aVal);
-        bVal = Number(b.name);
+        bVal = Number(bVal);
       }
       if (aVal > bVal) {
         return -1;
@@ -661,6 +683,44 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
+    if (lessThanData.length > 0 && greaterThanData.length > 0) {
+      data[0] = greaterThanData[0];
+      data[data.length - 1] = lessThanData[0];
+    } else if (lessThanData.length > 0) {
+      data[data.length - 1] = lessThanData[0];
+    } else if (greaterThanData.length > 0 ) {
+      data[0] = greaterThanData[0];
+    }
+    if (data.length > 2) {
+      if (greaterThanData.length === 0) {
+        if (isNaN(Number(data[0].name))) {
+          // Don't do anything
+        } else {
+          data[0].name = '>= ' + data[0].name;
+        }
+      }
+      if (lessThanData.length === 0) {
+        if (isNaN(Number(data[data.length - 1].name))) {
+          // Don't do anything
+        } else {
+          data[data.length - 1].name = '< ' + data[data.length - 1].name;
+        }
+      }
+    }
+    for (const d of data) {
+      if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0) {
+        // Do not need to do anything
+      } else {
+        if (isNaN(Number(d.name))) {
+          // Do not do anything
+        } else {
+          if (Number(d.binWidth) > 0) {
+            d.name = d.name + ' - ' + String((Number(d.name) +
+              Number(d.binWidth)).toFixed(this.getNumDecimals(String(d.binWidth))));
+          }
+        }
+      }
+    }
     for (const d of data) {
       cats.push(d.name);
     }
@@ -758,5 +818,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return true;
     }
     return false;
+  }
+
+  public getNumDecimals (value: any) {
+    if ((value % 1) !== 0) {
+      return value.toString().split('.')[1].length;
+    }
+    return 0;
   }
 }
