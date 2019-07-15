@@ -827,7 +827,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                         ArrayList<AchillesResult> numericValues = new ArrayList<>();
                                         // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
                                         for (AchillesResult result: unitGenderAnalysis.getResults()) {
-                                            if (NumberUtils.isNumber(result.getStratum4())) {
+                                            String result_value = result.getStratum4();
+                                            String numericResult = null;
+                                            if (result_value.contains(" - ")) {
+                                                numericResult = result_value.split(" - ")[1];
+                                            } else if (result_value.contains(">= ")) {
+                                                numericResult = result_value.replaceAll(">= ","");
+                                            } else if (result_value.contains("< ")) {
+                                                numericResult = result_value.replaceAll("< ","");
+                                            }
+                                            if (NumberUtils.isNumber(numericResult)) {
                                                 numericValues.add(result);
                                             } else {
                                                 textValues.add(result);
@@ -960,11 +969,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             for(String missingGender: completeGenderStratumList){
                 AchillesResult missingResult = null;
                 if (stratum == 1) {
-                    missingResult = new AchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, 20L, 20L);
+                    missingResult = new AchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, null, 20L, 20L);
                 } else if (stratum == 2) {
-                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, null, null, 20L, 20L);
+                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, null, null, null, 20L, 20L);
                 } else if (stratum == 3) {
-                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, null, missingGender, null, null, 20L, 20L);
+                    missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, null, missingGender, null, null, null, 20L, 20L);
                 }
                 missingResult.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(missingGender));
                 aa.getResults().add(missingResult);
@@ -998,7 +1007,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
             completeAgeDeciles.removeAll(uniqueAgeDeciles);
             for(String missingAgeDecile: completeAgeDeciles){
-                AchillesResult missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, 20L, 20L);
+                AchillesResult missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, null, 20L, 20L);
                 missingResult.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(missingAgeDecile));
                 aa.getResults().add(missingResult);
             }
@@ -1050,11 +1059,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             Float otherBinMin = null;
             Float otherBinMax = null;
 
-            Float maleBinWidth = null;
-            Float femaleBinWidth = null;
-            Float noneBinWidth = null;
-            Float intersexBinWidth = null;
-            Float otherBinWidth = null;
+            float maleBinWidth = 0f;
+            float femaleBinWidth = 0f;
+            float noneBinWidth = 0f;
+            float intersexBinWidth = 0f;
+            float otherBinWidth = 0f;
 
             for(AchillesResultDist ard:resultDists){
                 if(Integer.parseInt(ard.getStratum3())== MALE) {
@@ -1161,16 +1170,25 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             for(AchillesResult ar: aa.getResults()){
                 String analysisStratumName=ar.getAnalysisStratumName();
-                if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                    maleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-                }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                    femaleBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-                }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                    intersexBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-                }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                    noneBinRanges.remove(Float.parseFloat(ar.getStratum4()));
-                }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(Float.parseFloat(ar.getStratum4()))){
-                    otherBinRanges.remove(Float.parseFloat(ar.getStratum4()));
+                String result_value = ar.getStratum4();
+                Float result_value_f = null;
+                if (result_value.contains(" - ")) {
+                    result_value_f = Float.parseFloat(result_value.split(" - ")[1]);
+                } else if (result_value.contains(">= ")) {
+                    result_value_f = Float.parseFloat(result_value.replaceAll(">= ",""));
+                } else if (result_value.contains("< ")) {
+                    result_value_f = Float.parseFloat(result_value.replaceAll("< ",""));
+                }
+                if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(result_value_f)){
+                    maleBinRanges.remove(result_value_f);
+                }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(result_value_f)){
+                    femaleBinRanges.remove(result_value_f);
+                }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(result_value_f)){
+                    intersexBinRanges.remove(result_value_f);
+                }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(result_value_f)){
+                    noneBinRanges.remove(result_value_f);
+                }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(result_value_f)){
+                    otherBinRanges.remove(result_value_f);
                 }
                 if (analysisStratumName == null || analysisStratumName.equals("")) {
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
@@ -1184,8 +1202,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else {
                     missingValue = String.format("%.2f", maleRemaining);
                 }
+                String missingBinWidth = null;
+                if (maleBinWidth == (long)(maleBinWidth)) {
+                    missingBinWidth = String.format("%d",(long)maleBinWidth);
+                } else {
+                    missingBinWidth = String.format("%.2f", maleBinWidth);
+                }
                 missingValue = trimTrailingZeroDecimals(missingValue);
-                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), missingValue, null, 20L, 20L);
+                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
+                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), missingValue, null, String.valueOf(maleBinWidth), 20L, 20L);
                 aa.addResult(achillesResult);
             }
 
@@ -1196,8 +1221,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else {
                     missingValue = String.format("%.2f", femaleRemaining);
                 }
+                String missingBinWidth = null;
+                if (femaleBinWidth == (long)femaleBinWidth) {
+                    missingBinWidth = String.format("%d",(long)femaleBinWidth);
+                } else {
+                    missingBinWidth = String.format("%.2f", femaleBinWidth);
+                }
                 missingValue = trimTrailingZeroDecimals(missingValue);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), missingValue, null, 20L, 20L);
+                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), missingValue, null, String.valueOf(femaleBinWidth), 20L, 20L);
                 aa.addResult(ar);
             }
 
@@ -1208,8 +1240,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else {
                     missingValue = String.format("%.2f", intersexRemaining);
                 }
+                String missingBinWidth = null;
+                if (intersexBinWidth == (long)intersexBinWidth) {
+                    missingBinWidth = String.format("%d",(long)intersexBinWidth);
+                } else {
+                    missingBinWidth = String.format("%.2f", intersexBinWidth);
+                }
                 missingValue = trimTrailingZeroDecimals(missingValue);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), missingValue, null, 20L, 20L);
+                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), missingValue, null, String.valueOf(intersexBinWidth), 20L, 20L);
                 aa.addResult(ar);
             }
 
@@ -1220,8 +1259,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else {
                     missingValue = String.format("%.2f", noneRemaining);
                 }
+                String missingBinWidth = null;
+                if (noneBinWidth == (long)noneBinWidth) {
+                    missingBinWidth = String.format("%d",(long)noneBinWidth);
+                } else {
+                    missingBinWidth = String.format("%.2f", noneBinWidth);
+                }
                 missingValue = trimTrailingZeroDecimals(missingValue);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), missingValue, null, 20L, 20L);
+                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), missingValue, null, String.valueOf(noneBinWidth), 20L, 20L);
                 aa.addResult(ar);
             }
 
@@ -1232,8 +1278,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else {
                     missingValue = String.format("%.2f", otherRemaining);
                 }
+                String missingBinWidth = null;
+                if (otherBinWidth == (long)otherBinWidth) {
+                    missingBinWidth = String.format("%d",(long)otherBinWidth);
+                } else {
+                    missingBinWidth = String.format("%.2f", otherBinWidth);
+                }
                 missingValue = trimTrailingZeroDecimals(missingValue);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), missingValue, null, 20L, 20L);
+                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), missingValue, null, String.valueOf(otherBinWidth), 20L, 20L);
                 aa.addResult(ar);
             }
         } else {
@@ -1258,28 +1311,28 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             if (("numeric").equals(type)) {
                 if (maleResults.size() == 0) {
-                    AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, 20L, 20L);
+                    AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, "0", 20L, 20L);
                     aa.addResult(achillesResult);
                 }
                 if (femaleResults.size() == 0) {
-                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, 20L, 20L);
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, "0", 20L, 20L);
                     aa.addResult(ar);
                 }
                 if (otherResults.size() == 0) {
-                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, 20L, 20L);
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, "0", 20L, 20L);
                     aa.addResult(ar);
                 }
             } else if(("text").equals(type)) {
                 if (maleResults.size() == 0) {
-                    AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "Null", null, 20L, 20L);
+                    AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "Null", null, "0", 20L, 20L);
                     aa.addResult(achillesResult);
                 }
                 if (femaleResults.size() == 0) {
-                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "Null", null, 20L, 20L);
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "Null", null, "0", 20L, 20L);
                     aa.addResult(ar);
                 }
                 if (otherResults.size() == 0) {
-                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "Null", null, 20L, 20L);
+                    AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "Null", null, "0", 20L, 20L);
                     aa.addResult(ar);
                 }
             }

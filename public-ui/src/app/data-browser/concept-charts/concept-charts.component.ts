@@ -89,12 +89,14 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     if (this.analyses && this.analyses.measurementValueGenderAnalysis
       && this.showGraph === GraphType.Values) {
       this.displayMeasurementGraphs = true;
-      for (const aa of this.analyses.measurementGenderCountAnalysis) {
-        let sumCount = 0;
-        for (const ar of aa.results) {
-          sumCount = sumCount + ar.countValue;
+      if (this.analyses.measurementGenderCountAnalysis) {
+        for (const aa of this.analyses.measurementGenderCountAnalysis) {
+          let sumCount = 0;
+          for (const ar of aa.results) {
+            sumCount = sumCount + ar.countValue;
+          }
+          unitCounts.push({ name: aa.unitName, count : sumCount});
         }
-        unitCounts.push({ name: aa.unitName, count : sumCount});
       }
       unitCounts = unitCounts.sort((a, b) => {
           if (a.count < b.count) {

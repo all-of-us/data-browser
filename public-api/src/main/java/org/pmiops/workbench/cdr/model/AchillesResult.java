@@ -24,7 +24,7 @@ public class AchillesResult  {
 
     public AchillesResult() {}
 
-    public AchillesResult(Long analysisId, String stratum1, String stratum2, String stratum3, String stratum4, String stratum5, Long countValue, Long sourceCountValue) {
+    public AchillesResult(Long analysisId, String stratum1, String stratum2, String stratum3, String stratum4, String stratum5, String stratum6, Long countValue, Long sourceCountValue) {
             this.analysisId = analysisId;
             this.stratum1 = stratum1;
             this.stratum2 = stratum2;

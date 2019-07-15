@@ -288,206 +288,205 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
      with measurement_quartile_data as
-     (
-     select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,
-     cast(stratum_6 as float64) as bin_width,
-     min_value,max_value,p10_value,p25_value,p75_value,p90_value
-     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
-     ),
-     measurement_bucket_data as
           (
-          select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,
-          CASE when bin_width != 0 then CAST(CEIL((iqr_max-iqr_min)/bin_width) as int64)+1 else 1 end as num_buckets
-          from measurement_quartile_data
-          )
-     select 0 as id,1900 as analysis_id,
-     CAST(m1.measurement_concept_id AS STRING) as stratum_1,
-     unit as stratum_2,
-     CAST(p1.gender_concept_id AS STRING) as stratum_3,
-      cast(
-          (case when iqr_min != iqr_max then
-          round((case when m1.value_as_number < iqr_min then iqr_min
-                when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number <= iqr_max then iqr_min+bin_width
-                when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number <= iqr_max then iqr_min+2*bin_width
-                when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number <= iqr_max then iqr_min+3*bin_width
-                when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number <= iqr_max then iqr_min+4*bin_width
-                when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number <= iqr_max then iqr_min+5*bin_width
-                when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number <= iqr_max then iqr_min+6*bin_width
-                when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number <= iqr_max then iqr_min+7*bin_width
-                when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number <= iqr_max then iqr_min+8*bin_width
-                when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number <= iqr_max then iqr_min+9*bin_width
-                when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number <= iqr_max then iqr_min+10*bin_width
-                when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number <= iqr_max then iqr_min+11*bin_width
-                when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number <= iqr_max then iqr_min+12*bin_width
-                when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number <= iqr_max then iqr_min+13*bin_width
-                when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number <= iqr_max then iqr_min+14*bin_width
-                when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number <= iqr_max then iqr_min+15*bin_width
-                when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number <= iqr_max then iqr_min+16*bin_width
-                else
-                (case when num_buckets = 2 then iqr_min+bin_width
-                 when num_buckets = 3 then iqr_min+2*bin_width
-                 when num_buckets = 4 then iqr_min+3*bin_width
-                 when num_buckets = 5 then iqr_min+4*bin_width
-                 when num_buckets = 6 then iqr_min+5*bin_width
-                 when num_buckets = 7 then iqr_min+6*bin_width
-                 when num_buckets = 8 then iqr_min+7*bin_width
-                 when num_buckets = 9 then iqr_min+8*bin_width
-                 when num_buckets = 10 then iqr_min+9*bin_width
-                 when num_buckets = 11 then iqr_min+10*bin_width
-                 when num_buckets = 12 then iqr_min+11*bin_width
-                 when num_buckets = 13 then iqr_min+12*bin_width
-                 when num_buckets = 14 then iqr_min+13*bin_width
-                 when num_buckets = 15 then iqr_min+14*bin_width
-                 when num_buckets = 16 then iqr_min+15*bin_width
-                 when num_buckets = 17 then iqr_min+16*bin_width
-                 when num_buckets = 18 then iqr_min+17*bin_width
-                 else iqr_max end)
-                end),2)
-          when p10_value != p90_value then
-          round((case when m1.value_as_number < p10_value then p10_value
-                when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
-                else
-                (case when num_buckets = 2 then p10_value+((p90_value-p10_value)/11)
-                 when num_buckets = 3 then p10_value+2*((p90_value-p10_value)/11)
-                 when num_buckets = 4 then p10_value+3*((p90_value-p10_value)/11)
-                 when num_buckets = 5 then p10_value+4*((p90_value-p10_value)/11)
-                 when num_buckets = 6 then p10_value+5*((p90_value-p10_value)/11)
-                 when num_buckets = 7 then p10_value+6*((p90_value-p10_value)/11)
-                 when num_buckets = 8 then p10_value+7*((p90_value-p10_value)/11)
-                 when num_buckets = 9 then p10_value+8*((p90_value-p10_value)/11)
-                 when num_buckets = 10 then p10_value+9*((p90_value-p10_value)/11)
-                 when num_buckets = 11 then p10_value+10*((p90_value-p10_value)/11)
-                 when num_buckets = 12 then p10_value+11*((p90_value-p10_value)/11)
-                 when num_buckets = 13 then p10_value+12*((p90_value-p10_value)/11)
-                 when num_buckets = 14 then p10_value+13*((p90_value-p10_value)/11)
-                 when num_buckets = 15 then p10_value+14*((p90_value-p10_value)/11)
-                 when num_buckets = 16 then p10_value+15*((p90_value-p10_value)/11)
-                 when num_buckets = 17 then p10_value+16*((p90_value-p10_value)/11)
-                 when num_buckets = 18 then p10_value+17*((p90_value-p10_value)/11)
-                 else iqr_max end)
-               end),2)
-          else m1.value_as_number
-               end) as string) as stratum_4,
-               cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
-     count(distinct p1.person_id) as count_value,
-     count(distinct p1.person_id) as source_count_value
-     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
-     join measurement_bucket_data on m1.measurement_concept_id=concept
-     join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
-     join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
-     on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
-     where m1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
-     group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6
-     union all
-     select 0 as id, 1900 as analysis_id,
-     CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
-     unit as stratum_2,
-     CAST(p1.gender_concept_id AS STRING) as stratum_3,
-      cast(
-          (case when iqr_min != iqr_max then
-          round((case when m1.value_as_number < iqr_min then iqr_min
-                when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number <= iqr_max then iqr_min+bin_width
-                when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number <= iqr_max then iqr_min+2*bin_width
-                when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number <= iqr_max then iqr_min+3*bin_width
-                when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number <= iqr_max then iqr_min+4*bin_width
-                when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number <= iqr_max then iqr_min+5*bin_width
-                when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number <= iqr_max then iqr_min+6*bin_width
-                when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number <= iqr_max then iqr_min+7*bin_width
-                when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number <= iqr_max then iqr_min+8*bin_width
-                when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number <= iqr_max then iqr_min+9*bin_width
-                when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number <= iqr_max then iqr_min+10*bin_width
-                when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number <= iqr_max then iqr_min+11*bin_width
-                when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number <= iqr_max then iqr_min+12*bin_width
-                when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number <= iqr_max then iqr_min+13*bin_width
-                when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number <= iqr_max then iqr_min+14*bin_width
-                when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number <= iqr_max then iqr_min+15*bin_width
-                when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number <= iqr_max then iqr_min+16*bin_width
-                else
-                (case when num_buckets = 2 then iqr_min+bin_width
-                 when num_buckets = 3 then iqr_min+2*bin_width
-                 when num_buckets = 4 then iqr_min+3*bin_width
-                 when num_buckets = 5 then iqr_min+4*bin_width
-                 when num_buckets = 6 then iqr_min+5*bin_width
-                 when num_buckets = 7 then iqr_min+6*bin_width
-                 when num_buckets = 8 then iqr_min+7*bin_width
-                 when num_buckets = 9 then iqr_min+8*bin_width
-                 when num_buckets = 10 then iqr_min+9*bin_width
-                 when num_buckets = 11 then iqr_min+10*bin_width
-                 when num_buckets = 12 then iqr_min+11*bin_width
-                 when num_buckets = 13 then iqr_min+12*bin_width
-                 when num_buckets = 14 then iqr_min+13*bin_width
-                 when num_buckets = 15 then iqr_min+14*bin_width
-                 when num_buckets = 16 then iqr_min+15*bin_width
-                 when num_buckets = 17 then iqr_min+16*bin_width
-                 when num_buckets = 18 then iqr_min+17*bin_width
-                 else iqr_max end)
-                end),2)
-          when p10_value != p90_value then
-          round((case when m1.value_as_number < p10_value then p10_value
-                when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
-                when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
-                else
-                (case when num_buckets = 2 then p10_value+((p90_value-p10_value)/11)
-                 when num_buckets = 3 then p10_value+2*((p90_value-p10_value)/11)
-                 when num_buckets = 4 then p10_value+3*((p90_value-p10_value)/11)
-                 when num_buckets = 5 then p10_value+4*((p90_value-p10_value)/11)
-                 when num_buckets = 6 then p10_value+5*((p90_value-p10_value)/11)
-                 when num_buckets = 7 then p10_value+6*((p90_value-p10_value)/11)
-                 when num_buckets = 8 then p10_value+7*((p90_value-p10_value)/11)
-                 when num_buckets = 9 then p10_value+8*((p90_value-p10_value)/11)
-                 when num_buckets = 10 then p10_value+9*((p90_value-p10_value)/11)
-                 when num_buckets = 11 then p10_value+10*((p90_value-p10_value)/11)
-                 when num_buckets = 12 then p10_value+11*((p90_value-p10_value)/11)
-                 when num_buckets = 13 then p10_value+12*((p90_value-p10_value)/11)
-                 when num_buckets = 14 then p10_value+13*((p90_value-p10_value)/11)
-                 when num_buckets = 15 then p10_value+14*((p90_value-p10_value)/11)
-                 when num_buckets = 16 then p10_value+15*((p90_value-p10_value)/11)
-                 when num_buckets = 17 then p10_value+16*((p90_value-p10_value)/11)
-                 when num_buckets = 18 then p10_value+17*((p90_value-p10_value)/11)
-                 else iqr_max end)
-               end),2)
-          else m1.value_as_number
-               end) as string) as stratum_4,
-               cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
-     COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
-     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
-     join measurement_bucket_data on m1.measurement_source_concept_id=concept
-     join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
-     join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
-     where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
-     and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
-     group by stratum_1, stratum_2, stratum_3, stratum_4,stratum_6"
+          select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,
+          cast(stratum_6 as float64) as bin_width,
+          min_value,max_value,p10_value,p25_value,p75_value,p90_value
+          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+          ),
+          measurement_bucket_data as
+               (
+               select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,
+               CASE when bin_width != 0 then CAST(CEIL((iqr_max-iqr_min)/bin_width) as int64)+1 else 1 end as num_buckets
+               from measurement_quartile_data
+               ),
+               measurement_quartile_data_2 as
+               (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,iqr_min +
+               (num_buckets - 1)*bin_width as updated_iqr_max,
+               LENGTH(REGEXP_EXTRACT(CAST(iqr_max as string), r'.(.*)')) AS decimal_places
+               from measurement_bucket_data),
+               measurement_quartile_bucket_decimal_data as
+               (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,
+               updated_iqr_max, case when decimal_places > 1 then decimal_places-1 else 0 end as num_decimals
+               from measurement_quartile_data_2),
+               measurement_quartile_bucket_decimal_data_calc as
+               (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,
+               ROUND(updated_iqr_max, num_decimals) as calc_iqr_max
+               from measurement_quartile_bucket_decimal_data)
+               select 0 as id,1900 as analysis_id,
+          CAST(m1.measurement_concept_id AS STRING) as stratum_1,
+          unit as stratum_2,
+          CAST(p1.gender_concept_id AS STRING) as stratum_3,
+               case when iqr_min != iqr_max then
+               (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
+                     when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
+                     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
+                     then CONCAT(cast(round(iqr_min,2) as string), ' - ', cast(round(iqr_min+bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+2*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+bin_width,2) as string), ' - ', cast(round(iqr_min+2*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+3*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+2*bin_width,2) as string), ' - ', cast(round(iqr_min+3*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+4*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+3*bin_width,2) as string), ' - ', cast(round(iqr_min+4*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+5*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+4*bin_width,2) as string), ' - ', cast(round(iqr_min+5*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+6*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+5*bin_width,2) as string), ' - ', cast(round(iqr_min+6*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+7*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+6*bin_width,2) as string), ' - ', cast(round(iqr_min+7*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+8*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+7*bin_width,2) as string), ' - ', cast(round(iqr_min+8*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+9*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+8*bin_width,2) as string), ' - ', cast(round(iqr_min+9*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+10*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+9*bin_width,2) as string), ' - ', cast(round(iqr_min+10*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+11*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+10*bin_width,2) as string), ' - ', cast(round(iqr_min+11*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+12*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+11*bin_width,2) as string), ' - ', cast(round(iqr_min+12*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+13*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+12*bin_width,2) as string), ' - ', cast(round(iqr_min+13*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+14*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+13*bin_width,2) as string), ' - ', cast(round(iqr_min+14*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+15*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+14*bin_width,2) as string), ' - ', cast(round(iqr_min+15*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+16*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+15*bin_width,2) as string), ' - ', cast(round(iqr_min+16*bin_width,2) as string))
+                     else cast(value_as_number as string)
+                    end)
+                     when p10_value != p90_value then
+        (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
+                     when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+16*((p90_value-p10_value)/11),2) as string))
+                     else CONCAT('< ' , cast(round(p90_value,2) as string))
+                     end)
+               else cast(m1.value_as_number as string)
+                    end as stratum_4,
+                    cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
+          count(distinct p1.person_id) as count_value,
+          count(distinct p1.person_id) as source_count_value
+          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+          join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=concept
+          join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
+          join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
+          on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+          where m1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+          and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
+          group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6
+          union all
+          select 0 as id, 1900 as analysis_id,
+          CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
+          unit as stratum_2,
+          CAST(p1.gender_concept_id AS STRING) as stratum_3,
+               case when iqr_min != iqr_max then
+               (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
+                     when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
+                     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
+                     then CONCAT(cast(round(iqr_min,2) as string), ' - ', cast(round(iqr_min+bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+2*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+bin_width,2) as string), ' - ', cast(round(iqr_min+2*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+3*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+2*bin_width,2) as string), ' - ', cast(round(iqr_min+3*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+4*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+3*bin_width,2) as string), ' - ', cast(round(iqr_min+4*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+5*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+4*bin_width,2) as string), ' - ', cast(round(iqr_min+5*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+6*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+5*bin_width,2) as string), ' - ', cast(round(iqr_min+6*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+7*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+6*bin_width,2) as string), ' - ', cast(round(iqr_min+7*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+8*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+7*bin_width,2) as string), ' - ', cast(round(iqr_min+8*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+9*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+8*bin_width,2) as string), ' - ', cast(round(iqr_min+9*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+10*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+9*bin_width,2) as string), ' - ', cast(round(iqr_min+10*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+11*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+10*bin_width,2) as string), ' - ', cast(round(iqr_min+11*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+12*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+11*bin_width,2) as string), ' - ', cast(round(iqr_min+12*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+13*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+12*bin_width,2) as string), ' - ', cast(round(iqr_min+13*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+14*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+13*bin_width,2) as string), ' - ', cast(round(iqr_min+14*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+15*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+14*bin_width,2) as string), ' - ', cast(round(iqr_min+15*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+16*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+15*bin_width,2) as string), ' - ', cast(round(iqr_min+16*bin_width,2) as string))
+                     else cast(value_as_number as string)
+                    end)
+               when p10_value != p90_value then
+               (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
+                     when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+16*((p90_value-p10_value)/11),2) as string))
+                     else CONCAT('< ' , cast(round(p90_value,2) as string))
+                     end)
+               else cast(m1.value_as_number as string)
+                    end as stratum_4,
+                    cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
+          COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
+          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+          join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
+          join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+          join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
+          where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+          and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
+          and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
+          group by stratum_1, stratum_2, stratum_3, stratum_4,stratum_6"
 
      # 1900 Measurement string value counts (This query generates counts, source counts of the value and gender combination. It gets bin size from joining the achilles_results)
      # We do not yet generate the source counts of standard concepts
@@ -503,7 +502,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       cast(m1.value_as_concept_id as string) as stratum_5,
       count(distinct p1.person_id) as count_value,
       count(distinct p1.person_id) as source_count_value
-      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+      FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c2 on c2.concept_id=m1.value_as_concept_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
       where m1.value_as_concept_id != 0
@@ -540,7 +539,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
       join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m.unit_concept_id = um.unit_concept_id or lower(m.unit_source_value)=lower(um.unit_source_value))
       where m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-      and (m.unit_concept_id != 0 or m.unit_source_value is not null)
+      and (m.value_as_number is not null)
       group by m.measurement_concept_id,um.unit_concept_id,p.gender_concept_id
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit, cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
@@ -561,7 +560,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m.unit_concept_id = um.unit_concept_id or lower(m.unit_source_value)=lower(um.unit_source_value))
       where m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and
       m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
-      and (m.unit_concept_id != 0 or m.unit_source_value is not null)
+      and (m.value_as_number is not null)
       group by concept_id, unit, gender
       union all
       select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit,
@@ -833,205 +832,205 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
 with measurement_quartile_data as
-(
-select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,
-cast(stratum_6 as float64) as bin_width,min_value,max_value,p10_value,p25_value,p75_value,p90_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
-),
-measurement_bucket_data as
-     (
-     select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,
-     CASE when bin_width != 0 then CAST(CEIL((iqr_max-iqr_min)/bin_width) as int64)+1 else 1 end as num_buckets
-     from measurement_quartile_data
-     )
-select 0 as id,1900 as analysis_id,
-CAST(m1.measurement_concept_id AS STRING) as stratum_1,
-unit as stratum_2,
-CAST(p1.gender_concept_id AS STRING) as stratum_3,
- cast(
-     (case when iqr_min != iqr_max then
-     round((case when m1.value_as_number < iqr_min then iqr_min
-           when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number <= iqr_max then iqr_min+bin_width
-           when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number <= iqr_max then iqr_min+2*bin_width
-           when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number <= iqr_max then iqr_min+3*bin_width
-           when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number <= iqr_max then iqr_min+4*bin_width
-           when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number <= iqr_max then iqr_min+5*bin_width
-           when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number <= iqr_max then iqr_min+6*bin_width
-           when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number <= iqr_max then iqr_min+7*bin_width
-           when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number <= iqr_max then iqr_min+8*bin_width
-           when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number <= iqr_max then iqr_min+9*bin_width
-           when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number <= iqr_max then iqr_min+10*bin_width
-           when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number <= iqr_max then iqr_min+11*bin_width
-           when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number <= iqr_max then iqr_min+12*bin_width
-           when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number <= iqr_max then iqr_min+13*bin_width
-           when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number <= iqr_max then iqr_min+14*bin_width
-           when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number <= iqr_max then iqr_min+15*bin_width
-           when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number <= iqr_max then iqr_min+16*bin_width
-           else
-           (case when num_buckets = 2 then iqr_min+bin_width
-            when num_buckets = 3 then iqr_min+2*bin_width
-            when num_buckets = 4 then iqr_min+3*bin_width
-            when num_buckets = 5 then iqr_min+4*bin_width
-            when num_buckets = 6 then iqr_min+5*bin_width
-            when num_buckets = 7 then iqr_min+6*bin_width
-            when num_buckets = 8 then iqr_min+7*bin_width
-            when num_buckets = 9 then iqr_min+8*bin_width
-            when num_buckets = 10 then iqr_min+9*bin_width
-            when num_buckets = 11 then iqr_min+10*bin_width
-            when num_buckets = 12 then iqr_min+11*bin_width
-            when num_buckets = 13 then iqr_min+12*bin_width
-            when num_buckets = 14 then iqr_min+13*bin_width
-            when num_buckets = 15 then iqr_min+14*bin_width
-            when num_buckets = 16 then iqr_min+15*bin_width
-            when num_buckets = 17 then iqr_min+16*bin_width
-            when num_buckets = 18 then iqr_min+17*bin_width
-            else iqr_max end)
-           end),2)
-     when p10_value != p90_value then
-     round((case when m1.value_as_number < p10_value then p10_value
-           when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
-           else
-           (case when num_buckets = 2 then p10_value+((p90_value-p10_value)/11)
-            when num_buckets = 3 then p10_value+2*((p90_value-p10_value)/11)
-            when num_buckets = 4 then p10_value+3*((p90_value-p10_value)/11)
-            when num_buckets = 5 then p10_value+4*((p90_value-p10_value)/11)
-            when num_buckets = 6 then p10_value+5*((p90_value-p10_value)/11)
-            when num_buckets = 7 then p10_value+6*((p90_value-p10_value)/11)
-            when num_buckets = 8 then p10_value+7*((p90_value-p10_value)/11)
-            when num_buckets = 9 then p10_value+8*((p90_value-p10_value)/11)
-            when num_buckets = 10 then p10_value+9*((p90_value-p10_value)/11)
-            when num_buckets = 11 then p10_value+10*((p90_value-p10_value)/11)
-            when num_buckets = 12 then p10_value+11*((p90_value-p10_value)/11)
-            when num_buckets = 13 then p10_value+12*((p90_value-p10_value)/11)
-            when num_buckets = 14 then p10_value+13*((p90_value-p10_value)/11)
-            when num_buckets = 15 then p10_value+14*((p90_value-p10_value)/11)
-            when num_buckets = 16 then p10_value+15*((p90_value-p10_value)/11)
-            when num_buckets = 17 then p10_value+16*((p90_value-p10_value)/11)
-            when num_buckets = 18 then p10_value+17*((p90_value-p10_value)/11)
-            else iqr_max end)
-          end),2)
-     else m1.value_as_number
-          end) as string) as stratum_4,
-          cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
-count(distinct p1.person_id) as count_value,
-count(distinct p1.person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
-join measurement_bucket_data on m1.measurement_concept_id=concept
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
-on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
-where m1.measurement_concept_id > 0
-and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
-group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6
-union all
-select 0 as id, 1900 as analysis_id,
-CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
-unit as stratum_2,
-CAST(p1.gender_concept_id AS STRING) as stratum_3,
- cast(
-     (case when iqr_min != iqr_max then
-     round((case when m1.value_as_number < iqr_min then iqr_min
-           when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number <= iqr_max then iqr_min+bin_width
-           when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number <= iqr_max then iqr_min+2*bin_width
-           when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number <= iqr_max then iqr_min+3*bin_width
-           when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number <= iqr_max then iqr_min+4*bin_width
-           when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number <= iqr_max then iqr_min+5*bin_width
-           when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number <= iqr_max then iqr_min+6*bin_width
-           when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number <= iqr_max then iqr_min+7*bin_width
-           when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number <= iqr_max then iqr_min+8*bin_width
-           when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number <= iqr_max then iqr_min+9*bin_width
-           when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number <= iqr_max then iqr_min+10*bin_width
-           when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number <= iqr_max then iqr_min+11*bin_width
-           when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number <= iqr_max then iqr_min+12*bin_width
-           when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number <= iqr_max then iqr_min+13*bin_width
-           when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number <= iqr_max then iqr_min+14*bin_width
-           when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number <= iqr_max then iqr_min+15*bin_width
-           when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number <= iqr_max then iqr_min+16*bin_width
-           else
-           (case when num_buckets = 2 then iqr_min+bin_width
-            when num_buckets = 3 then iqr_min+2*bin_width
-            when num_buckets = 4 then iqr_min+3*bin_width
-            when num_buckets = 5 then iqr_min+4*bin_width
-            when num_buckets = 6 then iqr_min+5*bin_width
-            when num_buckets = 7 then iqr_min+6*bin_width
-            when num_buckets = 8 then iqr_min+7*bin_width
-            when num_buckets = 9 then iqr_min+8*bin_width
-            when num_buckets = 10 then iqr_min+9*bin_width
-            when num_buckets = 11 then iqr_min+10*bin_width
-            when num_buckets = 12 then iqr_min+11*bin_width
-            when num_buckets = 13 then iqr_min+12*bin_width
-            when num_buckets = 14 then iqr_min+13*bin_width
-            when num_buckets = 15 then iqr_min+14*bin_width
-            when num_buckets = 16 then iqr_min+15*bin_width
-            when num_buckets = 17 then iqr_min+16*bin_width
-            when num_buckets = 18 then iqr_min+17*bin_width
-            else iqr_max end)
-           end),2)
-     when p10_value != p90_value then
-     round((case when m1.value_as_number < p10_value then p10_value
-           when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+2*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+3*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+4*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+5*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+6*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+7*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+8*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+9*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+10*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+11*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+12*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+13*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+14*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+15*((p90_value-p10_value)/11)
-           when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then p10_value+16*((p90_value-p10_value)/11)
-           else
-           (case when num_buckets = 2 then p10_value+((p90_value-p10_value)/11)
-            when num_buckets = 3 then p10_value+2*((p90_value-p10_value)/11)
-            when num_buckets = 4 then p10_value+3*((p90_value-p10_value)/11)
-            when num_buckets = 5 then p10_value+4*((p90_value-p10_value)/11)
-            when num_buckets = 6 then p10_value+5*((p90_value-p10_value)/11)
-            when num_buckets = 7 then p10_value+6*((p90_value-p10_value)/11)
-            when num_buckets = 8 then p10_value+7*((p90_value-p10_value)/11)
-            when num_buckets = 9 then p10_value+8*((p90_value-p10_value)/11)
-            when num_buckets = 10 then p10_value+9*((p90_value-p10_value)/11)
-            when num_buckets = 11 then p10_value+10*((p90_value-p10_value)/11)
-            when num_buckets = 12 then p10_value+11*((p90_value-p10_value)/11)
-            when num_buckets = 13 then p10_value+12*((p90_value-p10_value)/11)
-            when num_buckets = 14 then p10_value+13*((p90_value-p10_value)/11)
-            when num_buckets = 15 then p10_value+14*((p90_value-p10_value)/11)
-            when num_buckets = 16 then p10_value+15*((p90_value-p10_value)/11)
-            when num_buckets = 17 then p10_value+16*((p90_value-p10_value)/11)
-            when num_buckets = 18 then p10_value+17*((p90_value-p10_value)/11)
-            else iqr_max end)
-          end),2)
-     else m1.value_as_number
-          end) as string) as stratum_4,
-          cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
-COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
-join measurement_bucket_data on m1.measurement_source_concept_id=concept
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
-where m1.measurement_source_concept_id > 0
-and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
-group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6"
+          (
+          select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,
+          cast(stratum_6 as float64) as bin_width,
+          min_value,max_value,p10_value,p25_value,p75_value,p90_value
+          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` where analysis_id=1815
+          ),
+          measurement_bucket_data as
+               (
+               select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,
+               CASE when bin_width != 0 then CAST(CEIL((iqr_max-iqr_min)/bin_width) as int64)+1 else 1 end as num_buckets
+               from measurement_quartile_data
+               ),
+               measurement_quartile_data_2 as
+               (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,iqr_min +
+               (num_buckets - 1)*bin_width as updated_iqr_max,
+               LENGTH(REGEXP_EXTRACT(CAST(iqr_max as string), r'.(.*)')) AS decimal_places
+               from measurement_bucket_data),
+               measurement_quartile_bucket_decimal_data as
+               (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,
+               updated_iqr_max, case when decimal_places > 1 then decimal_places-1 else 0 end as num_decimals
+               from measurement_quartile_data_2),
+               measurement_quartile_bucket_decimal_data_calc as
+               (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,
+               ROUND(updated_iqr_max, num_decimals) as calc_iqr_max
+               from measurement_quartile_bucket_decimal_data)
+               select 0 as id,1900 as analysis_id,
+          CAST(m1.measurement_concept_id AS STRING) as stratum_1,
+          unit as stratum_2,
+          CAST(p1.gender_concept_id AS STRING) as stratum_3,
+               case when iqr_min != iqr_max then
+               (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
+                     when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
+                     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
+                     then CONCAT(cast(round(iqr_min,2) as string), ' - ', cast(round(iqr_min+bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+2*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+bin_width,2) as string), ' - ', cast(round(iqr_min+2*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+3*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+2*bin_width,2) as string), ' - ', cast(round(iqr_min+3*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+4*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+3*bin_width,2) as string), ' - ', cast(round(iqr_min+4*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+5*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+4*bin_width,2) as string), ' - ', cast(round(iqr_min+5*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+6*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+5*bin_width,2) as string), ' - ', cast(round(iqr_min+6*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+7*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+6*bin_width,2) as string), ' - ', cast(round(iqr_min+7*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+8*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+7*bin_width,2) as string), ' - ', cast(round(iqr_min+8*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+9*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+8*bin_width,2) as string), ' - ', cast(round(iqr_min+9*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+10*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+9*bin_width,2) as string), ' - ', cast(round(iqr_min+10*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+11*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+10*bin_width,2) as string), ' - ', cast(round(iqr_min+11*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+12*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+11*bin_width,2) as string), ' - ', cast(round(iqr_min+12*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+13*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+12*bin_width,2) as string), ' - ', cast(round(iqr_min+13*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+14*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+13*bin_width,2) as string), ' - ', cast(round(iqr_min+14*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+15*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+14*bin_width,2) as string), ' - ', cast(round(iqr_min+15*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+16*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+15*bin_width,2) as string), ' - ', cast(round(iqr_min+16*bin_width,2) as string))
+                     else cast(value_as_number as string)
+                    end)
+                     when p10_value != p90_value then
+        (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
+                     when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+16*((p90_value-p10_value)/11),2) as string))
+                     else CONCAT('< ' , cast(round(p90_value,2) as string))
+                     end)
+               else cast(m1.value_as_number as string)
+                    end as stratum_4,
+                    cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
+          count(distinct p1.person_id) as count_value,
+          count(distinct p1.person_id) as source_count_value
+          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+          join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=concept
+          join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
+          join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
+          on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+          where m1.measurement_concept_id > 0
+          and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
+          group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6
+          union all
+          select 0 as id, 1900 as analysis_id,
+          CAST(m1.measurement_source_concept_id AS STRING) as stratum_1,
+          unit as stratum_2,
+          CAST(p1.gender_concept_id AS STRING) as stratum_3,
+               case when iqr_min != iqr_max then
+               (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
+                     when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
+                     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
+                     then CONCAT(cast(round(iqr_min,2) as string), ' - ', cast(round(iqr_min+bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+bin_width and iqr_min+2*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+2*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+bin_width,2) as string), ' - ', cast(round(iqr_min+2*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+2*bin_width and iqr_min+3*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+3*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+2*bin_width,2) as string), ' - ', cast(round(iqr_min+3*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+3*bin_width and iqr_min+4*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+4*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+3*bin_width,2) as string), ' - ', cast(round(iqr_min+4*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+4*bin_width and iqr_min+5*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+5*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+4*bin_width,2) as string), ' - ', cast(round(iqr_min+5*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+5*bin_width and iqr_min+6*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+6*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+5*bin_width,2) as string), ' - ', cast(round(iqr_min+6*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+6*bin_width and iqr_min+7*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+7*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+6*bin_width,2) as string), ' - ', cast(round(iqr_min+7*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+7*bin_width and iqr_min+8*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+8*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+7*bin_width,2) as string), ' - ', cast(round(iqr_min+8*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+8*bin_width and iqr_min+9*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+9*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+8*bin_width,2) as string), ' - ', cast(round(iqr_min+9*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+9*bin_width and iqr_min+10*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+10*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+9*bin_width,2) as string), ' - ', cast(round(iqr_min+10*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+10*bin_width and iqr_min+11*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+11*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+10*bin_width,2) as string), ' - ', cast(round(iqr_min+11*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+11*bin_width and iqr_min+12*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+12*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+11*bin_width,2) as string), ' - ', cast(round(iqr_min+12*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+12*bin_width and iqr_min+13*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+13*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+12*bin_width,2) as string), ' - ', cast(round(iqr_min+13*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+13*bin_width and iqr_min+14*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+14*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+13*bin_width,2) as string), ' - ', cast(round(iqr_min+14*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+14*bin_width and iqr_min+15*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+15*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+14*bin_width,2) as string), ' - ', cast(round(iqr_min+15*bin_width,2) as string))
+                     when (m1.value_as_number between iqr_min+15*bin_width and iqr_min+16*bin_width) and m1.value_as_number < calc_iqr_max
+                     and iqr_min+16*bin_width <= calc_iqr_max then CONCAT(cast(round(iqr_min+15*bin_width,2) as string), ' - ', cast(round(iqr_min+16*bin_width,2) as string))
+                     else cast(value_as_number as string)
+                    end)
+               when p10_value != p90_value then
+               (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
+                     when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+((p90_value-p10_value)/11) and p10_value+2*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+2*((p90_value-p10_value)/11) and p10_value+3*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+2*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+3*((p90_value-p10_value)/11) and p10_value+4*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+3*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+4*((p90_value-p10_value)/11) and p10_value+5*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+4*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+5*((p90_value-p10_value)/11) and p10_value+6*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+5*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+6*((p90_value-p10_value)/11) and p10_value+7*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+6*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+7*((p90_value-p10_value)/11) and p10_value+8*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+7*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+8*((p90_value-p10_value)/11) and p10_value+9*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+8*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+9*((p90_value-p10_value)/11) and p10_value+10*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+9*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+10*((p90_value-p10_value)/11) and p10_value+11*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+10*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+11*((p90_value-p10_value)/11) and p10_value+12*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+11*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+12*((p90_value-p10_value)/11) and p10_value+13*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+12*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+13*((p90_value-p10_value)/11) and p10_value+14*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+13*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+14*((p90_value-p10_value)/11) and p10_value+15*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
+                     then CONCAT(cast(round(p10_value+14*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string))
+                     when (m1.value_as_number between p10_value+15*((p90_value-p10_value)/11) and p10_value+16*((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value then CONCAT(cast(round(p10_value+15*((p90_value-p10_value)/11),2) as string), ' - ', cast(round(p10_value+16*((p90_value-p10_value)/11),2) as string))
+                     else CONCAT('< ' , cast(round(p90_value,2) as string))
+                     end)
+               else cast(m1.value_as_number as string)
+                    end as stratum_4,
+                    cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else value_as_number end) as string) as stratum_6,
+          COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
+          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+          join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
+          join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+          join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
+          where m1.measurement_source_concept_id > 0
+          and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
+          and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
+          group by stratum_1, stratum_2, stratum_3, stratum_4,stratum_6"
 
 # 1900 Measurement string value counts (This query generates counts, source counts of the value and gender combination. It gets bin size from joining the achilles_results)
 # We do not yet generate the source counts of standard concepts
@@ -1082,7 +1081,7 @@ where co2.measurement_source_concept_id=m.measurement_concept_id
 and (co2.unit_concept_id=um.unit_concept_id or lower(co2.unit_source_value)=lower(unit_source_value)) and p1.gender_concept_id=p.gender_concept_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m.unit_concept_id = um.unit_concept_id or lower(m.unit_source_value)=lower(um.unit_source_value))
-where m.measurement_concept_id > 0 and (m.unit_concept_id != 0 or m.unit_source_value is not null)
+where m.measurement_concept_id > 0 and (m.value_as_number is not null)
 group by m.measurement_concept_id,um.unit_concept_id,p.gender_concept_id
 union all
 select 0 as id, 1910 as analysis_id,cast(measurement_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit, cast(p.gender_concept_id as string) as gender,count(distinct p.person_id) as count_value,
@@ -1102,7 +1101,7 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m.unit_concept_id = um.unit_concept_id or lower(m.unit_source_value)=lower(um.unit_source_value))
 where m.measurement_source_concept_id > 0 and
 m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and (m.unit_concept_id != 0 or m.unit_source_value is not null)
+and (m.value_as_number is not null)
 group by concept_id, unit, gender
 union all
 select 0 as id, 1910 as analysis_id,cast(measurement_source_concept_id as string) as concept_id, cast(um.unit_concept_id as string) as unit,
