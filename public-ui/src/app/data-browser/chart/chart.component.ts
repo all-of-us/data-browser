@@ -664,9 +664,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (b.name.indexOf(' - ') > 0) {
         bVal = b.name.split(' - ')[1];
       } else if (b.name.indexOf('< ') >= 0) {
-        bVal = b.name.replace('< ','');
+        bVal = b.name.replace('< ', '');
       } else if (b.name.indexOf('>= ') >= 0) {
-        bVal = b.name.replace('>= ','');
+        bVal = b.name.replace('>= ', '');
       }
       if (isNaN(Number(aVal))) {
         // Don't do anything
