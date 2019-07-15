@@ -138,6 +138,11 @@ strong {
     width: calc(40%)
 }
 
+.active-question {
+    font-family: GothamBold, Arial, sans-serif;
+    font-weight: bold;
+}
+
 .question .display-body {
     padding-bottom: 18px;
 }

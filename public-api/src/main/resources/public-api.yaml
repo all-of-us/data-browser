@@ -967,3 +967,7 @@ definitions:
         type: integer
         format: int32
         description: The minimum count of concepts to be fetched
+      pageNumber:
+        type: integer
+        default: 0
+        description: By default it returns the first page and then its next pages from that on.

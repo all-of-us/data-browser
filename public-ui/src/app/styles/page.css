@@ -201,6 +201,9 @@
   border-color: #BEE1FF;
   border-radius: 2px 2px 2px 2px;
 }
+.survey-answer-level-1.active, .survey-answer-level-2.active{
+  font-weight: bold;
+}
 
 .aka {
   transition: .1s background ease-in;
@@ -353,4 +356,8 @@
 
 .tree-heading {
   padding-top: 1em;
+}
+
+.allofus-italics {
+  font-style: italic;
 }
