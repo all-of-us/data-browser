@@ -656,18 +656,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       // Sort  numeric data as number
       if (a.name.indexOf(' - ') > 0) {
         aVal = a.name.split(' - ')[1];
-      } else if(a.name.indexOf('< ') >= 0) {
+      } else if (a.name.indexOf('< ') >= 0) {
         aVal = a.name.replace('< ','');
-      } else if(a.name.indexOf('>= ') >= 0) {
+      } else if (a.name.indexOf('>= ') >= 0) {
         aVal = a.name.replace('>= ','');
       }
       if (b.name.indexOf(' - ') > 0) {
         bVal = b.name.split(' - ')[1];
       }
-      else if(b.name.indexOf('< ') >= 0) {
+      else if (b.name.indexOf('< ') >= 0) {
         bVal = b.name.replace('< ','');
       }
-      else if(b.name.indexOf('>= ') >= 0) {
+      else if (b.name.indexOf('>= ') >= 0) {
         bVal = b.name.replace('>= ','');
       }
       if (isNaN(Number(aVal))) {
