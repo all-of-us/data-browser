@@ -456,7 +456,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (a.countValue > 20) {
           toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-          '<br/> Participant Count: ' + '<b>' + a.countValue+ '</b>';
+          '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
         } else {
           toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
@@ -612,7 +612,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageHelpText = seriesName;
         if (a.countValue > 20 ) {
           toolTipHelpText = ageHelpText + ' : ' +
-            '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
+            '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ' +
+            '<b>' + a.countValue + '</b>';
         } else {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ';
@@ -622,7 +623,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (a.countValue > 20 ) {
           toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
-          '<br/>' + 'Participant Count: ' + '<b>' +  a.countValue+ '</b>';
+          '<br/>' + 'Participant Count: ' + '<b>' +  a.countValue + '</b>';
         } else {
           toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
@@ -681,10 +682,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let tooltipText = '';
       if (a.countValue <= 20) {
         tooltipText = '<b>' + analysisStratumName + '</b>' +
-          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4 + '</b><br/>' + 'Participant Count: ';
+          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
+          + '</b> <br/>' + 'Participant Count: ';
       } else {
         tooltipText = '<b>' + analysisStratumName + '</b>' +
-          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4 + '</b><br/>' + 'Participant Count: ' +
+          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
+          + '</b> <br/>' + 'Participant Count: ' +
           '<b>' + a.countValue + '</b>';
       }
       data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this,
