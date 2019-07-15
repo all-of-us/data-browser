@@ -656,21 +656,26 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       // Sort  numeric data as number
       if (a.name.indexOf(' - ') > 0) {
         aVal = a.name.split(' - ')[1];
-      } else if(a.name.indexOf('< ') >= 0) {
+      }
+      else if(a.name.indexOf('< ') >= 0) {
         aVal = a.name.replace('< ','');
-      } else if(a.name.indexOf('>= ') >= 0) {
+      }
+      else if(a.name.indexOf('>= ') >= 0) {
         aVal = a.name.replace('>= ','');
       }
       if (b.name.indexOf(' - ') > 0) {
         bVal = b.name.split(' - ')[1];
-      } else if(b.name.indexOf('< ') >= 0) {
+      }
+      else if(b.name.indexOf('< ') >= 0) {
         bVal = b.name.replace('< ','');
-      } else if(b.name.indexOf('>= ') >= 0) {
+      }
+      else if(b.name.indexOf('>= ') >= 0) {
         bVal = b.name.replace('>= ','');
       }
       if (isNaN(Number(aVal))) {
         // Don't do anything
-      } else {
+      }
+      else {
         // Make a number so sort works
         aVal = Number(aVal);
         bVal = Number(bVal);
@@ -694,14 +699,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (data.length > 2) {
       if (greaterThanData.length === 0) {
         if (isNaN(Number(data[0].name))) {
-          //Don't do anything
+          // Don't do anything
         } else {
           data[0].name = '>= ' + data[0].name;
         }
       }
       if (lessThanData.length === 0) {
         if (isNaN(Number(data[data.length-1].name))) {
-          //Don't do anything
+          // Don't do anything
         } else {
           data[data.length-1].name = '< ' + data[data.length-1].name;
         }
@@ -709,10 +714,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     for (let d of data) {
       if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0){
-        //Do not need to do anything
+        // Do not need to do anything
       } else {
         if (isNaN(Number(d.name))) {
-          //Do not do anything
+          // Do not do anything
         } else {
           if (Number(d.binWidth) > 0) {
             d.name = d.name + ' - ' + String((Number(d.name) + Number(d.binWidth)).toFixed(this.getNumDecimals(String(d.binWidth))));
