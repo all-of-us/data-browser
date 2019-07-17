@@ -1390,6 +1390,7 @@ group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answer count by age deciles for more than one race / ethnicity bucket
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 with multiple_answered_people as
