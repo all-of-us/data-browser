@@ -85,7 +85,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
              return this.point.toolTipHelpText;
         },
         useHTML: true,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f0f2f3',
         borderWidth: 0,
         shadow: false,
         enabled: true,
