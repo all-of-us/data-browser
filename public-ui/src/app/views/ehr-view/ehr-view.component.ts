@@ -255,6 +255,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     const maxResults = 50;
     this.loading = true;
+    //look here 
     this.searchRequest = {
       query: query,
       domain: this.ehrDomain.domain.toUpperCase(),

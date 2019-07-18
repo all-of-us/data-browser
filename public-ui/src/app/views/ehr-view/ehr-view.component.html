@@ -13,6 +13,7 @@
   <div *ngIf="items.length > 0" class="results">
     <a class="btn btn-link btn-sm" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
+        <h1>{{totalResults}}</h1>
         <div class="db-card">
           <div class="db-card-inner">
             <section *ngIf="items.length > 0">
@@ -126,7 +127,7 @@
                 </div>
               </div>
               <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
-                *ngFor="let r of standardConcepts.concat(items), let i = index | paginate: { itemsPerPage: 10, currentPage: 1 }">
+                *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: 10, currentPage: p }, let i = index">
                 <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
                   <div class="body-lead info-text tbl-d first"
                     *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
@@ -284,9 +285,9 @@
               </div>
             </div>
           </div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
         </div>
   </div>
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
 <div *ngIf="!loading && items.length === 0 && searchText.value">
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
