@@ -502,7 +502,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       cast(m1.value_as_concept_id as string) as stratum_5,
       count(distinct p1.person_id) as count_value,
       count(distinct p1.person_id) as source_count_value
-      FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+      FROM \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c2 on c2.concept_id=m1.value_as_concept_id
       join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
       where m1.value_as_concept_id != 0
