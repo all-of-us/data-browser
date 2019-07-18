@@ -79,10 +79,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         outside: true,
         formatter: function(tooltip) {
             if (this.point.y <= 20) {
-               return this.point.toolTipHelpText + '<br/> <b> &le; ' + this.point.y + '</b>';
+               return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
              }
              // If not <= 20, use the default formatter
-             return this.point.toolTipHelpText + '<br/> <b> ' + this.point.y + '</b>';
+             return this.point.toolTipHelpText;
         },
         useHTML: true,
         backgroundColor: '#f0f2f3',
@@ -365,20 +365,35 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     );
     for (const a of this.concepts) {
+      let toolTipText = '';
       if (!this.sources) {
+        if (a.countValue > 20 ) {
+          toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+            '<br/>' + 'Pariticipant Count: ' + '<b>' + a.countValue + '</b>';
+        } else {
+          toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+            '<br/>' + 'Pariticipant Count: ';
+        }
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.countValue,
           color: this.dbc.COLUMN_COLOR,
-          toolTipHelpText: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') '
+          toolTipHelpText: toolTipText
         });
         cats.push(a.conceptName);
       } else {
+        if (a.countValue > 20 ) {
+          toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+            '<br/>' + 'Pariticipant Count: ' + '<b>' + a.countValue + '</b>';
+        } else {
+          toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+            '<br/>' + 'Pariticipant Count: ';
+        }
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.sourceCountValue,
           color: this.dbc.COLUMN_COLOR,
-          toolTipHelpText: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') '
+          toolTipHelpText: toolTipText
         });
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
@@ -423,7 +438,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
-        toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>';
+        if (a.countValue <= 20) {
+          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
+            '</b>' + '<br/> Participant Count: ';
+        } else {
+          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
+            '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
+        }
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
@@ -432,8 +453,15 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
-        'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>';
+        if (a.countValue > 20) {
+          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+            'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
+          '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
+        } else {
+          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+            'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
+            '<br/> Participant Count: ';
+        }
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
@@ -582,12 +610,25 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let toolTipHelpText = null;
       if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
         ageHelpText = seriesName;
-        toolTipHelpText = ageHelpText + ' : ' +
-        '<b>' +  a.analysisStratumName + '</b>';
+        if (a.countValue > 20 ) {
+          toolTipHelpText = ageHelpText + ' : ' +
+            '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ' +
+            '<b>' + a.countValue + '</b>';
+        } else {
+          toolTipHelpText = ageHelpText + ' : ' +
+            '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ';
+        }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
-        toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
-          '<b> ' +  a.analysisStratumName + ' </b>';
+        if (a.countValue > 20 ) {
+          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+            '<b> ' +  a.analysisStratumName + ' </b>' +
+          '<br/>' + 'Participant Count: ' + '<b>' +  a.countValue + '</b>';
+        } else {
+          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+            '<b> ' +  a.analysisStratumName + ' </b>' +
+            '<br/>' + 'Participant Count: ';
+        }
       }
       data.push({
         name: a.analysisStratumName,
@@ -638,9 +679,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (analysisStratumName === null) {
         analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum3];
       }
+      let tooltipText = '';
+      if (a.countValue <= 20) {
+        tooltipText = '<b>' + analysisStratumName + '</b>' +
+          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
+          + '</b> <br/>' + 'Participant Count: ';
+      } else {
+        tooltipText = '<b>' + analysisStratumName + '</b>' +
+          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
+          + '</b> <br/>' + 'Participant Count: ' +
+          '<b>' + a.countValue + '</b>';
+      }
       data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this,
-        result: a, toolTipHelpText: '<b>' + analysisStratumName + '</b>' +
-        '<br/>' + 'Measurement Value: ' + a.stratum4, binWidth: a.stratum6});
+        result: a, toolTipHelpText: tooltipText, binWidth: a.stratum6});
     }
     const lessThanData = data.filter(
       d => d.name.indexOf('< ') >= 0);
