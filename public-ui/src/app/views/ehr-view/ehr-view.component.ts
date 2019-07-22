@@ -59,7 +59,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchFromUrl: string;
   totalResults: number;
   numPages: number;
-  currentPage: number = 1;
+  currentPage = 1;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -151,7 +151,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           if (query == null) {
             query = '' ;
           }
-          localStorage.setItem('searchText', query)
+          localStorage.setItem('searchText', query);
         }));
     }
   }
@@ -247,9 +247,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.standardConcepts = [];
     }
     // this.top10Results = this.searchResult.items.slice(0, 10);
-    this.getTopTen(this.prevSearchText).subscribe((results) => {
-      this.top10Results = results.items.slice(0,10);
-    })
+    this.getTopTen(this.prevSearchText).subscribe((res) => {
+      this.top10Results = res.items.slice(0, 10);
+    });
     this.loading = false;
   }
 
