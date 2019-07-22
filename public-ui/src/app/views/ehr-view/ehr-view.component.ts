@@ -59,7 +59,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchFromUrl: string;
   totalResults: number;
   numPages: number;
-  currentPage: number;
+  currentPage: number = 1;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -72,7 +72,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
-      this.searchFromUrl = params.searchString;
+      if (params.searchString === ' ') {
+        this.router.navigate(
+          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
+        );
+      } else {
+        this.searchFromUrl = params.searchString;
+      }
     });
     this.loadPage();
   }
@@ -249,7 +255,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public getTopTen(query: string) {
     const maxResults = 10;
-    this.searchRequest = {
+    const top10SearchRequest = {
       query: query,
       domain: this.ehrDomain.domain.toUpperCase(),
       standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
@@ -257,7 +263,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1,
       pageNumber: 0,
     };
-    return this.api.searchConcepts(this.searchRequest);
+    return this.api.searchConcepts(top10SearchRequest);
   }
 
   public searchDomain(query: string) {

@@ -13,12 +13,10 @@
   <div *ngIf="items.length > 0" class="results">
     <a class="btn btn-link btn-sm" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
-        <h1>{{totalResults}}</h1>
         <div class="db-card">
           <div class="db-card-inner">
             <section *ngIf="items.length > 0">
               <!-- Top summary boxes -- only show if have results -->
-
               <h5 id="domain-summary" class="secondary-display">
                 <a class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending Participant Counts
                   <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
@@ -35,7 +33,7 @@
               <div class="domain-info-layout">
                 <span>
                   <h5 id="domain-name" class="primary-display">
-                    Showing top {{items.length}}
+                    Showing top {{((currentPage * searchRequest.maxResults) - items.length)+1}} - {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}} 
                   </h5>
                   <ng-container *ngIf="!searchText.value; else no_search_term">
                     <h5 id="domain-name" class="primary-display">
@@ -150,7 +148,7 @@
                   <ng-template #code_match_not_standard>
                     <div class="body-lead info-text tbl-d first">
                       <div class="code-tooltip">
-                        <app-highlight-search [indNum]="i+1" [text]="r.conceptName" [searchTerm]="prevSearchText">
+                        <app-highlight-search [indNum]="i+((currentPage * searchRequest.maxResults) - items.length)+1" [text]="r.conceptName" [searchTerm]="prevSearchText">
                         </app-highlight-search>
                       </div>
                     </div>
