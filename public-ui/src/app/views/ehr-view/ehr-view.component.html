@@ -127,7 +127,7 @@
                 </div>
               </div>
               <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
-                *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: 10, currentPage: p }, let i = index">
+                *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
                 <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
                   <div class="body-lead info-text tbl-d first"
                     *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
@@ -285,7 +285,7 @@
               </div>
             </div>
           </div>
-          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          <pagination-controls (pageChange)="currentPage = $event; getNextPage($event)"></pagination-controls>
         </div>
   </div>
 </div>
