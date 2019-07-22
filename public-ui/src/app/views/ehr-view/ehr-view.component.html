@@ -5,8 +5,8 @@
   <div class="search-bar-container">
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-      <input type="text" aria-label="EHR Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto"
-        autofocus>
+      <input type="text" aria-label="EHR Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText"
+        style="height:auto" autofocus>
     </div>
   </div>
   <app-db-spinner [loading]="loading"></app-db-spinner>
@@ -18,7 +18,8 @@
             <section *ngIf="items.length > 0">
               <!-- Top summary boxes -- only show if have results -->
               <h5 id="domain-summary" class="secondary-display">
-                <a class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending Participant Counts
+                <a class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending
+                  Participant Counts
                   <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
                   <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
                 </a>
@@ -32,9 +33,17 @@
             <div class="results-grid" *ngIf="items.length > 0">
               <div class="domain-info-layout">
                 <span>
-                  <h5 id="domain-name" class="primary-display">
-                    Showing top {{((currentPage * searchRequest.maxResults) - items.length)+1}} - {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}} 
-                  </h5>
+                  <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
+                    <h5 id="domain-name" class="primary-display">
+                      Showing top {{totalResults}}
+                    </h5>
+                  </ng-container>
+                  <ng-template #show_pages>
+                    <h5 id="domain-name" class="primary-display">
+                      Showing top {{((currentPage * searchRequest.maxResults) - items.length)+1}} -
+                      {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
+                    </h5>
+                  </ng-template>
                   <ng-container *ngIf="!searchText.value; else no_search_term">
                     <h5 id="domain-name" class="primary-display">
                       concepts for this domain
@@ -148,7 +157,11 @@
                   <ng-template #code_match_not_standard>
                     <div class="body-lead info-text tbl-d first">
                       <div class="code-tooltip">
-                        <app-highlight-search [indNum]="i+((currentPage * searchRequest.maxResults) - items.length)+1" [text]="r.conceptName" [searchTerm]="prevSearchText">
+                          <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
+                            {{i+((currentPage * searchRequest.maxResults) - items.length)+1}}.
+                          </span>
+                        <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
+                        <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
                         </app-highlight-search>
                       </div>
                     </div>
@@ -200,21 +213,21 @@
                   </div>
                   <div class="synonyms-text">
                     <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                          *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
-                                          [searchTerm]="prevSearchText">
+                      *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
+                      [searchTerm]="prevSearchText">
                     </app-highlight-search>
                     <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                          *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
-                                          [searchTerm]="prevSearchText">
+                      *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
+                      [searchTerm]="prevSearchText">
                     </app-highlight-search>
                     <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
-                       *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
+                      *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
                       See
                       Less
                     </a>
                     <ng-template #seeMore>
                       <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
-                         *ngIf="synonymString[r.conceptId].length > 100"> See More
+                        *ngIf="synonymString[r.conceptId].length > 100"> See More
                         <clr-icon shape="ellipsis-horizontal"></clr-icon>
                       </a>
                     </ng-template>
@@ -235,7 +248,8 @@
                     </div>
                   </div>
                   <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-                    <div class="source-layout" *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
+                    <div class="source-layout"
+                      *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
                       <div class="source-item">
                         <aside class="source-tree">
                           <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
@@ -269,10 +283,10 @@
                     </div>
                   </ng-template>
                   <ng-template #NonSourceCharts>
-                      <div class="graph-item">
-                          <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-                          </app-concept-charts>
-                      </div>
+                    <div class="graph-item">
+                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                      </app-concept-charts>
+                    </div>
                   </ng-template>
                 </div>
               </div>
@@ -283,7 +297,10 @@
               </div>
             </div>
           </div>
-          <pagination-controls (pageChange)="currentPage = $event; getNextPage($event)"></pagination-controls>
+          <pagination-controls (pageChange)="currentPage = $event; 
+          getNextPage($event)" directionLinks="true" autoHide="true" previousLabel="Previous" nextLabel="Next"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page"></pagination-controls>
         </div>
   </div>
 </div>
