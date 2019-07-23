@@ -830,17 +830,22 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                         for (AchillesResult result: unitGenderAnalysis.getResults()) {
                                             String result_value = result.getStratum4();
                                             String numericResult = null;
-                                            if (result_value.contains(" - ")) {
-                                                numericResult = result_value.split(" - ")[1];
-                                            } else if (result_value.contains(">= ")) {
+                                            if (result_value != null && result_value.contains(" - ")) {
+                                                String[] result_value_split = result_value.split(" - ");
+                                                if(result_value_split.length > 0) {
+                                                    numericResult = result_value_split[1];
+                                                }
+                                            } else if (result_value != null && result_value.contains(">= ")) {
                                                 numericResult = result_value.replaceAll(">= ","");
-                                            } else if (result_value.contains("< ")) {
+                                            } else if (result_value != null && result_value.contains("< ")) {
                                                 numericResult = result_value.replaceAll("< ","");
                                             }
-                                            if (NumberUtils.isNumber(numericResult)) {
-                                                numericValues.add(result);
-                                            } else {
-                                                textValues.add(result);
+                                            if (numericResult != null) {
+                                                if (NumberUtils.isNumber(numericResult)) {
+                                                    numericValues.add(result);
+                                                } else {
+                                                    textValues.add(result);
+                                                }
                                             }
                                         }
                                         if (textValues.size() > 0 && numericValues.size() > 0) {
@@ -1173,12 +1178,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 String analysisStratumName=ar.getAnalysisStratumName();
                 String result_value = ar.getStratum4();
                 Float result_value_f = null;
-                if (result_value.contains(" - ")) {
-                    result_value_f = Float.parseFloat(result_value.split(" - ")[1]);
-                } else if (result_value.contains(">= ")) {
-                    result_value_f = Float.parseFloat(result_value.replaceAll(">= ",""));
-                } else if (result_value.contains("< ")) {
-                    result_value_f = Float.parseFloat(result_value.replaceAll("< ",""));
+                if (result_value != null && result_value.contains(" - ")) {
+                    String[] result_value_split = result_value.split(" - ");
+                    if(result_value_split.length > 1) {
+                        result_value_f = Float.parseFloat(result_value.split(" - ")[1]);
+                    }
                 }
                 if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(result_value_f)){
                     maleBinRanges.remove(result_value_f);

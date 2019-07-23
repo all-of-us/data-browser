@@ -694,13 +694,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         result: a, toolTipHelpText: tooltipText, binWidth: a.stratum6});
     }
     const lessThanData = data.filter(
-      d => d.name.indexOf('< ') >= 0);
+      d => d.name != null && d.name.indexOf('< ') >= 0);
     const greaterThanData = data.filter(
-      d => d.name.indexOf('>= ') >= 0);
+      d => d.name != null && d.name.indexOf('>= ') >= 0);
     data = data.filter(
-      d => d.name.indexOf('< ') === -1);
+      d => d.name != null && d.name.indexOf('< ') === -1);
     data = data.filter(
-      d => d.name.indexOf('>= ') === -1);
+      d => d.name != null && d.name.indexOf('>= ') === -1);
     data = data.sort((a, b) => {
       let aVal: any = a.name;
       let bVal: any = b.name;
