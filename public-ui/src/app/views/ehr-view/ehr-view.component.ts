@@ -60,6 +60,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   totalResults: number;
   numPages: number;
   currentPage = 1;
+  subGraphButtons = ['Percentage', 'Count']
 
   constructor(private route: ActivatedRoute,
     private router: Router,
