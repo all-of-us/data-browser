@@ -36,6 +36,7 @@ import { SurveysComponent } from './views/surveys/surveys.component';
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
 
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import {ConfigService, DataBrowserService} from 'publicGenerated';
 import { BetaBarComponent } from './components/beta-bar/beta-bar.component';
 import { DbNoResultsComponent } from './components/db-no-results/db-no-results.component';
@@ -78,6 +79,7 @@ export function getConfigService(http: Http) {
     HttpModule,
     ReactiveFormsModule,
     ClarityModule,
+    NgxPaginationModule,
     DataBrowserModule,
     ResponsiveModule.forRoot()
   ],

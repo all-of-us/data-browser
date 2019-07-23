@@ -59,6 +59,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   searchFromUrl: string;
   totalResults: number;
   numPages: number;
+  currentPage = 1;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -71,7 +72,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
-      this.searchFromUrl = params.searchString;
+      if (params.searchString === ' ') {
+        this.router.navigate(
+          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
+        );
+      } else {
+        this.searchFromUrl = params.searchString;
+      }
     });
     this.loadPage();
   }
@@ -89,6 +96,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
 
   public loadPage() {
+    this.loading = true;
     this.items = [];
     // Get search text from localStorage
     if (!this.prevSearchText) {
@@ -139,7 +147,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
       this.subscriptions.push(this.searchText.valueChanges
-        .subscribe((query) => localStorage.setItem('searchText', query)));
+        .subscribe((query) => {
+          if (query == null) {
+            query = '' ;
+          }
+          localStorage.setItem('searchText', query);
+        }));
     }
   }
 
@@ -233,10 +246,24 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.standardConcepts = [];
     }
-    this.top10Results = this.searchResult.items.slice(0, 10);
-    // Set the localStorage to empty so making a new search here does not follow to other pages
-    // localStorage.setItem('searchText', '');
+    // this.top10Results = this.searchResult.items.slice(0, 10);
+    this.getTopTen(this.prevSearchText).subscribe((res) => {
+      this.top10Results = res.items.slice(0, 10);
+    });
     this.loading = false;
+  }
+
+  public getTopTen(query: string) {
+    const maxResults = 10;
+    const top10SearchRequest = {
+      query: query,
+      domain: this.ehrDomain.domain.toUpperCase(),
+      standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+      maxResults: 10,
+      minCount: 1,
+      pageNumber: 0,
+    };
+    return this.api.searchConcepts(top10SearchRequest);
   }
 
   public searchDomain(query: string) {
@@ -254,14 +281,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.initSearchSubscription.unsubscribe();
     }
     const maxResults = 50;
-    this.loading = true;
     this.searchRequest = {
       query: query,
       domain: this.ehrDomain.domain.toUpperCase(),
       standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
       maxResults: maxResults,
       minCount: 1,
-      pageNumber: 0,
+      pageNumber: this.currentPage - 1,
     };
     this.prevSearchText = query;
     return this.api.searchConcepts(this.searchRequest);
@@ -393,5 +419,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return this.top10Results.length + ' ' + this.title.slice(0, -1);
     }
     return 10;
+  }
+
+  public getNextPage(event) {
+    this.searchRequest.pageNumber = this.currentPage;
+     window.scrollTo(0, 0);
+     this.ngOnInit();
   }
 }

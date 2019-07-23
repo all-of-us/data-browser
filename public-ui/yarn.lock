@@ -4150,6 +4150,10 @@ neo-async@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
 
+ngx-pagination@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/ngx-pagination/-/ngx-pagination-4.1.0.tgz#05ccd30f54351e04beeaa92cbe5c42be5fd809c2"
+
 ngx-responsive@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/ngx-responsive/-/ngx-responsive-6.0.0.tgz#15ae0674f43dda9b037241083a1678d26330d062"
@@ -6203,7 +6207,7 @@ tar@^2.0.0, tar@^2.2.1:
   resolved "https://registry.yarnpkg.com/tar/-/tar-2.2.2.tgz#0ca8848562c7299b8b446ff6a4d60cdbb23edc40"
   dependencies:
     block-stream "*"
-    fstream "^1.0.2"
+    fstream "^1.0.12"
     inherits "2"
 
 through2@^2.0.0:

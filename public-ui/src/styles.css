@@ -564,6 +564,14 @@ a a:link a:visited {
   }
 }
 
+.ngx-pagination {
+  margin-bottom: 0 !important;
+  padding-top: .5rem!important;
+}
+
+.ngx-pagination .current {
+  background:#2691d0!important;
+}
 /* Must override clarity styles here, globally as angular component styles don't apply to child components used
  * in the template ie clarity components.
  */

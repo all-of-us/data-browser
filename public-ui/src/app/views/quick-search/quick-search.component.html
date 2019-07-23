@@ -91,7 +91,7 @@
         <div class="result-box-link">
           <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
             (click)="viewEhrDomain(r)">
-            View Top 100 </a>
+            View Top {{r.name}} </a>
           <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
             View Results </a>
         </div>
