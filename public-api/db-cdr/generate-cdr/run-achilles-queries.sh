@@ -1505,12 +1505,82 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0 as id,3000 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,count(distinct person_id) as count_value,
 0 as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\`"
 
+# Condition Domain participant counts by gender
+echo "Getting condition domain participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id,3300 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,cast(p.gender_concept_id as string) as stratum_4,
+count(distinct co.person_id) as count_value,
+0 as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+on p.person_id=co.person_id
+group by p.gender_concept_id"
+
+# Condition Domain participant counts by age
+echo "Getting condition domain participant counts by age"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+with condition_age as
+(select condition_occurrence_id,
+ceil(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY)/365.25) as age
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+group by condition_occurrence_id,age
+),
+condition_age_stratum as
+(
+select condition_occurrence_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from condition_age
+group by condition_occurrence_id,age_stratum
+)
+select 0 as id, 3301 as analysis_id,'19' as stratum_1,'Condition' as stratum_3,age_stratum as stratum_4,
+count(distinct co.person_id) as count_value,
+0 as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co join condition_age_stratum coa on co.condition_occurrence_id=coa.condition_occurrence_id
+group by age_stratum"
+
 echo "Getting drug domain participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
 select 0 as id,3000 as analysis_id,'13' as stratum_1,'Drug' as stratum_3, count(distinct person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\`"
+
+echo "Getting drug domain participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id,3300 as analysis_id,'13' as stratum_1,'Drug' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
+count(distinct de.person_id) as count_value, 0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\` de join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+on p.person_id=de.person_id
+group by p.gender_concept_id"
+
+echo "Getting drug domain participant counts by age"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+with drug_age as
+(select drug_exposure_id,
+ceil(TIMESTAMP_DIFF(drug_exposure_start_datetime, birth_datetime, DAY)/365.25) as age
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+group by drug_exposure_id,age
+),
+drug_age_stratum as
+(
+select drug_exposure_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from drug_age
+group by drug_exposure_id,age_stratum
+)
+select 0 as id, 3301 as analysis_id, '13' as stratum_1,'Drug' as stratum_3, age_stratum as stratum_4,
+count(distinct de.person_id) as count_value, 0 as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\` de join drug_age_stratum das
+on de.drug_exposure_id = das.drug_exposure_id
+group by age_stratum"
 
 echo "Getting measurement domain participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1520,6 +1590,42 @@ select 0 as id,3000 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3,
     0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`"
 
+echo "Getting measurement domain participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id,3300 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
+count(distinct m.person_id) as count_value,
+    0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+on p.person_id=m.person_id
+group by p.gender_concept_id"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+with m_age as
+(select measurement_id,
+ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+group by measurement_id,age
+),
+m_age_stratum as
+(
+select measurement_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from m_age
+group by measurement_id,age_stratum
+)
+select 0 as id,3301 as analysis_id,'21' as stratum_1,'Measurement' as stratum_3, age_stratum as stratum_4,
+count(distinct m.person_id) as count_value,
+    0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join m_age_stratum p
+on m.measurement_id=p.measurement_id
+group by age_stratum"
+
 echo "Getting procedure domain participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -1527,6 +1633,42 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, count(distinct person_id) as count_value,
     0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\`"
+
+echo "Getting procedure domain participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
+count(distinct po.person_id) as count_value,
+    0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\` po join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+on p.person_id=po.person_id
+group by p.gender_concept_id"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value,source_count_value)
+with procedure_age as
+(select procedure_occurrence_id,
+ceil(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY)/365.25) as age
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+group by procedure_occurrence_id,age
+),
+procedure_age_stratum as
+(
+select procedure_occurrence_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from procedure_age
+group by procedure_occurrence_id,age_stratum
+)
+select 0 as id,3301 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, age_stratum as stratum_4,
+count(distinct person_id) as count_value,
+    0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\` po join procedure_age_stratum p
+on p.person_id=po.person_id
+group by p.age_stratum"
 
 echo "Getting physical measurement participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1536,6 +1678,43 @@ select 0 as id,3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as s
 count(distinct person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)"
+
+echo "Getting physical measurement participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id,3300 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
+count(distinct m.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+on p.person_id=m.person_id
+where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+group by p.gender_concept_id"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+with m_age as
+(select measurement_id,
+ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+group by measurement_id,age
+),
+m_age_stratum as
+(
+select measurement_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from m_age
+group by measurement_id,age_stratum
+)
+select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
+count(distinct m.person_id) as count_value, 0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join m_age_stratum p
+on m.measurement_id=p.measurement_id
+group by age_stratum"
 
 # Count of people who took each survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1673,3 +1852,43 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id, stratum_2"
+
+# Survey Module counts by gender
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
+select 0 as id, 3200 as analysis_id, cast(cr.concept_id_2 as string) as stratum_1,
+cast(p.gender_concept_id as string) as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=ob.person_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept_relationship\` cr
+on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
+on cr.concept_id_2=sm.concept_id
+group by cr.concept_id_2, p.gender_concept_id"
+
+# Survey Module counts by age decile
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
+with survey_age as
+(
+select observation_id,
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+group by observation_id,age
+),
+survey_age_stratum as
+(
+select observation_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from survey_age
+group by observation_id,age_stratum
+)
+select 0 as id, 3201 as analysis_id, cr.concept_id_2 as survey_concept_id, sa.age_stratum, count(distinct ob.person_id) as count_val from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+join survey_age_stratum sa on sa.observation_id=ob.observation_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept_relationship\` cr
+on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
+on cr.concept_id_2=sm.concept_id
+group by cr.concept_id_2, sa.age_stratum"
+

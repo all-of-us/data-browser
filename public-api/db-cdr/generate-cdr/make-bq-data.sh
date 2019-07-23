@@ -658,6 +658,86 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set has_counts = IF(count_value > 0 or source_count_value > 0, 1, 0)
 where concept_id != 0"
 
+echo "Inserting percentages of condition rows by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3300 and stratum_3='Condition')
+select id, 3310 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Condition' ";
+
+echo "Inserting percentages of condition rows by age decile"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3301 and stratum_3='Condition')
+select id, 3311 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Condition' ";
+
+echo "Inserting percentages of measurement rows by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3300 and stratum_3='Measurement')
+select id, 3310 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Measurement' ";
+
+echo "Inserting percentages of measurement rows by age decile"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3301 and stratum_3='Measurement')
+select id, 3311 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Measurement' ";
+
+echo "Inserting percentages of Drug rows by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3300 and stratum_3='Drug')
+select id, 3310 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Drug' ";
+
+echo "Inserting percentages of Drug rows by age decile"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3301 and stratum_3='Drug')
+select id, 3311 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Drug' ";
+
+echo "Inserting percentages of Procedure rows by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3300 and stratum_3='Procedure')
+select id, 3310 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Procedure' ";
+
+echo "Inserting percentages of Procedure rows by age decile"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4)
+with meta_data as
+(select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3301 and stratum_3='Procedure')
+select id, 3311 as analysis_id, stratum_1, stratum_3,
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Procedure' ";
+
 #######################
 # Drop views created #
 #######################
