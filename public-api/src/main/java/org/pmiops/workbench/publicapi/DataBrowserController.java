@@ -1174,10 +1174,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 otherBinRanges = makeBins(otherBinMin, otherBinMax, otherBinWidth);
             }
 
-            if (conceptId.equals("3014576") && unitName.equals("millimole per liter")) {
-                System.out.println(maleBinRanges);
-            }
-
             for(AchillesResult ar: aa.getResults()){
                 String analysisStratumName=ar.getAnalysisStratumName();
                 String result_value = ar.getStratum4();
