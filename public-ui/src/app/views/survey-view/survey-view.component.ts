@@ -147,6 +147,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   subQuestion.countAnalysis.surveyQuestionResults =
                     subQuestion.countAnalysis.surveyQuestionResults.
                     filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+                  subQuestion.genderAnalysis.surveyQuestionResults = subQuestion.genderAnalysis.surveyQuestionResults
+                    .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+                  subQuestion.ageAnalysis.surveyQuestionResults = subQuestion.ageAnalysis.surveyQuestionResults
+                    .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                     for (const question of subResult.subQuestions) {
@@ -157,6 +161,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       }
                       question.countAnalysis.surveyQuestionResults =
                         question.countAnalysis.surveyQuestionResults.
+                        filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
+                      question.genderAnalysis.surveyQuestionResults =
+                        question.genderAnalysis.surveyQuestionResults.
+                      filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
+                      question.ageAnalysis.surveyQuestionResults =
+                        question.ageAnalysis.surveyQuestionResults.
                         filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
                       question.graphToShow = GraphType.BiologicalSex;
                       question.selectedAnalysis = question.genderAnalysis;

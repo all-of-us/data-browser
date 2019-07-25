@@ -5,17 +5,15 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-29">
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-36">
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
       <not>
-        <columnExists tableName="concept" columnName="has_counts"/>
+        <columnExists tableName="achilles_analysis" columnName="stratum_6_name"/>
       </not>
     </preConditions>
-    <addColumn tableName="concept">
-      <column name="has_counts" type="BOOL">
-        <constraints nullable="true"/>
-      </column>
+    <addColumn tableName="achilles_analysis">
+      <column name="stratum_6_name" type="VARCHAR(255)" />
     </addColumn>
   </changeSet>
 
