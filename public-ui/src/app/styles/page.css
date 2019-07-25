@@ -204,11 +204,14 @@
   cursor: pointer;
 }
 
-.unit-choice.active {
+.unit-choice.active, .sub-graph-choice.active{
   border-style: solid;
   border-color: #BEE1FF;
   border-radius: 2px 2px 2px 2px;
 }
+
+
+
 .survey-answer-level-1.active, .survey-answer-level-2.active{
   font-weight: bold;
 }

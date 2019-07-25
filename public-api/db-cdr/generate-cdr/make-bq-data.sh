@@ -493,7 +493,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
 set d.all_concept_count = c.all_concept_count, d.standard_concept_count = c.standard_concept_count from
 (select c.domain_id as domain_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
-SUM(CASE WHEN c.standard_concept IN ('S', 'C') THEN 1 ELSE 0 END) as standard_concept_count from
+SUM(CASE WHEN c.standard_concept IN ('S', 'C') and c.can_select > 0 THEN 1 ELSE 0 END) as standard_concept_count from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d2
 on d2.domain_id = c.domain_id
@@ -741,41 +741,41 @@ from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3
 echo "Inserting percentages of survey question answers by biological sex (by module)"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, stratum_4, stratum_5, stratum_6)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5, stratum_6)
 with meta_data as
 (select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3200)
 select id, 3331 as analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5,
-cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_2=ar.stratum_5))*100,2) as string) as stratum_6
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_2=ar.stratum_5 and md.stratum_1=ar.stratum_1))*100,2) as string) as stratum_6
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3111 ";
 
 echo "Inserting percentages of survey question answers by age decile (by module)"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, stratum_4, stratum_5, stratum_6)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5, stratum_6)
 with meta_data as
 (select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3201)
 select id, 3332 as analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5,
-cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_2=ar.stratum_5))*100,2) as string) as stratum_6
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_2=ar.stratum_5 and md.stratum_1=ar.stratum_1))*100,2) as string) as stratum_6
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3112 ";
 
 echo "Inserting percentages of survey question answers by biological sex (by question)"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, stratum_4, stratum_5, stratum_6)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5, stratum_6)
 with meta_data as
 (select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3320)
 select id, 3333 as analysis_id, stratum_2, stratum_3, stratum_4, stratum_6,
-cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_5=ar.stratum_5 and md.stratum_2=ar.stratum_2 and md.stratum_6=ar.stratum_6))*100,2) as string) as stratum_5
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_5=ar.stratum_5 and md.stratum_1=ar.stratum_1 and md.stratum_2=ar.stratum_2 and md.stratum_6=ar.stratum_6))*100,2) as string) as stratum_5
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3111 ";
 
 echo "Inserting percentages of survey question answers by age decile (by module)"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, stratum_4, stratum_5, stratum_6)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5, stratum_6)
 with meta_data as
 (select * from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` where analysis_id=3321)
 select id, 3334 as analysis_id, stratum_2, stratum_3, stratum_4, stratum_5, stratum_6
-cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_5=ar.stratum_5 and md.stratum_2=ar.stratum_2 and md.stratum_6=ar.stratum_6))*100,2) as string) as stratum_1
+cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_5=ar.stratum_5 and md.stratum_1=ar.stratum_1 and md.stratum_2=ar.stratum_2 and md.stratum_6=ar.stratum_6))*100,2) as string) as stratum_1
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar where analysis_id=3112 ";
 
 #######################

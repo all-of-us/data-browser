@@ -16,7 +16,8 @@
 </div>
 
 <div class="col-md">
-  <div *ngFor="let sg of subGraphButtons" class="btn btn-link">{{sg}}</div>
+  <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}"
+       (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">{{sg}}</div>
 </div>
 
 <div *ngIf="!loading()" class="concept-charts chart">

@@ -95,7 +95,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
     public static final long COUNT_ANALYSIS_ID = 3000;
+    public static final long GENDER_COUNT_ANALYSIIS_ID = 3200;
+    public static final long AGE_COUNT_ANALYSIIS_ID = 3201;
     public static final long GENDER_ANALYSIS_ID = 3101;
+    public static final long GENDER_PERCENTAGE_ANALYSIS_ID = 3310;
+    public static final long AGE_PERCENTAGE_ANALYSIS_ID = 3311;
+    public static final long SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
+    public static final long SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
@@ -180,6 +186,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     SurveyQuestionAnalysis ageAnalysis=null;
                     SurveyQuestionAnalysis genderIdentityAnalysis=null;
                     SurveyQuestionAnalysis raceEthnicityAnalysis=null;
+                    SurveyQuestionAnalysis genderPercentageAnalysis = null;
+                    SurveyQuestionAnalysis agePercentageAnalysis = null;
                     if(concept.getCountAnalysis() != null){
                         countAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getCountAnalysis());
                     }
@@ -195,6 +203,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     if(concept.getRaceEthnicityAnalysis() != null){
                         raceEthnicityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
                     }
+                    if (concept.getGenderPercentageAnalysis() != null) {
+                        genderPercentageAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderPercentageAnalysis());
+                    }
+                    if (concept.getAgePercentageAnalysis() != null) {
+                        agePercentageAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getAgePercentageAnalysis());
+                    }
 
 
                     return new org.pmiops.workbench.model.QuestionConcept()
@@ -209,7 +223,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis)
                             .genderIdentityAnalysis(genderIdentityAnalysis)
-                            .raceEthnicityAnalysis(raceEthnicityAnalysis);
+                            .raceEthnicityAnalysis(raceEthnicityAnalysis)
+                            .genderPercentageAnalysis(genderPercentageAnalysis)
+                            .agePercentageAnalysis(agePercentageAnalysis);
 
                 }
             };
@@ -733,6 +749,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(GENDER_ANALYSIS_ID);
         analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
         analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
+        analysisIds.add(GENDER_PERCENTAGE_ANALYSIS_ID);
+        analysisIds.add(AGE_PERCENTAGE_ANALYSIS_ID);
         analysisIds.add(AGE_ANALYSIS_ID);
         analysisIds.add(RACE_ANALYSIS_ID);
         analysisIds.add(COUNT_ANALYSIS_ID);
@@ -790,7 +808,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
                 if (analysisId == COUNT_ANALYSIS_ID) {
                     conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == GENDER_ANALYSIS_ID){
+                }else if(analysisId == GENDER_ANALYSIS_ID || analysisId == GENDER_PERCENTAGE_ANALYSIS_ID){
                     addGenderStratum(aa,2, conceptId);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
@@ -799,7 +817,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == RACE_ETHNICITY_ANALYSIS_ID){
                     addRaceEthnicityStratum(aa);
                     conceptAnalysis.setRaceEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == AGE_ANALYSIS_ID){
+                }else if(analysisId == AGE_ANALYSIS_ID || analysisId == AGE_PERCENTAGE_ANALYSIS_ID){
                     addAgeStratum(aa, conceptId);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == RACE_ANALYSIS_ID){
