@@ -44,7 +44,8 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   toDisplayMeasurementGenderAnalysis: Analysis;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
-  subGraphButtons = ['Percentage', 'Count'];
+  subGraphButtons = ['Percentage (%)', 'Count'];
+  selectedSubGraph: string;
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
 
@@ -214,5 +215,9 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     } else {
       return gender.countValue;
     }
+  }
+  
+  public showSelectedSubGraph(sg: string) {
+    this.selectedSubGraph = sg;
   }
 }

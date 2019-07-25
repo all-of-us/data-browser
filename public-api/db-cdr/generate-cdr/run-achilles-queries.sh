@@ -1638,7 +1638,7 @@ echo "Getting procedure domain participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
-select 0 as id,3000 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
+select 0 as id,3300 as analysis_id,'10' as stratum_1,'Procedure' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
 count(distinct po.person_id) as count_value,
     0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\` po join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
