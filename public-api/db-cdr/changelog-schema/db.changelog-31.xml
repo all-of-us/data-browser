@@ -14,38 +14,5 @@
     <dropColumn tableName="achilles_results" columnName="count_value"/>
     <dropColumn tableName="achilles_results" columnName="source_count_value"/>
   </changeSet>
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-32">
-    <validCheckSum>ANY</validCheckSum>
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <columnExists tableName="achilles_results" columnName="stratum_6"/>
-      </not>
-    </preConditions>
-    <addColumn tableName="achilles_results">
-      <column name="stratum_6" type="VARCHAR(255)" />
-    </addColumn>
-  </changeSet>
-    <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-33">
-        <validCheckSum>ANY</validCheckSum>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="achilles_results" columnName="count_value"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="achilles_results">
-            <column name="count_value" type="BIGINT" />
-        </addColumn>
-    </changeSet>
-    <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-34">
-        <validCheckSum>ANY</validCheckSum>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="achilles_results" columnName="source_count_value"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="achilles_results">
-            <column name="source_count_value" type="BIGINT" />
-        </addColumn>
-    </changeSet>
 
 </databaseChangeLog>
