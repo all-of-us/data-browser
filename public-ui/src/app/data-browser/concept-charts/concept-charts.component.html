@@ -15,6 +15,10 @@
   </clr-tooltip>
 </div>
 
+<div class="col-md">
+  <div *ngFor="let sg of subGraphButtons" class="btn btn-link">{{sg}}</div>
+</div>
+
 <div *ngIf="!loading()" class="concept-charts chart">
   <!-- show measurements binned by gender if we want -->
   <!-- Loop through the genders we have measurement results for  for showing the graph

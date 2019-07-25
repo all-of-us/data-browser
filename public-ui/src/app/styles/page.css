@@ -176,6 +176,14 @@
   margin-left:.25rem;
 }
 
+.sub-chart-choice {
+  padding: 9px;
+  color: #216fb4;
+  position: relative;
+  display: flex;
+  cursor: pointer;
+}
+
 .survey-chart-choice .tooltip {
   margin-left:.25rem;
 }
