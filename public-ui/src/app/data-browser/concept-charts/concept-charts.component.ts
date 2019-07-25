@@ -44,6 +44,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   toDisplayMeasurementGenderAnalysis: Analysis;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
+  subGraphButtons = ['Percentage', 'Count'];
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
 
