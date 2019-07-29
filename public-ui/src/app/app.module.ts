@@ -19,12 +19,12 @@ import {
 
 
 import { AppRoutingModule } from './app-routing.module';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { DataBrowserModule } from './data-browser/data-browser.module';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
-import { BreadcrumbComponent } from './views/breadcrumb/breadcrumb.component';
 import { LoginComponent } from './views/login/login.component';
 import {
   PageTemplateSignedOutComponent
