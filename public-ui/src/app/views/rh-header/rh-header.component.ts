@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 @Component({
-  selector: 'app-db-header',
-  templateUrl: './db-header.component.html',
-  styleUrls: ['./db-header.component.css', '../../styles/template.css']
+  selector: 'app-rh-header',
+  templateUrl: './rh-header.component.html',
+  styleUrls: ['./rh-header.component.css', '../../styles/template.css']
 })
-export class DbHeaderComponent implements OnInit {
+export class RhHeaderComponent implements OnInit {
   @Input() noMenu = false;
   topMenuItemToggle = false;
   openTopMenu = false;

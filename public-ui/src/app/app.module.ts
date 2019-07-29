@@ -24,7 +24,7 @@ import { DataBrowserModule } from './data-browser/data-browser.module';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
 import { BreadcrumbComponent } from './views/breadcrumb/breadcrumb.component';
-import { DbHeaderComponent } from './views/db-header/db-header.component';
+import { RhHeaderComponent } from './views/rh-header/rh-header.component';
 import { LoginComponent } from './views/login/login.component';
 import {
   PageTemplateSignedOutComponent
@@ -86,7 +86,7 @@ export function getConfigService(http: Http) {
   declarations: [
     AppComponent,
     SurveysComponent,
-    DbHeaderComponent,
+    RhHeaderComponent,
     BreadcrumbComponent,
     SurveyViewComponent,
     HighlightSearchComponent,
