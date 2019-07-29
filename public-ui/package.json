@@ -59,6 +59,7 @@
     "@types/jasmine": "^2.8.6",
     "@types/jasminewd2": "^2.0.3",
     "@types/node": "^9.4.0",
+    "@types/stacktrace-js": "0.0.32",
     "codelyzer": "^4.1.0",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
