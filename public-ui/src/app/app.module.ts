@@ -19,8 +19,8 @@ import {
 
 
 import { AppRoutingModule } from './app-routing.module';
+import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
 import { DataBrowserModule } from './data-browser/data-browser.module';
-import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
 import { BreadcrumbComponent } from './views/breadcrumb/breadcrumb.component';
