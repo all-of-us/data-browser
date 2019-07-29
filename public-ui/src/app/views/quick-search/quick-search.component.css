@@ -43,7 +43,7 @@ strong {
     border-radius: 5px;
     width: 100%;
 }
-app-db-spinner {
+app-spinner {
     position: relative;
     top: 2rem;
 }

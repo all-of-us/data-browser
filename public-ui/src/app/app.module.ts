@@ -20,11 +20,11 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
+import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { DataBrowserModule } from './data-browser/data-browser.module';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
 import { BreadcrumbComponent } from './views/breadcrumb/breadcrumb.component';
-import { RhHeaderComponent } from './views/rh-header/rh-header.component';
 import { LoginComponent } from './views/login/login.component';
 import {
   PageTemplateSignedOutComponent
@@ -40,9 +40,9 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import {ConfigService, DataBrowserService} from 'publicGenerated';
 import { BetaBarComponent } from './components/beta-bar/beta-bar.component';
 import { DbNoResultsComponent } from './components/db-no-results/db-no-results.component';
-import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -97,7 +97,7 @@ export function getConfigService(http: Http) {
     PhysicalMeasurementsComponent,
     SurveyChartComponent,
     DbNoResultsComponent,
-    DbSpinnerComponent,
+    SpinnerComponent,
     EmergencyComponent,
     SourceTreeComponent,
     RecursiveTreeComponent,

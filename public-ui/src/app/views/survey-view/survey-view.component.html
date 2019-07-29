@@ -17,7 +17,7 @@
         <input type="text" aria-label="Survey Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
       </div>
     </div>
-    <app-db-spinner [loading]="loading"></app-db-spinner>
+    <app-spinner [loading]="loading"></app-spinner>
     <section *ngIf="questions.length > 0 && !loading" class="results">
       <a class="btn btn-link btn-sm" [routerLink]="['']">
         < Back to main search </a> <div class="db-card">
