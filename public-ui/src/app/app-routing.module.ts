@@ -9,10 +9,10 @@ import { QuickSearchComponent } from './data-browser/views/quick-search/quick-se
 import { SurveyViewComponent } from './data-browser/views/survey-view/survey-view.component';
 import { IsSafeGuard } from './guards/is-safe-guard.service';
 import { SignInGuard } from './guards/sign-in-guard.service';
-import { ResearchDirectoryComponent } from './research-directory/views/research-directory/research-directory.component'
+import { ResearchDirectoryComponent } from './research-directory/views/research-directory/research-directory.component';
 import { EmergencyComponent } from './views/emergency/emergency.component';
 import { LoginComponent } from './views/login/login.component';
- 
+
 const routes: Routes = [
   {
     path: 'login',
