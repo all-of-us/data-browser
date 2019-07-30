@@ -1,14 +1,11 @@
 import {ErrorHandler, NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Http, HttpModule, RequestOptions, XHRBackend} from '@angular/http';
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ClarityModule} from '@clr/angular';
+
+import {Http} from '@angular/http';
+
 import {environment} from 'environments/environment';
-import { ResponsiveModule } from 'ngx-responsive';
+
 import * as StackTrace from 'stacktrace-js';
 import {ErrorReporterService} from './services/error-reporter.service';
-
 import {AppComponent, overriddenUrlKey} from './views/app/app.component';
 
 /* Our Modules */
@@ -18,40 +15,19 @@ import {
 } from 'publicGenerated';
 
 
-import { AppRoutingModule } from './app-routing.module';
+import { SharedModule } from './shared/shared.module';
 import { DataBrowserModule } from './data-browser/data-browser.module';
-import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
-import { BreadcrumbComponent } from './views/breadcrumb/breadcrumb.component';
-import { DbHeaderComponent } from './views/db-header/db-header.component';
-import { LoginComponent } from './views/login/login.component';
-import {
-  PageTemplateSignedOutComponent
-} from './views/page-template-signed-out/page-template-signed-out.component';
-import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { SurveysComponent } from './views/surveys/surveys.component';
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
 
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import {ConfigService, DataBrowserService} from 'publicGenerated';
-import { BetaBarComponent } from './components/beta-bar/beta-bar.component';
-import { DbNoResultsComponent } from './components/db-no-results/db-no-results.component';
-import { DbSpinnerComponent } from './components/db-spinner/db-spinner.component';
-import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
-import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
-import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
-import { EmergencyComponent } from './views/emergency/emergency.component';
-import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
-import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
-import { QuickSearchComponent } from './views/quick-search/quick-search.component';
-import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 
 function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
@@ -72,37 +48,11 @@ export function getConfigService(http: Http) {
 @NgModule({
   imports: [
     ApiModule,
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpModule,
-    ReactiveFormsModule,
-    ClarityModule,
-    NgxPaginationModule,
     DataBrowserModule,
-    ResponsiveModule.forRoot()
+    SharedModule,
   ],
   declarations: [
     AppComponent,
-    SurveysComponent,
-    DbHeaderComponent,
-    BreadcrumbComponent,
-    SurveyViewComponent,
-    HighlightSearchComponent,
-    LoginComponent,
-    QuickSearchComponent,
-    EhrViewComponent,
-    PageTemplateSignedOutComponent,
-    PhysicalMeasurementsComponent,
-    SurveyChartComponent,
-    DbNoResultsComponent,
-    DbSpinnerComponent,
-    EmergencyComponent,
-    SourceTreeComponent,
-    RecursiveTreeComponent,
-    IntroVidsComponent,
-    BetaBarComponent,
   ],
   providers: [
     {

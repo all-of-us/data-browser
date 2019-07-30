@@ -1,10 +1,10 @@
 <app-db-header></app-db-header>
-<clr-main-container class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
+<main class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
   <app-breadcrumb></app-breadcrumb>
     <!-- <div class="db-container"> -->
     <router-outlet (activate)="onActivate($event)" ></router-outlet>
   <!-- </div> -->
-</clr-main-container>
+</main>
   <!-- *** removed until strategic direction is provided for CTA section ***
     <div class="cta-content dark">
 				<img src="https://aou-db-test.appspot.com/assets/images/applyForAccess_btn.png" /><h4>Find out more about <a href="##">Data Access Levels</a> and <a href="##">How to Apply</a>.</h4>
