@@ -1,20 +1,14 @@
-import {ErrorHandler, NgModule} from '@angular/core';
-
-import {Http} from '@angular/http';
-
-import {environment} from 'environments/environment';
-
+import { ErrorHandler, NgModule } from '@angular/core';
+import { Http } from '@angular/http';
+import { environment } from 'environments/environment';
 import * as StackTrace from 'stacktrace-js';
-import {ErrorReporterService} from './services/error-reporter.service';
-import {AppComponent, overriddenUrlKey} from './views/app/app.component';
-
+import { ErrorReporterService } from './services/error-reporter.service';
+import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 /* Our Modules */
 import {
   ApiModule,
   Configuration
 } from 'publicGenerated';
-
-
 import { DataBrowserModule } from './data-browser/data-browser.module';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
@@ -23,8 +17,7 @@ import { SharedModule } from './shared/shared.module';
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
-
-import {ConfigService, DataBrowserService} from 'publicGenerated';
+import { ConfigService, DataBrowserService } from 'publicGenerated';
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -79,4 +72,4 @@ export function getConfigService(http: Http) {
   bootstrap: [AppComponent]
 
 })
-export class AppModule {}
+export class AppModule { }

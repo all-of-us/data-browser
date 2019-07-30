@@ -7,8 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from '../app-routing.module';
-
-
 //  components
 import { BetaBarComponent } from '../components/beta-bar/beta-bar.component';
 import { EmergencyComponent } from '../views/emergency/emergency.component';

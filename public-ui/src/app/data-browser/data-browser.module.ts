@@ -1,5 +1,3 @@
-import { environment } from 'environments/environment';
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
