@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import { environment } from '../../../environments/environment';
-import { DbConfigService } from '../../utils/db-config.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { environment } from '../../../../environments/environment';
+import { DbConfigService } from '../../../utils/db-config.service';
 
 export interface Breadcrumb {
   label: string;
@@ -12,10 +12,11 @@ export interface Breadcrumb {
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
-  styleUrls: ['../../styles/buttons.css',
-    '../../styles/cards.css',
-    '../../styles/headers.css',
-    '../../styles/inputs.css',
+  styleUrls: [
+    '../../../styles/buttons.css',
+    '../../../styles/page.css',
+    '../../../styles/headers.css',
+    '../../../styles/inputs.css',
     './breadcrumb.component.css']
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
@@ -25,7 +26,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dbc: DbConfigService) {}
+    private dbc: DbConfigService) { }
 
   /**
    * Generate a breadcrumb using the default label and url. Uses the route's

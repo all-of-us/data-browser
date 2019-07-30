@@ -9,7 +9,7 @@
         style="height:auto" autofocus>
     </div>
   </div>
-  <app-db-spinner [loading]="loading"></app-db-spinner>
+  <app-spinner [loading]="loading"></app-spinner>
   <div *ngIf="items.length > 0" class="results">
     <a class="btn btn-link btn-sm" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
@@ -262,7 +262,7 @@
                               </clr-tooltip-content>
                             </clr-tooltip>
                           </p>
-                          <app-db-spinner [loading]="treeLoading" [dots]="true"></app-db-spinner>
+                          <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
                           <ng-container *ngIf="!treeLoading">
                             <div *ngFor="let node of treeData" class="tree-top">
                               <app-source-tree [rootNode]="node"></app-source-tree>

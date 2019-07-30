@@ -1,16 +1,16 @@
-import {environment} from 'environments/environment';
+import { environment } from 'environments/environment';
 
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {ClarityModule} from '@clr/angular';
-import {SharedModule} from '../shared/shared.module';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ClarityModule } from '@clr/angular';
+import { SharedModule } from '../shared/shared.module';
 /* Components */
-import {ChartModule} from 'angular2-highcharts';
-import {HighchartsStatic} from 'angular2-highcharts/dist/HighchartsService';
+import { ChartModule } from 'angular2-highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
-import {ChartComponent} from './chart/chart.component';
-import {ConceptChartsComponent} from './concept-charts/concept-charts.component';
+import { ChartComponent } from './chart/chart.component';
+import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { RecursiveTreeComponent } from '../components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from '../components/source-tree/source-tree.component';
@@ -57,12 +57,12 @@ import { SurveyViewComponent } from '../views/survey-view/survey-view.component'
   ],
   providers: [
     {
-        provide: HighchartsStatic,
-        useValue: highcharts,
-      },
+      provide: HighchartsStatic,
+      useValue: highcharts,
+    },
   ]
 })
 
 export class DataBrowserModule {
-  constructor() {}
+  constructor() { }
 }

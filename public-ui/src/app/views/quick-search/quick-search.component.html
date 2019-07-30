@@ -1,5 +1,5 @@
 <div class="db-container">
-  <div class="db-header">
+  <div class="rh-header">
     <div>
       <h1 id='db-title' class="primary-display ">Data Browser</h1>
       <p id="db-desc" class="body-default">
@@ -52,7 +52,7 @@
       </div>
     </div><!-- .iconlinks -->
   </div><!-- .search-icon-container -->
-  <app-db-spinner [loading]="loading"></app-db-spinner>
+  <app-spinner [loading]="loading"></app-spinner>
   <section class="results">
     <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
       <clr-tooltip>
