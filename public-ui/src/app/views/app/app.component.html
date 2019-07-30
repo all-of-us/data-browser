@@ -1,9 +1,9 @@
 <app-rh-header></app-rh-header>
 <main class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
   <app-breadcrumb></app-breadcrumb>
-    <!-- <div class="db-container"> -->
     <router-outlet (activate)="onActivate($event)" ></router-outlet>
-  <!-- </div> -->
+    <router-outlet name="researchDir"></router-outlet>
+
 </main>
   <!-- *** removed until strategic direction is provided for CTA section ***
     <div class="cta-content dark">

@@ -5,16 +5,19 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
-import { environment } from '../../../environments/environment';
-import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../publicGenerated';
-import { DbConfigService } from '../../utils/db-config.service';
-import { GraphType } from '../../utils/enum-defs';
-import { TooltipService } from '../../utils/tooltip.service';
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../../publicGenerated';
+import { DbConfigService } from '../../../utils/db-config.service';
+import { GraphType } from '../../../utils/enum-defs';
+import { TooltipService } from '../../../utils/tooltip.service';
 
 @Component({
   selector: 'app-survey-view',
   templateUrl: './survey-view.component.html',
-  styleUrls: ['../../styles/template.css', '../../styles/cards.css', './survey-view.component.css']
+  styleUrls: [
+    '../../../styles/template.css',
+    '../../../styles/cards.css',
+    './survey-view.component.css'
+  ]
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {

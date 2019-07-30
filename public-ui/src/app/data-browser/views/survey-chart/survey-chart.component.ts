@@ -1,12 +1,12 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import { DbConfigService } from '../../utils/db-config.service';
-import {GraphType} from '../../utils/enum-defs';
-import {TooltipService} from '../../utils/tooltip.service';
+import { DbConfigService } from '../../../utils/db-config.service';
+import {GraphType} from '../../../utils/enum-defs';
+import {TooltipService} from '../../../utils/tooltip.service';
 
 @Component({
   selector: 'app-survey-chart',
   templateUrl: './survey-chart.component.html',
-  styleUrls: ['./survey-chart.component.css', '../../styles/template.css']
+  styleUrls: ['./survey-chart.component.css', '../../../styles/template.css']
 })
 export class SurveyChartComponent implements OnInit {
 

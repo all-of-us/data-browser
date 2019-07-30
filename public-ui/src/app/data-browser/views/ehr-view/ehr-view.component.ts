@@ -10,22 +10,26 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
-import { MatchType } from '../../../publicGenerated';
-import { Concept } from '../../../publicGenerated/model/concept';
-import { ConceptListResponse } from '../../../publicGenerated/model/conceptListResponse';
-import { Domain } from '../../../publicGenerated/model/domain';
-import { SearchConceptsRequest } from '../../../publicGenerated/model/searchConceptsRequest';
-import { StandardConceptFilter } from '../../../publicGenerated/model/standardConceptFilter';
-import { DbConfigService } from '../../utils/db-config.service';
-import { GraphType } from '../../utils/enum-defs';
-import { TooltipService } from '../../utils/tooltip.service';
+import { MatchType } from '../../../../publicGenerated';
+import { Concept } from '../../../../publicGenerated/model/concept';
+import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
+import { Domain } from '../../../../publicGenerated/model/domain';
+import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchConceptsRequest';
+import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
+import { DbConfigService } from '../../../utils/db-config.service';
+import { GraphType } from '../../../utils/enum-defs';
+import { TooltipService } from '../../../utils/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
 @Component({
   selector: 'app-ehr-view',
   templateUrl: './ehr-view.component.html',
-  styleUrls: ['../../styles/template.css', '../../styles/cards.css', './ehr-view.component.css']
+  styleUrls: [
+    '../../../styles/template.css',
+    '../../../styles/cards.css',
+    './ehr-view.component.css'
+  ]
 })
 export class EhrViewComponent implements OnInit, OnDestroy {
   domainId: string;

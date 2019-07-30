@@ -1,18 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import {DataBrowserService} from '../../../publicGenerated/api/dataBrowser.service';
-import {AchillesResult} from '../../../publicGenerated/model/achillesResult';
-import {Analysis} from '../../../publicGenerated/model/analysis';
-import {ConceptGroup} from '../../utils/conceptGroup';
-import {ConceptWithAnalysis} from '../../utils/conceptWithAnalysis';
-import {DbConfigService} from '../../utils/db-config.service';
-import { DomainType } from '../../utils/enum-defs';
-import {TooltipService} from '../../utils/tooltip.service';
+import {DataBrowserService} from '../../../../publicGenerated/api/dataBrowser.service';
+import {Analysis} from '../../../../publicGenerated/model/analysis';
+import {ConceptGroup} from '../../../utils/conceptGroup';
+import {ConceptWithAnalysis} from '../../../utils/conceptWithAnalysis';
+import {DbConfigService} from '../../../utils/db-config.service';
+import { DomainType } from '../../../utils/enum-defs';
+import {TooltipService} from '../../../utils/tooltip.service';
 
 @Component({
   selector: 'app-physical-measurements',
   templateUrl: './pm.component.html',
-  styleUrls: ['../../styles/template.css', '../../styles/cards.css', './pm.component.css']
+  styleUrls: ['../../../styles/template.css', '../../../styles/cards.css', './pm.component.css']
 })
 export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   title = 'Browse Program Physical Measurements';

@@ -1,18 +1,19 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 import { environment } from 'environments/environment';
-import * as StackTrace from 'stacktrace-js';
-import { ErrorReporterService } from './services/error-reporter.service';
-import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 /* Our Modules */
 import {
   ApiModule,
   Configuration
 } from 'publicGenerated';
+import * as StackTrace from 'stacktrace-js';
 import { DataBrowserModule } from './data-browser/data-browser.module';
+import { ResearchDirectoryModule } from './research-directory/research-directory.module';
+import { ErrorReporterService } from './services/error-reporter.service';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
 import { SharedModule } from './shared/shared.module';
+import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
@@ -43,6 +44,7 @@ export function getConfigService(http: Http) {
     ApiModule,
     DataBrowserModule,
     SharedModule,
+    ResearchDirectoryModule
   ],
   declarations: [
     AppComponent,

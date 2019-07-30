@@ -10,15 +10,15 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from 'rxjs/Subscription';
-import { environment } from '../../../environments/environment';
-import { ConceptGroup } from '../../utils/conceptGroup';
-import { DbConfigService } from '../../utils/db-config.service';
-import { TooltipService } from '../../utils/tooltip.service';
+import { environment } from '../../../../environments/environment';
+import { ConceptGroup } from '../../../utils/conceptGroup';
+import { DbConfigService } from '../../../utils/db-config.service';
+import { TooltipService } from '../../../utils/tooltip.service';
 
 @Component({
   selector: 'app-quick-search',
   templateUrl: './quick-search.component.html',
-  styleUrls: ['../../styles/template.css', '../../styles/cards.css',
+  styleUrls: ['../../../styles/template.css', '../../../styles/cards.css',
     './quick-search.component.css']
 })
 export class QuickSearchComponent implements OnInit, OnDestroy {

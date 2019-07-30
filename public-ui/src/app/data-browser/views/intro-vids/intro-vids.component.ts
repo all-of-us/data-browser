@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-intro-vids',
   templateUrl: './intro-vids.component.html',
-  styleUrls: ['../../styles/template.css', './intro-vids.component.css']
+  styleUrls: ['../../../styles/template.css', './intro-vids.component.css']
 })
 export class IntroVidsComponent {
 
