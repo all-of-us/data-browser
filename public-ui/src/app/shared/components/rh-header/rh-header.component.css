@@ -439,10 +439,7 @@ li.flip::before {
       background-color: #262262;
       color: #fff;
     }
-    .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu > li:not(.menu-item-has-children):not(.icon_search) a:hover,
-    .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu > li:not(.menu-item-has-children):not(.icon_search) a:focus {
-
-  }
+    
     .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover a svg,
     .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover > a svg,
     .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus a svg,

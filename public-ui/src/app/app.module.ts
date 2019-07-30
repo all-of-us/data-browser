@@ -15,10 +15,10 @@ import {
 } from 'publicGenerated';
 
 
-import { SharedModule } from './shared/shared.module';
 import { DataBrowserModule } from './data-browser/data-browser.module';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
+import { SharedModule } from './shared/shared.module';
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
