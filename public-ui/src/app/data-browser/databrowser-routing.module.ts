@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 import { IsSafeGuard } from '../guards/is-safe-guard.service';

@@ -2,6 +2,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { environment } from 'environments/environment';
 /* Our Modules */
 import {
@@ -30,12 +31,13 @@ function getPublicBasePath() {
 }
 
 // if true show Research Dir; hide Data browser
-const rDFlag = true;
+const rDFlag = false;
 
 const dynamicImports = [
   BrowserModule,
   BrowserAnimationsModule,
   ApiModule,
+  RouterModule,
   SharedModule
 ];
 
