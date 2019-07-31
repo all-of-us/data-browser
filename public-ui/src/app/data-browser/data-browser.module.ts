@@ -18,9 +18,11 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { DataBrowserRoutingModule } from './databrowser-routing.module';
 
 @NgModule({
   imports: [
+    DataBrowserRoutingModule,
     CommonModule,
     ChartModule,
     ClarityModule,
@@ -40,6 +42,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyViewComponent
   ],
   exports: [
+    DataBrowserRoutingModule,
     ChartComponent,
     CommonModule,
     ConceptChartsComponent,

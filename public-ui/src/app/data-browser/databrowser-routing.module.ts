@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
-import { EhrViewComponent } from './data-browser/views/ehr-view/ehr-view.component';
-import { IntroVidsComponent } from './data-browser/views/intro-vids/intro-vids.component';
-import { PhysicalMeasurementsComponent } from './data-browser/views/pm/pm.component';
-import { QuickSearchComponent } from './data-browser/views/quick-search/quick-search.component';
-import { SurveyViewComponent } from './data-browser/views/survey-view/survey-view.component';
-import { IsSafeGuard } from './guards/is-safe-guard.service';
-import { SignInGuard } from './guards/sign-in-guard.service';
-import { ResearchDirectoryComponent } from './research-directory/views/research-directory/research-directory.component';
-import { EmergencyComponent } from './views/emergency/emergency.component';
-import { LoginComponent } from './views/login/login.component';
+import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
+import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
+import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
+import { QuickSearchComponent } from './views/quick-search/quick-search.component';
+import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { IsSafeGuard } from '../guards/is-safe-guard.service';
+import { SignInGuard } from '../guards/sign-in-guard.service';
+import { ResearchDirectoryComponent } from '../research-directory/views/research-directory/research-directory.component';
+import { EmergencyComponent } from '../views/emergency/emergency.component';
+import { LoginComponent } from '../views/login/login.component';
 
 const routes: Routes = [
   {
@@ -128,7 +128,7 @@ const routes: Routes = [
     IsSafeGuard,
   ]
 })
-export class AppRoutingModule {
+export class DataBrowserRoutingModule {
 
   constructor(public router: Router) {
     this.router.events.subscribe(event => {

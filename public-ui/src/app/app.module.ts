@@ -1,5 +1,7 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { Http } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'environments/environment';
 /* Our Modules */
 import {
@@ -27,6 +29,22 @@ function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
 }
 
+// if true show Research Dir; hide Data browser
+const rDFlag = true;
+
+const dynamicImports = [
+  BrowserModule,
+  BrowserAnimationsModule,
+  ApiModule,
+  SharedModule
+];
+
+if (rDFlag) {
+  dynamicImports.push(ResearchDirectoryModule);
+} else if (!rDFlag) {
+  dynamicImports.push(DataBrowserModule);
+}
+
 // "Configuration" means Swagger API Client configuration.
 export function getConfiguration(signInService: SignInService): Configuration {
   return new Configuration({
@@ -40,12 +58,7 @@ export function getConfigService(http: Http) {
 }
 
 @NgModule({
-  imports: [
-    ApiModule,
-    DataBrowserModule,
-    SharedModule,
-    ResearchDirectoryModule
-  ],
+  imports: dynamicImports,
   declarations: [
     AppComponent,
   ],
