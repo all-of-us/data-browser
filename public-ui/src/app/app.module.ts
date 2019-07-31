@@ -31,7 +31,7 @@ function getPublicBasePath() {
 }
 
 // if true show Research Dir; hide Data browser
-const rDFlag = false;
+
 
 const dynamicImports = [
   BrowserModule,
@@ -41,9 +41,9 @@ const dynamicImports = [
   SharedModule
 ];
 
-if (rDFlag) {
+if (environment.isResearchDirectory) {
   dynamicImports.push(ResearchDirectoryModule);
-} else if (!rDFlag) {
+} else if (!environment.isResearchDirectory) {
   dynamicImports.push(DataBrowserModule);
 }
 
