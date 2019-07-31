@@ -12,13 +12,13 @@ import { SourceTreeComponent } from '../components/source-tree/source-tree.compo
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
+import { DataBrowserRoutingModule } from './databrowser-routing.module';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { DataBrowserRoutingModule } from './databrowser-routing.module';
 
 @NgModule({
   imports: [
