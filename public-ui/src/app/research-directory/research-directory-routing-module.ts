@@ -14,16 +14,6 @@ const routes: Routes = [
     data: { title: 'Sign In' }
   },
   {
-    path: 'ehr',
-    redirectTo: '',
-    pathMatch: 'full'
-  },
-  {
-    path: 'survey',
-    redirectTo: '',
-    pathMatch: 'full'
-  },
-  {
     path: '',
     canActivate: [SignInGuard],
     canActivateChild: [SignInGuard],
