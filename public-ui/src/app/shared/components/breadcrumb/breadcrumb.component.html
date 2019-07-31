@@ -2,9 +2,17 @@
   <div class="breadcrumb">
     <a href="{{allOfUs}}/">Home</a>
   </div>
-  <div class="breadcrumb">
-    <a href="{{allOfUs}}/data/">Data</a>
-  </div>
+  <ng-container *ngIf="isResearchDirectory;else isDatabrowser">
+    <div class="breadcrumb">
+      <a href="{{allOfUs}}/about/">About</a>
+    </div>
+  </ng-container>
+  <ng-template #isDatabrowser>
+    <div class="breadcrumb">
+      <a href="{{allOfUs}}/data/">Data</a>
+    </div>
+  </ng-template>
+
   <div *ngFor="let breadcrumb of breadcrumbs; let last = last"
     [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}">
     <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label.split('-').join(' ') }}</a>
