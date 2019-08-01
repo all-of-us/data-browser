@@ -22,9 +22,9 @@ const routes: Routes = [
       {
         path: '',
         data: {
-          title: 'Research Directory',
+          title: 'AoU Research',
           breadcrumb: {
-            value: 'Research Directory',
+            value: 'AoU Research',
           }
         },
         children: [{
