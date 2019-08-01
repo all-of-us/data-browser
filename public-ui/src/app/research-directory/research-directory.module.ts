@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { ResearchDirectoryRoutingModule } from './research-directory-routing-module';
-import { ResearchDirectoryComponent } from './views/research-directory/research-directory.component';
+import { ResearchDirViewComponent } from './views/research-dir-view/research-dir-view.component';
 @NgModule({
   imports: [
     CommonModule,
-    ResearchDirectoryRoutingModule
+    ResearchDirectoryRoutingModule,
+    SharedModule
   ],
-  exports: [ResearchDirectoryRoutingModule],
-  declarations: [ResearchDirectoryComponent]
+  exports: [ResearchDirectoryRoutingModule,SharedModule],
+  declarations: [ResearchDirViewComponent]
 })
 export class ResearchDirectoryModule { }

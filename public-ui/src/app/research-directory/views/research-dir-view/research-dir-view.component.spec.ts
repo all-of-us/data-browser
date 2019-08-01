@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResearchDirectoryComponent } from './research-directory.component';
+import { ResearchDirViewComponent } from './research-dir-view.component';
 
-describe('ResearchDirectoryComponent', () => {
-  let component: ResearchDirectoryComponent;
-  let fixture: ComponentFixture<ResearchDirectoryComponent>;
+describe('ResearchDirViewComponent', () => {
+  let component: ResearchDirViewComponent;
+  let fixture: ComponentFixture<ResearchDirViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResearchDirectoryComponent ]
+      declarations: [ ResearchDirViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResearchDirectoryComponent);
+    fixture = TestBed.createComponent(ResearchDirViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

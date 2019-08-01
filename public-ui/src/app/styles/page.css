@@ -1,3 +1,7 @@
+.center {
+  text-align: center
+}
+
 /* primary display */
 
 .primary-display, h1 {
@@ -8,7 +12,6 @@
   font-stretch: normal;
   line-height: 45.36px;
   letter-spacing: normal;
-  text-align: left;
 }
 
 .secondary-display, h2 {
@@ -173,11 +176,11 @@
 }
 
 .chart-choice .tooltip {
-  margin-left:.25rem;
+  margin-left: .25rem;
 }
 
 .survey-chart-choice .tooltip {
-  margin-left:.25rem;
+  margin-left: .25rem;
 }
 
 .chart-choice:hover {
@@ -201,7 +204,8 @@
   border-color: #BEE1FF;
   border-radius: 2px 2px 2px 2px;
 }
-.survey-answer-level-1.active, .survey-answer-level-2.active{
+
+.survey-answer-level-1.active, .survey-answer-level-2.active {
   font-weight: bold;
 }
 
@@ -229,8 +233,9 @@
   white-space: nowrap;
   text-align: center;
 }
+
 .tbl-r-group .tbl-d:last-of-type button {
-  width:100%;
+  width: 100%;
 }
 
 .tbl-r.tbl-head {
