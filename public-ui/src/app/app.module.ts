@@ -15,7 +15,6 @@ import { ResearchDirectoryModule } from './research-directory/research-directory
 import { ErrorReporterService } from './services/error-reporter.service';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
-import { SharedModule } from './shared/shared.module';
 import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
@@ -37,8 +36,7 @@ const dynamicImports = [
   BrowserModule,
   BrowserAnimationsModule,
   ApiModule,
-  RouterModule,
-  SharedModule
+  RouterModule
 ];
 
 if (environment.isResearchDirectory) {
@@ -62,7 +60,7 @@ export function getConfigService(http: Http) {
 @NgModule({
   imports: dynamicImports,
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   providers: [
     {

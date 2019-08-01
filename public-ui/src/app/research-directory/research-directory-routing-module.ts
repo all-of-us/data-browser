@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
 import { environment } from '../../environments/environment';
-
 import { IsSafeGuard } from '../guards/is-safe-guard.service';
 import { SignInGuard } from '../guards/sign-in-guard.service';
-import { ResearchDirectoryComponent } from '../research-directory/views/research-directory/research-directory.component';
 import { LoginComponent } from '../views/login/login.component';
+import { ResearchDirViewComponent } from './views/research-dir-view/research-dir-view.component';
 
 const routes: Routes = [
   {
@@ -29,9 +28,8 @@ const routes: Routes = [
         },
         children: [{
           path: '',
-          component: ResearchDirectoryComponent,
-        }
-        ]
+          component: ResearchDirViewComponent,
+        }]
       }
     ]
   },

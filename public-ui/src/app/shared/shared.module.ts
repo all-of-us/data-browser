@@ -13,6 +13,7 @@ import { LoginComponent } from '../views/login/login.component';
 import { PageTemplateSignedOutComponent } from '../views/page-template-signed-out/page-template-signed-out.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
+import { ItemSelectComponent } from './components/item-select/item-select.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 
@@ -34,7 +35,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     PageTemplateSignedOutComponent,
     RhHeaderComponent,
     BetaBarComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    ItemSelectComponent
   ],
   exports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     RhHeaderComponent,
     BetaBarComponent,
     SpinnerComponent,
-    LocalStorageModule
+    LocalStorageModule,
+    ItemSelectComponent
   ]
 })
 export class SharedModule { }
