@@ -221,7 +221,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series: options.series,
     };
   }
-  
+
   public makeChartOptions() {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
@@ -317,7 +317,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
-  
+
   public makeCountChartOptions(results: any, analysisName: string) {
     let data = [];
     let cats = [];
@@ -379,7 +379,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: { pointFormat: '{point.y}' },
     };
   }
-  
+
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
@@ -461,7 +461,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: 'Participant Count',
     };
   }
-  
+
   public makeGenderChartOptions(results: any, analysisName: string,
                                 seriesName: string, chartType: string) {
     let data = [];
@@ -513,12 +513,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (a.percentage === null || a.percentage === 0) {
           toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Biological Sex that answered' + ': ' + '<b>' + (a.percentage) + '% </b>' +
+            '<br/> % of Each Biological Sex that answered' + ': '
+            + '<b>' + (a.percentage) + '% </b>' +
             '<br/> Participant Count: ';
         } else {
           toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Biological Sex that answered' + ': ' + '<b>' + (a.percentage) + '% </b>' +
+            '<br/> % of Each Biological Sex that answered' + ': '
+            + '<b>' + (a.percentage) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
@@ -547,22 +549,26 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
         if (a.stratum4 == null) {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName + ': <b>' + 0 + '% </b>' +
+            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName +
+            ': <b>' + 0 + '% </b>' +
             '<br/> Participant Count: ' ;
         } else {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName + ': <b>' + (+a.stratum4) + '% </b>' +
+            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName +
+            ': <b>' + (+a.stratum4) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
-      if ((this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
+      if ((this.surveyAnalysis &&
+          this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
         data.push({
           name: a.analysisStratumName
           , y: +(a.percentage), color: color, sliced: true,
           toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
         });
         cats.push(a.analysisStratumName);
-      } else if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
+      } else if (this.analysis &&
+        this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
         if (a.stratum4 === null) {
           data.push({
             name: a.analysisStratumName
@@ -680,7 +686,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
-  
+
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string, analysisId: number) {
     // Age results have two stratum-- 1 is concept, 2 is age decile
@@ -723,12 +729,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (a.stratum4 === null || a.stratum4 === '0') {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' +
-            '<br/>' + '% of Each Age with ' + this.conceptName + ': <b>' + '0' + '% </b>' +
+            '<br/>' + '% of Each Age with ' + this.conceptName + ': <b>' +
+            '0' + '% </b>' +
             '<br/> Participant Count: ';
         } else {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' +
-            '<br/>' + '% of Each Age with ' + this.conceptName + ': <b>' +(a.stratum4) + '% </b>' +
+            '<br/>' + '% of Each Age with ' + this.conceptName +
+            ': <b>' +(a.stratum4) + '% </b>' +
             '<br/> Participant Count: ';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
@@ -816,7 +824,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
-  
+
   // Histogram data analyses come already binned
   // The value is in stratum 4, the unit in stratum5, the countValue in the bin is countValue
   // and we also have
@@ -974,7 +982,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
     };
   }
-  
+
   public getChartTitle(domainType: string) {
     if (domainType === DomainType.EHR) {
       return 'Age at First Occurrence in EHR.';
@@ -984,7 +992,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return 'Age When Physical Measurement Was Taken';
     }
   }
-  
+
   public makeStackedChartOptions(seriesName: string) {
     const data = [];
     const cats = [];
@@ -1019,21 +1027,21 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: null,
     };
   }
-  
+
   public isPregnancyOrWheelChair() {
     if (['903111', '903120'].indexOf(this.conceptId) > -1) {
       return true;
     }
     return false;
   }
-  
+
   public getNumDecimals (value: any) {
     if ((value % 1) !== 0) {
       return value.toString().split('.')[1].length;
     }
     return 0;
   }
-  
+
   public getGenderMissingPercentageEhr(stratumFilter: string) {
     let genderCountResults = this.domainCountAnalysis.genderCountAnalysis.results;
     genderCountResults.filter(r => r.stratum4 === stratumFilter);
