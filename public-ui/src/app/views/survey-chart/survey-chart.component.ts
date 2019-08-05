@@ -73,7 +73,8 @@ export class SurveyChartComponent implements OnInit {
           this.genderPercentageAnalysis.surveyQuestionResults = [];
           const surveyQuestionResultsWithPercentage1 = [];
           for (const ar of q.genderAnalysis.surveyQuestionResults) {
-            const countResult = this.genderQuestionCounts.filter(gc => gc.stratum2 === ar.stratum2 &&
+            const countResult = this.genderQuestionCounts
+              .filter(gc => gc.stratum2 === ar.stratum2 &&
               gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
             const arWithPercentage = JSON.parse(JSON.stringify(ar));
             if (countResult && countResult.length > 0) {
@@ -84,7 +85,8 @@ export class SurveyChartComponent implements OnInit {
             }
             surveyQuestionResultsWithPercentage1.push(arWithPercentage);
           }
-          this.genderPercentageAnalysis.surveyQuestionResults = surveyQuestionResultsWithPercentage1;
+          this.genderPercentageAnalysis.surveyQuestionResults =
+            surveyQuestionResultsWithPercentage1;
           this.genderPercentageAnalysis.analysisId = 3331;
           q.selectedAnalysis = this.genderPercentageAnalysis;
           break;
@@ -155,7 +157,8 @@ export class SurveyChartComponent implements OnInit {
   }
 
   public isPercentageAnalysis(question: any) {
-    if(question.graphDataToShow && question.graphDataToShow.toLowerCase().indexOf('percentage') >= 0) {
+    if(question.graphDataToShow &&
+      question.graphDataToShow.toLowerCase().indexOf('percentage') >= 0) {
       return true;
     }
     return false;
