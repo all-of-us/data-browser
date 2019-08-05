@@ -260,7 +260,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }));
     }
   }
-  
+
   public getSurveyStratumCountsByQuestion(questionConceptId: string, questionPath: string) {
     this.subscriptions.push(
       this.api.getSurveyQuestionCounts(questionConceptId, questionPath).subscribe(results => {
