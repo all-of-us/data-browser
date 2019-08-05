@@ -1,0 +1,6 @@
+<div class="list-layout">
+    <app-item class="choice" (click)="setActive(item)" [isActive]="selectedItem === item.title" *ngFor="let item of list" [item]="item"></app-item>
+</div>
+
+
+

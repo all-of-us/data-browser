@@ -1,0 +1,12 @@
+:host {
+    width: fit-content;
+    display: block;
+}
+
+.list-layout {
+    display: flex;
+}
+
+.choice {
+    margin-right:1rem;
+}

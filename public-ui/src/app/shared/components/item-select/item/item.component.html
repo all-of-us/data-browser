@@ -1,0 +1,6 @@
+<div [ngClass]="{'active':isActive}" class="item-wrapper">
+<h2 class="display-body">{{item.title}}</h2>
+<ng-container *ngIf="item.subInfo.length > 0">
+    <span class="display-body sub-info"> {{item.subInfo}}</span>
+</ng-container>
+</div>

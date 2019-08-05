@@ -1,0 +1,21 @@
+.item-wrapper{
+    cursor: pointer;
+    height: auto;
+}
+.item-wrapper * {
+    color:#216FB4;
+    font-family: FFUnitStdRegular;
+}
+
+span.sub-info {
+     font-size: .7em;
+}
+.active {
+    box-shadow: 0 .25rem 0;
+    color: #216FB4;
+
+}
+.active * {
+    font-family: FFUnitStdMedium;
+    font-weight: bolder!important;
+}

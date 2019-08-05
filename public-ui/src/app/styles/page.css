@@ -2,6 +2,11 @@
   text-align: center
 }
 
+/* default color on text */
+* {
+  color: #262262;
+}
+
 /* primary display */
 
 .primary-display, h1 {
