@@ -1196,7 +1196,8 @@ group by person_id having answers_count = 1
 order by answers_count desc)
 select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
+count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
@@ -1205,7 +1206,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey gender counts for more than one race / ethnicity bucket
@@ -1219,7 +1220,8 @@ group by person_id having answers_count > 1
 order by answers_count desc)
 select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 'More than one race/ethnicity' as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
+count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
@@ -1227,7 +1229,7 @@ join multiple_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id = 1586140)
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender for q2 (rolling up categories)
@@ -1240,7 +1242,8 @@ group by person_id having answers_count = 1
 order by answers_count desc)
 select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(903070 as string) as stratum_3,'Other' as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
+count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
@@ -1249,7 +1252,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answers count by gender(value_as_number not null)
@@ -1257,14 +1260,15 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_as_number as string) as stratum_4,CAST(p.gender_concept_id as string) as stratum_5,count(distinct p.person_id) as count_value,0 as source_count_value
+CAST(o.value_as_number as string) as stratum_4,CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
+count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id = 0)
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey Question Answer Count by age deciles for all questions except q2
@@ -1377,7 +1381,8 @@ group by observation_id,age_stratum
 )
 select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-age_stratum as stratum_5,COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
+age_stratum as stratum_5,sq.path as stratum_6,
+COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join survey_age_stratum sa on sa.observation_id=o.observation_id
 join single_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
@@ -1386,7 +1391,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey question answer count by age deciles for more than one race / ethnicity bucket
@@ -1415,7 +1420,8 @@ group by observation_id,age_stratum
 )
 select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 'More than one race/ethnicity' as stratum_4,
-age_stratum as stratum_5,COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
+age_stratum as stratum_5,sq.path as stratum_6,
+COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join survey_age_stratum sa on sa.observation_id=o.observation_id
 join multiple_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
@@ -1423,7 +1429,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id = 1586140)
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,stratum_5,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 
@@ -1453,7 +1459,8 @@ group by observation_id,age_stratum
 )
 select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 '903070' as stratum_3,'Other' as stratum_4,
-age_stratum as stratum_5,COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
+age_stratum as stratum_5,sq.path as stratum_6,
+COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join survey_age_stratum sa on sa.observation_id=o.observation_id
 join single_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
@@ -1461,7 +1468,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 # Survey Question Answer Count by age deciles for all questions that have value_as_number
@@ -1486,14 +1493,15 @@ group by observation_id,age_stratum
 )
 select 0, 3112 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,
-age_stratum as stratum_5,COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
+age_stratum as stratum_5,sq.path as stratum_6,
+COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join survey_age_stratum sa on sa.observation_id=o.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id = 0 and o.value_as_number >= 0)
 and sq.survey_concept_id in (1586134, 1585855, 1585710)
-group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number
+group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
 ### Test data does not have the mapping tables, so this else block lets the script to fetch domain counts for test data

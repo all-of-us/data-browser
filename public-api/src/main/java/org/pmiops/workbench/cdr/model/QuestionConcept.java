@@ -17,9 +17,7 @@ public class QuestionConcept {
     private float prevalence;
     private AchillesAnalysis countAnalysis;
     private AchillesAnalysis genderAnalysis;
-    private AchillesAnalysis genderPercentageAnalysis;
     private AchillesAnalysis ageAnalysis;
-    private AchillesAnalysis agePercentageAnalysis;
     private AchillesAnalysis genderIdentityAnalysis;
     private AchillesAnalysis raceEthnicityAnalysis;
     private List<SurveyQuestionMap> questions = new ArrayList<>();
@@ -27,8 +25,6 @@ public class QuestionConcept {
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
     public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
-    public static final long SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
-    public static final long SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
     public static final long SURVEY_GENDER_IDENTITY_ANALYSIS_ID = 3113;
     public static final long SURVEY_RACE_ETHNICITY_ANALYSIS_ID = 3114;
 
@@ -197,10 +193,10 @@ public class QuestionConcept {
                 }
                 String rStratum5Name = r.getAnalysisStratumName();
                 if (rStratum5Name == null || rStratum5Name.equals("")) {
-                    if ((analysis.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID || analysis.getAnalysisId() == SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) && validAgeDeciles.contains(r.getStratum5())) {
+                    if (analysis.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID && validAgeDeciles.contains(r.getStratum5())) {
                         r.setAnalysisStratumName(ageStratumNameMap.get(r.getStratum5()));
                     }
-                    if (analysis.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID || analysis.getAnalysisId() == SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
+                    if (analysis.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
                         r.setAnalysisStratumName(genderStratumNameMap.get(r.getStratum5()));
                     }
                     if (analysis.getAnalysisId() == SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
@@ -344,20 +340,6 @@ public class QuestionConcept {
     }
 
     @Transient
-    public AchillesAnalysis getGenderPercentageAnalysis() {
-        return this.genderPercentageAnalysis;
-    }
-
-    public void setGenderPercentageAnalysis(AchillesAnalysis analysis) {
-        this.genderPercentageAnalysis = analysis;
-    }
-
-    public QuestionConcept genderPercentageAnalysis(AchillesAnalysis analysis) {
-        this.genderPercentageAnalysis = analysis;
-        return this;
-    }
-
-    @Transient
     public AchillesAnalysis getAgeAnalysis() {
         return this.ageAnalysis;
     }
@@ -368,20 +350,6 @@ public class QuestionConcept {
 
     public QuestionConcept ageAnalysis(AchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
-        return this;
-    }
-
-    @Transient
-    public AchillesAnalysis getAgePercentageAnalysis() {
-        return this.agePercentageAnalysis;
-    }
-
-    public void setAgePercentageAnalysis(AchillesAnalysis analysis) {
-        this.agePercentageAnalysis = analysis;
-    }
-
-    public QuestionConcept agePercentageAnalysis(AchillesAnalysis analysis) {
-        this.agePercentageAnalysis = analysis;
         return this;
     }
 
@@ -425,10 +393,6 @@ public class QuestionConcept {
             this.genderIdentityAnalysis = analysis;
         } else if (analysis.getAnalysisId() == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
             this.raceEthnicityAnalysis = analysis;
-        } else if (analysis.getAnalysisId() == SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
-            this.genderPercentageAnalysis = analysis;
-        } else if (analysis.getAnalysisId() == SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
-            this.agePercentageAnalysis = analysis;
         }
     }
 
@@ -443,11 +407,8 @@ public class QuestionConcept {
             return this.genderIdentityAnalysis;
         } else if (analysisId == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
             return this.raceEthnicityAnalysis;
-        } else if (analysisId == SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
-            return this.genderPercentageAnalysis;
-        } else if (analysisId == SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
-            return this.agePercentageAnalysis;
         }
         return null;
     }
+
 }

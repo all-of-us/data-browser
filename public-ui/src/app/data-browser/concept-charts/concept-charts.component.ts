@@ -46,6 +46,10 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   graphType = GraphType;
   subGraphButtons = ['Percentage (%)', 'Count'];
   selectedSubGraph: string;
+  toDisplayGenderAnalysis: Analysis;
+  toDisplayAgeAnalysis: Analysis;
+  domainCountAnalysis: any;
+  conceptName: string;
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
 
@@ -57,11 +61,15 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     // Get chart results for concept
     this.loadingStack.push(true);
     const conceptIdStr = '' + this.concept.conceptId.toString();
+    this.conceptName = this.concept.conceptName;
     this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
       this.concept.domainId).subscribe(
       results => {
         this.results = results.items;
         this.analyses = results.items[0];
+        this.selectedSubGraph = 'Percentage (%)';
+        this.toDisplayGenderAnalysis = this.analyses.genderPercentageAnalysis;
+        this.toDisplayAgeAnalysis = this.analyses.agePercentageAnalysis;
         this.organizeGenders(this.analyses.genderAnalysis);
         this.fetchMeasurementGenderResults();
         // Set this var to make template simpler.
@@ -77,6 +85,11 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         }
         this.loadingStack.pop();
       }));
+    this.subscriptions.push(this.api.getEhrCountAnalysis(this.concept.domainId).subscribe(
+      results => {
+        this.domainCountAnalysis = results;
+      }
+    ));
   }
 
   public fetchMeasurementGenderResults() {
@@ -219,5 +232,19 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   
   public showSelectedSubGraph(sg: string) {
     this.selectedSubGraph = sg;
+    if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
+      this.toDisplayGenderAnalysis = this.analyses.genderPercentageAnalysis;
+      this.toDisplayAgeAnalysis = this.analyses.agePercentageAnalysis;
+    } else {
+      this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
+      this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
+    }
+  }
+  
+  public isPercentageGraphSelected() {
+    if(this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
+      return true;
+    }
+    return false;
   }
 }
