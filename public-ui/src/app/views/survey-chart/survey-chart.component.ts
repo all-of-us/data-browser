@@ -1,9 +1,9 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { ISubscription } from 'rxjs/Subscription';
 import {AchillesResult, DataBrowserService, SurveyQuestionAnalysis} from '../../../publicGenerated';
 import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import {TooltipService} from '../../utils/tooltip.service';
-import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-survey-chart',
@@ -71,7 +71,7 @@ export class SurveyChartComponent implements OnInit {
         case GraphType.BiologicalSex:
           this.genderPercentageAnalysis = JSON.parse(JSON.stringify(q.genderAnalysis));
           this.genderPercentageAnalysis.surveyQuestionResults = [];
-          let surveyQuestionResultsWithPercentage1 = [];
+          const surveyQuestionResultsWithPercentage1 = [];
           for (const ar of q.genderAnalysis.surveyQuestionResults) {
             let countResult = this.genderQuestionCounts.filter(gc => gc.stratum2 === ar.stratum2 &&
               gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
@@ -90,7 +90,7 @@ export class SurveyChartComponent implements OnInit {
         case GraphType.AgeWhenSurveyWasTaken:
           this.agePercentageAnalysis = JSON.parse(JSON.stringify(q.ageAnalysis));
           this.agePercentageAnalysis.surveyQuestionResults = [];
-          let surveyQuestionResultsWithPercentage2 = [];
+          const surveyQuestionResultsWithPercentage2 = [];
           for (const ar of q.ageAnalysis.surveyQuestionResults) {
             let countResult = this.ageQuestionCounts.filter(gc => gc.stratum2 === ar.stratum2 &&
               gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
