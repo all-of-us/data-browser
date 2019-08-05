@@ -38,7 +38,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       lang: { thousandsSep: ',' },
     });
   }
-  
   // Render new chart on changes
   ngOnChanges() {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
@@ -57,14 +56,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     }, 1);
   }
-  
+
   public isGenderIdentityAnalysis() {
     return this.analysis ?
       (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
         this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
       : false;
   }
-  
+
   public hcChartOptions(): any {
     const options = this.makeChartOptions();
     // Override title if they passed one
@@ -157,13 +156,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             textTransform: 'capitalize',
           }
         },
-        min: ((this.analysis && (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
+        min: ((this.analysis &&
+          (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
         this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
-          (this.surveyAnalysis && (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
+          (this.surveyAnalysis &&
+            (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
           this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? 0 : 20,
-        labels: ((this.analysis && (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
+        labels: ((this.analysis &&
+          (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
           this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
-          (this.surveyAnalysis && (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
+          (this.surveyAnalysis &&
+            (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
             this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? {
           style: {
             fontSize: '12px',
