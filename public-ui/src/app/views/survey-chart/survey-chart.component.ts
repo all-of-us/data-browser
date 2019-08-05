@@ -157,7 +157,7 @@ export class SurveyChartComponent implements OnInit {
   }
 
   public isPercentageAnalysis(question: any) {
-    if(question.graphDataToShow &&
+    if (question.graphDataToShow &&
       question.graphDataToShow.toLowerCase().indexOf('percentage') >= 0) {
       return true;
     }
