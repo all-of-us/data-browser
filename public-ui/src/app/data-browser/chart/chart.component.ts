@@ -764,7 +764,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/> Participant Count: ';
         }
       }
-      if(analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
+      if (analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
         if (a.stratum4 === null) {
           data.push({
             name: a.analysisStratumName,
@@ -778,7 +778,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
-      } else if (analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID){
+      } else if (analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
         if (a.percentage === null || a.percentage === 0) {
           data.push({
             name: a.analysisStratumName,
