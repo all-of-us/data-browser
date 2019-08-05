@@ -77,7 +77,8 @@ export class SurveyChartComponent implements OnInit {
               gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
             let arWithPercentage = JSON.parse(JSON.stringify(ar));
             if (countResult && countResult.length > 0) {
-              arWithPercentage.percentage = ((ar.countValue/countResult[0].countValue)*100).toFixed(2);
+              arWithPercentage.percentage =
+                ((ar.countValue/countResult[0].countValue)*100).toFixed(2);
             } else {
               arWithPercentage.percentage = 0;
             }
@@ -92,11 +93,12 @@ export class SurveyChartComponent implements OnInit {
           this.agePercentageAnalysis.surveyQuestionResults = [];
           const surveyQuestionResultsWithPercentage2 = [];
           for (const ar of q.ageAnalysis.surveyQuestionResults) {
-            let countResult = this.ageQuestionCounts.filter(gc => gc.stratum2 === ar.stratum2 &&
+            const countResult = this.ageQuestionCounts.filter(gc => gc.stratum2 === ar.stratum2 &&
               gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
-            let arWithPercentage = JSON.parse(JSON.stringify(ar));
+            const arWithPercentage = JSON.parse(JSON.stringify(ar));
             if (countResult && countResult.length > 0) {
-              arWithPercentage.percentage = ((ar.countValue/countResult[0].countValue)*100).toFixed(2);
+              arWithPercentage.percentage =
+                ((ar.countValue/countResult[0].countValue)*100).toFixed(2);
             } else {
               arWithPercentage.percentage = 0;
             }
