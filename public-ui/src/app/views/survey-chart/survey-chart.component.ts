@@ -1,9 +1,9 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { DbConfigService } from '../../utils/db-config.service';
-import {GraphType} from '../../utils/enum-defs';
-import { ISubscription } from 'rxjs/Subscription';
+import { GraphType } from '../../utils/enum-defs';
 import {TooltipService} from '../../utils/tooltip.service';
 import {AchillesResult, DataBrowserService, SurveyQuestionAnalysis} from '../../../publicGenerated';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-survey-chart',

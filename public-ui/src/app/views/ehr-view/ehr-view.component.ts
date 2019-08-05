@@ -93,7 +93,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.initSearchSubscription.unsubscribe();
     }
   }
-  
+
   @HostListener('window:popstate', ['$event'])
   public onPopState(event: any) {
     if (this.searchText.value) {
@@ -101,7 +101,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     this.searchText.setValue(null);
   }
-  
+
   public loadPage() {
     this.loading = true;
     this.items = [];

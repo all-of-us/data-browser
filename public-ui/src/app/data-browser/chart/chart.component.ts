@@ -736,7 +736,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' +
             '<br/>' + '% of Each Age with ' + this.conceptName +
-            ': <b>' +(a.stratum4) + '% </b>' +
+            ': <b>' + (+(a.stratum4)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
