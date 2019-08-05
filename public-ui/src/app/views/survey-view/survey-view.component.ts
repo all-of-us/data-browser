@@ -6,7 +6,10 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
 import { environment } from '../../../environments/environment';
-import { DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept, SurveyModule } from '../../../publicGenerated';
+import {
+  AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept,
+  SurveyModule
+} from '../../../publicGenerated';
 import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
@@ -41,6 +44,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
+  subGraphButtons = ['Percentage (%)', 'Count'];
+  genderCountByQuestionResults: any;
+  ageCountByQuestionResults: any;
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -120,6 +126,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           for (const q of this.surveyResult.items) {
             q.actualQuestionNumber = 0;
             q.graphToShow = GraphType.BiologicalSex;
+            q.graphDataToShow = 'Percentage (%)';
             if (q.questions && q.questions.length > 0) {
               q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
             }
@@ -149,10 +156,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     filter(r => r.stratum6.indexOf(a.stratum3) > -1);
                   subQuestion.genderAnalysis.surveyQuestionResults =
                     subQuestion.genderAnalysis.surveyQuestionResults
-                    .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+                      .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
                   subQuestion.ageAnalysis.surveyQuestionResults =
                     subQuestion.ageAnalysis.surveyQuestionResults
-                    .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+                      .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                     for (const question of subResult.subQuestions) {
@@ -166,7 +173,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
                       question.genderAnalysis.surveyQuestionResults =
                         question.genderAnalysis.surveyQuestionResults.
-                      filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
+                        filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
                       question.ageAnalysis.surveyQuestionResults =
                         question.ageAnalysis.surveyQuestionResults.
                         filter(r => r.stratum6.indexOf(subResult.stratum3) > -1);
@@ -252,6 +259,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         complete: () => { this.resultsComplete = true; }
       }));
     }
+  }
+  
+  public getSurveyStratumCountsByQuestion(questionConceptId: string, questionPath: string) {
+    this.subscriptions.push(
+      this.api.getSurveyQuestionCounts(questionConceptId, questionPath).subscribe(results => {
+        this.genderCountByQuestionResults = results.items.filter(r => r.analysisId === 3320);
+        this.ageCountByQuestionResults = results.items.filter(r => r.analysisId === 3321);
+        if (this.genderCountByQuestionResults && this.genderCountByQuestionResults.length > 0) {
+          this.genderCountByQuestionResults = this.genderCountByQuestionResults[0].results;
+        }
+        if (this.ageCountByQuestionResults && this.ageCountByQuestionResults.length > 0) {
+          this.ageCountByQuestionResults = this.ageCountByQuestionResults[0].results;
+        }
+      }));
   }
 
   public setSurvey() {
@@ -387,6 +408,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public showAnswerGraphs(a: any, q: any) {
+    this.getSurveyStratumCountsByQuestion(a.stratum2, a.stratum6);
     a.expanded = !a.expanded;
     if (a.expanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
@@ -401,6 +423,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public showSubAnswerGraphs(sqa: any, sq: any) {
+    this.getSurveyStratumCountsByQuestion(sqa.stratum2, sqa.stratum6);
     sqa.subExpanded = !sqa.subExpanded;
     if (sqa.subExpanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',

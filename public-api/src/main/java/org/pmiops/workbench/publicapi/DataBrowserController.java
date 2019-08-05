@@ -50,6 +50,8 @@ import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.MatchType;
 import org.pmiops.workbench.model.QuestionConceptListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
+import org.pmiops.workbench.model.AnalysisListResponse;
+import org.pmiops.workbench.model.EhrCountAnalysis;
 import org.pmiops.workbench.model.CriteriaParentResponse;
 import org.pmiops.workbench.model.CriteriaListResponse;
 import org.pmiops.workbench.model.StandardConceptFilter;
@@ -105,6 +107,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
+
+    public static final long EHR_COUNT_ANALYSIS_ID = 3300;
 
     public static final long RACE_ANALYSIS_ID = 3103;
     public static final long ETHNICITY_ANALYSIS_ID = 3104;
@@ -186,8 +190,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     SurveyQuestionAnalysis ageAnalysis=null;
                     SurveyQuestionAnalysis genderIdentityAnalysis=null;
                     SurveyQuestionAnalysis raceEthnicityAnalysis=null;
-                    SurveyQuestionAnalysis genderPercentageAnalysis = null;
-                    SurveyQuestionAnalysis agePercentageAnalysis = null;
                     if(concept.getCountAnalysis() != null){
                         countAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getCountAnalysis());
                     }
@@ -203,13 +205,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     if(concept.getRaceEthnicityAnalysis() != null){
                         raceEthnicityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
                     }
-                    if (concept.getGenderPercentageAnalysis() != null) {
-                        genderPercentageAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderPercentageAnalysis());
-                    }
-                    if (concept.getAgePercentageAnalysis() != null) {
-                        agePercentageAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getAgePercentageAnalysis());
-                    }
-
 
                     return new org.pmiops.workbench.model.QuestionConcept()
                             .conceptId(concept.getConceptId())
@@ -223,9 +218,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis)
                             .genderIdentityAnalysis(genderIdentityAnalysis)
-                            .raceEthnicityAnalysis(raceEthnicityAnalysis)
-                            .genderPercentageAnalysis(genderPercentageAnalysis)
-                            .agePercentageAnalysis(agePercentageAnalysis);
+                            .raceEthnicityAnalysis(raceEthnicityAnalysis);
 
                 }
             };
@@ -334,9 +327,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .conceptId(ca.getConceptId())
                             .countAnalysis(ca.getCountAnalysis())
                             .genderAnalysis(ca.getGenderAnalysis())
+                            .genderPercentageAnalysis(ca.getGenderPercentageAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
                             .raceEthnicityAnalysis(ca.getRaceEthnicityAnalysis())
                             .ageAnalysis(ca.getAgeAnalysis())
+                            .agePercentageAnalysis(ca.getAgePercentageAnalysis())
                             .raceAnalysis(ca.getRaceAnalysis())
                             .ethnicityAnalysis(ca.getEthnicityAnalysis())
                             .measurementValueGenderAnalysis(ca.getMeasurementValueGenderAnalysis())
@@ -740,6 +735,31 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
+    public ResponseEntity<EhrCountAnalysis> getEhrCountAnalysis(String domainId) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        List<Long> analysisIds = new ArrayList<>();
+        analysisIds.add(3300L);
+        analysisIds.add(3301L);
+        List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+        EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
+        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
+        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
+        return ResponseEntity.ok(ehrCountAnalysis);
+    }
+
+    @Override
+    public ResponseEntity<AnalysisListResponse> getSurveyQuestionCounts(String questionConceptId, String questionPath) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        List<Long> analysisIds = new ArrayList<>();
+        analysisIds.add(3320L);
+        analysisIds.add(3321L);
+        List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
+        AnalysisListResponse analysisListResponse = new AnalysisListResponse();
+        analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+        return ResponseEntity.ok(analysisListResponse);
+    }
+
+    @Override
     public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
 
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
@@ -808,18 +828,24 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
                 if (analysisId == COUNT_ANALYSIS_ID) {
                     conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == GENDER_ANALYSIS_ID || analysisId == GENDER_PERCENTAGE_ANALYSIS_ID){
+                }else if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa,2, conceptId);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                }else if (analysisId == GENDER_PERCENTAGE_ANALYSIS_ID) {
+                    addGenderStratum(aa,2, conceptId);
+                    conceptAnalysis.setGenderPercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
                     conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == RACE_ETHNICITY_ANALYSIS_ID){
                     addRaceEthnicityStratum(aa);
                     conceptAnalysis.setRaceEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == AGE_ANALYSIS_ID || analysisId == AGE_PERCENTAGE_ANALYSIS_ID){
+                }else if(analysisId == AGE_ANALYSIS_ID){
                     addAgeStratum(aa, conceptId);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
+                    addAgeStratum(aa, conceptId);
+                    conceptAnalysis.setAgePercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == RACE_ANALYSIS_ID){
                     addRaceStratum(aa);
                     conceptAnalysis.setRaceAnalysis(TO_CLIENT_ANALYSIS.apply(aa));

@@ -1,6 +1,6 @@
 <div class="survey-graph-menu">
   <div *ngFor="let g of graphButtons"
-       [ngClass]="{'active':question.graphToShow === g}" (click)="$event.stopPropagation();selectGraph(g,question,answer)"
+       [ngClass]="{'active':question.graphToShow === g}" (click)="$event.stopPropagation();selectGraphType(g,question,answer)"
        class="survey-chart-choice">
     <span>{{g}}</span>
     <clr-tooltip (mouseenter)="hoverOnTooltip(question, answer , g, 'Graph Help Text')">
@@ -11,7 +11,20 @@
     </clr-tooltip>
   </div>
 </div>
-<div class="chart">
-  <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
-             [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
+<div class="col-md">
+  <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':question.graphDataToShow === sg}"
+       (click)="$event.stopPropagation();selectGraph(sg,question,answer)" class="btn btn-link sub-graph-choice">
+    {{sg}}</div>
 </div>
+<ng-container *ngIf="isPercentageAnalysis(question); else CountChart">
+  <div class="chart">
+    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
+               [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
+  </div>
+</ng-container>
+<ng-template #CountChart>
+  <div class="chart">
+    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
+               [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
+  </div>
+</ng-template>
