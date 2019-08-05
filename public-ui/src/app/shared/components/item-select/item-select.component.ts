@@ -7,7 +7,7 @@ import { Component, Input, OnChanges, Output } from '@angular/core';
 export class ItemSelectComponent implements OnChanges {
 
   @Input() list: any[];
-  selectedItem:string;
+  selectedItem: string;
 
   constructor() { }
 

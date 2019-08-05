@@ -10,7 +10,7 @@ export class IterateOverObjPipe implements PipeTransform {
     return Object.keys(value).map(function(key) {
         const pair = {};
         const k = 'key';
-        const v = 'value'
+        const v = 'value';
 
 
         pair[k] = key;
