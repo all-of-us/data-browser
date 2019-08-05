@@ -159,6 +159,7 @@ def dev_up()
   common.status "Running database migrations..."
   common.run_inline %W{docker-compose run db-migration}
   common.run_inline %W{docker-compose run db-public-migration}
+  common.run_inline %W{docker-compose run rwd-migration}
 
   common.status "Updating CDR versions..."
   common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
@@ -521,6 +522,7 @@ def run_local_data_migrations()
   common.run_inline %W{docker-compose run db-migration}
   common.run_inline %W{docker-compose run db-public-migration}
   common.run_inline %W{docker-compose run db-public-data-migration}
+  common.run_inline %W{docker-compose run rwd-migration}
 end
 
 Common.register_command({
@@ -916,6 +918,14 @@ def migrate_meta_db()
   Dir.chdir("db") do
     common.run_inline(%W{gradle --info update -PrunList=data -Pcontexts=cloud})
   end
+end
+
+def migrate_meta_rwd()
+  common = Common.new
+  common.status "Migrating metadata for rwd..."
+  Dir.chdir("rwd") do
+    common.run_inline(%W{gradle --info update -PrunList=rwd-data -Pcontexts=cloud})
+   end
 end
 
 def load_config(project, dry_run = false)
