@@ -1046,7 +1046,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const genderCountResults = this.domainCountAnalysis.genderCountAnalysis.results;
     genderCountResults.filter(r => r.stratum4 === stratumFilter);
     if (genderCountResults.length > 0 && genderCountResults[0].countValue > 0) {
-      return ((20/genderCountResults[0].countValue)*100).toFixed(2);
+      return ((20 / genderCountResults[0].countValue) * 100).toFixed(2);
     } else {
       return 0;
     }

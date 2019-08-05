@@ -229,7 +229,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       return gender.countValue;
     }
   }
-  
+
   public showSelectedSubGraph(sg: string) {
     this.selectedSubGraph = sg;
     if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
@@ -240,9 +240,9 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
     }
   }
-  
+
   public isPercentageGraphSelected() {
-    if(this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
+    if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
       return true;
     }
     return false;
