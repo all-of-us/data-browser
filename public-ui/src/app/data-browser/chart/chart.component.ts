@@ -583,7 +583,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           });
         }
         cats.push(a.analysisStratumName);
-      } else{
+      } else {
         data.push({
           name: a.analysisStratumName
           , y: a.countValue, color: color, sliced: true,
@@ -629,7 +629,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
-  
+
   public makeRaceEthnicityChartOptions(
     results: any, seriesName: string, analysisName: string) {
     let data = [];
@@ -1043,7 +1043,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public getGenderMissingPercentageEhr(stratumFilter: string) {
-    let genderCountResults = this.domainCountAnalysis.genderCountAnalysis.results;
+    const genderCountResults = this.domainCountAnalysis.genderCountAnalysis.results;
     genderCountResults.filter(r => r.stratum4 === stratumFilter);
     if (genderCountResults.length > 0 && genderCountResults[0].countValue > 0) {
       return ((20/genderCountResults[0].countValue)*100).toFixed(2);
