@@ -202,8 +202,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                             filter(r => r.stratum3 !== null && r.stratum3 === subResult2.stratum3),
                           subResult.countValue);
                       }
-                      this.prepGenderPercentageAnalysis(question, question.genderCountAnalysis.surveyQuestionResults);
-                      this.prepAgePercentageAnalysis(question, question.ageCountAnalysis.surveyQuestionResults);
+                      this.prepGenderPercentageAnalysis(question,
+                        question.genderCountAnalysis.surveyQuestionResults);
+                      this.prepAgePercentageAnalysis(question,
+                        question.ageCountAnalysis.surveyQuestionResults);
                       question.selectedAnalysis = question.genderPercentageAnalysis;
                     }
                   }
@@ -231,8 +233,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
                       a.countValue);
                   }
-                  this.prepGenderPercentageAnalysis(subQuestion, subQuestion.genderCountAnalysis.surveyQuestionResults);
-                  this.prepAgePercentageAnalysis(subQuestion, subQuestion.ageCountAnalysis.surveyQuestionResults);
+                  this.prepGenderPercentageAnalysis(subQuestion,
+                    subQuestion.genderCountAnalysis.surveyQuestionResults);
+                  this.prepAgePercentageAnalysis(subQuestion,
+                    subQuestion.ageCountAnalysis.surveyQuestionResults);
                   subQuestion.selectedAnalysis = subQuestion.genderPercentageAnalysis;
                 }
               }
@@ -531,7 +535,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
       + event, null, 'Survey Page Tooltip');
   }
-  
+
   public prepGenderPercentageAnalysis(question: any, genderCountByQuestionResults: any) {
     this.genderPercentageAnalysis = JSON.parse(JSON.stringify(question.genderAnalysis));
     this.genderPercentageAnalysis.surveyQuestionResults = [];
@@ -556,7 +560,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.genderPercentageAnalysis.analysisId = 3331;
     question.genderPercentageAnalysis = this.genderPercentageAnalysis;
   }
-  
+
   public prepAgePercentageAnalysis(question: any, ageCountByQuestionResults: any) {
     this.agePercentageAnalysis = JSON.parse(JSON.stringify(question.ageAnalysis));
     this.agePercentageAnalysis.surveyQuestionResults = [];

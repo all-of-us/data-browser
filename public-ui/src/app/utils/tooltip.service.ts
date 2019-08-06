@@ -7,11 +7,14 @@ export class TooltipService {
   ehrBSPercentageChartHelpText = `Percentages are calculated based on how many participants
   of the sex assigned have the
   medical concept out of how many of the sex assigned have EHR records in the program.`;
-  ehrBSCountChartHelpText = ` Counts are the total sum of participants with the medical concept mentioned in their
+  ehrBSCountChartHelpText = ` Counts are the total sum of participants with the medical
+  concept mentioned in their
   electronic health record (EHR).`;
-  surveyBSPercentageChartHelpText = `Percentages are calculated based on how many participants of the sex assigned selected the
+  surveyBSPercentageChartHelpText = `Percentages are calculated based on how many
+  participants of the sex assigned selected the
   answer  out of how many of the sex assigned completed the survey.`;
-  surveyBSCountChartHelpText = `Counts are the total sum of participants of the sex assigned who selected the answer.`;
+  surveyBSCountChartHelpText = `Counts are the total sum of participants of the
+  sex assigned who selected the answer.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
