@@ -10,7 +10,7 @@ import { ResearchDirViewComponent } from './views/research-dir-view/research-dir
     ResearchDirectoryRoutingModule,
     SharedModule
   ],
-  exports: [ResearchDirectoryRoutingModule,RdTableComponent, SharedModule],
+  exports: [ResearchDirectoryRoutingModule, RdTableComponent, SharedModule],
   declarations: [ResearchDirViewComponent, RdTableComponent]
 })
 export class ResearchDirectoryModule { }

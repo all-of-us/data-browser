@@ -90,7 +90,5 @@ export class ResearchDirViewComponent implements OnInit {
         title: 'Researchers',
         subInfo: '234'
       }];
-      
   }
-
 }
