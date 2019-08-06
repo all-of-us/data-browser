@@ -21,5 +21,3 @@ export class ItemSelectComponent implements OnChanges {
   }
 }
 
-
-}

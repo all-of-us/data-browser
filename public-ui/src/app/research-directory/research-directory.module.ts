@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
+import { RdTableComponent } from './components/rd-table/rd-table.component';
 import { ResearchDirectoryRoutingModule } from './research-directory-routing-module';
 import { ResearchDirViewComponent } from './views/research-dir-view/research-dir-view.component';
 @NgModule({
@@ -9,7 +10,7 @@ import { ResearchDirViewComponent } from './views/research-dir-view/research-dir
     ResearchDirectoryRoutingModule,
     SharedModule
   ],
-  exports: [ResearchDirectoryRoutingModule, SharedModule],
-  declarations: [ResearchDirViewComponent]
+  exports: [ResearchDirectoryRoutingModule,RdTableComponent, SharedModule],
+  declarations: [ResearchDirViewComponent, RdTableComponent]
 })
 export class ResearchDirectoryModule { }

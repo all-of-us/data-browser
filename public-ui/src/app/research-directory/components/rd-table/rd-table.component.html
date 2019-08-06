@@ -1,0 +1,28 @@
+<div class="grid-table">
+  <div class="table-head head-col-layout">
+    <div *ngFor="let header of tableData.header" class="table-head-item" [innerHTML]="header.title"></div>
+  </div>
+  <div class="table-body">
+    <div *ngFor="let row of tableData.rowData" class="table-row body-col-layout">
+      <div class="table-row-item">{{row.name}}</div>
+      <div class="table-row-item">{{row.createdDate}}</div>
+      <div class="table-row-item">{{row.accessLevel}}</div>
+      <div class="table-row-item">
+        <div class="table-row-sub-row sub-row-col-layout"  *ngFor="let researcher of row.researchers">
+          <div class="table-row-item" >{{researcher.name}}</div> 
+          <div class="table-row-item" >{{researcher.accessLevel}}</div>
+          <div>
+            <div class="table-row-subitems"  *ngFor="let role of researcher.institute">
+              <span>{{role.role}}</span>
+            </div>
+          </div>
+          <div>
+            <div class="table-row-subitems"  *ngFor="let role of researcher.institute">
+              <span>{{role.affiliation}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
