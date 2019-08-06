@@ -108,6 +108,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
 
+    public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3320;
+    public static final long SURVEY_AGE_COUNT_ANALYSIS_ID = 3321;
+
     public static final long EHR_COUNT_ANALYSIS_ID = 3300;
 
     public static final long RACE_ANALYSIS_ID = 3103;
@@ -190,6 +193,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     SurveyQuestionAnalysis ageAnalysis=null;
                     SurveyQuestionAnalysis genderIdentityAnalysis=null;
                     SurveyQuestionAnalysis raceEthnicityAnalysis=null;
+                    SurveyQuestionAnalysis genderCountAnalysis = null;
+                    SurveyQuestionAnalysis ageCountAnalysis = null;
                     if(concept.getCountAnalysis() != null){
                         countAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getCountAnalysis());
                     }
@@ -205,6 +210,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     if(concept.getRaceEthnicityAnalysis() != null){
                         raceEthnicityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
                     }
+                    if(concept.getGenderCountAnalysis() != null) {
+                        genderCountAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderCountAnalysis());
+                    }
+                    if (concept.getAgeCountAnalysis() != null) {
+                        ageCountAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getAgeCountAnalysis());
+                    }
 
                     return new org.pmiops.workbench.model.QuestionConcept()
                             .conceptId(concept.getConceptId())
@@ -218,8 +229,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis)
                             .genderIdentityAnalysis(genderIdentityAnalysis)
-                            .raceEthnicityAnalysis(raceEthnicityAnalysis);
-
+                            .raceEthnicityAnalysis(raceEthnicityAnalysis)
+                            .genderCountAnalysis(genderCountAnalysis)
+                            .ageCountAnalysis(ageCountAnalysis);
                 }
             };
 

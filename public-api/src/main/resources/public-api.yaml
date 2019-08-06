@@ -558,11 +558,11 @@ definitions:
       raceEthnicityAnalysis:
         description: race ethnicity analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderPercentageAnalysis:
-        description: gender percentage analysis
+      genderCountAnalysis:
+        description: gender count analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
-      AgePercentageAnalysis:
-        description: age percentage analysis
+      ageCountAnalysis:
+        description: age count analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
 
   QuestionConceptListResponse:

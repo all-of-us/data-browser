@@ -19,13 +19,10 @@ export class SurveyChartComponent implements OnInit {
   @Input() surveyName: string;
   @Input() searchTerm: string;
   @Input() subGraphButtons: string[];
-  @Input() genderQuestionCounts: any;
-  @Input() ageQuestionCounts: any;
   graphToShow = GraphType.BiologicalSex;
   graphDataToShow = 'Percentage (%)';
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
-  agePercentageAnalysis: any;
 
   constructor(private tooltipText: TooltipService,
               public dbc: DbConfigService,
@@ -36,6 +33,7 @@ export class SurveyChartComponent implements OnInit {
 
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
+    this.graphDataToShow = null;
   }
 
   public selectGraphType(g, q: any, answer: any) {
@@ -46,22 +44,24 @@ export class SurveyChartComponent implements OnInit {
       + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + this.graphToShow, this.searchTerm, null);
     q.graphToShow = this.graphToShow;
+    if (q.graphDataToShow === null) {
+      q.graphDataToShow = 'Percentage (%)';
+    }
     switch (g) {
       case GraphType.GenderIdentity:
         q.selectedAnalysis = q.genderIdentityAnalysis;
         break;
       case GraphType.AgeWhenSurveyWasTaken:
         q.selectedAnalysis = q.ageAnalysis;
-        this.selectGraph(q.graphDataToShow, q, answer);
         break;
       case GraphType.RaceEthnicity:
         q.selectedAnalysis = q.raceEthnicityAnalysis;
         break;
       default:
         q.selectedAnalysis = q.genderAnalysis;
-        this.selectGraph(q.graphDataToShow, q, answer);
         break;
     }
+    this.selectGraph(q.graphDataToShow, q, answer);
   }
 
   public selectGraph(sg: any, q: any, answer: any) {
@@ -69,46 +69,10 @@ export class SurveyChartComponent implements OnInit {
     if (q.graphDataToShow === 'Percentage (%)') {
       switch (q.graphToShow) {
         case GraphType.BiologicalSex:
-          this.genderPercentageAnalysis = JSON.parse(JSON.stringify(q.genderAnalysis));
-          this.genderPercentageAnalysis.surveyQuestionResults = [];
-          const surveyQuestionResultsWithPercentage1 = [];
-          for (const ar of q.genderAnalysis.surveyQuestionResults) {
-            const countResult = this.genderQuestionCounts
-              .filter(gc => gc.stratum2 === ar.stratum2 &&
-              gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
-            const arWithPercentage = JSON.parse(JSON.stringify(ar));
-            if (countResult && countResult.length > 0) {
-              arWithPercentage.percentage =
-                ((ar.countValue / countResult[0].countValue) * 100).toFixed(2);
-            } else {
-              arWithPercentage.percentage = 0;
-            }
-            surveyQuestionResultsWithPercentage1.push(arWithPercentage);
-          }
-          this.genderPercentageAnalysis.surveyQuestionResults =
-            surveyQuestionResultsWithPercentage1;
-          this.genderPercentageAnalysis.analysisId = 3331;
-          q.selectedAnalysis = this.genderPercentageAnalysis;
+          q.selectedAnalysis = q.genderPercentageAnalysis;
           break;
         case GraphType.AgeWhenSurveyWasTaken:
-          this.agePercentageAnalysis = JSON.parse(JSON.stringify(q.ageAnalysis));
-          this.agePercentageAnalysis.surveyQuestionResults = [];
-          const surveyQuestionResultsWithPercentage2 = [];
-          for (const ar of q.ageAnalysis.surveyQuestionResults) {
-            const countResult = this.ageQuestionCounts.filter(gc => gc.stratum2 === ar.stratum2 &&
-              gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
-            const arWithPercentage = JSON.parse(JSON.stringify(ar));
-            if (countResult && countResult.length > 0) {
-              arWithPercentage.percentage =
-                ((ar.countValue / countResult[0].countValue) * 100).toFixed(2);
-            } else {
-              arWithPercentage.percentage = 0;
-            }
-            surveyQuestionResultsWithPercentage2.push(arWithPercentage);
-          }
-          this.agePercentageAnalysis.surveyQuestionResults = surveyQuestionResultsWithPercentage2;
-          this.agePercentageAnalysis.analysisId = 3332;
-          q.selectedAnalysis = this.agePercentageAnalysis;
+          q.selectedAnalysis = q.agePercentageAnalysis;
           break;
       }
     } else {
@@ -125,7 +89,9 @@ export class SurveyChartComponent implements OnInit {
 
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText;
+      return this.tooltipText.biologicalSexChartHelpText + '\n' +
+        this.tooltipText.surveyBSPercentageChartHelpText + '\n' +
+        this.tooltipText.surveyBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {
       return this.tooltipText.genderIdentityChartHelpText;

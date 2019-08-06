@@ -341,7 +341,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public showToolTip(g) {
     if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText;
+      return this.tooltipText.biologicalSexChartHelpText + '\n' +
+        this.tooltipText.ehrBSPercentageChartHelpText + '\n' +
+        this.tooltipText.ehrBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {
       return this.tooltipText.genderIdentityChartHelpText;

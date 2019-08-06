@@ -466,6 +466,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
                                 seriesName: string, chartType: string) {
     let data = [];
     let cats = [];
+    let yAxisLabel = null;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -505,6 +506,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
+        yAxisLabel = '% of Each Biological Sex that answered with ' + this.selectedResult.stratum4;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
@@ -542,6 +544,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
+        yAxisLabel = '% of Each Biological Sex with ' + this.conceptName;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
@@ -622,7 +625,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       color: this.dbc.COLUMN_COLOR,
       pointWidth: this.pointWidth,
       xAxisTitle: analysisName,
-      yAxisTitle: 'Participant Count',
+      yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.y} {point.name}</span>',
@@ -689,6 +692,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string, analysisId: number) {
+    let yAxisLabel = null;
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -725,6 +729,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ';
         }
       } else if (analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
+        yAxisLabel = '% of Each Age with ' + this.conceptName;
         ageHelpText = seriesName;
         if (a.stratum4 === null || a.stratum4 === '0') {
           toolTipHelpText = ageHelpText + ' : ' +
@@ -751,6 +756,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/>' + 'Participant Count: ';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
+        yAxisLabel = '% of Each Age that answered with ' + this.selectedResult.stratum4;
         ageHelpText = 'Age When Survey Was Taken';
         if (a.percentage === null || a.percentage === 0) {
           toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
@@ -817,7 +823,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: this.domainType === 'physical measurements' ? seriesName : analysisName,
-      yAxisTitle: 'Participant Count',
+      yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.name}<br/ > {point.y}</span>'

@@ -143,8 +143,7 @@
 
               <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
                 <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
-                                  [searchTerm]="prevSearchText" [answer]="a" [genderQuestionCounts]="genderCountByQuestionResults"
-                [ageQuestionCounts]="ageCountByQuestionResults"></app-survey-chart>
+                                  [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
               </div>
               <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
                 <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
@@ -223,9 +222,7 @@
                     <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
                       <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
                                         [surveyName]="survey.name"
-                                        [searchTerm]="prevSearchText" [answer]="sqa"
-                                        [genderQuestionCounts]="genderCountByQuestionResults"
-                                        [ageQuestionCounts]="ageCountByQuestionResults"></app-survey-chart>
+                                        [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
                     </div>
                     <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
                       <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
@@ -298,9 +295,7 @@
                             <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
                                               [surveyName]="survey.name"
                                               [searchTerm]="prevSearchText"
-                                              [answer]="sqa2"
-                                              [genderQuestionCounts]="genderCountByQuestionResults"
-                                              [ageQuestionCounts]="ageCountByQuestionResults"></app-survey-chart>
+                                              [answer]="sqa2"></app-survey-chart>
                           </div>
                         </div>
                       </ng-container>
