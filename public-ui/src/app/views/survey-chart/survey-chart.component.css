@@ -5,7 +5,7 @@
     padding-bottom: 9px;
 }
 
-.survey-chart-choice {
+.survey-chart-choice, .survey-sub-chart-choice {
     padding: 9px;
     color: #216fb4;
     position: relative;

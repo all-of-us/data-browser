@@ -20,6 +20,8 @@ public class QuestionConcept {
     private AchillesAnalysis ageAnalysis;
     private AchillesAnalysis genderIdentityAnalysis;
     private AchillesAnalysis raceEthnicityAnalysis;
+    private AchillesAnalysis genderCountAnalysis;
+    private AchillesAnalysis ageCountAnalysis;
     private List<SurveyQuestionMap> questions = new ArrayList<>();
 
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
@@ -27,6 +29,8 @@ public class QuestionConcept {
     public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
     public static final long SURVEY_GENDER_IDENTITY_ANALYSIS_ID = 3113;
     public static final long SURVEY_RACE_ETHNICITY_ANALYSIS_ID = 3114;
+    public static final long SURVEY_GENDER_QUESTION_COUNT_ANALYSIS_ID = 3320;
+    public static final long SURVEY_AGE_QUESTION_COUNT_ANALYSIS_ID = 3321;
 
     public static Map<String, String> ageStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderStratumNameMap = new HashMap<String, String>();
@@ -381,6 +385,34 @@ public class QuestionConcept {
         return this;
     }
 
+    @Transient
+    public AchillesAnalysis getGenderCountAnalysis() {
+        return this.genderCountAnalysis;
+    }
+
+    public void setGenderCountAnalysis(AchillesAnalysis analysis) {
+        this.genderCountAnalysis = genderCountAnalysis;
+    }
+
+    public QuestionConcept genderCountAnalysis(AchillesAnalysis analysis) {
+        this.genderCountAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
+    public AchillesAnalysis getAgeCountAnalysis() {
+        return this.ageCountAnalysis;
+    }
+
+    public void setAgeCountAnalysis(AchillesAnalysis analysis) {
+        this.ageCountAnalysis = ageCountAnalysis;
+    }
+
+    public QuestionConcept ageCountAnalysis(AchillesAnalysis analysis) {
+        this.ageCountAnalysis = analysis;
+        return this;
+    }
+
 
     public void setAnalysis(AchillesAnalysis analysis) {
         if (analysis.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
@@ -393,6 +425,10 @@ public class QuestionConcept {
             this.genderIdentityAnalysis = analysis;
         } else if (analysis.getAnalysisId() == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
             this.raceEthnicityAnalysis = analysis;
+        } else if(analysis.getAnalysisId() == SURVEY_GENDER_QUESTION_COUNT_ANALYSIS_ID) {
+            this.genderCountAnalysis = analysis;
+        } else if(analysis.getAnalysisId() == SURVEY_AGE_QUESTION_COUNT_ANALYSIS_ID) {
+            this.ageCountAnalysis = analysis;
         }
     }
 
@@ -407,6 +443,10 @@ public class QuestionConcept {
             return this.genderIdentityAnalysis;
         } else if (analysisId == SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
             return this.raceEthnicityAnalysis;
+        } else if (analysisId == SURVEY_GENDER_QUESTION_COUNT_ANALYSIS_ID) {
+            return this.genderCountAnalysis;
+        } else if (analysisId == SURVEY_AGE_QUESTION_COUNT_ANALYSIS_ID) {
+            return this.ageCountAnalysis;
         }
         return null;
     }

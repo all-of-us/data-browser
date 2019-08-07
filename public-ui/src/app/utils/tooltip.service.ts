@@ -4,6 +4,17 @@ import { Injectable } from '@angular/core';
 export class TooltipService {
   biologicalSexChartHelpText = `The sex assigned to a child at birth, most often based on
   the child’s external anatomy.`;
+  ehrBSPercentageChartHelpText = `Percentages are calculated based on how many participants
+  of the sex assigned have the
+  medical concept out of how many of the sex assigned have EHR records in the program.`;
+  ehrBSCountChartHelpText = ` Counts are the total sum of participants with the medical
+  concept mentioned in their
+  electronic health record (EHR).`;
+  surveyBSPercentageChartHelpText = `Percentages are calculated based on how many
+  participants of the sex assigned selected the
+  answer  out of how many of the sex assigned completed the survey.`;
+  surveyBSCountChartHelpText = `Counts are the total sum of participants of the
+  sex assigned who selected the answer.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
@@ -13,7 +24,9 @@ export class TooltipService {
    a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
    the participant is included once in the bar chart at the age of first occurrence, age 25.`;
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
-    'ages at which the participants took the indicated survey.';
+    'ages at which the participants took the indicated survey. \n' +
+    'The percentages below are calculated based on how many participants of the age group ' +
+    'responded with this survey answer out of how many of the age group completed the survey.';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
   raceEthnicityChartHelpText = `“Race” refers to physical differences that groups and cultures
