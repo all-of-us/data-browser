@@ -239,7 +239,6 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
       this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
     }
-    console.log(this.analyses);
   }
 
   public isPercentageGraphSelected() {
