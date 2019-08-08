@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -42,6 +42,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   items: any[] = [];
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
+  graphButtons: any = [];
   loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
@@ -55,7 +56,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts: boolean;
   medlinePlusLink: string;
-  graphButtons = [];
   graphType = GraphType;
   treeData: any[];
   expanded = true;
@@ -98,6 +98,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('window:popstate', ['$event'])
+  public onPopState(event: any) {
+    if (this.searchText.value) {
+      localStorage.setItem('searchTermBeforeBack', this.searchText.value);
+    }
+    this.searchText.setValue(null);
+  }
 
   public loadPage() {
     this.loading = true;
@@ -271,9 +278,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
-    if (query != null) {
+    if (query != null && query !== ' ' && query) {
       this.router.navigate(
-        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + query]
+        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + this.prevSearchText]
       );
     }
     this.getNumberOfPages(query);
@@ -338,7 +345,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public showToolTip(g) {
     if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText;
+      return this.tooltipText.biologicalSexChartHelpText + '\n' +
+        this.tooltipText.ehrBSPercentageChartHelpText + '\n' +
+        this.tooltipText.ehrBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {
       return this.tooltipText.genderIdentityChartHelpText;

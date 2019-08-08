@@ -106,7 +106,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     // Get search result from localStorage
     this.prevSearchText = localStorage.getItem('searchText');
     if (!this.prevSearchText) {
-      this.prevSearchText = '';
+      this.prevSearchText = localStorage.getItem('searchTermBeforeBack');
+      localStorage.removeItem('searchTermBeforeBack');
+      if (!this.prevSearchText) {
+        this.prevSearchText = '';
+      }
     }
     this.searchText.setValue(this.prevSearchText);
     this.subscriptions.push(

@@ -21,296 +21,296 @@
     <section *ngIf="questions.length > 0 && !loading" class="results">
       <a class="btn btn-link btn-sm" [routerLink]="['']">
         < Back to main search </a> <div class="db-card">
-          <div class="survey-head">
-            <div class="stat-container">
-              <h2 class="secondary-display">
-                {{survey.participantCount | number }}
-              </h2>
-              <p class="info-text">
-                Participants completed this survey
-              </p>
+      <div class="survey-head">
+        <div class="stat-container">
+          <h2 class="secondary-display">
+            {{survey.participantCount | number }}
+          </h2>
+          <p class="info-text">
+            Participants completed this survey
+          </p>
+        </div>
+        <div class="stat-container">
+          <h2 class="secondary-display">
+            <span>{{ surveyResult.items.length }} </span>
+          </h2>
+          <p class="info-text">
+            Questions displayed
+          </p>
+        </div>
+        <div class="pdf-link" (click)="downloadPdf()">
+          <a href="{{surveyPdfUrl}}" download>
+            <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
+          </a>
+        </div>
+      </div>
+      <div class="survey-results" *ngIf="resultsComplete">
+        <div class="question-result" *ngFor="let q of questions, let i = index">
+          <div class="secondary-display">
+            <div class="box-title"> Question {{q.actualQuestionNumber}}
+              <clr-tooltip *ngIf="q.conceptId === 1586140" (mouseenter)="hoverOnTooltip(q, 'Race Ethnicity Question Help Text')">
+                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
+                  <div class="tooltip-label">{{tooltipText.raceEthnicityQuestionHelpText}}</div>
+                </clr-tooltip-content>
+              </clr-tooltip>
             </div>
-            <div class="stat-container">
-              <h2 class="secondary-display">
-                <span>{{ surveyResult.items.length }} </span>
-              </h2>
-              <p class="info-text">
-                Questions displayed
-              </p>
-            </div>
-            <div class="pdf-link" (click)="downloadPdf()">
-              <a href="{{surveyPdfUrl}}" download>
-                <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
-              </a>
+            <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
+              <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
+              </app-highlight-search>
             </div>
           </div>
-          <div class="survey-results" *ngIf="resultsComplete">
-            <div class="question-result" *ngFor="let q of questions, let i = index">
-              <div class="secondary-display">
-                <div class="box-title"> Question {{q.actualQuestionNumber}}
-                  <clr-tooltip *ngIf="q.conceptId === 1586140" (mouseenter)="hoverOnTooltip(q, 'Race Ethnicity Question Help Text')">
+          <div class="see-answers body-lead" (click)="toggleAnswer(q)"> See Answers
+            <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
+            <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
+          </div>
+          <div class="tbl" [hidden]="!showAnswer[q.conceptId]">
+            <div class="tbl-r tbl-head">
+              <div class=" info-text first tbl-d">
+              </div>
+              <div class="tbl-r-group tbl-r-group-style ">
+                <div class="info-text tbl-d display-body">
+                  Concept Code
+                  <clr-tooltip (mouseenter)="hoverOnTooltip(q, 'Concept Code')">
                     <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                    <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
-                      <div class="tooltip-label">{{tooltipText.raceEthnicityQuestionHelpText}}</div>
+                    <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                      <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
                     </clr-tooltip-content>
                   </clr-tooltip>
                 </div>
-                <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
-                  <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
-                </app-highlight-search>
+                <div class=" info-text tbl-d display-body">
+                  Participant Count
+                  <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(q.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
+                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                    <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                      <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
+                </div>
+                <div class=" info-text tbl-d display-body">
+                  % Answered
+                </div>
+                <div class="tbl-d display-body"></div>
               </div>
-              </div>
-              <div class="see-answers body-lead" (click)="toggleAnswer(q)"> See Answers
-                <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
-                <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
-              </div>
-              <div class="tbl" [hidden]="!showAnswer[q.conceptId]">
-                <div class="tbl-r tbl-head">
-                  <div class=" info-text first tbl-d">
-                  </div>
-                  <div class="tbl-r-group tbl-r-group-style ">
-                    <div class="info-text tbl-d display-body">
-                      Concept Code
-                      <clr-tooltip (mouseenter)="hoverOnTooltip(q, 'Concept Code')">
-                        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                          <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
-                        </clr-tooltip-content>
-                      </clr-tooltip>
-                    </div>
-                    <div class=" info-text tbl-d display-body">
-                      Participant Count
-                      <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(q.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
-                        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                          <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
-                        </clr-tooltip-content>
-                      </clr-tooltip>
-                    </div>
-                    <div class=" info-text tbl-d display-body">
-                      % Answered
-                    </div>
-                    <div class="tbl-d display-body"></div>
+            </div>
+            <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r "
+                 *ngFor="let a of q.countAnalysis.surveyQuestionResults" (click)="showAnswerGraphs(a,q)"
+                 [hidden]="!showAnswer[q.conceptId]">
+              <div class="tbl-r">
+                <div class="tbl-d first display-body info-text survey-answer-level-1" [ngClass]="{'active':a.expanded}">
+                  <div>
+                    <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
+                    </app-highlight-search>
+                    <clr-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'" (mouseenter)="hoverOnTooltip(q, 'Other category Help Text')">
+                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                      <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
+                        <div class="tooltip-label">{{tooltipText.q2RolledCategoriesHelpText}}</div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
                   </div>
                 </div>
-                <div [ngClass]="a.expanded?'tbl-r-state':''" class="tbl-exp-r "
-                  *ngFor="let a of q.countAnalysis.surveyQuestionResults" (click)="showAnswerGraphs(a,q)"
-                  [hidden]="!showAnswer[q.conceptId]">
-                  <div class="tbl-r">
-                    <div class="tbl-d first display-body info-text survey-answer-level-1" [ngClass]="{'active':a.expanded}">
-                      <div>
-                        <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
-                        </app-highlight-search>
-                        <clr-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'" (mouseenter)="hoverOnTooltip(q, 'Other category Help Text')">
+                <div class="tbl-r-group">
+                  <div class="info-text tbl-d display-body info-text">
+                    <label class="concept-code">{{a.stratum3}}</label>
+                  </div>
+
+                  <div class="info-text tbl-d display-body info-text">
+                    <div class="participant-count" *ngIf="a.countValue <= 20; else Non20Counts;">
+                      &le; {{a.countValue | number}}
+                    </div>
+                    <ng-template #Non20Counts>
+                      <div class="body-lead info-text tbl-d">
+                        {{a.countValue | number}}
+                      </div>
+                    </ng-template>
+                  </div>
+
+                  <div class=" info-text tbl-d display-body info-text">
+                    <span>{{a.countPercent.toFixed(2)}}%</span>
+                  </div>
+
+                  <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
+                    <button class="icon-btn" *ngIf="!a.subQuestions && a.stratum4 != 'Did not answer'">
+                      <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                    </button>
+                    <button class="icon-btn" *ngIf="a.subQuestions">
+                      <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
+                      <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
+                <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
+                                  [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
+              </div>
+              <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
+                <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
+                  <h6 class="sub-question-text">
+                    <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion)" [searchTerm]="searchText.value">
+                  </app-highlight-search>
+                  </h6>
+                  <div class="tbl-r sub-tbl-1">
+                    <div class="tbl-d first display-body info-text survey-question-heading">
+                      ANSWER
+                    </div>
+                    <div class="tbl-r-group">
+                      <div class="tbl-d display-body info-text survey-question-heading">
+                        <label class="concept-code">Concept Code</label>
+                      </div>
+
+                      <div class="tbl-d display-body info-text survey-question-heading">
+                        <label class="participant-count">Participant Count</label>
+                        <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
                           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                          <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
-                            <div class="tooltip-label">{{tooltipText.q2RolledCategoriesHelpText}}</div>
+                          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                            <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
                           </clr-tooltip-content>
                         </clr-tooltip>
                       </div>
-                    </div>
-                    <div class="tbl-r-group">
-                      <div class="info-text tbl-d display-body info-text">
-                        <label class="concept-code">{{a.stratum3}}</label>
-                      </div>
 
-                      <div class="info-text tbl-d display-body info-text">
-                        <div class="participant-count" *ngIf="a.countValue <= 20; else Non20Counts;">
-                          &le; {{a.countValue | number}}
-                        </div>
-                        <ng-template #Non20Counts>
-                          <div class="body-lead info-text tbl-d">
-                            {{a.countValue | number}}
-                          </div>
-                        </ng-template>
-                      </div>
-
-                      <div class=" info-text tbl-d display-body info-text">
-                        <span>{{a.countPercent.toFixed(2)}}%</span>
+                      <div class="tbl-d display-body info-text survey-question-heading">
+                        <span>% Answered out of {{a.countValue}}</span>
                       </div>
 
                       <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                        <button class="icon-btn" *ngIf="!a.subQuestions && a.stratum4 != 'Did not answer'">
-                          <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
-                        </button>
-                        <button class="icon-btn" *ngIf="a.subQuestions">
-                          <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
-                          <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
-                        </button>
+
                       </div>
                     </div>
                   </div>
-
-                  <div class="row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
-                    <app-survey-chart [graphButtons]="graphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
-                    [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
-                  </div>
-                  <div class="row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
-                    <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
-                      <h6 class="sub-question-text">
-                        <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion)" [searchTerm]="searchText.value">
-                      </app-highlight-search>
-                      </h6>
-                      <div class="tbl-r sub-tbl-1">
-                        <div class="tbl-d first display-body info-text survey-question-heading">
-                          ANSWER
-                        </div>
-                        <div class="tbl-r-group">
-                          <div class="tbl-d display-body info-text survey-question-heading">
-                            <label class="concept-code">Concept Code</label>
-                          </div>
-
-                          <div class="tbl-d display-body info-text survey-question-heading">
-                            <label class="participant-count">Participant Count</label>
-                            <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
-                              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                              <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                                <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
-                              </clr-tooltip-content>
-                            </clr-tooltip>
-                          </div>
-
-                          <div class="tbl-d display-body info-text survey-question-heading">
-                            <span>% Answered out of {{a.countValue}}</span>
-                          </div>
-
-                          <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-
-                          </div>
+                  <div class="tbl-exp-r sub-tbl-1"
+                       *ngFor="let sqa of subQuestion.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa, subQuestion)">
+                    <div class="tbl-r">
+                      <div class="tbl-d first display-body info-text sub-1-que survey-answer-level-1" [ngClass]="{'active':a.expanded && sqa.subExpanded}">
+                        <div>
+                          <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value">
+                          </app-highlight-search>
                         </div>
                       </div>
-                      <div class="tbl-exp-r sub-tbl-1"
-                           *ngFor="let sqa of subQuestion.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa, subQuestion)">
+                      <div class="tbl-r-group">
+                        <div class="info-text tbl-d display-body info-text">
+                          <label class="concept-code">{{sqa.stratum3}}</label>
+                        </div>
+
+                        <div class="info-text tbl-d display-body info-text">
+                          <label class="participant-count" *ngIf="sqa.countValue <= 20; else Non20Counts;">
+                            &le; {{sqa.countValue | number}}
+                          </label>
+                          <ng-template #Non20Counts>
+                            <label class="body-lead info-text tbl-d">
+                              {{sqa.countValue | number}}
+                            </label>
+                          </ng-template>
+                        </div>
+
+                        <div class=" info-text tbl-d display-body info-text">
+                          <span>{{countPercentage(sqa.countValue, a.countValue).toFixed(2)}}%</span>
+                        </div>
+
+                        <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
+                          <button class="icon-btn" *ngIf="!sqa.subQuestions">
+                            <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                          </button>
+                          <button class="icon-btn" *ngIf="sqa.subQuestions">
+                            <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
+                            <clr-icon *ngIf="sqa.subExpanded" shape="caret" dir="down"></clr-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
+                      <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
+                                        [surveyName]="survey.name"
+                                        [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
+                    </div>
+                    <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
+                      <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
+                        <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
+                          <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion2)" [searchTerm]="searchText.value">
+                        </app-highlight-search>
+                        </h6>
                         <div class="tbl-r">
-                          <div class="tbl-d first display-body info-text sub-1-que survey-answer-level-1" [ngClass]="{'active':a.expanded && sqa.subExpanded}">
-                            <div>
-                              <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value">
-                              </app-highlight-search>
-                            </div>
+                          <div class="tbl-d first display-body info-text survey-question-heading">
+                            ANSWER
                           </div>
                           <div class="tbl-r-group">
-                            <div class="info-text tbl-d display-body info-text">
-                              <label class="concept-code">{{sqa.stratum3}}</label>
+                            <div class="info-text tbl-d display-body info-text survey-question-heading">
+                              <label class="concept-code">Concept Code</label>
                             </div>
 
-                            <div class="info-text tbl-d display-body info-text">
-                              <label class="participant-count" *ngIf="sqa.countValue <= 20; else Non20Counts;">
-                                &le; {{sqa.countValue | number}}
-                              </label>
-                              <ng-template #Non20Counts>
-                                <label class="body-lead info-text tbl-d">
-                                  {{sqa.countValue | number}}
-                                </label>
-                              </ng-template>
+                            <div class="info-text tbl-d display-body survey-question-heading">
+                              <label class="participant-count">Participant Count</label>
+                              <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
+                                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                                <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                                  <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
+                                </clr-tooltip-content>
+                              </clr-tooltip>
                             </div>
 
-                            <div class=" info-text tbl-d display-body info-text">
-                              <span>{{countPercentage(sqa.countValue, a.countValue).toFixed(2)}}%</span>
+                            <div class=" info-text tbl-d display-body survey-question-heading">
+                              <span>% Answered out of {{sqa.countValue}}</span>
                             </div>
 
                             <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                              <button class="icon-btn" *ngIf="!sqa.subQuestions">
-                                <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
-                              </button>
-                              <button class="icon-btn" *ngIf="sqa.subQuestions">
-                                <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
-                                <clr-icon *ngIf="sqa.subExpanded" shape="caret" dir="down"></clr-icon>
-                              </button>
+
                             </div>
                           </div>
                         </div>
-                        <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
-                          <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
-                                            [surveyName]="survey.name"
-                                            [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
-                        </div>
-                        <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.subQuestions">
-                          <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
-                            <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
-                              <clr-icon shape="child-arrow" size="25"></clr-icon> <app-highlight-search [text]="changeAutoInsertText(subQuestion2)" [searchTerm]="searchText.value">
-                            </app-highlight-search>
-                            </h6>
-                            <div class="tbl-r">
-                              <div class="tbl-d first display-body info-text survey-question-heading">
-                                ANSWER
-                              </div>
-                              <div class="tbl-r-group">
-                                <div class="info-text tbl-d display-body info-text survey-question-heading">
-                                  <label class="concept-code">Concept Code</label>
-                                </div>
-
-                                <div class="info-text tbl-d display-body survey-question-heading">
-                                  <label class="participant-count">Participant Count</label>
-                                  <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
-                                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                                    <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                                      <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
-                                    </clr-tooltip-content>
-                                  </clr-tooltip>
-                                </div>
-
-                                <div class=" info-text tbl-d display-body survey-question-heading">
-                                  <span>% Answered out of {{sqa.countValue}}</span>
-                                </div>
-
-                                <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-
-                                </div>
+                        <div class="tbl-exp-r"
+                             *ngFor="let sqa2 of subQuestion2.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa2, subQuestion2)">
+                          <div class="tbl-r">
+                            <div class="tbl-d first display-body info-text">
+                              <div>
+                                <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value">
+                                </app-highlight-search>
                               </div>
                             </div>
-                            <div class="tbl-exp-r"
-                                 *ngFor="let sqa2 of subQuestion2.countAnalysis.surveyQuestionResults" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa2, subQuestion2)">
-                              <div class="tbl-r">
-                                <div class="tbl-d first display-body info-text">
-                                  <div>
-                                    <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value">
-                                    </app-highlight-search>
-                                  </div>
-                                </div>
-                                <div class="tbl-r-group">
-                                  <div class="info-text tbl-d display-body info-text">
-                                    <label class="concept-code">{{sqa2.stratum3}}</label>
-                                  </div>
-
-                                  <div class="info-text tbl-d display-body info-text">
-                                    <label class="participant-count">{{sqa2.countValue | number}} </label>
-                                  </div>
-
-                                  <div class=" info-text tbl-d display-body info-text">
-                                    <span>{{countPercentage(sqa2.countValue, sqa.countValue).toFixed(2)}}%</span>
-                                  </div>
-
-                                  <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                                    <button class="icon-btn" *ngIf="!sqa2.subQuestions">
-                                      <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
-                                    </button>
-                                    <button class="icon-btn" *ngIf="sqa2.subQuestions">
-                                      <clr-icon *ngIf="!sqa2.subExpanded" shape="caret" dir="right"></clr-icon>
-                                      <clr-icon *ngIf="sqa2.subExpanded" shape="caret" dir="down"></clr-icon>
-                                    </button>
-                                  </div>
-                                </div>
+                            <div class="tbl-r-group">
+                              <div class="info-text tbl-d display-body info-text">
+                                <label class="concept-code">{{sqa2.stratum3}}</label>
                               </div>
-                              <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions">
-                                <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
-                                                  [surveyName]="survey.name"
-                                                  [searchTerm]="prevSearchText"
-                                                  [answer]="sqa2"></app-survey-chart>
+
+                              <div class="info-text tbl-d display-body info-text">
+                                <label class="participant-count">{{sqa2.countValue | number}} </label>
+                              </div>
+
+                              <div class=" info-text tbl-d display-body info-text">
+                                <span>{{countPercentage(sqa2.countValue, sqa.countValue).toFixed(2)}}%</span>
+                              </div>
+
+                              <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
+                                <button class="icon-btn" *ngIf="!sqa2.subQuestions">
+                                  <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                                </button>
+                                <button class="icon-btn" *ngIf="sqa2.subQuestions">
+                                  <clr-icon *ngIf="!sqa2.subExpanded" shape="caret" dir="right"></clr-icon>
+                                  <clr-icon *ngIf="sqa2.subExpanded" shape="caret" dir="down"></clr-icon>
+                                </button>
                               </div>
                             </div>
-                          </ng-container>
+                          </div>
+                          <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.subQuestions">
+                            <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
+                                              [surveyName]="survey.name"
+                                              [searchTerm]="prevSearchText"
+                                              [answer]="sqa2"></app-survey-chart>
+                          </div>
                         </div>
-                      </div>
-                    </ng-container>
+                      </ng-container>
+                    </div>
                   </div>
-                </div>
+                </ng-container>
               </div>
             </div>
           </div>
         </div>
-  </section>
-</div>
-<div class="no-results" *ngIf="questions.length === 0 && !loading">
+      </div>
+    </div>
+    </section>
+  </div>
+  <div class="no-results" *ngIf="questions.length === 0 && !loading">
     <p class="results-heading no-results">
       <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
           {{searchText.value}}</strong>.
@@ -336,14 +336,14 @@
     </p>
     <app-db-no-results (newDomain)="changeResults($event)"[searchText]="searchText"></app-db-no-results>
   </div>
-<!-- Todo show general totals for demographics of who took the survey -->
-<!--
-  <div class="row">
-    <div class="">
-      <app-concept-charts [concept]="survey" [showRace]="true" [showAge]="true" [showGender]="true"
-                        [showEthnicity]="true" [backgroundColor]="'#ECF1F4'">
-      </app-concept-charts>
+  <!-- Todo show general totals for demographics of who took the survey -->
+  <!--
+    <div class="row">
+      <div class="">
+        <app-concept-charts [concept]="survey" [showRace]="true" [showAge]="true" [showGender]="true"
+                          [showEthnicity]="true" [backgroundColor]="'#ECF1F4'">
+        </app-concept-charts>
+      </div>
     </div>
-  </div>
-  -->
+    -->
 </div>
