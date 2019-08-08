@@ -7,5 +7,6 @@ export const environment = {
   debug: true,
   gtmId: 'GTM-NQ9XDTW',
   gtmAuth: 'kMy-ZUX8XsBfuanMZzP_5A',
-  gtmPreview: 'env-25'
+  gtmPreview: 'env-25',
+  isResearchDirectory: true
 };

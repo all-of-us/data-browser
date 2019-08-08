@@ -6,5 +6,4 @@ export const testEnvironmentBase = {
   workbenchUrl: 'https://all-of-us-workbench-test.appspot.com',
   researchAllOfUsUrl: 'https://staging.researchallofus.org',
   gaId: 'UA-116298798-4',
-  isResearchDirectory: true
 };
