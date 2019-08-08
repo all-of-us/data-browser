@@ -2,24 +2,28 @@ export interface Institution {
     role: string;
     affiliation: string;
 }
-export interface Header {
+
+export interface ColumnDefs {
     title: string;
+    field: string;
 }
+
 export interface Researchers {
     name: string;
-    accessLevel: string;
+    researchersAccessLevel: string;
     institute: Institution[];
     removed: boolean;
 }
 
 export interface RowData {
-    name: string;
+    wsName: string;
     accessLevel: string;
     createdDate: string;
     researchers: Researchers[];
 }
 
 export interface RdTableData {
-    header: Header[];
+    header: ColumnDefs[];
     rowData: RowData[];
 }
+

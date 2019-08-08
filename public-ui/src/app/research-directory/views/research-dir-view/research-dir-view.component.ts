@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ResearchDirWorkSpace } from '../../../../publicGenerated/model/researchDirWorkSpace';
 import { RdTableData } from '../../classes/rd-table-data';
 
 @Component({
@@ -8,71 +9,114 @@ import { RdTableData } from '../../classes/rd-table-data';
 })
 export class ResearchDirViewComponent implements OnInit {
   itemList: any[];
+  workspaceTable: ResearchDirWorkSpace =
+  {
+  columnDefs: [{
+    name: '',
+    field: ''
+  }],
+  rowData: [{
+    wsName: '',
+    createdDate: '',
+    accessLevel: '',
+    researchers: [{
+      name: '',
+      researcherAccessLevel: '',
+      removed: false,
+      workspaces: [{
+    workspaceId: '',
+    name : '',
+    accessLevel: '',
+    creation_time: '',
+    archival_time: '',
+    reasonForAllOfUs: '',
+    anticipatedFindings: '',
+    intended_study: ''
+  }],
+      affiliations: [{
+        role: '',
+        institution: ''
+      }],
+    }],
+    }
+  }
 
-  workspaceTableData: RdTableData = {
-    header: [{
-      title: 'Workspace<br>Name'
+
+  workspaceTableData: ResearchDirWorkSpace = {
+    columnDefs: [{
+      name: 'Workspace<br>Name',
+      field: 'wsName'
     }, {
-      title: 'Date<br>Created',
+      name: 'Date<br>Created',
+      field: 'createdDate'
     }, {
-      title: 'Workspace<br>Access Level',
+      name: 'Workspace<br>Access Level',
+      field: 'accessLevel'
     }, {
-      title: 'Researcher<br>Name',
+      name: 'Researcher<br>Name',
+      field: 'name'
     }, {
-      title: 'Researcher<br>Access Level',
+      name: 'Researcher<br>Access Level',
+      field: 'wsName'
     }, {
-      title: 'Institutional<br>Role',
+      name: 'Institutional<br>Role',
+      field: 'wsName'
     }, {
-      title: 'Institutional<br>Affiliation',
+      name: 'Institutional<br>Affiliation',
+      field: 'wsName'
     }],
     rowData: [{
-      name: 'GeneX mutaton in woman with HS education',
+      wsName: 'GeneX mutaton in woman with HS education',
       createdDate: 'Jan 1, 2020',
       accessLevel: 'Registered',
       researchers: [{
         name: 'Alex Berger',
-        accessLevel: 'Owner',
-        institute: [{
+        researcherAccessLevel: 'Owner',
+        removed: false,
+        workspaces: true,
+        affiliations: [{
           role: 'Professor',
-          affiliation: 'NYU'
+          institution: 'NYU'
         },
         {
           role: 'Head Research Lead',
-          affiliation: 'Broad Institute'
+          institution: 'Broad Institute'
         },
         {
           role: 'Fellow',
-          affiliation: 'Harvard Universty College of Medicine'
+          institution: 'Harvard Universty College of Medicine'
         }
         ],
-        removed: false
       },
       {
         name: 'Bruce Crane',
-        accessLevel: 'Writer',
-        institute: [{
+        researcherAccessLevel: 'Writer',
+        removed: false,
+        workspaces: false,
+        affiliations: [{
           role: 'Post doctoral fellow',
-          affiliation: 'GWU'
+          institution: 'GWU'
         }],
-        removed: false
       },
       {
         name: 'Denise Egglton',
-        accessLevel: 'Writer',
-        institute: [{
+        researcherAccessLevel: 'Writer',
+        removed: false,
+        workspaces: false,
+        affiliations: [{
           role: 'Analyst',
-          affiliation: 'Privacy Analytics'
+          institution: 'Privacy Analytics'
         }],
-        removed: true
       },
       {
         name: 'Erin Proust',
-        accessLevel: 'Writer',
-        institute: [{
+        researcherAccessLevel: 'Writer',
+        removed: true,
+        workspaces: false,
+        affiliations: [{
           role: 'Biostatistion',
-          affiliation: 'Privacy Analytics'
+          institution: 'Privacy Analytics'
         }],
-        removed: true
       },
 
       ]
@@ -92,3 +136,5 @@ export class ResearchDirViewComponent implements OnInit {
       }];
   }
 }
+
+
