@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+  <changeSet author="srushtigangireddy" id="changelog-5">
+
+    <createTable tableName="workspace_history">
+      <column name="workspace_id" type="BIGINT">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="VARCHAR(80)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="access_level" type="INT(5)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="creation_time" type="DATETIME">
+        <constraints nullable="true"/>
+      </column>
+      <column name="archival_time" type="DATETIME">
+        <constraints nullable="true"/>
+      </column>
+      <column name="research_purpose" type="VARCHAR(1000)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="reason_for_all_of_us" type="VARCHAR(500)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="anticipated_findings" type="VARCHAR(2000)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="intended_study" type="LONGTEXT">
+        <constraints nullable="true"/>
+      </column>
+      <column name="version_id" type="INT(3)">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+
+    <createIndex
+            indexName="idx_workspace_id"
+            tableName="workspace_history"
+            unique="true">
+      <column name="workspace_id"/>
+    </createIndex>
+
+  </changeSet>
+</databaseChangeLog>

@@ -5,7 +5,7 @@
 set -xeuo pipefail
 IFS=$'\n\t'
 
-USAGE="./init-new-rwd-db.sh [--drop-if-exists] --rwd-db-name public-rwd>"
+USAGE="./init-new-rwd-db.sh [--drop-if-exists] --db-name researcher_directory>"
 DROP_IF_EXISTS="N"
 RUN_LIST="schema"
 CONTEXT=
@@ -13,7 +13,7 @@ CONTEXT=
 while [ $# -gt 0 ]; do
   echo "1 is $1"
   case "$1" in
-    --rwd-db-name) RWD_DB_NAME=$2; shift 2;;
+    --db-name) RWD_DB_NAME=$2; shift 2;;
     --drop-if-exists) DROP_IF_EXISTS="Y"; shift 1;;
     --run-list) RUN_LIST=$2; shift 2;;
     --context) CONTEXT="-Pcontexts=$2"; shift 2;;
@@ -33,7 +33,7 @@ fi
 #export RWD_DB_NAME
 
 # If RWD_DB_NAME matches ^public, we want to the public_db_user env var substituted in the create_db.sql
-if [[ RWD_DB_NAME =~ ^public-rwd ]]
+if [[ RWD_DB_NAME =~ ^researcher ]]
 then
   echo "Working the public db init rwd"
   export META_DB_USER=$PUBLIC_DB_USER

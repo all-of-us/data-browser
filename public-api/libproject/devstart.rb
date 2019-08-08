@@ -203,6 +203,9 @@ def run_local_migrations()
   Dir.chdir('db-cdr') do
     common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
   end
+  Dir.chdir('rwd') do
+    common.run_inline %W{./generate-cdr/init-new-rwd-db.sh --db-name researcher_directory}
+  end
   common.run_inline %W{gradle :tools:loadConfig -Pconfig_key=main -Pconfig_file=../config/config_local.json}
   common.run_inline %W{gradle :tools:loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json}
   common.run_inline %W{gradle :tools:updateCdrVersions -PappArgs=['../config/cdr_versions_local.json',false]}
@@ -519,10 +522,8 @@ Common.register_command({
 
 def run_local_data_migrations()
   common = Common.new
-  common.run_inline %W{docker-compose run db-migration}
-  common.run_inline %W{docker-compose run db-public-migration}
-  common.run_inline %W{docker-compose run db-public-data-migration}
-  common.run_inline %W{docker-compose run rwd-migration}
+  common.run_inline %W{docker-compose run research-directory-db-schema-migration}
+  common.run_inline %W{docker-compose run research-directory-db-data-migration}
 end
 
 Common.register_command({
@@ -920,11 +921,19 @@ def migrate_meta_db()
   end
 end
 
+def migrate_rwd_database(dry_run = false)
+  common = Common.new
+  common.status "Migrating main database..."
+  Dir.chdir("rwd") do
+    run_inline_or_log(dry_run, %W{gradle --info update -PrunList=main})
+  end
+end
+
 def migrate_meta_rwd()
   common = Common.new
   common.status "Migrating metadata for rwd..."
   Dir.chdir("rwd") do
-    common.run_inline(%W{gradle --info update -PrunList=rwd-data -Pcontexts=cloud})
+    common.run_inline(%W{gradle --info update -PrunList=data -Pcontexts=cloud})
    end
 end
 
