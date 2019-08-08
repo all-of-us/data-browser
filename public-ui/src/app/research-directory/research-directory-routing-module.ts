@@ -20,7 +20,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     children: [
       {
-        path: '',
+        path: 'rd',
         data: {
           title: 'AoU Research',
           breadcrumb: {
