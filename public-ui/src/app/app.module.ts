@@ -40,11 +40,7 @@ const dynamicImports = [
   RouterModule
 ];
 
-if (environment.isResearchDirectory) {
-  dynamicImports.push(ResearchDirectoryModule);
-} else if (!environment.isResearchDirectory) {
-  dynamicImports.push(DataBrowserModule);
-}
+
 
 // "Configuration" means Swagger API Client configuration.
 export function getConfiguration(signInService: SignInService): Configuration {
@@ -59,7 +55,14 @@ export function getConfigService(http: Http) {
 }
 
 @NgModule({
-  imports: dynamicImports,
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    ApiModule,
+    RouterModule,
+    DataBrowserModule,
+    ResearchDirectoryModule
+  ],
   declarations: [
     AppComponent
   ],

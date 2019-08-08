@@ -93,6 +93,46 @@ paths:
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
 
+  /v1/databrowser/ehr-count-analysis:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets EHR biological sex and age count analysis
+      operationId: "getEhrCountAnalysis"
+      parameters:
+        - in: query
+          name: domain-id
+          type: string
+          required: true
+          description: domain id
+      responses:
+        200:
+          description: A collection of ehr count analysis for biological sex and age
+          schema:
+            $ref: "#/definitions/EhrCountAnalysis"
+
+  /v1/databrowser/survey-question-counts:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Gets participant count of question by each stratum
+      operationId: "getSurveyQuestionCounts"
+      parameters:
+        - in: query
+          name: questionConceptId
+          type: string
+          required: true
+        - in: query
+          name: questionPath
+          type: string
+          required: true
+      responses:
+        200:
+          description: Gender and age stratum counts for each question
+          schema:
+            $ref: "#/definitions/AnalysisListResponse"
+
   /v1/databrowser/concept-analysis-results:
     get:
       tags:
@@ -661,6 +701,12 @@ definitions:
       raceEthnicityAnalysis:
         description: race ethnicity analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderCountAnalysis:
+        description: gender count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageCountAnalysis:
+        description: age count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   QuestionConceptListResponse:
     type: object
@@ -941,6 +987,7 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Analysis"
+
   SurveyQuestionAnalysis:
     type: object
     required:
@@ -1051,6 +1098,18 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Analysis"
+      genderPercentageAnalysis:
+        description: gender percentage analysis
+        type: object
+        $ref: "#/definitions/Analysis"
+      agePercentageAnalysis:
+        description: age percentage analysis
+        type: object
+        $ref: "#/definitions/Analysis"
+      ehrCountAnalysis:
+        description: count analysis
+        type: object
+        $ref: "#/definitions/Analysis"
 
   ConceptAnalysisListResponse:
     type: object
@@ -1061,6 +1120,23 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/ConceptAnalysis"
+
+  EhrCountAnalysis:
+    type: object
+    required:
+      - domainId
+    properties:
+      domainId:
+        description: domain id
+        type: string
+      genderCountAnalysis:
+        description: biological sex count analysis
+        type: object
+        $ref: "#/definitions/Analysis"
+      ageCountAnalysis:
+        description: age count analysis
+        type: object
+        $ref: "#/definitions/Analysis"
 
   StandardConceptFilter:
     type: string

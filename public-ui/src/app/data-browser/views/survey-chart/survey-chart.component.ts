@@ -1,6 +1,8 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { ISubscription } from 'rxjs/Subscription';
+import {AchillesResult, DataBrowserService, SurveyQuestionAnalysis} from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
-import {GraphType} from '../../../utils/enum-defs';
+import { GraphType } from '../../../utils/enum-defs';
 import {TooltipService} from '../../../utils/tooltip.service';
 
 @Component({
@@ -9,7 +11,6 @@ import {TooltipService} from '../../../utils/tooltip.service';
   styleUrls: ['./survey-chart.component.css', '../../../styles/template.css']
 })
 export class SurveyChartComponent implements OnInit {
-
   @Input() graphButtons: string[];
   @Input() question: any;
   @Input() answer: any;
@@ -17,19 +18,25 @@ export class SurveyChartComponent implements OnInit {
   @Input() selectedResult: any;
   @Input() surveyName: string;
   @Input() searchTerm: string;
+  @Input() subGraphButtons: string[];
   graphToShow = GraphType.BiologicalSex;
+  graphDataToShow = 'Percentage (%)';
+  private subscriptions: ISubscription[] = [];
+  genderPercentageAnalysis: any;
 
   constructor(private tooltipText: TooltipService,
-              public dbc: DbConfigService) { }
+              public dbc: DbConfigService,
+              private api: DataBrowserService) { }
 
   ngOnInit() {
   }
 
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
+    this.graphDataToShow = null;
   }
 
-  public selectGraph(g, q: any, answer: any) {
+  public selectGraphType(g, q: any, answer: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
     this.dbc.triggerEvent('conceptClick', 'View Graphs',
@@ -37,6 +44,9 @@ export class SurveyChartComponent implements OnInit {
       + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + this.graphToShow, this.searchTerm, null);
     q.graphToShow = this.graphToShow;
+    if (q.graphDataToShow === null) {
+      q.graphDataToShow = 'Percentage (%)';
+    }
     switch (g) {
       case GraphType.GenderIdentity:
         q.selectedAnalysis = q.genderIdentityAnalysis;
@@ -51,11 +61,37 @@ export class SurveyChartComponent implements OnInit {
         q.selectedAnalysis = q.genderAnalysis;
         break;
     }
+    this.selectGraph(q.graphDataToShow, q, answer);
+  }
+
+  public selectGraph(sg: any, q: any, answer: any) {
+    q.graphDataToShow = sg;
+    if (q.graphDataToShow === 'Percentage (%)') {
+      switch (q.graphToShow) {
+        case GraphType.BiologicalSex:
+          q.selectedAnalysis = q.genderPercentageAnalysis;
+          break;
+        case GraphType.AgeWhenSurveyWasTaken:
+          q.selectedAnalysis = q.agePercentageAnalysis;
+          break;
+      }
+    } else {
+      switch (q.graphToShow) {
+        case GraphType.BiologicalSex:
+          q.selectedAnalysis = q.genderAnalysis;
+          break;
+        case GraphType.AgeWhenSurveyWasTaken:
+          q.selectedAnalysis = q.ageAnalysis;
+          break;
+      }
+    }
   }
 
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText;
+      return this.tooltipText.biologicalSexChartHelpText + '\n' +
+        this.tooltipText.surveyBSPercentageChartHelpText + '\n' +
+        this.tooltipText.surveyBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {
       return this.tooltipText.genderIdentityChartHelpText;
@@ -70,6 +106,7 @@ export class SurveyChartComponent implements OnInit {
       return this.tooltipText.sourcesChartHelpText;
     }
   }
+
   public toolTipPos(g) {
     if (g === 'Sex Assigned at Birth') {
       return 'bottom-right';
@@ -83,5 +120,13 @@ export class SurveyChartComponent implements OnInit {
       + ' - ' +  q.conceptName + ' - ' + a.stratum4 +
       ' - ' + g, null,
       'Survey Chart Tooltip');
+  }
+
+  public isPercentageAnalysis(question: any) {
+    if (question.graphDataToShow &&
+      question.graphDataToShow.toLowerCase().indexOf('percentage') >= 0) {
+      return true;
+    }
+    return false;
   }
 }
