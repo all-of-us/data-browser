@@ -43,7 +43,11 @@ security:
 
 paths:
 
-  # Data Browser #######################################################################
+  # Research Directory ###################################################################
+  
+  # api connection here
+
+  # Data Browser #########################################################################
   /v1/config:
     get:
       tags:
@@ -288,6 +292,145 @@ paths:
 ## DEFINITIONS
 ##########################################################################################
 definitions:
+  Workspaces:
+    type: object
+    required:
+      - workspaceId
+      - name 
+      - accessLevel
+      - creation_time
+      - archival_time
+      - reasonForAllOfUs
+      - anticipatedFindings
+      - intended_study
+
+    properties:
+      workspaceId:
+        discription: workspace identifier
+        type: string
+      name:
+        discription: workspace display name
+        type: string
+      accessLevel:
+        discription: level of access
+        type: string
+      creation_time:
+        discription: Workspace creation time 
+        type: string
+      archival_time:
+        discription: Initial time at which this metadata was recorded
+        type: string
+      reasonForAllOfUs:
+        discription: Reason for choosing AoU?
+        type: string
+      anticipatedFindings: 
+        discription: What are your anticipated findings?
+        type: string
+      intended_study:
+        discription:  What questions do you intend to study?
+        type: string
+
+
+  ResearcherAffiliation:
+    type: object
+    required:
+      - role
+      - institute
+    
+    properties:
+      role:
+        description: role of researcher at institution
+        type: string
+      institute: 
+        description: institution researcher is affiliated with
+        type: string
+
+  ResearchDirResearchers:
+    type: object
+    required:
+      - name
+      - researcherAccessLevel
+      - removed
+      - workspaces
+      - affiliation
+    
+    properties: 
+      name:
+        description: researher name
+        type: string
+      researcherAccessLevel: 
+        description: researcher access level
+        type: string
+      removed:
+        description: flag if researcher has been removed from workspace
+        type: boolean
+      workspaces:
+        desctiption: workspaces owned by researcher
+        type: array
+        items:
+          $ref: '#/definitions/Workspaces'
+      affiliations:
+        desctiption: info on researcher's institution and roles
+        type: array
+        items: 
+          $ref: "#/definitions/ResearcherInstitution"      
+          
+  ResearchDirRowData:
+    type: object
+    required:
+      - wsName
+      - createdDate
+      - accessLevel
+      - researchers
+    
+    properties:
+      wsName:
+        description: workspace name
+        type: string
+      createdDate:
+        description: date the workspace was created
+        type: string
+      accessLevel:
+        description: workspace access level
+        type: string
+      researchers: 
+        description: researchers associated with workspace
+        type: array
+        items:
+            $ref: "#/definitions/ResearchDirResearchers"
+
+  ResearchDirColumns:
+    type: object
+    required:
+      - name
+      - field
+
+    properties:
+      name:
+        description: display name 
+        type: string 
+      field:
+        description: field name should match rowdata keys
+        type: string
+    
+  ResearchDirWorkSpace:
+    type: object
+    required:
+      - columnDefs
+      - rowData
+
+    properties:
+      columnDefs:
+        description: column definitions 
+        type: array 
+        items:
+          $ref: "#/definitions/ResearchDirColumns"
+      rowData:
+        description: data for each row
+        type: array
+        items: 
+          $ref: "#/definitions/ResearchDirRowData"
+      
   Concept:
     type: object
     required:
