@@ -12,13 +12,13 @@
           <div class="table-row-item" >{{researcher.name}}</div> 
           <div class="table-row-item" >{{researcher.researcherAccessLevel}}</div>
           <div class="table-row-item">
-            <div class="table-row-subitems"  *ngFor="let role of researcher.institution">
+            <div class="table-row-subitems"  *ngFor="let role of researcher.affiliations">
               <span>{{role.role}}</span>
             </div>
           </div>
           <div class="table-row-item">
-            <div class="table-row-subitems"  *ngFor="let role of researcher.institution">
-              <span>{{role.affiliation}}</span>
+            <div class="table-row-subitems"  *ngFor="let role of researcher.affiliations">
+              <span>{{role.institute}}</span>
             </div>
           </div>
         </div>

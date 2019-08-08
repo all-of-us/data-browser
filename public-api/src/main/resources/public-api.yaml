@@ -404,16 +404,11 @@ definitions:
       removed:
         description: flag if researcher has been removed from workspace
         type: boolean
-      workspaces:
-        desctiption: workspaces owned by researcher
-        type: array
-        items:
-          $ref: '#/definitions/Workspaces'
       affiliations:
         desctiption: info on researcher's institution and roles
         type: array
         items: 
-          $ref: "#/definitions/ResearcherInstitution"      
+          $ref: "#/definitions/ResearcherAffiliation"      
           
   ResearchDirRowData:
     type: object

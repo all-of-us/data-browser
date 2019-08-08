@@ -10,36 +10,36 @@ import { RdTableData } from '../../classes/rd-table-data';
 export class ResearchDirViewComponent implements OnInit {
   itemList: any[];
   workspaceTable: ResearchDirWorkSpace =
-  {
-  columnDefs: [{
-    name: '',
-    field: ''
-  }],
-  rowData: [{
-    wsName: '',
-    createdDate: '',
-    accessLevel: '',
-    researchers: [{
-      name: '',
-      researcherAccessLevel: '',
-      removed: false,
-      workspaces: [{
-    workspaceId: '',
-    name : '',
-    accessLevel: '',
-    creation_time: '',
-    archival_time: '',
-    reasonForAllOfUs: '',
-    anticipatedFindings: '',
-    intended_study: ''
-  }],
-      affiliations: [{
-        role: '',
-        institution: ''
+    {
+      columnDefs: [{
+        name: '',
+        field: ''
       }],
-    }],
-    }
-  }
+      rowData: [{
+        wsName: '',
+        createdDate: '',
+        accessLevel: '',
+        researchers: [{
+          name: '',
+          researcherAccessLevel: '',
+          removed: false,
+          // workspaces: [{
+          //   workspaceId: '',
+          //   name: '',
+          //   accessLevel: '',
+          //   creationTime: '',
+          //   archivalTime: '',
+          //   reasonForAllOfUs: '',
+          //   anticipatedFindings: '',
+          //   intendedStudy: ''
+          // }],
+          affiliations: [{
+            role: '',
+            institute: ''
+          }],
+        }],
+      }],
+    };
 
 
   workspaceTableData: ResearchDirWorkSpace = {
@@ -73,18 +73,17 @@ export class ResearchDirViewComponent implements OnInit {
         name: 'Alex Berger',
         researcherAccessLevel: 'Owner',
         removed: false,
-        workspaces: true,
         affiliations: [{
           role: 'Professor',
-          institution: 'NYU'
+          institute: 'NYU'
         },
         {
           role: 'Head Research Lead',
-          institution: 'Broad Institute'
+          institute: 'Broad Institute'
         },
         {
           role: 'Fellow',
-          institution: 'Harvard Universty College of Medicine'
+          institute: 'Harvard Universty College of Medicine'
         }
         ],
       },
@@ -92,30 +91,27 @@ export class ResearchDirViewComponent implements OnInit {
         name: 'Bruce Crane',
         researcherAccessLevel: 'Writer',
         removed: false,
-        workspaces: false,
         affiliations: [{
           role: 'Post doctoral fellow',
-          institution: 'GWU'
+          institute: 'GWU'
         }],
       },
       {
         name: 'Denise Egglton',
         researcherAccessLevel: 'Writer',
         removed: false,
-        workspaces: false,
         affiliations: [{
           role: 'Analyst',
-          institution: 'Privacy Analytics'
+          institute: 'Privacy Analytics'
         }],
       },
       {
         name: 'Erin Proust',
         researcherAccessLevel: 'Writer',
         removed: true,
-        workspaces: false,
         affiliations: [{
           role: 'Biostatistion',
-          institution: 'Privacy Analytics'
+          institute: 'Privacy Analytics'
         }],
       },
 

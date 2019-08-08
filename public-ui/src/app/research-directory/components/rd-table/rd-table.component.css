@@ -41,7 +41,7 @@
     height: 100%;
     /* border-right:1px solid; */
     padding: .5rem;
-    border: 1px solid;
+    border: 1px solid #CCCCCC;
     border-left: none;
     border-bottom: none;
 }
