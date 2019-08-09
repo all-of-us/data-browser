@@ -23,16 +23,6 @@ export class ResearchDirViewComponent implements OnInit {
           name: '',
           researcherAccessLevel: '',
           removed: false,
-          // workspaces: [{
-          //   workspaceId: '',
-          //   name: '',
-          //   accessLevel: '',
-          //   creationTime: '',
-          //   archivalTime: '',
-          //   reasonForAllOfUs: '',
-          //   anticipatedFindings: '',
-          //   intendedStudy: ''
-          // }],
           affiliations: [{
             role: '',
             institute: ''
