@@ -422,9 +422,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         });
         cats.push(a.conceptName);
       } else {
-        if (a.countValue > 20 ) {
+        if (a.sourceCountValue > 20 ) {
           toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ' + '<b>' + a.countValue + '</b>';
+            '<br/>' + 'Pariticipant Count: ' + '<b>' + a.sourceCountValue + '</b>';
         } else {
           toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
             '<br/>' + 'Pariticipant Count: ';
