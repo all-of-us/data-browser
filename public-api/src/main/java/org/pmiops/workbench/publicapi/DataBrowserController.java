@@ -908,7 +908,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                                 }
                                             }
                                         }
-                                        System.out.println(textValues.size());
+
                                         if (textValues.size() > 0 && numericValues.size() > 0) {
                                             List<AchillesResult> filteredNumericResults = unitGenderAnalysis.getResults().stream().filter(ele -> textValues.stream()
                                                     .anyMatch(element -> element.getId()==ele.getId())).collect(Collectors.toList());
@@ -992,17 +992,39 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         bins.add(String.format("%.2f", min));
 
-        bins.add(String.format("%.2f", min+binWidth));
-        bins.add(String.format("%.2f", min+2*binWidth));
-        bins.add(String.format("%.2f", min+3*binWidth));
-        bins.add(String.format("%.2f", min+4*binWidth));
-        bins.add(String.format("%.2f", min+5*binWidth));
-        bins.add(String.format("%.2f", min+6*binWidth));
-        bins.add(String.format("%.2f", min+7*binWidth));
-        bins.add(String.format("%.2f", min+8*binWidth));
-        bins.add(String.format("%.2f", min+9*binWidth));
-        bins.add(String.format("%.2f", min+10*binWidth));
-        bins.add(String.format("%.2f", min+11*binWidth));
+        if (min+binWidth <= max) {
+            bins.add(String.format("%.2f", min+binWidth));
+        }
+        if (min+2*binWidth <= max) {
+            bins.add(String.format("%.2f", min+2*binWidth));
+        }
+        if (min+3*binWidth <= max) {
+            bins.add(String.format("%.2f", min+3*binWidth));
+        }
+        if (min+4*binWidth <= max) {
+            bins.add(String.format("%.2f", min+4*binWidth));
+        }
+        if (min+5*binWidth <= max) {
+            bins.add(String.format("%.2f", min+5*binWidth));
+        }
+        if (min+6*binWidth <= max) {
+            bins.add(String.format("%.2f", min+6*binWidth));
+        }
+        if (min+7*binWidth <= max) {
+            bins.add(String.format("%.2f", min+7*binWidth));
+        }
+        if (min+8*binWidth <= max) {
+            bins.add(String.format("%.2f", min+8*binWidth));
+        }
+        if (min+9*binWidth <= max) {
+            bins.add(String.format("%.2f", min+9*binWidth));
+        }
+        if (min+10*binWidth <= max) {
+            bins.add(String.format("%.2f", min+10*binWidth));
+        }
+        if (min+11*binWidth <= max) {
+            bins.add(String.format("%.2f", min+11*binWidth));
+        }
 
         List<String> trimmedBins = new ArrayList<>();
 
