@@ -850,15 +850,28 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum3];
       }
       let tooltipText = '';
-      if (a.countValue <= 20) {
-        tooltipText = '<b>' + analysisStratumName + '</b>' +
-          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
-          + '</b> <br/>' + 'Participant Count: ';
+      if (a.stratum2 !== 'No unit') {
+        if (a.countValue <= 20) {
+          tooltipText = '<b>' + analysisStratumName + '</b>' +
+            '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
+            + '</b> <br/>' + 'Participant Count: ';
+        } else {
+          tooltipText = '<b>' + analysisStratumName + '</b>' +
+            '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
+            + '</b> <br/>' + 'Participant Count: ' +
+            '<b>' + a.countValue + '</b>';
+        }
       } else {
-        tooltipText = '<b>' + analysisStratumName + '</b>' +
-          '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
-          + '</b> <br/>' + 'Participant Count: ' +
-          '<b>' + a.countValue + '</b>';
+        if (a.countValue <= 20) {
+          tooltipText = '<b>' + analysisStratumName + '</b>' +
+            '<br/>' + 'Measurement Value : <b>' + a.stratum4
+            + '</b> <br/>' + 'Participant Count: ';
+        } else {
+          tooltipText = '<b>' + analysisStratumName + '</b>' +
+            '<br/>' + 'Measurement Value : <b>' + a.stratum4
+            + '</b> <br/>' + 'Participant Count: ' +
+            '<b>' + a.countValue + '</b>';
+        }
       }
       data.push({ name: a.stratum4, y: a.countValue, thisCtrl: this,
         result: a, toolTipHelpText: tooltipText, binWidth: a.stratum6});
@@ -925,20 +938,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           // Don't do anything
         } else {
           data[data.length - 1].name = '< ' + data[data.length - 1].name;
-        }
-      }
-    }
-    for (const d of data) {
-      if (d.name.indexOf(' - ') >= 0 || d.name.indexOf('< ') >= 0 || d.name.indexOf('>= ') >= 0) {
-        // Do not need to do anything
-      } else {
-        if (isNaN(Number(d.name))) {
-          // Do not do anything
-        } else {
-          if (Number(d.binWidth) > 0) {
-            d.name = d.name + ' - ' + String((Number(d.name) +
-              Number(d.binWidth)).toFixed(this.getNumDecimals(String(d.binWidth))));
-          }
         }
       }
     }

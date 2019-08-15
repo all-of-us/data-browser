@@ -895,6 +895,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                                 numericResult = result_value.replaceAll(">= ","");
                                             } else if (result_value != null && result_value.contains("< ")) {
                                                 numericResult = result_value.replaceAll("< ","");
+                                            } else {
+                                                if (result_value != null &&  !result_value.matches(".*\\d.*")) {
+                                                    textValues.add(result);
+                                                }
                                             }
                                             if (numericResult != null) {
                                                 if (NumberUtils.isNumber(numericResult)) {
@@ -904,6 +908,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                                 }
                                             }
                                         }
+                                        System.out.println(textValues.size());
                                         if (textValues.size() > 0 && numericValues.size() > 0) {
                                             List<AchillesResult> filteredNumericResults = unitGenderAnalysis.getResults().stream().filter(ele -> textValues.stream()
                                                     .anyMatch(element -> element.getId()==ele.getId())).collect(Collectors.toList());
