@@ -344,7 +344,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                measurement_quartile_data_2 as
                (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,iqr_min +
                (num_buckets - 1)*bin_width as updated_iqr_max,
-               LENGTH(REGEXP_EXTRACT(CAST(iqr_max as string), r'.(.*)')) AS decimal_places
+               LENGTH(REGEXP_EXTRACT(CAST(bin_width as string), r'.(.*)')) AS decimal_places
                from measurement_bucket_data),
                measurement_quartile_bucket_decimal_data as
                (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,
@@ -360,7 +360,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           CAST(p1.gender_concept_id AS STRING) as stratum_3,
                 case when bin_width != 0 then
                (case when iqr_min != iqr_max then
-               (case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+               (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
                   (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
                     when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
                     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -435,7 +435,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                         else cast(value_as_number as string)
                        end) end)
                      when p10_value != p90_value then
-        (case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+        (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
                        (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
                      when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
                      then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -514,7 +514,9 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=concept
           join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
           join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
-          on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+          on case when (m1.unit_concept_id > 0 and m1.unit_source_value is null) then m1.unit_concept_id = um.unit_concept_id
+             when (m1.unit_concept_id = 0 and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             else m1.unit_concept_id = um.unit_concept_id end
           where m1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
           and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
           group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6
@@ -525,7 +527,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           CAST(p1.gender_concept_id AS STRING) as stratum_3,
                 case when bin_width != 0 then
                (case when iqr_min != iqr_max then
-       (case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+       (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
                       (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
                         when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
                         when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -600,7 +602,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                             else cast(value_as_number as string)
                            end) end)
                when p10_value != p90_value then
-               (case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+               (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
                (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
                             when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
                             then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -676,7 +678,10 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
           from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
           join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
-          join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+          join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
+          case when (m1.unit_concept_id > 0 and m1.unit_source_value is null) then m1.unit_concept_id = um.unit_concept_id
+                       when (m1.unit_concept_id = 0 and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+                       else m1.unit_concept_id = um.unit_concept_id end
           join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
           where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
           and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
@@ -1056,7 +1061,7 @@ measurement_bucket_data as
    measurement_quartile_data_2 as
    (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,iqr_min +
    (num_buckets - 1)*bin_width as updated_iqr_max,
-   LENGTH(REGEXP_EXTRACT(CAST(iqr_max as string), r'.(.*)')) AS decimal_places
+   LENGTH(REGEXP_EXTRACT(CAST(bin_width as string), r'.(.*)')) AS decimal_places
    from measurement_bucket_data),
    measurement_quartile_bucket_decimal_data as
    (select concept, unit, gender, iqr_min, iqr_max, min_value, max_value, p10_value, p25_value, p75_value, p90_value, bin_width,num_buckets,
@@ -1072,7 +1077,7 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
     case when bin_width != 0 then
    (case when iqr_min != iqr_max then
-   (case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+   (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
       (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
             when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
             when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -1147,7 +1152,7 @@ CAST(p1.gender_concept_id AS STRING) as stratum_3,
             else cast(value_as_number as string)
            end) end)
          when p10_value != p90_value then
-(case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+(case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
     (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
          when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
          then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -1225,8 +1230,10 @@ count(distinct p1.person_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
 join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=concept
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
-on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
+case when (m1.unit_concept_id > 0 and m1.unit_source_value is null) then m1.unit_concept_id = um.unit_concept_id
+             when (m1.unit_concept_id = 0 and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             else m1.unit_concept_id = um.unit_concept_id end
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
 group by stratum_1, stratum_2, stratum_3, stratum_4, stratum_6
@@ -1237,7 +1244,7 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
     case when bin_width != 0 then
    (case when iqr_min != iqr_max then
-   (case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+   (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
                   (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
                         when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
                         when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -1312,7 +1319,7 @@ CAST(p1.gender_concept_id AS STRING) as stratum_3,
                         else cast(value_as_number as string)
                        end) end)
 when p10_value != p90_value then
-(case when (m1.unit_concept_id > 0 and m1.unit_source_value is not null) then
+(case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
 (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
 when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
 then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -1388,7 +1395,10 @@ cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value th
 COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
 join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on (m1.unit_concept_id = um.unit_concept_id or lower(m1.unit_source_value)=lower(um.unit_source_value))
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
+case when (m1.unit_concept_id > 0 and m1.unit_source_value is null) then m1.unit_concept_id = um.unit_concept_id
+             when (m1.unit_concept_id = 0 and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             else m1.unit_concept_id = um.unit_concept_id end
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
 where m1.measurement_source_concept_id > 0
 and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
