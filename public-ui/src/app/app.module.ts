@@ -11,7 +11,6 @@ import {
 } from 'publicGenerated';
 import * as StackTrace from 'stacktrace-js';
 import { DataBrowserModule } from './data-browser/data-browser.module';
-import { ResearchDirectoryModule } from './research-directory/research-directory.module';
 import { ErrorReporterService } from './services/error-reporter.service';
 import { ServerConfigService } from './services/server-config.service';
 import { SignInService } from './services/sign-in.service';
@@ -56,7 +55,6 @@ export function getConfigService(http: Http) {
     RouterModule,
     SharedModule,
     DataBrowserModule,
-    ResearchDirectoryModule
   ],
   declarations: [
     AppComponent,
