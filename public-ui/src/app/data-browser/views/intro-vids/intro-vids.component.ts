@@ -40,6 +40,40 @@ export class IntroVidsComponent {
       url: '/assets/videos/researcher_intro.webm',
       type: 'video/webm'
     }],
+  },
+  {
+    title: 'Surveys Intro',
+    downloadUrl: '',
+    poster: '/assets/videos/surveys_video_poster.png',
+    src: [{
+      url: '/assets/videos/surveys_intro.mp4',
+      type: 'video/mp4'
+    },
+    {
+      url: '/assets/videos/surveys_intro.ogv',
+      type: 'video/ogg'
+    },
+    {
+      url: '/assets/videos/surveys_intro.webm',
+      type: 'video/webm'
+    }],
+  },
+  {
+    title: 'Physical Measurements Intro',
+    downloadUrl: '',
+    poster: '/assets/videos/physical_measurements_video_poster.png',
+    src: [{
+      url: '/assets/videos/physical_measurements_intro.mp4',
+      type: 'video/mp4'
+    },
+    {
+      url: '/assets/videos/physical_measurements_intro.ogv',
+      type: 'video/ogg'
+    },
+    {
+      url: '/assets/videos/physical_measurements_intro.webm',
+      type: 'video/webm'
+    }],
   }];
 
 }

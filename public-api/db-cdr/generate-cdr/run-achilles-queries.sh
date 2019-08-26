@@ -1189,7 +1189,7 @@ select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 # Survey question answers count by gender for q2 unrolled
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count = 1
@@ -1213,7 +1213,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Survey question answers count by gender for q2 unrolled
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with multiple_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count > 1
@@ -1235,7 +1235,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Survey question answers count by gender for q2 (rolling up categories)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count = 1
@@ -1258,7 +1258,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Survey question answers count by gender(value_as_number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
@@ -1358,7 +1358,7 @@ select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 # Survey Question Answer Count by age deciles for unrolled categories in q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count = 1
@@ -1397,7 +1397,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Survey question answer count by age deciles for more than one race / ethnicity bucket
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with multiple_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count > 1
@@ -1436,7 +1436,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Survey Question Answer Count by age deciles for rolled categories in q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count > 1
@@ -1474,7 +1474,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Survey Question Answer Count by age deciles for all questions that have value_as_number
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with survey_age as
 (
 select observation_id,
