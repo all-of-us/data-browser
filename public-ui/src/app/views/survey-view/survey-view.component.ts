@@ -126,6 +126,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           for (const q of this.surveyResult.items) {
             q.actualQuestionNumber = 0;
             q.graphToShow = GraphType.BiologicalSex;
+            q.selectedAnalysis = q.genderAnalysis;
             q.graphDataToShow = 'Count';
             if (q.questions && q.questions.length > 0) {
               q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
@@ -143,6 +144,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                 this.survey.participantCount);
               if (a.subQuestions) {
                 for (const subQuestion of a.subQuestions) {
+                  subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
                   subQuestion.actualQuestionNumber = 0;
                   if (subQuestion.questions && subQuestion.questions.length > 0) {
                     subQuestion.actualQuestionNumber =
@@ -162,6 +164,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
                     filter(r => r.subQuestions !== null && r.subQuestions.length > 0)) {
                     for (const question of subResult.subQuestions) {
+                      question.selectedAnalysis = question.genderAnalysis;
                       question.actualQuestionNumber = 0;
                       if (question.questions && question.questions.length > 0) {
                         question.actualQuestionNumber =
@@ -206,7 +209,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         question.genderCountAnalysis.surveyQuestionResults);
                       this.prepAgePercentageAnalysis(question,
                         question.ageCountAnalysis.surveyQuestionResults);
-                      question.selectedAnalysis = question.genderAnalysis;
                     }
                   }
                   subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
@@ -237,13 +239,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     subQuestion.genderCountAnalysis.surveyQuestionResults);
                   this.prepAgePercentageAnalysis(subQuestion,
                     subQuestion.ageCountAnalysis.surveyQuestionResults);
-                  subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
                 }
               }
             }
             this.prepGenderPercentageAnalysis(q, q.genderCountAnalysis.surveyQuestionResults);
             this.prepAgePercentageAnalysis(q, q.ageCountAnalysis.surveyQuestionResults);
-            q.selectedAnalysis = q.genderAnalyis;
             q.countAnalysis.surveyQuestionResults.push(
               this.addDidNotAnswerResult(
                 q.countAnalysis.surveyQuestionResults, this.survey.participantCount));

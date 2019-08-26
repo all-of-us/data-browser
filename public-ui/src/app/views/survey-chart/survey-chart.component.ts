@@ -44,6 +44,7 @@ export class SurveyChartComponent implements OnInit {
       + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + this.graphToShow, this.searchTerm, null);
     q.graphToShow = this.graphToShow;
+    console.log(this.question);
     if (q.graphDataToShow === null) {
       q.graphDataToShow = 'Count';
     }
