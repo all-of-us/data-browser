@@ -1,5 +1,4 @@
-<div class="db-container">
-  <div class="page-header">
+<div class="page-header">
     <h2 class="primary-display">{{title}}</h2>
   </div>
   <div class="search-bar-container">
@@ -307,5 +306,4 @@
 <div *ngIf="!loading && items.length === 0 && searchText.value">
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
-</div>
 </div>
