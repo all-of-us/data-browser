@@ -3,7 +3,6 @@ import { Router, RouterModule, Routes } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 import { IsSafeGuard } from '../guards/is-safe-guard.service';
-import { SignInGuard } from '../guards/sign-in-guard.service';
 import { EmergencyComponent } from '../views/emergency/emergency.component';
 import { LoginComponent } from '../views/login/login.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
@@ -13,7 +12,11 @@ import { QuickSearchComponent } from './views/quick-search/quick-search.componen
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
 const routes: Routes = [
-
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { title: 'Sign In' }
+  },
   {
     path: 'ehr',
     redirectTo: '',
