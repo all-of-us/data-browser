@@ -13,11 +13,7 @@ import { QuickSearchComponent } from './views/quick-search/quick-search.componen
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: { title: 'Sign In' }
-  },
+
   {
     path: 'ehr',
     redirectTo: '',
@@ -36,8 +32,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [SignInGuard, IsSafeGuard],
-    canActivateChild: [SignInGuard, IsSafeGuard],
+    canActivate: [IsSafeGuard],
+    canActivateChild: [IsSafeGuard],
     runGuardsAndResolvers: 'always',
     children: [
       {
