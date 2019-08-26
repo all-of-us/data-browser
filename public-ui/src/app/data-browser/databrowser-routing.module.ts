@@ -122,7 +122,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
   providers: [
-    SignInGuard,
     IsSafeGuard,
   ]
 })
