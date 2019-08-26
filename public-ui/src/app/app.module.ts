@@ -29,11 +29,6 @@ function getPublicBasePath() {
   return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
 }
 
-// if true show Research Dir; hide Data browser
-
-
-
-
 
 // "Configuration" means Swagger API Client configuration.
 export function getConfiguration(signInService: SignInService): Configuration {
