@@ -67,6 +67,10 @@ export class SurveyChartComponent implements OnInit {
   public selectGraph(sg: any, q: any, answer: any) {
     q.graphDataToShow = sg;
     if (q.graphDataToShow === 'Percentage (%)') {
+      this.dbc.triggerEvent('percentageTabClick', '% Tab',
+        'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
+        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
+        ' - ' + this.graphToShow, this.searchTerm, null);
       switch (q.graphToShow) {
         case GraphType.BiologicalSex:
           q.selectedAnalysis = q.genderPercentageAnalysis;
@@ -76,6 +80,10 @@ export class SurveyChartComponent implements OnInit {
           break;
       }
     } else {
+      this.dbc.triggerEvent('countTabClick', 'Count Tab',
+        'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
+        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
+        ' - ' + this.graphToShow, this.searchTerm, null);
       switch (q.graphToShow) {
         case GraphType.BiologicalSex:
           q.selectedAnalysis = q.genderAnalysis;
