@@ -1,0 +1,309 @@
+<div class="page-header">
+    <h2 class="primary-display">{{title}}</h2>
+  </div>
+  <div class="search-bar-container">
+    <div id="db-search-bar">
+      <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+      <input type="text" aria-label="EHR Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText"
+        style="height:auto" autofocus>
+    </div>
+  </div>
+  <app-spinner [loading]="loading"></app-spinner>
+  <div *ngIf="items.length > 0" class="results">
+    <a class="btn btn-link btn-sm" [routerLink]="['']">
+      < Back to main search </a> <div class="result-list">
+        <div class="db-card">
+          <div class="db-card-inner">
+            <section *ngIf="items.length > 0">
+              <!-- Top summary boxes -- only show if have results -->
+              <h5 id="domain-summary" class="secondary-display">
+                <a class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending
+                  Participant Counts
+                  <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
+                  <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
+                </a>
+              </h5>
+              <div *ngIf="showTopConcepts">
+                <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results"
+                  [pointWidth]="10">
+                </app-chart>
+              </div>
+            </section>
+            <div class="results-grid" *ngIf="items.length > 0">
+              <div class="domain-info-layout">
+                <span>
+                  <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
+                    <h5 id="domain-name" class="primary-display">
+                      Showing top {{totalResults}}
+                    </h5>
+                  </ng-container>
+                  <ng-template #show_pages>
+                    <h5 id="domain-name" class="primary-display">
+                      Showing top {{((currentPage * searchRequest.maxResults) - items.length)+1}} -
+                      {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
+                    </h5>
+                  </ng-template>
+                  <ng-container *ngIf="!searchText.value; else no_search_term">
+                    <h5 id="domain-name" class="primary-display">
+                      concepts for this domain
+                      <clr-tooltip>
+                        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                          <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
+                        </clr-tooltip-content>
+                      </clr-tooltip>
+                    </h5>
+                  </ng-container>
+                  <ng-template #no_search_term>
+                    <h5 id="domain-name" class="primary-display" *ngIf="searchText.value">
+                      matching medical concepts
+                      <clr-tooltip>
+                        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                          <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
+                        </clr-tooltip-content>
+                      </clr-tooltip>
+                    </h5>
+                  </ng-template>
+                </span>
+                <h6 *ngIf="searchText.value" class="primary-display medline-link">Interested in general
+                  health information related to "{{getTerm()}}"?
+                  <br /><a href="{{medlinePlusLink}}" target="_blank">Search MedlinePlus</a></h6>
+              </div>
+              <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
+                <div class=" db-alert">
+                  <clr-alert [clrAlertClosable]="false" [clrAlertType]="info">
+                    Note: {{items[0].vocabularyId}} {{items[0].conceptCode}} "{{items[0].conceptName}}"
+                    maps to Standard Vocabulary {{standardConcepts[0].vocabularyId}}
+                    {{standardConcepts[0].conceptCode}}.
+                    Standard vocabularies capture data across a variety of source vocabularies.
+                  </clr-alert>
+                </div>
+              </div>
+              <div class="tbl-r tbl-head">
+                <div class="tbl-d first body-lead info-text"> {{ehrDomain.name}}
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                    <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
+                      <div class="tooltip-label">{{tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
+                </div>
+                <div class="tbl-r-group">
+                  <div class="tbl-d body-lead info-text"> Participants of {{totalParticipants | number}}
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                      <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                        <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
+                  </div>
+                  <div class="tbl-d body-lead info-text"> % of
+                    {{totalParticipants | number}}
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                      <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                        <div class="tooltip-label">The overall participant count of this medical concept divided
+                          by the total number of participants
+                        </div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
+                  </div>
+                  <div class="tbl-d  body-lead info-text">
+                    Vocabulary Code
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                      <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                        <div class="tooltip-label">{{tooltipText.vocabularyCodeHelpText}}
+                        </div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
+                  </div>
+                  <div class="tbl-d body-lead info-text">
+                    Concept Code
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                      <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+                        <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
+                  </div>
+                  <div class="tbl-d body-lead info-text"> View graphs
+                  </div>
+                </div>
+              </div>
+              <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
+                *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
+                <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
+                  <div class="body-lead info-text tbl-d first"
+                    *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
+                    <div class="code-tooltip">
+                      <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
+                      </app-highlight-search>
+                    </div>
+                  </div>
+
+                  <ng-template #code_match_standard>
+                    <div class="body-lead info-text tbl-d first"
+                      *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+                      <div class="code-tooltip"
+                        *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+                        <app-highlight-search [isStandard]="true" [text]="r.conceptName" [searchTerm]="prevSearchText">
+                        </app-highlight-search>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <ng-template #code_match_not_standard>
+                    <div class="body-lead info-text tbl-d first">
+                      <div class="code-tooltip">
+                          <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
+                            {{i+((currentPage * searchRequest.maxResults) - items.length)+1}}.
+                          </span>
+                        <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
+                        <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
+                        </app-highlight-search>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <div class="tbl-r-group">
+                    <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
+                      &le; {{r.countValue | number}}
+                    </div>
+                    <ng-template #Non20Counts>
+                      <div class="body-lead info-text tbl-d">
+                        {{r.countValue | number}}
+                      </div>
+                    </ng-template>
+                    <div class="body-lead info-text tbl-d">
+                      {{participantPercentage(r.countValue) | number}}%
+                    </div>
+                    <ng-template #noConceptSynonyms>
+                      <div class="body-lead info-text tbl-d"></div>
+                    </ng-template>
+                    <div class="body-lead info-text tbl-d">
+                      {{r.vocabularyId}} {{r.conceptCode}}
+                    </div>
+                    <div class="body-lead info-text tbl-d">
+                      {{r.conceptId}}
+                    </div>
+                    <div class="body-lead info-text tbl-d">
+                      <button class="icon-btn">
+                        <clr-icon [ngClass]="r.expanded?'is-solid':''" shape="bar-chart" class="bar-chart-icon">
+                        </clr-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(standardConcepts.concat(items),r)"
+                  class="body-lead info-text aka" [ngClass]="{'no-b-border': r.expanded}">
+                  <div *ngIf="r.conceptSynonyms;else noConceptSynonyms"
+                    (click)="$event.stopPropagation();toggleSynonyms(r)" class="aka-text"
+                    [ngClass]="{'no-b-border': r.expanded}"><span>Also Known As</span>
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info">
+                      </clr-icon>
+                      <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                        <div class="tooltip-header">
+                          Medical concepts often have alternative names and descriptions, known as synonyms.
+                          Alternate names and descriptions,
+                          if available, are listed for each medical concept.</div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
+                  </div>
+                  <div class="synonyms-text">
+                    <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+                      *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
+                      [searchTerm]="prevSearchText">
+                    </app-highlight-search>
+                    <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+                      *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
+                      [searchTerm]="prevSearchText">
+                    </app-highlight-search>
+                    <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
+                      *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
+                      See
+                      Less
+                    </a>
+                    <ng-template #seeMore>
+                      <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
+                        *ngIf="synonymString[r.conceptId].length > 100"> See More
+                        <clr-icon shape="ellipsis-horizontal"></clr-icon>
+                      </a>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="row-expansion" *ngIf="r.expanded" #chartElement>
+                  <div class="graph-menu">
+                    <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}"
+                      (click)="selectGraph(g, r)" class="chart-choice">
+                        <span>{{g}}</span>
+                        <clr-tooltip>
+                          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                          <clr-tooltip-content clrPosition="{{toolTipPos(g)}}" clrSize="lg" *clrIfOpen>
+                            <div class="tooltip-label">{{showToolTip(g)}}</div>
+                          </clr-tooltip-content>
+                        </clr-tooltip>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
+                    <div class="source-layout"
+                      *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
+                      <div class="source-item">
+                        <aside class="source-tree">
+                          <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
+                          <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
+                          <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
+                            <clr-tooltip>
+                              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+                              <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+                                <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
+                              </clr-tooltip-content>
+                            </clr-tooltip>
+                          </p>
+                          <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
+                          <ng-container *ngIf="!treeLoading">
+                            <div *ngFor="let node of treeData" class="tree-top">
+                              <app-source-tree [rootNode]="node"></app-source-tree>
+                            </div>
+                          </ng-container>
+                        </aside>
+                      </div>
+                      <div class="source-item">
+                        <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                        </app-concept-charts>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #NonRolledUp>
+                    <div class="graph-item">
+                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                      </app-concept-charts>
+                    </div>
+                  </ng-template>
+                  <ng-template #NonSourceCharts>
+                    <div class="graph-item">
+                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                      </app-concept-charts>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div *ngIf="!loading && items.length === 0">
+                <div class="">
+                  <h5 class="no-results"> No results match your search. </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <pagination-controls (pageChange)="currentPage = $event; 
+          getNextPage($event)" directionLinks="true" autoHide="true" previousLabel="Previous" nextLabel="Next"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page"></pagination-controls>
+        </div>
+  </div>
+</div>
+<div *ngIf="!loading && items.length === 0 && searchText.value">
+  <h5 class="secondary-display"> No results in this domain that match your search.</h5>
+  <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
+</div>

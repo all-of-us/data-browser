@@ -1,0 +1,179 @@
+  <div class="rh-header">
+    <div>
+      <h1 id='db-title' class="primary-display ">Data Browser</h1>
+      <p id="db-desc" class="body-default">
+        The Data Browser provides interactive views of the publicly available <span class="allofus-italics">All of Us</span> Research Program participant data.
+        Currently, participant provided information, including surveys and physical measurements taken at the time of
+        participant enrollment , as well as electronic health record data are available.
+        The <span class="allofus-italics">All of Us</span> Research Program data will include more data types over time.
+        <br><br>
+        In order to protect participant privacy, the data is limited to aggregate counts and summary
+        demographic information.
+        For more information, please visit our <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs">FAQ page.</a> 
+      </p>
+    </div>
+  </div>
+  <div class="search-icon-container">
+    <div class="search">
+      <div class="search-title">
+        <span class="secondary-display">{{title}}</span>
+        <clr-tooltip (mouseenter)="hoverOnTooltip()">
+          <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-label">{{subTitle1}} <span class="allofus-italics">All of Us</span> {{subTitle2}}
+            </div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+      </div>
+      <div id="db-search-bar">
+        <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+        <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search"
+          [formControl]="searchText" style="height:auto">
+      </div>
+      <span class="result-body-item cdr-info" *ngIf="creationTime">
+        Data based on Curated Data Repository (CDR) dated
+        {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}} with
+        {{numParticipants | number}} total participants.
+      </span>
+    </div><!-- .search -->
+    <div class="iconlinks">
+      <div class="icons" (click)="iconClickEvent('FAQ')">
+        <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs" alt="FAQs"><img alt="FAQs"
+            src="/assets/icons/icons_faqs.png" /><span>FAQs</span></a>
+      </div>
+      <div class="icons" (click)="iconClickEvent('Intro-Videos')">
+        <a [routerLink]="['introductory-videos']" alt="Introductory Videos"><img alt="Introductory Videos"
+            src="/assets/icons/icons_introductoryvideo.png" /><span>Introductory Videos</span></a>
+      </div>
+      <div class="icons" (click)="iconClickEvent('User-Guide')">
+        <a href="../../../assets/pdf/Databrowser_Tutorial_4_26_2019.pdf" target="_blank" alt="User Guide"><img
+            alt="User Guide" src="/assets/icons/icons_userguide.png" /><span>User Guide</span></a>
+      </div>
+    </div><!-- .iconlinks -->
+  </div><!-- .search-icon-container -->
+  <app-spinner [loading]="loading"></app-spinner>
+  <section class="results">
+    <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
+      <clr-tooltip>
+        <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+          <div class="tooltip-header">EHR Domains</div>
+          <div class="tooltip-label">{{tooltipText.ehrDomainHelpText}}
+          </div>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </h5>
+    <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
+      <div [routerLink]="setEhrUrl(r)" (click)="viewEhrDomain(r)" class="result-box" *ngFor="let r of domainResults">
+        <p class="result-box-title">
+          {{r.name}}
+          <clr-tooltip>
+            <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+            <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+              <div class="tooltip-label">{{tooltipText.domainHelpText[r.domain.toLowerCase()]}}</div>
+            </clr-tooltip-content>
+          </clr-tooltip>
+        </p>
+        <div class="result-body">
+          <span class="result-body-item">
+            <div class="result-stat">
+              {{r.standardConceptCount | number}}
+            </div>
+            <span *ngIf="searchText.value">matching medical concepts</span>
+            <span *ngIf="!searchText.value">medical concepts</span>
+          </span>
+          <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
+            <span><strong> {{r.participantCount | number}}</strong> participants in this domain
+            </span>
+          </span>
+        </div>
+        <div class="result-box-link">
+          <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
+            (click)="viewEhrDomain(r)">
+            View Top {{r.name}} </a>
+          <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
+            View Results </a>
+        </div>
+      </div>
+      <div class="col col-xs-12" *ngIf="! domainResults || domainResults.length === 0">
+        <h6> No EHR Data Results.</h6>
+      </div>
+    </div>
+    <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
+    <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
+      <div (click)="viewSurvey(r)" class="result-box" *ngFor="let r of surveyResults">
+        <p class="result-box-title">
+          {{r.name}}
+          <clr-tooltip>
+            <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+            <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+              <div class="tooltip-label">{{tooltipText.domainHelpText[r.name.toLowerCase()]}}</div>
+            </clr-tooltip-content>
+          </clr-tooltip>
+        </p>
+        <div class="result-body">
+          <div class="result-body-item">
+            <div class="result-stat">
+              {{r.questionCount | number}}
+            </div>
+            <span *ngIf="searchText.value">matching survey questions</span>
+            <span *ngIf="!searchText.value">survey questions</span>
+          </div>
+          <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
+            <span><strong> {{r.participantCount | number}}</strong> participants in this domain
+            </span>
+          </span>
+          <div class="result-body-item">
+            <span>{{r.description}}</span>
+          </div>
+        </div>
+          <div class="result-box-link">
+            <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
+              View Complete Survey </a>
+            <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r)"> View Results </a>
+          </div>
+      </div>
+      <!-- toDO: style noresults -->
+      <div class="col-xs-12" *ngIf="! surveyResults || surveyResults.length === 0">
+        <h6> No Survey Results.</h6>
+      </div>
+    </div>
+    <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
+      Physical Measurements: </h5>
+    <div class="result-boxes"
+      *ngIf="physicalMeasurementsFound > 0 && !loading">
+      <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
+        <p class="result-box-title">
+          Physical Measurements
+          <clr-tooltip>
+            <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+            <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+              <div class="tooltip-label">{{tooltipText.physicalMeasurements}}</div>
+            </clr-tooltip-content>
+          </clr-tooltip>
+        </p>
+        <div class="result-body">
+          <span class="result-body-item">
+            <ng-container *ngIf="searchText.value; else noSearchPm;">
+              <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
+            </ng-container>
+            <ng-template #noSearchPm>
+              <div class="result-stat">{{physicalMeasurementsFound}}</div> physical measurements
+            </ng-template>
+          </span>
+          <span class="result-body-item result-body-stat" *ngIf="pmParticipantCount > 0">
+              <span><strong> {{pmParticipantCount | number}}</strong> participants in this domain
+              </span>
+            </span>
+          <span class="result-body-item">
+            Participants have the option to provide a standard set of physical measurements as part
+              of the enrollment process (“program physical measurements”).
+          </span>
+        </div>
+          <div class="result-box-link">
+            <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+          </div>
+      </div>
+    </div>
+    <h6 *ngIf="physicalMeasurementsFound === 0 && !loading"> No Program Physical Measurement Results.</h6>
+  </section>

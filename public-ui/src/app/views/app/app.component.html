@@ -1,14 +1,15 @@
-<app-db-header></app-db-header>
-<clr-main-container class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
+<app-rh-header></app-rh-header>
+<main class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
   <app-breadcrumb></app-breadcrumb>
-    <!-- <div class="db-container"> -->
-    <router-outlet (activate)="onActivate($event)" ></router-outlet>
-  <!-- </div> -->
-</clr-main-container>
-  <!-- *** removed until strategic direction is provided for CTA section ***
+  <div class="db-container">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+</main>
+<!-- *** removed until strategic direction is provided for CTA section ***
     <div class="cta-content dark">
 				<img src="https://aou-db-test.appspot.com/assets/images/applyForAccess_btn.png" /><h4>Find out more about <a href="##">Data Access Levels</a> and <a href="##">How to Apply</a>.</h4>
-		</div> --><!-- .cta-content -->
+		</div> -->
+<!-- .cta-content -->
 <ng-template #login>
   <router-outlet></router-outlet>
 </ng-template>
