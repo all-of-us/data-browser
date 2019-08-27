@@ -44,7 +44,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   toDisplayMeasurementGenderAnalysis: Analysis;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
-  subGraphButtons = ['Percentage (%)', 'Count'];
+  subGraphButtons = ['Count', 'Percentage (%)'];
   selectedSubGraph: string;
   toDisplayGenderAnalysis: Analysis;
   toDisplayAgeAnalysis: Analysis;
@@ -67,9 +67,9 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
       results => {
         this.results = results.items;
         this.analyses = results.items[0];
-        this.selectedSubGraph = 'Percentage (%)';
-        this.toDisplayGenderAnalysis = this.analyses.genderPercentageAnalysis;
-        this.toDisplayAgeAnalysis = this.analyses.agePercentageAnalysis;
+        this.selectedSubGraph = 'Count';
+        this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
+        this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
         this.organizeGenders(this.analyses.genderAnalysis);
         this.fetchMeasurementGenderResults();
         // Set this var to make template simpler.

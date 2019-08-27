@@ -20,7 +20,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() subGraphButtons: string[];
   graphToShow = GraphType.BiologicalSex;
-  graphDataToShow = 'Percentage (%)';
+  graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
 
@@ -45,7 +45,7 @@ export class SurveyChartComponent implements OnInit {
       ' - ' + this.graphToShow, this.searchTerm, null);
     q.graphToShow = this.graphToShow;
     if (q.graphDataToShow === null) {
-      q.graphDataToShow = 'Percentage (%)';
+      q.graphDataToShow = 'Count';
     }
     switch (g) {
       case GraphType.GenderIdentity:
