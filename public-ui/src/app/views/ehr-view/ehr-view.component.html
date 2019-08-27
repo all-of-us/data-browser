@@ -271,20 +271,20 @@
                         </aside>
                       </div>
                       <div class="source-item">
-                        <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                        <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'" [searchTerm]="searchText.value">
                         </app-concept-charts>
                       </div>
                     </div>
                   </ng-container>
                   <ng-template #NonRolledUp>
                     <div class="graph-item">
-                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'" [searchTerm]="searchText.value">
                       </app-concept-charts>
                     </div>
                   </ng-template>
                   <ng-template #NonSourceCharts>
                     <div class="graph-item">
-                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+                      <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'" [searchTerm]="searchText.value">
                       </app-concept-charts>
                     </div>
                   </ng-template>

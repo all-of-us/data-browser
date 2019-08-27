@@ -15,12 +15,11 @@
   </clr-tooltip>
 </div>
 
-<div class="col-md" *ngIf="showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
-  <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}"
-       (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">{{sg}}</div>
-</div>
-
 <div *ngIf="!loading()" class="concept-charts chart">
+  <div class="col-md" *ngIf="showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
+    <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}"
+         (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">{{sg}}</div>
+  </div>
   <!-- show measurements binned by gender if we want -->
   <!-- Loop through the genders we have measurement results for  for showing the graph
   <!-- Loop through the genders we have measurement results for  for showing the graph
@@ -44,7 +43,7 @@
 toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
               [genderId]="gender.stratum2"
               [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)" [chartType]="'histogram'"
-              [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"></app-chart>
+              [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'" [conceptName]="conceptName"></app-chart>
     </div>
   </div>
     <div class="no-values" *ngIf="toDisplayMeasurementGenderAnalysis === undefined">
@@ -71,14 +70,14 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <ng-container *ngIf="showGraph === graphType.GenderIdentity">
     <div class="chart" *ngIf="showGraph === graphType.GenderIdentity && analyses.genderIdentityAnalysis">
       <app-chart [analysis]="analyses.genderIdentityAnalysis" [backgroundColor]="backgroundColor"
-                 [chartTitle]="'Gender Identity'"> </app-chart>
+                 [chartTitle]="'Gender Identity'" [conceptName]="conceptName"> </app-chart>
     </div>
   </ng-container>
 
   <ng-container *ngIf="showGraph === graphType.RaceEthnicity">
     <div class="chart" *ngIf="showGraph === graphType.RaceEthnicity && analyses.raceEthnicityAnalysis">
       <app-chart [analysis]="analyses.raceEthnicityAnalysis" [backgroundColor]="backgroundColor"
-                 [chartTitle]="'Race Ethnicity'"> </app-chart>
+                 [chartTitle]="'Race Ethnicity'" [conceptName]="conceptName"> </app-chart>
     </div>
   </ng-container>
 
@@ -87,8 +86,7 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <ng-container *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">
     <div class="chart" *ngIf="isPercentageGraphSelected(); else AgeCountChart">
       <app-chart [analysis]="toDisplayAgeAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
-                 [domainType]="'ehr'" [domainCountAnalysis]="domainCountAnalysis"
-      [conceptName]="conceptName"> </app-chart>
+                 [domainType]="'ehr'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName"> </app-chart>
     </div>
     <ng-template #AgeCountChart>
       <app-chart [analysis]="toDisplayAgeAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
@@ -101,7 +99,7 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- SOURCE COLUMN CHART -->
   <ng-container class="chart-container" *ngIf="showGraph === graphType.Sources">
     <div class="chart" *ngIf="sourceConcepts && sourceConcepts.length > 0; else NoSourceConcepts;">
-      <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'">
+      <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'" [conceptName]="conceptName">
       </app-chart>
     </div>
     <ng-template #NoSourceConcepts>
@@ -114,13 +112,13 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- show race totals  if we want -->
   <div class="chart" *ngIf="showRace && analyses.raceAnalysis ">
     <app-chart [analysis]="analyses.raceAnalysis" [pointWidth]="20" [backgroundColor]="backgroundColor"
-               [chartTitle]="'Race'">
+               [chartTitle]="'Race'" [conceptName]="conceptName">
     </app-chart>
   </div>
   <!-- show ethnicity totals  if we want -->
   <div class="chart" *ngIf="showEthnicity && analyses.ethnicityAnalysis ">
     <app-chart [analysis]="analyses.ethnicityAnalysis" [pointWidth]="20" [backgroundColor]="backgroundColor"
-               [chartTitle]="'Ethnicity'">
+               [chartTitle]="'Ethnicity'" [conceptName]="conceptName">
     </app-chart>
   </div>
 
