@@ -11,6 +11,8 @@ import { RecursiveTreeComponent } from '../components/recursive-tree/recursive-t
 import { SourceTreeComponent } from '../components/source-tree/source-tree.component';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
+import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
+import { ChartService } from './charts/chart.service';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
@@ -19,7 +21,8 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { ChartService } from './charts/chart.service';
+import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
+
 
 
 @NgModule({
@@ -41,7 +44,9 @@ import { ChartService } from './charts/chart.service';
     SurveyChartComponent,
     ChartComponent,
     ConceptChartsComponent,
-    SurveyViewComponent
+    SurveyViewComponent,
+    ChartTopResultsComponent,
+    ChartBaseComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -56,7 +61,8 @@ import { ChartService } from './charts/chart.service';
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
     SurveyChartComponent,
-    ClarityModule
+    ClarityModule,
+    ChartTopResultsComponent
   ],
   providers: [
     {

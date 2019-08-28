@@ -24,6 +24,7 @@
                 </a>
               </h5>
               <div *ngIf="showTopConcepts">
+                <chart-top-results [concepts]="top10Results"></chart-top-results>
                 <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results"
                   [pointWidth]="10">
                 </app-chart>
