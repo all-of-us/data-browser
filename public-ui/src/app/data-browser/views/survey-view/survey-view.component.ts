@@ -412,6 +412,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showAnswerGraphs(a: any, q: any) {
     a.expanded = !a.expanded;
     if (a.expanded) {
+      if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
+        this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
+          'Expand to see graphs', this.survey.name + ' - Q'
+          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
+          , this.prevSearchText, null);
+      }
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
         + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
