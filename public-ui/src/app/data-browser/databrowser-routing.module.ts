@@ -92,6 +92,16 @@ const routes: Routes = [
           }
         },
         {
+          path: 'ehr/:id/:searchString/:searchString2',
+          component: EhrViewComponent,
+          data: {
+            title: 'View Full Results',
+            breadcrumb: {
+              value: ':id Domain',
+            }
+          }
+        },
+        {
           path: 'physical-measurements',
           component: PhysicalMeasurementsComponent,
           data: {

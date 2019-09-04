@@ -74,6 +74,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.route.params);
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
       if (params.searchString === ' ') {
@@ -81,7 +82,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
         );
       } else {
-        this.searchFromUrl = params.searchString;
+        if (params.searchString2) {
+          if (params.searchString2 !== ' ') {
+            this.searchFromUrl = params.searchString + '/' + params.searchString2;
+          } else {
+            this.searchFromUrl = params.searchString;
+          }
+        } else {
+          this.searchFromUrl = params.searchString;
+        }
       }
     });
     this.loadPage();
