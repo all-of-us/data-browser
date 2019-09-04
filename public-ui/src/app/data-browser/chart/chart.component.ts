@@ -208,6 +208,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
