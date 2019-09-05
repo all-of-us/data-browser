@@ -64,6 +64,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   totalResults: number;
   numPages: number;
   currentPage = 1;
+  selectedConcept: Concept;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -438,5 +439,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchRequest.pageNumber = this.currentPage;
      window.scrollTo(0, 0);
      this.ngOnInit();
+  }
+
+  public conceptSelectedFromChart(concept: Concept) {
+    this.selectedConcept = concept;
   }
 }

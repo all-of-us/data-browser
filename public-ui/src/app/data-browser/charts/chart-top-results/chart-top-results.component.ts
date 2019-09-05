@@ -1,91 +1,80 @@
-import { Component, Injector, OnChanges } from '@angular/core';
+import { Component, Injector, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Concept } from '../../../../publicGenerated/model/concept';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
   selector: 'chart-top-results',
   templateUrl: './chart-top-results.component.html',
-  styleUrls: ['./chart-top-results.component.css']
+  styleUrls: ['./chart-top-results.component.css', '../chart-base/chart-base.component.css']
 })
 export class ChartTopResultsComponent extends ChartBaseComponent implements OnChanges {
-  categoryArr: any[];
   chartOptions: any;
+  @Output() topResultSelected = new EventEmitter<Concept>();
   constructor(injector: Injector) {
     super(injector);
-
   }
+
 
   ngOnChanges() {
-    console.log(this.concepts, "concept");
-    // sort high to low
+    this.pointData = [];
+    this.buildChart();
 
-    this.concepts = this.concepts.sort((a, b) => {
-
-      if (a.countValue < b.countValue) {
-        return 1;
-      }
-      if (a.countValue > b.countValue) {
-        return -1;
-      }
-      return 0;
-    });
-
-
-    if (this.concepts) {
-      this.chartOptions = {
-        chart: this.chartObject(),
-        colors: [this.chartService.barColor],
-        title: this.chartService.noTitle,
-        xAxis: {
-          categories: this.categoryArr,
-          title: this.chartService.noTitle
-        },
-        yAxis: {
-          title: this.chartService.noTitle
-        },
-        legend: this.chartService.notEnabled,
-        credits: this.chartService.notEnabled,
-        plotOptions: {
-          series: {
-            pointWidth: 20
-          },
-          bar: {
-            shadow: false,
-            borderColor: null,
-            colorByPoint: true,
-            groupPadding: 0,
-            pointPadding: 0,
-            dataLabels: {
-              enabled: false,
-            },
-          }
-        },
-        series: this.topSeries(),
-      };
-      console.log(this.categoryArr,'classsss');
-    }
-    
+    this.chartOptions = this.getChartOptions();
+    this.chartOptions.plotOptions.series.pointWidth = 20;
+    this.chartOptions.yAxis.title.text = 'Participant Count';
+    this.chartOptions.xAxis.title.text = 'Top Concepts';
   }
 
 
-  topSeries() {
-    if (this.concepts && this.concepts.length > 0) {
-      const data = [];
-      this.categoryArr = [];
-      for (const concept of this.concepts) {
-        let toolTipText = '';
 
-        if (concept.countValue > 20) {
-          toolTipText = concept.conceptName + ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ' + '<b>' + concept.countValue + '</b>';
-        } else {
-          toolTipText = concept.conceptName + ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ';
-        }
-        data.push(concept.countValue);
-        this.categoryArr.push(concept.conceptName);
 
+  public buildChart() {
+    this.conceptDist();
+    this.chartObj = {
+      type: 'bar',
+      backgroundColor: 'transparent',
+    };
+    this.barPlotOptions = {
+      shadow: false,
+      borderColor: null,
+      cursor: 'pointer',
+      events: {
+        click:(event) => this.barClick(event)
       }
-      return [{ data: data }];
+    };
+  }
+
+  public barClick(e) {
+    console.log(e.point.concept);
+    
+    this.topResultSelected.emit(e.point.concept);
+  }
+
+  public conceptDist() {
+    for (const concept of this.concepts) {
+      this.pointData.push({
+        toolTipHelpText: this.toolTip(concept),
+        name: concept.conceptName + ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ',
+        y: concept.countValue,
+        concept: concept
+      });
+      this.categoryArr.push(concept.conceptName);
     }
+  }
+
+  public toolTip(concept: Concept) {
+    let toolTipText;
+    if (concept.countValue > 20) {
+      toolTipText = concept.conceptName +
+        ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
+        '<br/>' + 'Pariticipant Count: ' + '<b>' + concept.countValue + '</b>';
+    } else {
+      toolTipText = concept.conceptName +
+        ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
+        '<br/>' + 'Pariticipant Count: ';
+    }
+    return toolTipText;
   }
 }
+
+

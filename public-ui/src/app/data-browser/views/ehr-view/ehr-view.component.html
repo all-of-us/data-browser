@@ -24,10 +24,10 @@
                 </a>
               </h5>
               <div *ngIf="showTopConcepts">
-                <chart-top-results [concepts]="top10Results"></chart-top-results>
-                <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results"
+                <chart-top-results (topResultSelected)="conceptSelectedFromChart($event)"[concepts]="top10Results"></chart-top-results>
+                <!-- <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results"
                   [pointWidth]="10">
-                </app-chart>
+                </app-chart> -->
               </div>
             </section>
             <div class="results-grid" *ngIf="items.length > 0">
@@ -234,7 +234,7 @@
                   </div>
                 </div>
 
-                <div class="row-expansion" *ngIf="r.expanded" #chartElement>
+                <div class="row-expansion" *ngIf="r.expanded || selectedConcept && selectedConcept.conceptCode == r.conceptCode" #chartElement>
                   <div class="graph-menu">
                     <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}"
                       (click)="selectGraph(g, r)" class="chart-choice">
