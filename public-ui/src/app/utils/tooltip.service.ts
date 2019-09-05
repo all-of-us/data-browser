@@ -42,13 +42,14 @@ export class TooltipService {
     'The sources represent the many different ways that the standard medical concept ' +
     'returned in the search results has been recorded in patient records. \n' +
     'The sources bar chart provides the top 10 source concepts from the All of Us data.';
-  matchingConceptsHelpText = 'Medical concepts are similar to medical terms; ' +
+  matchingConceptsHelpText1 = 'Medical concepts are similar to medical terms; ' +
     'they capture medical information\n' +
     'in an individual’s records and may sometimes have values associated with them.\n' +
     'For example, “height” is a medical concept that has a measurement value (in centimeters).\n' +
     'These concepts are categorized into different domains. ' +
     'Domains are types of medical information.\n' +
-    'The Data Browser searches the All of Us public data for medical concepts that\n' +
+    'The Data Browser searches the ';
+  matchingConceptsHelpText2 = 'public data for medical concepts that\n' +
     'match the keyword or code entered in the search bar.\n' +
     'The Data Browser counts how many participants have at least\n' +
     'one mention of the matching medical concepts in their records.\n' +
@@ -81,9 +82,11 @@ export class TooltipService {
     'overall health': this.overallHealthSurvey,
     'lifestyle': this.lifestyleSurvey
   };
-  conceptCodeHelpText = 'The concept code is an additional piece of information that\n' +
-    'can be utilized to find medical concepts in the All of Us data set. Concept codes are\n' +
-    'specific to the All of Us Research Program data and are assigned ' +
+  conceptCodeHelpText1 = 'The concept code is an additional piece of information that\n' +
+    'can be utilized to find medical concepts in the ';
+  conceptCodeHelpText2 = 'data set. Concept codes are\n' +
+    'specific to the ';
+  conceptCodeHelpText3 = 'Research Program data and are assigned ' +
     'to all medical concepts.\n' +
     'In some instances, a medical concept may not be assigned ' +
     'a source or standard vocabulary code.\n' +
@@ -130,12 +133,18 @@ export class TooltipService {
     medical concept in the hierarchy, but never more than once for the same concept. As a result,
      the sum total of counts for the descendants in the tree may be more than the count
      returned for the top level concept.`;
-  raceEthnicityQuestionHelpText = `The All of Us Research Program defines race as a person’s
-  self-identification with one or more social groups. An individual can report as White, Black or
-  African American, Asian, American Indian and Alaska Native, Native Hawaiian and Other
-  Pacific Islander, or some other race. Survey respondents may report multiple races.
-  Ethnicity determines whether a person is of Hispanic origin or not. Hispanics may report
-  as any race.`;
+  raceEthnicityQuestionHelpText1 = `Through "The Basics" program survey, participants self-report race and ethnicity information to
+  the`;
+  allOfUsHelpText = `All of Us`;
+  raceEthnicityQuestionHelpText2 = `Research Program. Each participant who answered this survey question is only counted once in the counts below. If
+  a participant selected more than one option, they are counted in the “more than one race/ethnicity” category.`;
+  raceEthnicityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer`;
+  surveyExplorerUrl = 'https://www.researchallofus.org/data/data-sources/survey-explorer/';
+  genderIdentityQuestionHelpText1 = `Through “The Basics” survey, participants who have completed the initial steps of the program self-report gender
+  identity information to the `;
+  genderIdentityQuestionHelpText2 = `Research Program. Because participants can select more than one option,
+  counts and percentages may not add up to 100%`;
+  genderIdentityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer`;
   q2RolledCategoriesHelpText = `“Other” includes the following categories: American Indian
   or Alaska Native, Middle Eastern or North African,
   Native Hawaiian or other Pacific Islander, and None of these describe me.`;
