@@ -39,6 +39,12 @@ export class SurveyChartComponent implements OnInit {
   public selectGraphType(g, q: any, answer: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
+    if (this.answer.stratum4.toLowerCase().indexOf('more than one race') > -1) {
+      this.dbc.triggerEvent('conceptClick', 'More than one race /ethncitiy graph view',
+        'Expand to see graphs', this.surveyName + ' - Q'
+        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
+        ' - ' + this.graphToShow, this.searchTerm, null);
+    }
     this.dbc.triggerEvent('conceptClick', 'View Graphs',
       'Expand to see graphs', this.surveyName + ' - Q'
       + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
