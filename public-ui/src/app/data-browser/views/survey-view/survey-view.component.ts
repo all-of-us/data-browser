@@ -63,7 +63,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
-      this.searchFromUrl = params.searchString;
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.prevSearchText = params.search;
+      } else {
+        this.prevSearchText = '';
+      }
     });
   }
 
@@ -372,6 +378,21 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { search: this.searchText.value },
+          queryParamsHandling: 'merge'
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     if (this.searchText.value) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);

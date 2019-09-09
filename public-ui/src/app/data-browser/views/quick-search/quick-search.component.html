@@ -64,7 +64,7 @@
       </clr-tooltip>
     </h5>
     <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
-      <div [routerLink]="setEhrUrl(r)" (click)="viewEhrDomain(r)" class="result-box" *ngFor="let r of domainResults">
+      <div [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
         <p class="result-box-title">
           {{r.name}}
           <clr-tooltip>
@@ -88,10 +88,10 @@
           </span>
         </div>
         <div class="result-box-link">
-          <a [routerLink]="setEhrUrl(r)" *ngIf="!searchText.value" class="result-bottom-link"
-            (click)="viewEhrDomain(r)">
+          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="!searchText.value" class="result-bottom-link"
+            (click)="viewEhrDomain(r, null)">
             View Top {{r.name}} </a>
-          <a [routerLink]="setEhrUrl(r)" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r)">
+          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r, searchText.value)">
             View Results </a>
         </div>
       </div>
@@ -101,7 +101,7 @@
     </div>
     <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
     <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
-      <div (click)="viewSurvey(r)" class="result-box" *ngFor="let r of surveyResults">
+      <div (click)="viewSurvey(r, searchText.value)" class="result-box" *ngFor="let r of surveyResults">
         <p class="result-box-title">
           {{r.name}}
           <clr-tooltip>
@@ -128,9 +128,9 @@
           </div>
         </div>
           <div class="result-box-link">
-            <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r)">
+            <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r, null)">
               View Complete Survey </a>
-            <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r)"> View Results </a>
+            <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r, searchText.value)"> View Results </a>
           </div>
       </div>
       <!-- toDO: style noresults -->
