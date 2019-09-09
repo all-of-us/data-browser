@@ -24,7 +24,7 @@
                 </a>
               </h5>
               <div *ngIf="showTopConcepts">
-                <chart-top-results (topResultSelected)="conceptSelectedFromChart($event)"[concepts]="top10Results"></chart-top-results>
+                <chart-top-results (topResultSelected)="conceptSelectedFromChart($event,$event.conceptCode)" [concepts]="top10Results"></chart-top-results>
                 <!-- <app-chart *ngIf="showTopConcepts" class="top-concepts-chart" [concepts]="top10Results"
                   [pointWidth]="10">
                 </app-chart> -->
@@ -133,7 +133,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tbl-exp-r " [ngClass]="r.expanded?'row-selected':''"
+              <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r " [ngClass]="r.expanded || selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
                 *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
                 <div class="tbl-r" (click)="expandRow(standardConcepts.concat(items),r)">
                   <div class="body-lead info-text tbl-d first"
@@ -189,7 +189,7 @@
                     </div>
                     <div class="body-lead info-text tbl-d">
                       <button class="icon-btn">
-                        <clr-icon [ngClass]="r.expanded?'is-solid':''" shape="bar-chart" class="bar-chart-icon">
+                        <clr-icon [ngClass]="r.expanded || selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''" shape="bar-chart" class="bar-chart-icon">
                         </clr-icon>
                       </button>
                     </div>

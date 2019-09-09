@@ -68,6 +68,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private elm: ElementRef,
     private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService,
@@ -161,7 +162,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.searchText.valueChanges
         .subscribe((query) => {
           if (query == null) {
-            query = '' ;
+            query = '';
           }
           localStorage.setItem('searchText', query);
         }));
@@ -378,11 +379,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.graphToShow = GraphType.None;
   }
 
-  public expandRow(concepts: any[], r: any) {
+  public expandRow(concepts: any[], concept: any) {
+    // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
-      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
-    if (r.expanded) {
-      r.expanded = false;
+      concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
+    if (concept.expanded) {
+      concept.expanded = false;
       return;
     }
     this.resetSelectedGraphs();
@@ -392,7 +394,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.graphToShow = GraphType.BiologicalSex;
     }
     concepts.forEach(concept => concept.expanded = false);
-    r.expanded = true;
+    concept.expanded = true;
   }
 
   public toggleTopConcepts() {
@@ -437,11 +439,22 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public getNextPage(event) {
     this.searchRequest.pageNumber = this.currentPage;
-     window.scrollTo(0, 0);
-     this.ngOnInit();
+    window.scrollTo(0, 0);
+    this.ngOnInit();
   }
 
   public conceptSelectedFromChart(concept: Concept) {
-    this.selectedConcept = concept;
+    if (concept === this.selectedConcept) {
+      this.selectedConcept = undefined;
+    } else {
+      this.selectedConcept = concept;
+      setTimeout(() => {
+        // need to prefix a abc character b/c
+        const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
+        console.log(elm, 'elm HERE');
+        elm.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
   }
+
 }
