@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
   BrowserInfoRx,
   ResponsiveSizeInfoRx, UserAgentInfoRx
@@ -10,6 +10,8 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import {map} from 'rxjs/operators'
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
@@ -74,6 +76,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
       if (params.searchString === ' ') {
@@ -91,7 +94,23 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           this.searchFromUrl = params.searchString;
         }
       }
+      console.log('am i here ?');
     });
+    /*
+    combineLatest(this.route.params, this.route.queryParams)
+      .pipe(map(results => ({params: results[0], query: results[1]})))
+      .subscribe(results => {
+        this.domainId = this.dbc.routeToDomain[results.params.id];
+        if (results.query.searchString === ' ') {
+          this.router.navigate(
+            ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
+          );
+        } else {
+          this.searchFromUrl = results.query.searchString;
+        }
+        console.log('am i here ?');
+      });
+      */
     this.loadPage();
   }
 
@@ -288,7 +307,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public searchDomain(query: string) {
     if (query != null && query !== ' ' && query) {
       this.router.navigate(
-        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + this.prevSearchText]
+        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '?searchString=' + this.prevSearchText]
       );
     }
     this.getNumberOfPages(query);

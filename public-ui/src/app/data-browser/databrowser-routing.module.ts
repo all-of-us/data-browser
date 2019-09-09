@@ -82,17 +82,7 @@ const routes: Routes = [
           }
         },
         {
-          path: 'ehr/:id/:searchString',
-          component: EhrViewComponent,
-          data: {
-            title: 'View Full Results',
-            breadcrumb: {
-              value: ':id Domain',
-            }
-          }
-        },
-        {
-          path: 'ehr/:id/:searchString/:searchString2',
+          path: 'ehr/:id/',
           component: EhrViewComponent,
           data: {
             title: 'View Full Results',
