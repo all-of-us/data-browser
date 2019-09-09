@@ -211,7 +211,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     return this.api.getDomainSearchResults(query);
   }
 
-  public viewSurvey(r) {
+  public viewSurvey(r, searchString: string) {
     if (!this.prevSearchText) {
       this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
@@ -220,7 +220,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', this.prevSearchText);
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
-        this.router.navigateByUrl('survey/' + idName.conceptName.toLowerCase().replace(' ', '-'));
+        if (searchString) {
+          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')],
+            { queryParams: { searchString: searchString } });
+        } else {
+          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')]);
+        }
       }
     });
   }
