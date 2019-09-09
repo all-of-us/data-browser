@@ -234,7 +234,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', this.prevSearchText);
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
-    this.router.navigate([url], { queryParams: { searchString: searchString } })
+    this.router.navigate([url], { queryParams: { searchString: searchString } });
   }
 
   public setEhrUrl(r) {

@@ -62,7 +62,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
-  searchFromUrl: string;f
+  searchFromUrl: string;
   totalResults: number;
   numPages: number;
   currentPage = 1;
