@@ -64,7 +64,7 @@
       </clr-tooltip>
     </h5>
     <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
-      <div [routerLink]="setEhrUrl(r)" [queryParams]="{searchString: searchText.value}" (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
+      <div [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
         <p class="result-box-title">
           {{r.name}}
           <clr-tooltip>
@@ -88,10 +88,10 @@
           </span>
         </div>
         <div class="result-box-link">
-          <a [routerLink]="setEhrUrl(r)" [queryParams]="{searchString: searchText.value}" *ngIf="!searchText.value" class="result-bottom-link"
+          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="!searchText.value" class="result-bottom-link"
             (click)="viewEhrDomain(r, null)">
             View Top {{r.name}} </a>
-          <a [routerLink]="setEhrUrl(r)" [queryParams]="{searchString: searchText.value}" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r, searchText.value)">
+          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r, searchText.value)">
             View Results </a>
         </div>
       </div>

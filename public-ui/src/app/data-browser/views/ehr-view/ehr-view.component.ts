@@ -74,8 +74,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
-      if (params['searchString']) {
-        this.searchFromUrl = params.searchString;
+      if (params['search']) {
+        this.searchFromUrl = params.search;
       } else {
         this.router.navigate(
           ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
@@ -228,7 +228,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         [],
         {
           relativeTo: this.route,
-          queryParams: { searchString: this.prevSearchText }
+          queryParams: { search: this.prevSearchText }
         });
     } else {
       this.router.navigate(
@@ -294,7 +294,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.router.navigate(
         ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
         {
-          queryParams: {searchString: this.searchFromUrl}
+          queryParams: {search: this.searchFromUrl}
         }
       );
     }

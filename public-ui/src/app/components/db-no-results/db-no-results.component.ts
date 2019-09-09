@@ -55,7 +55,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
           this.router.navigate(
             ['ehr/' + this.dbc.domainToRoute[r.domain.toLowerCase()]],
             {
-              queryParams: { searchString: this.searchText.value }
+              queryParams: { search: this.searchText.value }
             });
         }
       });
