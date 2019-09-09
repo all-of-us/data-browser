@@ -379,13 +379,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.graphToShow = GraphType.None;
   }
 
-  public expandRow(concepts: any[], concept: any) {
+  public expandRow(concept: any) {
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
-    if (concept.expanded) {
-      concept.expanded = false;
-      return;
+    if ( this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
+      this.selectedConcept = undefined;
+    } else {
+      this.selectedConcept = concept;
     }
     this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
@@ -393,8 +394,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.graphToShow = GraphType.BiologicalSex;
     }
-    concepts.forEach(c => c.expanded = false);
-    concept.expanded = true;
   }
 
   public toggleTopConcepts() {
