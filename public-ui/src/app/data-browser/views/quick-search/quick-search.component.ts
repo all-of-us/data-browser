@@ -225,7 +225,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  public viewEhrDomain(r) {
+  public viewEhrDomain(r, searchString: string) {
     if (!this.prevSearchText) {
       this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
@@ -234,6 +234,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', this.prevSearchText);
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
+    this.router.navigate([url], { queryParams: { searchString: searchString } })
   }
 
   public setEhrUrl(r) {

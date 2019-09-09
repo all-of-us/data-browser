@@ -62,7 +62,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   treeData: any[];
   expanded = true;
   treeLoading = false;
-  searchFromUrl: string;
+  searchFromUrl: string;f
   totalResults: number;
   numPages: number;
   currentPage = 1;
@@ -78,38 +78,16 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
-      if (params.searchString === ' ') {
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['searchString']) {
+        this.searchFromUrl = params.searchString;
+      } else {
         this.router.navigate(
           ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
         );
-      } else {
-        if (params.searchString2) {
-          if (params.searchString2 !== ' ') {
-            this.searchFromUrl = params.searchString + '/' + params.searchString2;
-          } else {
-            this.searchFromUrl = params.searchString;
-          }
-        } else {
-          this.searchFromUrl = params.searchString;
-        }
       }
-      console.log('am i here ?');
     });
-    /*
-    combineLatest(this.route.params, this.route.queryParams)
-      .pipe(map(results => ({params: results[0], query: results[1]})))
-      .subscribe(results => {
-        this.domainId = this.dbc.routeToDomain[results.params.id];
-        if (results.query.searchString === ' ') {
-          this.router.navigate(
-            ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
-          );
-        } else {
-          this.searchFromUrl = results.query.searchString;
-        }
-        console.log('am i here ?');
-      });
-      */
     this.loadPage();
   }
 
@@ -251,6 +229,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { searchString: this.prevSearchText }
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
@@ -306,8 +298,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public searchDomain(query: string) {
     if (query != null && query !== ' ' && query) {
       this.router.navigate(
-        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() +
-        '?searchString=' + this.prevSearchText]
+        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
+        {
+          queryParams: {searchString: this.searchFromUrl}
+        }
       );
     }
     this.getNumberOfPages(query);
