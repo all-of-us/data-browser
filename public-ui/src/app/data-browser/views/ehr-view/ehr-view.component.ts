@@ -9,9 +9,9 @@ import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicG
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import { ISubscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import {map} from 'rxjs/operators'
+import {map} from 'rxjs/operators';
+import { ISubscription } from 'rxjs/Subscription';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
@@ -76,7 +76,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
       if (params.searchString === ' ') {
@@ -307,7 +306,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public searchDomain(query: string) {
     if (query != null && query !== ' ' && query) {
       this.router.navigate(
-        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '?searchString=' + this.prevSearchText]
+        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() +
+        '?searchString=' + this.prevSearchText]
       );
     }
     this.getNumberOfPages(query);

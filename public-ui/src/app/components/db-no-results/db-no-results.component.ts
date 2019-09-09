@@ -53,7 +53,8 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
           localStorage.setItem('ehrDomain', JSON.stringify(r));
           this.newDomain.emit(payload);
           this.router.navigateByUrl(
-            'ehr/' + this.dbc.domainToRoute[r.domain.toLowerCase()] + '?searchString=' + this.searchText.value
+            'ehr/' + this.dbc.domainToRoute[r.domain.toLowerCase()] +
+            '?searchString=' + this.searchText.value
             );
         }
       });

@@ -43,7 +43,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     if (newLabel.indexOf(':') >= 0) {
       const paramMap = route.snapshot.paramMap;
       for (const k of paramMap.keys) {
-        if(paramMap.get(k).indexOf('?') >= 0) {
+        if (paramMap.get(k).indexOf('?') >= 0) {
           newLabel = newLabel.replace(':' + k, paramMap.get(k).substring(0, paramMap.get(k).indexOf('?')));
         } else {
           newLabel = newLabel.replace(':' + k, paramMap.get(k));
