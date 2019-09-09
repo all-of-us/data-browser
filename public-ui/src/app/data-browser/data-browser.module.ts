@@ -11,6 +11,7 @@ import { RecursiveTreeComponent } from '../components/recursive-tree/recursive-t
 import { SourceTreeComponent } from '../components/source-tree/source-tree.component';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
+import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
 import { ChartService } from './charts/chart.service';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
@@ -21,7 +22,6 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 
 
 

@@ -1,8 +1,9 @@
-import { Component, Injector, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Injector, OnChanges, Output } from '@angular/core';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'chart-top-results',
   templateUrl: './chart-top-results.component.html',
   styleUrls: ['./chart-top-results.component.css', '../chart-base/chart-base.component.css']
@@ -39,14 +40,14 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
       borderColor: null,
       cursor: 'pointer',
       events: {
-        click:(event) => this.barClick(event)
+        click: (event) => this.barClick(event)
       }
     };
   }
 
   public barClick(e) {
     console.log(e.point.concept);
-    
+
     this.topResultSelected.emit(e.point.concept);
   }
 

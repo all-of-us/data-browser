@@ -13,7 +13,7 @@ export class ChartBaseComponent {
   pointData: any[] = [];
   toolTipText: string;
   chartObj: Object;
-  barPlotOptions: Object ={
+  barPlotOptions: Object = {
     shadow: false,
     borderColor: null,
   };
@@ -32,7 +32,7 @@ export class ChartBaseComponent {
       chart: this.chartObj,
       tooltip: {
         followPointer: true,
-        formatter: function() {
+        formatter: function () {
           if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('% of') === -1) {
             return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
           } else if (this.point.toolTipHelpText.indexOf('% of') >= 0) {

@@ -393,7 +393,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.graphToShow = GraphType.BiologicalSex;
     }
-    concepts.forEach(concept => concept.expanded = false);
+    concepts.forEach(c => c.expanded = false);
     concept.expanded = true;
   }
 
