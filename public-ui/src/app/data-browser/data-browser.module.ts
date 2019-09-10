@@ -62,7 +62,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     QuickSearchComponent,
     SurveyChartComponent,
     ClarityModule,
-    ChartTopResultsComponent
+    ChartTopResultsComponent,
+    ChartBaseComponent
   ],
   providers: [
     {
