@@ -394,6 +394,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.graphToShow = GraphType.BiologicalSex;
     }
+    setTimeout(() => {
+      // need to prefix a abc character b/c querySelector can't select just digits
+      const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
+      console.log(elm, 'elm HERE');
+      elm.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   }
 
   public toggleTopConcepts() {
@@ -441,19 +447,4 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     window.scrollTo(0, 0);
     this.ngOnInit();
   }
-
-  public conceptSelectedFromChart(concept: Concept) {
-    if (concept === this.selectedConcept) {
-      this.selectedConcept = undefined;
-    } else {
-      this.selectedConcept = concept;
-      setTimeout(() => {
-        // need to prefix a abc character b/c
-        const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
-        console.log(elm, 'elm HERE');
-        elm.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-  }
-
 }
