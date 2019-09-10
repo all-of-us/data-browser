@@ -128,7 +128,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     this.setDomain();
     this.domainSetup(this.ehrDomain);
-    this.showTopConcepts = true;
+    if (this.currentPage !== 1) {
+      this.showTopConcepts = false;
+    } else {this.showTopConcepts = true;}
   }
 
   private domainSetup(domain) {
@@ -383,7 +385,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
-    if ( this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
+    if (this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
       this.selectedConcept = null;
     } else {
       this.selectedConcept = concept;
