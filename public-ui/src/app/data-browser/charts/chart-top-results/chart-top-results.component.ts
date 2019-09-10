@@ -46,8 +46,6 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
   }
 
   public barClick(e) {
-    console.log(e.point.concept);
-
     this.topResultSelected.emit(e.point.concept);
   }
 

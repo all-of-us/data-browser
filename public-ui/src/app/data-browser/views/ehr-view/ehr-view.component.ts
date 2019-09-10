@@ -384,9 +384,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     if ( this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
-      this.selectedConcept = undefined;
+      this.selectedConcept = null;
     } else {
       this.selectedConcept = concept;
+      setTimeout(() => {
+        // need to prefix a abc character b/c querySelector can't select just digits
+        const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
+        elm.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     }
     this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
@@ -394,12 +399,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.graphToShow = GraphType.BiologicalSex;
     }
-    setTimeout(() => {
-      // need to prefix a abc character b/c querySelector can't select just digits
-      const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
-      console.log(elm, 'elm HERE');
-      elm.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
   }
 
   public toggleTopConcepts() {
