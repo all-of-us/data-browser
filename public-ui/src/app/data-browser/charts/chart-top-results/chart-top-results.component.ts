@@ -17,9 +17,7 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
 
 
   ngOnChanges() {
-    this.pointData = [];
     this.buildChart();
-
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 20;
     this.chartOptions.yAxis.title.text = 'Participant Count';
@@ -30,6 +28,8 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
 
 
   public buildChart() {
+    this.pointData = [];
+    this.categoryArr = [];
     this.conceptDist();
     this.chartObj = {
       type: 'bar',

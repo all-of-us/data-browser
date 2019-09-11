@@ -130,7 +130,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.domainSetup(this.ehrDomain);
     if (this.currentPage !== 1) {
       this.showTopConcepts = false;
-    } else {this.showTopConcepts = true;}
+    } else { this.showTopConcepts = true; }
+    return true;
   }
 
   private domainSetup(domain) {
@@ -381,7 +382,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.graphToShow = GraphType.None;
   }
 
-  public expandRow(concept: any) {
+  public expandRow(concept: any, fromChart?: boolean) {
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
@@ -389,11 +390,16 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.selectedConcept = null;
     } else {
       this.selectedConcept = concept;
-      setTimeout(() => {
-        // need to prefix a abc character b/c querySelector can't select just digits
-        const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
-        elm.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      if (this.selectedConcept) {
+        // document ready
+        setTimeout(() => {
+          if (document.readyState === 'complete') {
+            // need to prefix a abc character b/c querySelector can't select just digits
+            const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
+            elm.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 50);
+      }
     }
     this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {

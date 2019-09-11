@@ -24,7 +24,7 @@
                 </a>
               </h5>
               <div *ngIf="showTopConcepts">
-                <chart-top-results (topResultSelected)="expandRow($event)" [concepts]="top10Results"></chart-top-results>
+                <chart-top-results (topResultSelected)="expandRow($event,true)" [concepts]="top10Results"></chart-top-results>
               </div>
             </section>
             <div class="results-grid" *ngIf="items.length > 0">
