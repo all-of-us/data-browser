@@ -1145,6 +1145,7 @@
 4117788,"bar - pressure"
 4117789,"lb/sq. in"
 4117790,"Unit of area"
+4117839,"IU/mL"
 4117791,"/10 min"
 4117792,"/40"
 4117793,"/day"
@@ -1360,11 +1361,13 @@
 4121362,"Unit of mass"
 4121363,"nanogram"
 8564,"pg"
+8564,"(pg)"
 4121365,"fg"
 4121366,"Unit of time"
 4121367,"Non-SI unit of time"
 4121368,"hour"
 8512,"day"
+8713,"(g/dL)"
 8511,"week"
 4121371,"Unit of temperature"
 4121372,"Non-SI unit of temperature"
@@ -3036,7 +3039,9 @@
 8752,mm/hr(s)
 4212719,E.U./dL
 8785,/MM3
-8653,Degree_C
+8653,"Degree_C"
+8653,"degrees celcius"
+8653,Celsius
 8645,U/L
 8950,g/dL (calc)
 8698,L/min
