@@ -1,7 +1,7 @@
-"concept_id","name","description","question_count","participant_count","order_number"
-1585855,"Lifestyle","Survey includes information on participant smoking, alcohol and recreational drug use.",7,568120,3
-1585710,"Overall Health","Survey provides information about how participants report levels of individual health.",16,567857,2
-1586134,"The Basics","Survey includes participant demographic information.",14,567437,1
-43529712,"Personal Medical History","Survey includes information about participants personal medical history",0,0,4
-43528895,"Healthcare Access & Utilization","Survey includes information about participants access and use of health care",0,0,5
-43528698,"Family Health History","Survey includes information about participants family's medical history",0,0,6
+"concept_id","name","description","question_count","participant_count","order_number","can_show"
+1585855,"Lifestyle","Survey includes information on participant smoking, alcohol and recreational drug use.",7,568120,3,1
+1585710,"Overall Health","Survey provides information about how participants report levels of individual health.",16,567857,2,1
+1586134,"The Basics","Survey includes participant demographic information.",14,567437,1,1
+43529712,"Personal Medical History","Survey includes information about participants personal medical history",0,0,4,0
+43528895,"Healthcare Access & Utilization","Survey includes information about participants access and use of health care",0,0,5,0
+43528698,"Family Health History","Survey includes information about participants family's medical history",0,0,6,0

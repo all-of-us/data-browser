@@ -28,6 +28,7 @@ public class SurveyModule {
   private long questionCount;
   private long participantCount;
   private int orderNumber;
+  private int canShow;
 
   @Id
   @Column(name = "concept_id")
@@ -114,6 +115,20 @@ public class SurveyModule {
     return this;
   }
 
+  @Column(name="can_show")
+  public int getCanShow() {
+    return canShow;
+  }
+
+  public void setCanShow(int canShow) {
+    this.canShow = canShow;
+  }
+
+  public SurveyModule canShow(int canShow) {
+    this.canShow = canShow;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -124,12 +139,13 @@ public class SurveyModule {
             Objects.equals(conceptId, surveyModule.conceptId) &&
             Objects.equals(questionCount, surveyModule.questionCount) &&
             Objects.equals(participantCount, surveyModule.participantCount) &&
-            Objects.equals(orderNumber, surveyModule.orderNumber);
+            Objects.equals(orderNumber, surveyModule.orderNumber) &&
+            Objects.equals(canShow, surveyModule.canShow);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, description, conceptId, questionCount, participantCount, orderNumber);
+    return Objects.hash(name, description, conceptId, questionCount, participantCount, orderNumber, canShow);
   }
 
   @Override
