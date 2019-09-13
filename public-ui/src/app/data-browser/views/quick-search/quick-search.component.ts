@@ -212,7 +212,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewSurvey(r, search: string) {
-    console.log('in here');
     if (!this.prevSearchText) {
       this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
