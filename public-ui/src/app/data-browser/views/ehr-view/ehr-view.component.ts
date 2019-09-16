@@ -36,6 +36,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   searchResult: ConceptListResponse;
   items: any[] = [];
+  fullResultItemsList: any[] = [];
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
   graphButtons: any = [];
@@ -250,6 +251,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
+    if (this.domainId === 'drug' && this.items.length > this.searchRequest.maxResults) {
+      this.fullResultItemsList = this.items;
+      this.items = this.items.slice(((this.currentPage-1)*this.searchRequest.maxResults),
+        (((this.currentPage-1))*this.searchRequest.maxResults) + this.searchRequest.maxResults);
+    }
+    if (this.domainId === 'drug' && this.currentPage > 1) {
+      this.items = this.fullResultItemsList.slice(((this.currentPage-1)*this.searchRequest.maxResults),
+        (((this.currentPage-1))*this.searchRequest.maxResults) + this.searchRequest.maxResults);
+    }
     this.items = this.items.sort((a, b) => {
       if (a.countValue > b.countValue) {
         return -1;
