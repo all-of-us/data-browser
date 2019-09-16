@@ -609,11 +609,12 @@ public class DataBrowserControllerTest {
 
     private static org.pmiops.workbench.cdr.model.SurveyModule makeSurveyModule(SurveyModule surveyModule) {
         return new org.pmiops.workbench.cdr.model.SurveyModule()
-            .conceptId(surveyModule.getConceptId())
-            .name(surveyModule.getName())
-            .description(surveyModule.getDescription())
-            .questionCount(surveyModule.getQuestionCount())
-            .participantCount(surveyModule.getParticipantCount());
+                .conceptId(surveyModule.getConceptId())
+                .name(surveyModule.getName())
+                .description(surveyModule.getDescription())
+                .questionCount(surveyModule.getQuestionCount())
+                .participantCount(surveyModule.getParticipantCount())
+                .canShow(surveyModule.getCanShow());
     }
 
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
