@@ -34,7 +34,7 @@ export class DbTableComponent implements OnChanges {
   private subscriptions: ISubscription[] = [];
 
   constructor(
-    public tooltipText: TooltipService,  
+    public tooltipText: TooltipService,
     public dbc: DbConfigService,
     private elm: ElementRef,
     private api: DataBrowserService
@@ -71,7 +71,7 @@ export class DbTableComponent implements OnChanges {
     } else {
       this.selectedConcept = concept;
       setTimeout(() => { // wait till previous selected row shrinks
-        this.scrollTo('#c' + this.selectedConcept.conceptCode)
+        this.scrollTo('#c' + this.selectedConcept.conceptCode);
       }, 1);
     }
     this.resetSelectedGraphs();
