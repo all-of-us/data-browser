@@ -611,8 +611,7 @@ public class DataBrowserControllerTest {
                 .name(surveyModule.getName())
                 .description(surveyModule.getDescription())
                 .questionCount(surveyModule.getQuestionCount())
-                .participantCount(surveyModule.getParticipantCount())
-                .canShow(surveyModule.getCanShow());
+                .participantCount(surveyModule.getParticipantCount());
     }
 
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
