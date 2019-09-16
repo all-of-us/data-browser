@@ -253,12 +253,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.items = this.searchResult.items;
     if (this.domainId === 'drug' && this.items.length > this.searchRequest.maxResults) {
       this.fullResultItemsList = this.items;
-      this.items = this.items.slice(((this.currentPage-1)*this.searchRequest.maxResults),
-        (((this.currentPage-1))*this.searchRequest.maxResults) + this.searchRequest.maxResults);
+      this.items = this.items.slice(((this.currentPage - 1) * this.searchRequest.maxResults),
+        (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
     }
     if (this.domainId === 'drug' && this.currentPage > 1) {
-      this.items = this.fullResultItemsList.slice(((this.currentPage-1)*this.searchRequest.maxResults),
-        (((this.currentPage-1))*this.searchRequest.maxResults) + this.searchRequest.maxResults);
+      this.items = this.fullResultItemsList
+        .slice(((this.currentPage - 1) * this.searchRequest.maxResults),
+        (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
     }
     this.items = this.items.sort((a, b) => {
       if (a.countValue > b.countValue) {
