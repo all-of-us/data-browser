@@ -1,10 +1,6 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  BrowserInfoRx,
-  ResponsiveSizeInfoRx, UserAgentInfoRx
-} from 'ngx-responsive';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -78,12 +74,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
-      if (params.searchString === ' ') {
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.searchFromUrl = params.search;
+      } else {
         this.router.navigate(
           ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
         );
-      } else {
-        this.searchFromUrl = params.searchString;
       }
     });
     this.loadPage();
@@ -230,6 +228,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
+    if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { search: this.prevSearchText }
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
@@ -285,7 +297,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public searchDomain(query: string) {
     if (query != null && query !== ' ' && query) {
       this.router.navigate(
-        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + this.prevSearchText]
+        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
+        {
+          queryParams: {search: this.searchFromUrl}
+        }
       );
     }
     this.getNumberOfPages(query);

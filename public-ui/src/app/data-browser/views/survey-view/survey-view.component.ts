@@ -63,7 +63,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
-      this.searchFromUrl = params.searchString;
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.prevSearchText = params.search;
+      } else {
+        this.prevSearchText = '';
+      }
     });
   }
 
@@ -373,6 +379,21 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public filterResults() {
     if (this.searchText.value) {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: { search: this.searchText.value },
+          queryParamsHandling: 'merge'
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route
+        });
+    }
+    if (this.searchText.value) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
     }
@@ -412,6 +433,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showAnswerGraphs(a: any, q: any) {
     a.expanded = !a.expanded;
     if (a.expanded) {
+      if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
+        this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
+          'Expand to see graphs', this.survey.name + ' - Q'
+          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
+          , this.prevSearchText, null);
+      }
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
         + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +

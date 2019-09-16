@@ -21,6 +21,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   @Input() showGraph = GraphType.None;
   @Input() showRace = false;
   @Input() showEthnicity = false;
+  @Input() searchTerm = '';
 
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
@@ -233,9 +234,17 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
   public showSelectedSubGraph(sg: string) {
     this.selectedSubGraph = sg;
     if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
+      this.dbc.triggerEvent('percentageTabClick', '% Tab',
+        'Click',
+        this.concept.domainId + ' - ' + this.showGraph + ' - ' +
+        this.conceptName, this.searchTerm, null);
       this.toDisplayGenderAnalysis = this.analyses.genderPercentageAnalysis;
       this.toDisplayAgeAnalysis = this.analyses.agePercentageAnalysis;
     } else {
+      this.dbc.triggerEvent('countTabClick', 'Count Tab',
+        'Click',
+         this.concept.domainId + ' - ' + this.showGraph + ' - ' +
+        this.conceptName, this.searchTerm, null);
       this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
       this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
     }

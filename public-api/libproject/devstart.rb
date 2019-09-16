@@ -24,7 +24,7 @@ SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com 
               clouderrorreporting.googleapis.com bigquery-json.googleapis.com}
 DRY_RUN_CMD = %W{echo [DRY_RUN]}
 TEST_GAE_VARS = {
-  "GAE_MIN_INSTANCES" => "0",
+  "GAE_MIN_INSTANCES" => "1",
   "GAE_MAX_INSTANCES" => "10"
 }
 

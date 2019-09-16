@@ -43,7 +43,11 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     if (newLabel.indexOf(':') >= 0) {
       const paramMap = route.snapshot.paramMap;
       for (const k of paramMap.keys) {
-        newLabel = newLabel.replace(':' + k, paramMap.get(k));
+        if (paramMap.get(k).indexOf('?') >= 0) {
+          newLabel = newLabel.replace(':' + k, paramMap.get(k).substring(0, paramMap.get(k).indexOf('?')));
+        } else {
+          newLabel = newLabel.replace(':' + k, paramMap.get(k));
+        }
       }
     }
     return {
@@ -102,7 +106,6 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       if (routeURL.length > 0) {
         url += `/${routeURL}`;
       }
-
       const label = child.snapshot.data[routeDataBreadcrumb].value;
       const isIntermediate = child.snapshot.data[routeDataBreadcrumb].intermediate;
 
