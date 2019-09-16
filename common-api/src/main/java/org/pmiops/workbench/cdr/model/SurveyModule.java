@@ -20,7 +20,8 @@ public class SurveyModule {
                           .description(surveyModule.getDescription())
                           .questionCount(surveyModule.getQuestionCount())
                           .participantCount(surveyModule.getParticipantCount())
-                          .orderNumber(surveyModule.getOrderNumber());
+                          .orderNumber(surveyModule.getOrderNumber())
+                          .canShow(surveyModule.getCanShow());
 
   private long conceptId;
   private String name;
