@@ -16,6 +16,7 @@ import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tr
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
+import { DbTableComponent } from './db-table/db-table.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
@@ -47,6 +48,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyViewComponent,
     ChartTopResultsComponent,
     ChartBaseComponent,
+    DbTableComponent,
   ],
   exports: [
     DataBrowserRoutingModule,

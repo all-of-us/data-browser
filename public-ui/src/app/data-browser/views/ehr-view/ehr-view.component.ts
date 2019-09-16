@@ -46,7 +46,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   loading: boolean;
   totalParticipants: number;
   top10Results: any[] = []; // We graph top10 results
-  private searchRequest: SearchConceptsRequest;
+  searchRequest: SearchConceptsRequest;
   private subscriptions: ISubscription[] = [];
   private initSearchSubscription: ISubscription = null;
   /* Show more synonyms when toggled */
@@ -319,25 +319,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectGraph(g, r: any) {
-    this.resetSelectedGraphs();
-    this.graphToShow = g;
-    this.dbc.triggerEvent('conceptClick', 'Concept Graph',
-      'Click On ' + this.graphToShow + ' Chart',
-      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
-    if (this.graphToShow === GraphType.Sources &&
-      ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
-        || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
-      this.treeLoading = true;
-      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
-        .subscribe({
-          next: result => {
-            this.treeData = [result.parent];
-            this.treeLoading = false;
-          }
-        }));
-    }
-  }
 
   public toggleSynonyms(concept: any) {
     this.showMoreSynonyms[concept.conceptId] = !this.showMoreSynonyms[concept.conceptId];
@@ -348,87 +329,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public showToolTip(g) {
-    if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.ehrBSPercentageChartHelpText + '\n' +
-        this.tooltipText.ehrBSCountChartHelpText + '\n';
-    }
-    if (g === 'Gender Identity') {
-      return this.tooltipText.genderIdentityChartHelpText;
-    }
-    if (g === 'Race / Ethnicity') {
-      return this.tooltipText.raceEthnicityChartHelpText;
-    }
-    if (g === 'Age') {
-      return this.tooltipText.ehrAgeChartHelpText;
-    }
-    if (g === 'Sources') {
-      return this.tooltipText.sourcesChartHelpText;
-    }
-    if (g === 'Values') {
-      return this.tooltipText.valueChartHelpText;
-    }
-  }
-
-  public toolTipPos(g) {
-    if (g === 'Biological Sex' || g === 'Values') {
-      return 'bottom-right';
-    }
-    return 'bottom-left';
-  }
-
-  public resetSelectedGraphs() {
-    this.graphToShow = GraphType.None;
-  }
-
-  public expandRow(concept: any, fromChart?: boolean) {
-    // analytics
-    this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
-      concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
-    if (this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
-      this.selectedConcept = null;
-    } else {
-      this.selectedConcept = concept;
-      if (this.selectedConcept) {
-        // document ready
-        setTimeout(() => {
-          if (document.readyState === 'complete') {
-            // need to prefix a abc character b/c querySelector can't select just digits
-            const elm = this.elm.nativeElement.querySelector('#c' + this.selectedConcept.conceptCode);
-            elm.scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 50);
-      }
-    }
-    this.resetSelectedGraphs();
-    if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
-      this.graphToShow = GraphType.Values;
-    } else {
-      this.graphToShow = GraphType.BiologicalSex;
-    }
-  }
-
   public toggleTopConcepts() {
     this.showTopConcepts = !this.showTopConcepts;
   }
 
-  public checkCount(count: number) {
-    if (count <= 20) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public participantPercentage(count: number) {
-    if (!count || count <= 0) { return 0; }
-    let percent: number = count / this.totalParticipants;
-    percent = parseFloat(percent.toFixed(4));
-    return percent * 100;
-  }
-
   public changeResults(e) {
+    this.selectedConcept = undefined;
     this.loadPage();
   }
 
@@ -450,8 +356,18 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public getNextPage(event) {
+    this.selectedConcept = undefined;
     this.searchRequest.pageNumber = this.currentPage;
     window.scrollTo(0, 0);
-    this.ngOnInit();
+    this.loadPage();
+  }
+
+  public selectConcept(concept: Concept, fromChart?: boolean) {
+    this.selectedConcept = concept;
+    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptCode);
+    if (fromChart && this.currentPage !== 1) {
+      this.currentPage = 1;
+      this.loadPage();
+    }
   }
 }

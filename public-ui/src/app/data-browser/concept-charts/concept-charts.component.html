@@ -15,7 +15,7 @@
   </clr-tooltip>
 </div>
 
-<div class="col-md" *ngIf="showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
+<div class="col-md" *ngIf="!loading() && showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
   <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}"
        (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">{{sg}}</div>
 </div>
