@@ -60,7 +60,7 @@ export class DbTableComponent implements OnChanges {
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     if (this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
-      if (fromChart && localStorage.getItem('selectedConceptCode'))  {
+      if (fromChart && localStorage.getItem('selectedConceptCode')) {
         this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
           this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));

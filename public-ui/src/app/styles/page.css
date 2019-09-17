@@ -223,26 +223,11 @@
 
 /* •••• table with fisrt column maxwidth 50% •••• */
 
-.tbl-r {
+/* .tbl-r {
   display: flex;
   justify-content: space-between;
-}
+} */
 
-.tbl-r-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 30rem;
-}
-
-.tbl-r-group .tbl-d:last-of-type {
-  width: 5rem;
-  white-space: nowrap;
-  text-align: center;
-}
-.tbl-r-group .tbl-d:last-of-type button {
-  width:100%;
-}
 
 .tbl-r.tbl-head {
   padding: 9px;
@@ -250,9 +235,11 @@
 }
 
 .tbl-d {
+  display: inline-block;
   padding: 0 9px;
   position: relative;
-  width: calc(24%);
+  width: calc(25%);
+  min-width: 10rem;
 }
 
 .row-expansion {
@@ -302,14 +289,14 @@
   transition: .1s background ease-in;
 }
 
-.tbl-d.first {
+/* .tbl-d.first {
   width: 30%;
-}
+} */
 
 @media only screen and (min-width: 1168px) {
-  .tbl-d.first {
+  /* .tbl-d.first {
     min-width: 10rem;
-  }
+  } */
 }
 
 .tbl-r {

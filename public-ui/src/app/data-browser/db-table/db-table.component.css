@@ -1,3 +1,4 @@
+
 .medline-link {
     font-size: 14px;
     color: #262262;
@@ -64,7 +65,7 @@
     padding-bottom: 16px;
 }
 
-.tbl-head .tbl-r-group .tbl-d::before {
+.tbl-head .tbl-d::before {
     content: '';
     position: absolute;
     width: 10px;
@@ -72,6 +73,9 @@
     background: url('/assets/icons/divider.svg');
     background-repeat: no-repeat;
     left: -10px;
+}
+.tbl-head .tbl-d:first-of-type::before {
+    content: none;
 }
 
 .tbl-r.tbl-head {
@@ -82,7 +86,8 @@
 
 .icon-btn {
     position: relative;
-    right: 18px;
+    width:100%;
+    text-align: right;
 }
 
 .tbl-r {

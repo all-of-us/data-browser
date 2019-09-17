@@ -18,7 +18,7 @@
           <clr-tooltip>
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
+              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText1}}</div>
             </clr-tooltip-content>
           </clr-tooltip>
         </h5>
@@ -29,7 +29,7 @@
           <clr-tooltip>
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText}}</div>
+              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText2}}</div>
             </clr-tooltip-content>
           </clr-tooltip>
         </h5>
@@ -50,7 +50,7 @@
     </div>
   </div>
   <div class="tbl-r tbl-head">
-    <div class="tbl-d first body-lead info-text"> {{ehrDomain.name}}
+    <div class="tbl-d body-lead info-text"> {{ehrDomain.name}}
       <clr-tooltip>
         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
@@ -58,27 +58,26 @@
         </clr-tooltip-content>
       </clr-tooltip>
     </div>
-    <div class="tbl-r-group">
-      <div class="tbl-d body-lead info-text"> Participants of {{totalParticipants | number}}
-        <clr-tooltip>
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div>
-      <div class="tbl-d body-lead info-text"> % of
-        {{totalParticipants | number}}
-        <clr-tooltip>
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">The overall participant count of this medical concept divided
-              by the total number of participants
-            </div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div>
-      <div class="tbl-d  body-lead info-text">
+    <div class="tbl-d body-lead info-text"> Participants of {{totalParticipants | number}}
+      <clr-tooltip>
+        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+          <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+    <div class="tbl-d body-lead info-text"> % of
+      {{totalParticipants | number}}
+      <clr-tooltip>
+        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+          <div class="tooltip-label">The overall participant count of this medical concept divided
+            by the total number of participants
+          </div>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+    <!-- <div class="tbl-d  body-lead info-text">
         Vocabulary Code
         <clr-tooltip>
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -87,8 +86,8 @@
             </div>
           </clr-tooltip-content>
         </clr-tooltip>
-      </div>
-      <div class="tbl-d body-lead info-text">
+      </div> -->
+    <!-- <div class="tbl-d body-lead info-text">
         Concept Code
         <clr-tooltip>
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -96,16 +95,17 @@
             <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
           </clr-tooltip-content>
         </clr-tooltip>
-      </div>
-      <div class="tbl-d body-lead info-text"> View graphs
-      </div>
-    </div>
+      </div> -->
+    <!-- <div class="tbl-d body-lead info-text"> 
+      </div> -->
+
   </div>
-  
-  <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r " [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
+
+  <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r "
+    [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
     *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
     <div class="tbl-r" (click)="expandRow(r)">
-      <div class="body-lead info-text tbl-d first"
+      <div class="body-lead info-text tbl-d"
         *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
         <div class="code-tooltip">
           <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
@@ -114,7 +114,7 @@
       </div>
 
       <ng-template #code_match_standard>
-        <div class="body-lead info-text tbl-d first"
+        <div class="body-lead info-text tbl-d"
           *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
           <div class="code-tooltip"
             *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
@@ -124,50 +124,50 @@
         </div>
       </ng-template>
       <ng-template #code_match_not_standard>
-        <div class="body-lead info-text tbl-d first">
+        <div class="body-lead info-text tbl-d">
           <div class="code-tooltip">
-              <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
-                {{i+((currentPage * searchRequest.maxResults) - items.length)+1}}.
-              </span>
+            <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
+              {{i+((currentPage * searchRequest.maxResults) - items.length)+1}}.
+            </span>
             <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
             <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
             </app-highlight-search>
           </div>
         </div>
       </ng-template>
-      <div class="tbl-r-group">
-        <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
-          &le; {{r.countValue | number}}
-        </div>
-        <ng-template #Non20Counts>
-          <div class="body-lead info-text tbl-d">
-            {{r.countValue | number}}
-          </div>
-        </ng-template>
+
+      <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
+        &le; {{r.countValue | number}}
+      </div>
+      <ng-template #Non20Counts>
         <div class="body-lead info-text tbl-d">
-          {{participantPercentage(r.countValue) | number}}%
+          {{r.countValue | number}}
         </div>
-        <ng-template #noConceptSynonyms>
-          <div class="body-lead info-text tbl-d"></div>
-        </ng-template>
-        <div class="body-lead info-text tbl-d">
+      </ng-template>
+      <div class="body-lead info-text tbl-d">
+        {{participantPercentage(r.countValue) | number}}%
+      </div>
+      <ng-template #noConceptSynonyms>
+        <div class="body-lead info-text tbl-d"></div>
+      </ng-template>
+      <!-- <div class="body-lead info-text tbl-d">
           {{r.vocabularyId}} {{r.conceptCode}}
         </div>
         <div class="body-lead info-text tbl-d">
           {{r.conceptId}}
-        </div>
-        <div class="body-lead info-text tbl-d">
-          <button class="icon-btn">
-            <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''" shape="bar-chart" class="bar-chart-icon">
-            </clr-icon>
-          </button>
-        </div>
+        </div> -->
+      <div class="body-lead info-text tbl-d">
+        <button class="icon-btn">
+          <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
+            shape="bar-chart" class="bar-chart-icon">
+          </clr-icon>
+        </button>
       </div>
+
     </div>
-    <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)"
-      class="body-lead info-text aka">
-      <div *ngIf="r.conceptSynonyms;else noConceptSynonyms"
-        (click)="$event.stopPropagation();toggleSynonyms(r)" class="aka-text">
+    <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)" class="body-lead info-text aka">
+      <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
+        class="aka-text">
         <span>Also Known As</span>
         <clr-tooltip>
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info">
@@ -186,8 +186,7 @@
           [searchTerm]="prevSearchText">
         </app-highlight-search>
         <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-          *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
-          [searchTerm]="prevSearchText">
+          *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
         </app-highlight-search>
         <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
           *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
@@ -203,17 +202,18 @@
       </div>
     </div>
 
-    <div class="row-expansion" *ngIf="searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode" #chartElement>
+    <div class="row-expansion" *ngIf="searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
+      #chartElement>
       <div class="graph-menu">
-        <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}"
-          (click)="selectGraph(g, r)" class="chart-choice">
-            <span>{{g}}</span>
-            <clr-tooltip>
-              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-              <clr-tooltip-content clrPosition="{{toolTipPos(g)}}" clrSize="lg" *clrIfOpen>
-                <div class="tooltip-label">{{showToolTip(g)}}</div>
-              </clr-tooltip-content>
-            </clr-tooltip>
+        <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g, r)"
+          class="chart-choice">
+          <span>{{g}}</span>
+          <clr-tooltip>
+            <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+            <clr-tooltip-content clrPosition="{{toolTipPos(g)}}" clrSize="lg" *clrIfOpen>
+              <div class="tooltip-label">{{showToolTip(g)}}</div>
+            </clr-tooltip-content>
+          </clr-tooltip>
         </div>
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
