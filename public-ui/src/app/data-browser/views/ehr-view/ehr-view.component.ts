@@ -465,4 +465,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
      window.scrollTo(0, 0);
      this.ngOnInit();
   }
+  
+  public hoverOnTooltip(label: string, searchTerm: string, action: string) {
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
+      label, this.searchText.value, action);
+  }
 }
