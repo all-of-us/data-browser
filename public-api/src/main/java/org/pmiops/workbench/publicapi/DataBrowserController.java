@@ -840,7 +840,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 Map.Entry pair = (Map.Entry)it.next();
                 Long analysisId = (Long)pair.getKey();
                 AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
-
                 //aa.setUnitName(unitName);
                 if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
                     aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
@@ -1074,7 +1073,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     List<AchillesResult> ehrGenderCountResults = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingGender)).collect(Collectors.toList());
                     if (ehrGenderCountResults != null && ehrGenderCountResults.size() > 0) {
                         AchillesResult result = ehrGenderCountResults.get(0);
-                        String percentageValue = String.valueOf(Math.round((20/result.getCountValue())*100/2)*2);
+                        String percentageValue = String.valueOf(Math.round(((double)20/result.getCountValue())*100/2)*2);
                         missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, percentageValue, null, null, 20L, 20L);
                     } else {
                         missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, "0", null, null, 20L, 20L);
