@@ -8,9 +8,8 @@ strong {
 }
 
 .desc-container {
-    display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
 }
 
 .page-header {

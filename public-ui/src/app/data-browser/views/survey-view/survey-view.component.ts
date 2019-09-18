@@ -89,8 +89,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = this.searchFromUrl;
         localStorage.setItem('searchText', this.searchFromUrl);
       } else {
-        this.prevSearchText = '';
-        this.prevSearchText = localStorage.getItem('searchText');
+        if (localStorage.getItem('searchText')) {
+          this.prevSearchText = localStorage.getItem('searchText');
+        } else {
+          this.prevSearchText = '';
+        }
       }
     }
     this.loading = true;
@@ -105,7 +108,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.searchText.setValue(this.prevSearchText);
     if (this.prevSearchText && this.prevSearchText != null) {
       this.router.navigate(
-        ['survey/' + this.domainId.toLowerCase() + '/' + this.prevSearchText]
+        ['survey/' + this.domainId.toLowerCase()],
+        {
+          queryParams: { search: this.searchText.value },
+        }
       );
     }
     // Filter when text value changes
@@ -378,7 +384,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
-    if (this.searchText.value) {
+    if (this.searchText.value && this.searchText.value !== 'null') {
       this.router.navigate(
         [],
         {
