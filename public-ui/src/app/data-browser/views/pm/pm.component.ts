@@ -106,7 +106,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }
-  
+
   public hoverOnTooltip(label: string, action: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       label, null, action);
