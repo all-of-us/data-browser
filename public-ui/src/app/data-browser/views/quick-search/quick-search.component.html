@@ -17,7 +17,7 @@
     <div class="search">
       <div class="search-title">
         <span class="secondary-display">{{title}}</span>
-        <clr-tooltip (mouseenter)="hoverOnTooltip()">
+        <clr-tooltip (mouseenter)="hoverOnTooltip('Homepage Tooltip Hover', null, 'Tooltip Homepage search across data')">
           <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
             <div class="tooltip-label">{{subTitle1}} <span class="allofus-italics">All of Us</span> {{subTitle2}}
@@ -54,7 +54,7 @@
   <app-spinner [loading]="loading"></app-spinner>
   <section class="results">
     <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
-      <clr-tooltip>
+      <clr-tooltip (mouseenter)="hoverOnTooltip('Homepage Tooltip Hover', null, 'Tooltip Home Page EHR Domains')">
         <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
           <div class="tooltip-header">EHR Domains</div>
@@ -67,7 +67,7 @@
       <div [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
         <p class="result-box-title">
           {{r.name}}
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('Homepage Tooltip Hover', null, 'Hover on ' + r.name + 'tile tooltip')">
             <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.domainHelpText[r.domain.toLowerCase()]}}</div>
@@ -104,7 +104,7 @@
       <div (click)="viewSurvey(r, searchText.value)" class="result-box" *ngFor="let r of surveyResults">
         <p class="result-box-title">
           {{r.name}}
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('Homepage Tooltip Hover', null, 'Hover on Survey Tile ' + r.name + ' tooltip')">
             <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.domainHelpText[r.name.toLowerCase()]}}</div>
@@ -145,7 +145,7 @@
       <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
         <p class="result-box-title">
           Physical Measurements
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('Homepage Tooltip Hover', null, 'Hover on physical measurements tile tooltip')">
             <clr-icon clrTooltipTrigger shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.physicalMeasurements}}</div>
