@@ -79,6 +79,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.searchFromUrl = params.search;
+        this.prevSearchText = params.search;
+        this.searchText.setValue(this.prevSearchText);
       } else {
         this.router.navigate(
           ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
