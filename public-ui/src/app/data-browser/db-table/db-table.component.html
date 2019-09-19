@@ -8,7 +8,7 @@
       </ng-container>
       <ng-template #show_pages>
         <h5 id="domain-name" class="primary-display">
-          Showing top {{((currentPage * searchRequest.maxResults) - items.length)+1}} -
+          Showing top {{((currentPage-1) * searchRequest.maxResults)+1}} -
           {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
         </h5>
       </ng-template>
@@ -127,7 +127,7 @@
         <div class="body-lead info-text tbl-d first">
           <div class="code-tooltip">
               <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
-                {{i+((currentPage * searchRequest.maxResults) - items.length)+1}}.
+                {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
               </span>
             <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
             <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
