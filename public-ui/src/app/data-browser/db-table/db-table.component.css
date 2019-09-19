@@ -1,4 +1,3 @@
-
 .medline-link {
     font-size: 14px;
     color: #262262;
@@ -38,7 +37,7 @@
 .aka {
     padding-left: 9px;
     padding-top: 9px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .aka .info-icon {
@@ -46,13 +45,34 @@
     transform: scale(0.7);
 }
 
+.aka-text {
+    /* width: 170px; */
+    font-family: Arial, sans-serif;
+    font-style: italic;
+    color: rgb(150 150 150);
+}
+
+.aka-info {
+    opacity: .7;
+}
+
+.aka-layout {
+    font-size: 16px;
+}
+
+
+
 .see-more, .see-less {
     display: inline;
     color: #216fb4;
     font-weight: 400;
     position: relative;
     z-index: 100;
-    padding-left: 0.5%;
+}
+
+.see-more clr-icon {
+    margin-top: 0.276rem;
+    margin-left: -3.7px;
 }
 
 .row-selected {
@@ -73,7 +93,9 @@
     background: url('/assets/icons/divider.svg');
     background-repeat: no-repeat;
     left: -10px;
+    padding-right: 1rem;
 }
+
 .tbl-head .tbl-d:first-of-type::before {
     content: none;
 }
@@ -84,19 +106,83 @@
     border-bottom: none;
 }
 
-.icon-btn {
+.tbl-r.tbl-head {
+    padding: .5rem 0;
+    border-radius: 3px 3px 0 0;
+  }
+  
+  .tbl-r {
+    display:grid;
+    grid-template-columns: 35% 20% 20% 1fr;
+    text-align: left;
+    min-width: 810px;
+  }
+  
+  .tbl-d {
+    display: inline-block;
+    padding: 0 .5rem;
+    font-size:16px;
     position: relative;
-    width:100%;
-    text-align: right;
-}
+  }
+  
+  
+  .row-expansion {
+    width: 100%;
+    text-align: center;
+    padding-top: 9px;
+    background: #f6f6f8;
+    border-top: none;
+    padding-bottom: calc(9px*3);
+  }
+  
+  .tbl-r-state {
+    background: #f6f6f8;
+  }
+  
+  .tbl-r-expanded {
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+  }
+  
+  
+  .tbl-exp-r {
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    cursor: pointer;
+    transition: .2s background ease-out;
+    padding: 9px;
+    min-width: 810px;
+  }
+  
+  .tbl-exp-r *.tbl-exp-r {
+    border-left: none;
+    border-right: none;
+    padding: 0.5rem 0;
+    min-width: auto;
+  }
+  
+  .tbl-exp-r:last-of-type {
+    border-bottom: 1px solid #CCCCCC;
+  }
+  
+  .tbl-exp-r:hover {
+    background: #f6f6f8;
+    transition: .1s background ease-in;
+  }
 
 .tbl-r {
     border: none;
 }
 
-.synonyms-text {
-    padding-left: 1%;
-    padding-right: 3%;
+.icon-btn {
+    position: relative;
+    width: 100%;
+    text-align: right;
+}
+
+
+.tooltip-lg {
+
 }
 
 #answer-result {
