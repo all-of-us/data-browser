@@ -161,4 +161,8 @@ export class DbTableComponent implements OnChanges {
       return this.tooltipText.valueChartHelpText;
     }
   }
+  public hoverOnTooltip(label: string, searchTerm: string, action: string) {
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
+      label, this.searchText.value, action);
+  }
 }

@@ -15,7 +15,7 @@
       <ng-container *ngIf="!searchText.value; else no_search_term">
         <h5 id="domain-name" class="primary-display">
           concepts for this domain
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText1}}</div>
@@ -26,7 +26,7 @@
       <ng-template #no_search_term>
         <h5 id="domain-name" class="primary-display" *ngIf="searchText.value">
           matching medical concepts
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText2}}</div>
@@ -51,7 +51,7 @@
   </div>
   <div class="tbl-r tbl-head">
     <div class="tbl-d first body-lead info-text"> {{ehrDomain.name}}
-      <clr-tooltip>
+      <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Domain name tooltip hover in matching concepts table')">
         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
           <div class="tooltip-label">{{tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
@@ -60,7 +60,7 @@
     </div>
     <div class="tbl-r-group">
       <div class="tbl-d body-lead info-text"> Participants of {{totalParticipants | number}}
-        <clr-tooltip>
+        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Participant count tooltip hover')">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
             <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
@@ -69,7 +69,7 @@
       </div>
       <div class="tbl-d body-lead info-text"> % of
         {{totalParticipants | number}}
-        <clr-tooltip>
+        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Percentage of participant count tooltip hover')">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
             <div class="tooltip-label">The overall participant count of this medical concept divided
@@ -80,7 +80,7 @@
       </div>
       <div class="tbl-d  body-lead info-text">
         Vocabulary Code
-        <clr-tooltip>
+        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Vocabulary code tooltip hover')">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
             <div class="tooltip-label">{{tooltipText.vocabularyCodeHelpText}}
@@ -90,7 +90,7 @@
       </div>
       <div class="tbl-d body-lead info-text">
         Concept Code
-        <clr-tooltip>
+        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept code tooltip hover')">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
             <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
@@ -169,7 +169,7 @@
       <div *ngIf="r.conceptSynonyms;else noConceptSynonyms"
         (click)="$event.stopPropagation();toggleSynonyms(r)" class="aka-text">
         <span>Also Known As</span>
-        <clr-tooltip>
+        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept synonyms tooltip hover on concept ' + r.conceptName)">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info">
           </clr-icon>
           <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
@@ -208,7 +208,7 @@
         <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}"
           (click)="selectGraph(g, r)" class="chart-choice">
             <span>{{g}}</span>
-            <clr-tooltip>
+            <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName)">
               <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
               <clr-tooltip-content clrPosition="{{toolTipPos(g)}}" clrSize="lg" *clrIfOpen>
                 <div class="tooltip-label">{{showToolTip(g)}}</div>
@@ -224,7 +224,7 @@
               <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
               <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
               <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
-                <clr-tooltip>
+                <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Sources chart tooltip hover on concept ' + r.conceptName)">
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
                   <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
                     <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
