@@ -138,7 +138,7 @@ export class TooltipService {
   allOfUsHelpText = `All of Us`;
   raceEthnicityQuestionHelpText2 = `Research Program. Each participant who answered this survey question is only counted once in the counts below. If
   a participant selected more than one option, they are counted in the “more than one race/ethnicity” category.`;
-  raceEthnicityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer`;
+  raceEthnicityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
   surveyExplorerUrl = 'https://www.researchallofus.org/data/data-sources/survey-explorer/';
   genderIdentityQuestionHelpText1 = `Through “The Basics” survey, participants who have completed the initial steps of the program self-report gender
   identity information to the `;
