@@ -43,13 +43,21 @@
   text-align: left;
 }
 
+.help-text {
+  font-size: 16px;
+}
+
+.survey-desc {
+  padding-top: 1%;
+}
+
 .body-default, p {
   font-family: 'GothamBook', 'Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
   line-height: 1.5;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: normal;
   text-align: left;
   color: #262262;
