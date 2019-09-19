@@ -832,7 +832,7 @@ with rawdata_1815 as
  select measurement_concept_id as subject_id, cast('0' as string), p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
- where m.value_as_number is not null and m.measurement_concept_id > 0 and ((m.unit_concept_id = 0 m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
  union all
  select measurement_source_concept_id as subject_id, cast('0' as string),p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
