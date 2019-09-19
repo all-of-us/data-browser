@@ -36,4 +36,7 @@
   a:link,a:visited,a{
     color:#2aa3d8;
   }
-  
+  @keyframes load {
+    from{background:transparent}
+    to{background:#302c70}
+  }

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.service';
+import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 
 @Component({
   selector: 'app-recursive-tree',
