@@ -15,7 +15,6 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
     super(injector);
   }
 
-
   ngOnChanges() {
     this.buildChart();
     this.chartOptions = this.getChartOptions();
@@ -23,9 +22,6 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
     this.chartOptions.yAxis.title.text = 'Participant Count';
     this.chartOptions.xAxis.title.text = 'Top Concepts';
   }
-
-
-
 
   public buildChart() {
     this.pointData = [];

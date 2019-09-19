@@ -19,13 +19,10 @@ export class ChartBaseComponent {
   };
   @Input() concepts: Concept[];
 
-
-
   constructor(injector: Injector) {
     this.chartService = injector.get(ChartService);
 
   }
-
 
   getChartOptions() {
     return {
@@ -81,6 +78,5 @@ export class ChartBaseComponent {
       series: [{ data: this.pointData }],
     };
   }
-
 
 }

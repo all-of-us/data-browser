@@ -334,7 +334,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
   }
 
-
   public toggleSynonyms(concept: any) {
     this.showMoreSynonyms[concept.conceptId] = !this.showMoreSynonyms[concept.conceptId];
     if (this.showMoreSynonyms[concept.conceptId]) {

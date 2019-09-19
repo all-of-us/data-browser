@@ -114,7 +114,6 @@ export class DbTableComponent implements OnChanges {
     return percent * 100;
   }
 
-
   public selectGraph(g, r: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
@@ -162,6 +161,4 @@ export class DbTableComponent implements OnChanges {
       return this.tooltipText.valueChartHelpText;
     }
   }
-
-
 }
