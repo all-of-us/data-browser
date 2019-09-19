@@ -81,10 +81,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.searchFromUrl = params.search;
         this.prevSearchText = params.search;
         this.searchText.setValue(this.prevSearchText);
-      } else {
-        this.router.navigate(
-          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
-        );
       }
     });
     this.loadPage();
@@ -105,6 +101,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public onPopState(event: any) {
     if (this.searchText.value) {
       localStorage.setItem('searchTermBeforeBack', this.searchText.value);
+    } else {
+      localStorage.setItem('searchTermBeforeBack', '');
     }
     this.searchText.setValue(null);
   }
@@ -242,7 +240,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.router.navigate(
         [],
         {
-          relativeTo: this.route
+          relativeTo: this.route,
+          queryParams: {}
         });
     }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
