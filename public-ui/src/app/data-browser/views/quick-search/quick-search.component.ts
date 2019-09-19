@@ -248,18 +248,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     return url;
   }
 
-  public hoverOnTooltip() {
-    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      'Homepage Search Across Data', null, 'Tooltip Homepage search across data');
-  }
-
   public iconClickEvent(iconString: string) {
     this.dbc.triggerEvent('HelpEvent', 'Help', 'Click',
       iconString, null, null);
   }
   public hoverOnTooltip(label: string, searchTerm: string, action: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      'Homepage Search Across Data', null, 'Tooltip Homepage search across data');
-    label, this.searchText.value, action);
+      label, this.searchText.value, action);
   }
 }
