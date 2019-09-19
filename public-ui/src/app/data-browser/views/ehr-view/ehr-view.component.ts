@@ -240,7 +240,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           relativeTo: this.route,
           queryParams: { search: this.prevSearchText }
         });
-    } 
+    }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
