@@ -16,7 +16,7 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
   @Query(nativeQuery=true,value="select m.name, m.description,\n" +
           "m.concept_id, COUNT(DISTINCT c.concept_id) as question_count,\n" +
           // We don't show participant counts when filtering by keyword, and don't have a way of computing them easily; return 0.
-          "0 participant_count, m.order_number \n" +
+          "0 participant_count, m.order_number, m.can_show \n" +
           "from survey_module m\n" +
           "join achilles_results r on m.concept_id = r.stratum_1\n" +
           "join concept c on r.stratum_2 = c.concept_id\n" +
@@ -25,7 +25,7 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
           // Because we're using a native query we use MySQL match() here directly instead of matchConcept()
           // TODO: add AchillesResults entity, replace this with JQL
           "and (match(c.concept_name) against (?1 in boolean mode) > 0 or\n" +
-          "match(r.stratum_4) against(?1 in boolean mode) > 0) \n" +
+          "match(r.stratum_4) against(?1 in boolean mode) > 0) and m.can_show=1\n" +
           "group by m.name, m.description, m.concept_id\n" +
           "order by m.order_number")
   List<SurveyModule> findSurveyModuleQuestionCounts(String matchExpression);

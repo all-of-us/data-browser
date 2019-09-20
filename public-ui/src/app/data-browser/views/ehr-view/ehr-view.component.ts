@@ -81,6 +81,14 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.searchFromUrl = params.search;
         this.prevSearchText = params.search;
         this.searchText.setValue(this.prevSearchText);
+      } else {
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: {},
+            replaceUrl: true
+          });
       }
     });
     this.loadPage();
@@ -163,10 +171,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         }));
       this.subscriptions.push(this.searchText.valueChanges
         .subscribe((query) => {
-          if (query == null) {
-            query = '';
-          }
-          localStorage.setItem('searchText', query);
         }));
     }
   }
@@ -235,13 +239,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         {
           relativeTo: this.route,
           queryParams: { search: this.prevSearchText }
-        });
-    } else {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          queryParams: {}
         });
     }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
