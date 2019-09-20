@@ -156,10 +156,20 @@
         <div class="body-lead tbl-d">
           {{r.conceptId}}
         </div> -->
-      <div class="body-lead tbl-d">
+      <div class="body-lead tbl-d icon-btn-group">
         <button class="icon-btn">
           <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
             shape="bar-chart" class="bar-chart-icon">
+          </clr-icon>
+        </button>
+        <button class="icon-btn">
+          <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
+            shape="tree-view" class="bar-chart-icon">
+          </clr-icon>
+        </button>
+        <button class="icon-btn">
+          <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
+            shape="share" class="bar-chart-icon">
           </clr-icon>
         </button>
       </div>

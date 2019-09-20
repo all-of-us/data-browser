@@ -91,12 +91,11 @@ button.btn.btn-lg {
 button.icon-btn {
     background-color: inherit;
     border: none;
-    height: 1rem;
+    width:auto;
+
 }
 
-button.icon-btn:focus {
-    outline: none;
-}
+
 
 .btn-effect:hover {
     transition: .3s cubic-bezier(1, .18, 0, 1.12);
