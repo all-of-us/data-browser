@@ -94,9 +94,6 @@ button.icon-btn {
     height: 1rem;
 }
 
-button.icon-btn:focus {
-    outline: none;
-}
 
 .btn-effect:hover {
     transition: .3s cubic-bezier(1, .18, 0, 1.12);
