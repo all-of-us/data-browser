@@ -544,6 +544,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             maxResults = Integer.MAX_VALUE;
         }
 
+        List<Long> drugConcepts = new ArrayList<>();
+
+        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
+            List<Concept> drugMatchedConcepts = new ArrayList<>();
+            drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+            if(drugMatchedConcepts.size() > 0) {
+                drugConcepts = drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList());
+            }
+        }
+
         Integer minCount = searchConceptsRequest.getMinCount();
         if(minCount == null){
             minCount = 1;
@@ -570,7 +580,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
         Slice<Concept> concepts = null;
-        concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter,
+        concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
                 searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
                 (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber());
         ConceptListResponse response = new ConceptListResponse();
@@ -601,18 +611,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             conceptList = new ArrayList(concepts.getContent());
             if(response.getStandardConcepts() != null) {
                 conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
-            }
-        }
-
-        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Concept> drugMatchedConcepts = new ArrayList<>();
-            if (conceptList.size() > 0) {
-                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrandNotInConceptIds(searchConceptsRequest.getQuery(), conceptList.stream().map(Concept::getConceptId).collect(Collectors.toList()));
-            } else {
-                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-            }
-            if(drugMatchedConcepts.size() > 0) {
-                conceptList.addAll(drugMatchedConcepts);
             }
         }
 
