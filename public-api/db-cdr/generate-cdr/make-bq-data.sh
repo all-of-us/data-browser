@@ -96,7 +96,6 @@ do
 done
 
 # Populate some tables from cdr data
-
 ############
 # criteria #
 ############
