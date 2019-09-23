@@ -83,12 +83,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.searchText.setValue(this.prevSearchText);
       } else {
         this.router.navigate(
-          [],
+          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
           {
-            relativeTo: this.route,
-            queryParams: {},
             replaceUrl: true
-          });
+          }
+        );
       }
     });
     this.loadPage();
@@ -240,6 +239,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           relativeTo: this.route,
           queryParams: { search: this.prevSearchText }
         });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          replaceUrl: true
+        });
     }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
@@ -254,15 +260,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
-    if (this.domainId === 'drug' && this.items.length > this.searchRequest.maxResults) {
-      this.fullResultItemsList = this.items;
-      this.items = this.items.slice(((this.currentPage - 1) * this.searchRequest.maxResults),
-        (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
-    }
     if (this.domainId === 'drug' && this.currentPage > 1) {
       this.items = this.fullResultItemsList
         .slice(((this.currentPage - 1) * this.searchRequest.maxResults),
-        (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
+          (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
     }
     this.items = this.items.sort((a, b) => {
       if (a.countValue > b.countValue) {
@@ -274,6 +275,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return 0;
     }
     );
+    if (this.domainId === 'drug' && this.items.length > this.searchRequest.maxResults) {
+      this.fullResultItemsList = this.items;
+      this.items = this.items.slice(((this.currentPage - 1) * this.searchRequest.maxResults),
+        (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
+    }
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
     }
@@ -283,10 +289,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.standardConcepts = [];
     }
-    // this.top10Results = this.searchResult.items.slice(0, 10);
+    if (this.currentPage == 1) {
+      this.top10Results = this.searchResult.items.slice(0, 10);
+    }
+    /*
     this.getTopTen(this.prevSearchText).subscribe((res) => {
+      console.log(res.items.slice(0,10));
       this.top10Results = res.items.slice(0, 10);
     });
+    */
     this.loading = false;
   }
 
