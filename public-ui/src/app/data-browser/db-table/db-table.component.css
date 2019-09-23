@@ -37,7 +37,6 @@
 .aka {
     padding-left: 9px;
     padding-top: 9px;
-    font-size: 16px;
 }
 
 .aka .info-icon {
@@ -57,7 +56,7 @@
 }
 
 .aka-layout {
-    font-size: 16px;
+    font-size: .8em;
 }
 
 .see-more, .see-less {
@@ -75,10 +74,28 @@
 
 .icon-btn-group {
     text-align: right;
+    display: flex!important;
+    align-items: flex-start;
 }
 
 .icon-btn-group .icon-btn {
     font-size: 2.5rem;
+}
+
+.source-btn_active {
+    background: url('/assets/icons/source_btn_active.svg');
+}
+
+.source-btn {
+    background: url('/assets/icons/source_btn.svg');
+}
+
+.source-btn, .source-btn_active {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: auto;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .row-selected {
@@ -119,7 +136,7 @@
 
 .tbl-r {
     display: grid;
-    grid-template-columns: 35% 20% 20% 1fr;
+    grid-template-columns: 30% 25% 20% 1fr;
     text-align: left;
     min-width: 810px;
 }
@@ -127,7 +144,7 @@
 .tbl-d {
     display: inline-block;
     padding: 0 .5rem;
-    font-size: 16px;
+    font-size: .8em;
     position: relative;
 }
 
@@ -182,6 +199,13 @@
     position: relative;
     width: 100%;
     text-align: right;
+}
+
+.icon-choice {
+    height: 1.25rem;
+    width: 1.25rem;
+    color: #2691D0;
+    cursor: pointer;
 }
 
 .tooltip-lg {}

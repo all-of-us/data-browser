@@ -87,13 +87,6 @@
   transform: scale(0.8);
 }
 
-.bar-chart-icon {
-  height: 1rem;
-  width: 1rem;
-  color: #2691D0;
-  cursor: pointer;
-}
-
 .db-card {
   padding: 18px;
   border-radius: 4px;
