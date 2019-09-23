@@ -15,7 +15,7 @@ export class HighlightSearchComponent implements OnChanges, OnDestroy {
   words: string[] = [];
   matchString: RegExp;
   ngOnChanges() {
-    if (!this.searchTerm) {
+    if (!this.searchTerm || this.searchTerm === ' ' || this.searchTerm === '.' || this.searchTerm === ',') {
       this.words = [this.text];
     } else {
       let searchWords = this.searchTerm.split(new RegExp(',| '));
@@ -39,5 +39,12 @@ export class HighlightSearchComponent implements OnChanges, OnDestroy {
   }
   ngOnDestroy() {
     this.words = [];
+  }
+
+  public searchTermCheck(searchTerm: string) {
+    if (searchTerm && searchTerm !== ' ' && searchTerm !== ',' && searchTerm !== '.') {
+      return true;
+    }
+    return false;
   }
 }
