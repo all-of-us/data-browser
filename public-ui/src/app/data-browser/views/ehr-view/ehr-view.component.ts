@@ -263,7 +263,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (this.domainId === 'drug' && this.currentPage > 1) {
       this.items = this.fullResultItemsList
         .slice(((this.currentPage - 1) * this.searchRequest.maxResults),
-          (((this.currentPage - 1)) * this.searchRequest.maxResults) + this.searchRequest.maxResults);
+          (((this.currentPage - 1)) * this.searchRequest.maxResults) +
+          this.searchRequest.maxResults);
     }
     this.items = this.items.sort((a, b) => {
       if (a.countValue > b.countValue) {
@@ -289,7 +290,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else {
       this.standardConcepts = [];
     }
-    if (this.currentPage == 1) {
+    if (this.currentPage === 1) {
       this.top10Results = this.searchResult.items.slice(0, 10);
     }
     /*

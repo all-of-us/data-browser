@@ -15,7 +15,8 @@ export class HighlightSearchComponent implements OnChanges, OnDestroy {
   words: string[] = [];
   matchString: RegExp;
   ngOnChanges() {
-    if (!this.searchTerm || this.searchTerm === ' ' || this.searchTerm === '.' || this.searchTerm === ',') {
+    if (!this.searchTerm || this.searchTerm === ' ' ||
+      this.searchTerm === '.' || this.searchTerm === ',') {
       this.words = [this.text];
     } else {
       let searchWords = this.searchTerm.split(new RegExp(',| '));
