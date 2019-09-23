@@ -46,6 +46,11 @@ fi
 #Get the list of tables in the dataset
 tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
 
+declare -a domain_names domain_table_names
+domain_names=(condition drug procedure observation)
+domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence observation)
+concept_ids_to_exclude=(19 0 0 0)
+
 ################################################
 # CREATE VIEWS
 ################################################
@@ -133,6 +138,36 @@ fi
 # Next Populate achilles_results
 echo "Running achilles queries..."
 
+for index in "${!domain_names[@]}"; do
+    domain_name="${domain_names[$index]}";
+    domain_table_name="${domain_table_names[$index]}";
+    ## Fetching 3000 counts
+    concept_id="${domain_names[$index]}_concept_id";
+    source_concept_id="${domain_names[$index]}_source_concept_id";
+    exclude_concept_id=${concept_ids_to_exclude[$index]};
+    domain_stratum="$(tr '[:lower:]' '[:upper:]' <<< ${domain_name:0:1})${domain_name:1}"
+    echo "Querying ${domain_table_name} ..."
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+    select 0, 3000 as analysis_id,
+    CAST(co1.${concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
+    COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
+    where co2.${source_concept_id}=co1.${concept_id}) as source_count_value
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+    where co1.${concept_id} > 0 and co1.${concept_id} != ${exclude_concept_id}
+    group by co1.${concept_id}
+    union all
+    select 0 as id,3000 as analysis_id,CAST(co1.${source_concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
+    COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+    where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
+    and co1.${source_concept_id} != ${exclude_concept_id}
+    group by co1.${source_concept_id}"
+done
+
+exit 0
+
 echo "Getting person count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -213,47 +248,6 @@ select 0, 12 as analysis_id, CAST(RACE_CONCEPT_ID AS STRING) as stratum_1, CAST(
 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
 group by RACE_CONCEPT_ID,ETHNICITY_CONCEPT_ID"
-
-# 200	(3000 ) Number of persons with at least one visit occurrence, by visit_concept_id
-echo "Getting visit count and source count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-select 0 as id,3000 as analysis_id,CAST(vo1.visit_concept_id AS STRING) as stratum_1,'Visit' as stratum_3,
-COUNT(distinct vo1.PERSON_ID) as count_value,(select COUNT(distinct vo2.person_id) from
-\`${BQ_PROJECT}.${BQ_DATASET}.visit_occurrence\` vo2 where vo2.visit_source_concept_id=vo1.visit_concept_id) as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.visit_occurrence\` vo1
-where vo1.visit_concept_id > 0
-group by vo1.visit_concept_id
-union all
-select 0 as id,3000 as analysis_id,CAST(vo1.visit_source_concept_id AS STRING) as stratum_1,'Visit' as stratum_3,
-COUNT(distinct vo1.PERSON_ID) as count_value,COUNT(distinct vo1.PERSON_ID) as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.visit_occurrence\` vo1
-where vo1.visit_source_concept_id not in (select distinct visit_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.visit_occurrence\`)
-group by vo1.visit_source_concept_id"
-
-
-# 400 (3000)	Number of persons with at least one condition occurrence, by condition_concept_id
-# There was weird data in combined20181025 that has rows in condition occurrence table with concept id 19 which was causing problem while fetching domain participant count
-# so added check in there (Remove after checking the data is proper)
-echo "Querying condition_occurrence ..."
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-select 0, 3000 as analysis_id,
-CAST(co1.condition_CONCEPT_ID AS STRING) as stratum_1,'Condition' as stratum_3,
-COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co2
-where co2.condition_source_concept_id=co1.condition_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co1
-where co1.condition_concept_id > 0 and co1.condition_concept_id != 19
-group by co1.condition_CONCEPT_ID
-union all
-select 0 as id,3000 as analysis_id,CAST(co1.condition_source_concept_id AS STRING) as stratum_1,'Condition' as stratum_3,
-COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` co1
-where co1.condition_source_concept_id not in (select distinct condition_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\`)
-and co1.condition_source_concept_id != 19
-group by co1.condition_source_concept_id"
 
 # Condition gender
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
