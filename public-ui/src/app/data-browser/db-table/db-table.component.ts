@@ -4,6 +4,7 @@ import { Concept, ConceptListResponse, DataBrowserService, MatchType, SearchConc
 import { ISubscription } from 'rxjs/Subscription';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
+import { forEach } from '@angular/router/src/utils/collection';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'db-table',
@@ -31,6 +32,7 @@ export class DbTableComponent implements OnChanges {
   @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
+  expanded: boolean = false;
   private subscriptions: ISubscription[] = [];
 
   constructor(
@@ -44,7 +46,6 @@ export class DbTableComponent implements OnChanges {
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.expandRow(this.selectedConcept, true);
     }
-
   }
 
   public getTerm() {
@@ -54,12 +55,39 @@ export class DbTableComponent implements OnChanges {
     }
     return this.searchText.value;
   }
+  public checkIfExpanded(concept: Concept, event: any, sources?: boolean) {
+    const classList = event.target.classList;
+    for (let i = 0; i < classList.length; i++) {
+      const item = classList[i];
+      if (item === 'is-solid' || item === 'source-btn_active') {
+        this.expanded = false;
+      } else {
+        this.expanded = true;
+      }
+    }
 
+    if (this.selectedConcept && this.selectedConcept.conceptCode === concept.conceptCode) {
+      // if already expanded than just change the graph
+      if (sources) {
+        this.graphToShow = GraphType.Sources;
+      } else {
+        this.graphToShow = GraphType.BiologicalSex;
+      }
+    } else if (sources) { // if not expand the row
+      this.graphToShow = GraphType.Sources;
+      this.expandRow(concept);
+    } else {
+      this.graphToShow = GraphType.BiologicalSex;
+      this.expandRow(concept);
+    }
+  }
   public expandRow(concept: any, fromChart?: boolean) {
+    this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
       concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
-    if (this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
+    if (this.expanded && this.selectedConcept &&
+      concept.conceptCode === this.selectedConcept.conceptCode) {
       if (fromChart && localStorage.getItem('selectedConceptCode')) {
         this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
@@ -67,6 +95,7 @@ export class DbTableComponent implements OnChanges {
         }, 50);
       } else {
         this.selectedConcept = null;
+        this.expanded = false;
       }
     } else {
       this.selectedConcept = concept;
@@ -74,11 +103,8 @@ export class DbTableComponent implements OnChanges {
         this.scrollTo('#c' + this.selectedConcept.conceptCode);
       }, 1);
     }
-    this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
       this.graphToShow = GraphType.Values;
-    } else {
-      this.graphToShow = GraphType.BiologicalSex;
     }
   }
 

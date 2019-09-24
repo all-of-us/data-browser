@@ -126,19 +126,18 @@
         <div class="body-lead tbl-d"></div>
       </ng-template>
       <div class="body-lead tbl-d icon-btn-group">
-        <button class="icon-btn">
-          <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
+        <button (click)="checkIfExpanded(r,$event);$event.stopPropagation()"  class="icon-btn">
+          <clr-icon [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow != 'Sources'?'is-solid':''"
             shape="bar-chart" class="icon-choice">
           </clr-icon>
         </button>
         <button class="icon-btn icon-choice">
-          <div
-            [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'source-btn_active':'source-btn'">
+          <div (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()"
+            [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow == 'Sources'?'source-btn_active':'source-btn'">
           </div>
         </button>
-        <button class="icon-btn">
-          <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
-            shape="share" class="icon-choice">
+        <button (click)="$event.stopPropagation()"class="icon-btn">
+          <clr-icon shape="share" class="icon-choice">
           </clr-icon>
         </button>
       </div>
@@ -177,8 +176,7 @@
         </a>
       </ng-template>
     </div>
-
-    <div class="row-expansion" *ngIf="searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
+    <div class="row-expansion" *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
       #chartElement>
       <div class="graph-menu">
         <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g, r)"
