@@ -124,7 +124,7 @@ public class ConceptService {
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
-    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<String> vocabularyIds, String domainId, int limit, int minCount, int page) {
+    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page) {
 
 
         Specification<Concept> conceptSpecification =
@@ -169,10 +169,10 @@ public class ConceptService {
                                 conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
                                 standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
                                         criteriaBuilder.literal(query)));
+                                standardOrCodeOrIdMatch.add(root.get("conceptId").in(conceptIds));
                                 try {
                                     long conceptId = Long.parseLong(query);
                                     standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
-
                                             criteriaBuilder.literal(conceptId)));
                                 } catch (NumberFormatException e) {
                                     // Not a long, don't try to match it to a concept ID.
