@@ -60,7 +60,18 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
   public toolTip(concept: Concept) {
     let toolTipText;
     if (concept.countValue > 20) {
-      toolTipText = concept.conceptName +
+      let tempConceptNameText = '';
+      if (concept.conceptName.length > 100) {
+        let conceptNameSplit = concept.conceptName.split(/(.{100})/);
+        for (const name of conceptNameSplit) {
+          if (name) {
+            tempConceptNameText += name + '</br>';
+          }
+        }
+      } else {
+        tempConceptNameText = concept.conceptName;
+      }
+      toolTipText = tempConceptNameText +
         ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
         '<br/>' + 'Pariticipant Count: ' + '<b>' + concept.countValue + '</b>';
     } else {

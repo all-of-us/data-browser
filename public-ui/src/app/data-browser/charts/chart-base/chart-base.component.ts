@@ -43,6 +43,9 @@ export class ChartBaseComponent {
           return this.point.toolTipHelpText;
         },
         useHTML: true,
+        style: {
+          padding: 0,
+        },
         backgroundColor: '#f0f2f3',
         borderWidth: 0,
         shadow: false,
