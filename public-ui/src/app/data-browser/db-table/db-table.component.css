@@ -224,6 +224,11 @@ h5.secondary-display {
     margin: 0 2rem;
 }
 
+.concept-box {
+    background:white;
+    padding:1rem;
+}
+
 .source-item {
     width: 50%;
     margin: 0 auto;

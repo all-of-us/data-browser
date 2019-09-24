@@ -78,29 +78,6 @@
       </clr-tooltip>
     </div>
   </div>
-  <!-- <div class="tbl-d  body-lead info-text">
-        Vocabulary Code
-        <clr-tooltip>
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.vocabularyCodeHelpText}}
-            </div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div> -->
-  <!-- <div class="tbl-d body-lead info-text">
-        Concept Code
-        <clr-tooltip>
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div> -->
-  <!-- <div class="tbl-d body-lead info-text"> 
-      </div> -->
-
-
   <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r "
     [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
     *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
@@ -112,7 +89,6 @@
           </app-highlight-search>
         </div>
       </div>
-
       <ng-template #code_match_standard>
         <div class="body-lead tbl-d"
           *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
@@ -135,7 +111,6 @@
           </div>
         </div>
       </ng-template>
-
       <div class="body-lead tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
         &le; {{r.countValue | number}}
       </div>
@@ -150,12 +125,6 @@
       <ng-template #noConceptSynonyms>
         <div class="body-lead tbl-d"></div>
       </ng-template>
-      <!-- <div class="body-lead tbl-d">
-          {{r.vocabularyId}} {{r.conceptCode}}
-        </div>
-        <div class="body-lead tbl-d">
-          {{r.conceptId}}
-        </div> -->
       <div class="body-lead tbl-d icon-btn-group">
         <button class="icon-btn">
           <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''"
@@ -163,7 +132,8 @@
           </clr-icon>
         </button>
         <button class="icon-btn icon-choice">
-          <div [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'source-btn_active':'source-btn'">
+          <div
+            [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'source-btn_active':'source-btn'">
           </div>
         </button>
         <button class="icon-btn">
@@ -172,7 +142,6 @@
           </clr-icon>
         </button>
       </div>
-
     </div>
     <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)" class="body-lead aka-layout aka">
       <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
@@ -228,8 +197,10 @@
           *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
           <div class="source-item">
             <aside class="source-tree">
-              <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
-              <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
+              <div class="concept-box">
+                <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
+                <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
+              </div>
               <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
