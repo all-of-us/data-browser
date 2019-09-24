@@ -169,7 +169,9 @@ public class ConceptService {
                                 conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
                                 standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
                                         criteriaBuilder.literal(query)));
-                                standardOrCodeOrIdMatch.add(root.get("conceptId").in(conceptIds));
+                                if (conceptIds.size() > 0) {
+                                    standardOrCodeOrIdMatch.add(root.get("conceptId").in(conceptIds));
+                                }
                                 try {
                                     long conceptId = Long.parseLong(query);
                                     standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
