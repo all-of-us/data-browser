@@ -777,26 +777,6 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       group by id, analysis_id, concept_id, unit, gender"
 fi
 
-# 3000 Measurements that have numeric values - Number of persons with at least one measurement occurrence by measurement_concept_id, bin size of the measurement value for 10 bins, maximum and minimum from measurement value. Added value for measurement rows
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-select 0, 3000 as analysis_id,
-	CAST(co1.measurement_concept_id AS STRING) as stratum_1,
-  'Measurement' as stratum_3,
-	COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co2
-	where co2.measurement_source_concept_id=co1.measurement_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co1
-where co1.measurement_concept_id > 0
-group by co1.measurement_concept_id
-union all
- select 0 as id,3000 as analysis_id,CAST(co1.measurement_source_concept_id AS STRING) as stratum_1,
-  'Measurement' as stratum_3,
- COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
- from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co1
- where co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
- group by co1.measurement_source_concept_id"
-
 # 1815 Measurement response by gender distribution
 echo "Getting measurement response by gender distribution"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
