@@ -83,11 +83,11 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
   }
 
   private chunkString(str: string, limit: number) {
-    let input = str.trim().split(' ');
+    const input = str.trim().split(' ');
     let [index, output] = [0, []];
     output[index] = '';
     input.forEach(word => {
-      let temp = `${output[index]} ${word}`.trim();
+      const temp = `${output[index]} ${word}`.trim();
       if (temp.length <= limit) {
         output[index] = temp;
       } else {
