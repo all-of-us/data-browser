@@ -62,7 +62,7 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
     if (concept.countValue > 20) {
       let tempConceptNameText = '';
       if (concept.conceptName.length > 100) {
-        let conceptNameSplit = concept.conceptName.split(/(.{100})/);
+        const conceptNameSplit = concept.conceptName.split(/(.{100})/);
         for (const name of conceptNameSplit) {
           if (name) {
             tempConceptNameText += name + '</br>';
