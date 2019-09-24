@@ -73,11 +73,11 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
       }
       toolTipText = tempConceptNameText +
         ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-        '<br/>' + '<b> Pariticipant Count: ' + '</b>' + concept.countValue;
+        '<br/>' + '<b> Participant Count: ' + '</b>' + concept.countValue;
     } else {
       toolTipText = concept.conceptName +
         ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-        '<br/>' + '<b> Pariticipant Count: </b>';
+        '<br/>' + '<b> Participant Count: </b>';
     }
     return toolTipText;
   }
