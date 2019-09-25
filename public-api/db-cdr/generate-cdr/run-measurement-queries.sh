@@ -1508,3 +1508,41 @@ echo "Replacing no matching concept unit name to no unit"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` set stratum_2 = 'No unit'
 where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910"
+
+echo "Filling measurement concept info table"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.measurement_concept_info\`
+(concept, has_values)
+with
+distinct_3000_measurement_concepts as
+(select distinct cast(stratum_1 as int64) as concept from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` where stratum_3='Measurement' and analysis_id=3000),
+distinct_1900_measurement_concepts as
+(select distinct cast(stratum_1 as int64) as concept from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` where analysis_id=1900),
+no_1900_measurement_concepts as
+(select a.* from distinct_3000_measurement_concepts a join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` b on a.concept=b.concept_id
+where concept not in (select distinct concept from distinct_1900_measurement_concepts)),
+measurement_value_number_counts as
+(select a.concept as concept, count(distinct m.value_as_number) as value_number_count from no_1900_measurement_concepts a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m on
+a.concept=m.measurement_concept_id or a.concept=m.measurement_source_concept_id
+where m.value_as_number is not null
+group by a.concept),
+measurement_value_concept_counts as
+(select a.concept as concept, count(distinct m.value_as_concept_id) as value_concept_count from no_1900_measurement_concepts a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m on
+a.concept=m.measurement_concept_id or a.concept=m.measurement_source_concept_id
+where m.value_as_concept_id > 0
+group by a.concept),
+no_values as
+(select concept, 0 as has_values from no_1900_measurement_concepts where concept not in
+(select distinct concept from measurement_value_number_counts)
+and concept not in (select distinct concept from measurement_value_concept_counts)),
+yes_values_1 as
+(select concept, 1 as has_values from no_1900_measurement_concepts where concept in
+(select distinct concept from measurement_value_number_counts)
+or concept in (select distinct concept from measurement_value_concept_counts)),
+yes_values_2 as
+(select concept, 1 as has_values from distinct_1900_measurement_concepts)
+select * from no_values
+union distinct
+select * from yes_values_1
+union distinct
+select * from yes_values_2"

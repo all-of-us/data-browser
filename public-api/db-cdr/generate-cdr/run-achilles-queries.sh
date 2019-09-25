@@ -52,6 +52,10 @@ domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedu
 actual_table_names=(condition_occurrence drug_exposure procedure_occurrence observation measurement)
 concept_ids_to_exclude=(19 0 0 0 0)
 domain_concept_ids=(19 13 10 27 21)
+view_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence)
+view_table_names=(condition_occurrence drug_exposure procedure_occurrence)
+view_mapping_table_names=(_mapping_condition_occurrence _mapping_drug_exposure _mapping_procedure_occurrence)
+view_domain_names=(condition drug procedure)
 
 ################################################
 # CREATE VIEWS
@@ -83,29 +87,22 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     on suc.source_unit_concept = m.unit_concept_id
     where (m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) or m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))"
 
-    echo "CREATE VIEWS - v_ehr_condition_occurrence"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` m join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` mm
-    on m.condition_occurrence_id = mm.condition_occurrence_id
-    where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_condition_occurrence\` where src_dataset_id like '%ehr%')
-    and (m.condition_concept_id > 0 or m.condition_source_concept_id > 0)"
+    for index in "${!view_names[@]}"; do
+        view_table_name="${view_table_names[$index]}";
+        view_name="${view_names[$index]}";
+        view_mapping_table_name="${view_mapping_table_names[$index]}";
+        view_table_id="${view_table_name}_id";
+        concept_id="${view_domain_names[$index]}_concept_id";
+        source_concept_id="${view_domain_names[$index]}_source_concept_id";
 
-    echo "CREATE VIEWS - v_ehr_procedure_occurrence"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` m join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` mm
-    on m.procedure_occurrence_id = mm.procedure_occurrence_id
-    where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_procedure_occurrence\` where src_dataset_id like '%ehr%')
-    and (m.procedure_concept_id > 0 or m.procedure_source_concept_id > 0)"
-
-    echo "CREATE VIEWS - v_ehr_drug_exposure"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` m join \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` mm
-    on m.drug_exposure_id = mm.drug_exposure_id
-    where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_drug_exposure\` where src_dataset_id like '%ehr%')
-    and (m.drug_concept_id > 0 or m.drug_source_concept_id > 0)"
+        echo "CREATE VIEWS - ${view_name}"
+        bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+        "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${view_name}\` AS
+        select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m join \`${BQ_PROJECT}.${BQ_DATASET}.${view_mapping_table_name}\` mm
+        on m.${view_table_id} = mm.${view_table_id}
+        where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}.${view_mapping_table_name}\` where src_dataset_id like '%ehr%')
+        and (m.${concept_id} > 0 or m.${source_concept_id} > 0)"
+    done
 
 else
     echo "CREATE VIEWS - v_ehr_measurement"
@@ -118,23 +115,20 @@ else
      left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.similar_unit_concepts\` suc on m.unit_concept_id = suc.source_unit_concept
     where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0"
 
-    echo "CREATE VIEWS - v_ehr_condition_occurrence"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_condition_occurrence\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` m
-    where m.condition_concept_id > 0 or m.condition_source_concept_id > 0"
+    for index in "${!view_names[@]}"; do
+        view_table_name="${view_table_names[$index]}";
+        view_name="${view_names[$index]}";
+        view_mapping_table_name="${view_mapping_table_names[$index]}";
+        view_table_id="${view_table_name}_id";
+        concept_id="${view_domain_names[$index]}_concept_id";
+        source_concept_id="${view_domain_names[$index]}_source_concept_id";
 
-    echo "CREATE VIEWS - v_ehr_procedure_occurrence"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_procedure_occurrence\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` m
-    where m.procedure_concept_id > 0 or m.procedure_source_concept_id > 0"
-
-    echo "CREATE VIEWS - v_ehr_drug_exposure"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-    "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_drug_exposure\` AS
-    select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.drug_exposure\` m
-    where m.drug_concept_id > 0 or m.drug_source_concept_id > 0"
+        echo "CREATE VIEWS - ${view_name}"
+        bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+        "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${view_name}\` AS
+        select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m
+        where m.${concept_id} > 0 or m.${source_concept_id} > 0"
+    done
 fi
 
 # Next Populate achilles_results
@@ -145,7 +139,6 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, count_value,source_count_value) select 0 as id, 1 as analysis_id,  COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`"
-
 
 # Gender count
 echo "Getting gender count"
@@ -163,7 +156,6 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0, 3 as analysis_id,  CAST(year_of_birth AS STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
 group by YEAR_OF_BIRTH"
-
 
 #  4	Number of persons by race
 echo "Getting race count"
@@ -221,6 +213,7 @@ select 0, 12 as analysis_id, CAST(RACE_CONCEPT_ID AS STRING) as stratum_1, CAST(
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
 group by RACE_CONCEPT_ID,ETHNICITY_CONCEPT_ID"
 
+# Fetches data needed for concept counts (3000), biological sex (3101), age (3102) charts
 for index in "${!domain_names[@]}"; do
     domain_name="${domain_names[$index]}";
     domain_table_name="${domain_table_names[$index]}";
@@ -240,17 +233,20 @@ for index in "${!domain_names[@]}"; do
     CAST(co1.${concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
     COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
     where co2.${source_concept_id}=co1.${concept_id}) as source_count_value
-    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on
+    c.concept_id=co1.{concept_id}
     where co1.${concept_id} > 0 and co1.${concept_id} != ${exclude_concept_id}
     group by co1.${concept_id}
     union all
     select 0 as id,3000 as analysis_id,CAST(co1.${source_concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
     COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
-    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on
+    c.concept_id=co1.{source_concept_id}
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     and co1.${source_concept_id} != ${exclude_concept_id}
     group by co1.${source_concept_id}"
 
+    # Fetchii
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
@@ -263,6 +259,7 @@ for index in "${!domain_names[@]}"; do
     from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
     \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
     on p1.person_id = co1.person_id
+    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.{concept_id}
     where co1.${concept_id} > 0
     group by co1.${concept_id}, p1.gender_concept_id
     union all
@@ -271,6 +268,7 @@ for index in "${!domain_names[@]}"; do
     COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value from
     \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
     on p1.person_id = co1.person_id
+    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id}
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     group by co1.${source_concept_id}, p1.gender_concept_id"
 
@@ -307,6 +305,7 @@ for index in "${!domain_names[@]}"; do
     where co2.${source_concept_id}=co1.${concept_id}
     and ca2.age_stratum=ca.age_stratum) as source_count_value
     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join ehr_age_stratum ca on co1.${table_id} = ca.${table_id}
+    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.{concept_id}
     where co1.${concept_id} > 0
     group by co1.${concept_id}, stratum_2
     union all
@@ -316,6 +315,7 @@ for index in "${!domain_names[@]}"; do
     COUNT(distinct co1.person_id) as count_value,
     COUNT(distinct co1.person_id) as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join ehr_age_stratum ca
     on co1.${table_id} = ca.${table_id}
+    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.{source_concept_id}
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     group by co1.${source_concept_id}, stratum_2"
 
