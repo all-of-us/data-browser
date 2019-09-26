@@ -1512,7 +1512,7 @@ where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910"
 echo "Filling measurement concept info table"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.measurement_concept_info\`
-(concept, has_values)
+(concept_id, has_values)
 with
 distinct_3000_measurement_concepts as
 (select distinct cast(stratum_1 as int64) as concept from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` where stratum_3='Measurement' and analysis_id=3000),
