@@ -4,7 +4,6 @@ import { Concept, ConceptListResponse, DataBrowserService, MatchType, SearchConc
 import { ISubscription } from 'rxjs/Subscription';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
-import { forEach } from '@angular/router/src/utils/collection';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'db-table',
@@ -75,12 +74,14 @@ export class DbTableComponent implements OnChanges {
       }
     } else if (sources) { // if not expand the row
       this.graphToShow = GraphType.Sources;
+      this.loadSourceTree(concept);
       this.expandRow(concept);
     } else {
       this.graphToShow = GraphType.BiologicalSex;
       this.expandRow(concept);
     }
   }
+
   public expandRow(concept: any, fromChart?: boolean) {
     this.expanded = true;
     // analytics
@@ -124,6 +125,7 @@ export class DbTableComponent implements OnChanges {
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
   }
+
   public toggleSynonyms(concept: any) {
     this.showMoreSynonyms[concept.conceptId] = !this.showMoreSynonyms[concept.conceptId];
     if (this.showMoreSynonyms[concept.conceptId]) {
@@ -140,8 +142,7 @@ export class DbTableComponent implements OnChanges {
     return percent * 100;
   }
 
-
-  public selectGraph(g, r: any) {
+  public selectGraph(g: string, r: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
     this.dbc.triggerEvent('conceptClick', 'Concept Graph',
@@ -150,23 +151,29 @@ export class DbTableComponent implements OnChanges {
     if (this.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
-      this.treeLoading = true;
-      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
-        .subscribe({
-          next: result => {
-            this.treeData = [result.parent];
-            this.treeLoading = false;
-          }
-        }));
+      this.loadSourceTree(r);
     }
   }
-  public toolTipPos(g) {
+
+  private loadSourceTree(concept: Concept) {
+    this.treeLoading = true;
+    this.subscriptions.push(this.api.getCriteriaRolledCounts(concept.conceptId)
+      .subscribe({
+        next: result => {
+          this.treeData = [result.parent];
+          this.treeLoading = false;
+        }
+      }));
+  }
+
+  public toolTipPos(g: string) {
     if (g === 'Biological Sex' || g === 'Values') {
       return 'bottom-right';
     }
     return 'bottom-left';
   }
-  public showToolTip(g) {
+
+  public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
       return this.tooltipText.biologicalSexChartHelpText + '\n' +
         this.tooltipText.ehrBSPercentageChartHelpText + '\n' +
@@ -188,6 +195,5 @@ export class DbTableComponent implements OnChanges {
       return this.tooltipText.valueChartHelpText;
     }
   }
-
 
 }
