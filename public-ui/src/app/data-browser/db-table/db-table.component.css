@@ -74,7 +74,8 @@
 
 .icon-btn-group {
     text-align: right;
-    display: flex!important;
+    display: flex;
+    justify-content: flex-end;
     align-items: flex-start;
 }
 
@@ -142,7 +143,6 @@
 }
 
 .tbl-d {
-    display: inline-block;
     padding: 0 .5rem;
     font-size: .8em;
     position: relative;
