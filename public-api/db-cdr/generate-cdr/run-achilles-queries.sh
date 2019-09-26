@@ -48,14 +48,15 @@ tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
 
 declare -a domain_names domain_table_names
 domain_names=(condition drug procedure observation measurement)
-domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence observation v_ehr_measurement)
+domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation v_ehr_measurement)
 actual_table_names=(condition_occurrence drug_exposure procedure_occurrence observation measurement)
+datetime_names_3102=(condition_start_datetime drug_exposure_start_datetime procedure_datetime observation_datetime measurement_datetime)
 concept_ids_to_exclude=(19 0 0 0 0)
 domain_concept_ids=(19 13 10 27 21)
-view_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence)
-view_table_names=(condition_occurrence drug_exposure procedure_occurrence)
-view_mapping_table_names=(_mapping_condition_occurrence _mapping_drug_exposure _mapping_procedure_occurrence)
-view_domain_names=(condition drug procedure)
+view_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation)
+view_table_names=(condition_occurrence drug_exposure procedure_occurrence observation)
+view_mapping_table_names=(_mapping_condition_occurrence _mapping_drug_exposure _mapping_procedure_occurrence _mapping_observation)
+view_domain_names=(condition drug procedure observation)
 
 ################################################
 # CREATE VIEWS
@@ -218,7 +219,7 @@ for index in "${!domain_names[@]}"; do
     domain_name="${domain_names[$index]}";
     domain_table_name="${domain_table_names[$index]}";
     table_id="${actual_table_names[$index]}_id";
-    datetime_name="${domain_names[$index]}_start_datetime";
+    datetime_name="${datetime_names_3102[$index]}";
     domain_concept_id="${domain_concept_ids[$index]}";
     ## Fetching 3000 counts
     concept_id="${domain_names[$index]}_concept_id";
