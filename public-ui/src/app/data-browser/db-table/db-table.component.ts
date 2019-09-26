@@ -60,6 +60,9 @@ export class DbTableComponent implements OnChanges {
       const item = classList[i];
       if (item === 'is-solid' || item === 'source-btn_active') {
         this.expanded = false;
+        for (const s of this.subscriptions) {
+          s.unsubscribe();
+        }
       } else {
         this.expanded = true;
       }
@@ -93,7 +96,7 @@ export class DbTableComponent implements OnChanges {
         this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
           this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));
-        }, 50);
+        }, 1);
       } else {
         this.selectedConcept = null;
         this.expanded = false;
@@ -157,6 +160,12 @@ export class DbTableComponent implements OnChanges {
 
   private loadSourceTree(concept: Concept) {
     this.treeLoading = true;
+    // close previous subscription
+    if (this.subscriptions.length > 0) {
+      for (const s of this.subscriptions) {
+        s.unsubscribe();
+      }
+    }
     this.subscriptions.push(this.api.getCriteriaRolledCounts(concept.conceptId)
       .subscribe({
         next: result => {
