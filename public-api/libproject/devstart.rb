@@ -24,7 +24,7 @@ SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com 
               clouderrorreporting.googleapis.com bigquery-json.googleapis.com}
 DRY_RUN_CMD = %W{echo [DRY_RUN]}
 TEST_GAE_VARS = {
-  "GAE_MIN_INSTANCES" => "1",
+  "GAE_MIN_IDLE_INSTANCES" => "1",
   "GAE_MAX_INSTANCES" => "10"
 }
 
@@ -56,7 +56,7 @@ ENVIRONMENTS = {
     :cdr_versions_json => "cdr_versions_prod.json",
     :api_base_path => "https://public.api.researchallofus.org",
     :gae_vars => {
-      "GAE_MIN_INSTANCES" => "10",
+      "GAE_MIN_IDLE_INSTANCES" => "10",
       "GAE_MAX_INSTANCES" => "64"
     }
   }
