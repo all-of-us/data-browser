@@ -585,6 +585,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber());
         ConceptListResponse response = new ConceptListResponse();
 
+        if (domainId.equals("Measurement")) {
+            System.out.println("I am here");
+        }
+
         for(Concept con : concepts.getContent()){
             String conceptCode = con.getConceptCode();
             String conceptId = String.valueOf(con.getConceptId());
