@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 
@@ -11,11 +11,14 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   @Input() node: any;
   @Input() opened = false;
   @Input() loading = true;
+  @Output() payload: EventEmitter<any> = new EventEmitter();
   private subscriptions: ISubscription[] = [];
   constructor(private api: DataBrowserService) { }
 
   ngOnChanges() {
     if (this.node && this.node.group) {
+      this.emitChild(this.node);
+      setTimeout(() => {
       this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
         .subscribe({
           next: result => {
@@ -28,8 +31,22 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
           }
         })
         );
+      }, 10);
       }
   }
+
+  public checkStorage(node: any) {
+    if (localStorage.getItem(node.code) === null) {
+      return true;
+    }
+    return false;
+  }
+  public emitChild(child) {
+    console.log(child,"recursive child");
+    
+    this.payload.emit(child);
+  }
+
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();

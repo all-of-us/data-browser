@@ -180,6 +180,12 @@ export class DbTableComponent implements OnChanges {
       this.treeLoading = false;
     }
   }
+  buildTree(event: any) {
+    if (this.treeData) {
+      console.log(event, 'tree limb');
+
+    }
+  }
 
   public toolTipPos(g: string) {
     if (g === 'Biological Sex' || g === 'Values') {
