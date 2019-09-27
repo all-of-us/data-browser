@@ -28,7 +28,7 @@ export class DbTableComponent implements OnChanges {
   @Input() standardConceptIds: number[];
   @Input() graphButtons: any[];
   @Input() graphToShow: any;
-  @Input() treeData: any;
+  @Input() treeData: any[];
   @Input() treeLoading: boolean;
   @Input() graphType: any;
   expanded: boolean = false;
@@ -166,13 +166,19 @@ export class DbTableComponent implements OnChanges {
         s.unsubscribe();
       }
     }
-    this.subscriptions.push(this.api.getCriteriaRolledCounts(concept.conceptId)
-      .subscribe({
-        next: result => {
-          this.treeData = [result.parent];
-          this.treeLoading = false;
-        }
-      }));
+    if (localStorage.getItem(concept.conceptCode) === null) {
+      this.subscriptions.push(this.api.getCriteriaRolledCounts(concept.conceptId)
+        .subscribe({
+          next: result => {
+            this.treeData = [result.parent];
+            this.treeLoading = false;
+          }
+        }));
+    } else {
+      // get stashed built tree from recursive tree component
+      this.treeData = [JSON.parse(localStorage.getItem(concept.conceptCode))];
+      this.treeLoading = false;
+    }
   }
 
   public toolTipPos(g: string) {
