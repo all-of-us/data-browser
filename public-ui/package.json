@@ -36,7 +36,7 @@
     "angular2-highcharts": "^0.5.5",
     "core-js": "^2.5.3",
     "enhanced-resolve": "3.3.0",
-    "highcharts": "^6.0.4",
+    "highcharts": "^6.1.0",
     "immutable": "^4.0.0-rc.9",
     "moment": "^2.20.1",
     "mutationobserver-shim": "^0.3.2",
