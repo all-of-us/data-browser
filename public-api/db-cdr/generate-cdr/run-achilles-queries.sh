@@ -226,7 +226,8 @@ for index in "${!domain_names[@]}"; do
     source_concept_id="${domain_names[$index]}_source_concept_id";
     exclude_concept_id=${concept_ids_to_exclude[$index]};
     domain_stratum="$(tr '[:lower:]' '[:upper:]' <<< ${domain_name:0:1})${domain_name:1}"
-    echo "Querying ${domain_table_name} ..."
+
+    # 3000 counts
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
@@ -247,7 +248,7 @@ for index in "${!domain_names[@]}"; do
     and co1.${source_concept_id} != ${exclude_concept_id}
     group by co1.${source_concept_id}"
 
-    # Fetchii
+    # Fetching 3101 counts
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)

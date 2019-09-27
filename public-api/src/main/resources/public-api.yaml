@@ -379,6 +379,10 @@ definitions:
         type: "array"
         items:
           type: "string"
+      measurementConceptInfo:
+        description: measurement concept info
+        type: object
+        $ref: "#/definitions/MeasurementConceptInfo"
 
   ConceptListResponse:
     type: object
@@ -404,6 +408,16 @@ definitions:
         description: concept for which standard concepts are fetched
         type: integer
         format: int64
+
+  MeasurementConceptInfo:
+    type: object
+    properties:
+      conceptId:
+        type: integer
+        format: int64
+      hasValues:
+        type: integer
+        format: int32
 
   ConfigResponse:
     type: object
