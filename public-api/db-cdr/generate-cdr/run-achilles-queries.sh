@@ -48,6 +48,7 @@ tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
 
 declare -a domain_names domain_table_names
 domain_names=(condition drug procedure observation measurement)
+domain_stratum_names=(Condition Drug Procedure Observation Measurement)
 domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation v_ehr_measurement)
 actual_table_names=(condition_occurrence drug_exposure procedure_occurrence observation measurement)
 datetime_names_3102=(condition_start_datetime drug_exposure_start_datetime procedure_datetime observation_datetime measurement_datetime)
@@ -225,9 +226,9 @@ for index in "${!domain_names[@]}"; do
     concept_id="${domain_names[$index]}_concept_id";
     source_concept_id="${domain_names[$index]}_source_concept_id";
     exclude_concept_id=${concept_ids_to_exclude[$index]};
-    domain_stratum="$(tr '[:lower:]' '[:upper:]' <<< ${domain_name:0:1})${domain_name:1}"
+    domain_stratum="${domain_stratum_names[$index]}";
 
-    # 3000 counts
+    # Get 3000 counts
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
@@ -235,15 +236,15 @@ for index in "${!domain_names[@]}"; do
     CAST(co1.${concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
     COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
     where co2.${source_concept_id}=co1.${concept_id}) as source_count_value
-    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on
-    c.concept_id=co1.${concept_id}
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on
+    c.concept_id=co1.${concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${concept_id} > 0 and co1.${concept_id} != ${exclude_concept_id}
     group by co1.${concept_id}
     union all
     select 0 as id,3000 as analysis_id,CAST(co1.${source_concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
     COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on
-    c.concept_id=co1.${source_concept_id}
+    c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     and co1.${source_concept_id} != ${exclude_concept_id}
     group by co1.${source_concept_id}"
@@ -261,7 +262,7 @@ for index in "${!domain_names[@]}"; do
     from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
     \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
     on p1.person_id = co1.person_id
-    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${concept_id}
+    join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=co1.${concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${concept_id} > 0
     group by co1.${concept_id}, p1.gender_concept_id
     union all
@@ -270,7 +271,7 @@ for index in "${!domain_names[@]}"; do
     COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value from
     \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
     on p1.person_id = co1.person_id
-    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id}
+    join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     group by co1.${source_concept_id}, p1.gender_concept_id"
 
@@ -307,7 +308,7 @@ for index in "${!domain_names[@]}"; do
     where co2.${source_concept_id}=co1.${concept_id}
     and ca2.age_stratum=ca.age_stratum) as source_count_value
     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join ehr_age_stratum ca on co1.${table_id} = ca.${table_id}
-    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${concept_id}
+    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${concept_id} > 0
     group by co1.${concept_id}, stratum_2
     union all
@@ -317,7 +318,7 @@ for index in "${!domain_names[@]}"; do
     COUNT(distinct co1.person_id) as count_value,
     COUNT(distinct co1.person_id) as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join ehr_age_stratum ca
     on co1.${table_id} = ca.${table_id}
-    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id}
+    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     group by co1.${source_concept_id}, stratum_2"
 

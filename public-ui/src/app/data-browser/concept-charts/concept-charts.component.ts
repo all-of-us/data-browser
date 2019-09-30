@@ -159,6 +159,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     }
     const results = [];
     for (const g of analysis.results) {
+      console.log(g);
       const chartTitle = g.analysisStratumName
         + ' - ' + g.countValue.toLocaleString();
       if (g.stratum2 === this.dbc.MALE_GENDER_ID) {

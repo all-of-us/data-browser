@@ -102,6 +102,17 @@
   cursor: pointer;
 }
 
+.filter-grid-icon {
+  height: 1rem;
+  width: 1rem;
+  color: #2691D0;
+  cursor: pointer;
+}
+
+.clr-checkbox-wrapper {
+  padding: 5%;
+}
+
 .db-card {
   padding: 18px;
   border-radius: 4px;

@@ -1061,3 +1061,11 @@ definitions:
         type: integer
         default: 0
         description: By default it returns the first page and then its next pages from that on.
+      measurementTests:
+        type: integer
+        default: 1
+        description: By default all the measurement tests are returned
+      measurementOrders:
+        type: integer
+        default: 1
+        description: By default all the measurement orders are returned

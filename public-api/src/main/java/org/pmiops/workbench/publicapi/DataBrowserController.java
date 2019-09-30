@@ -601,9 +601,21 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
         Slice<Concept> concepts = null;
+        int measurementTests = 1;
+        int measurementOrders = 1;
+        if (domainId != null && domainId.equals("Measurement")) {
+            if (searchConceptsRequest.getMeasurementTests() != null) {
+                measurementTests = searchConceptsRequest.getMeasurementTests();
+            }
+            if (searchConceptsRequest.getMeasurementOrders() != null) {
+                measurementOrders = searchConceptsRequest.getMeasurementOrders();
+            }
+            System.out.println(measurementTests);
+            System.out.println(measurementOrders);
+        }
         concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
                 searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
-                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber());
+                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
         ConceptListResponse response = new ConceptListResponse();
 
         for(Concept con : concepts.getContent()){

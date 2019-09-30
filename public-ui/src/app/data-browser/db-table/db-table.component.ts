@@ -1,9 +1,12 @@
 import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { Concept, ConceptListResponse, DataBrowserService, MatchType, SearchConceptsRequest } from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
+import {StandardConceptFilter} from "../../../publicGenerated/model/standardConceptFilter";
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'db-table',
@@ -31,20 +34,64 @@ export class DbTableComponent implements OnChanges {
   @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
+  selectedFilterGrid: boolean = false;
+  isChecked1: boolean = true;
+  isChecked2: boolean = true;
+  measurementTestsChecked: FormControl = new FormControl(true);
+  measurementOrdersChecked: FormControl = new FormControl(true);
   private subscriptions: ISubscription[] = [];
 
   constructor(
     public tooltipText: TooltipService,
     public dbc: DbConfigService,
     private elm: ElementRef,
-    private api: DataBrowserService
-  ) { }
+    private api: DataBrowserService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
+  }
+  
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.measurementTestsChecked.setValue(true);
+      this.measurementOrdersChecked.setValue(true);
+    });
+    this.isChecked1 = true;
+    this.isChecked2 = true;
+    this.subscriptions.push(this.measurementTestsChecked.valueChanges
+      .subscribe((query) => {
+        if (!query) {
+          let getOrders = 0;
+          if (this.measurementOrdersChecked.value) {
+            getOrders = 1;
+          }
+          var measurementSearchRequestWithFilter = {
+            query: this.searchRequest.query,
+            domain: this.searchRequest.domain,
+            standardConceptFilter: this.searchRequest.standardConceptFilter,
+            maxResults: this.searchRequest.maxResults,
+            minCount: this.searchRequest.minCount,
+            pageNumber: this.searchRequest.pageNumber,
+            measurementTests: 0,
+            measurementOrders: getOrders
+          };
+          const searchResult = this.api.searchConcepts(measurementSearchRequestWithFilter);
+          this.items = this.searchResult.items;
+          console.log(this.items);
+        }
+      }));
+    this.subscriptions.push(this.measurementOrdersChecked.valueChanges
+      .subscribe((query) => {
+        if (!query) {
+          console.log('remove orders');
+        }
+      }));
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.expandRow(this.selectedConcept, true);
     }
-
   }
 
   public getTerm() {
@@ -164,5 +211,34 @@ export class DbTableComponent implements OnChanges {
   public hoverOnTooltip(label: string, searchTerm: string, action: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       label, this.searchText.value, action);
+  }
+
+  public filterMeasurementDataTypes() {
+    if (this.selectedFilterGrid) {
+      this.selectedFilterGrid = false;
+    } else {
+      this.selectedFilterGrid = true;
+    }
+  }
+
+  public checkBoxClick(box: string, value: boolean) {
+    if (box === 'tests') {
+      if (value) {
+        this.measurementTestsChecked.setValue(true);
+        localStorage.setItem('measurementTests', '1');
+      } else {
+        this.measurementTestsChecked.setValue(false);
+        localStorage.setItem('measurementTests', '0');
+      }
+    }
+    if (box === 'orders') {
+      if (value) {
+        this.measurementOrdersChecked.setValue(true);
+        localStorage.setItem('measurementOrders', '1');
+      } else {
+        this.measurementOrdersChecked.setValue(false);
+        localStorage.setItem('measurementOrders', '0');
+      }
+    }
   }
 }

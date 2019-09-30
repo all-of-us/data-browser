@@ -93,9 +93,31 @@
         <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept code tooltip hover')">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
+            <div class="tooltip-label">{{tooltipText.conceptCodeHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i>
+              {{tooltipText.conceptCodeHelpText2}} <i>{{tooltipText.allOfUsHelpText}}</i>
+              {{tooltipText.conceptCodeHelpText3}}</div>
           </clr-tooltip-content>
         </clr-tooltip>
+      </div>
+      <div class="tbl-d body-lead info-text" *ngIf="ehrDomain.domain.toLowerCase() === 'measurement'">
+        Data Type
+        <div class="dropdown bottom-left" [ngClass]="selectedFilterGrid?'open':''">
+          <button class="dropdown-toggle">
+            <clr-icon shape="filter-grid" class="filter-grid-icon" (click)="filterMeasurementDataTypes()" [ngClass]="selectedFilterGrid?'is-solid':''"></clr-icon>
+          </button>
+          <div class="dropdown-menu">
+            <div class="clr-checkbox-wrapper">
+              <input type="checkbox" id="checkbox1" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked1" (change)="checkBoxClick('tests', isChecked1)"
+              [formControl]="measurementTestsChecked" [checked]="true">
+              <label for="checkbox1">Tests</label>
+            </div>
+            <div class="clr-checkbox-wrapper">
+              <input type="checkbox" id="checkbox2" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked2" (change)="checkBoxClick('orders', isChecked2)"
+              [formControl]="measurementOrdersChecked" [checked]="true">
+              <label for="checkbox2">Orders</label>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="tbl-d body-lead info-text"> View graphs
       </div>
