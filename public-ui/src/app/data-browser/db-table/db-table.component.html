@@ -192,36 +192,6 @@
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
         <app-sources [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
-
-        <!-- <div class="source-layout"
-          *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
-          <div class="source-item">
-            <aside class="source-tree">
-              <div class="concept-box">
-                <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
-                <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
-              </div>
-              <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
-                <clr-tooltip>
-                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                  <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                    <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
-                  </clr-tooltip-content>
-                </clr-tooltip>
-              </p>
-              <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
-              <ng-container *ngIf="!treeLoading">
-                <div *ngFor="let node of treeData" class="tree-top">
-                  <app-source-tree (payload)="buildTree($event)" [rootNode]="node"></app-source-tree>
-                </div>
-              </ng-container>
-            </aside>
-          </div>
-          <div class="source-item">
-            <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-            </app-concept-charts>
-          </div>
-        </div> -->
       </ng-container>
       <ng-template #NonRolledUp>
         <div class="graph-item">
