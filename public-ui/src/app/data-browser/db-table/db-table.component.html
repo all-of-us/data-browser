@@ -1,4 +1,4 @@
-<div class="results-grid" *ngIf="items && items.length > 0">
+<div class="results-grid" *ngIf="(items && items.length > 0) || (measurementTestsChecked.value === false && measurementOrdersChecked.value === false)">
   <div class="domain-info-layout">
     <span>
       <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
