@@ -23,6 +23,7 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { SourcesComponent } from './sources/sources.component';
 
 
 
@@ -49,6 +50,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartTopResultsComponent,
     ChartBaseComponent,
     DbTableComponent,
+    SourcesComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
