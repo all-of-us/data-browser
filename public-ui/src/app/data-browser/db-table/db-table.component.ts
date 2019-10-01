@@ -25,12 +25,12 @@ export class DbTableComponent implements OnChanges {
   @Input() totalResults: number;
   @Input() currentPage: number;
   @Input() totalParticipants: number;
-  @Input() standardConceptIds: number[];
   @Input() graphButtons: any[];
   @Input() graphToShow: any;
   @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
+  standardConceptIds: number[];
   private subscriptions: ISubscription[] = [];
 
   constructor(
@@ -41,6 +41,7 @@ export class DbTableComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.expandRow(this.selectedConcept, true);
     }
@@ -152,7 +153,9 @@ export class DbTableComponent implements OnChanges {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
     if (g === 'Age') {
-      return this.tooltipText.ehrAgeChartHelpText;
+      return this.tooltipText.ehrAgeChartHelpText + '\n' +
+        this.tooltipText.ehrAgePercentageChartHelpText + '\n' +
+        this.tooltipText.ehrAgeCountChartHelpText + '\n';
     }
     if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
