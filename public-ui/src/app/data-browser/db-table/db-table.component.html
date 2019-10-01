@@ -115,9 +115,9 @@
 
       <ng-template #code_match_standard>
         <div class="body-lead info-text tbl-d first"
-          *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+          *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
           <div class="code-tooltip"
-            *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+            *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
             <app-highlight-search [isStandard]="true" [text]="r.conceptName" [searchTerm]="prevSearchText">
             </app-highlight-search>
           </div>
