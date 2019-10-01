@@ -75,15 +75,67 @@ export class DbTableComponent implements OnChanges {
             measurementTests: 0,
             measurementOrders: getOrders
           };
-          const searchResult = this.api.searchConcepts(measurementSearchRequestWithFilter);
-          this.items = this.searchResult.items;
-          console.log(this.items);
+          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+            results =>
+            this.items = results.items);
+        } else {
+          let getOrders = 0;
+          if (this.measurementOrdersChecked.value) {
+            getOrders = 1;
+          }
+          var measurementSearchRequestWithFilter = {
+            query: this.searchRequest.query,
+            domain: this.searchRequest.domain,
+            standardConceptFilter: this.searchRequest.standardConceptFilter,
+            maxResults: this.searchRequest.maxResults,
+            minCount: this.searchRequest.minCount,
+            pageNumber: this.searchRequest.pageNumber,
+            measurementTests: 1,
+            measurementOrders: getOrders
+          };
+          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+            results =>
+              this.items = results.items);
         }
       }));
     this.subscriptions.push(this.measurementOrdersChecked.valueChanges
       .subscribe((query) => {
         if (!query) {
-          console.log('remove orders');
+          let getTests = 0;
+          if (this.measurementTestsChecked.value) {
+            getTests = 1;
+          }
+          var measurementSearchRequestWithFilter = {
+            query: this.searchRequest.query,
+            domain: this.searchRequest.domain,
+            standardConceptFilter: this.searchRequest.standardConceptFilter,
+            maxResults: this.searchRequest.maxResults,
+            minCount: this.searchRequest.minCount,
+            pageNumber: this.searchRequest.pageNumber,
+            measurementTests: getTests,
+            measurementOrders: 0
+          };
+          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+            results =>
+              this.items = results.items);
+        } else {
+          let getTests = 0;
+          if (this.measurementTestsChecked.value) {
+            getTests = 1;
+          }
+          var measurementSearchRequestWithFilter = {
+            query: this.searchRequest.query,
+            domain: this.searchRequest.domain,
+            standardConceptFilter: this.searchRequest.standardConceptFilter,
+            maxResults: this.searchRequest.maxResults,
+            minCount: this.searchRequest.minCount,
+            pageNumber: this.searchRequest.pageNumber,
+            measurementTests: getTests,
+            measurementOrders: 1
+          };
+          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+            results =>
+              this.items = results.items);
         }
       }));
   }
@@ -123,7 +175,11 @@ export class DbTableComponent implements OnChanges {
     }
     this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
-      this.graphToShow = GraphType.Values;
+      if (this.measurementTestsChecked.value === true) {
+        this.graphToShow = GraphType.Values;
+      } else {
+        this.graphToShow = GraphType.BiologicalSex;
+      }
     } else {
       this.graphToShow = GraphType.BiologicalSex;
     }
@@ -228,6 +284,7 @@ export class DbTableComponent implements OnChanges {
         localStorage.setItem('measurementTests', '1');
       } else {
         this.measurementTestsChecked.setValue(false);
+        this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
         localStorage.setItem('measurementTests', '0');
       }
     }
