@@ -219,27 +219,6 @@ h5.secondary-display {
     font-size: 1.3em;
 }
 
-.source-layout {
-    display: flex;
-    margin: 0 2rem;
-}
-
-.concept-box {
-    background:white;
-    padding:1rem;
-}
-
-.source-item {
-    width: 50%;
-    margin: 0 auto;
-    flex-grow: 1;
-}
-
-.source-item:not(:nth-of-type(2)) {
-    width: 50%;
-    min-width: 10rem;
-}
-
 @media (max-width: 600px) {
     .chart-choice {
         font-size: 4vw;

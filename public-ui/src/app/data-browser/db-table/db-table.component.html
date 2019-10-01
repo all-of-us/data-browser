@@ -191,7 +191,9 @@
         </div>
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-        <div class="source-layout"
+        <app-sources [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
+
+        <!-- <div class="source-layout"
           *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
           <div class="source-item">
             <aside class="source-tree">
@@ -219,7 +221,7 @@
             <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
             </app-concept-charts>
           </div>
-        </div>
+        </div> -->
       </ng-container>
       <ng-template #NonRolledUp>
         <div class="graph-item">

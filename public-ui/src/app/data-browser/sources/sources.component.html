@@ -1,3 +1,29 @@
-<p>
-  sources works!
-</p>
+<div class="source-layout"
+  *ngIf="concept.vocabularyId === 'SNOMED' && (concept.domainId === 'Condition' || concept.domainId === 'Procedure'); else NonRolledUp">
+  <div class="source-item">
+    <aside class="source-tree">
+      <div class="concept-box">
+        <p><b>SNOMED Code:</b> {{concept.conceptCode}}</p>
+        <p><b>OMOP Concept Id:</b> {{concept.conceptId}}</p>
+      </div>
+      <p class="tree-heading">Count Breakdown ({{concept.vocabularyId}})
+        <clr-tooltip>
+          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+      </p>
+      <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
+      <ng-container *ngIf="!treeLoading">
+        <div *ngFor="let node of treeData" class="tree-top">
+          <app-source-tree [rootNode]="node"></app-source-tree>
+        </div>
+      </ng-container>
+    </aside>
+  </div>
+  <div class="source-item">
+    <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+    </app-concept-charts>
+  </div>
+</div>

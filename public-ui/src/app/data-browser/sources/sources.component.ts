@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnChanges } from '@angular/core';
+import { Concept } from '../../../publicGenerated';
+import { TooltipService } from '../../utils/tooltip.service';
 @Component({
   selector: 'app-sources',
   templateUrl: './sources.component.html',
-  styleUrls: ['./sources.component.css']
+  styleUrls: ['../../styles/template.css','./sources.component.css']
 })
-export class SourcesComponent implements OnInit {
+export class SourcesComponent implements OnChanges {
+  @Input() concept: Concept;
+  @Input() treeLoading: boolean;
+  @Input() treeData: any[];
+  @Input() graphToShow: string;
 
-  constructor() { }
+  constructor(public tooltipText: TooltipService) { }
 
-  ngOnInit() {
+  ngOnChanges() {
   }
 
 }

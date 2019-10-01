@@ -1,0 +1,20 @@
+.source-layout {
+    display: flex;
+    margin: 0 2rem;
+}
+
+.source-item {
+    width: 50%;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.source-item:not(:nth-of-type(2)) {
+    width: 50%;
+    min-width: 10rem;
+}
+
+.concept-box {
+    background: white;
+    padding: 1rem;
+}
