@@ -251,28 +251,7 @@
   max-width: 320px;
 }
 
-.tree-top {
-  padding: 1em;
-  padding-top: 0;
-  overflow: scroll;
-  height: 11rem;
-}
 
-.source-tree {
-  width: calc((100%/12)*10);
-  margin: 0 auto;
-  padding: 1em;
-  width: 90%;
-  text-align: left;
-}
-
-.source-tree p {
-  margin: 0;
-}
-
-.tree-heading {
-  padding-top: 1em;
-}
 
 .allofus-italics {
   font-style: italic;

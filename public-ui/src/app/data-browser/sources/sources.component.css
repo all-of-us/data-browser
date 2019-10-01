@@ -1,11 +1,16 @@
+p {
+    margin-top:0;
+}
+
 .source-layout {
     display: flex;
     margin: 0 2rem;
+    height:100%;
 }
 
 .source-item {
-    width: 50%;
-    margin: 0 auto;
+    width: 75%;
+    /* margin: 0 auto; */
     flex-grow: 1;
 }
 
@@ -16,5 +21,45 @@
 
 .concept-box {
     background: white;
+}
+
+.concept-box_info {
     padding: 1rem;
+}
+
+.tree-top {
+    padding: 1em;
+    padding-top:0;
+    padding-top: 0;
+    overflow-y: scroll;
+}
+
+.tree-view {
+    font-size: 14px;
+    text-align: left;
+    width: 75%;
+    padding: .5rem;
+    padding-top: 0;
+ 
+}
+
+.source-tree {
+    width: calc((100%/12)*10);
+    margin: 0 auto;
+    padding: 1rem;
+    width: 90%;
+    text-align: left;
+}
+.tree {
+    height: 516px;
+    overflow-y: scroll;
+}
+
+.source-tree p {
+    margin: 0;
+}
+
+.tree-heading {
+    width: 75%;
+    border-bottom: 1px solid #3e3b70;
 }
