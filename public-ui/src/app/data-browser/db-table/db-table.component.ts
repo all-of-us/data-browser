@@ -86,6 +86,7 @@ export class DbTableComponent implements OnChanges {
   }
 
   public expandRow(concept: any, fromChart?: boolean) {
+    this.loadSourceTree(concept);
     this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
@@ -159,6 +160,8 @@ export class DbTableComponent implements OnChanges {
   }
 
   private loadSourceTree(concept: Concept) {
+    // clear out treeData
+    this.treeData = [];
     this.treeLoading = true;
     // close previous subscription
     if (this.subscriptions.length > 0) {
@@ -178,12 +181,6 @@ export class DbTableComponent implements OnChanges {
       // get stashed built tree from recursive tree component
       this.treeData = [JSON.parse(localStorage.getItem(concept.conceptCode))];
       this.treeLoading = false;
-    }
-  }
-  buildTree(event: any) {
-    if (this.treeData) {
-      console.log(event, 'tree limb');
-
     }
   }
 
