@@ -4,17 +4,23 @@ import { Injectable } from '@angular/core';
 export class TooltipService {
   biologicalSexChartHelpText = `The sex assigned to a child at birth, most often based on
   the child’s external anatomy.`;
-  ehrBSPercentageChartHelpText = `Percentages are calculated based on how many participants
-  of the sex assigned have the
-  medical concept out of how many of the sex assigned have EHR records in the program.`;
+  ehrBSPercentageChartHelpText = `Percentages are calculated based on total number of participants
+  of each sex assigned that have this
+  medical concept out of total number of participants of each sex assigned that have EHR records in this domain.`;
+  ehrAgePercentageChartHelpText = `Percentages are calculated based on total number of participants
+  of each age group that have this
+  medical concept out of total number of participants of each age group that have EHR records in this domain.`;
   ehrBSCountChartHelpText = ` Counts are the total sum of participants with the medical
   concept mentioned in their
   electronic health record (EHR).`;
+  ehrAgeCountChartHelpText = ` Counts are the total sum of participants with the medical
+  concept mentioned in their
+  electronic health record (EHR).`;
   surveyBSPercentageChartHelpText = `Percentages are calculated based on how many
-  participants of the sex assigned selected the
-  answer  out of how many of the sex assigned completed the survey.`;
+  participants of the sex assigned selected this
+  answer  out of total number of participants of each sex assigned that answered this question (excluding skip codes).`;
   surveyBSCountChartHelpText = `Counts are the total sum of participants of the
-  sex assigned who selected the answer.`;
+  sex assigned who selected this answer.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
@@ -26,7 +32,7 @@ export class TooltipService {
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
     'ages at which the participants took the indicated survey. \n' +
     'The percentages below are calculated based on how many participants of the age group ' +
-    'responded with this survey answer out of how many of the age group completed the survey.';
+    'responded with this survey answer out of total number of participants of each age group that answered this question (excluding skip codes).';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
   raceEthnicityChartHelpText = `“Race” refers to physical differences that groups and cultures

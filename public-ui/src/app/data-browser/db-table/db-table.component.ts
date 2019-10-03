@@ -28,7 +28,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() totalResults: number;
   @Input() currentPage: number;
   @Input() totalParticipants: number;
-  @Input() standardConceptIds: number[];
   @Input() graphButtons: any[];
   @Input() graphToShow: any;
   @Input() treeData: any;
@@ -41,6 +40,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     localStorage.getItem('measurementTestsChecked') : true);
   measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
     localStorage.getItem('measurementOrdersChecked') : true);
+  standardConceptIds: number[];
   private subscriptions: ISubscription[] = [];
 
   constructor(
@@ -91,6 +91,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       this.totalResults = +localStorage.getItem('totalResults');
     }
     if (changes.selectedConcept && changes.selectedConcept.currentValue && changes.totalResults) {
+    this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
+    if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.expandRow(this.selectedConcept, true);
     }
   }
@@ -204,7 +206,9 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
     if (g === 'Age') {
-      return this.tooltipText.ehrAgeChartHelpText;
+      return this.tooltipText.ehrAgeChartHelpText + '\n' +
+        this.tooltipText.ehrAgePercentageChartHelpText + '\n' +
+        this.tooltipText.ehrAgeCountChartHelpText + '\n';
     }
     if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
