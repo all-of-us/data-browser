@@ -3,11 +3,12 @@
   <aside>
     <div class="concept-box">
       <div class="concept-box_info">
-        <p><b>SNOMED Code:</b> {{concept.conceptCode}}</p>
-        <p><b>OMOP Concept Id:</b> {{concept.conceptId}}</p>
+        <p><strong>{{concept.conceptName}}</strong></p>
+        <p>SNOMED Code: {{concept.conceptCode}}</p>
+        <p>OMOP Concept Id: {{concept.conceptId}}</p>
       </div>
-      <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-      </app-concept-charts>
+      <!-- <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+      </app-concept-charts> -->
     </div>
   </aside>
   <div class="tree-view">

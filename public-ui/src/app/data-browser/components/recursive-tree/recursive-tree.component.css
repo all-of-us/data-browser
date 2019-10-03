@@ -32,9 +32,10 @@
     background-color: #2991cf;
     color: white;
     border-radius: .5rem;
-    font-size: .8em;
+    font-size: .7em;
     padding: 0.025rem .5rem;
     margin-left: .25rem;
+    align-self: center;
 }
 
 .children {
@@ -46,6 +47,7 @@
 }
 
 .handle {
+    color:#2991cf;
     z-index: 1000;
     transform: rotate(90deg);
     transition: .1s transform linear;

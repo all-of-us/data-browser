@@ -76,8 +76,7 @@
 }
 
 .chart {
-  /* width: calc((100%/12)*10); */
-  width:100%;
+  width: calc((100%/12)*10);
   margin: 0 auto;
 }
 
@@ -213,15 +212,11 @@
   cursor: pointer;
 }
 
-
-
 @media only screen and (min-width: 1168px) {
   /* .tbl-d.first {
     min-width: 10rem;
   } */
 }
-
-
 
 /**** ##MAILCHIMP ***/
 
@@ -251,8 +246,6 @@
   width: 100%;
   max-width: 320px;
 }
-
-
 
 .allofus-italics {
   font-style: italic;
