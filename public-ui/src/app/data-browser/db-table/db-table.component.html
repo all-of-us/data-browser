@@ -108,13 +108,13 @@
           <div class="dropdown-menu">
             <div class="clr-checkbox-wrapper">
               <input type="checkbox" id="checkbox1" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked1" (change)="checkBoxClick('tests', isChecked1)"
-              [formControl]="measurementTestsChecked" [checked]="true">
-              <label for="checkbox1">Tests</label>
+              [formControl]="measurementTestsChecked" [checked]="checkMeasurementTests()">
+              <label for="checkbox1"><i class="fas fa-vial fa-rotate-45"></i> Tests</label>
             </div>
             <div class="clr-checkbox-wrapper">
               <input type="checkbox" id="checkbox2" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked2" (change)="checkBoxClick('orders', isChecked2)"
-              [formControl]="measurementOrdersChecked" [checked]="true">
-              <label for="checkbox2">Orders</label>
+              [formControl]="measurementOrdersChecked" [checked]="checkMeasurementOrders()">
+              <label for="checkbox2"><i class="far fa-file-signature"></i> Orders</label>
             </div>
           </div>
         </div>
@@ -177,6 +177,26 @@
         </div>
         <div class="body-lead info-text tbl-d">
           {{r.conceptId}}
+        </div>
+        <div class="body-lead info-text tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
+          <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder" class="vial-span">
+            <clr-tooltip>
+              <i class="fas fa-vial solid fa-lg" clrTooltipTrigger></i>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-header">
+              This code contains values. Search the medical concept keyword to see related Labs & Measurements results.</div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+          </span>
+          <ng-template #labOrder><span class="order-span">
+            <clr-tooltip>
+              <i class="far fa-file-signature regular fa-lg" clrTooltipTrigger></i>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-header">
+              This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.</div>
+          </clr-tooltip-content>
+            </clr-tooltip>
+            </span></ng-template>
         </div>
         <div class="body-lead info-text tbl-d">
           <button class="icon-btn">

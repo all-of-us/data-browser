@@ -243,7 +243,7 @@ for index in "${!domain_names[@]}"; do
     union all
     select 0 as id,3000 as analysis_id,CAST(co1.${source_concept_id} AS STRING) as stratum_1, \"${domain_stratum}\" as stratum_3,
     COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
-    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on
     c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     and co1.${source_concept_id} != ${exclude_concept_id}
@@ -308,7 +308,7 @@ for index in "${!domain_names[@]}"; do
     where co2.${source_concept_id}=co1.${concept_id}
     and ca2.age_stratum=ca.age_stratum) as source_count_value
     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join ehr_age_stratum ca on co1.${table_id} = ca.${table_id}
-    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${concept_id} and c.domain_id=\"${domain_stratum}\"
+    join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=co1.${concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${concept_id} > 0
     group by co1.${concept_id}, stratum_2
     union all
@@ -318,7 +318,7 @@ for index in "${!domain_names[@]}"; do
     COUNT(distinct co1.person_id) as count_value,
     COUNT(distinct co1.person_id) as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1 join ehr_age_stratum ca
     on co1.${table_id} = ca.${table_id}
-    join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
+    join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
     group by co1.${source_concept_id}, stratum_2"
 

@@ -62,6 +62,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   numPages: number;
   currentPage = 1;
   selectedConcept: Concept;
+  testFilter = 0;
+  orderFilter = 0;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -102,6 +104,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
     }
+    localStorage.removeItem('measurementTestsChecked');
+    localStorage.removeItem('measurementOrdersChecked');
+    localStorage.removeItem('totalResults');
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -207,30 +212,56 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public getNumberOfPages(query: string) {
     let domainResults = null;
     if (query && query != null) {
-      this.subscriptions.push(this.api.getDomainSearchResults(query)
-        .subscribe(results => {
-          domainResults = results.domainInfos.filter(d => d.domain !== null);
-          domainResults = domainResults.filter(
-            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
-          if (domainResults && domainResults.length > 0) {
-            this.totalResults = domainResults[0].standardConceptCount;
-            this.numPages = Math.ceil(this.totalResults / 50);
-          }
-        }));
+      if (this.ehrDomain.domainConceptId === 21) {
+        this.subscriptions.push(this.api.getMeasurementSearchResults(query, this.testFilter, this.orderFilter)
+          .subscribe(results => {
+            domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+            if (domainResults && domainResults.length > 0) {
+              this.totalResults = domainResults[0].standardConceptCount;
+              localStorage.setItem('totalResults', String(this.totalResults));
+              this.numPages = Math.ceil(this.totalResults / 50);
+            }
+          }));
+      } else {
+        this.subscriptions.push(this.api.getDomainSearchResults(query)
+          .subscribe(results => {
+            domainResults = results.domainInfos.filter(d => d.domain !== null);
+            domainResults = domainResults.filter(
+              d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+            if (domainResults && domainResults.length > 0) {
+              this.totalResults = domainResults[0].standardConceptCount;
+              localStorage.setItem('totalResults', String(this.totalResults));
+              this.numPages = Math.ceil(this.totalResults / 50);
+            }
+          }));
+      }
     } else {
-      this.subscriptions.push(this.api.getDomainTotals()
-        .subscribe(results => {
-          domainResults = results.domainInfos.filter(d => d.domain !== null);
-          domainResults = domainResults.filter(
-            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
-          if (domainResults && domainResults.length > 0) {
-            this.totalResults = domainResults[0].standardConceptCount;
-            this.numPages = Math.ceil(this.totalResults / 50);
-          }
-        }));
+      if (this.ehrDomain.domainConceptId === 21) {
+        this.subscriptions.push(this.api.getMeasurementDomainTotals(this.testFilter, this.orderFilter)
+          .subscribe(results => {
+            domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+            if (domainResults && domainResults.length > 0) {
+              this.totalResults = domainResults[0].standardConceptCount;
+              localStorage.setItem('totalResults', String(this.totalResults));
+              this.numPages = Math.ceil(this.totalResults / 50);
+            }
+          }));
+      } else {
+        this.subscriptions.push(this.api.getDomainTotals()
+          .subscribe(results => {
+            domainResults = results.domainInfos.filter(d => d.domain !== null);
+            domainResults = domainResults.filter(
+              d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+            if (domainResults && domainResults.length > 0) {
+              this.totalResults = domainResults[0].standardConceptCount;
+              localStorage.setItem('totalResults', String(this.totalResults));
+              this.numPages = Math.ceil(this.totalResults / 50);
+            }
+          }));
+      }
     }
   }
-
+  
   public searchCallback(results: any) {
     if (this.searchText.value) {
       this.router.navigate(
@@ -322,14 +353,37 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.initSearchSubscription.unsubscribe();
     }
     const maxResults = 50;
-    this.searchRequest = {
-      query: query,
-      domain: this.ehrDomain.domain.toUpperCase(),
-      standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
-      maxResults: maxResults,
-      minCount: 1,
-      pageNumber: this.currentPage - 1,
-    };
+    if (this.currentPage > 1 && this.ehrDomain.domain.toLowerCase() === 'measurement') {
+      if (localStorage.getItem('measurementTestsChecked') === null) {
+        this.testFilter = 1;
+      } else {
+        this.testFilter = localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0;
+      }
+      if (localStorage.getItem('measurementOrdersChecked') === null) {
+        this.orderFilter = 1;
+      } else {
+        this.orderFilter = localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0;
+      }
+      this.searchRequest = {
+        query: query,
+        domain: this.ehrDomain.domain.toUpperCase(),
+        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        maxResults: maxResults,
+        minCount: 1,
+        pageNumber: this.currentPage - 1,
+        measurementTests: this.testFilter,
+        measurementOrders: this.orderFilter
+      };
+    } else {
+      this.searchRequest = {
+        query: query,
+        domain: this.ehrDomain.domain.toUpperCase(),
+        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        maxResults: maxResults,
+        minCount: 1,
+        pageNumber: this.currentPage - 1,
+      };
+    }
     this.prevSearchText = query;
     return this.api.searchConcepts(this.searchRequest);
   }

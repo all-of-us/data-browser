@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -13,7 +13,7 @@ import {StandardConceptFilter} from "../../../publicGenerated/model/standardConc
   templateUrl: './db-table.component.html',
   styleUrls: ['../../styles/template.css', './db-table.component.css']
 })
-export class DbTableComponent implements OnChanges {
+export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() items: any[];
   @Input() searchRequest: SearchConceptsRequest;
   @Input() searchResult: ConceptListResponse;
@@ -37,8 +37,10 @@ export class DbTableComponent implements OnChanges {
   selectedFilterGrid: boolean = false;
   isChecked1: boolean = true;
   isChecked2: boolean = true;
-  measurementTestsChecked: FormControl = new FormControl(true);
-  measurementOrdersChecked: FormControl = new FormControl(true);
+  measurementTestsChecked: FormControl = new FormControl(localStorage.getItem('measurementTestsChecked') ?
+    localStorage.getItem('measurementTestsChecked') : true);
+  measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
+    localStorage.getItem('measurementOrdersChecked') : true);
   private subscriptions: ISubscription[] = [];
 
   constructor(
@@ -52,96 +54,43 @@ export class DbTableComponent implements OnChanges {
   }
   
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.measurementTestsChecked.setValue(true);
-      this.measurementOrdersChecked.setValue(true);
+    this.measurementTestsChecked.valueChanges.subscribe(value => {
+      let getTests = 0;
+      let getOrders = 0;
+      value ? getTests = 1 : 0;
+      this.measurementOrdersChecked.value ? getOrders = 1 : 0;
+      var measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
+      const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+        results =>
+          this.items = results.items);
+      if (this.searchRequest.query && this.searchRequest.query !== null) {
+        const totalResults2 = this.getMeasurementSearchResultTotals(getTests, getOrders);
+      } else {
+        const totalResults2 = this.getMeasurementDomainTotals(getTests, getOrders);
+      }
     });
-    this.isChecked1 = true;
-    this.isChecked2 = true;
-    this.subscriptions.push(this.measurementTestsChecked.valueChanges
-      .subscribe((query) => {
-        if (!query) {
-          let getOrders = 0;
-          if (this.measurementOrdersChecked.value) {
-            getOrders = 1;
-          }
-          var measurementSearchRequestWithFilter = {
-            query: this.searchRequest.query,
-            domain: this.searchRequest.domain,
-            standardConceptFilter: this.searchRequest.standardConceptFilter,
-            maxResults: this.searchRequest.maxResults,
-            minCount: this.searchRequest.minCount,
-            pageNumber: this.searchRequest.pageNumber,
-            measurementTests: 0,
-            measurementOrders: getOrders
-          };
-          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-            results =>
-            this.items = results.items);
-        } else {
-          let getOrders = 0;
-          if (this.measurementOrdersChecked.value) {
-            getOrders = 1;
-          }
-          var measurementSearchRequestWithFilter = {
-            query: this.searchRequest.query,
-            domain: this.searchRequest.domain,
-            standardConceptFilter: this.searchRequest.standardConceptFilter,
-            maxResults: this.searchRequest.maxResults,
-            minCount: this.searchRequest.minCount,
-            pageNumber: this.searchRequest.pageNumber,
-            measurementTests: 1,
-            measurementOrders: getOrders
-          };
-          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-            results =>
-              this.items = results.items);
-        }
-      }));
-    this.subscriptions.push(this.measurementOrdersChecked.valueChanges
-      .subscribe((query) => {
-        if (!query) {
-          let getTests = 0;
-          if (this.measurementTestsChecked.value) {
-            getTests = 1;
-          }
-          var measurementSearchRequestWithFilter = {
-            query: this.searchRequest.query,
-            domain: this.searchRequest.domain,
-            standardConceptFilter: this.searchRequest.standardConceptFilter,
-            maxResults: this.searchRequest.maxResults,
-            minCount: this.searchRequest.minCount,
-            pageNumber: this.searchRequest.pageNumber,
-            measurementTests: getTests,
-            measurementOrders: 0
-          };
-          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-            results =>
-              this.items = results.items);
-        } else {
-          let getTests = 0;
-          if (this.measurementTestsChecked.value) {
-            getTests = 1;
-          }
-          var measurementSearchRequestWithFilter = {
-            query: this.searchRequest.query,
-            domain: this.searchRequest.domain,
-            standardConceptFilter: this.searchRequest.standardConceptFilter,
-            maxResults: this.searchRequest.maxResults,
-            minCount: this.searchRequest.minCount,
-            pageNumber: this.searchRequest.pageNumber,
-            measurementTests: getTests,
-            measurementOrders: 1
-          };
-          const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-            results =>
-              this.items = results.items);
-        }
-      }));
+    this.measurementOrdersChecked.valueChanges.subscribe(value => {
+      let getTests = 0;
+      let getOrders = 0;
+      value ? getOrders = 1 : 0;
+      this.measurementTestsChecked.value ? getTests = 1 : 0;
+      var measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
+      const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+        results =>
+          this.items = results.items);
+      if (this.searchRequest.query && this.searchRequest.query !== null) {
+        const totalResults2 = this.getMeasurementSearchResultTotals(getTests, getOrders);
+      } else {
+        const totalResults2 = this.getMeasurementDomainTotals(getTests, getOrders);
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.selectedConcept && changes.selectedConcept.currentValue) {
+    if (localStorage.getItem('totalResults')) {
+      this.totalResults = +localStorage.getItem('totalResults');
+    }
+    if (changes.selectedConcept && changes.selectedConcept.currentValue && changes.totalResults) {
       this.expandRow(this.selectedConcept, true);
     }
   }
@@ -281,21 +230,76 @@ export class DbTableComponent implements OnChanges {
     if (box === 'tests') {
       if (value) {
         this.measurementTestsChecked.setValue(true);
-        localStorage.setItem('measurementTests', '1');
+        localStorage.setItem('measurementTestsChecked', 'true');
       } else {
         this.measurementTestsChecked.setValue(false);
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
-        localStorage.setItem('measurementTests', '0');
+        localStorage.setItem('measurementTestsChecked', 'false');
       }
     }
     if (box === 'orders') {
       if (value) {
         this.measurementOrdersChecked.setValue(true);
-        localStorage.setItem('measurementOrders', '1');
+        localStorage.setItem('measurementOrdersChecked', 'true');
       } else {
         this.measurementOrdersChecked.setValue(false);
-        localStorage.setItem('measurementOrders', '0');
+        localStorage.setItem('measurementOrdersChecked', 'false');
       }
+    }
+  }
+  
+  public checkMeasurementTests() {
+    if (this.currentPage > 1) {
+      return localStorage.getItem('measurementTestsChecked') === 'true';
+    }
+    return this.measurementTestsChecked.value;
+  }
+
+  public checkMeasurementOrders() {
+    if (this.currentPage > 1) {
+      return localStorage.getItem('measurementOrdersChecked') === 'true';
+    }
+    return this.measurementOrdersChecked.value;
+  }
+
+  public getMeasurementDomainTotals(testFilter: number, orderFilter: number) {
+    this.api.getMeasurementDomainTotals(testFilter, orderFilter).subscribe(
+      results => {
+        const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+        this.totalResults = domainResults[0].standardConceptCount;
+      }
+    );
+  }
+  
+  public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
+    this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter).subscribe(
+      results => {
+        const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+        this.totalResults = domainResults[0].standardConceptCount;
+      }
+    );
+  }
+  
+  public makeMeasurementSearchRequest(testFilter: number, orderFilter: number) {
+    var measurementSearchRequestWithFilter = {
+      query: this.searchRequest.query,
+      domain: this.searchRequest.domain,
+      standardConceptFilter: this.searchRequest.standardConceptFilter,
+      maxResults: this.searchRequest.maxResults,
+      minCount: this.searchRequest.minCount,
+      pageNumber: this.searchRequest.pageNumber,
+      measurementTests: testFilter,
+      measurementOrders: orderFilter
+    };
+    return measurementSearchRequestWithFilter;
+  }
+  
+  public ngOnDestroy() {
+    if (localStorage.getItem('measurementTestsChecked') === null) {
+      localStorage.setItem('measurementTestsChecked', 'true');
+    }
+    if (localStorage.getItem('measurementOrdersChecked') === null) {
+      localStorage.setItem('measurementOrdersChecked', 'true');
     }
   }
 }
