@@ -90,7 +90,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         getTests = 0;
       }
-      const measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
+      const measurementSearchRequestWithFilter =
+        this.makeMeasurementSearchRequest(getTests, getOrders);
       this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
         results =>
           this.items = results.items);
@@ -99,7 +100,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         this.getMeasurementDomainTotals(getTests, getOrders);
       }
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -267,7 +268,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
-  
+
   public checkMeasurementTests() {
     if (this.currentPage > 1) {
       return localStorage.getItem('measurementTestsChecked') === 'true';
@@ -290,7 +291,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       }
     );
   }
-  
+
   public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
     this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter).subscribe(
       results => {
