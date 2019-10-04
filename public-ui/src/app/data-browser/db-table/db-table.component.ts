@@ -108,9 +108,10 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       this.totalResults = +localStorage.getItem('totalResults');
     }
     if (changes.selectedConcept && changes.selectedConcept.currentValue && changes.totalResults) {
-    this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
-    if (changes.selectedConcept && changes.selectedConcept.currentValue) {
-      this.expandRow(this.selectedConcept, true);
+      this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
+      if (changes.selectedConcept && changes.selectedConcept.currentValue) {
+        this.expandRow(this.selectedConcept, true);
+      }
     }
   }
 
