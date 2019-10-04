@@ -12,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 
 
 @Entity
@@ -34,6 +38,7 @@ public class Concept {
     private String synonymsStr;
     private int canSelect;
     private int hasCounts;
+    private MeasurementConceptInfo measurementConceptInfo = null;
 
     public Concept() {}
 
@@ -245,6 +250,19 @@ public class Concept {
 
     public Concept hasCounts(int hasCounts) {
         this.hasCounts = hasCounts;
+        return this;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="concept_id", insertable=false, updatable=false)
+    public MeasurementConceptInfo getMeasurementConceptInfo() {
+        return measurementConceptInfo;
+    }
+    public void setMeasurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
+        this.measurementConceptInfo = measurementConceptInfo;
+    }
+    public Concept measurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
+        this.measurementConceptInfo = measurementConceptInfo;
         return this;
     }
 

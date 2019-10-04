@@ -379,6 +379,10 @@ definitions:
         type: "array"
         items:
           type: "string"
+      measurementConceptInfo:
+        description: measurement concept info
+        type: object
+        $ref: "#/definitions/MeasurementConceptInfo"
 
   ConceptListResponse:
     type: object
@@ -404,6 +408,15 @@ definitions:
         description: concept for which standard concepts are fetched
         type: integer
         format: int64
+  MeasurementConceptInfo:
+    type: object
+    properties:
+      conceptId:
+        type: integer
+        format: int64
+      hasValues:
+        type: integer
+        format: int32
 
   ConfigResponse:
     type: object
@@ -1047,3 +1060,11 @@ definitions:
         type: integer
         default: 0
         description: By default it returns the first page and then its next pages from that on.
+      measurementTests:
+        type: integer
+        default: 1
+        description: By default all the measurement tests are returned
+      measurementOrders:
+        type: integer
+        default: 1
+        description: By default all the measurement orders are returned

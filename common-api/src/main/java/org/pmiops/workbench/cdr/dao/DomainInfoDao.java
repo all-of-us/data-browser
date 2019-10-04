@@ -46,6 +46,77 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
       "    order by domain_id")
   List<DomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds);
 
+  @Query(nativeQuery=true,
+          value="select " +
+                  "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
+                  "0 all_concept_count, c.count standard_concept_count, d.participant_count participant_count " +
+                  "from domain_info d " +
+                  "join (" +
+                  "  select c1.domain_id, count(*) as count " +
+                  "  from (" +
+                  "    (select domain_id, c.concept_id from concept c join measurement_concept_info m on c.concept_id=m.concept_id and m.has_values = ?4" +
+                  "     where has_counts > 0 and " +
+                  "       match(concept_name, concept_code, vocabulary_id, synonyms) against (?1 in boolean mode) > 0 and " +
+                  "       standard_concept IN ('S', 'C') and can_select=1) " +
+                  // An OR of these different conditions would be easier, but MySQL will not leverage the full
+                  // text index to perform the match, bringing performance to a crawl (~10ms vs ~8s). Using the
+                  // union results in usage of the fulltext index in the first subquery. In the future we should
+                  // move these searches to a more suitable technology, e.g. Elasticsearch.
+                  "    UNION DISTINCT " +
+                  "    (select domain_id, concept_id from concept " +
+                  "     where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 " +
+                  "  group by c1.domain_id) c " +
+                  "ON d.domain_id = c.domain_id and d.domain=4")
+  List<DomainInfo> findMeasurementStandardOrCodeMatchConceptCountsByValueCheck(String matchExpression, String query, List<Long> conceptIds, int hasValues);
+
+  @Query(nativeQuery=true,
+          value="select " +
+                  "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
+                  "0 all_concept_count, c.count standard_concept_count, d.participant_count participant_count " +
+                  "from domain_info d " +
+                  "join (" +
+                  "  select c1.domain_id, count(*) as count " +
+                  "  from (" +
+                  "    (select domain_id, c.concept_id from concept c" +
+                  "     where has_counts > 0 and " +
+                  "       match(concept_name, concept_code, vocabulary_id, synonyms) against (?1 in boolean mode) > 0 and " +
+                  "       standard_concept IN ('S', 'C') and can_select=1) " +
+                  // An OR of these different conditions would be easier, but MySQL will not leverage the full
+                  // text index to perform the match, bringing performance to a crawl (~10ms vs ~8s). Using the
+                  // union results in usage of the fulltext index in the first subquery. In the future we should
+                  // move these searches to a more suitable technology, e.g. Elasticsearch.
+                  "    UNION DISTINCT " +
+                  "    (select domain_id, concept_id from concept " +
+                  "     where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 " +
+                  "  group by c1.domain_id) c " +
+                  "ON d.domain_id = c.domain_id and d.domain=4")
+  List<DomainInfo> findMeasurementStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds);
+
+  @Query(nativeQuery=true,
+          value="select " +
+                  "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
+                  "0 all_concept_count, 0 standard_concept_count, d.participant_count participant_count " +
+                  "from domain_info d where d.domain=4")
+  List<DomainInfo> findMeasurementNoMatchConceptCounts();
+
+  @Query(nativeQuery=true,
+          value = "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count," +
+                  "c.count standard_concept_count, d.participant_count participant_count from domain_info d " +
+                  "join (" +
+                  "select c.domain_id, count(*) as count from concept c join measurement_concept_info m on c.concept_id=m.concept_id and has_values = ?1 " +
+                  "where standard_concept in ('S', 'C') and can_select=1 group by domain_id) c " +
+                  "on d.domain_id=c.domain_id and d.domain=4")
+  List<DomainInfo> findMeasurementDomainTotalsWithFilter(int valueFilter);
+
+  @Query(nativeQuery=true,
+          value = "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count," +
+                  "c.count standard_concept_count, d.participant_count participant_count from domain_info d " +
+                  "join (" +
+                  "select c.domain_id, count(*) as count from concept c " +
+                  "where standard_concept in ('S', 'C') and can_select=1 group by domain_id) c " +
+                  "on d.domain_id=c.domain_id and d.domain=4")
+  List<DomainInfo> findMeasurementDomainTotalsWithoutFilter();
+
   /**
    * Returns domain metadata and concept counts for domains, matching only standard concepts by name,
    * code, or concept ID. standardConceptCount is populated; allConceptCount

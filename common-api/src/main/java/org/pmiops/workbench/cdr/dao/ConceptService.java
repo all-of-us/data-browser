@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import javax.persistence.criteria.JoinType;
 
 @Service
 public class ConceptService {
@@ -124,7 +125,8 @@ public class ConceptService {
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
-    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page) {
+    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
+                                         int measurementTests, int measurementOrders) {
 
 
         Specification<Concept> conceptSpecification =
@@ -194,6 +196,16 @@ public class ConceptService {
                         predicates.add(root.get("vocabularyId").in(vocabularyIds));
                     }
                     if (domainId != null) {
+                        if (domainId.equals("Measurement")) {
+                            root.fetch("measurementConceptInfo", JoinType.LEFT);
+                            if (measurementTests == 1 && measurementOrders == 0) {
+                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 1));
+                            } else if (measurementTests == 0 && measurementOrders == 1) {
+                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 0));
+                            } else if (measurementTests == 0 && measurementOrders == 0) {
+                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 2));
+                            }
+                        }
                         predicates.add(criteriaBuilder.equal(root.get("domainId"), criteriaBuilder.literal(domainId)));
                     }
                     if (minCount == 1) {

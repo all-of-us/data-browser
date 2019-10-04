@@ -152,6 +152,7 @@ public class DataBrowserControllerTest {
 
     private static final DomainInfo CLIENT_DOMAIN_1 = new DomainInfo()
             .domain(Domain.CONDITION)
+            .domainConceptId(1L)
             .name("Diagnoses")
             .description("Condition Domain")
             .allConceptCount(123L)
@@ -160,6 +161,7 @@ public class DataBrowserControllerTest {
 
     private static final DomainInfo CLIENT_DOMAIN_2 = new DomainInfo()
             .domain(Domain.DRUG)
+            .domainConceptId(2L)
             .name("Medications")
             .description("Drug Domain")
             .allConceptCount(1L)
