@@ -213,7 +213,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     let domainResults = null;
     if (query && query != null) {
       if (this.ehrDomain.domainConceptId === 21) {
-        this.subscriptions.push(this.api.getMeasurementSearchResults(query, this.testFilter, this.orderFilter)
+        this.subscriptions.push(this.api.getMeasurementSearchResults(
+          query, this.testFilter, this.orderFilter)
           .subscribe(results => {
             domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
             if (domainResults && domainResults.length > 0) {
@@ -237,7 +238,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       }
     } else {
       if (this.ehrDomain.domainConceptId === 21) {
-        this.subscriptions.push(this.api.getMeasurementDomainTotals(this.testFilter, this.orderFilter)
+        this.subscriptions.push(this.api.getMeasurementDomainTotals(
+          this.testFilter, this.orderFilter)
           .subscribe(results => {
             domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
             if (domainResults && domainResults.length > 0) {
@@ -261,7 +263,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
+
   public searchCallback(results: any) {
     if (this.searchText.value) {
       this.router.navigate(
