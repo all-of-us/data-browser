@@ -6,7 +6,6 @@ import { Concept, ConceptListResponse, DataBrowserService, MatchType, SearchConc
 import { ISubscription } from 'rxjs/Subscription';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
-import {StandardConceptFilter} from "../../../publicGenerated/model/standardConceptFilter";
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'db-table',
@@ -34,9 +33,9 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
-  selectedFilterGrid: boolean = false;
-  isChecked1: boolean = true;
-  isChecked2: boolean = true;
+  selectedFilterGrid = false;
+  isChecked1 = true;
+  isChecked2 = true;
   measurementTestsChecked: FormControl = new FormControl(localStorage.getItem('measurementTestsChecked') ?
     localStorage.getItem('measurementTestsChecked') : true);
   measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
@@ -60,13 +59,13 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       value ? getTests = 1 : 0;
       this.measurementOrdersChecked.value ? getOrders = 1 : 0;
       var measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
-      const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+      this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
         results =>
           this.items = results.items);
       if (this.searchRequest.query && this.searchRequest.query !== null) {
-        const totalResults2 = this.getMeasurementSearchResultTotals(getTests, getOrders);
+        this.getMeasurementSearchResultTotals(getTests, getOrders);
       } else {
-        const totalResults2 = this.getMeasurementDomainTotals(getTests, getOrders);
+        this.getMeasurementDomainTotals(getTests, getOrders);
       }
     });
     this.measurementOrdersChecked.valueChanges.subscribe(value => {
@@ -74,14 +73,14 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       let getOrders = 0;
       value ? getOrders = 1 : 0;
       this.measurementTestsChecked.value ? getTests = 1 : 0;
-      var measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
-      const searchResult2 = this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+      const measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
+      this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
         results =>
           this.items = results.items);
       if (this.searchRequest.query && this.searchRequest.query !== null) {
-        const totalResults2 = this.getMeasurementSearchResultTotals(getTests, getOrders);
+        this.getMeasurementSearchResultTotals(getTests, getOrders);
       } else {
-        const totalResults2 = this.getMeasurementDomainTotals(getTests, getOrders);
+        this.getMeasurementDomainTotals(getTests, getOrders);
       }
     })
   }
