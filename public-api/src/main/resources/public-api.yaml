@@ -1084,7 +1084,6 @@ definitions:
         description: >
             A query string that can be used to match a subset of the name (case-insensitively),
             the entire code value (case-insensitively), or the concept ID.
-        default: null
       standardConceptFilter:
         description: >
             STANDARD_CONCEPTS if only standard concepts should be returned,
