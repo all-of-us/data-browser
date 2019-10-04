@@ -66,7 +66,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         getOrders = 0;
       }
-      var measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
+      const measurementSearchRequestWithFilter =
+        this.makeMeasurementSearchRequest(getTests, getOrders);
       this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
         results =>
           this.items = results.items);
@@ -79,8 +80,16 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     this.measurementOrdersChecked.valueChanges.subscribe(value => {
       let getTests = 0;
       let getOrders = 0;
-      value ? getOrders = 1 : 0;
-      this.measurementTestsChecked.value ? getTests = 1 : 0;
+      if (value) {
+        getOrders = 1;
+      } else {
+        getOrders = 0;
+      }
+      if (this.measurementTestsChecked.value) {
+        getTests = 1;
+      } else {
+        getTests = 0;
+      }
       const measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
       this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
         results =>
