@@ -654,6 +654,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
                 searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
                 (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
+
         ConceptListResponse response = new ConceptListResponse();
 
         for(Concept con : concepts.getContent()){

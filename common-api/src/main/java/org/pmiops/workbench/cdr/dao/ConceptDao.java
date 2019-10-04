@@ -89,4 +89,5 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
             "order by c.name asc) " +
             "and c1.concept_class_id = 'Ingredient') and cr.concept_id_2 not in (?2) and (c1.has_counts > 0)", nativeQuery = true)
     List<Concept> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
+
 }

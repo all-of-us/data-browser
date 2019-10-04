@@ -38,9 +38,10 @@ public class Concept {
     private String synonymsStr;
     private int canSelect;
     private int hasCounts;
-    private MeasurementConceptInfo measurementConceptInfo;
+    private MeasurementConceptInfo measurementConceptInfo = null;
 
-    public Concept() {}
+    public Concept() {
+    }
 
     // Copy constructor for copying everything but synonyms
     public Concept(Concept a) {
