@@ -51,13 +51,21 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
   ) {
   }
-  
+
   ngOnInit() {
     this.measurementTestsChecked.valueChanges.subscribe(value => {
       let getTests = 0;
       let getOrders = 0;
-      value ? getTests = 1 : 0;
-      this.measurementOrdersChecked.value ? getOrders = 1 : 0;
+      if (value) {
+        getTests = 1;
+      } else {
+        getTests = 0;
+      }
+      if (this.measurementOrdersChecked.value) {
+        getOrders = 1;
+      } else {
+        getOrders = 0;
+      }
       var measurementSearchRequestWithFilter = this.makeMeasurementSearchRequest(getTests, getOrders);
       this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
         results =>
