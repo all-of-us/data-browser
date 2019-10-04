@@ -293,16 +293,17 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
-    this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter).subscribe(
+    this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter)
+      .subscribe(
       results => {
         const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
         this.totalResults = domainResults[0].standardConceptCount;
       }
     );
   }
-  
+
   public makeMeasurementSearchRequest(testFilter: number, orderFilter: number) {
-    var measurementSearchRequestWithFilter = {
+    const measurementSearchRequestWithFilter = {
       query: this.searchRequest.query,
       domain: this.searchRequest.domain,
       standardConceptFilter: this.searchRequest.standardConceptFilter,
@@ -314,7 +315,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     };
     return measurementSearchRequestWithFilter;
   }
-  
+
   public ngOnDestroy() {
     if (localStorage.getItem('measurementTestsChecked') === null) {
       localStorage.setItem('measurementTestsChecked', 'true');
