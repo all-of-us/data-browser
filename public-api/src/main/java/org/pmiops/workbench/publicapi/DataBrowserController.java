@@ -1432,9 +1432,17 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             for(float maleRemaining: maleBinRanges){
                 String missingValue = null;
                 if (maleRemaining == (long)maleRemaining) {
-                    missingValue = String.format("%d",(long)maleRemaining);
+                    if (maleRemaining == maleBinMax || maleRemaining == maleBinMin) {
+                        missingValue = String.format("%d",(long)maleRemaining);
+                    } else {
+                        missingValue = String.format("%d",(long)(maleRemaining-maleBinWidth)) + " - " + String.format("%d",(long)maleRemaining);
+                    }
                 } else {
-                    missingValue = String.format("%.2f", maleRemaining);
+                    if (maleRemaining == maleBinMax || maleRemaining == maleBinMin) {
+                        missingValue = String.format("%.2f",(float)maleRemaining);
+                    } else {
+                        missingValue = trimTrailingZeroDecimals(String.format("%.2f",(float)(maleRemaining-maleBinWidth))) + " - " + trimTrailingZeroDecimals(String.format("%.2f",maleRemaining));
+                    }
                 }
                 String missingBinWidth = null;
                 if (maleBinWidth == (long)(maleBinWidth)) {
@@ -1451,9 +1459,17 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             for(float femaleRemaining: femaleBinRanges){
                 String missingValue = null;
                 if (femaleRemaining == (long)femaleRemaining) {
-                    missingValue = String.format("%d",(long)femaleRemaining);
+                    if (femaleRemaining == femaleBinMax || femaleRemaining == femaleBinMin) {
+                        missingValue = String.format("%d",(long)femaleRemaining);
+                    } else {
+                        missingValue = String.format("%d", (long)(femaleRemaining-femaleBinWidth)) + "-" + String.format("%d",(long)femaleRemaining);
+                    }
                 } else {
-                    missingValue = String.format("%.2f", femaleRemaining);
+                    if (femaleRemaining == femaleBinMin || femaleRemaining == femaleBinMax) {
+                        missingValue = String.format("%.2f",(float)femaleRemaining);
+                    } else {
+                        missingValue = trimTrailingZeroDecimals(String.format("%.2f",(float)(femaleRemaining-femaleBinWidth))) + " - " + trimTrailingZeroDecimals(String.format("%.2f",femaleRemaining));
+                    }
                 }
                 String missingBinWidth = null;
                 if (femaleBinWidth == (long)femaleBinWidth) {
@@ -1508,8 +1524,17 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             for(float otherRemaining: otherBinRanges){
                 String missingValue = null;
                 if (otherRemaining == (long)otherRemaining) {
-                    missingValue = String.format("%d",(long)otherRemaining);
+                    if (otherRemaining == otherBinMin || otherRemaining == otherBinMax) {
+                        missingValue = String.format("%d",(long)otherRemaining);
+                    } else {
+                        missingValue = String.format("%d",(long)(otherRemaining-otherBinWidth)) + " - " + String.format("%d",(long)otherRemaining);
+                    }
                 } else {
+                    if (otherRemaining == otherBinMin || otherRemaining == otherBinMax) {
+                        missingValue = String.format("%.2f",(float)otherRemaining);
+                    } else {
+                        missingValue = trimTrailingZeroDecimals(String.format("%.2f",(float)(otherRemaining-otherBinWidth))) + " - " + trimTrailingZeroDecimals(String.format("%.2f",otherRemaining));
+                    }
                     missingValue = String.format("%.2f", otherRemaining);
                 }
                 String missingBinWidth = null;

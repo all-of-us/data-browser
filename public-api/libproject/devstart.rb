@@ -56,7 +56,7 @@ ENVIRONMENTS = {
     :cdr_versions_json => "cdr_versions_prod.json",
     :api_base_path => "https://public.api.researchallofus.org",
     :gae_vars => {
-      "GAE_MIN_IDLE_INSTANCES" => "10",
+      "GAE_MIN_IDLE_INSTANCES" => "1",
       "GAE_MAX_INSTANCES" => "64"
     }
   }
