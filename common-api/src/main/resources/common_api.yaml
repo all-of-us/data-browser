@@ -84,6 +84,10 @@ definitions:
       domain:
         description: the domain ID
         $ref: "#/definitions/Domain"
+      domainConceptId:
+        description: domain concept id
+        type: integer
+        format: int64
       name:
         description: display name of the domain
         type: string

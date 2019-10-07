@@ -63,6 +63,10 @@
   color: #262262;
 }
 
+.fas {
+  transform: rotate(-45deg);
+}
+
 #db-title {
   text-align: center;
   margin: 0;
@@ -100,6 +104,17 @@
   width: 1rem;
   color: #2691D0;
   cursor: pointer;
+}
+
+.filter-grid-icon {
+  height: 1rem;
+  width: 1rem;
+  color: #2691D0;
+  cursor: pointer;
+}
+
+.clr-checkbox-wrapper {
+  padding: 5%;
 }
 
 .db-card {
@@ -240,7 +255,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 30rem;
+  width: 35rem;
 }
 
 .tbl-r-group .tbl-d:last-of-type {

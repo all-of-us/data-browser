@@ -1,4 +1,4 @@
-<div class="results-grid" *ngIf="items && items.length > 0">
+<div class="results-grid" *ngIf="(items && items.length > 0) || (measurementTestsChecked.value === false && measurementOrdersChecked.value === false)">
   <div class="domain-info-layout">
     <span>
       <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
@@ -93,9 +93,31 @@
         <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept code tooltip hover')">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
           <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.conceptCodeHelpText}}</div>
+            <div class="tooltip-label">{{tooltipText.conceptCodeHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i>
+              {{tooltipText.conceptCodeHelpText2}} <i>{{tooltipText.allOfUsHelpText}}</i>
+              {{tooltipText.conceptCodeHelpText3}}</div>
           </clr-tooltip-content>
         </clr-tooltip>
+      </div>
+      <div class="tbl-d body-lead info-text" *ngIf="ehrDomain.domain.toLowerCase() === 'measurement'">
+        Data Type
+        <div class="dropdown bottom-left" [ngClass]="selectedFilterGrid?'open':''">
+          <button class="dropdown-toggle">
+            <clr-icon shape="filter-grid" class="filter-grid-icon" (click)="filterMeasurementDataTypes()" [ngClass]="selectedFilterGrid?'is-solid':''"></clr-icon>
+          </button>
+          <div class="dropdown-menu">
+            <div class="clr-checkbox-wrapper">
+              <input type="checkbox" id="checkbox1" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked1" (change)="checkBoxClick('tests', isChecked1)"
+              [formControl]="measurementTestsChecked" [checked]="checkMeasurementTests()">
+              <label for="checkbox1"><i class="fas fa-vial fa-rotate-45"></i> Tests</label>
+            </div>
+            <div class="clr-checkbox-wrapper">
+              <input type="checkbox" id="checkbox2" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked2" (change)="checkBoxClick('orders', isChecked2)"
+              [formControl]="measurementOrdersChecked" [checked]="checkMeasurementOrders()">
+              <label for="checkbox2"><i class="far fa-file-signature"></i> Orders</label>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="tbl-d body-lead info-text"> View graphs
       </div>
@@ -155,6 +177,26 @@
         </div>
         <div class="body-lead info-text tbl-d">
           {{r.conceptId}}
+        </div>
+        <div class="body-lead info-text tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
+          <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder" class="vial-span">
+            <clr-tooltip>
+              <i class="fas fa-vial solid fa-lg" clrTooltipTrigger></i>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-header">
+              This code contains values. Search the medical concept keyword to see related Labs & Measurements results.</div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+          </span>
+          <ng-template #labOrder><span class="order-span">
+            <clr-tooltip>
+              <i class="far fa-file-signature regular fa-lg" clrTooltipTrigger></i>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-header">
+              This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.</div>
+          </clr-tooltip-content>
+            </clr-tooltip>
+            </span></ng-template>
         </div>
         <div class="body-lead info-text tbl-d">
           <button class="icon-btn">
@@ -257,11 +299,6 @@
           </app-concept-charts>
         </div>
       </ng-template>
-    </div>
-  </div>
-  <div *ngIf="!loading && items.length === 0">
-    <div class="">
-      <h5 class="no-results"> No results match your search. </h5>
     </div>
   </div>
 </div>

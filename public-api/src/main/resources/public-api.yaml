@@ -266,6 +266,37 @@ paths:
           description: A collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
+  /v1/databrowser/measurement-domain-search:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the measurement domain filter with the count of matched concepts
+      operationId: "getMeasurementSearchResults"
+      parameters:
+        - in: query
+          name: searchWord
+          type: string
+          required: true
+          description: search key word
+        - in: query
+          name: testFilter
+          type: integer
+          format: int32
+          required: false
+          description: measurement filter
+        - in: query
+          name: orderFilter
+          type: integer
+          format: int32
+          required: false
+          description: measurement filter
+      responses:
+        200:
+          description: A collection of domains and survey modules
+          schema:
+            $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
   /v1/databrowser/domain-totals:
     get:
       tags:
@@ -276,6 +307,31 @@ paths:
       responses:
         200:
           description: A collection of domains and survey modules
+          schema:
+            $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
+  /v1/databrowser/measurement-domain-totals:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the measurement domain meta data info with applied filter
+      operationId: "getMeasurementDomainTotals"
+      parameters:
+        - in: query
+          name: testFilter
+          type: integer
+          format: int32
+          required: true
+          description: measurement filter
+        - in: query
+          name: valueFilter
+          type: integer
+          format: int32
+          required: true
+          description: measurement filter
+      responses:
+        200:
+          description: Collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
 
@@ -379,6 +435,10 @@ definitions:
         type: "array"
         items:
           type: "string"
+      measurementConceptInfo:
+        description: measurement concept info
+        type: object
+        $ref: "#/definitions/MeasurementConceptInfo"
 
   ConceptListResponse:
     type: object
@@ -404,6 +464,16 @@ definitions:
         description: concept for which standard concepts are fetched
         type: integer
         format: int64
+
+  MeasurementConceptInfo:
+    type: object
+    properties:
+      conceptId:
+        type: integer
+        format: int64
+      hasValues:
+        type: integer
+        format: int32
 
   ConfigResponse:
     type: object
@@ -1047,3 +1117,11 @@ definitions:
         type: integer
         default: 0
         description: By default it returns the first page and then its next pages from that on.
+      measurementTests:
+        type: integer
+        default: 1
+        description: By default all the measurement tests are returned
+      measurementOrders:
+        type: integer
+        default: 1
+        description: By default all the measurement orders are returned
