@@ -208,7 +208,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
       return resultsObservable;
     }
-    return this.api.getDomainSearchResults(query);
+    return this.api.getDomainSearchResults(query, 1, 1);
   }
 
   public viewSurvey(r, search: string) {

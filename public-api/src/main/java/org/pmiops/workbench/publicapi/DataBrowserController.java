@@ -527,7 +527,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query){
+    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, Integer testFilter, Integer orderFilter){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
@@ -545,7 +545,30 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
         }
 
-        List<DomainInfo> domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
+        System.out.println(testFilter);
+        System.out.println(orderFilter);
+
+        int measurementQuery = 0;
+        if (testFilter == 1 && orderFilter == 0) {
+            measurementQuery = 1;
+        } else if (testFilter == 0 && orderFilter == 1) {
+            measurementQuery = 0;
+        } else if (testFilter == 0 && orderFilter == 0) {
+            measurementQuery = -1;
+        } else if (testFilter == 1 && orderFilter == 1) {
+            measurementQuery = 2;
+        }
+
+
+        List<DomainInfo> domains = null;
+        if (measurementQuery == 1 || measurementQuery == 0) {
+            domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds, measurementQuery);
+        } else if (measurementQuery == -1){
+            domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(domainKeyword, query, toMatchConceptIds);
+        } else if (measurementQuery == 2) {
+            domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
+        }
+
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domains.stream()

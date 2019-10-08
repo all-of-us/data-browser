@@ -261,6 +261,16 @@ paths:
           type: string
           required: true
           description: search key word
+        - in: query
+          name: testFilter
+          type: integer
+          format: int32
+          description: measurement filter
+        - in: query
+          name: orderFilter
+          type: integer
+          format: int32
+          description: measurement filter
       responses:
         200:
           description: A collection of domains and survey modules

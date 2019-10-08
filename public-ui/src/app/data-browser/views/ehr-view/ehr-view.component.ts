@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
@@ -27,7 +27,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
     './ehr-view.component.css'
   ]
 })
-export class EhrViewComponent implements OnInit, OnDestroy {
+export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   domainId: string;
   title: string;
   subTitle: string;
@@ -38,7 +38,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   items: any[] = [];
   fullResultItemsList: any[] = [];
   standardConcepts: any[] = [];
-  standardConceptIds: number[] = [];
   graphButtons: any = [];
   loading: boolean;
   totalParticipants: number;
@@ -64,6 +63,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   selectedConcept: Concept;
   testFilter = 0;
   orderFilter = 0;
+  selectedFilterGrid = false;
+  isChecked1 = true;
+  isChecked2 = true;
+  expandConcept = false;
+  measurementTestsChecked: FormControl = new FormControl(localStorage.getItem('measurementTestsChecked') ?
+    localStorage.getItem('measurementTestsChecked') : true);
+  measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
+    localStorage.getItem('measurementOrdersChecked') : true);
+  standardConceptIds: number[];
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -95,9 +103,69 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         );
       }
     });
+    this.measurementTestsChecked.valueChanges.subscribe(value => {
+      let getTests = 0;
+      let getOrders = 0;
+      if (value) {
+        getTests = 1;
+      } else {
+        getTests = 0;
+      }
+      if (this.measurementOrdersChecked.value) {
+        getOrders = 1;
+      } else {
+        getOrders = 0;
+      }
+      const measurementSearchRequestWithFilter =
+        this.makeMeasurementSearchRequest(getTests, getOrders);
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+        results =>
+        {
+          this.processSearchResults(results);
+        });
+      if (this.searchRequest.query && this.searchRequest.query !== null) {
+        this.getMeasurementSearchResultTotals(getTests, getOrders);
+      } else {
+        this.getMeasurementDomainTotals(getTests, getOrders);
+      }
+    });
+    this.measurementOrdersChecked.valueChanges.subscribe(value => {
+      let getTests = 0;
+      let getOrders = 0;
+      if (value) {
+        getOrders = 1;
+      } else {
+        getOrders = 0;
+      }
+      if (this.measurementTestsChecked.value) {
+        getTests = 1;
+      } else {
+        getTests = 0;
+      }
+      const measurementSearchRequestWithFilter =
+        this.makeMeasurementSearchRequest(getTests, getOrders);
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+        results => {
+          this.processSearchResults(results);
+        });
+      if (this.searchRequest.query && this.searchRequest.query !== null) {
+        this.getMeasurementSearchResultTotals(getTests, getOrders);
+      } else {
+        this.getMeasurementDomainTotals(getTests, getOrders);
+      }
+    });
     this.loadPage();
   }
-
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.selectedConcept && changes.selectedConcept.currentValue) {
+      this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
+      if (changes.selectedConcept && changes.selectedConcept.currentValue) {
+        this.expandRow(this.selectedConcept, true);
+      }
+    }
+  }
+  
   ngOnDestroy() {
     if (this.subscriptions) {
       for (const s of this.subscriptions) {
@@ -109,7 +177,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     }
     localStorage.removeItem('measurementTestsChecked');
     localStorage.removeItem('measurementOrdersChecked');
-    localStorage.removeItem('totalResults');
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -123,6 +190,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public loadPage() {
+    if (localStorage.getItem('measurementTestsChecked') === null) {
+      localStorage.setItem('measurementTestsChecked', 'true');
+    }
+    if (localStorage.getItem('measurementOrdersChecked') === null) {
+      localStorage.setItem('measurementOrdersChecked', 'true');
+    }
     this.loading = true;
     this.items = [];
     // Get search text from localStorage
@@ -156,13 +229,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
-      if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
-        this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
-      } else {
-        this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
-      }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
-        .subscribe(results => this.searchCallback(results));
+        .subscribe(results => {
+          this.searchCallback(results);
+          if (this.expandConcept && this.selectedConcept) {
+            this.expandRow(this.selectedConcept, true);
+          }
+        });
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(1500)
@@ -216,14 +289,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public getNumberOfPages(query: string) {
     let domainResults = null;
     if (query && query != null) {
-      this.subscriptions.push(this.api.getDomainSearchResults(query)
+      this.subscriptions.push(this.api.getDomainSearchResults(query, this.testFilter, this.orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
-            localStorage.setItem('totalResults', String(this.totalResults));
             this.numPages = Math.ceil(this.totalResults / 50);
           }
         }));
@@ -235,7 +307,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
-            localStorage.setItem('totalResults', String(this.totalResults));
             this.numPages = Math.ceil(this.totalResults / 50);
           }
         }));
@@ -269,7 +340,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         if(res.items && res.items.length > 0) {
           this.processSearchResults(res);
         } else {
-          console.log('in here no results');
           this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
             'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
         }
@@ -293,8 +363,17 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         return 0;
       }
     );
-    for (const concept of this.items) {
+    for (var concept of this.standardConcepts.concat(this.items)) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+      if (this.ehrDomain.domainConceptId === 21) {
+        if (concept.measurementConceptInfo && concept.measurementConceptInfo.hasValues === 0) {
+          concept.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
+        } else {
+          concept.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
+        }
+      } else {
+        concept.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
+      }
     }
     if (this.searchResult.standardConcepts) {
       this.standardConcepts = this.searchResult.standardConcepts;
@@ -407,6 +486,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public changeResults(e) {
     this.selectedConcept = undefined;
+    this.expandConcept = false;
     this.loadPage();
   }
 
@@ -440,6 +520,197 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (fromChart && this.currentPage !== 1) {
       this.currentPage = 1;
       this.loadPage();
+      this.expandConcept = true;
+    } else {
+      this.expandRow(this.selectedConcept, true);
     }
+  }
+  
+  public expandRow(concept: any, fromChart?: boolean) {
+    // analytics
+    this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
+      concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
+    if (this.selectedConcept && concept.conceptCode === this.selectedConcept.conceptCode) {
+      if (fromChart && localStorage.getItem('selectedConceptCode'))  {
+        this.selectedConcept = concept;
+        setTimeout(() => { // wait till previous selected row shrinks
+          this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));
+        }, 50);
+      } else {
+        this.selectedConcept = null;
+      }
+    } else {
+      this.selectedConcept = concept;
+      setTimeout(() => { // wait till previous selected row shrinks
+        this.scrollTo('#c' + this.selectedConcept.conceptCode);
+      }, 1);
+    }
+    this.resetSelectedGraphs();
+    if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+      if (this.measurementTestsChecked.value === true) {
+        this.graphToShow = GraphType.Values;
+      } else {
+        this.graphToShow = GraphType.BiologicalSex;
+      }
+    } else {
+      this.graphToShow = GraphType.BiologicalSex;
+    }
+  }
+  
+  public scrollTo(id: string) {
+    const el = this.elm.nativeElement.querySelector(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  
+  public resetSelectedGraphs() {
+    this.graphToShow = GraphType.None;
+  }
+  
+  public participantPercentage(count: number) {
+    if (!count || count <= 0) { return 0; }
+    let percent: number = count / this.totalParticipants;
+    percent = parseFloat(percent.toFixed(4));
+    return percent * 100;
+  }
+  
+  public checkCount(count: number) {
+    if (count <= 20) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public selectGraph(g, r: any) {
+    this.resetSelectedGraphs();
+    this.graphToShow = g;
+    this.dbc.triggerEvent('conceptClick', 'Concept Graph',
+      'Click On ' + this.graphToShow + ' Chart',
+      r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
+    if (this.graphToShow === GraphType.Sources &&
+      ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
+        || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
+      this.treeLoading = true;
+      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
+        .subscribe({
+          next: result => {
+            this.treeData = [result.parent];
+            this.treeLoading = false;
+          }
+        }));
+    }
+  }
+  
+  public toolTipPos(g) {
+    if (g === 'Biological Sex' || g === 'Values') {
+      return 'bottom-right';
+    }
+    return 'bottom-left';
+  }
+  public showToolTip(g) {
+    if (g === 'Sex Assigned at Birth') {
+      return this.tooltipText.biologicalSexChartHelpText + '\n' +
+        this.tooltipText.ehrBSPercentageChartHelpText + '\n' +
+        this.tooltipText.ehrBSCountChartHelpText + '\n';
+    }
+    if (g === 'Gender Identity') {
+      return this.tooltipText.genderIdentityChartHelpText;
+    }
+    if (g === 'Race / Ethnicity') {
+      return this.tooltipText.raceEthnicityChartHelpText;
+    }
+    if (g === 'Age') {
+      return this.tooltipText.ehrAgeChartHelpText + '\n' +
+        this.tooltipText.ehrAgePercentageChartHelpText + '\n' +
+        this.tooltipText.ehrAgeCountChartHelpText + '\n';
+    }
+    if (g === 'Sources') {
+      return this.tooltipText.sourcesChartHelpText;
+    }
+    if (g === 'Values') {
+      return this.tooltipText.valueChartHelpText;
+    }
+  }
+  public hoverOnTooltip(label: string, searchTerm: string, action: string) {
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
+      label, this.searchText.value, action);
+  }
+  
+  public filterMeasurementDataTypes() {
+    if (this.selectedFilterGrid) {
+      this.selectedFilterGrid = false;
+    } else {
+      this.selectedFilterGrid = true;
+    }
+  }
+  
+  public checkBoxClick(box: string, value: boolean) {
+    if (box === 'tests') {
+      if (value) {
+        this.measurementTestsChecked.setValue(true);
+        localStorage.setItem('measurementTestsChecked', 'true');
+      } else {
+        this.measurementTestsChecked.setValue(false);
+        localStorage.setItem('measurementTestsChecked', 'false');
+      }
+    }
+    if (box === 'orders') {
+      if (value) {
+        this.measurementOrdersChecked.setValue(true);
+        localStorage.setItem('measurementOrdersChecked', 'true');
+      } else {
+        this.measurementOrdersChecked.setValue(false);
+        localStorage.setItem('measurementOrdersChecked', 'false');
+      }
+    }
+  }
+  
+  public checkMeasurementTests() {
+    if (this.currentPage > 1) {
+      return localStorage.getItem('measurementTestsChecked') === 'true';
+    }
+    return this.measurementTestsChecked.value;
+  }
+  
+  public checkMeasurementOrders() {
+    if (this.currentPage > 1) {
+      return localStorage.getItem('measurementOrdersChecked') === 'true';
+    }
+    return this.measurementOrdersChecked.value;
+  }
+  
+  public getMeasurementDomainTotals(testFilter: number, orderFilter: number) {
+    this.api.getMeasurementDomainTotals(testFilter, orderFilter).subscribe(
+      results => {
+        const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+        this.totalResults = domainResults[0].standardConceptCount;
+      }
+    );
+  }
+  
+  public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
+    this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter)
+      .subscribe(
+        results => {
+          const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+          this.totalResults = domainResults[0].standardConceptCount;
+        }
+      );
+  }
+  
+  public makeMeasurementSearchRequest(testFilter: number, orderFilter: number) {
+    const measurementSearchRequestWithFilter = {
+      query: this.searchRequest.query,
+      domain: this.searchRequest.domain,
+      standardConceptFilter: this.searchRequest.standardConceptFilter,
+      maxResults: this.searchRequest.maxResults,
+      minCount: this.searchRequest.minCount,
+      pageNumber: this.searchRequest.pageNumber,
+      measurementTests: testFilter,
+      measurementOrders: orderFilter
+    };
+    return measurementSearchRequestWithFilter;
   }
 }
