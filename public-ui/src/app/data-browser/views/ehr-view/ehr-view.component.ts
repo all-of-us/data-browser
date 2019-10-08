@@ -682,7 +682,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   }
   
   public getMeasurementDomainTotals(testFilter: number, orderFilter: number) {
-    this.api.getMeasurementDomainTotals(testFilter, orderFilter).subscribe(
+    this.api.getDomainTotals(testFilter, orderFilter).subscribe(
       results => {
         const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
         this.totalResults = domainResults[0].standardConceptCount;
@@ -691,7 +691,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   }
   
   public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
-    this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter)
+    this.api.getDomainSearchResults(this.searchRequest.query, testFilter, orderFilter)
       .subscribe(
         results => {
           const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);

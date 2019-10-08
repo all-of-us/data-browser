@@ -581,46 +581,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getMeasurementSearchResults(String query, Integer testFilter, Integer orderFilter) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
-        Long conceptId = 0L;
-        try {
-            conceptId = Long.parseLong(query);
-        } catch (NumberFormatException e) {
-            // expected
-        }
-        List<Long> toMatchConceptIds = new ArrayList<>();
-        toMatchConceptIds.add(conceptId);
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
-        }
-        List<DomainInfo> domains = null;
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            domains = domainInfoDao.findMeasurementStandardOrCodeMatchConceptCountsByValueCheck(domainKeyword, query, toMatchConceptIds, measurementQuery);
-        } else if (measurementQuery == -1){
-            domains = domainInfoDao.findMeasurementNoMatchConceptCounts();
-        } else if (measurementQuery == 2) {
-            domains = domainInfoDao.findMeasurementStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds);
-        }
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(domains.stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(null);
-        return ResponseEntity.ok(response);
-    }
-
-
-
-    @Override
     public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         Integer maxResults = searchConceptsRequest.getMaxResults();
@@ -751,42 +711,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setSurveyModules(surveyModules.stream()
                 .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
                 .collect(Collectors.toList()));
-        return ResponseEntity.ok(response);
-    }
-
-    @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getMeasurementDomainTotals(Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
-        }
-
-        List<DomainInfo> domainInfos = new ArrayList<>();
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery));
-        } else if (measurementQuery == -1){
-            domainInfos = domainInfoDao.findMeasurementNoMatchConceptCounts();
-        } else if (measurementQuery == 2) {
-            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithoutFilter());
-        }
-
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        if (domainInfos != null) {
-            response.setDomainInfos(domainInfos.stream()
-                    .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                    .collect(Collectors.toList()));
-        } else {
-            response.setDomainInfos(null);
-        }
-        response.setSurveyModules(null);
         return ResponseEntity.ok(response);
     }
 

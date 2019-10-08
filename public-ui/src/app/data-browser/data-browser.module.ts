@@ -47,7 +47,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyViewComponent,
     ChartTopResultsComponent,
     ChartBaseComponent,
-    DbTableComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
