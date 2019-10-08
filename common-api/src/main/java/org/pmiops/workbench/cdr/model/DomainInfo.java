@@ -13,7 +13,7 @@ import org.pmiops.workbench.model.Domain;
 
 @Entity
 @Table(name = "domain_info")
-public class DomainInfo {
+public class DomainInfo implements Comparable<DomainInfo>{
 
   public static final Function<DomainInfo, org.pmiops.workbench.model.DomainInfo> TO_CLIENT_DOMAIN_INFO =
       (domain) -> new org.pmiops.workbench.model.DomainInfo()
@@ -26,7 +26,7 @@ public class DomainInfo {
           .participantCount(domain.getParticipantCount());
 
   private long conceptId;
-  private short domain;
+  private Short domain;
   private String domainId;
   private String name;
   private String description;
@@ -38,7 +38,7 @@ public class DomainInfo {
   }
 
   // Used from JQL queries in DomainInfoDao
-  public DomainInfo(short domain, String domainId, String name, String description,
+  public DomainInfo(Short domain, String domainId, String name, String description,
       long conceptId, long allConceptCount, long standardConceptCount, long participantCount) {
     this.conceptId = conceptId;
     this.domain = domain;
@@ -65,15 +65,15 @@ public class DomainInfo {
   }
 
   @Column(name = "domain")
-  public short getDomain() {
+  public Short getDomain() {
     return domain;
   }
 
-  public void setDomain(short domain) {
+  public void setDomain(Short domain) {
     this.domain = domain;
   }
 
-  public DomainInfo domain(short domain) {
+  public DomainInfo domain(Short domain) {
     this.domain = domain;
     return this;
   }
@@ -195,6 +195,11 @@ public class DomainInfo {
   @Override
   public String toString() {
     return  ToStringBuilder.reflectionToString(this);
+  }
+
+  @Override
+  public int compareTo(DomainInfo o) {
+    return this.getDomain().compareTo(o.getDomain());
   }
 
 }

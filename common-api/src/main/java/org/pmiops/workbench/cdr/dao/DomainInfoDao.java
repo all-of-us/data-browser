@@ -144,7 +144,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
           "select c.domain_id, count(*) as count from concept c join measurement_concept_info m on c.concept_id=m.concept_id and has_values = ?1 " +
           "where standard_concept in ('S', 'C') and can_select=1 group by domain_id) c " +
           "on d.domain_id=c.domain_id and d.domain=4")
-  List<DomainInfo> findMeasurementDomainTotalsWithFilter(int valueFilter);
+  DomainInfo findMeasurementDomainTotalsWithFilter(int valueFilter);
 
   @Query(nativeQuery=true,
           value = "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count," +
@@ -153,7 +153,9 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "select c.domain_id, count(*) as count from concept c " +
                   "where standard_concept in ('S', 'C') and can_select=1 group by domain_id) c " +
                   "on d.domain_id=c.domain_id and d.domain=4")
-  List<DomainInfo> findMeasurementDomainTotalsWithoutFilter();
+  DomainInfo findMeasurementDomainTotalsWithoutFilter();
 
-  List<DomainInfo> findByOrderByDomainId();
+  List<DomainInfo> findByConceptIdNotOrderByDomainId(long conceptId);
+
+  DomainInfo findByConceptId(long conceptId);
 }

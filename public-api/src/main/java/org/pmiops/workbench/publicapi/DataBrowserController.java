@@ -691,12 +691,38 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(){
+    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<DomainInfo> domainInfos = ImmutableList.copyOf(domainInfoDao.findByOrderByDomainId());
+        List<DomainInfo> domainInfos = new ArrayList<>();
+        domainInfos.addAll(domainInfoDao.findByConceptIdNotOrderByDomainId(21L));
+
+        int measurementQuery = 0;
+        if (testFilter == 1 && orderFilter == 0) {
+            measurementQuery = 1;
+        } else if (testFilter == 0 && orderFilter == 1) {
+            measurementQuery = 0;
+        } else if (testFilter == 0 && orderFilter == 0) {
+            measurementQuery = -1;
+        } else if (testFilter == 1 && orderFilter == 1) {
+            measurementQuery = 2;
+        }
+
+        if (measurementQuery == 1 || measurementQuery == 0) {
+            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery));
+        } else if (measurementQuery == -1){
+            domainInfos.add(domainInfoDao.findByConceptId(21L));
+        } else if (measurementQuery == 2) {
+            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithoutFilter());
+        }
+
+        Collections.sort(domainInfos);
+
         List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
+
+        //System.out.println(domainInfos);
+
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(domainInfos.stream()
+        response.setDomainInfos(ImmutableList.copyOf(domainInfos).stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
                 .collect(Collectors.toList()));
         response.setSurveyModules(surveyModules.stream()
@@ -720,13 +746,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             measurementQuery = 2;
         }
 
-        List<DomainInfo> domainInfos = null;
+        List<DomainInfo> domainInfos = new ArrayList<>();
         if (measurementQuery == 1 || measurementQuery == 0) {
-            domainInfos = domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery);
+            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery));
         } else if (measurementQuery == -1){
             domainInfos = domainInfoDao.findMeasurementNoMatchConceptCounts();
         } else if (measurementQuery == 2) {
-            domainInfos = domainInfoDao.findMeasurementDomainTotalsWithoutFilter();
+            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithoutFilter());
         }
 
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();

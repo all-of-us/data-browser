@@ -134,7 +134,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
     // Get domain totals only once so if they erase search we can load them
     this.subscriptions.push(
-      this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
+      this.api.getDomainTotals(1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           this.totalResults = data;
           // Only set results to the totals if we don't have a searchText
