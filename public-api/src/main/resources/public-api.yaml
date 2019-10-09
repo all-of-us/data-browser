@@ -276,7 +276,6 @@ paths:
           description: A collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
-
   /v1/databrowser/domain-totals:
     get:
       tags:
@@ -297,6 +296,31 @@ paths:
       responses:
         200:
           description: A collection of domains and survey modules
+          schema:
+            $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
+  /v1/databrowser/measurement-domain-totals:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the measurement domain meta data info with applied filter
+      operationId: "getMeasurementDomainTotals"
+      parameters:
+        - in: query
+          name: testFilter
+          type: integer
+          format: int32
+          required: true
+          description: measurement filter
+        - in: query
+          name: valueFilter
+          type: integer
+          format: int32
+          required: true
+          description: measurement filter
+      responses:
+        200:
+          description: Collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
 

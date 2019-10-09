@@ -104,7 +104,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.totalResults);
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
       if (changes.selectedConcept && changes.selectedConcept.currentValue) {
