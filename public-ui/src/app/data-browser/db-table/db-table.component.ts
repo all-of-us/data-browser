@@ -121,7 +121,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (this.searchText.value && this.searchText.value != null) {
-      this.initSubscription = this.api.getDomainSearchResults(this.searchText, testFilter, orderFilter)
+      this.initSubscription = this.api.getDomainSearchResults
+        (this.searchText, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -373,5 +374,4 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       this.initSubscription.unsubscribe();
     }
   }
-  
 }
