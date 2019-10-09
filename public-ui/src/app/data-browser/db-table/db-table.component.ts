@@ -24,7 +24,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() synonymString: any;
   @Input() showMoreSynonyms: any;
   @Input() standardConcepts: any[];
-  @Input() totalResults: number;
   @Input() currentPage: number;
   @Input() totalParticipants: number;
   @Input() graphButtons: any[];
@@ -32,15 +31,23 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
+  @Input() totalResults: number;
+  //totalResults = localStorage.getItem('totalResults') ?
+    //+localStorage.getItem('totalResults') : 0;
+  numPages: number;
   selectedFilterGrid = false;
-  isChecked1 = true;
-  isChecked2 = true;
+  isChecked1 = localStorage.getItem('measurementTestsChecked') ?
+    (localStorage.getItem('measurementTestsChecked') === 'true' ? true : false) : true;
+  isChecked2 = localStorage.getItem('measurementOrdersChecked') ?
+    (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true;
   measurementTestsChecked: FormControl = new FormControl(localStorage.getItem('measurementTestsChecked') ?
-    localStorage.getItem('measurementTestsChecked') : true);
+    (localStorage.getItem('measurementTestsChecked') === 'true' ? true : false) : true);
   measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
-    localStorage.getItem('measurementOrdersChecked') : true);
+    (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true);
   standardConceptIds: number[];
   private subscriptions: ISubscription[] = [];
+  
+  private initSubscription: ISubscription = null;
 
   constructor(
     public tooltipText: TooltipService,
@@ -53,61 +60,93 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.measurementTestsChecked.valueChanges.subscribe(value => {
-      let getTests = 0;
-      let getOrders = 0;
-      if (value) {
-        getTests = 1;
-      } else {
-        getTests = 0;
-      }
-      if (this.measurementOrdersChecked.value) {
-        getOrders = 1;
-      } else {
-        getOrders = 0;
-      }
-      const measurementSearchRequestWithFilter =
-        this.makeMeasurementSearchRequest(getTests, getOrders);
-      this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-        results =>
-          this.items = results.items);
-      if (this.searchRequest.query && this.searchRequest.query !== null) {
-        this.getMeasurementSearchResultTotals(getTests, getOrders);
-      } else {
-        this.getMeasurementDomainTotals(getTests, getOrders);
-      }
-    });
-    this.measurementOrdersChecked.valueChanges.subscribe(value => {
-      let getTests = 0;
-      let getOrders = 0;
-      if (value) {
-        getOrders = 1;
-      } else {
-        getOrders = 0;
-      }
-      if (this.measurementTestsChecked.value) {
-        getTests = 1;
-      } else {
-        getTests = 0;
-      }
-      const measurementSearchRequestWithFilter =
-        this.makeMeasurementSearchRequest(getTests, getOrders);
-      this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-        results =>
-          this.items = results.items);
-      if (this.searchRequest.query && this.searchRequest.query !== null) {
-        this.getMeasurementSearchResultTotals(getTests, getOrders);
-      } else {
-        this.getMeasurementDomainTotals(getTests, getOrders);
-      }
-    });
+    this.domainCounts();
+    this.subscriptions.push(this.measurementTestsChecked.valueChanges
+      .subscribe((query) => {
+        let getTests = 0;
+        let getOrders = 0;
+        if (query) {
+          getTests = 1;
+        } else {
+          getTests = 0;
+        }
+        if (this.measurementOrdersChecked.value) {
+          getOrders = 1;
+        } else {
+          getOrders = 0;
+        }
+        const measurementSearchRequestWithFilter =
+          this.makeMeasurementSearchRequest(getTests, getOrders);
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+          results =>
+            this.items = results.items);
+        if (this.searchRequest.query && this.searchRequest.query !== null) {
+          this.getMeasurementSearchResultTotals(getTests, getOrders);
+        } else {
+          this.getMeasurementDomainTotals(getTests, getOrders);
+        }
+      }));
+    this.subscriptions.push(this.measurementOrdersChecked.valueChanges
+      .subscribe((query) => {
+        let getTests = 0;
+        let getOrders = 0;
+        if (query) {
+          getOrders = 1;
+        } else {
+          getOrders = 0;
+        }
+        if (this.measurementTestsChecked.value) {
+          getTests = 1;
+        } else {
+          getTests = 0;
+        }
+        const measurementSearchRequestWithFilter =
+          this.makeMeasurementSearchRequest(getTests, getOrders);
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+          results =>
+            this.items = results.items);
+        if (this.searchRequest.query && this.searchRequest.query !== null) {
+          this.getMeasurementSearchResultTotals(getTests, getOrders);
+        } else {
+          this.getMeasurementDomainTotals(getTests, getOrders);
+        }
+      }));
+  }
+  
+  
+  public domainCounts() {
+    let domainResults = null;
+    let testFilter = localStorage.getItem('measurementTestsChecked') ?
+      (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+    let orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+      (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
+    if (this.searchText.value && this.searchText.value != null) {
+      this.initSubscription = this.api.getDomainSearchResults(this.searchText, testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        });
+    } else {
+      this.initSubscription = this.api.getDomainTotals(testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (localStorage.getItem('totalResults')) {
-      this.totalResults = +localStorage.getItem('totalResults');
-    }
-    if (changes.selectedConcept && changes.selectedConcept.currentValue && changes.totalResults) {
+    if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
       if (changes.selectedConcept && changes.selectedConcept.currentValue) {
         this.expandRow(this.selectedConcept, true);
@@ -285,7 +324,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getMeasurementDomainTotals(testFilter: number, orderFilter: number) {
-    this.api.getMeasurementDomainTotals(testFilter, orderFilter).subscribe(
+    this.api.getDomainTotals(testFilter, orderFilter).subscribe(
       results => {
         const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
         this.totalResults = domainResults[0].standardConceptCount;
@@ -294,7 +333,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
-    this.api.getMeasurementSearchResults(this.searchRequest.query, testFilter, orderFilter)
+    this.api.getDomainSearchResults(this.searchRequest.query, testFilter, orderFilter)
       .subscribe(
       results => {
         const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
@@ -324,5 +363,15 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     if (localStorage.getItem('measurementOrdersChecked') === null) {
       localStorage.setItem('measurementOrdersChecked', 'true');
     }
+    localStorage.setItem('totalResults', String(this.totalResults));
+    if (this.subscriptions) {
+      for (const s of this.subscriptions) {
+        s.unsubscribe();
+      }
+    }
+    if (this.initSubscription) {
+      this.initSubscription.unsubscribe();
+    }
   }
+  
 }
