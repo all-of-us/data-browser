@@ -32,9 +32,10 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() treeLoading: boolean;
   @Input() graphType: any;
   @Input() totalResults: number;
-  // Save this till labs is tested completely to see if the pagination breaks because of not having this
+  // Save this till labs is tested completely to see
+  // if the pagination breaks because of not having this
   // totalResults = localStorage.getItem('totalResults') ?
-    // +localStorage.getItem('totalResults') : 0;
+  // +localStorage.getItem('totalResults') : 0;
   numPages: number;
   selectedFilterGrid = false;
   isChecked1 = localStorage.getItem('measurementTestsChecked') ?
