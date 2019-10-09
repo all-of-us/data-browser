@@ -675,6 +675,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<DomainInfo> domainInfos = new ArrayList<>();
         domainInfos.addAll(domainInfoDao.findByConceptIdNotOrderByDomainId(21L));
 
+        if (testFilter == null) {
+            testFilter = 1;
+        }
+        if (orderFilter == null) {
+            orderFilter = 1;
+        }
+
         int measurementQuery = 0;
         if (testFilter == 1 && orderFilter == 0) {
             measurementQuery = 1;
