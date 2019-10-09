@@ -231,7 +231,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
     } else {
-      this.subscriptions.push(this.api.getDomainTotals(testFilter ,orderFilter)
+      this.subscriptions.push(this.api.getDomainTotals(testFilter , orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -269,7 +269,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       results && (!results.items || results.items.length <= 0)) {
       this.searchRequest.pageNumber = 0;
       this.api.searchConcepts(this.searchRequest).subscribe((res) => {
-        if(res.items && res.items.length > 0) {
+        if (res.items && res.items.length > 0) {
           this.processSearchResults(res);
         } else {
           this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
