@@ -121,7 +121,7 @@ export class DbConfigService {
     'color': '#f6f6f8', 'font-family': 'GothamBook', 'font-size': '22px',
     'font-weight': '300', 'textOutline': 'none'
   };
-  MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
+  MULTIPLE_ANSWER_SURVEY_QUESTIONS = [43528428, 1585952, 1585806, 1585838];
 
   pmGroups: ConceptGroup[] = [];
   physicalMeasurementsFound: Number;
