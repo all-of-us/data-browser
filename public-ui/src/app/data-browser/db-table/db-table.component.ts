@@ -48,7 +48,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true);
   standardConceptIds: number[];
   private subscriptions: ISubscription[] = [];
-  
   private initSubscription: ISubscription = null;
 
   constructor(
@@ -114,13 +113,12 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
         }
       }));
   }
-  
-  
+
   public domainCounts() {
     let domainResults = null;
-    let testFilter = localStorage.getItem('measurementTestsChecked') ?
+    const testFilter = localStorage.getItem('measurementTestsChecked') ?
       (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
-    let orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (this.searchText.value && this.searchText.value != null) {
       this.initSubscription = this.api.getDomainSearchResults(this.searchText, testFilter, orderFilter)
