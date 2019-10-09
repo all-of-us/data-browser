@@ -79,7 +79,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
-      if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === "true") {
+      if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === 'true') {
         this.currentPage = 1;
       }
       if (params['search']) {
@@ -214,9 +214,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public getNumberOfPages(query: string) {
     let domainResults = null;
-    let testFilter = localStorage.getItem('measurementTestsChecked') ?
+    const testFilter = localStorage.getItem('measurementTestsChecked') ?
       (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
-    let orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (query && query != null) {
       this.subscriptions.push(this.api.getDomainSearchResults(query, testFilter, orderFilter)
