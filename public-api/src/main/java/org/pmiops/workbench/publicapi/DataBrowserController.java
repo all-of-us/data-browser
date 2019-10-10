@@ -687,16 +687,23 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         if (measurementQuery == 1 || measurementQuery == 0) {
-            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery));
+            DomainInfo domainInfo= domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery);
+            if (domainInfo != null) {
+                domainInfos.add(domainInfo);
+            }
         } else if (measurementQuery == -1){
-            domainInfos.add(domainInfoDao.findByConceptId(21L));
+            DomainInfo domainInfo= domainInfoDao.findByConceptId(21L);
+            if (domainInfo != null) {
+                domainInfos.add(domainInfo);
+            }
         } else if (measurementQuery == 2) {
-            domainInfos.add(domainInfoDao.findMeasurementDomainTotalsWithoutFilter());
+            DomainInfo domainInfo = domainInfoDao.findMeasurementDomainTotalsWithoutFilter();
+            if (domainInfo != null) {
+                domainInfos.add(domainInfo);
+            }
         }
 
-        if (domainInfos != null) {
-            Collections.sort(domainInfos);
-        }
+        Collections.sort(domainInfos);
 
         List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
 

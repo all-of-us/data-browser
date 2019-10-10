@@ -201,5 +201,4 @@ public class DomainInfo implements Comparable<DomainInfo> {
   public int compareTo(DomainInfo o) {
     return this.getDomain().compareTo(o.getDomain());
   }
-
 }
