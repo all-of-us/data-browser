@@ -703,7 +703,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        Collections.sort(domainInfos);
+        //Collections.sort(domainInfos);
 
         List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
 
