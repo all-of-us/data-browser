@@ -672,6 +672,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        /* Delete this once tested in test
         List<DomainInfo> domainInfos = new ArrayList<>();
         domainInfos.addAll(domainInfoDao.findByConceptIdNotOrderByDomainId(21L));
 
@@ -714,6 +715,36 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setSurveyModules(surveyModules.stream()
                 .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
                 .collect(Collectors.toList()));
+                */
+
+        Integer getTests = null;
+        Integer getOrders = null;
+
+        if (testFilter == 1 && orderFilter == 1) {
+            getTests = 1;
+            getOrders = 0;
+        } else if (testFilter == 1 && orderFilter == 0) {
+            getTests = 1;
+            getOrders = 2;
+        } else if (testFilter == 0 && orderFilter == 1) {
+            getTests = 2;
+            getOrders = 0;
+        } else if (testFilter == 0 && orderFilter == 0) {
+            getTests = 2;
+            getOrders = 2;
+        }
+
+        List<DomainInfo> domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
+        List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
+
+        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
+        response.setDomainInfos(domainInfos.stream()
+                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
+                .collect(Collectors.toList()));
+        response.setSurveyModules(surveyModules.stream()
+                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
+                .collect(Collectors.toList()));
+
         return ResponseEntity.ok(response);
     }
 

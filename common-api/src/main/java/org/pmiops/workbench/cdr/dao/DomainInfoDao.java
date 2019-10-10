@@ -246,4 +246,16 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
   DomainInfo findByConceptId(long conceptId);
 
   List<DomainInfo> findByOrderByDomainId();
+
+
+  @Query(nativeQuery=true,
+        value = "select d.domain, d.domain_id, d.name, d.description, d.concept_id, d.all_concept_count, " +
+                "d.standard_concept_count, d.participant_count from domain_info d where domain != 4 " +
+                "union all " +
+                "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count, " +
+                "(select count(*) from concept c join measurement_concept_info m where c.concept_id = m.concept_id " +
+                "and c.domain_id='Measurement' and c.standard_concept in ('S', 'C') and c.can_select=1 and m.has_values in (?1, ?2)) " +
+                "standard_concept_count, d.participant_count participant_count from domain_info d where d.domain=4 " +
+                "order by domain")
+  List<DomainInfo> findDomainTotals(int testFilter, int orderFilter);
 }
