@@ -366,9 +366,9 @@ public class DataBrowserControllerTest {
             makeConcept(CLIENT_CONCEPT_7);
 
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_1 =
-            makeDomain(CLIENT_DOMAIN_1, 1L);
+            makeDomain(CLIENT_DOMAIN_1, 1L, "0");
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
-            makeDomain(CLIENT_DOMAIN_2, 2L);
+            makeDomain(CLIENT_DOMAIN_2, 2L, "3");
     private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_1 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_1);
     private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_2 =
@@ -417,10 +417,9 @@ public class DataBrowserControllerTest {
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_4, CLIENT_CONCEPT_2);
     }
 
-
     @Test
     public void testGetDomainTotals() throws Exception {
-        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals();
+        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals(1, 1);
         assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
         assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2);
     }
@@ -552,7 +551,7 @@ public class DataBrowserControllerTest {
     }
 
     @Test
-    public void testGetSurveyDemographicAnalysesNoMatch() throws Exception{
+    public void testGetSurveyDemographicAnalysesNoMatch() throws Exception {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1585855");
         ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
@@ -595,10 +594,11 @@ public class DataBrowserControllerTest {
         return result;
     }
 
-    private static org.pmiops.workbench.cdr.model.DomainInfo makeDomain(DomainInfo domain, long conceptId) {
+    private static org.pmiops.workbench.cdr.model.DomainInfo makeDomain(DomainInfo domain, long conceptId, String domainId) {
         return new org.pmiops.workbench.cdr.model.DomainInfo()
             .domainEnum(domain.getDomain())
             .domainId(CommonStorageEnums.domainToDomainId(domain.getDomain()))
+            .domain(Short.valueOf(domainId))
             .name(domain.getName())
             .description(domain.getDescription())
             .conceptId(conceptId)

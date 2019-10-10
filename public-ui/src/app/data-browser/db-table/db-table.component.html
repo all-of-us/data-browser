@@ -107,12 +107,12 @@
           </button>
           <div class="dropdown-menu">
             <div class="clr-checkbox-wrapper">
-              <input type="checkbox" id="checkbox1" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked1" (change)="checkBoxClick('tests', isChecked1)"
+              <input type="checkbox" id="checkbox1" class="clr-checkbox" [(ngModel)]="isChecked1" (change)="checkBoxClick('tests', isChecked1)"
               [formControl]="measurementTestsChecked" [checked]="checkMeasurementTests()">
               <label for="checkbox1"><i class="fas fa-vial fa-rotate-45"></i> Tests</label>
             </div>
             <div class="clr-checkbox-wrapper">
-              <input type="checkbox" id="checkbox2" name="checkbox-basic" class="clr-checkbox" [(ngModel)]="isChecked2" (change)="checkBoxClick('orders', isChecked2)"
+              <input type="checkbox" id="checkbox2" class="clr-checkbox" [(ngModel)]="isChecked2" (change)="checkBoxClick('orders', isChecked2)"
               [formControl]="measurementOrdersChecked" [checked]="checkMeasurementOrders()">
               <label for="checkbox2"><i class="far fa-file-signature"></i> Orders</label>
             </div>

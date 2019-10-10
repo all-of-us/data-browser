@@ -79,6 +79,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
+      if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === 'true') {
+        this.currentPage = 1;
+      }
       if (params['search']) {
         this.searchFromUrl = params.search;
         this.prevSearchText = params.search;
@@ -196,7 +199,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   // get the current ehr domain by its route
   public getThisDomain() {
     this.subscriptions.push(
-      this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
+      this.api.getDomainTotals(1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
             const thisDomain = Domain[domain.domain];
@@ -211,56 +214,34 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public getNumberOfPages(query: string) {
     let domainResults = null;
+    const testFilter = localStorage.getItem('measurementTestsChecked') ?
+      (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+      (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (query && query != null) {
-      if (this.ehrDomain.domainConceptId === 21) {
-        this.subscriptions.push(this.api.getMeasurementSearchResults(
-          query, this.testFilter, this.orderFilter)
-          .subscribe(results => {
-            domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
-            if (domainResults && domainResults.length > 0) {
-              this.totalResults = domainResults[0].standardConceptCount;
-              localStorage.setItem('totalResults', String(this.totalResults));
-              this.numPages = Math.ceil(this.totalResults / 50);
-            }
-          }));
-      } else {
-        this.subscriptions.push(this.api.getDomainSearchResults(query)
-          .subscribe(results => {
-            domainResults = results.domainInfos.filter(d => d.domain !== null);
-            domainResults = domainResults.filter(
-              d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
-            if (domainResults && domainResults.length > 0) {
-              this.totalResults = domainResults[0].standardConceptCount;
-              localStorage.setItem('totalResults', String(this.totalResults));
-              this.numPages = Math.ceil(this.totalResults / 50);
-            }
-          }));
-      }
+      this.subscriptions.push(this.api.getDomainSearchResults(query, testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            localStorage.setItem('totalResults', String(this.totalResults));
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        }));
     } else {
-      if (this.ehrDomain.domainConceptId === 21) {
-        this.subscriptions.push(this.api.getMeasurementDomainTotals(
-          this.testFilter, this.orderFilter)
-          .subscribe(results => {
-            domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
-            if (domainResults && domainResults.length > 0) {
-              this.totalResults = domainResults[0].standardConceptCount;
-              localStorage.setItem('totalResults', String(this.totalResults));
-              this.numPages = Math.ceil(this.totalResults / 50);
-            }
-          }));
-      } else {
-        this.subscriptions.push(this.api.getDomainTotals()
-          .subscribe(results => {
-            domainResults = results.domainInfos.filter(d => d.domain !== null);
-            domainResults = domainResults.filter(
-              d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
-            if (domainResults && domainResults.length > 0) {
-              this.totalResults = domainResults[0].standardConceptCount;
-              localStorage.setItem('totalResults', String(this.totalResults));
-              this.numPages = Math.ceil(this.totalResults / 50);
-            }
-          }));
-      }
+      this.subscriptions.push(this.api.getDomainTotals(testFilter , orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            localStorage.setItem('totalResults', String(this.totalResults));
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        }));
     }
   }
 
@@ -286,43 +267,54 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
     } else if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && (!results.items || results.items.length <= 0)) {
-      this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
-        'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+      this.searchRequest.pageNumber = 0;
+      this.api.searchConcepts(this.searchRequest).subscribe((res) => {
+        if (res.items && res.items.length > 0) {
+          this.processSearchResults(res);
+        } else {
+          this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
+            'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+        }
+      });
     }
-    this.searchResult = results;
-    this.searchResult.items = this.searchResult.items.filter(
-      x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
-    this.items = this.searchResult.items;
-    this.items = this.items.sort((a, b) => {
-      if (a.countValue > b.countValue) {
-        return -1;
-      }
-      if (a.countValue < b.countValue) {
-        return 1;
-      }
-      return 0;
-    }
-    );
-    for (const concept of this.items) {
-      this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
-    }
-    if (this.searchResult.standardConcepts) {
-      this.standardConcepts = this.searchResult.standardConcepts;
-      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
-    } else {
-      this.standardConcepts = [];
-    }
-    if (this.currentPage === 1) {
-      this.top10Results = this.searchResult.items.slice(0, 10);
-    }
-    /*
-    this.getTopTen(this.prevSearchText).subscribe((res) => {
-      console.log(res.items.slice(0,10));
-      this.top10Results = res.items.slice(0, 10);
-    });
-    */
-    this.loading = false;
+    this.processSearchResults(results);
   }
+
+  public processSearchResults (results) {
+      this.searchResult = results;
+      this.searchResult.items = this.searchResult.items.filter(
+        x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
+      this.items = this.searchResult.items;
+      this.items = this.items.sort((a, b) => {
+          if (a.countValue > b.countValue) {
+            return -1;
+          }
+          if (a.countValue < b.countValue) {
+            return 1;
+          }
+          return 0;
+        }
+      );
+      for (const concept of this.items) {
+        this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+      }
+      if (this.searchResult.standardConcepts) {
+        this.standardConcepts = this.searchResult.standardConcepts;
+        this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+      } else {
+        this.standardConcepts = [];
+      }
+      if (this.currentPage === 1) {
+        this.top10Results = this.searchResult.items.slice(0, 10);
+      }
+      /*
+      this.getTopTen(this.prevSearchText).subscribe((res) => {
+        console.log(res.items.slice(0,10));
+        this.top10Results = res.items.slice(0, 10);
+      });
+      */
+      this.loading = false;
+    }
 
   public getTopTen(query: string) {
     const maxResults = 10;
