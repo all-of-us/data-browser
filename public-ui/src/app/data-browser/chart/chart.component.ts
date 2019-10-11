@@ -927,7 +927,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
-    
     if (lessThanData.length > 0 && greaterThanData.length > 0) {
       data.unshift(greaterThanData[0]);
       data.push(lessThanData[0]);
