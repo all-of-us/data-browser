@@ -3,12 +3,20 @@
   <aside>
     <div class="concept-box">
       <div class="concept-box_info">
+        <ng-container *ngIf="treeConcept; else default">
+            <p><strong>{{treeConcept.conceptName}}</strong></p>
+            <p>SNOMED Code: {{treeConcept.conceptCode}}</p>
+            <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
+        </ng-container>
+        <ng-template #default>
+        
         <p><strong>{{concept.conceptName}}</strong></p>
         <p>SNOMED Code: {{concept.conceptCode}}</p>
         <p>OMOP Concept Id: {{concept.conceptId}}</p>
+      </ng-template>
       </div>
-      <!-- <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-      </app-concept-charts> -->
+      <app-concept-charts *ngIf="treeConcept" [concept]="treeConcept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+      </app-concept-charts>
     </div>
   </aside>
   <div class="tree-view">
@@ -24,7 +32,7 @@
       <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
       <ng-container *ngIf="!treeLoading">
         <div *ngFor="let node of treeData" class="tree-top">
-          <app-source-tree [rootNode]="node"></app-source-tree>
+          <app-source-tree (conceptSelect)="conceptTreeClick($event)" [rootNode]="node"></app-source-tree>
         </div>
       </ng-container>
     </div>

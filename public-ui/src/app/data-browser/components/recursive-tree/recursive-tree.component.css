@@ -38,6 +38,10 @@
     align-self: center;
 }
 
+.child {
+    z-index: 1000;
+}
+
 .children {
     margin-left: 1.5em;
     display: flex;

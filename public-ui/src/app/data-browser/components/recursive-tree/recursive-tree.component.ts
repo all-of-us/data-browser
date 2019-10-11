@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
+import { Concept, DataBrowserService } from '../../../../publicGenerated';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -11,6 +11,7 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   @Input() node: any;
   @Input() opened = false;
   @Input() loading: boolean;
+  @Output() conceptSelected: EventEmitter<any> = new EventEmitter;
   private subscriptions: ISubscription[] = [];
   constructor(private api: DataBrowserService) { }
 
@@ -46,6 +47,10 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  public conceptClick(concept: Concept) {
+    this.conceptSelected.emit(concept);
   }
 
   ngOnDestroy() {
