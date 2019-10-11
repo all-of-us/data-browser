@@ -1293,19 +1293,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             Float femaleBinMin = null;
             Float femaleBinMax = null;
 
-            Float intersexBinMin = null;
-            Float intersexBinMax = null;
-
-            Float noneBinMin = null;
-            Float noneBinMax = null;
-
             Float otherBinMin = null;
             Float otherBinMax = null;
 
             float maleBinWidth = 0f;
             float femaleBinWidth = 0f;
-            float noneBinWidth = 0f;
-            float intersexBinWidth = 0f;
             float otherBinWidth = 0f;
 
             for(AchillesResultDist ard:resultDists){
@@ -1319,16 +1311,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     femaleBinMin = Float.valueOf(ard.getStratum4());
                     femaleBinMax = Float.valueOf(ard.getStratum5());
                     femaleBinWidth = Float.valueOf(ard.getStratum6());
-                }
-                else if(Integer.parseInt(ard.getStratum3()) == INTERSEX) {
-                    intersexBinMin = Float.valueOf(ard.getStratum4());
-                    intersexBinMax = Float.valueOf(ard.getStratum5());
-                    intersexBinWidth = Float.valueOf(ard.getStratum6());
-                }
-                else if(Integer.parseInt(ard.getStratum3()) == NONE) {
-                    noneBinMin = Float.valueOf(ard.getStratum4());
-                    noneBinMax = Float.valueOf(ard.getStratum5());
-                    noneBinWidth = Float.valueOf(ard.getStratum6());
                 }
                 else if(Integer.parseInt(ard.getStratum3()) == OTHER) {
                     otherBinMin = Float.valueOf(ard.getStratum4());
@@ -1387,8 +1369,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             ArrayList<Float> maleBinRanges = new ArrayList<Float>();
             ArrayList<Float> femaleBinRanges = new ArrayList<Float>();
-            ArrayList<Float> intersexBinRanges = new ArrayList<Float>();
-            ArrayList<Float> noneBinRanges = new ArrayList<Float>();
             ArrayList<Float> otherBinRanges = new ArrayList<Float>();
 
             if(maleBinMax != null && maleBinMin != null){
@@ -1399,161 +1379,81 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 femaleBinRanges = makeBins(femaleBinMin, femaleBinMax, femaleBinWidth);
             }
 
-            if(intersexBinMax != null && intersexBinMin != null){
-                intersexBinRanges = makeBins(intersexBinMin, intersexBinMax, intersexBinWidth);
-            }
-
-            if(noneBinMax != null && noneBinMin != null){
-                noneBinRanges = makeBins(noneBinMin, noneBinMax, noneBinWidth);
-            }
-
             if(otherBinMax != null && otherBinMin != null){
                 otherBinRanges = makeBins(otherBinMin, otherBinMax, otherBinWidth);
             }
 
+            ArrayList<String> maleRangesInResults = new ArrayList<>();
+            maleRangesInResults.add(("< " + trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(0)))));
+            for (int k=0; k<maleBinRanges.size()-1;k++) {
+                maleRangesInResults.add((trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(k))) + " - " + trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(k+1)))));
+            }
+            maleRangesInResults.add((">= " + trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(maleBinRanges.size()-1)))));
+
+            ArrayList<String> femaleRangesInResults = new ArrayList<>();
+            femaleRangesInResults.add(("< " + trimTrailingZeroDecimals(String.valueOf(femaleBinRanges.get(0)))));
+            for (int k=0; k<femaleBinRanges.size()-1;k++) {
+                femaleRangesInResults.add((trimTrailingZeroDecimals(String.valueOf(femaleBinRanges.get(k))) + " - " + trimTrailingZeroDecimals(String.valueOf(femaleBinRanges.get(k+1)))));
+            }
+            femaleRangesInResults.add((">= " + trimTrailingZeroDecimals(String.valueOf(femaleBinRanges.get(femaleBinRanges.size()-1)))));
+
+            ArrayList<String> otherRangesInResults = new ArrayList<>();
+            otherRangesInResults.add(("< " + trimTrailingZeroDecimals(String.valueOf(otherBinRanges.get(0)))));
+            for (int k=0; k<otherBinRanges.size()-1;k++) {
+                otherRangesInResults.add((trimTrailingZeroDecimals(String.valueOf(otherBinRanges.get(k))) + " - " + trimTrailingZeroDecimals(String.valueOf(otherBinRanges.get(k+1)))));
+            }
+            otherRangesInResults.add((">= " + trimTrailingZeroDecimals(String.valueOf(otherBinRanges.get(otherBinRanges.size()-1)))));
+
             for(AchillesResult ar: aa.getResults()){
                 String analysisStratumName=ar.getAnalysisStratumName();
                 String result_value = ar.getStratum4();
-                Float result_value_f = null;
-                if (result_value != null && result_value.contains(" - ")) {
-                    String[] result_value_split = result_value.split(" - ");
-                    if(result_value_split.length > 1) {
-                        result_value_f = Float.parseFloat(result_value.split(" - ")[1]);
-                    }
+
+                if(Long.valueOf(ar.getStratum3()) == MALE && maleRangesInResults.contains(result_value)){
+                    maleRangesInResults.remove(result_value);
+                }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleRangesInResults.contains(result_value)){
+                    femaleRangesInResults.remove(result_value);
+                }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherRangesInResults.contains(result_value)){
+                    otherRangesInResults.remove(result_value);
                 }
-                if(Long.valueOf(ar.getStratum3()) == MALE && maleBinRanges.contains(result_value_f)){
-                    maleBinRanges.remove(result_value_f);
-                }else if(Long.valueOf(ar.getStratum3()) == FEMALE && femaleBinRanges.contains(result_value_f)){
-                    femaleBinRanges.remove(result_value_f);
-                }else if(Long.valueOf(ar.getStratum3()) == INTERSEX && intersexBinRanges.contains(result_value_f)){
-                    intersexBinRanges.remove(result_value_f);
-                }else if(Long.valueOf(ar.getStratum3()) == NONE && noneBinRanges.contains(result_value_f)){
-                    noneBinRanges.remove(result_value_f);
-                }else if(Long.valueOf(ar.getStratum3()) == OTHER && otherBinRanges.contains(result_value_f)){
-                    otherBinRanges.remove(result_value_f);
-                }
+
                 if (analysisStratumName == null || analysisStratumName.equals("")) {
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
                 }
             }
 
-            for(float maleRemaining: maleBinRanges){
-                String missingValue = null;
-                if (maleRemaining == (long)maleRemaining) {
-                    if (maleRemaining == maleBinMax || maleRemaining == maleBinMin) {
-                        missingValue = String.format("%d",(long)maleRemaining);
-                    } else {
-                        missingValue = String.format("%d",(long)(maleRemaining-maleBinWidth)) + " - " + String.format("%d",(long)maleRemaining);
-                    }
-                } else {
-                    if (maleRemaining == maleBinMax || maleRemaining == maleBinMin) {
-                        missingValue = String.format("%.2f",(float)maleRemaining);
-                    } else {
-                        missingValue = trimTrailingZeroDecimals(String.format("%.2f",(float)(maleRemaining-maleBinWidth))) + " - " + trimTrailingZeroDecimals(String.format("%.2f",maleRemaining));
-                    }
-                }
+            for(String maleRemaining: maleRangesInResults){
                 String missingBinWidth = null;
                 if (maleBinWidth == (long)(maleBinWidth)) {
                     missingBinWidth = String.format("%d",(long)maleBinWidth);
                 } else {
                     missingBinWidth = String.format("%.2f", maleBinWidth);
                 }
-                missingValue = trimTrailingZeroDecimals(missingValue);
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), missingValue, null, String.valueOf(maleBinWidth), 20L, 20L);
+                AchillesResult achillesResult = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), maleRemaining, null, String.valueOf(maleBinWidth), 20L, 20L);
                 aa.addResult(achillesResult);
             }
 
-            for(float femaleRemaining: femaleBinRanges){
-                String missingValue = null;
-                if (femaleRemaining == (long)femaleRemaining) {
-                    if (femaleRemaining == femaleBinMax || femaleRemaining == femaleBinMin) {
-                        missingValue = String.format("%d",(long)femaleRemaining);
-                    } else {
-                        missingValue = String.format("%d", (long)(femaleRemaining-femaleBinWidth)) + "-" + String.format("%d",(long)femaleRemaining);
-                    }
-                } else {
-                    if (femaleRemaining == femaleBinMin || femaleRemaining == femaleBinMax) {
-                        missingValue = String.format("%.2f",(float)femaleRemaining);
-                    } else {
-                        missingValue = trimTrailingZeroDecimals(String.format("%.2f",(float)(femaleRemaining-femaleBinWidth))) + " - " + trimTrailingZeroDecimals(String.format("%.2f",femaleRemaining));
-                    }
-                }
+            for(String femaleRemaining: femaleRangesInResults){
                 String missingBinWidth = null;
                 if (femaleBinWidth == (long)femaleBinWidth) {
                     missingBinWidth = String.format("%d",(long)femaleBinWidth);
                 } else {
                     missingBinWidth = String.format("%.2f", femaleBinWidth);
                 }
-                missingValue = trimTrailingZeroDecimals(missingValue);
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), missingValue, null, String.valueOf(femaleBinWidth), 20L, 20L);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), femaleRemaining, null, String.valueOf(femaleBinWidth), 20L, 20L);
                 aa.addResult(ar);
             }
 
-            for(float intersexRemaining: intersexBinRanges){
-                String missingValue = null;
-                if (intersexRemaining == (long)intersexRemaining) {
-                    missingValue = String.format("%d",(long)intersexRemaining);
-                } else {
-                    missingValue = String.format("%.2f", intersexRemaining);
-                }
-                String missingBinWidth = null;
-                if (intersexBinWidth == (long)intersexBinWidth) {
-                    missingBinWidth = String.format("%d",(long)intersexBinWidth);
-                } else {
-                    missingBinWidth = String.format("%.2f", intersexBinWidth);
-                }
-                missingValue = trimTrailingZeroDecimals(missingValue);
-                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(INTERSEX), missingValue, null, String.valueOf(intersexBinWidth), 20L, 20L);
-                aa.addResult(ar);
-            }
-
-            for(float noneRemaining: noneBinRanges){
-                String missingValue = null;
-                if (noneRemaining == (long)noneRemaining) {
-                    missingValue = String.format("%d",(long)noneRemaining);
-                } else {
-                    missingValue = String.format("%.2f", noneRemaining);
-                }
-                String missingBinWidth = null;
-                if (noneBinWidth == (long)noneBinWidth) {
-                    missingBinWidth = String.format("%d",(long)noneBinWidth);
-                } else {
-                    missingBinWidth = String.format("%.2f", noneBinWidth);
-                }
-                missingValue = trimTrailingZeroDecimals(missingValue);
-                missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(NONE), missingValue, null, String.valueOf(noneBinWidth), 20L, 20L);
-                aa.addResult(ar);
-            }
-
-            for(float otherRemaining: otherBinRanges){
-                String missingValue = null;
-                if (otherRemaining == (long)otherRemaining) {
-                    if (otherRemaining == otherBinMin || otherRemaining == otherBinMax) {
-                        missingValue = String.format("%d",(long)otherRemaining);
-                    } else {
-                        missingValue = String.format("%d",(long)(otherRemaining-otherBinWidth)) + " - " + String.format("%d",(long)otherRemaining);
-                    }
-                } else {
-                    if (otherRemaining == otherBinMin || otherRemaining == otherBinMax) {
-                        missingValue = String.format("%.2f",(float)otherRemaining);
-                    } else {
-                        missingValue = trimTrailingZeroDecimals(String.format("%.2f",(float)(otherRemaining-otherBinWidth))) + " - " + trimTrailingZeroDecimals(String.format("%.2f",otherRemaining));
-                    }
-                    missingValue = String.format("%.2f", otherRemaining);
-                }
+            for(String otherRemaining: otherRangesInResults){
                 String missingBinWidth = null;
                 if (otherBinWidth == (long)otherBinWidth) {
                     missingBinWidth = String.format("%d",(long)otherBinWidth);
                 } else {
                     missingBinWidth = String.format("%.2f", otherBinWidth);
                 }
-                missingValue = trimTrailingZeroDecimals(missingValue);
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), missingValue, null, String.valueOf(otherBinWidth), 20L, 20L);
+                AchillesResult ar = new AchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), otherRemaining, null, String.valueOf(otherBinWidth), 20L, 20L);
                 aa.addResult(ar);
             }
         } else {
@@ -1654,13 +1554,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if (((bMax - bMin)/11) >= 5) {
             binWidth = (float) (Math.round(((bMax-bMin)/11)/5)*5);
         } else if (((bMax-bMin)/11) >= 0.1 && ((bMax-bMin)/11) <= 1) {
-            binWidth = (float) (Math.round(Math.ceil((float)(((bMax-bMin)/11))/0.1)*0.1)*10.0/10.0);
+            binWidth = (float) (Math.ceil((float)(((bMax-bMin)/11))/0.1)*0.1);
         } else if (((bMax-bMin)/11) >= 1 && ((bMax-bMin)/11) <= 2) {
-            binWidth = (float) (Math.round(Math.round((float)(((bMax-bMin)/11))/2)*2)*10.0/10.0);
+            binWidth = (float) (Math.round((float)(((bMax-bMin)/11))/2)*2);
         } else if (((bMax-bMin)/11) >= 2 && ((bMax-bMin)/11) <= 3) {
-            binWidth = (float) (Math.round(Math.round((float)(((bMax-bMin)/11))/3)*3)*10.0/10.0);
+            binWidth = (float) (Math.round((float)(((bMax-bMin)/11))/3)*3);
         } else if (((bMax-bMin)/11) >= 3 && ((bMax-bMin)/11) <= 5) {
-            binWidth = (float) (Math.round(Math.round((float)(((bMax-bMin)/11))/5)*5)*10.0/10.0);
+            binWidth = (float) (Math.round((float)(((bMax-bMin)/11))/5)*5);
         } else {
             binWidth = (float) (Math.round(((bMax-bMin)/11))*10.0/10.0);
         }

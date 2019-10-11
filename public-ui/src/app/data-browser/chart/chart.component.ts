@@ -927,13 +927,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
+    
     if (lessThanData.length > 0 && greaterThanData.length > 0) {
-      data[0] = greaterThanData[0];
-      data[data.length - 1] = lessThanData[0];
+      data.unshift(greaterThanData[0]);
+      data.push(lessThanData[0]);
     } else if (lessThanData.length > 0) {
-      data[data.length - 1] = lessThanData[0];
+      data.push(lessThanData[0]);
     } else if (greaterThanData.length > 0 ) {
-      data[0] = greaterThanData[0];
+      data.unshift(greaterThanData[0]);
     }
     if (data.length > 2) {
       if (greaterThanData.length === 0) {
