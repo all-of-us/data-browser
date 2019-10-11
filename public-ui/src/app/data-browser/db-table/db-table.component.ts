@@ -31,7 +31,7 @@ export class DbTableComponent implements OnChanges {
   @Input() treeData: any[];
   @Input() treeLoading: boolean;
   @Input() graphType: any;
-  expanded: boolean = false;
+  expanded = false;
   private subscriptions: ISubscription[] = [];
 
   constructor(

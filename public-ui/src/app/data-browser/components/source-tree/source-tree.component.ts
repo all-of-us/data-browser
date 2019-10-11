@@ -10,7 +10,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SourceTreeComponent {
   @Input() rootNode: object;
   @Input() loading: boolean;
-  @Output() conceptSelect: EventEmitter<any> = new EventEmitter
+  @Output() conceptSelect: EventEmitter<any> = new EventEmitter;
   open = true;
 
   constructor() {
