@@ -55,7 +55,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
           this.router.navigate(
             ['ehr/' + this.dbc.domainToRoute[r.domain.toLowerCase()]],
             {
-              queryParams: { search: this.searchText.value }
+              queryParams: { search: this.searchText.value, fromDifferentDomain: true }
             });
         }
       });
@@ -82,7 +82,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    this.subscriptions.push(this.api.getDomainSearchResults(query)
+    this.subscriptions.push(this.api.getDomainSearchResults(query, 1, 1)
       .subscribe(results => {
         this.results = results;
         this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');

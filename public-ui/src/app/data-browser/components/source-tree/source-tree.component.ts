@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
@@ -5,6 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   template:
     `<app-recursive-tree
       [node]="rootNode" (conceptSelected)="bubbleUp($event)" [opened]="true"></app-recursive-tree>`,
+
   styleUrls: ['./source-tree.component.css']
 })
 export class SourceTreeComponent {
@@ -16,11 +18,7 @@ export class SourceTreeComponent {
   constructor() {
     this.rootNode = null;
   }
-
   public bubbleUp(concept) {
     this.conceptSelect.emit(concept);
   }
-
-
-
 }

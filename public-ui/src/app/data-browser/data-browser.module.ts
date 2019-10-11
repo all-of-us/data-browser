@@ -25,7 +25,6 @@ import { QuickSearchComponent } from './views/quick-search/quick-search.componen
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
-
 @NgModule({
   imports: [
     DataBrowserRoutingModule,

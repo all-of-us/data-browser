@@ -37,12 +37,14 @@
 .aka {
     padding-left: 9px;
     padding-top: 9px;
+    font-size: 14px;
 }
 
 .aka .info-icon {
     filter: contrast(43%) brightness(165%);
     transform: scale(0.7);
 }
+
 
 .aka-text {
     /* width: 170px; */
@@ -217,6 +219,22 @@
 h5.secondary-display {
     padding: 18px;
     font-size: 1.3em;
+}
+
+.source-layout {
+    display: flex;
+    margin: 0 2rem;
+}
+
+.source-item {
+    width: 50%;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.source-item:not(:nth-of-type(2)) {
+    width: 50%;
+    min-width: 10rem;
 }
 
 @media (max-width: 600px) {

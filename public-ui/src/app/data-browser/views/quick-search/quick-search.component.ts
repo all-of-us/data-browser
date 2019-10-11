@@ -134,7 +134,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
     // Get domain totals only once so if they erase search we can load them
     this.subscriptions.push(
-      this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
+      this.api.getDomainTotals(1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           this.totalResults = data;
           // Only set results to the totals if we don't have a searchText
@@ -208,7 +208,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
       return resultsObservable;
     }
-    return this.api.getDomainSearchResults(query);
+    return this.api.getDomainSearchResults(query, 1, 1);
   }
 
   public viewSurvey(r, search: string) {
@@ -221,10 +221,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
         if (search) {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')],
+          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-')],
             { queryParams: { search: search } });
         } else {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().replace(' ', '-')]);
+          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-')]);
         }
       }
     });
@@ -248,13 +248,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     return url;
   }
 
-  public hoverOnTooltip() {
-    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      'Homepage Search Across Data', null, 'Tooltip Homepage search across data');
-  }
-
   public iconClickEvent(iconString: string) {
     this.dbc.triggerEvent('HelpEvent', 'Help', 'Click',
       iconString, null, null);
+  }
+  public hoverOnTooltip(label: string, searchTerm: string, action: string) {
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
+      label, this.searchText.value, action);
   }
 }

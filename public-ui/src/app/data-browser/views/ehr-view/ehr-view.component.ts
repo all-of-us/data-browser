@@ -36,6 +36,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   searchResult: ConceptListResponse;
   items: any[] = [];
+  fullResultItemsList: any[] = [];
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
   graphButtons: any = [];
@@ -60,7 +61,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   totalResults: number;
   numPages: number;
   currentPage = 1;
-  selectedConcept: Concept;
+
+  testFilter = 0;
+  orderFilter = 0;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -76,11 +79,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
+      if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === 'true') {
+        this.currentPage = 1;
+      }
       if (params['search']) {
         this.searchFromUrl = params.search;
+        this.prevSearchText = params.search;
+        this.searchText.setValue(this.prevSearchText);
       } else {
         this.router.navigate(
-          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]
+          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
+          {
+            replaceUrl: true
+          }
         );
       }
     });
@@ -96,12 +107,17 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
     }
+    localStorage.removeItem('measurementTestsChecked');
+    localStorage.removeItem('measurementOrdersChecked');
+    localStorage.removeItem('totalResults');
   }
 
   @HostListener('window:popstate', ['$event'])
   public onPopState(event: any) {
     if (this.searchText.value) {
       localStorage.setItem('searchTermBeforeBack', this.searchText.value);
+    } else {
+      localStorage.setItem('searchTermBeforeBack', '');
     }
     this.searchText.setValue(null);
   }
@@ -187,7 +203,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   // get the current ehr domain by its route
   public getThisDomain() {
     this.subscriptions.push(
-      this.api.getDomainTotals(this.dbc.TO_SUPPRESS_PMS).subscribe(
+      this.api.getDomainTotals(1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
             const thisDomain = Domain[domain.domain];
@@ -202,25 +218,31 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public getNumberOfPages(query: string) {
     let domainResults = null;
+    const testFilter = localStorage.getItem('measurementTestsChecked') ?
+      (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+      (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (query && query != null) {
-      this.subscriptions.push(this.api.getDomainSearchResults(query)
+      this.subscriptions.push(this.api.getDomainSearchResults(query, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
+            localStorage.setItem('totalResults', String(this.totalResults));
             this.numPages = Math.ceil(this.totalResults / 50);
           }
         }));
     } else {
-      this.subscriptions.push(this.api.getDomainTotals()
+      this.subscriptions.push(this.api.getDomainTotals(testFilter , orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
           if (domainResults && domainResults.length > 0) {
             this.totalResults = domainResults[0].standardConceptCount;
+            localStorage.setItem('totalResults', String(this.totalResults));
             this.numPages = Math.ceil(this.totalResults / 50);
           }
         }));
@@ -239,7 +261,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.router.navigate(
         [],
         {
-          relativeTo: this.route
+          relativeTo: this.route,
+          replaceUrl: true
         });
     }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
@@ -248,38 +271,54 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
     } else if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && (!results.items || results.items.length <= 0)) {
-      this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
-        'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+      this.searchRequest.pageNumber = 0;
+      this.api.searchConcepts(this.searchRequest).subscribe((res) => {
+        if (res.items && res.items.length > 0) {
+          this.processSearchResults(res);
+        } else {
+          this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
+            'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+        }
+      });
     }
-    this.searchResult = results;
-    this.searchResult.items = this.searchResult.items.filter(
-      x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
-    this.items = this.searchResult.items;
-    this.items = this.items.sort((a, b) => {
-      if (a.countValue > b.countValue) {
-        return -1;
-      }
-      if (a.countValue < b.countValue) {
-        return 1;
-      }
-      return 0;
-    }
-    );
-    for (const concept of this.items) {
-      this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
-    }
-    if (this.searchResult.standardConcepts) {
-      this.standardConcepts = this.searchResult.standardConcepts;
-      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
-    } else {
-      this.standardConcepts = [];
-    }
-    // this.top10Results = this.searchResult.items.slice(0, 10);
-    this.getTopTen(this.prevSearchText).subscribe((res) => {
-      this.top10Results = res.items.slice(0, 10);
-    });
-    this.loading = false;
+    this.processSearchResults(results);
   }
+
+  public processSearchResults (results) {
+      this.searchResult = results;
+      this.searchResult.items = this.searchResult.items.filter(
+        x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
+      this.items = this.searchResult.items;
+      this.items = this.items.sort((a, b) => {
+          if (a.countValue > b.countValue) {
+            return -1;
+          }
+          if (a.countValue < b.countValue) {
+            return 1;
+          }
+          return 0;
+        }
+      );
+      for (const concept of this.items) {
+        this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+      }
+      if (this.searchResult.standardConcepts) {
+        this.standardConcepts = this.searchResult.standardConcepts;
+        this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+      } else {
+        this.standardConcepts = [];
+      }
+      if (this.currentPage === 1) {
+        this.top10Results = this.searchResult.items.slice(0, 10);
+      }
+      /*
+      this.getTopTen(this.prevSearchText).subscribe((res) => {
+        console.log(res.items.slice(0,10));
+        this.top10Results = res.items.slice(0, 10);
+      });
+      */
+      this.loading = false;
+    }
 
   public getTopTen(query: string) {
     const maxResults = 10;
@@ -312,14 +351,37 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.initSearchSubscription.unsubscribe();
     }
     const maxResults = 50;
-    this.searchRequest = {
-      query: query,
-      domain: this.ehrDomain.domain.toUpperCase(),
-      standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
-      maxResults: maxResults,
-      minCount: 1,
-      pageNumber: this.currentPage - 1,
-    };
+    if (this.currentPage > 1 && this.ehrDomain.domain.toLowerCase() === 'measurement') {
+      if (localStorage.getItem('measurementTestsChecked') === null) {
+        this.testFilter = 1;
+      } else {
+        this.testFilter = localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0;
+      }
+      if (localStorage.getItem('measurementOrdersChecked') === null) {
+        this.orderFilter = 1;
+      } else {
+        this.orderFilter = localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0;
+      }
+      this.searchRequest = {
+        query: query,
+        domain: this.ehrDomain.domain.toUpperCase(),
+        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        maxResults: maxResults,
+        minCount: 1,
+        pageNumber: this.currentPage - 1,
+        measurementTests: this.testFilter,
+        measurementOrders: this.orderFilter
+      };
+    } else {
+      this.searchRequest = {
+        query: query,
+        domain: this.ehrDomain.domain.toUpperCase(),
+        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        maxResults: maxResults,
+        minCount: 1,
+        pageNumber: this.currentPage - 1,
+      };
+    }
     this.prevSearchText = query;
     return this.api.searchConcepts(this.searchRequest);
   }
@@ -333,7 +395,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       row.viewSynonyms = true;
     }
   }
-
 
   public toggleSynonyms(concept: any) {
     this.showMoreSynonyms[concept.conceptId] = !this.showMoreSynonyms[concept.conceptId];

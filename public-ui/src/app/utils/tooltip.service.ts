@@ -4,17 +4,23 @@ import { Injectable } from '@angular/core';
 export class TooltipService {
   biologicalSexChartHelpText = `The sex assigned to a child at birth, most often based on
   the child’s external anatomy.`;
-  ehrBSPercentageChartHelpText = `Percentages are calculated based on how many participants
-  of the sex assigned have the
-  medical concept out of how many of the sex assigned have EHR records in the program.`;
+  ehrBSPercentageChartHelpText = `Percentages are calculated based on total number of participants
+  of each sex assigned that have this
+  medical concept out of total number of participants of each sex assigned that have EHR records in this domain.`;
+  ehrAgePercentageChartHelpText = `Percentages are calculated based on total number of participants
+  of each age group that have this
+  medical concept out of total number of participants of each age group that have EHR records in this domain.`;
   ehrBSCountChartHelpText = ` Counts are the total sum of participants with the medical
   concept mentioned in their
   electronic health record (EHR).`;
+  ehrAgeCountChartHelpText = ` Counts are the total sum of participants with the medical
+  concept mentioned in their
+  electronic health record (EHR).`;
   surveyBSPercentageChartHelpText = `Percentages are calculated based on how many
-  participants of the sex assigned selected the
-  answer  out of how many of the sex assigned completed the survey.`;
+  participants of the sex assigned selected this
+  answer  out of total number of participants of each sex assigned that answered this question (excluding skip codes).`;
   surveyBSCountChartHelpText = `Counts are the total sum of participants of the
-  sex assigned who selected the answer.`;
+  sex assigned who selected this answer.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
     'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
     'or may not correspond to a person’s \n' +
@@ -26,7 +32,7 @@ export class TooltipService {
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
     'ages at which the participants took the indicated survey. \n' +
     'The percentages below are calculated based on how many participants of the age group ' +
-    'responded with this survey answer out of how many of the age group completed the survey.';
+    'responded with this survey answer out of total number of participants of each age group that answered this question (excluding skip codes).';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
   raceEthnicityChartHelpText = `“Race” refers to physical differences that groups and cultures
@@ -138,13 +144,13 @@ export class TooltipService {
   allOfUsHelpText = `All of Us`;
   raceEthnicityQuestionHelpText2 = `Research Program. Each participant who answered this survey question is only counted once in the counts below. If
   a participant selected more than one option, they are counted in the “more than one race/ethnicity” category.`;
-  raceEthnicityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer`;
+  raceEthnicityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
   surveyExplorerUrl = 'https://www.researchallofus.org/data/data-sources/survey-explorer/';
   genderIdentityQuestionHelpText1 = `Through “The Basics” survey, participants who have completed the initial steps of the program self-report gender
   identity information to the `;
   genderIdentityQuestionHelpText2 = `Research Program. Because participants can select more than one option,
   counts and percentages may not add up to 100%`;
-  genderIdentityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer`;
+  genderIdentityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
   q2RolledCategoriesHelpText = `“Other” includes the following categories: American Indian
   or Alaska Native, Middle Eastern or North African,
   Native Hawaiian or other Pacific Islander, and None of these describe me.`;

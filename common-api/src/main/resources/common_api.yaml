@@ -84,6 +84,10 @@ definitions:
       domain:
         description: the domain ID
         $ref: "#/definitions/Domain"
+      domainConceptId:
+        description: domain concept id
+        type: integer
+        format: int64
       name:
         description: display name of the domain
         type: string
@@ -132,6 +136,10 @@ definitions:
         format: int64
       orderNumber:
         description: survey release order number
+        type: integer
+        format: int32
+      canShow:
+        description: determines if this survey can be displayed
         type: integer
         format: int32
 

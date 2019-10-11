@@ -1,5 +1,8 @@
 "unit_concept_id","unit_source_value"
 0,"no unit"
+9654,"ueq/mL"
+9015,"umol/g CRT"
+9018,"mM/g.Creat"
 8478,"avidity index"
 8479,"centipoise"
 8480,"Ehrlich unit"
@@ -66,6 +69,7 @@
 8554,"percent"
 8555,"second"
 8556,"EIA unit"
+8556,"EIA"
 8560,"Juvenile Diabetes Foundation unit"
 8561,"Of Total"
 8564,"picogram"
@@ -123,10 +127,13 @@
 8644,"Seconds per CO"
 8645,"unit per liter"
 8646,"Volume percent"
+8646,"%Volume"
+8646,"VOL_%"
 8647,"per microliter"
 8648,"percent of normal"
 8649,"percent uptake"
 8653,"degree Celsius"
+8653,"degrees celcius"
 8654,"Enzyme activity"
 8655,"Farad per liter"
 8656,"Low Power Field"
@@ -778,6 +785,7 @@
 4037638,"J/feed"
 4037639,"MJ/kg body weight"
 4037640,"ug/feed"
+9654,"ueq/mL"
 4037641,"L/meal"
 4037642,"L/kg body weight"
 4037643,"mL/kg body weight"
@@ -1145,6 +1153,7 @@
 4117788,"bar - pressure"
 4117789,"lb/sq. in"
 4117790,"Unit of area"
+4117839,"IU/mL"
 4117791,"/10 min"
 4117792,"/40"
 4117793,"/day"
@@ -1219,6 +1228,7 @@
 4117999,"pmol/number of cells"
 8645,"U/L"
 4118001,"U/hour"
+9014,"ug/g CRT"
 4118002,"Units factor VIIIc inhibitor/mL"
 4118003,"ug/day/sq. m"
 4118004,"mol/day/kg"
@@ -1294,6 +1304,7 @@
 4118321,"Unit of pressure"
 4118322,"lbf - pound-force"
 8876,"mmHg"
+8876,"(mmHg)"
 4118324,"/12h"
 8786,"/HPF"
 4118326,"/period"
@@ -1360,11 +1371,13 @@
 4121362,"Unit of mass"
 4121363,"nanogram"
 8564,"pg"
+8564,"(pg)"
 4121365,"fg"
 4121366,"Unit of time"
 4121367,"Non-SI unit of time"
 4121368,"hour"
 8512,"day"
+8713,"(g/dL)"
 8511,"week"
 4121371,"Unit of temperature"
 4121372,"Non-SI unit of temperature"
@@ -1643,6 +1656,7 @@
 4171063,"dollars/min"
 4171072,"ng/gm"
 4171221,"GPL unit"
+4171221,"GPL Units"
 4171235,"gm/specimen"
 8647,"/mcL"
 4171561,"dollars/year"
@@ -2504,6 +2518,7 @@
 8752,"mm/hr"
 8753,"mmol/l"
 8753,"mmo/L"
+8753,"mm/L"
 8753,"mmoI/L"
 8753,"mmol/LL"
 8753,"mMOL/L"
@@ -2566,6 +2581,7 @@
 8753,"mmol/L"
 8753,"MMOLL"
 8753,"MMOL/L"
+8753,"(mmol/L)"
 8763,"U/mL"
 8763,"[U]/mL"
 8763,"u/ml"
@@ -2608,6 +2624,7 @@
 8525,"TITER"
 8525,"Titer"
 8525,"titer"
+8525,"{titer}"
 9550,"mIU/mL"
 9550,"mlU/ml"
 9550,"10*-3.[iU]/mL"
@@ -2854,6 +2871,7 @@
 8845,pg/ml
 8845,PG/ML
 9101,[MPL'U]
+9101,"MPL Units"
 9101,MPL
 4117647,GPL U/mL
 8862,mosm/kg
@@ -2944,6 +2962,8 @@
 8608,index'value
 8608,{index'value}
 8608,index_value
+8608,"{index_val}"
+8608,"{Index_val}"
 8608,indexvalue
 8608,INDEX_VALUE
 9632,pmol/ml
@@ -3036,7 +3056,9 @@
 8752,mm/hr(s)
 4212719,E.U./dL
 8785,/MM3
-8653,Degree_C
+8653,"Degree_C"
+8653,"degrees celcius"
+8653,Celsius
 8645,U/L
 8950,g/dL (calc)
 8698,L/min
@@ -3181,6 +3203,7 @@
 8993,"nmol/hr/mg"
 9014,"ug/g_cre"
 9014,"ug/g_Creat"
+9014,"ug/gCR"
 9017,"mg/gCR"
 9017,"mg/g_Cre"
 9017,"mg/g_creat"

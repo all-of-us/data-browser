@@ -1,4 +1,7 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { Concept, ConceptListResponse, DataBrowserService, MatchType, SearchConceptsRequest } from 'publicGenerated';
 import { ISubscription } from 'rxjs/Subscription';
@@ -10,7 +13,8 @@ import { TooltipService } from '../../utils/tooltip.service';
   templateUrl: './db-table.component.html',
   styleUrls: ['../../styles/template.css', './db-table.component.css']
 })
-export class DbTableComponent implements OnChanges {
+
+export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() items: any[];
   @Input() searchRequest: SearchConceptsRequest;
   @Input() searchResult: ConceptListResponse;
@@ -22,28 +26,134 @@ export class DbTableComponent implements OnChanges {
   @Input() synonymString: any;
   @Input() showMoreSynonyms: any;
   @Input() standardConcepts: any[];
-  @Input() totalResults: number;
   @Input() currentPage: number;
   @Input() totalParticipants: number;
-  @Input() standardConceptIds: number[];
   @Input() graphButtons: any[];
   @Input() graphToShow: any;
-  @Input() treeData: any[];
+  @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
+  @Input() totalResults: number;
+  // Save this till labs is tested completely to see
+  // if the pagination breaks because of not having this
+  // totalResults = localStorage.getItem('totalResults') ?
+  // +localStorage.getItem('totalResults') : 0;
+  numPages: number;
+  selectedFilterGrid = false;
   expanded = false;
+  isChecked1 = localStorage.getItem('measurementTestsChecked') ?
+    (localStorage.getItem('measurementTestsChecked') === 'true' ? true : false) : true;
+  isChecked2 = localStorage.getItem('measurementOrdersChecked') ?
+    (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true;
+  measurementTestsChecked: FormControl = new FormControl(localStorage.getItem('measurementTestsChecked') ?
+    (localStorage.getItem('measurementTestsChecked') === 'true' ? true : false) : true);
+  measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
+    (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true);
+  standardConceptIds: number[];
   private subscriptions: ISubscription[] = [];
-
+  private initSubscription: ISubscription = null;
   constructor(
     public tooltipText: TooltipService,
     public dbc: DbConfigService,
     private elm: ElementRef,
-    private api: DataBrowserService
-  ) { }
+    private api: DataBrowserService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
+  }
+
+  ngOnInit() {
+    this.domainCounts();
+    this.subscriptions.push(this.measurementTestsChecked.valueChanges
+      .subscribe((query) => {
+        let getTests = 0;
+        let getOrders = 0;
+        if (query) {
+          getTests = 1;
+        } else {
+          getTests = 0;
+        }
+        if (this.measurementOrdersChecked.value) {
+          getOrders = 1;
+        } else {
+          getOrders = 0;
+        }
+        const measurementSearchRequestWithFilter =
+          this.makeMeasurementSearchRequest(getTests, getOrders);
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+          results =>
+            this.items = results.items);
+        if (this.searchRequest.query && this.searchRequest.query !== null) {
+          this.getMeasurementSearchResultTotals(getTests, getOrders);
+        } else {
+          this.getMeasurementDomainTotals(getTests, getOrders);
+        }
+      }));
+    this.subscriptions.push(this.measurementOrdersCh
+      .subscribe((query) => {
+        let getTests = 0;
+        let getOrders = 0;
+        if (query) {
+          getOrders = 1;
+        } else {
+          getOrders = 0;
+        }
+        if (this.measurementTestsChecked.value) {
+          getTests = 1;
+        } else {
+          getTests = 0;
+        }
+        const measurementSearchRequestWithFilter =
+          this.makeMeasurementSearchRequest(getTests, getOrders);
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+          results =>
+            this.items = results.items);
+        if (this.searchRequest.query && this.searchRequest.query !== null) {
+          this.getMeasurementSearchResultTotals(getTests, getOrders);
+        } else {
+          this.getMeasurementDomainTotals(getTests, getOrders);
+        }
+      }));
+  }
+
+  public domainCounts() {
+    let domainResults = null;
+    const testFilter = localStorage.getItem('measurementTestsChecked') ?
+      (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+      (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
+    if (this.searchText.value && this.searchText.value != null) {
+      this.initSubscription = this.api.getDomainSearchResults
+        (this.searchText, testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        });
+    } else {
+      this.initSubscription = this.api.getDomainTotals(testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
-      this.expandRow(this.selectedConcept, true);
+      this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
+      if (changes.selectedConcept && changes.selectedConcept.currentValue) {
+        this.expandRow(this.selectedConcept, true);
+      }
     }
   }
 
@@ -54,6 +164,7 @@ export class DbTableComponent implements OnChanges {
     }
     return this.searchText.value;
   }
+
   public checkIfExpanded(concept: Concept, event: any, sources?: boolean) {
     const classList = event.target.classList;
     for (let i = 0; i < classList.length; i++) {
@@ -146,6 +257,7 @@ export class DbTableComponent implements OnChanges {
     return percent * 100;
   }
 
+
   public selectGraph(g: string, r: any) {
     this.resetSelectedGraphs();
     this.graphToShow = g;
@@ -204,7 +316,10 @@ export class DbTableComponent implements OnChanges {
       return this.tooltipText.raceEthnicityChartHelpText;
     }
     if (g === 'Age') {
-      return this.tooltipText.ehrAgeChartHelpText;
+
+      return this.tooltipText.ehrAgeChartHelpText + '\n' +
+        this.tooltipText.ehrAgePercentageChartHelpText + '\n' +
+        this.tooltipText.ehrAgeCountChartHelpText + '\n';
     }
     if (g === 'Sources') {
       return this.tooltipText.sourcesChartHelpText;
@@ -214,4 +329,103 @@ export class DbTableComponent implements OnChanges {
     }
   }
 
+  public hoverOnTooltip(label: string, searchTerm: string, action: string) {
+    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
+      label, this.searchText.value, action);
+  }
+
+  public filterMeasurementDataTypes() {
+    if (this.selectedFilterGrid) {
+      this.selectedFilterGrid = false;
+    } else {
+      this.selectedFilterGrid = true;
+    }
+  }
+
+  public checkBoxClick(box: string, value: boolean) {
+    if (box === 'tests') {
+      if (value) {
+        this.measurementTestsChecked.setValue(true);
+        localStorage.setItem('measurementTestsChecked', 'true');
+      } else {
+        this.measurementTestsChecked.setValue(false);
+        this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
+        localStorage.setItem('measurementTestsChecked', 'false');
+      }
+    }
+    if (box === 'orders') {
+      if (value) {
+        this.measurementOrdersChecked.setValue(true);
+        localStorage.setItem('measurementOrdersChecked', 'true');
+      } else {
+        this.measurementOrdersChecked.setValue(false);
+        localStorage.setItem('measurementOrdersChecked', 'false');
+      }
+    }
+  }
+
+  public checkMeasurementTests() {
+    if (this.currentPage > 1) {
+      return localStorage.getItem('measurementTestsChecked') === 'true';
+    }
+    return this.measurementTestsChecked.value;
+  }
+
+  public checkMeasurementOrders() {
+    if (this.currentPage > 1) {
+      return localStorage.getItem('measurementOrdersChecked') === 'true';
+    }
+    return this.measurementOrdersChecked.value;
+  }
+
+  public getMeasurementDomainTotals(testFilter: number, orderFilter: number) {
+    this.api.getDomainTotals(testFilter, orderFilter).subscribe(
+      results => {
+        const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+        this.totalResults = domainResults[0].standardConceptCount;
+      }
+    );
+  }
+
+  public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
+    this.api.getDomainSearchResults(this.searchRequest.query, testFilter, orderFilter)
+      .subscribe(
+      results => {
+        const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+        this.totalResults = domainResults[0].standardConceptCount;
+      }
+    );
+  }
+
+  public makeMeasurementSearchRequest(testFilter: number, orderFilter: number) {
+    const measurementSearchRequestWithFilter = {
+      query: this.searchRequest.query,
+      domain: this.searchRequest.domain,
+      standardConceptFilter: this.searchRequest.standardConceptFilter,
+      maxResults: this.searchRequest.maxResults,
+      minCount: this.searchRequest.minCount,
+      pageNumber: this.searchRequest.pageNumber,
+      measurementTests: testFilter,
+      measurementOrders: orderFilter
+    };
+    return measurementSearchRequestWithFilter;
+  }
+
+  public ngOnDestroy() {
+    if (localStorage.getItem('measurementTestsChecked') === null) {
+      localStorage.setItem('measurementTestsChecked', 'true');
+    }
+    if (localStorage.getItem('measurementOrdersChecked') === null) {
+      localStorage.setItem('measurementOrdersChecked', 'true');
+    }
+    localStorage.setItem('totalResults', String(this.totalResults));
+    if (this.subscriptions) {
+      for (const s of this.subscriptions) {
+        s.unsubscribe();
+      }
+    }
+    if (this.initSubscription) {
+      this.initSubscription.unsubscribe();
+    }
+  }
 }

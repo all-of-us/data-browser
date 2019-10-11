@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.JoinType;
 
 import org.pmiops.workbench.cdr.model.Concept;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,9 +125,12 @@ public class ConceptService {
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
-    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<String> vocabularyIds, String domainId, int limit, int minCount, int page) {
+    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
+                                         int measurementTests, int measurementOrders) {
 
-
+        System.out.println("*************************************************************");
+        System.out.println(page);
+        System.out.println("*************************************************************");
         Specification<Concept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();
@@ -169,10 +173,12 @@ public class ConceptService {
                                 conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
                                 standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
                                         criteriaBuilder.literal(query)));
+                                if (conceptIds.size() > 0) {
+                                    standardOrCodeOrIdMatch.add(root.get("conceptId").in(conceptIds));
+                                }
                                 try {
                                     long conceptId = Long.parseLong(query);
                                     standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
-
                                             criteriaBuilder.literal(conceptId)));
                                 } catch (NumberFormatException e) {
                                     // Not a long, don't try to match it to a concept ID.
@@ -192,13 +198,22 @@ public class ConceptService {
                         predicates.add(root.get("vocabularyId").in(vocabularyIds));
                     }
                     if (domainId != null) {
+                        if (domainId.equals("Measurement")) {
+                            root.fetch("measurementConceptInfo", JoinType.LEFT);
+                            if (measurementTests == 1 && measurementOrders == 0) {
+                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 1));
+                            } else if (measurementTests == 0 && measurementOrders == 1) {
+                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 0));
+                            } else if (measurementTests == 0 && measurementOrders == 0) {
+                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 2));
+                            }
+                        }
                         predicates.add(criteriaBuilder.equal(root.get("domainId"), criteriaBuilder.literal(domainId)));
                     }
                     if (minCount == 1) {
                         predicates.add(criteriaBuilder.greaterThan(root.get("hasCounts"), 0));
                     }
                     predicates.add(criteriaBuilder.greaterThan(root.get("canSelect"), 0));
-
                     criteriaQuery.distinct(true);
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 };

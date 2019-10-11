@@ -1,4 +1,5 @@
-<div class="results-grid" *ngIf="items && items.length > 0">
+
+<div class="results-grid" *ngIf="(items && items.length > 0) || (measurementTestsChecked.value === false && measurementOrdersChecked.value === false)">
   <div class="domain-info-layout">
     <span>
       <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
@@ -8,14 +9,14 @@
       </ng-container>
       <ng-template #show_pages>
         <h5 id="domain-name" class="primary-display">
-          Showing top {{((currentPage * searchRequest.maxResults) - items.length)+1}} -
+          Showing top {{((currentPage-1) * searchRequest.maxResults)+1}} -
           {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
         </h5>
       </ng-template>
       <ng-container *ngIf="!searchText.value; else no_search_term">
         <h5 id="domain-name" class="primary-display">
           concepts for this domain
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText1}}</div>
@@ -26,7 +27,7 @@
       <ng-template #no_search_term>
         <h5 id="domain-name" class="primary-display" *ngIf="searchText.value">
           matching medical concepts
-          <clr-tooltip>
+          <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
               <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText2}}</div>
@@ -51,7 +52,7 @@
   </div>
   <div class="tbl-r tbl-head">
     <div class="tbl-d body-lead"> {{ehrDomain.name}}
-      <clr-tooltip>
+      <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Domain name tooltip hover in matching concepts table')">
         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
           <div class="tooltip-label">{{tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]}}</div>
@@ -59,7 +60,7 @@
       </clr-tooltip>
     </div>
     <div class="tbl-d body-lead"> Participants of {{totalParticipants | number}}
-      <clr-tooltip>
+      <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Participant count tooltip hover')">
         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
           <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
@@ -68,7 +69,7 @@
     </div>
     <div class="tbl-d body-lead"> % of
       {{totalParticipants | number}}
-      <clr-tooltip>
+      <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Percentage of participant count tooltip hover')">
         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
           <div class="tooltip-label">The overall participant count of this medical concept divided
@@ -77,7 +78,28 @@
         </clr-tooltip-content>
       </clr-tooltip>
     </div>
+     <div class="tbl-d body-lead info-text" *ngIf="ehrDomain.domain.toLowerCase() === 'measurement'">
+        Data Type
+        <div class="dropdown bottom-left" [ngClass]="selectedFilterGrid?'open':''">
+          <button class="dropdown-toggle">
+            <clr-icon shape="filter-grid" class="filter-grid-icon" (click)="filterMeasurementDataTypes()" [ngClass]="selectedFilterGrid?'is-solid':''"></clr-icon>
+          </button>
+          <div class="dropdown-menu">
+            <div class="clr-checkbox-wrapper">
+              <input type="checkbox" id="checkbox1" class="clr-checkbox" [(ngModel)]="isChecked1" (change)="checkBoxClick('tests', isChecked1)"
+              [formControl]="measurementTestsChecked" [checked]="checkMeasurementTests()">
+              <label for="checkbox1"><i class="fas fa-vial fa-rotate-45"></i> Tests</label>
+            </div>
+            <div class="clr-checkbox-wrapper">
+              <input type="checkbox" id="checkbox2" class="clr-checkbox" [(ngModel)]="isChecked2" (change)="checkBoxClick('orders', isChecked2)"
+              [formControl]="measurementOrdersChecked" [checked]="checkMeasurementOrders()">
+              <label for="checkbox2"><i class="far fa-file-signature"></i> Orders</label>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
+
   <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r "
     [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
     *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
@@ -91,9 +113,9 @@
       </div>
       <ng-template #code_match_standard>
         <div class="body-lead tbl-d"
-          *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+          *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
           <div class="code-tooltip"
-            *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+            *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
             <app-highlight-search [isStandard]="true" [text]="r.conceptName" [searchTerm]="prevSearchText">
             </app-highlight-search>
           </div>
@@ -103,7 +125,7 @@
         <div class="body-lead tbl-d">
           <div class="code-tooltip">
             <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
-              {{i+((currentPage * searchRequest.maxResults) - items.length)+1}}.
+              {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
             </span>
             <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
             <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
@@ -111,6 +133,7 @@
           </div>
         </div>
       </ng-template>
+
       <div class="body-lead tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
         &le; {{r.countValue | number}}
       </div>
@@ -125,6 +148,26 @@
       <ng-template #noConceptSynonyms>
         <div class="body-lead tbl-d"></div>
       </ng-template>
+    <div class="body-lead tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
+          <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder" class="vial-span">
+            <clr-tooltip>
+              <i class="fas fa-vial solid fa-lg" clrTooltipTrigger></i>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-header">
+              This code contains values. Search the medical concept keyword to see related Labs & Measurements results.</div>
+          </clr-tooltip-content>
+        </clr-tooltip>
+          </span>
+          <ng-template #labOrder><span class="order-span">
+            <clr-tooltip>
+              <i class="far fa-file-signature regular fa-lg" clrTooltipTrigger></i>
+          <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+            <div class="tooltip-header">
+              This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.</div>
+          </clr-tooltip-content>
+            </clr-tooltip>
+            </span></ng-template>
+        </div>
       <div class="body-lead tbl-d icon-btn-group">
         <button (click)="checkIfExpanded(r,$event);$event.stopPropagation()"  class="icon-btn">
           <clr-icon [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow != 'Sources'?'is-solid':''"
@@ -146,7 +189,7 @@
       <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
         class="aka-text">
         <span>Also Known As</span>
-        <clr-tooltip>
+        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept synonyms tooltip hover on concept ' + r.conceptName)">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info">
           </clr-icon>
           <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
@@ -157,6 +200,7 @@
           </clr-tooltip-content>
         </clr-tooltip>
       </div>
+
       <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
         *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
         [searchTerm]="prevSearchText">
@@ -192,6 +236,7 @@
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
         <app-sources [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
+
       </ng-container>
       <ng-template #NonRolledUp>
         <div class="graph-item">
@@ -205,11 +250,6 @@
           </app-concept-charts>
         </div>
       </ng-template>
-    </div>
-  </div>
-  <div *ngIf="!loading && items.length === 0">
-    <div class="">
-      <h5 class="no-results"> No results match your search. </h5>
     </div>
   </div>
 </div>

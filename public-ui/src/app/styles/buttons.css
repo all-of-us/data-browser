@@ -92,12 +92,4 @@ button.icon-btn {
     background-color: inherit;
     border: none;
     width:auto;
-
-}
-
-
-
-.btn-effect:hover {
-    transition: .3s cubic-bezier(1, .18, 0, 1.12);
-    transform: scale(1.01);
 }

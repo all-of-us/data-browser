@@ -1,26 +1,7 @@
+
 :host {
     position: relative;
 }
-
-.hasChildren {
-    position: relative;
-}
-
-/* .hasChildren::before {
-    background: yellow;
-    content: '';
-    display: block;
-    position: absolute;
-    top: .05em;
-    left: -1.05em;
-    width: .6em;
-    height: .6em;
-    border-right: .125em solid gray;
-    border-bottom: .125em solid gray;
-    border-radius: .1em;
-    transform-origin: 80% 80%;
-    transform: rotate(-45deg);
-} */
 
 
 .noChildren {
@@ -40,15 +21,30 @@
 
 .child {
     z-index: 1000;
+    transform-origin:  80% 80%;
+    transform: rotate(-45deg);
+}
+
+.hasChildren.opened::before {
+    transition: .1s transform linear;
+    transform: rotate(45deg);
+}
+
+.noChildren {
+    position: relative;
+    
+}
+.blue-text {
+    color:#216fb4;
 }
 
 .children {
     margin-left: 1.5em;
     display: flex;
     flex-direction: column;
-    height: fit-content;
-    justify-content: space-evenly;
+    font-size: .7rem;
 }
+
 
 .handle {
     color:#2991cf;
@@ -76,3 +72,4 @@
     margin-top: 0.1rem;
     left: -.1rem;
 }
+

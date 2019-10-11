@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Concept, DataBrowserService } from '../../../../publicGenerated';
@@ -52,6 +53,7 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   public conceptClick(concept: Concept) {
     this.conceptSelected.emit(concept);
   }
+
 
   ngOnDestroy() {
     for (const s of this.subscriptions) {

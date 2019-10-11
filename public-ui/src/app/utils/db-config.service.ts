@@ -121,7 +121,7 @@ export class DbConfigService {
     'color': '#f6f6f8', 'font-family': 'GothamBook', 'font-size': '22px',
     'font-weight': '300', 'textOutline': 'none'
   };
-  MULTIPLE_ANSWER_SURVEY_QUESTIONS = [1586140, 43528428, 1585952, 1585806];
+  MULTIPLE_ANSWER_SURVEY_QUESTIONS = [43528428, 1585952, 1585806, 1585838];
 
   pmGroups: ConceptGroup[] = [];
   physicalMeasurementsFound: Number;
@@ -129,7 +129,10 @@ export class DbConfigService {
   conceptIdNames = [
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
-    { conceptId: 1586134, conceptName: 'The Basics' }
+    { conceptId: 1586134, conceptName: 'The Basics' },
+    { conceptId: 43529712, conceptName: 'Personal Medical History'},
+    { conceptId: 43528895, conceptName: 'Healthcare Access and Utilization'},
+    { conceptId: 43528698, conceptName: 'Family Medical History'}
   ];
   // chart options
   lang = {

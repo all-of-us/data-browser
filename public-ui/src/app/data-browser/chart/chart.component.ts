@@ -419,10 +419,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (!this.sources) {
         if (a.countValue > 20 ) {
           toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ' + '<b>' + a.countValue + '</b>';
+            '<br/>' + 'Participant Count: ' + '<b>' + a.countValue + '</b>';
         } else {
           toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ';
+            '<br/>' + 'Participant Count: ';
         }
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
@@ -434,10 +434,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       } else {
         if (a.sourceCountValue > 20 ) {
           toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ' + '<b>' + a.sourceCountValue + '</b>';
+            '<br/>' + 'Participant Count: ' + '<b>' + a.sourceCountValue + '</b>';
         } else {
           toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-            '<br/>' + 'Pariticipant Count: ';
+            '<br/>' + 'Participant Count: ';
         }
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',

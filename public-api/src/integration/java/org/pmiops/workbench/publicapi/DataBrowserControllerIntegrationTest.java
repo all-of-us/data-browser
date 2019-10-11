@@ -52,7 +52,7 @@ public class DataBrowserControllerIntegrationTest {
 
   @Test
   public void testDomainTotals() throws Exception {
-    DomainInfosAndSurveyModulesResponse resp = api.getDomainTotals();
+    DomainInfosAndSurveyModulesResponse resp = api.getDomainTotals(1, 1);
     assertThat(resp.getDomainInfos()).isNotEmpty();
     assertThat(resp.getSurveyModules()).isNotEmpty();
   }
@@ -81,7 +81,7 @@ public class DataBrowserControllerIntegrationTest {
 
   @Test
   public void testDomainSearch_smoke() throws Exception {
-    DomainInfosAndSurveyModulesResponse resp = api.getDomainSearchResults("smoke");
+    DomainInfosAndSurveyModulesResponse resp = api.getDomainSearchResults("smoke", 1, 1);
     assertThat(resp.getDomainInfos()).isNotEmpty();
     assertThat(resp.getSurveyModules()).isNotEmpty();
   }

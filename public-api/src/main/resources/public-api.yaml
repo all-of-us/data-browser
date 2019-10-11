@@ -261,18 +261,39 @@ paths:
           type: string
           required: true
           description: search key word
+        - in: query
+          name: testFilter
+          type: integer
+          format: int32
+          description: measurement filter
+        - in: query
+          name: orderFilter
+          type: integer
+          format: int32
+          description: measurement filter
       responses:
         200:
           description: A collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+
   /v1/databrowser/domain-totals:
     get:
       tags:
         - dataBrowser
       description: Gets the domain filters and survey modules with the count of all concepts and questions
       operationId: "getDomainTotals"
-      parameters: []
+      parameters:
+        - in: query
+          name: testFilter
+          type: integer
+          format: int32
+          description: measurement filter
+        - in: query
+          name: orderFilter
+          type: integer
+          format: int32
+          description: measurement filter
       responses:
         200:
           description: A collection of domains and survey modules
@@ -379,6 +400,10 @@ definitions:
         type: "array"
         items:
           type: "string"
+      measurementConceptInfo:
+        description: measurement concept info
+        type: object
+        $ref: "#/definitions/MeasurementConceptInfo"
 
   ConceptListResponse:
     type: object
@@ -404,6 +429,16 @@ definitions:
         description: concept for which standard concepts are fetched
         type: integer
         format: int64
+
+  MeasurementConceptInfo:
+    type: object
+    properties:
+      conceptId:
+        type: integer
+        format: int64
+      hasValues:
+        type: integer
+        format: int32
 
   ConfigResponse:
     type: object
@@ -1047,3 +1082,11 @@ definitions:
         type: integer
         default: 0
         description: By default it returns the first page and then its next pages from that on.
+      measurementTests:
+        type: integer
+        default: 1
+        description: By default all the measurement tests are returned
+      measurementOrders:
+        type: integer
+        default: 1
+        description: By default all the measurement orders are returned

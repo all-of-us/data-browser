@@ -31,6 +31,7 @@ import org.pmiops.workbench.db.model.CdrVersion;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Concept;
+import org.pmiops.workbench.model.MeasurementConceptInfo;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
@@ -152,6 +153,7 @@ public class DataBrowserControllerTest {
 
     private static final DomainInfo CLIENT_DOMAIN_1 = new DomainInfo()
             .domain(Domain.CONDITION)
+            .domainConceptId(1L)
             .name("Diagnoses")
             .description("Condition Domain")
             .allConceptCount(123L)
@@ -160,6 +162,7 @@ public class DataBrowserControllerTest {
 
     private static final DomainInfo CLIENT_DOMAIN_2 = new DomainInfo()
             .domain(Domain.DRUG)
+            .domainConceptId(2L)
             .name("Medications")
             .description("Drug Domain")
             .allConceptCount(1L)
@@ -172,7 +175,8 @@ public class DataBrowserControllerTest {
             .conceptId(1585855L)
             .questionCount(568120L)
             .participantCount(4L)
-            .orderNumber(0);
+            .orderNumber(0)
+            .canShow(1);
 
     private static final SurveyModule CLIENT_SURVEY_MODULE_2 = new SurveyModule()
             .name("The Basics")
@@ -180,7 +184,8 @@ public class DataBrowserControllerTest {
             .conceptId(1586134L)
             .questionCount(567437L)
             .participantCount(5L)
-            .orderNumber(0);
+            .orderNumber(0)
+            .canShow(1);
 
     private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
             .analysisId(1900L)
@@ -361,9 +366,9 @@ public class DataBrowserControllerTest {
             makeConcept(CLIENT_CONCEPT_7);
 
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_1 =
-            makeDomain(CLIENT_DOMAIN_1, 1L);
+            makeDomain(CLIENT_DOMAIN_1, 1L, "0");
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
-            makeDomain(CLIENT_DOMAIN_2, 2L);
+            makeDomain(CLIENT_DOMAIN_2, 2L, "3");
     private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_1 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_1);
     private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_2 =
@@ -406,17 +411,15 @@ public class DataBrowserControllerTest {
             () -> cdrVersion, cdrVersionDao);
     }
 
-
     @Test
     public void testGetSourceConcepts() throws Exception {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.getSourceConcepts(7890L, 15);
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_4, CLIENT_CONCEPT_2);
     }
 
-
     @Test
     public void testGetDomainTotals() throws Exception {
-        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals();
+        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals(1, 1);
         assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
         assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2);
     }
@@ -548,15 +551,13 @@ public class DataBrowserControllerTest {
     }
 
     @Test
-    public void testGetSurveyDemographicAnalysesNoMatch() throws Exception{
+    public void testGetSurveyDemographicAnalysesNoMatch() throws Exception {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1585855");
         ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
         List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
         assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
     }
-
-
 
   static org.pmiops.workbench.cdr.model.Concept makeConcept(Concept concept) {
     org.pmiops.workbench.cdr.model.Concept result = new org.pmiops.workbench.cdr.model.Concept();
@@ -593,10 +594,11 @@ public class DataBrowserControllerTest {
         return result;
     }
 
-    private static org.pmiops.workbench.cdr.model.DomainInfo makeDomain(DomainInfo domain, long conceptId) {
+    private static org.pmiops.workbench.cdr.model.DomainInfo makeDomain(DomainInfo domain, long conceptId, String domainId) {
         return new org.pmiops.workbench.cdr.model.DomainInfo()
             .domainEnum(domain.getDomain())
             .domainId(CommonStorageEnums.domainToDomainId(domain.getDomain()))
+            .domain(Short.valueOf(domainId))
             .name(domain.getName())
             .description(domain.getDescription())
             .conceptId(conceptId)
@@ -607,11 +609,12 @@ public class DataBrowserControllerTest {
 
     private static org.pmiops.workbench.cdr.model.SurveyModule makeSurveyModule(SurveyModule surveyModule) {
         return new org.pmiops.workbench.cdr.model.SurveyModule()
-            .conceptId(surveyModule.getConceptId())
-            .name(surveyModule.getName())
-            .description(surveyModule.getDescription())
-            .questionCount(surveyModule.getQuestionCount())
-            .participantCount(surveyModule.getParticipantCount());
+                .conceptId(surveyModule.getConceptId())
+                .name(surveyModule.getName())
+                .description(surveyModule.getDescription())
+                .questionCount(surveyModule.getQuestionCount())
+                .participantCount(surveyModule.getParticipantCount())
+                .canShow(1);
     }
 
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){

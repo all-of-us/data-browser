@@ -38,9 +38,11 @@ h5.secondary-display {
     display: block;
 }
 
+
 @media (max-width: 900px) {
     .results {
       padding: 0;
       padding-top: 36px;
     }
 }
+
