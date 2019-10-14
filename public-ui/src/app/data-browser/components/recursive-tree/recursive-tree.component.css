@@ -21,8 +21,6 @@
 
 .child {
     z-index: 1000;
-    transform-origin:  80% 80%;
-    transform: rotate(-45deg);
 }
 
 .hasChildren.opened::before {

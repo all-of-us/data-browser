@@ -61,7 +61,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   totalResults: number;
   numPages: number;
   currentPage = 1;
-
+  selectedConcept;
   testFilter = 0;
   orderFilter = 0;
 

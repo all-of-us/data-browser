@@ -89,7 +89,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
           this.getMeasurementDomainTotals(getTests, getOrders);
         }
       }));
-    this.subscriptions.push(this.measurementOrdersCh
+    this.subscriptions.push(this.measurementOrdersChecked.valueChanges
       .subscribe((query) => {
         let getTests = 0;
         let getOrders = 0;
