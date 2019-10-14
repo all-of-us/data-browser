@@ -1125,7 +1125,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0 as id, 3200 as analysis_id, cast(cr.concept_id_2 as string) as stratum_1,
 cast(p.gender_concept_id as string) as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=ob.person_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept_relationship\` cr
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_concept_relationship\` cr
 on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
 on cr.concept_id_2=sm.concept_id
 group by cr.concept_id_2, p.gender_concept_id"
@@ -1153,7 +1153,7 @@ group by observation_id,age_stratum
 select 0 as id, 3201 as analysis_id, cast(cr.concept_id_2 as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
  from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
 join survey_age_stratum sa on sa.observation_id=ob.observation_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept_relationship\` cr
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_concept_relationship\` cr
 on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
 on cr.concept_id_2=sm.concept_id
 group by stratum_1, stratum_2"

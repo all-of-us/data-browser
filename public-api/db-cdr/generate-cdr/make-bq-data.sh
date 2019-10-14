@@ -88,7 +88,7 @@ do
 done
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions similar_unit_concepts)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions similar_unit_concepts survey_concept_relationship)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -543,7 +543,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
 (select count(distinct ob.person_id) as count_val,cr.concept_id_2 as survey_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept_relationship\` cr
+join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_concept_relationship\` cr
 on ob.observation_source_concept_id=cr.concept_id_1 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 on cr.concept_id_2=sm.concept_id
 group by cr.concept_id_2)
@@ -561,7 +561,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
 (select count(distinct ob.person_id) as count_val,cr.concept_id_2 as survey_concept_id,cr.concept_id_1 as question_id
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.concept_relationship\` cr
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_concept_relationship\` cr
 on ob.observation_source_concept_id=cr.concept_id_1 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 on cr.concept_id_2 = sm.concept_id
 where cr.relationship_id = 'Has Module'
