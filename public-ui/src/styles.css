@@ -538,9 +538,6 @@ a a:link a:visited {
   cursor: pointer;
 }
 
-.source-item .concept-charts.chart {
-  margin:0;
-}
 
 .highcharts-container{
   overflow:visible !important;

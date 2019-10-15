@@ -91,6 +91,14 @@
   width: calc((100%/12)*10);
   margin: 0 auto;
 }
+.concept-charts {
+  width: calc((100%/12)*10);
+  margin: 0 auto;
+}
+.source-chart {
+  width:100%;
+  margin-left:-1rem;
+}
 
 .info-icon {
   color: #337AB7;

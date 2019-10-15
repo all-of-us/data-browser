@@ -12,6 +12,7 @@ export class SourcesComponent implements OnChanges {
   @Input() treeLoading: boolean;
   @Input() treeData: any[];
   @Input() graphToShow: string;
+  @Input() ehrDomain: any;
   treeConcept: any;
 
   constructor(
@@ -22,10 +23,16 @@ export class SourcesComponent implements OnChanges {
   }
 
   public conceptTreeClick(node) {
-    // this.treeConcept = node;
     this.api.getSourceConcepts(node.conceptId).subscribe(results => {
-      this.treeConcept = results.items[0];
-      console.log(this.treeConcept);
+      this.treeConcept = {};
+      if (!results.items[0]) {
+        this.treeConcept['conceptName'] = node.name;
+        this.treeConcept['conceptCode'] = node.code;
+        this.treeConcept['conceptId'] = node.conceptId;
+        this.treeConcept['domainId'] = this.ehrDomain.domain;
+      } else {
+        this.treeConcept = results.items[0];
+      }
     });
   }
 }

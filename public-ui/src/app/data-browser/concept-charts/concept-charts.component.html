@@ -15,7 +15,7 @@
   </clr-tooltip>
 </div>
 
-<div *ngIf="!loading()" class="concept-charts chart">
+<div *ngIf="!loading()" class="concept-charts">
   <div class="col-md" *ngIf="showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
     <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}"
          (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">{{sg}}</div>
@@ -98,7 +98,7 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- show sources totals  if we want -->
   <!-- SOURCE COLUMN CHART -->
   <ng-container class="chart-container" *ngIf="showGraph === graphType.Sources">
-    <div class="chart" *ngIf="sourceConcepts && sourceConcepts.length > 0; else NoSourceConcepts;">
+    <div class="source-chart" *ngIf="sourceConcepts && sourceConcepts.length > 0; else NoSourceConcepts;">
       <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'" [conceptName]="conceptName">
       </app-chart>
     </div>

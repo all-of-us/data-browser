@@ -3,20 +3,26 @@
   <aside>
     <div class="concept-box">
       <div class="concept-box_info">
-        <ng-container *ngIf="treeConcept; else default">
-            <p><strong>{{treeConcept.conceptName}}</strong></p>
-            <p>SNOMED Code: {{treeConcept.conceptCode}}</p>
-            <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
+        <ng-container *ngIf="treeConcept && treeConcept.conceptId; else default">
+          <p><strong>{{treeConcept.conceptName}}</strong></p>
+          <p>SNOMED Code: {{treeConcept.conceptCode}}</p>
+          <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
         </ng-container>
-        <ng-template #default>
-        
-        <p><strong>{{concept.conceptName}}</strong></p>
-        <p>SNOMED Code: {{concept.conceptCode}}</p>
-        <p>OMOP Concept Id: {{concept.conceptId}}</p>
-      </ng-template>
       </div>
-      <app-concept-charts *ngIf="treeConcept" [concept]="treeConcept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-      </app-concept-charts>
+      <ng-template #default>
+        <div class="concept-box_info">
+          <p><strong>{{concept.conceptName}}</strong></p>
+          <p>SNOMED Code: {{concept.conceptCode}}</p>
+          <p>OMOP Concept Id: {{concept.conceptId}}</p>
+        </div>
+        <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+        </app-concept-charts>
+      </ng-template>
+      <ng-container *ngIf="treeConcept">
+        <app-concept-charts [concept]="treeConcept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+        </app-concept-charts>
+      </ng-container>
+
     </div>
   </aside>
   <div class="tree-view">
