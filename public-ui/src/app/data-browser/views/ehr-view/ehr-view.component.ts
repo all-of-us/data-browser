@@ -217,10 +217,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public exploreConcept(e) {
-    this.prevSearchText = e.conceptName;
     this.selectedConcept = e;
     localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptCode);
     this.loadPage();
+    this.searchText.setValue(e.conceptName);
+    this.prevSearchText = e.conceptName;
   }
 
   public getNumberOfPages(query: string) {

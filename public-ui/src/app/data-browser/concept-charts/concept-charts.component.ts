@@ -19,9 +19,9 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   @Input() concept: Concept;
   @Input() backgroundColor = 'transparent'; // background color to pass to the chart component
   @Input() showGraph = GraphType.None;
-  @Input() showRace = false;
-  @Input() showEthnicity = false;
-  @Input() searchTerm = '';
+  // @Input() showRace = false;
+  // @Input() showEthnicity = false;
+  // @Input() searchTerm = '';
 
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
@@ -102,7 +102,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     }
   }
   ngOnChanges() {
-
     // Get chart results for concept
     this.loadingStack.push(true);
     const conceptIdStr = '' + this.concept.conceptId.toString();
