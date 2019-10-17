@@ -30,9 +30,11 @@ export class SourcesComponent implements OnChanges {
         this.treeConcept['conceptName'] = node.name;
         this.treeConcept['conceptCode'] = node.code;
         this.treeConcept['conceptId'] = node.conceptId;
+        this.treeConcept['explorable'] = false;
         this.treeConcept['domainId'] = this.ehrDomain.domain;
       } else {
         this.treeConcept = results.items[0];
+        this.treeConcept['explorable'] = true;
       }
     });
   }
