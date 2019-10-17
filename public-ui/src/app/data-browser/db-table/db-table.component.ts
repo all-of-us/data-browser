@@ -1,5 +1,5 @@
 
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import { Component, ElementRef, Input, EventEmitter, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -34,6 +34,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() treeLoading: boolean;
   @Input() graphType: any;
   @Input() totalResults: number;
+  @Output() exploreConcept: EventEmitter<any> = new EventEmitter();
   // Save this till labs is tested completely to see
   // if the pagination breaks because of not having this
   // totalResults = localStorage.getItem('totalResults') ?
@@ -63,6 +64,42 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+  }
+
+  public domainCounts() {
+    let domainResults = null;
+    const testFilter = localStorage.getItem('measurementTestsChecked') ?
+      (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+      (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
+    if (this.searchText.value && this.searchText.value != null) {
+      this.initSubscription = this.api.getDomainSearchResults
+        (this.searchText, testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        });
+    } else {
+      this.initSubscription = this.api.getDomainTotals(testFilter, orderFilter)
+        .subscribe(results => {
+          domainResults = results.domainInfos.filter(d => d.domain !== null);
+          domainResults = domainResults.filter(
+            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
+          if (domainResults && domainResults.length > 0) {
+            this.totalResults = domainResults[0].standardConceptCount;
+            this.numPages = Math.ceil(this.totalResults / 50);
+          }
+        });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+
     this.domainCounts();
     this.subscriptions.push(this.measurementTestsChecked.valueChanges
       .subscribe((query) => {
@@ -114,48 +151,14 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
           this.getMeasurementDomainTotals(getTests, getOrders);
         }
       }));
-  }
-
-  public domainCounts() {
-    let domainResults = null;
-    const testFilter = localStorage.getItem('measurementTestsChecked') ?
-      (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
-    const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
-      (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
-    if (this.searchText.value && this.searchText.value != null) {
-      this.initSubscription = this.api.getDomainSearchResults
-        (this.searchText, testFilter, orderFilter)
-        .subscribe(results => {
-          domainResults = results.domainInfos.filter(d => d.domain !== null);
-          domainResults = domainResults.filter(
-            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
-          if (domainResults && domainResults.length > 0) {
-            this.totalResults = domainResults[0].standardConceptCount;
-            this.numPages = Math.ceil(this.totalResults / 50);
-          }
-        });
-    } else {
-      this.initSubscription = this.api.getDomainTotals(testFilter, orderFilter)
-        .subscribe(results => {
-          domainResults = results.domainInfos.filter(d => d.domain !== null);
-          domainResults = domainResults.filter(
-            d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
-          if (domainResults && domainResults.length > 0) {
-            this.totalResults = domainResults[0].standardConceptCount;
-            this.numPages = Math.ceil(this.totalResults / 50);
-          }
-        });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {    
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
       if (changes.selectedConcept && changes.selectedConcept.currentValue) {
-        this.expandRow(this.selectedConcept, true);
+          this.expandRow(this.selectedConcept, true);
       }
     }
   }
+
 
   public getTerm() {
     if (this.searchResult.matchType === MatchType.ID ||
@@ -201,14 +204,14 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
-      concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
+    concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     if (this.expanded && this.selectedConcept &&
       concept.conceptCode === this.selectedConcept.conceptCode) {
-      if (fromChart && localStorage.getItem('selectedConceptCode')) {
-        this.selectedConcept = concept;
+        if (fromChart && localStorage.getItem('selectedConceptCode')) {
+          this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
           this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));
-        }, 1);
+        }, 50);
       } else {
         this.selectedConcept = null;
         this.expanded = false;
@@ -390,11 +393,11 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
     this.api.getDomainSearchResults(this.searchRequest.query, testFilter, orderFilter)
       .subscribe(
-      results => {
-        const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
-        this.totalResults = domainResults[0].standardConceptCount;
-      }
-    );
+        results => {
+          const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
+          this.totalResults = domainResults[0].standardConceptCount;
+        }
+      );
   }
 
   public makeMeasurementSearchRequest(testFilter: number, orderFilter: number) {

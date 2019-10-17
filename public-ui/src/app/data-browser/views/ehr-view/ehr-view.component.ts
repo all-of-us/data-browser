@@ -216,6 +216,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     );
   }
 
+  public exploreConcept(e) {
+    this.prevSearchText = e.conceptName;
+    this.selectedConcept = e;
+    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptCode);
+    this.loadPage();
+  }
+
   public getNumberOfPages(query: string) {
     let domainResults = null;
     const testFilter = localStorage.getItem('measurementTestsChecked') ?

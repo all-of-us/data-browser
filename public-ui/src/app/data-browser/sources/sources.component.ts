@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DataBrowserService } from 'publicGenerated';
 import { Concept } from '../../../publicGenerated';
 import { TooltipService } from '../../utils/tooltip.service';
@@ -13,6 +13,7 @@ export class SourcesComponent implements OnChanges {
   @Input() treeData: any[];
   @Input() graphToShow: string;
   @Input() ehrDomain: any;
+  @Output() exploreConcept: EventEmitter<any> = new EventEmitter();
   treeConcept: any;
 
   constructor(

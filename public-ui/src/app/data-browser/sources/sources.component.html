@@ -7,6 +7,7 @@
           <p><strong>{{treeConcept.conceptName}}</strong></p>
           <p>SNOMED Code: {{treeConcept.conceptCode}}</p>
           <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
+          <a (click)="exploreConcept.emit(treeConcept)">Explore thie concept.</a>
         </ng-container>
       </div>
       <ng-template #default>

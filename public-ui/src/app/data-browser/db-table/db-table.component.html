@@ -235,7 +235,7 @@
         </div>
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-        <app-sources [ehrDomain]="ehrDomain" [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
+        <app-sources (exploreConcept)="exploreConcept.emit($event)" [ehrDomain]="ehrDomain" [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
 
       </ng-container>
       <ng-template #NonRolledUp>
