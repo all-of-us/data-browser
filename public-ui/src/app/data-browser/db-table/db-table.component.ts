@@ -236,7 +236,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
       this.treeLoading = true;
-      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId, this.ehrDomain.domain.toLowerCase())
+      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId,
+        this.ehrDomain.domain.toLowerCase())
         .subscribe({
           next: result => {
             this.treeData = [result.parent];
