@@ -57,7 +57,7 @@ tables=$(bq --project=$PUBLIC_PROJECT --dataset=$PUBLIC_DATASET ls)
 c_re=\\bconcept\\b
 cr_re=\\bconcept_relationship\\b
 ar_re=\\bachilles_results\\b
-cri_re=\\bcriteria\\b
+cri_re=\\bcb_criteria\\b
 sm_re=\\bsurvey_module\\b
 di_re=\\bdomain_info\\b
 if [[ "$tables" =~ $c_re ]] && [[ "$tables" =~ $ar_re ]] && [[ "$tables" =~ $cr_re ]] && [[ "$tables" =~ $cri_re ]] && [[ "$tables" =~ $sm_re ]] && [[ "$tables" =~ $di_re ]]; then
@@ -79,15 +79,15 @@ person_count=$(bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql "$q
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count
-from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.criteria\` r
-where r.type='SNOMED' and r.subtype='CM' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
+from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
+where r.type='SNOMED' and r.domain_id='CONDITION' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
 
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count
-from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.criteria\` r
-where r.type='SNOMED' and r.subtype='PCS' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
+from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
+where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.synonyms like '%rank1%' group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
 
 #Concept prevalence (based on count value and not on source count value)
@@ -166,7 +166,7 @@ where count_value > 0 or lower(vocabulary_id) ='ppi' "
 
 # criteria
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
-"Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.criteria\`
+"Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\`
 set est_count =
     case when est_count < ${BIN_SIZE}
         then ${BIN_SIZE}

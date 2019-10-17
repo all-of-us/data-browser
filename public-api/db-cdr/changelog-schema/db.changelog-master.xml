@@ -48,4 +48,12 @@
   <include file="changelog-schema/db.changelog-40.xml"/>
   <include file="changelog-schema/db.changelog-41.xml"/>
   <include file="changelog-schema/db.changelog-42.xml"/>
+  <include file="changelog-schema/db.changelog-44.xml"/>
+  <include file="changelog-schema/db.changelog-45.xml"/>
+  <include file="changelog-schema/db.changelog-46.xml"/>
+  <include file="changelog-schema/db.changelog-47.xml"/>
+  <include file="changelog-schema/db.changelog-48.xml"/>
+  <include file="changelog-schema/db.changelog-49.xml"/>
+  <include file="changelog-schema/db.changelog-50.xml"/>
+  <include file="changelog-schema/db.changelog-51.xml"/>
 </databaseChangeLog>
