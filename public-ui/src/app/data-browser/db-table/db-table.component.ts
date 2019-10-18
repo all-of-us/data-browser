@@ -414,6 +414,22 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     return measurementSearchRequestWithFilter;
   }
 
+  public share(conceptName: string) {
+    const selBox = document.createElement('textarea');
+    const copystr = window.location.origin + window.location.pathname +
+    '?search=' + conceptName.replace(/ /g, '%20');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = copystr.toLowerCase();
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
+
   public ngOnDestroy() {
     if (localStorage.getItem('measurementTestsChecked') === null) {
       localStorage.setItem('measurementTestsChecked', 'true');

@@ -179,10 +179,15 @@
             [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow == 'Sources'?'source-btn_active':'source-btn'">
           </div>
         </button>
-        <button (click)="$event.stopPropagation()"class="icon-btn">
+        <clr-dropdown>
+        <button clrDropdownTrigger aria-label="share button" (click)="$event.stopPropagation()"class="icon-btn">
           <clr-icon shape="share" class="is-solid icon-choice">
           </clr-icon>
         </button>
+        <clr-dropdown-menu (click)="$event.stopPropagation()" style="width: 10rem; text-align: left;"clrPosition="bottom-right" *clrIfOpen>
+          <button clrDropdownItem (click)="share(r.conceptName);$event.stopPropagation()" class="btn btn-sm">COPY this</button>
+        </clr-dropdown-menu>
+      </clr-dropdown>
       </div>
     </div>
     <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)" class="body-lead aka-layout aka">
