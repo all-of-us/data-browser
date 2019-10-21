@@ -21,7 +21,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   @Input() showGraph = GraphType.None;
   // @Input() showRace = false;
   // @Input() showEthnicity = false;
-  // @Input() searchTerm = '';
+  @Input() searchTerm = '';
 
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
