@@ -185,7 +185,7 @@
           </clr-icon>
         </button>
         <clr-dropdown-menu (click)="$event.stopPropagation()" style="width: 10rem; text-align: left;"clrPosition="bottom-right" *clrIfOpen>
-          <button clrDropdownItem (click)="share(r.conceptName);$event.stopPropagation()" class="btn btn-sm">COPY this</button>
+          <button clrDropdownItem (click)="share(r.conceptName,$event);$event.stopPropagation()" class="btn btn-sm">COPY LINK</button>
         </clr-dropdown-menu>
       </clr-dropdown>
       </div>
