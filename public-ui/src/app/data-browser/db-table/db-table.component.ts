@@ -154,11 +154,28 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
       if (changes.selectedConcept && changes.selectedConcept.currentValue) {
-          this.expandRow(this.selectedConcept, true);
+        this.expandRow(this.selectedConcept, true);
       }
     }
   }
 
+  public ngOnDestroy() {
+    if (localStorage.getItem('measurementTestsChecked') === null) {
+      localStorage.setItem('measurementTestsChecked', 'true');
+    }
+    if (localStorage.getItem('measurementOrdersChecked') === null) {
+      localStorage.setItem('measurementOrdersChecked', 'true');
+    }
+    localStorage.setItem('totalResults', String(this.totalResults));
+    if (this.subscriptions) {
+      for (const s of this.subscriptions) {
+        s.unsubscribe();
+      }
+    }
+    if (this.initSubscription) {
+      this.initSubscription.unsubscribe();
+    }
+  }
 
   public getTerm() {
     if (this.searchResult.matchType === MatchType.ID ||
@@ -204,11 +221,11 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
-    concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
+      concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     if (this.expanded && this.selectedConcept &&
       concept.conceptCode === this.selectedConcept.conceptCode) {
-        if (fromChart && localStorage.getItem('selectedConceptCode')) {
-          this.selectedConcept = concept;
+      if (fromChart && localStorage.getItem('selectedConceptCode')) {
+        this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
           this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));
         }, 50);
@@ -414,10 +431,10 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     return measurementSearchRequestWithFilter;
   }
 
-  public share(conceptName: string) {
+  public share(conceptName: string, e) {
     const selBox = document.createElement('textarea');
     const copystr = window.location.origin + window.location.pathname +
-    '?search=' + conceptName.replace(/ /g, '%20');
+      '?search=' + conceptName.replace(/ /g, '%20');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
@@ -428,23 +445,26 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    console.log(e);
+    this.clickAlertBox('Link copied to clipboard', e);
   }
+  public clickAlertBox(message, e) {
+    const alertBox = document.createElement('div');
+    alertBox.style.position = 'absolute';
+    alertBox.style.padding = '.5rem';
+    alertBox.style.fontSize = '14px';
+    alertBox.style.borderRadius = '4px';
+    alertBox.style.background = 'white';
+    alertBox.style.border = '1px solid';
+    alertBox.style.top = e.pageY + 'px';
+    alertBox.style.left = e.pageX - 30 + 'px';
+    alertBox.innerText = message;
+    document.body.appendChild(alertBox);
+    setTimeout(() => {
+      document.body.removeChild(alertBox);
+    }, 400);
 
-  public ngOnDestroy() {
-    if (localStorage.getItem('measurementTestsChecked') === null) {
-      localStorage.setItem('measurementTestsChecked', 'true');
-    }
-    if (localStorage.getItem('measurementOrdersChecked') === null) {
-      localStorage.setItem('measurementOrdersChecked', 'true');
-    }
-    localStorage.setItem('totalResults', String(this.totalResults));
-    if (this.subscriptions) {
-      for (const s of this.subscriptions) {
-        s.unsubscribe();
-      }
-    }
-    if (this.initSubscription) {
-      this.initSubscription.unsubscribe();
-    }
+
+
   }
 }
