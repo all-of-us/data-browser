@@ -237,6 +237,13 @@ h5.secondary-display {
     min-width: 10rem;
 }
 
+.copy-alert{
+    position: absolute;
+    border:1px solid;
+    border-radius: 4px;
+    padding:2rem;
+}
+
 @media (max-width: 600px) {
     .chart-choice {
         font-size: 4vw;
