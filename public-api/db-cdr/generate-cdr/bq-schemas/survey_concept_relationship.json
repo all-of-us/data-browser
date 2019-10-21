@@ -5,9 +5,9 @@
 	"type": "INTEGER"
 	},
 	{
-		"mode": "REQUIRED",
-		"name": "concept_id_2",
-		"type": "INTEGER"
+	"mode": "REQUIRED",
+	"name": "concept_id_2",
+	"type": "INTEGER"
 	},
 	{
 	"mode": "REQUIRED", 
