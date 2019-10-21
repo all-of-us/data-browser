@@ -218,6 +218,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public exploreConcept(e) {
     this.selectedConcept = e;
+    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptCode);
     this.loadPage();
     this.searchText.setValue(e.conceptCode);
   }
