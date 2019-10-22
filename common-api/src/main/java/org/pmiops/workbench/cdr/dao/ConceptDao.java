@@ -81,14 +81,14 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
     */
 
 
-    @Query(value = "select distinct co.* from cb_criteria c join concept co on c.concept_id=co.concept_id\n" +
+    @Query(value = "select distinct c.concept_id from cb_criteria c\n" +
             "inner join ( \n" +
             "select cr.concept_id_2 from cb_criteria_relationship cr \n" +
             "join concept c1 on (cr.concept_id_2 = c1.concept_id\n" +
             "and cr.concept_id_1 in (select distinct concept_id from cb_criteria c where c.domain_id='DRUG' and c.type='BRAND' and match(c.name, c.code) against(?1 in boolean mode) > 0)\n" +
-            "and c1.concept_class_id = 'Ingredient') ) cr1 on c.concept_id = cr1.concept_id_2\n" +
-            "and c.domain_id = 'DRUG' and c.type = 'RXNORM' and match(c.synonyms) against('+[drug_rank1]' in boolean mode) and co.has_counts > 0 order by co.count_value desc", nativeQuery= true)
-    List<Concept> findDrugIngredientsByBrand(String query);
+            "and c1.concept_class_id = 'Ingredient')) cr1 on c.concept_id = cr1.concept_id_2\n" +
+            "and c.domain_id = 'DRUG' and c.type = 'RXNORM' and match(c.synonyms) against('+[drug_rank1]' in boolean mode)", nativeQuery= true)
+    List<Long> findDrugIngredientsByBrand(String query);
 
     /*
 
@@ -105,14 +105,13 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
     List<Concept> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
     */
 
-    @Query(value = "select distinct co.* from cb_criteria c join concept co on c.concept_id=co.concept_id\n" +
+    @Query(value = "select distinct c.concept_id from cb_criteria c\n" +
             "inner join ( \n" +
             "select cr.concept_id_2 from cb_criteria_relationship cr \n" +
             "join concept c1 on (cr.concept_id_2 = c1.concept_id\n" +
             "and cr.concept_id_1 in (select distinct concept_id from cb_criteria c where c.domain_id='DRUG' and c.type='BRAND' and match(c.name, c.code) against(?1 in boolean mode) > 0)\n" +
             "and c1.concept_class_id = 'Ingredient' and cr.concept_id_2 not in (?2)) ) cr1 on c.concept_id = cr1.concept_id_2\n" +
-            "and c.domain_id = 'DRUG' and c.type = 'RXNORM' and match(c.synonyms) against('+[drug_rank1]' in boolean mode) and co.has_counts > 0 " +
-            "order by co.count_value desc", nativeQuery= true)
-    List<Concept> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
+            "and c.domain_id = 'DRUG' and c.type = 'RXNORM' and match(c.synonyms) against('+[drug_rank1]' in boolean mode) ", nativeQuery= true)
+    List<Long> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
 
 }
