@@ -540,9 +540,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         // TODO: consider parallelizing these lookups
         List<Long> toMatchConceptIds = new ArrayList<>();
         toMatchConceptIds.add(conceptId);
-        List<Concept> drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(query);
-        if (drugMatchedConcepts.size() > 0) {
-            toMatchConceptIds.addAll(drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList()));
+        List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
+        if (drugMatchedConceptIds.size() > 0) {
+            toMatchConceptIds.addAll(drugMatchedConceptIds);
         }
 
         int measurementQuery = 0;
@@ -587,10 +587,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Long> drugConcepts = new ArrayList<>();
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Concept> drugMatchedConcepts = new ArrayList<>();
+            List<Long> drugMatchedConcepts = new ArrayList<>();
             drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
             if(drugMatchedConcepts.size() > 0) {
-                drugConcepts = drugMatchedConcepts.stream().map(Concept::getConceptId).collect(Collectors.toList());
+                drugConcepts = drugMatchedConcepts;
             }
         }
 
