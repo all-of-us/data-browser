@@ -107,7 +107,6 @@ if [[ $tables =~ cb_cri_table_check ]]; then
      (id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms)
      SELECT id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms
      FROM \`$BQ_PROJECT.$BQ_DATASET.cb_criteria\`"
-    "
 fi
 
 ######################
@@ -138,7 +137,7 @@ fi
 #########################
 #   cb_criteria_ancestor   #
 #########################
-if [[ $tables =~ $cri_anc_table_check ]]; then
+if [[ $tables =~ $cb_cri_anc_table_check ]]; then
     echo "Inserting cb_criteria_ancestor"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_ancestor\`
