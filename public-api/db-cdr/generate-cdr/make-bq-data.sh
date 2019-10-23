@@ -80,11 +80,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor
-<<<<<<< HEAD
 domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum similar_unit_concepts measurement_concept_info survey_concept_relationship)
-=======
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum similar_unit_concepts measurement_concept_info)
->>>>>>> c8b8fe3406de72fb6859714642be4746300a6750
 
 for t in "${create_tables[@]}"
 do
