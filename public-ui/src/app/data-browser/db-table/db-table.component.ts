@@ -122,7 +122,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (this.searchText.value && this.searchText.value != null) {
       this.initSubscription = this.api.getDomainSearchResults
-        (this.searchText, testFilter, orderFilter)
+        (this.searchText.value, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -236,7 +236,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
       this.treeLoading = true;
-      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId)
+      this.subscriptions.push(this.api.getCriteriaRolledCounts(r.conceptId,
+        this.ehrDomain.domain.toLowerCase())
         .subscribe({
           next: result => {
             this.treeData = [result.parent];

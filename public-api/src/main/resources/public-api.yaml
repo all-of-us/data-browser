@@ -224,6 +224,11 @@ paths:
           format: int64
           required: true
           description: parent concept id
+        - in: query
+          name: domain
+          type: string
+          required: true
+          description: parent concept domain
       responses:
         200:
           description: Rolled up counts of concept
@@ -468,7 +473,7 @@ definitions:
           Stackdriver API key for error reporting, scoped to a particular
           domain. If unset, Stackdriver error reporting should be disabled.
 
-  Criteria:
+  CBCriteria:
     type: object
     required:
       - id
@@ -528,7 +533,7 @@ definitions:
       items:
         type: "array"
         items:
-          $ref: "#/definitions/Criteria"
+          $ref: "#/definitions/CBCriteria"
 
   CriteriaParentResponse:
     type: object
@@ -537,7 +542,7 @@ definitions:
     properties:
       parent:
         description: parent row
-        $ref: "#/definitions/Criteria"
+        $ref: "#/definitions/CBCriteria"
       children:
         description: children row
         $ref: "#/definitions/CriteriaListResponse"
