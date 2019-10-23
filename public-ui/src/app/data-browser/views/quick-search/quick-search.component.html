@@ -119,10 +119,14 @@
             <span *ngIf="searchText.value">matching survey questions</span>
             <span *ngIf="!searchText.value">survey questions</span>
           </div>
-          <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
+          <span class="result-body-item result-body-stat" *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
             <span><strong> {{r.participantCount | number}}</strong> participants in this domain
             </span>
           </span>
+          <ng-template #noParticipants>
+            <span><strong> 0 </strong>participants in this domain
+            </span>
+          </ng-template>
           <div class="result-body-item">
             <span>{{r.description}}</span>
           </div>
