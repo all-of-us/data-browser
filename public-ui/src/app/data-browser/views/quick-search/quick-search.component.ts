@@ -174,7 +174,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
     this.domainResults = results.domainInfos.filter(
       domain => domain.name.toLowerCase() !== 'physical measurements');
-    console.log(this.domainResults);
     const physicalMeasurementDomainInfo =
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     if (physicalMeasurementDomainInfo && physicalMeasurementDomainInfo.length > 0) {
