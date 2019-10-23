@@ -3,11 +3,15 @@
       <div class="title-container" *ngIf="survey && survey.conceptId">
         <h1> {{survey.name}} </h1>
         <div class="desc-container">
-          <p class="body-default help-text survey-desc">{{survey.description}} </p>
-          <p class="help-text"><em>Click on each response to view branching logic and data</em></p>
+          <p class="body-default help-text survey-desc">{{survey.description}} Survey questions appear in the order in which participants took the survey.</p>
         </div>
       </div>
-      <div class="info-text"> Note: The survey questions appear in the order in which people actually took the survey.
+      <div class="survey-note"> <span class="bold-note-heading">Note</span>: The data on this page are:
+        <ul class="survey-note">
+          <li>Gathered directly from participants through electronic surveys</li>
+          <li>Grouped into bins of 20 to protect privacy</li>
+        </ul>
+        For more information about this survey, please visit the <a href="https://www.researchallofus.org/data/data-sources/survey-explorer/">Survey Explorer</a>
       </div>
     </div>
     <div class="search-bar-container">
