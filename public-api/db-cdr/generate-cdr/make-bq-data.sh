@@ -88,6 +88,8 @@ do
     bq --quiet --project=$OUTPUT_PROJECT mk --schema=$schema_path/$t.json $OUTPUT_DATASET.$t
 done
 
+# Populate some tables from cdr data
+
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
 load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions similar_unit_concepts survey_concept_relationship)
 csv_path=generate-cdr/csv
@@ -100,7 +102,7 @@ done
 ############
 # cb_criteria #
 ############
-if [[ $tables =~ cb_cri_table_check ]]; then
+if [[ $tables =~ $cb_cri_table_check ]]; then
     echo "Inserting criteria"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
@@ -112,7 +114,7 @@ fi
 ######################
 # cb_criteria_attribute #
 ######################
-if [[ $tables =~ cb_cri_attr_table_check ]]; then
+if [[ $tables =~ $cb_cri_attr_table_check ]]; then
     echo "Inserting cb_criteria_attribute"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_attribute\`
@@ -124,7 +126,7 @@ fi
 #########################
 # cb_criteria_relationship #
 #########################
-if [[ $tables =~ cb_cri_rel_table_check ]]; then
+if [[ $tables =~ $cb_cri_rel_table_check ]]; then
     echo "Inserting criteria_relationship"
     echo "Inserting cb_criteria_relationship"
     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
