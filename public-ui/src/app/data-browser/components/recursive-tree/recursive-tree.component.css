@@ -43,6 +43,11 @@
     font-size: .7rem;
 }
 
+.tree-active {
+    font-family: gothamBold,Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
 
 .handle {
     color:#2991cf;

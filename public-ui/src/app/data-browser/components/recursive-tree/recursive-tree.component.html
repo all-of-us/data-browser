@@ -7,14 +7,14 @@
       <div *ngIf="loading" class="spinner spinner-sm loading"></div>
       <div *ngIf="!loading" class="noChildren"></div>
     </ng-template>
-    <div (click)="conceptClick(node); $event.stopPropagation()">{{node.name}}</div> <span class="count">{{node.count | number}}</span>
+    <div (click)="conceptClick(node); $event.stopPropagation()" [ngClass]="[highlightService.getHighlightId() == node.id? 'tree-active':'']">{{node.name}}</div> <span class="count">{{node.count | number}}</span>
   </div>
 
   <app-spinner [loading]="node.group && loading && opened && !checkStorage(node)" [dots]="true"></app-spinner>
 
   <div class="children" *ngIf="node.children && opened">
     <div *ngFor="let child of node.children" class="child">
-      <app-recursive-tree class="child" (conceptSelected)=conceptClick($event) [node]="child">
+      <app-recursive-tree class="child" (conceptSelected)="conceptClick($event)" [node]="child">
       </app-recursive-tree>
     </div>
   </div>

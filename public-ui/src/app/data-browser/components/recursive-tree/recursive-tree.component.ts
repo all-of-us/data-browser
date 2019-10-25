@@ -2,6 +2,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Concept, DataBrowserService } from '../../../../publicGenerated';
+import { TreeHighlightService } from '../../services/tree-highlight.service';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -13,8 +14,9 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   @Input() opened = false;
   @Input() loading: boolean;
   @Output() conceptSelected: EventEmitter<any> = new EventEmitter;
+  highlightId: string;
   private subscriptions: ISubscription[] = [];
-  constructor(private api: DataBrowserService) { }
+  constructor(private api: DataBrowserService, public highlightService: TreeHighlightService) { }
 
   ngOnChanges() {
     if (this.node && this.node.group) {
@@ -50,10 +52,10 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
     return false;
   }
 
-  public conceptClick(concept: Concept) {
-    this.conceptSelected.emit(concept);
+  public conceptClick(node: any) {
+    localStorage.setItem('treeHighlight', node.id);
+    this.conceptSelected.emit(node);
   }
-
 
   ngOnDestroy() {
     for (const s of this.subscriptions) {
