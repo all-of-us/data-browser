@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, Input, EventEmitter, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, EventEmitter, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -14,7 +14,7 @@ import { TooltipService } from '../../utils/tooltip.service';
   styleUrls: ['../../styles/template.css', './db-table.component.css']
 })
 
-export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
+export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() items: any[];
   @Input() searchRequest: SearchConceptsRequest;
   @Input() searchResult: ConceptListResponse;
@@ -63,9 +63,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   ) {
   }
 
-  ngOnInit() {
-  }
-
   public domainCounts() {
     let domainResults = null;
     const testFilter = localStorage.getItem('measurementTestsChecked') ?
@@ -99,7 +96,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
     this.domainCounts();
     this.subscriptions.push(this.measurementTestsChecked.valueChanges
       .subscribe((query) => {

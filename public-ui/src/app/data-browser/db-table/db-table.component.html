@@ -103,7 +103,7 @@
   <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r "
     [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
     *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
-    <div class="tbl-r" (click)="expandRow(r)">
+    <div [ngClass]="ehrDomain.domain === 'MEASUREMENT'?'tbl-r_labs':'tbl-r'"  (click)="expandRow(r)">
       <div class="body-lead tbl-d"
         *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
         <div class="code-tooltip">
@@ -185,7 +185,7 @@
           </clr-icon>
         </button>
         <clr-dropdown-menu (click)="$event.stopPropagation()" style="width: 10rem; text-align: left;"clrPosition="bottom-right" *clrIfOpen>
-          <button clrDropdownItem (click)="share(r.conceptName,$event);$event.stopPropagation()" class="btn btn-sm">COPY LINK</button>
+          <button clrDropdownItem (click)="share(r.conceptName,$event);$event.stopPropagation()" class="btn btn-sm">Copy link to clipboard</button>
         </clr-dropdown-menu>
       </clr-dropdown>
       </div>

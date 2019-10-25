@@ -144,6 +144,17 @@
     min-width: 810px;
 }
 
+.tbl-r_labs{
+    display: grid; 
+    grid-template-columns:30% 25% 20% 10% 1fr;
+    text-align: left;
+    min-width: 810px;
+}
+.tbl-r_labs .tbl-d:nth-of-type(4){
+    text-align: center;
+}
+
+
 .tbl-d {
     padding: 0 .5rem;
     font-size: .8em;
