@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CBCriteriaDao extends CrudRepository<CBCriteria, Long> {
-    @Query(value = "select c.* from cb_criteria c where c.concept_id = :conceptId and match(synonyms) against(:matchWord in boolean mode)\n" +
+    @Query(value = "select c.* from cb_criteria c where c.concept_id = :conceptId and match(synonyms) against(:matchWord in boolean mode) and domain_id=:domain\n" +
             "union all\n" +
-            "select * from cb_criteria where parent_id = (select distinct id from cb_criteria where concept_id=:conceptId and match(synonyms) against(:matchWord in boolean mode))\n" +
+            "select * from cb_criteria where parent_id in (select distinct id from cb_criteria where concept_id=:conceptId and match(synonyms) against(:matchWord in boolean mode) and domain_id=:domain)\n" +
             "order by cast(est_count as unsigned) desc", nativeQuery = true)
-    List<CBCriteria> findParentCounts(@Param("conceptId") String conceptId,@Param("matchWord") String matchWord);
+    List<CBCriteria> findParentCounts(@Param("conceptId") String conceptId,@Param("domain") String domain,@Param("matchWord") String matchWord);
 
     @Query(value = "select * from cb_criteria where parent_id = :parentId order by cast(est_count as unsigned) desc", nativeQuery=true)
     List<CBCriteria> findCriteriaChildren(@Param("parentId") Long parentId);

@@ -1,6 +1,7 @@
 package org.pmiops.workbench.publicapi;
 
 import java.util.logging.Logger;
+import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -276,6 +277,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .group(criteria.getGroup())
                             .selectable(criteria.getSelectable())
                             .count(Long.valueOf(criteria.getCount()))
+                            .sourceCount(criteria.getSourceCount())
                             .domainId(criteria.getDomainId())
                             .conceptId(criteria.getConceptId())
                             .path(criteria.getPath());
@@ -499,18 +501,52 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Override
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), new String(domainId+"_rank1"));
+        List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
+        Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps
+                .index(criteriaList, CBCriteria::getConceptId);
         CriteriaParentResponse response = new CriteriaParentResponse();
         if (criteriaList.size() > 0) {
-            CBCriteria parent = criteriaList.get(0);
+            List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
+            CBCriteria parent = null;
+            CBCriteria standardParent = null;
+            CBCriteria sourceParent = null;
+            if (parentList.size() > 1) {
+                standardParent = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList()).get(0);
+                sourceParent = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList()).get(0);
+                standardParent.setSourceCount(sourceParent.getCount());
+                parent = standardParent;
+            } else {
+                parent = parentList.get(0);
+            }
             if (criteriaList.size() >= 1) {
                 criteriaList.remove(parent);
             }
             response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
             Multimap<Long, CBCriteria> parentCriteria = Multimaps
                     .index(criteriaList, CBCriteria::getParentId);
+            List<CBCriteria> childrenList = new ArrayList<>();
+            if (standardParent == null && sourceParent == null) {
+                childrenList = parentCriteria.get(parent.getId()).stream().collect(Collectors.toList());
+            } else {
+                childrenList = parentCriteria.get(standardParent.getId()).stream().collect(Collectors.toList());
+                childrenList.addAll(parentCriteria.get(sourceParent.getId()).stream().collect(Collectors.toList()));
+                Multimap<String, CBCriteria> childCriteriaByConcept = Multimaps
+                        .index(criteriaList, CBCriteria::getConceptId);
+                for (String conceptKey: childCriteriaByConcept.keys()) {
+                    List<CBCriteria> childCriteria = childCriteriaByConcept.get(conceptKey).stream().collect(Collectors.toList());
+                    if (childCriteria.size() > 1) {
+                        CBCriteria standardChild = childCriteria.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList()).get(0);
+                        CBCriteria sourceChild = childCriteria.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList()).get(0);
+                        standardChild.setSourceCount(sourceChild.getCount());
+                        childrenList.add(standardChild);
+                    } else {
+                        childrenList.add(childCriteria.get(0));
+                    }
+                }
+                Collections.sort(childrenList, Comparator.comparing((CBCriteria criteria) -> criteria.getCount()));
+            }
             CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-            criteriaListResponse.setItems(parentCriteria.get(parent.getParentId()).stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
+            criteriaListResponse.setItems(childrenList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
             response.setChildren(criteriaListResponse);
             return ResponseEntity.ok(response);
         }
