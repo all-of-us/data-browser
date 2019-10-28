@@ -45,7 +45,7 @@ then
 fi
 
 #Get the list of tables in the dataset
-tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
+tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
 
 # Next Populate achilles_results
 echo "Running measurement queries..."

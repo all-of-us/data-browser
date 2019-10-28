@@ -33,5 +33,10 @@
     "mode": "REQUIRED",
     "name": "sub",
     "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "question_text",
+    "type": "STRING"
   }
 ]
