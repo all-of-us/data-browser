@@ -72,6 +72,7 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
         this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
         this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
         this.organizeGenders(this.analyses.genderAnalysis);
+        console.log(this.analyses.measurementValueGenderAnalysis.filter(ar => ar.unitName === 'micro-international unit per milliliter')[0].results.filter(r => r.stratum3 === '8507'));
         this.fetchMeasurementGenderResults();
         // Set this var to make template simpler.
         // We can just loop through the results and show bins
