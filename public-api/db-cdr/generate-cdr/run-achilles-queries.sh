@@ -44,7 +44,7 @@ then
 fi
 
 #Get the list of tables in the dataset
-tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls)
 
 declare -a domain_names domain_table_names
 domain_names=(condition drug procedure observation measurement)
@@ -417,7 +417,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with ppi_path
 as
 (select id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\`),
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` where survey_concept_id in (1586134, 1585855, 1585710)),
 main_questions_count as
 (SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
@@ -486,6 +486,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 join single_answered_people sap on sap.person_id=o.person_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -505,6 +506,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join multiple_answered_people sap on sap.person_id=o.person_id
 where (o.observation_source_concept_id = 1586140)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by o.observation_source_concept_id,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -525,6 +527,7 @@ join single_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by o.observation_source_concept_id,c.concept_name,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -539,6 +542,7 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.$
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id=0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by o.observation_source_concept_id,o.value_as_number,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -549,7 +553,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with ppi_path
 as
 (select id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\`),
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` where survey_concept_id in (1586134, 1585855, 1585710)),
 main_questions_count as
 (select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
@@ -630,6 +634,7 @@ join single_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -652,6 +657,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join multiple_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id = 1586140)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -674,6 +680,7 @@ join single_answered_people spa on spa.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -689,6 +696,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id = 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -699,7 +707,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with ppi_path
 as
 (select id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\`),
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` where survey_concept_id in (1586134, 1585855, 1585710)),
 survey_age as
 (
 select observation_id,
@@ -811,6 +819,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -848,6 +857,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id = 1586140)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -886,6 +896,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -918,6 +929,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id = 0 and o.value_as_number >= 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -980,6 +992,7 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.$
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 Group by sm.concept_id"
 
 # Gender breakdown of people who took each survey (Row for combinations of each survey and gender)
@@ -997,6 +1010,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id, p1.gender_concept_id"
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
@@ -1030,6 +1044,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id, stratum_2"
 
 # Current Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
@@ -1061,6 +1076,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id, stratum_2"
 
 # Race breakdown of people who took each survey (Row for combinations of each survey and race)
@@ -1079,6 +1095,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 and p1.race_concept_id > 0
 group by sm.concept_id, stratum_2"
 
@@ -1098,6 +1115,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On ob1.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 where (ob1.observation_source_concept_id > 0 and ob1.value_source_concept_id > 0)
+and sq.survey_concept_id in (1586134, 1585855, 1585710)
 group by sm.concept_id, stratum_2"
 
 # Survey Module counts by gender
@@ -1148,7 +1166,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with ppi_path
 as
 (select id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\`),
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` where survey_concept_id in (1586134, 1585855, 1585710)),
 main_questions_count as
 (select 0,3320 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
@@ -1211,7 +1229,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with ppi_path
 as
 (select id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\`),
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` where survey_concept_id in (1586134, 1585855, 1585710)),
 survey_age as
 (
 select observation_id,

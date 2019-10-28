@@ -1,713 +1,714 @@
-id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,"path",sub,"question_text"
-1,1586134,1586135,1,1,"1586135",0,"In what country were you born?"
-2,1586134,1586140,1,2,"1586140",0,"Which categories describe you? Select all that apply. Note, you may select more than one group."
-4,1586134,1586151,1,2,"1586140.1586142.1586151",1,"Asian (For example: Asian Indian, Chinese, Filipino, Japanese, Korean, Vietnamese, etc.)"
-5,1586134,1586152,1,2,"1586140.1586143.1586152",1,"Black, African American, or African (For example: African American, Ethiopian, Haitian, Jamaican, Nigerian, Somali, etc.)"
-6,1586134,1586156,1,2,"1586140.1586147.1586156",1,"Hispanic, Latino, or Spanish (For example: Colombian, Cuban, Dominican, Mexican or Mexican American, Puerto Rican, Salvadoran, etc.)"
-9,1586134,1586155,1,2,"1586140.1586146.1586155",1,"White (For example: English, European, French, German, Irish, Italian, Polish, etc.)"
-10,1586134,1585845,1,3,"1585845",0,"What was your biological sex assigned at birth?"
-11,1586134,1585838,1,4,"1585838",0,"What terms best express how you describe your gender identity? (Check all that apply)"
-12,1586134,1585348,1,4,"1585838.1585841.1585348",1,"Are any of these a closer description to your gender identity?"
-13,1586134,1585348,1,4,"1585838.1585842.1585348",1,"Are any of these a closer description to your gender identity?"
-14,1586134,1585348,1,4,"1585838.1585843.1585348",1,"Are any of these a closer description to your gender identity?"
-15,1586134,1585899,1,5,"1585899",0,"Which of the following best represents how you think of yourself."
-16,1586134,1585357,1,5,"1585899.1585904.1585357",1,"Are any of these a closer description of how you think of yourself?"
-17,1586134,1585940,1,6,"1585940",0,"What is the highest grade or year of school you completed?"
-18,1586134,1585852,1,7,"1585852",0,"Have you ever served on active duty in the United States Armed forces, either in the regular military or in a National Guard or military reserve unit?"
-19,1586134,1585892,1,8,"1585892",0,"What is your current marital status?"
-22,1586134,1585386,1,9,"1585386",0,"Are you covered by health insurance or some other kind of health care plan?"
-23,1586134,43528428,1,9,"1585386.1585387.43528428",1,"Are you currently covered by any of the following types of health insurance or health coverage plans? Select all that apply from one group."
-24,1586134,1585952,1,10,"1585952",0,"What is your current employment status? Please select 1 or more of these categories."
-25,1586134,1585375,1,11,"1585375",0,"What is your annual household income from all sources?"
-26,1586134,1585370,1,12,"1585370",0,"Do you own or rent the place where you live?"
-27,1586134,1585402,1,12,"1585370.1585373.1585402",1,"Where are you currently living?"
-28,1586134,1585879,1,13,"1585879",0,"How many years have you lived at your current address?"
-29,1586134,1585886,1,14,"1585886",0,"In the past 6 months, have you been worried or concerned about NOT having a place to live?"
-30,1585710,1585766,2,1,"1585766",0,"How confident are you filling out medical forms by yourself?"
-31,1585710,1585772,2,2,"1585772",0,"How often do you have someone help you read health-related materials?"
-32,1585710,1585778,2,3,"1585778",0,"How often do you have problems learning about your medical condition because of difficulty understanding written information?"
-33,1585710,1585711,2,4,"1585711",0,"In general, would you say your health is:"
-34,1585710,1585717,2,5,"1585717",0,"In general, would you say your quality of life is:"
-35,1585710,1585723,2,6,"1585723",0,"In general, how would you rate your physical health?"
-36,1585710,1585729,2,7,"1585729",0,"In general, how would you rate your mental health, including your mood and your ability to think?"
-37,1585710,1585735,2,8,"1585735",0,"In general, how would you rate your satisfaction with your social activities and relationships?"
-38,1585710,1585741,2,9,"1585741",0,"To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair?"
-39,1585710,1585747,2,10,"1585747",0,"In the past 7 days, how would you rate your pain on average?"
-40,1585710,1585748,2,11,"1585748",0,"In the past 7 days, how would you rate your fatigue?"
-41,1585710,1585754,2,12,"1585754",0,"In general, please rate how well you carry out your usual social roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)"
-42,1585710,1585760,2,13,"1585760",0,"In the past 7 days, how often have you been bothered by emotional problems such as feeling anxious, depressed or irritable?"
-43,1585710,1585784,2,14,"1585784",0,"Have your menstrual periods stopped permanently?"
-44,1585710,1585811,2,14,"1585784.1585785.1585811",1,"Are you currently pregnant?"
-45,1585710,1585811,2,14,"1585784.1585788.1585811",1,"Are you currently pregnant?"
-46,1585710,1585789,2,14,"1585784.1585786.1585789",1,"Why did your periods stop?"
-47,1585710,1585789,2,14,"1585784.1585787.1585789",1,"Why did your periods stop?"
-48,1585710,1585791,2,14,"1585784.1585786.1585791",1,"Have you ever had a hysterectomy (that is, surgery to remove your uterus or womb)?"
-50,1585710,1585796,2,14,"1585784.1585786.1585791.1585792.1585796",1,"Have you ever had an ovary removed?"
-51,1585710,1585796,2,14,"1585784.1585786.1585791.1585794.1585796",1,"Have you ever had an ovary removed?"
-52,1585710,1585796,2,14,"1585784.1585786.1585791.903079.1585796",1,"Have you ever had an ovary removed?"
-56,1585710,1585803,2,15,"1585803",0,"Have you had a transplant of any type?"
-57,1585710,1585806,2,15,"1585803.1585804.1585806",1,"If yes, please check all that apply"
-58,1585710,1585815,2,16,"1585815",0,"Have you traveled outside of the country within the past 6 months?"
-59,1585855,1585857,3,1,"1585857",0,"Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?"
-60,1585855,1585860,3,1,"1585857.1585858.1585860",1,"Do you now smoke cigarettes every day, some days, or not at all?"
-62,1585855,1585867,3,1,"1585857.1585858.1585867",1,"In the past, have you ever made a serious attempt to quit smoking? That is, have you stopped smoking for at least one day or longer because you were trying to quit?"
-67,1585855,1586166,3,2,"1586166",0,"Have you ever used an electronic nicotine product, even one or two times? (Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, epipes, and e-hookahs.)"
-68,1585855,1586169,3,2,"1586166.1586167.1586169",1,"Do you now use electronic nicotine products…"
-69,1585855,1586174,3,3,"1586174",0,"Have you ever smoked a traditional cigar, cigarillo, or filtered cigar, even one of two puffs?"
-70,1585855,1586177,3,3,"1586174.1586175.1586177",1,"Do you now smoke a traditional cigar, cigarillo, or filtered cigar…"
-71,1585855,1586182,3,4,"1586182",0,"Have you ever smoked tobacco in a hookah, even one or two puffs"
-72,1585855,1586185,3,4,"1586182.1586183.1586185",1,"Do you smoke hookah…"
-73,1585855,1586190,3,5,"1586190",0,"Have you ever used smokeless tobacco products, even one or two times? (Smokeless tobacco products include snus pouches, Skoal Bandits, loose snus, moist snuff, dip, spit, and chewing tobacco.)"
-74,1585855,1586193,3,5,"1586190.1586191.1586193",1,"Do you now use smokeless tobacco products…"
-75,1585855,1586198,3,6,"1586198",0,"In your entire life, have you had at least 1 drink of any kind of alcohol, not counting small tastes or sips? (By a “drink,” we mean a can or bottle of beer, a glass of wine or a wine cooler, a shot of liquor, or a mixed drink with liquor in it.)"
-76,1585855,1586201,3,6,"1586198.1586199.1586201",1,"How often did you have a drink containing alcohol in the past year?"
-77,1585855,1586207,3,6,"1586198.1586199.1586201.1586203.1586207",1,"On a typical day when you drink, how many drinks do you have?"
-78,1585855,1586207,3,6,"1586198.1586199.1586201.1586204.1586207",1,"On a typical day when you drink, how many drinks do you have?"
-79,1585855,1586207,3,6,"1586198.1586199.1586201.1586205.1586207",1,"On a typical day when you drink, how many drinks do you have?"
-80,1585855,1586207,3,6,"1586198.1586199.1586201.1586206.1586207",1,"On a typical day when you drink, how many drinks do you have?"
-81,1585855,1586213,3,6,"1586198.1586199.1586201.1586203.1586213",1,"How often did you have six or more drinks on one occasion in the past year?"
-82,1585855,1586213,3,6,"1586198.1586199.1586201.1586204.1586213",1,"How often did you have six or more drinks on one occasion in the past year?"
-83,1585855,1586213,3,6,"1586198.1586199.1586201.1586205.1586213",1,"How often did you have six or more drinks on one occasion in the past year?"
-84,1585855,1586213,3,6,"1586198.1586199.1586201.1586206.1586213",1,"How often did you have six or more drinks on one occasion in the past year?"
-85,1585855,1585636,3,7,"1585636",0,"In your LIFETIME, which of the following substances have you ever used?"
-86,1585855,1585650,3,7,"1585636.1585637.1585650",1,"In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?"
-87,1585855,1585656,3,7,"1585636.1585638.1585656",1,"In the PAST THREE MONTHS, how often have you used cocaine (coke, crack, etc.)?"
-88,1585855,1585662,3,7,"1585636.1585639.1585662",1,"In the PAST THREE MONTHS, how often have you used prescription stimulants for non-medical reasons (Vyvanse, Ritalin, Concerta, Dexedrine, Adderall, diet pills, etc.)"
-89,1585855,1585668,3,7,"1585636.1585640.1585668",1,"In the PAST THREE MONTHS, how often have you used other stimulants (methamphetamine, speed, crystal meth, ice, k2/spice, bath salts, etc.)"
-90,1585855,1585674,3,7,"1585636.1585641.1585674",1,"In the PAST THREE MONTHS, how often have you used inhalants (nitrous oxide, glue, gas, paint thinner, etc.)?"
-91,1585855,1585680,3,7,"1585636.1585642.1585656",1,"In the PAST THREE MONTHS, how often have you used sedatives or sleeping pills for non-medical reasons (Valium, Serepax, Ativan, Xanax, Librium, Rohypnol, GHB, etc.)?"
-92,1585855,1585686,3,7,"1585636.1585643.1585656",1,"In the PAST THREE MONTHS, how often have you used hallucinogens (LSD, acid, mushrooms, PCP, Special K, ecstasy, etc.)?"
-93,1585855,1585692,3,7,"1585636.1585644.1585656",1,"In the PAST THREE MONTHS, how often have you used street opioids (heroin, opium, etc.)?"
-94,1585855,1585698,3,7,"1585636.1585645.1585656",1,"In the PAST THREE MONTHS, how often have you used prescription opioids for non-medical reasons (obana, fentanyl, oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine [Supoxone], etc."
-95,1585855,1585704,3,7,"1585636.1585646.1585656",1,"In the PAST THREE MONTHS, how often have you used other drugs?"
-96,43529712,1384522,4,1,"1384522",0,"Has a doctor or health care provider ever told you that you have any of the following circulatory conditions? (select all that apply)"
-97,43529712,43530302,4,1,"1384522.43528401.43530302",1,"Are you still seeing a doctor or health care provider for Anemia?"
-98,43529712,43530461,4,1,"1384522.43528401.43530461",1,"About how old were you when you were first told you had Anemia?"
-99,43529712,43528786,4,1,"1384522.43528401.43528786",1,"Are you currently prescribed medications and/or receiving treatment for Anemia?"
-100,43529712,43530303,4,1,"1384522.43528442.43530303",1,"Are you still seeing a doctor or health care provider for Atrial fibrillation (Afib) or Atrial flutter?"
-101,43529712,43530414,4,1,"1384522.43528442.43530414",1,"About how old were you when you were first told you had Atrial fibrillation (Afib) or Atrial flutter?"
-102,43529712,43528787,4,1,"1384522.43528442.43528787",1,"Are you currently prescribed medications and/or receiving treatment for Atrial fibrillation (Afib) or Atrial flutter?"
-103,43529712,43530304,4,1,"1384522.1384512.43530304",1,"Are you still seeing a doctor or health care provider for Bleeding disorder?"
-104,43529712,43530462,4,1,"1384522.1384512.43530462",1,"About how old were you when you were first told you had Bleeding disorder?"
-105,43529712,43528788,4,1,"1384522.1384512.43528788",1,"Are you currently prescribed medications and/or receiving treatment for Bleeding disorder?"
-106,43529712,43530305,4,1,"1384522.43528580.43530305",1,"Are you still seeing a doctor or health care provider for Congestive heart failure?"
-107,43529712,43530463,4,1,"1384522.43528580.43530463",1,"About how old were you when you were first told you had Congestive heart failure?"
-108,43529712,4352878,4,1,"1384522.43528580.43528789",1,"Are you currently prescribed medications and/or receiving treatment for Congestive heart failure?"
-109,43529712,43530306,4,1,"1384522.1384497.43530306",1,"Are you still seeing a doctor or health care provider for Coronary artery/coronary heart disease?"
-110,43529712,43530464,4,1,"1384522.1384497.43530464",1,"About how old were you when you were first told you had Coronary artery/coronary heart disease?"
-111,43529712,43528790,4,1,"1384522.1384497.43528790",1,"Are you currently prescribed medications and/or receiving treatment for Coronary artery/coronary heart disease?"
-112,43529712,43530307,4,1,"1384522.43528910.43530307",1,"Are you still seeing a doctor or health care provider for Heart attack?"
-113,43529712,43530465,4,1,"1384522.43528910.43530465",1,"About how old were you when you were first told you had Heart attack?"
-114,43529712,43528791,4,1,"1384522.43528910.43528791",1,"Are you currently prescribed medications and/or receiving treatment for Heart attack?"
-115,43529712,43530308,4,1,"1384522.43528918.43530308",1,"Are you still seeing a doctor or health care provider for Heart valve disease?"
-116,43529712,43530466,4,1,"1384522.43528918.43530466",1,"About how old were you when you were first told you had Heart valve disease?"
-117,43529712,43528792,4,1,"1384522.43528918.43528792",1,"Are you currently prescribed medications and/or receiving treatment for Heart valve disease?"
-118,43529712,43530309,4,1,"1384522.43528936.43530309",1,"Are you still seeing a doctor or health care provider for High cholesterol?"
-119,43529712,43530467,4,1,"1384522.43528936.43530467",1,"About how old were you when you were first told you had High cholesterol?"
-120,43529712,43528793,4,1,"1384522.43528936.43528793",1,"Are you currently prescribed medications and/or receiving treatment for High cholesterol?"
-121,43529712,43530310,4,1,"1384522.43529063.43530310",1,"Are you still seeing a doctor or health care provider for Hypertension (high blood pressure)?"
-122,43529712,43530468,4,1,"1384522.43529063.43530468",1,"About how old were you when you were first told you had Hypertension (high blood pressure)?"
-123,43529712,1384437,4,1,"1384522.43529063.1384437",1,"Are you currently prescribed medications and/or receiving treatment for Hypertension (high blood pressure)?"
-124,43529712,43530311,4,1,"1384522.1384469.43530311",1,"Are you still seeing a doctor or health care provider for Peripheral vascular disease?"
-125,43529712,1384448,4,1,"1384522.1384469.43530311",1,"About how old were you when you were first told you had Peripheral vascular disease?"
-126,43529712,43528795,4,1,"1384522.1384469.43530311",1,"Are you currently prescribed medications and/or receiving treatment for Peripheral vascular disease?"
-127,43529712,43530312,4,1,"1384522.43529748.43530312",1,"Are you still seeing a doctor or health care provider for Pulmonary embolism or deep vein thrombosis?"
-128,43529712,43530469,4,1,"1384522.43529748.43530469",1,"About how old were you when you were first told you had Pulmonary embolism or deep vein thrombosis?"
-129,43529712,43528796,4,1,"1384522.43529748.43528796",1,"Are you currently prescribed medications and/or receiving treatment for Pulmonary embolism or deep vein thrombosis?"
-130,43529712,43530313,4,1,"1384522.1384467.43530313",1,"Are you still seeing a doctor or health care provider for Sickle cell disease?"
-131,43529712,43530470,4,1,"1384522.1384467.43530470",1,"About how old were you when you were first told you had Sickle cell disease?"
-132,43529712,43528797,4,1,"1384522.1384467.43528797",1,"Are you currently prescribed medications and/or receiving treatment for Sickle cell disease?"
-133,43529712,43530314,4,1,"1384522.43529874.43530314",1,"Are you still seeing a doctor or health care provider for Stroke?"
-134,43529712,43530471,4,1,"1384522.43529874.43530471",1,"About how old were you when you were first told you had Stroke?"
-135,43529712,43528798,4,1,"1384522.43529874.43528798",1,"Are you currently prescribed medications and/or receiving treatment for Stroke?"
-136,43529712,43530315,4,1,"1384522.43529918.43530315",1,"Are you still seeing a doctor or health care provider for Transient ischemic attacks (TIAs or mini-strokes)?"
-137,43529712,43530472,4,1,"1384522.43529918.43530472",1,"About how old were you when you were first told you had Transient ischemic attacks (TIAs or mini-strokes)?"
-138,43529712,43528799,4,1,"1384522.43529918.43528799",1,"Are you currently prescribed medications and/or receiving treatment for Transient ischemic attacks (TIAs or mini-strokes)?"
-139,43529712,1384423,4,1,"1384522.1384638.1384423",1,"Are you still seeing a doctor or health care provider for Other heart and blood condition?"
-140,43529712,1384462,4,1,"1384522.1384638.1384462",1,"About how old were you when you were first told you had Other heart and blood condition?"
-141,43529712,1384420,4,1,"1384522.1384638.1384420",1,"Are you currently prescribed medications and/or receiving treatment for Other heart and blood condition?"
-142,43529712,1384592,4,2,"1384592",0,"Has a doctor or health care provider ever told you that you have or had any of the following respiratory conditions? (select all that apply)"
-143,43529712,43530388,4,2,"1384592.43528439.43530388",1,"Are you still seeing a doctor or health care provider for Asthma?"
-144,43529712,43530546,4,2,"1384592.43528439.43530546",1,"About how old were you when you were first told you had Asthma?"
-145,43529712,43528873,4,2,"1384592.43528439.43528873",1,"Are you currently prescribed medications and/or receiving treatment for Asthma?"
-146,43529712,1384608,4,2,"1384592.1384567.1384608",1,"Are you still seeing a doctor or health care provider for Chronic Lung Disease?"
-147,43529712,1384393,4,2,"1384592.1384567.1384393",1,"About how old were you when you were first told you had Chronic Lung Disease?"
-148,43529712,1384587,4,2,"1384592.1384567.1384587",1,"Are you currently prescribed medications and/or receiving treatment for Chronic Lung Disease?"
-149,43529712,43530390,4,2,"1384592.43529837.43530390",1,"Are you still seeing a doctor or health care provider for Sleep Apnea?"
-150,43529712,43530548,4,2,"1384592.43529837.43530548",1,"About how old were you when you were first told you had Sleep Apnea?"
-151,43529712,43528875,4,2,"1384592.43529837.43528875",1,"Are you currently prescribed medications and/or receiving treatment for Sleep Apnea?"
-152,43529712,1384651,4,2,"1384592.1384564.1384651",1,"Are you still seeing a doctor or health care provider for Other lung condition?"
-153,43529712,1384635,4,2,"1384592.1384564.1384635",1,"About how old were you when you were first told you had Other lung condition?"
-154,43529712,1384476,4,2,"1384592.1384564.1384476",1,"Are you currently prescribed medications and/or receiving treatment for Other lung condition?"
-155,43529712,43528760,4,3,"43528760",0,"Has a doctor or health care provider ever told you that you have or had any of the following cancers? (select all that apply)"
-156,43529712,43530282,4,3,"43528760.43528472.43530282",1,"Are you still seeing a doctor or health care provider for Bladder cancer?"
-157,43529712,43530440,4,3,"43528760.43528472.43530440",1,"About how old were you when you were first told you had Bladder cancer?"
-158,43529712,43528766,4,3,"43528760.43528472.43528766",1,"Are you currently prescribed medications and/or receiving treatment for Bladder cancer?"
-159,43529712,43530283,4,3,"43528760.1384404.43530283",1,"Are you still seeing a doctor or health care provider for Blood or soft tissue cancer?"
-160,43529712,43530441,4,3,"43528760.1384404.43530441",1,"About how old were you when you were first told you had Blood or soft tissue cancer?"
-161,43529712,43528767,4,3,"43528760.1384404.43528767",1,"Are you currently prescribed medications and/or receiving treatment for Blood or soft tissue cancer?"
-162,43529712,43530284,4,3,"43528760.43528480.43530284",1,"Are you still seeing a doctor or health care provider for Bone cancer?"
-163,43529712,43530442,4,3,"43528760.43528480.43530442",1,"About how old were you when you were first told you had Bone cancer?"
-164,43529712,43528768,4,3,"43528760.43528480.43528768",1,"Are you currently prescribed medications and/or receiving treatment for Bone cancer?"
-165,43529712,43530285,4,3,"43528760.43528492.43530285",1,"Are you still seeing a doctor or health care provider for Brain cancer?"
-166,43529712,43530443,4,3,"43528760.43528492.43530285",1,"About how old were you when you were first told you had Brain cancer?"
-167,43529712,43528769,4,3,"43528760.43528492.43530285",1,"Are you currently prescribed medications and/or receiving treatment for Brain cancer?"
-168,43529712,43530286,4,3,"43528760.43528500.43530286",1,"Are you still seeing a doctor or health care provider for Breast cancer?"
-169,43529712,43530444,4,3,"43528760.43528500.43530444",1,"About how old were you when you were first told you had Breast cancer?"
-170,43529712,43528770,4,3,"43528760.43528500.43528770",1,"Are you currently prescribed medications and/or receiving treatment for Breast cancer?"
-171,43529712,43530287,4,3,"43528760.43528539.43530287",1,"Are you still seeing a doctor or health care provider for Cervical cancer?"
-172,43529712,43530445,4,3,"43528760.43528539.43530445",1,"About how old were you when you were first told you had Cervical cancer?"
-173,43529712,43528771,4,3,"43528760.43528539.43528771",1,"Are you currently prescribed medications and/or receiving treatment for Cervical cancer?"
-174,43529712,43530288,4,3,"43528760.43528565.43530288",1,"Are you still seeing a doctor or health care provider for Colon cancer/Rectal cancer?"
-175,43529712,43530446,4,3,"43528760.43528565.43530446",1,"About how old were you when you were first told you had Colon cancer/Rectal cancer?"
-176,43529712,43528772,4,3,"43528760.43528565.43528772",1,"Are you currently prescribed medications and/or receiving treatment for Colon cancer/Rectal cancer?"
-177,43529712,43530289,4,3,"43528760.43528668.43530289",1,"Are you still seeing a doctor or health care provider for Endocrine cancer?"
-178,43529712,43530447,4,3,"43528760.43528668.43530447",1,"About how old were you when you were first told you had Endocrine cancer?"
-179,43529712,43528773,4,3,"43528760.43528668.43528773",1,"Are you currently prescribed medications and/or receiving treatment for Endocrine cancer?"
-180,43529712,43530290,4,3,"43528760.43528679.43530290",1,"Are you still seeing a doctor or health care provider for Endometrial cancer?"
-181,43529712,43530448,4,3,"43528760.43528679.43530448",1,"About how old were you when you were first told you had Endometrial cancer?"
-182,43529712,43528774,4,3,"43528760.43528679.43528774",1,"Are you currently prescribed medications and/or receiving treatment for Endometrial cancer?"
-183,43529712,43530291,4,3,"43528760.43528693.43530291",1,"Are you still seeing a doctor or health care provider for Esophageal cancer?"
-184,43529712,43530449,4,3,"43528760.43528693.43530449",1,"About how old were you when you were first told you had Esophageal cancer?"
-185,43529712,43528775,4,3,"43528760.43528693.43528775",1,"Are you currently prescribed medications and/or receiving treatment for Esophageal cancer?"
-186,43529712,43530292,4,3,"43528760.43528695.43530292",1,"Are you still seeing a doctor or health care provider for Eye cancer?"
-187,43529712,43530450,4,3,"43528760.43528695.43530450",1,"About how old were you when you were first told you had Eye cancer?"
-188,43529712,43528776,4,3,"43528760.43528695.43528776",1,"Are you currently prescribed medications and/or receiving treatment for Eye cancer?"
-189,43529712,43530293,4,3,"43528760.43528886.43530293",1,"Are you still seeing a doctor or health care provider for Head and Neck cancer?"
-190,43529712,43530451,4,3,"43528760.43528886.43530451",1,"About how old were you when you were first told you had Head and Neck cancer?"
-191,43529712,43528777,4,3,"43528760.43528886.43528777",1,"Are you currently prescribed medications and/or receiving treatment for Head and Neck cancer?"
-192,43529712,43530294,4,3,"43528760.43529136.43530294",1,"Are you still seeing a doctor or health care provider for Kidney cancer?"
-193,43529712,43530452,4,3,"43528760.43529136.43530452",1,"About how old were you when you were first told you had Kidney cancer?"
-194,43529712,43528778,4,3,"43528760.43529136.43528778",1,"Are you currently prescribed medications and/or receiving treatment for Kidney cancer?"
-195,43529712,1384390,4,4,"1384390",0," Has a doctor or health care provider ever told you that you have or had any of the following digestive conditions? (select all that apply)"
-196,43529712,43530316,4,4,"1384390.1384603.43530316",1,"Are you still seeing a doctor or health care provider for Acid reflux?"
-197,43529712,43530473,4,4,"1384390.1384603.43530473",1,"About how old were you when you were first told you had Acid reflux?"
-198,43529712,43528800,4,4,"1384390.1384603.43528800",1,"Are you currently prescribed medications and/or receiving treatment for Acid reflux?"
-199,43529712,43530317,4,4,"1384390.1384417.43530317",1,"Are you still seeing a doctor or health care provider for Bowel obstruction?"
-200,43529712,43530474,4,4,"1384390.1384417.43530474",1,"About how old were you when you were first told you had Bowel obstruction?"
-201,43529712,43528801,4,4,"1384390.1384417.43528801",1,"Are you currently prescribed medications and/or receiving treatment for Bowel obstruction?"
-202,43529712,1384660,4,4,"1384390.1384519.1384660",1,"Are you still seeing a doctor or health care provider for Celiac disease?"
-203,43529712,1384609,4,4,"1384390.1384519.1384609",1,"About how old were you when you were first told you had Celiac disease?"
-204,43529712,1384494,4,4,"1384390.1384519.1384494",1,"Are you currently prescribed medications and/or receiving treatment for Celiac disease?"
-205,43529712,43530318,4,4,"1384390.1384445.43530318",1,"Are you still seeing a doctor or health care provider for Colon polyps?"
-206,43529712,43530475,4,4,"1384390.1384445.43530475",1,"About how old were you when you were first told you had Colon polyps?"
-207,43529712,43528802,4,4,"1384390.1384445.43528802",1,"Are you currently prescribed medications and/or receiving treatment for Colon polyps?"
-208,43529712,43530319,4,4,"1384390.1384472.43530319",1,"Are you still seeing a doctor or health care provider for Crohn's disease?"
-209,43529712,43530476,4,4,"1384390.1384472.43530476",1,"About how old were you when you were first told you had Crohn's disease?"
-210,43529712,43528804,4,4,"1384390.1384472.43528804",1,"Are you currently prescribed medications and/or receiving treatment for Crohn's disease?"
-211,43529712,43530320,4,4,"1384390.1384411.43530320",1,"Are you still seeing a doctor or health care provider for Diverticulosis/diverticulitis?"
-212,43529712,43530477,4,4,"1384390.1384411.43530477",1,"About how old were you when you were first told you had Diverticulosis/diverticulitis?"
-213,43529712,43528805,4,4,"1384390.1384411.43528805",1,"Are you currently prescribed medications and/or receiving treatment for Diverticulosis/diverticulitis?"
-214,43529712,43530321,4,4,"1384390.1384439.43530321",1,"Are you still seeing a doctor or health care provider for Gall stones?"
-215,43529712,43530478,4,4,"1384390.1384439.43530478",1,"About how old were you when you were first told you had Gall stones?"
-216,43529712,43528806,4,4,"1384390.1384439.43528806",1,"Are you currently prescribed medications and/or receiving treatment for Gall stones?"
-217,43529712,43530322,4,4,"1384390.1384491.43530322",1,"Are you still seeing a doctor or health care provider for Hemorrhoids?"
-218,43529712,43530479,4,4,"1384390.1384491.43530479",1,"About how old were you when you were first told you had Hemorrhoids?"
-219,43529712,43528807,4,4,"1384390.1384491.43528807",1,"Are you currently prescribed medications and/or receiving treatment for Hemorrhoids?"
-220,43529712,43530323,4,4,"1384390.1384440.43530323",1,"Are you still seeing a doctor or health care provider for Hernia?"
-221,43529712,43530480,4,4,"1384390.1384440.43530480",1,"About how old were you when you were first told you had Hernia?"
-222,43529712,43528808,4,4,"1384390.1384440.43528808",1,"Are you currently prescribed medications and/or receiving treatment for Hernia?"
-223,43529712,43530324,4,4,"1384390.1384548.43530324",1,"Are you still seeing a doctor or health care provider for Irritable bowel syndrome (IBS)?"
-224,43529712,43530481,4,4,"1384390.1384548.43530481",1,"About how old were you when you were first told you had Irritable bowel syndrome (IBS)?"
-225,43529712,43528809,4,4,"1384390.1384548.43528809",1,"Are you currently prescribed medications and/or receiving treatment for Irritable bowel syndrome (IBS)?"
-226,43529712,43530325,4,4,"1384390.1384583.43530325",1,"Are you still seeing a doctor or health care provider for Liver condition?"
-227,43529712,43530482,4,4,"1384390.1384583.43530482",1,"About how old were you when you were first told you had Liver condition?"
-228,43529712,43528810,4,4,"1384390.1384583.43528810",1,"Are you currently prescribed medications and/or receiving treatment for Liver condition?"
-229,43529712,43530326,4,4,"1384390.1384565.43530326",1,"Are you still seeing a doctor or health care provider for Pancreatitis?"
-230,43529712,43530483,4,4,"1384390.1384565.43530483",1,"About how old were you when you were first told you had Pancreatitis?"
-231,43529712,43528811,4,4,"1384390.1384565.43528811",1,"Are you currently prescribed medications and/or receiving treatment for Pancreatitis?"
-232,43529712,43530327,4,4,"1384390.1384405.43530327",1,"Are you still seeing a doctor or health care provider for Peptic ulcers?"
-233,43529712,43530484,4,4,"1384390.1384405.43530484",1,"About how old were you when you were first told you had Peptic ulcers?"
-234,43529712,43528812,4,4,"1384390.1384405.43528812",1,"Are you currently prescribed medications and/or receiving treatment for Peptic ulcers?"
-235,43529712,43530328,4,4,"1384390.1384604.43530328",1,"Are you still seeing a doctor or health care provider for Ulcerative colitis?"
-236,43529712,43530485,4,4,"1384390.1384604.43530485",1,"About how old were you when you were first told you had Ulcerative colitis?"
-237,43529712,43528813,4,4,"1384390.1384604.43528813",1,"Are you currently prescribed medications and/or receiving treatment for Ulcerative colitis?"
-238,43529712,1384460,4,4,"1384390.1384594.1384460",1,"Are you still seeing a doctor or health care provider for Other digestive condition?"
-239,43529712,1384649,4,4,"1384390.1384594.1384649",1,"About how old were you when you were first told you had Other digestive condition?"
-240,43529712,1384468,4,4,"1384390.1384594.1384468",1,"Are you currently prescribed medications and/or receiving treatment for Other digestive condition?"
-241,43529712,43528758,4,5,"43528758",0," Has a doctor or health care provider ever told you that you have or had any of the following hormone/endocrine conditions (select all that apply)"
-242,43529712,43530329,4,5,"43528758.43529066.43530329",1,"Are you still seeing a doctor or health care provider for Hyperthyroidism?"
-243,43529712,43530486,4,5,"43528758.43529066.43530486",1,"About how old were you when you were first told you had Hyperthyroidism?"
-244,43529712,43528814,4,5,"43528758.43529066.43528814",1,"Are you currently prescribed medications and/or receiving treatment for Hyperthyroidism?"
-245,43529712,43530330,4,5,"43528758.43529075.43530330",1,"Are you still seeing a doctor or health care provider for Hypothyroidism?"
-246,43529712,43530487,4,5,"43528758.43529075.43530487",1,"About how old were you when you were first told you had Hypothyroidism?"
-247,43529712,43528815,4,5,"43528758.43529075.43528815",1,"Are you currently prescribed medications and/or receiving treatment for Hypothyroidism?"
-248,43529712,1384532,4,5,"43528758.43529727.1384532",1,"Are you still seeing a doctor or health care provider for Prediabetes?"
-249,43529712,1384543,4,5,"43528758.43529727.1384543",1,"About how old were you when you were first told you had Prediabetes?"
-250,43529712,1384566,4,5,"43528758.43529727.1384566",1,"Are you currently prescribed medications and/or receiving treatment for Prediabetes?"
-251,43529712,43530334,4,5,"43528758.43529923.43530334",1,"Are you still seeing a doctor or health care provider for Type 1 Diabetes?"
-252,43529712,43530491,4,5,"43528758.43529923.43530491",1,"About how old were you when you were first told you had Type 1 Diabetes?"
-253,43529712,43528819,4,5,"43528758.43529923.43528819",1,"Are you currently prescribed medications and/or receiving treatment for Type 1 Diabetes?"
-254,43529712,43530335,4,5,"43528758.43529932.43530335",1,"Are you still seeing a doctor or health care provider for Type 2 Diabetes?"
-255,43529712,43530492,4,5,"43528758.43529932.43530492",1,"About how old were you when you were first told you had Type 2 Diabetes?"
-256,43529712,43528820,4,5,"43528758.43529932.43528820",1,"Are you currently prescribed medications and/or receiving treatment for Type 2 Diabetes?"
-257,43529712,43530331,4,5,"43528758.43529668.43530331",1,"Are you still seeing a doctor or health care provider for Other/unknown diabetes?"
-258,43529712,43530488,4,5,"43528758.43529668.43530488",1,"About how old were you when you were first told you had Other/unknown diabetes?"
-259,43529712,43528816,4,5,"43528758.43529668.43528816",1,"Are you currently prescribed medications and/or receiving treatment for Other/unknown diabetes?"
-260,43529712,43530332,4,5,"43528758.43529676.43530332",1,"Are you still seeing a doctor or health care provider for Other/unknown thyroid condition?"
-261,43529712,43530489,4,5,"43528758.43529676.43530489",1,"About how old were you when you were first told you had Other/unknown thyroid condition?"
-262,43529712,43528817,4,5,"43528758.43529676.43528817",1,"Are you currently prescribed medications and/or receiving treatment for Other/unknown thyroid condition?"
-263,43529712,1384538,4,5,"43528758.1384666.1384538",1,"Are you still seeing a doctor or health care provider for Other hormone/endocrine condition?"
-264,43529712,1384672,4,5,"43528758.1384666.1384672",1,"About how old were you when you were first told you had Other hormone/endocrine condition?"
-265,43529712,1384641,4,5,"43528758.1384666.1384641",1,"Are you currently prescribed medications and/or receiving treatment for Other hormone/endocrine condition?"
-266,43529712,1384487,4,6,"1384487",0,"Has a doctor or health care provider ever told you that you have or had any of the following Kidney conditions?  (select all that apply)"
-267,43529712,43530350,4,6,"1384487.1384395.43530350",1,"Are you still seeing a doctor or health care provider for Acute kidney disease with no current dialysis?"
-268,43529712,43530508,4,6,"1384487.1384395.43530508",1,"About how old were you when you were first told you had Acute kidney disease with no current dialysis?"
-269,43529712,43528835,4,6,"1384487.1384395.43528835",1,"Are you currently prescribed medications and/or receiving treatment for Acute kidney disease with no current dialysis?"
-270,43529712,43530352,4,7,"1384487.1384563.43530352",1,"Are you still seeing a doctor or health care provider for Kidney disease with dialysis?"
-271,43529712,43530510,4,7,"1384487.1384563.43530510",1,"About how old were you when you were first told you had Kidney disease with dialysis?"
-272,43529712,43528837,4,7,"1384487.1384563.43528837",1,"Are you currently prescribed medications and/or receiving treatment for Kidney disease with dialysis?"
-273,43529712,43530353,4,7,"1384487.1384414.43530353",1,"Are you still seeing a doctor or health care provider for Kidney disease without dialysis?"
-274,43529712,43530511,4,7,"1384487.1384414.43530511",1,"About how old were you when you were first told you had Kidney disease without dialysis?"
-275,43529712,43528838,4,7,"1384487.1384414.43528838",1,"Are you currently prescribed medications and/or receiving treatment for Kidney disease without dialysis?"
-276,43529712,43530351,4,7,"1384487.1384515.43530351",1,"Are you still seeing a doctor or health care provider for Kidney stones?"
-277,43529712,43530509,4,7,"1384487.1384515.43530509",1,"About how old were you when you were first told you had Kidney stones?"
-278,43529712,43528836,4,7,"1384487.1384515.43528836",1,"Are you currently prescribed medications and/or receiving treatment for Kidney stones?"
-279,43529712,1384493,4,7,"1384487.1384646.1384493",1,"Are you still seeing a doctor or health care provider for Other kidney condition?"
-280,43529712,1384661,4,7,"1384487.1384646.1384661",1,"About how old were you when you were first told you had Other kidney condition?"
-281,43529712,1384612,4,7,"1384487.1384646.1384612",1,"Are you currently prescribed medications and/or receiving treatment for Other kidney condition?"
-282,43529712,43528757,4,8,"43528757",0,"Has a doctor or health care provider ever told you that you have or had any of the following Bone, joint and muscle conditions?  (select all that apply)"
-283,43529712,43530392,4,8,"43528757.43528524.43530392",1,"Are you still seeing a doctor or health care provider for Carpal tunnel syndrome?"
-284,43529712,43530550,4,8,"43528757.43528524.43530550",1,"About how old were you when you were first told you had Carpal tunnel syndrome?"
-285,43529712,43528877,4,8,"43528757.43528524.43528877",1,"Are you currently prescribed medications and/or receiving treatment for Carpal tunnel syndrome?"
-286,43529712,43530393,4,8,"43528757.43528713.43530393",1,"Are you still seeing a doctor or health care provider for Fibromyalgia?"
-287,43529712,43530551,4,8,"43528757.43528713.43530551",1,"About how old were you when you were first told you had Fibromyalgia?"
-288,43529712,43528878,4,8,"43528757.43528713.43528878",1,"Are you currently prescribed medications and/or receiving treatment for Fibromyalgia?"
-289,43529712,43530394,4,8,"43528757.1384657.43530394",1,"Are you still seeing a doctor or health care provider for Fractured/broken any bones in the last 5 years?"
-290,43529712,43530552,4,8,"43528757.1384657.43530552",1,"About how old were you when you were first told you had Fractured/broken any bones in the last 5 years?"
-291,43529712,43528879,4,8,"43528757.1384657.43528879",1,"Are you currently prescribed medications and/or receiving treatment for Fractured/broken any bones in the last 5 years?"
-292,43529712,43530395,4,8,"43528757.43528742.43530395",1,"Are you still seeing a doctor or health care provider for Gout?"
-293,43529712,43530553,4,8,"43528757.43528742.43530553",1,"About how old were you when you were first told you had Gout?"
-294,43529712,43528880,4,8,"43528757.43528742.43528880",1,"Are you currently prescribed medications and/or receiving treatment for Gout?"
-295,43529712,1384617,4,8,"43528757.1384547.1384617",1,"Are you still seeing a doctor or health care provider for Osteoarthritis?"
-296,43529712,1384611,4,8,"43528757.1384547.1384611",1,"About how old were you when you were first told you had Osteoarthritis?"
-297,43529712,1384433,4,8,"43528757.1384547.1384433",1,"Are you currently prescribed medications and/or receiving treatment for Osteoarthritis?"
-298,43529712,43530397,4,8,"43528757.43529616.43530397",1,"Are you still seeing a doctor or health care provider for Osteoporosis?"
-299,43529712,43530555,4,8,"43528757.43529616.43530555",1,"About how old were you when you were first told you had Osteoporosis?"
-300,43529712,43528882,4,8,"43528757.43529616.43528882",1,"Are you currently prescribed medications and/or receiving treatment for Osteoporosis?"
-301,43529712,1384645,4,8,"43528757.1384422.1384645",1,"Are you still seeing a doctor or health care provider for Pseudogout?"
-302,43529712,1384626,4,8,"43528757.1384422.1384626",1,"About how old were you when you were first told you had Pseudogout?"
-303,43529712,1384513,4,8,"43528757.1384422.1384513",1,"Are you currently prescribed medications and/or receiving treatment for Pseudogout?"
-304,43529712,1384593,4,8,"43528757.1384653.1384593",1,"Are you still seeing a doctor or health care provider for Rheumatoid arthritis?"
-305,43529712,1384479,4,8,"43528757.1384653.1384479",1,"About how old were you when you were first told you had Rheumatoid arthritis?"
-306,43529712,1384540,4,8,"43528757.1384653.1384540",1,"Are you currently prescribed medications and/or receiving treatment for Rheumatoid arthritis?"
-307,43529712,43530398,4,8,"43528757.1384534.43530398",1,"Are you still seeing a doctor or health care provider for Spine, muscle, or bone disorders (non-cancer)?"
-308,43529712,43530556,4,8,"43528757.1384534.43530556",1,"About how old were you when you were first told you had Spine, muscle, or bone disorders (non-cancer)?"
-309,43529712,43528883,4,8,"43528757.1384534.43528883",1,"Are you currently prescribed medications and/or receiving treatment for Spine, muscle, or bone disorders (non-cancer)?"
-310,43529712,43530396,4,8,"43528757.1384389.43530396",1,"Are you still seeing a doctor or health care provider for Systemic lupus?"
-311,43529712,43530554,4,8,"43528757.1384389.43530554",1,"About how old were you when you were first told you had Systemic lupus?"
-312,43529712,43528881,4,8,"43528757.1384389.43528881",1,"Are you currently prescribed medications and/or receiving treatment for Systemic lupus?"
-313,43529712,1384576,4,8,"43528757.1384452.1384576",1,"Are you still seeing a doctor or health care provider for Other arthritis?"
-314,43529712,1384470,4,8,"43528757.1384452.1384470",1,"About how old were you when you were first told you had Other arthritis?"
-315,43529712,1384478,4,8,"43528757.1384452.1384478",1,"Are you currently prescribed medications and/or receiving treatment for Other arthritis?"
-316,43529712,1384410,4,8,"43528757.1384471.1384410",1,"Are you still seeing a doctor or health care provider for Other bone, joint or muscle condition?"
-317,43529712,1384399,4,8,"43528757.1384471.1384399",1,"About how old were you when you were first told you had Other bone, joint or muscle condition?"
-318,43529712,1384671,4,8,"43528757.1384471.1384671",1,"Are you currently prescribed medications and/or receiving treatment for Other bone, joint or muscle condition?"
-319,43529712,43528759,4,9,"43528759",0,"Has a doctor or health care provider ever told you that you have any of the following hearing or vision problems? (select all that apply)"
-320,43529712,43530336,4,9,"43528759.43528474.43530336",1,"Are you still seeing a doctor or health care provider for Blindness?"
-321,43529712,43530493,4,9,"43528759.43528474.43530493",1,"About how old were you when you were first told you had Blindness?"
-322,43529712,43528821,4,9,"43528759.43528474.43528821",1,"Are you currently prescribed medications and/or receiving treatment for Blindness?"
-323,43529712,43530337,4,9,"43528759.43528528.43530337",1,"Are you still seeing a doctor or health care provider for Cataracts?"
-324,43529712,43530494,4,9,"43528759.43528528.43530494",1,"About how old were you when you were first told you had Cataracts?"
-325,43529712,43528822,4,9,"43528759.43528528.43528822",1,"Are you currently prescribed medications and/or receiving treatment for Cataracts?"
-326,43529712,43530338,4,9,"43528759.43528659.43530338",1,"Are you still seeing a doctor or health care provider for Dry eyes?"
-327,43529712,43530495,4,9,"43528759.43528659.43530495",1,"About how old were you when you were first told you had Dry eyes?"
-328,43529712,43528823,4,9,"43528759.43528659.43528823",1,"Are you currently prescribed medications and/or receiving treatment for Dry eyes?"
-329,43529712,43530339,4,9,"43528759.43528699.43530339",1,"Are you still seeing a doctor or health care provider for Farsighted?"
-330,43529712,43530496,4,9,"43528759.43528699.43530496",1,"About how old were you when you were first told you had Farsighted?"
-331,43529712,43528824,4,9,"43528759.43528699.43528824",1,"Are you currently prescribed medications and/or receiving treatment for Farsighted?"
-332,43529712,43530343,4,9,"43528759.43529265.43530343",1,"Are you still seeing a doctor or health care provider for Nearsighted?"
-333,43529712,43530500,4,9,"43528759.43529265.43530500",1,"About how old were you when you were first told you had Nearsighted?"
-334,43529712,43528828,4,9,"43528759.43529265.43528828",1,"Are you currently prescribed medications and/or receiving treatment for Nearsighted?"
-335,43529712,1384570,4,9,"43528759.1384648.1384570",1,"Are you still seeing a doctor or health care provider for Astigmatism?"
-336,43529712,1384554,4,9,"43528759.1384648.1384554",1,"About how old were you when you were first told you had Astigmatism?"
-337,43529712,1384388,4,9,"43528759.1384648.1384388",1,"Are you currently prescribed medications and/or receiving treatment for Astigmatism?"
-338,43529712,43530340,4,9,"43528759.43528731.43530340",1,"Are you still seeing a doctor or health care provider for Glaucoma?"
-339,43529712,43530497,4,9,"43528759.43528731.43530497",1,"About how old were you when you were first told you had Glaucoma?"
-340,43529712,43528825,4,9,"43528759.43528731.43528825",1,"Are you currently prescribed medications and/or receiving treatment for Glaucoma?"
-341,43529712,43530342,4,9,"43528759.43529196.43530342",1,"Are you still seeing a doctor or health care provider for Macular degeneration?"
-342,43529712,43530499,4,9,"43528759.43529196.43530499",1,"About how old were you when you were first told you had Macular degeneration?"
-343,43529712,43528827,4,9,"43528759.43529196.43528827",1,"Are you currently prescribed medications and/or receiving treatment for Macular degeneration?"
-344,43529712,43530344,4,9,"43528759.43529917.43530344",1,"Are you still seeing a doctor or health care provider for Tinnitus?"
-345,43529712,43530501,4,9,"43528759.43529917.43530501",1,"About how old were you when you were first told you had Tinnitus?"
-346,43529712,43528829,4,9,"43528759.43529917.43528829",1,"Are you currently prescribed medications and/or receiving treatment for Tinnitus?"
-347,43529712,43530341,4,9,"43528759.1384396.43530341",1,"Are you still seeing a doctor or health care provider for Severe hearing loss or partial deafness in one or both ears?"
-348,43529712,43530498,4,9,"43528759.1384396.43530498",1,"About how old were you when you were first told you had Severe hearing loss or partial deafness in one or both ears?"
-349,43529712,43528826,4,9,"43528759.1384396.43528826",1,"Are you currently prescribed medications and/or receiving treatment for Severe hearing loss or partial deafness in one or both ears?"
-350,43529712,1384556,4,9,"43528759.1384428.1384556",1,"Are you still seeing a doctor or health care provider for Other hearing or eye condition?"
-351,43529712,1384667,4,9,"43528759.1384428.1384667",1,"About how old were you when you were first told you had Other hearing or eye condition?"
-352,43529712,1384663,4,9,"43528759.1384428.1384663",1,"Are you currently prescribed medications and/or receiving treatment for Other hearing or eye condition?"
-353,43529712,1384662,4,10,"1384662",0,"Has a doctor or health care provider ever told you that you have or had any of the following Infectious diseases?"
-354,43529712,1384553,4,10,"1384662.1384578.1384553",1,"Are you still seeing a doctor or health care provider for Chickenpox?"
-355,43529712,1384637,4,10,"1384662.1384578.1384637",1,"About how old were you when you were first told you had Chickenpox?"
-356,43529712,1384442,4,10,"1384662.1384578.1384442",1,"Are you currently prescribed medications and/or receiving treatment for Chickenpox?"
-357,43529712,43530345,4,10,"1384662.1384659.43530345",1,"Are you still seeing a doctor or health care provider for Chronic sinus infections?"
-358,43529712,43530502,4,10,"1384662.1384659.43530502",1,"About how old were you when you were first told you had Chronic sinus infections?"
-359,43529712,43528830,4,10,"1384662.1384659.43528830",1,"Are you currently prescribed medications and/or receiving treatment for Chronic sinus infections?"
-360,43529712,1384418,4,10,"1384662.1384454.1384418",1,"Are you still seeing a doctor or health care provider for Dengue fever?"
-361,43529712,1384552,4,10,"1384662.1384454.1384552",1,"About how old were you when you were first told you had Dengue fever?"
-362,43529712,1384627,4,10,"1384662.1384454.1384627",1,"Are you currently prescribed medications and/or receiving treatment for Dengue fever?"
-363,43529712,1384401,4,10,"1384662.1384581.1384401",1,"Are you still seeing a doctor or health care provider for Hepatitis A?"
-364,43529712,1384619,4,10,"1384662.1384581.1384619",1,"About how old were you when you were first told you had Hepatitis A?"
-365,43529712,1384535,4,10,"1384662.1384581.1384535",1,"Are you currently prescribed medications and/or receiving treatment for Hepatitis A?"
-366,43529712,1384506,4,10,"1384662.1384429.1384506",1,"Are you still seeing a doctor or health care provider for Hepatitis B?"
-367,43529712,1384620,4,10,"1384662.1384429.1384620",1,"About how old were you when you were first told you had Hepatitis B?"
-368,43529712,1384447,4,10,"1384662.1384429.1384447",1,"Are you currently prescribed medications and/or receiving treatment for Hepatitis B?"
-369,43529712,43530346,4,10,"1384662.1384588.43530346",1,"Are you still seeing a doctor or health care provider for Hepatitis C?"
-370,43529712,43530503,4,10,"1384662.1384588.43530503",1,"About how old were you when you were first told you had Hepatitis C?"
-371,43529712,43528831,4,10,"1384662.1384588.43528831",1,"Are you currently prescribed medications and/or receiving treatment for Hepatitis C?"
-372,43529712,43530347,4,10,"1384662.1384391.43530347",1,"Are you still seeing a doctor or health care provider for HIV/AIDS?"
-373,43529712,43530505,4,10,"1384662.1384391.43530505",1,"About how old were you when you were first told you had HIV/AIDS?"
-374,43529712,43528832,4,10,"1384662.1384391.43528832",1,"Are you currently prescribed medications and/or receiving treatment for HIV/AIDS?"
-375,43529712,1384431,4,10,"1384662.1384449.1384431",1,"Are you still seeing a doctor or health care provider for Lyme disease?"
-376,43529712,1384432,4,10,"1384662.1384449.1384432",1,"About how old were you when you were first told you had Lyme disease?"
-377,43529712,1384628,4,10,"1384662.1384449.1384628",1,"Are you currently prescribed medications and/or receiving treatment for Lyme disease?"
-378,43529712,43530349,4,10,"1384662.1384614.43530349",1,"Are you still seeing a doctor or health care provider for Recurrent urinary tract infections (uti)/bladder infections?"
-379,43529712,43530507,4,10,"1384662.1384614.43530507",1,"About how old were you when you were first told you had Recurrent urinary tract infections (uti)/bladder infections?"
-380,43529712,43528834,4,10,"1384662.1384614.43528834",1,"Are you currently prescribed medications and/or receiving treatment for Recurrent urinary tract infections (uti)/bladder infections?"
-381,43529712,1384465,4,10,"1384662.1384520.1384465",1,"Are you still seeing a doctor or health care provider for Reoccurring yeast infection?"
-382,43529712,1384621,4,10,"1384662.1384520.1384621",1,"About how old were you when you were first told you had Reoccurring yeast infection?"
-383,43529712,1384398,4,10,"1384662.1384520.1384398",1,"Are you currently prescribed medications and/or receiving treatment for Reoccurring yeast infection?"
-384,43529712,1384537,4,10,"1384662.1384406.1384537",1,"Are you still seeing a doctor or health care provider for Severe acute respiratory syndrome (SARS)?"
-385,43529712,1384438,4,10,"1384662.1384406.1384438",1,"About how old were you when you were first told you had Severe acute respiratory syndrome (SARS)?"
-386,43529712,1384642,4,10,"1384662.1384406.1384642",1,"Are you currently prescribed medications and/or receiving treatment for Severe acute respiratory syndrome (SARS)?"
-387,43529712,1384463,4,10,"1384662.1384453.1384463",1,"Are you still seeing a doctor or health care provider for Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?"
-388,43529712,1384573,4,10,"1384662.1384453.1384573",1,"About how old were you when you were first told you had Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?"
-389,43529712,1384664,4,10,"1384662.1384453.1384664",1,"Are you currently prescribed medications and/or receiving treatment for Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?"
-390,43529712,1384511,4,10,"1384662.1384610.1384511",1,"Are you still seeing a doctor or health care provider for Shingles?"
-391,43529712,1384416,4,10,"1384662.1384610.1384416",1,"About how old were you when you were first told you had Shingles?"
-392,43529712,1384505,4,10,"1384662.1384610.1384505",1,"Are you currently prescribed medications and/or receiving treatment for Shingles?"
-393,43529712,43530348,4,10,"1384662.1384555.43530348",1,"Are you still seeing a doctor or health care provider for Tuberculosis?"
-394,43529712,43530506,4,10,"1384662.1384555.43530506",1,"About how old were you when you were first told you had Tuberculosis?"
-395,43529712,43528833,4,10,"1384662.1384555.43528833",1,"Are you currently prescribed medications and/or receiving treatment for Tuberculosis?"
-396,43529712,1384596,4,10,"1384662.1384408.1384596",1,"Are you still seeing a doctor or health care provider for West Nile virus?"
-397,43529712,1384652,4,10,"1384662.1384408.1384652",1,"About how old were you when you were first told you had West Nile virus?"
-398,43529712,1384602,4,10,"1384662.1384408.1384602",1,"Are you currently prescribed medications and/or receiving treatment for West Nile virus?"
-399,43529712,1384459,4,10,"1384662.1384527.1384459",1,"Are you still seeing a doctor or health care provider for Zika virus?"
-400,43529712,1384492,4,10,"1384662.1384527.1384492",1,"About how old were you when you were first told you had Zika virus?"
-401,43529712,1384424,4,10,"1384662.1384527.1384424",1,"Are you currently prescribed medications and/or receiving treatment for Zika virus?"
-402,43529712,1384489,4,10,"1384662.1384484.1384489",1,"Are you still seeing a doctor or health care provider for Other infectious disease?"
-403,43529712,1384647,4,10,"1384662.1384484.1384647",1,"About how old were you when you were first told you had Other infectious disease?"
-404,43529712,1384517,4,10,"1384662.1384484.1384517",1,"Are you currently prescribed medications and/or receiving treatment for Other infectious disease?"
-405,43529712,1384526,4,11,"1384526",0," Has a doctor or health care provider ever told you that you have or had any of the following Brain and nervous system conditions?"
-406,43529712,1384597,4,11,"1384526.1384415.1384597",1,"Are you still seeing a doctor or health care provider for Cerebral palsy?"
-407,43529712,1384426,4,11,"1384526.1384415.1384426",1,"About how old were you when you were first told you had Cerebral palsy?"
-408,43529712,1384482,4,11,"1384526.1384415.1384482",1,"Are you currently prescribed medications and/or receiving treatment for Cerebral palsy?"
-409,43529712,43530365,4,11,"1384526.1384585.43530365",1,"Are you still seeing a doctor or health care provider for Chronic fatigue?"
-410,43529712,43530523,4,11,"1384526.1384585.43530523",1,"About how old were you when you were first told you had Chronic fatigue?"
-411,43529712,43528850,4,11,"1384526.1384585.43528850",1,"Are you currently prescribed medications and/or receiving treatment for Chronic fatigue?"
-412,43529712,43530366,4,11,"1384526.1384402.43530366",1,"Are you still seeing a doctor or health care provider for Concussion or loss of consciousness?"
-413,43529712,43530524,4,11,"1384526.1384402.43530524",1,"About how old were you when you were first told you had Concussion or loss of consciousness?"
-414,43529712,43528851,4,11,"1384526.1384402.43528851",1,"Are you currently prescribed medications and/or receiving treatment for Concussion or loss of consciousness?"
-415,43529712,43530367,4,11,"1384526.1384435.43530367",1,"Are you still seeing a doctor or health care provider for Dementia?"
-416,43529712,43530525,4,11,"1384526.1384435.43530525",1,"About how old were you when you were first told you had Dementia?"
-417,43529712,43528852,4,11,"1384526.1384435.43528852",1,"Are you currently prescribed medications and/or receiving treatment for Dementia?"
-418,43529712,43530368,4,11,"1384526.1384524.43530368",1,"Are you still seeing a doctor or health care provider for Epilepsy or seizure?"
-419,43529712,43530526,4,11,"1384526.1384524.43530526",1,"About how old were you when you were first told you had Epilepsy or seizure?"
-420,43529712,43528853,4,11,"1384526.1384524.43528853",1,"Are you currently prescribed medications and/or receiving treatment for Epilepsy or seizure?"
-421,43529712,43530369,4,11,"1384526.1384444.43530369",1,"Are you still seeing a doctor or health care provider for Insomnia?"
-422,43529712,43530527,4,11,"1384526.1384444.43530527",1,"About how old were you when you were first told you had Insomnia?"
-423,43529712,43528854,4,11,"1384526.1384444.43528854",1,"Are you currently prescribed medications and/or receiving treatment for Insomnia?"
-424,43529712,1384633,4,11,"1384526.1384607.1384633",1,"Are you still seeing a doctor or health care provider for Lou Gehrig’s Disease (Amyotrophic Lateral Sclerosis or ALS)?"
-425,43529712,1384670,4,11,"1384526.1384607.1384670",1,"About how old were you when you were first told you had Lou Gehrig’s Disease (Amyotrophic Lateral Sclerosis or ALS)?"
-426,43529712,1384451,4,11,"1384526.1384607.1384451",1,"Are you currently prescribed medications and/or receiving treatment for Lou Gehrig’s Disease (Amyotrophic Lateral Sclerosis or ALS)?"
-427,43529712,43530370,4,11,"1384526.1384531.43530370",1,"Are you still seeing a doctor or health care provider for Memory loss or impairment?"
-428,43529712,43530528,4,11,"1384526.1384531.43530528",1,"About how old were you when you were first told you had Memory loss or impairment?"
-429,43529712,43528855,4,11,"1384526.1384531.43528855",1,"Are you currently prescribed medications and/or receiving treatment for Memory loss or impairment?"
-430,43529712,43530371,4,11,"1384526.1384427.43530371",1,"Are you still seeing a doctor or health care provider for Migraine headaches?"
-431,43529712,43530529,4,11,"1384526.1384427.43530529",1,"About how old were you when you were first told you had Migraine headaches?"
-432,43529712,43528856,4,11,"1384526.1384427.43528856",1,"Are you currently prescribed medications and/or receiving treatment for Migraine headaches?"
-433,43529712,43530372,4,11,"1384526.1384591.43530372",1,"Are you still seeing a doctor or health care provider for Multiple sclerosis?"
-434,43529712,43530530,4,11,"1384526.1384591.43530530",1,"About how old were you when you were first told you had Multiple sclerosis?"
-435,43529712,43528857,4,11,"1384526.1384591.43528857",1,"Are you currently prescribed medications and/or receiving treatment for Multiple sclerosis?"
-436,43529712,43530373,4,11,"1384526.1384503.43530373",1,"Are you still seeing a doctor or health care provider for Muscular dystrophy (MD)?"
-437,43529712,43530531,4,11,"1384526.1384503.43530531",1,"About how old were you when you were first told you had Muscular dystrophy (MD)?"
-438,43529712,43528858,4,11,"1384526.1384503.43528858",1,"Are you currently prescribed medications and/or receiving treatment for Muscular dystrophy (MD)?"
-439,43529712,43530374,4,11,"1384526.1384650.43530374",1,"Are you still seeing a doctor or health care provider for Narcolepsy?"
-440,43529712,43530532,4,11,"1384526.1384650.43530532",1,"About how old were you when you were first told you had Narcolepsy?"
-441,43529712,43528859,4,11,"1384526.1384650.43528859",1,"Are you currently prescribed medications and/or receiving treatment for Narcolepsy?"
-442,43529712,43530375,4,11,"1384526.1384599.43530375",1,"Are you still seeing a doctor or health care provider for Neuropathy?"
-443,43529712,43530533,4,11,"1384526.1384599.43530533",1,"About how old were you when you were first told you had Neuropathy?"
-444,43529712,43528860,4,11,"1384526.1384599.43528860",1,"Are you currently prescribed medications and/or receiving treatment for Neuropathy?"
-445,43529712,43530377,4,11,"1384526.1384568.43530377",1,"Are you still seeing a doctor or health care provider for Parkinson's disease?"
-446,43529712,43530536,4,11,"1384526.1384568.43530536",1,"About how old were you when you were first told you had Parkinson's disease?"
-447,43529712,43528862,4,11,"1384526.1384568.43528862",1,"Are you currently prescribed medications and/or receiving treatment for Parkinson's disease?"
-448,43529712,43530378,4,11,"1384526.1384616.43530378",1,"Are you still seeing a doctor or health care provider for Restless leg syndrome?"
-449,43529712,43530537,4,11,"1384526.1384616.43530537",1,"About how old were you when you were first told you had Restless leg syndrome?"
-450,43529712,43528863,4,11,"1384526.1384616.43528863",1,"Are you currently prescribed medications and/or receiving treatment for Restless leg syndrome?"
-451,43529712,43530379,4,11,"1384526.1384577.43530379",1,"Are you still seeing a doctor or health care provider for Spinal cord injury or impairment?"
-452,43529712,1384655,4,11,"1384526.1384577.1384655",1,"About how old were you when you were first told you had Spinal cord injury or impairment?"
-453,43529712,43528864,4,11,"1384526.1384577.43528864",1,"Are you currently prescribed medications and/or receiving treatment for Spinal cord injury or impairment?"
-454,43529712,43530380,4,11,"1384526.1384496.43530380",1,"Are you still seeing a doctor or health care provider for Traumatic brain injury (TBI)?"
-455,43529712,43530538,4,11,"1384526.1384496.43530538",1,"About how old were you when you were first told you had Traumatic brain injury (TBI)?"
-456,43529712,43528865,4,11,"1384526.1384496.43528865",1,"Are you currently prescribed medications and/or receiving treatment for Traumatic brain injury (TBI)?"
-457,43529712,1384560,4,11,"1384526.1384582.1384560",1,"Are you still seeing a doctor or health care provider for Other brain or nervous system condition?"
-458,43529712,1384456,4,11,"1384526.1384582.1384456",1,"About how old were you when you were first told you had Other brain or nervous system condition?"
-459,43529712,1384528,4,11,"1384526.1384582.1384528",1,"Are you currently prescribed medications and/or receiving treatment for Other brain or nervous system condition?"
-460,43529712,1384495,4,12,"1384495",0,"Has a doctor or health care provider ever told you that you have or had any of the following Mental health and substance use conditions? (select all that apply)"
-461,43529712,1384490,4,12,"1384495.1384600.1384490",1,"Are you still seeing a doctor or health care provider for Alcohol use disorder?"
-462,43529712,1384625,4,12,"1384495.1384600.1384625",1,"About how old were you when you were first told you had Alcohol use disorder?"
-463,43529712,1384518,4,12,"1384495.1384600.1384625",1,"Are you currently prescribed medications and/or receiving treatment for Alcohol use disorder?"
-464,43529712,43530356,4,12,"1384495.1384475.43530356",1,"Are you still seeing a doctor or health care provider for Anxiety reaction/panic disorder?" 
-465,43529712,43530514,4,12,"1384495.1384475.43530514",1,"About how old were you when you were first told you had Anxiety reaction/panic disorder?"
-466,43529712,43528841,4,12,"1384495.1384475.43528841",1,"Are you currently prescribed medications and/or receiving treatment for Anxiety reaction/panic disorder?"
-467,43529712,43530354,4,12,"1384495.1384510.43530354",1,"Are you still seeing a doctor or health care provider for Attention-deficit/hyperactivity disorder (ADHD)?"
-468,43529712,43530512,4,12,"1384495.1384510.43530512",1,"About how old were you when you were first told you had Attention-deficit/hyperactivity disorder (ADHD)?"
-469,43529712,43528839,4,12,"1384495.1384510.43528839",1,"Are you currently prescribed medications and/or receiving treatment for Attention-deficit/hyperactivity disorder (ADHD)?"
-470,43529712,1384630,4,12,"1384495.1384458.1384630",1,"Are you still seeing a doctor or health care provider for Autism spectrum disorder?"
-471,43529712,1384574,4,12,"1384495.1384458.1384574",1,"About how old were you when you were first told you had Autism spectrum disorder?"
-472,43529712,1384486,4,12,"1384495.1384458.1384486",1,"Are you currently prescribed medications and/or receiving treatment for Autism spectrum disorder?"
-473,43529712,43530357,4,12,"1384495.1384669.43530357",1,"Are you still seeing a doctor or health care provider for Bipolar disorder?"
-474,43529712,43530515,4,12,"1384495.1384669.43530515",1,"About how old were you when you were first told you had Bipolar disorder?"
-475,43529712,43528842,4,12,"1384495.1384669.43528842",1,"Are you currently prescribed medications and/or receiving treatment for Bipolar disorder?"
-476,43529712,43530358,4,12,"1384495.1384656.43530358",1,"Are you still seeing a doctor or health care provider for Depression?"
-477,43529712,43530516,4,12,"1384495.1384656.43530516",1,"About how old were you when you were first told you had Depression?"
-478,43529712,43528843,4,12,"1384495.1384656.43528843",1,"Are you currently prescribed medications and/or receiving treatment for Depression?"
-479,43529712,1384480,4,12,"1384495.1384413.1384480",1,"Are you still seeing a doctor or health care provider for Drug use disorder?"
-480,43529712,1384514,4,12,"1384495.1384413.1384514",1,"About how old were you when you were first told you had Drug use disorder?"
-481,43529712,1384601,4,12,"1384495.1384413.1384601",1,"Are you currently prescribed medications and/or receiving treatment for Drug use disorder?"
-482,43529712,43530359,4,12,"1384495.1384558.43530359",1,"Are you still seeing a doctor or health care provider for Eating disorder?"
-483,43529712,43530517,4,12,"1384495.1384558.43530517",1,"About how old were you when you were first told you had Eating disorder?"
-484,43529712,43528844,4,12,"1384495.1384558.43528844",1,"Are you currently prescribed medications and/or receiving treatment for Eating disorder?"
-485,43529712,43530360,4,12,"1384495.1384622.43530360",1,"Are you still seeing a doctor or health care provider for Personality disorder?"
-486,43529712,43530518,4,12,"1384495.1384622.43530518",1,"About how old were you when you were first told you had Personality disorder?"
-487,43529712,43528845,4,12,"1384495.1384622.43528845",1,"Are you currently prescribed medications and/or receiving treatment for Personality disorder?"
-488,43529712,43530361,4,12,"1384495.1384443.43530361",1,"Are you still seeing a doctor or health care provider for Post-traumatic stress disorder (PTSD)?"
-489,43529712,43530519,4,12,"1384495.1384443.43530519",1,"About how old were you when you were first told you had Post-traumatic stress disorder (PTSD)?"
-490,43529712,43528846,4,12,"1384495.1384443.43528846",1,"Are you currently prescribed medications and/or receiving treatment for Post-traumatic stress disorder (PTSD)?"
-491,43529712,43530362,4,12,"1384495.1384557.43530362",1,"Are you still seeing a doctor or health care provider for Schizophrenia?"
-492,43529712,43530520,4,12,"1384495.1384557.43530520",1,"About how old were you when you were first told you had Schizophrenia?"
-493,43529712,43528847,4,12,"1384495.1384557.43528847",1,"Are you currently prescribed medications and/or receiving treatment for Schizophrenia?"
-494,43529712,43530363,4,12,"1384495.1384464.43530363",1,"Are you still seeing a doctor or health care provider for Social phobia?"
-495,43529712,43530521,4,12,"1384495.1384464.43530521",1,"About how old were you when you were first told you had Social phobia?"
-496,43529712,43528848,4,12,"1384495.1384464.43528848",1,"Are you currently prescribed medications and/or receiving treatment for Social phobia?"
-497,43529712,1384539,4,12,"1384495.1384549.1384539",1,"Are you still seeing a doctor or health care provider for Other mental health or substance use condition?"
-498,43529712,1384425,4,12,"1384495.1384549.1384425",1,"About how old were you when you were first told you had Other mental health or substance use condition?"
-499,43529712,1384584,4,12,"1384495.1384549.1384584",1,"Are you currently prescribed medications and/or receiving treatment for Other mental health or substance use condition?"
-500,43529712,1384430,4,13,"1384430",0,"Has a doctor or health care provider ever told you that you have…? (select all that apply)"
-501,43529712,43530381,4,13,"1384430.43528355.43530381",1,"Are you still seeing a doctor or health care provider for Acne?"
-502,43529712,43530539,4,13,"1384430.43528355.43530539",1,"About how old were you when you were first told you had Acne?"
-503,43529712,43528866,4,13,"1384430.43528355.43528866",1,"Are you currently prescribed medications and/or receiving treatment for Acne?"
-504,43529712,43530382,4,13,"1384430.43528377.43530382",1,"Are you still seeing a doctor or health care provider for Allergies?"
-505,43529712,43530540,4,13,"1384430.43528377.43530540",1,"About how old were you when you were first told you had Allergies?"
-506,43529712,43528867,4,13,"1384430.43528377.43528867",1,"Are you currently prescribed medications and/or receiving treatment for Allergies?"
-507,43529712,1384474,4,13,"1384430.1385329.1384474",1,"Are you still seeing a doctor or health care provider for Endometriosis?"
-508,43529712,1384636,4,13,"1384430.1385329.1384636",1,"About how old were you when you were first told you had Endometriosis?"
-509,43529712,1384624,4,13,"1384430.1385329.1384624",1,"Are you currently prescribed medications and/or receiving treatment for Endometriosis?"
-510,43529712,43530383,4,13,"1384430.43528684.43530383",1,"Are you still seeing a doctor or health care provider for Enlarged prostate?"
-511,43529712,43530541,4,13,"1384430.43528684.43530541",1,"About how old were you when you were first told you had Enlarged prostate?"
-512,43529712,43528868,4,13,"1384430.43528684.43528868",1,"Are you currently prescribed medications and/or receiving treatment for Enlarged prostate?"
-513,43529712,1384605,4,13,"1384430.1384407.1384605",1,"Are you still seeing a doctor or health care provider for Fibroids?"
-514,43529712,1384542,4,13,"1384430.1384407.1384542",1,"About how old were you when you were first told you had Fibroids?"
-515,43529712,1384668,4,13,"1384430.1384407.1384668",1,"Are you currently prescribed medications and/or receiving treatment for Fibroids?"
-516,43529712,43530384,4,13,"1384430.43529594.43530384",1,"Are you still seeing a doctor or health care provider for Obesity?"
-517,43529712,43530542,4,13,"1384430.43529594.43530542",1,"About how old were you when you were first told you had Obesity?"
-518,43529712,43528869,4,13,"1384430.43529594.43528869",1,"Are you currently prescribed medications and/or receiving treatment for Obesity?"
-519,43529712,1384501,4,13,"1384430.1384618.1384501",1,"Are you still seeing a doctor or health care provider for PCOS (polycystic ovarian syndrome)?"
-520,43529712,1384509,4,13,"1384430.1384618.1384509",1,"About how old were you when you were first told you had PCOS (polycystic ovarian syndrome)?"
-521,43529712,1384507,4,13,"1384430.1384618.1384507",1,"Are you currently prescribed medications and/or receiving treatment for PCOS (polycystic ovarian syndrome)?"
-522,43529712,1384530,4,13,"1384430.1384392.1384530",1,"Are you still seeing a doctor or health care provider for Reactions to anesthesia (such as hyperthermia)?"
-523,43529712,1384569,4,13,"1384430.1384392.1384569",1,"About how old were you when you were first told you had Reactions to anesthesia (such as hyperthermia)?"
-524,43529712,1384572,4,13,"1384430.1384392.1384572",1,"Are you currently prescribed medications and/or receiving treatment for Reactions to anesthesia (such as hyperthermia)?"
-525,43529712,43530385,4,13,"1384430.43529831.43530385",1,"Are you still seeing a doctor or health care provider for Skin condition (e.g. Eczema, Psoriasis)?"
-526,43529712,43530543,4,13,"1384430.43529831.43530543",1,"About how old were you when you were first told you had Skin condition (e.g. Eczema, Psoriasis)?"
-527,43529712,43528870,4,13,"1384430.43529831.43528870",1,"Are you currently prescribed medications and/or receiving treatment for Skin condition (e.g. Eczema, Psoriasis)?"
-528,43529712,43530386,4,13,"1384430.43529967.43530386",1,"Are you still seeing a doctor or health care provider for Vitamin B deficiency?"
-529,43529712,43530544,4,13,"1384430.43529967.43530544",1,"About how old were you when you were first told you had Vitamin B deficiency?"
-530,43529712,43528871,4,13,"1384430.43529967.43528871",1,"Are you currently prescribed medications and/or receiving treatment for Vitamin B deficiency?"
-531,43529712,43530387,4,13,"1384430.43529968.43530387",1,"Are you still seeing a doctor or health care provider for Vitamin D deficiency?"
-532,43529712,43530545,4,13,"1384430.43529968.43530545",1,"About how old were you when you were first told you had Vitamin D deficiency?"
-533,43529712,43528872,4,13,"1384430.43529968.43528872",1,"Are you currently prescribed medications and/or receiving treatment for Vitamin D deficiency?"
-534,43529712,1384409,4,13,"1384430.1384631.1384409",1,"Are you still seeing a doctor or health care provider for any other diagnosis?"
-535,43529712,1384394,4,13,"1384430.1384631.1384394",1,"About how old were you when you were first told you had any other diagnosis?"
-536,43529712,1384589,4,13,"1384430.1384631.1384589",1,"Are you currently prescribed medications and/or receiving treatment for any other diagnosis?"
-537,43528895,43530418,5,1,"43530418",0,"DURING THE PAST 12 MONTHS, were you told by a health care provider or doctor’s office that they did not accept your health care coverage?"
-538,43528895,43530559,5,2,"43530559",0,"In regard to your health insurance or health care coverage, how does it compare to a year ago? Is it better, worse, or about the same?"
-539,43528895,43530562,5,3,"43530562",0,"Is there a place that you USUALLY go to when you are sick or need advice about your health?"
-540,43528895,43530593,5,4,"43530593",0,"What kind of place do you go to most often?"
-541,43528895,43530595,5,5,"43530595",0,"About how long has it been since you last saw or talked to a doctor or other health care provider about your own health?"
-542,43528895,43528660,5,6,"43528660",0,"DURING THE PAST 12 MONTHS, have you seen or talked to a general doctor who treats a variety of illnesses (a physician in general practice, primary care, family medicine, or internal medicine)?"
-543,43528895,43530588,5,6,"43528660.43530243.43530588",1,"What is the total number of general doctor visits you made in the last 12 months?"
-544,43528895,43530404,5,7,"43530404",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A nurse practitioner, physician assistant, or midwife?"
-545,43528895,43529973,5,7,"43530404.43530246.43529973",1,"What is the total number of nurse practitioner, physician assistant, or midwife visits you made in the last 12 months?"
-546,43528895,43530401,5,8,"43530401",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A doctor who specializes in women's health (an obstetrician/gynecologist)?"
-547,43528895,43529975,5,8,"43530401.43530247.43529975",1,"What is the total number of visits to a doctor who specializes in women's health that you made in the last 12 months?"
-548,43528895,43530402,5,9,"43530402",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A mental health professional such as a psychiatrist, psychologist, psychiatric nurse, or clinical social worker?"
-549,43528895,43529977,5,9,"43530402.43530245.43529977",1,"What is the total number of visits to a mental health professional that you made in the last 12 months?"
-550,43528895,43530403,5,10,"43530403",0,"DURING THE PAST 12 MONTHS, have you seen or talked to An optometrist, ophthalmologist, or eye doctor (someone who prescribes eyeglasses)?"
-551,43528895,43530591,5,10,"43530403.43530242.43530591",1,"What is the total number of visits to an eye doctor that you made in the last 12 months?"
-552,43528895,43530406,5,11,"43530406",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A podiatrist or foot doctor?"
-553,43528895,43530590,5,11,"43530406.43530249.43530590",1,"What is the total number of visits to a foot doctor that you made in the last 12 months?"
-554,43528895,43530399,5,12,"43530399",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A chiropractor?"
-555,43528895,43530589,5,12,"43530399.43530240.43530589",1,"What is the total number of visits to a chiropractor that you made in the last 12 months?"
-556,43528895,43530405,5,13,"43530405",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist?"
-557,43528895,43530592,5,13,"43530405.43530249.43530592",1,"What is the total number of visits to a physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist that you made in the last 12 months?"
-558,43528895,43530400,5,14,"43530400",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A dentist or orthodontist?"
-559,43528895,43529974,5,14,"43530400.43530241.43529974",1,"What is the total number of visits to a dentist or orthodontist that you made in the last 12 months?"
-560,43528895,43528661,5,15,"43528661",0,"DURING THE PAST 12 MONTHS, have you seen or talked to A medical doctor who specializes in a particular medical disease or problem (other than obstetrician/gynecologist, psychiatrist, or ophthalmologist)?"
-561,43528895,43529976,5,15,"43528661.43530244.43529976",1,"What is the total number of visits to a medical doctor who specializes in a particular medical disease or problem that you made in the last 12 months?"
-562,43528895,43530407,5,16,"43530407",0,"DURING THE PAST 12 MONTHS, have you seen or talked to Traditional healers such as, Shaman, acupuncturist, or non-western medicine?"
-563,43528895,43529978,5,16,"43530407.43530250.43529978",1,"What is the total number of visits to traditional healers that you made in the last 12 months?"
-564,43528895,43530439,5,17,"43530439",0,"How often were you treated with respect by your doctors or health care providers? Would you say…"
-565,43528895,43530437,5,18,"43530437",0,"How often did your doctors or health care providers ask for your opinions or beliefs about your medical care or treatment? For example, what kind of tests, procedures, or medications you prefer. Would you say…"
-566,43528895,43530438,5,19,"43530438",0,"How often did your doctors or health care providers tell or give you information about your health and health care that was easy to understand? Would you say…"
-567,43528895,43529906,5,20,"43529906",0,"Have you delayed getting care for following reason: Didn’t have transportation?"
-568,43528895,43530268,5,21,"43530268",0,"Have you delayed getting care for following reason: You live in a rural area where distance to the health care provider is too far?"
-569,43528895,43530594,5,22,"43530594",0,"Have you delayed getting care for following reason: You were nervous about seeing a health care provider?"
-570,43528895,43529905,5,23,"43529905",0,"Have you delayed getting care for following reason: Couldn’t get time off work." 
-571,43528895,43529903,5,24,"43529903",0,"Have you delayed getting care for following reason: Couldn’t get child care.'
-572,43528895,43529904,5,25,"43529904",0,"Have you delayed getting care for following reason: You provide care to an adult and could not leave him/her."
-573,43528895,43530583,5,26,"43530583",0,"Have you delayed getting care for following reason: Couldn’t afford the copay."
-574,43528895,43530585,5,27,"43530585",0,"Have you delayed getting care for following reason: Your deductible was too high/or could not afford the deductible."
-575,43528895,43530584,5,28,"43530584",0,"Have you delayed getting care for following reason: You had to pay out of pocket for some or all of the procedure."
-576,43528895,43530411,5,29,"43530411",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Prescription medicines"
-577,43528895,43530410,5,30,"43530410",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Mental health care or counseling"
-578,43528895,43528663,5,31,"43528663",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Emergency care"
-579,43528895,43528662,5,32,"43528662",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Dental care (including check ups)"
-580,43528895,43530408,5,33,"43530408",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Eyeglasses"
-581,43528895,43528664,5,34,"43528664",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a regular doctor or general health provider (in primary care, general practice, internal medicine, family medicine)"
-582,43528895,43530412,5,35,"43530412",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a specialist"
-583,43528995,43530409,5,36,"43530409",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Follow-up care" 
-585,43528895,43530557,5,37,"43530557",0,"If you get sick or have an accident, how worried are you that you will be able to pay your medical bills? Are you very worried, somewhat worried, or not at all worried?"
-586,43528895,43530416,5,38,"43530416",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You skipped medication doses to save money"
-587,43528895,43530417,5,39,"43530417",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You took less medicine to save money"
-588,43528895,43530415,5,40,"43530415",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You delayed filling a prescription to save money"
-589,43528895,43530413,5,41,"43530413",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You asked your doctor for a lower cost medication to save money"
-590,43528895,43528665,5,42,"43528665",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You bought prescription drugs from another country to save money"
-591,43528895,43528666,5,43,"43528666",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You used alternative therapies to save money"
-592,43528895,43529901,5,44,"43529901",0,"How important is it to you that your doctors or health care providers understand or are similar to you in any of these ways? Would you say..."
-593,43528895,43529902,5,45,"43529902",0,"How often were you able to see doctors or health care providers who were similar to you in any of these ways? Would you say…"
-594,43528895,43529899,5,46,"43529899",0,"How often have you either delayed or not gone to see doctors or health care providers because they were different from you in any of these ways?"
-595,43528698,43528652,6,1,"43528652",0,"How much do you know about illnesses or health problems for your parents, grandparents, brothers, sisters, and/or children?"
-596,43528698,43528512,6,1,"43528652.43528385.43528512",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Cancer"
-597,43528698,43528512,6,1,"43528652.43529842.43528512",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Cancer"
-598,43528698,43528917,6,1,"43528652.43528385.43528917",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Heart and blood conditions"
-599,43528698,43528917,6,1,"43528652.43529842.43528917",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Heart and blood conditions"
-600,43528698,43528631,6,1,"43528652.43528385.43528631",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Digestive conditions"
-601,43528698,43528631,6,1,"43528652.43529842.43528631",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Digestive conditions"
-602,43528698,43528944,6,1,"43528652.43528385.43528944",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-603,43528698,43528944,6,1,"43528652.43529842.43528944",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-604,43528698,43529155,6,1,"43528652.43528385.43529155",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Kidney conditions"
-605,43528698,43529155,6,1,"43528652.43529842.43529155",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Kidney conditions"
-606,43528698,43529191,6,1,"43528652.43528385.43529191",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Lung conditions"
-607,43528698,43529191,6,1,"43528652.43529842.43529191",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Lung conditions"
-608,43528698,43528490,6,1,"43528652.43529842.43528490",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Brain and nervous system conditions"
-609,43528698,43528490,6,1,"43528652.43529842.43528490",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Brain and nervous system conditions"
-610,43528698,43530563,6,1,"43528652.43528385.43530563",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-611,43528698,43530563,6,1,"43528652.43529842.43530563",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-612,43528698,43528487,6,1,"43528652.43528385.43528487",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-613,43528698,43528487,6,1,"43528652.43529842.43528487",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-614,43528698,43529963,6,1,"43528652.43528385.43529963",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hearing and eye conditions"
-615,43528698,43529963,6,1,"43528652.43529842.43529963",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hearing and eye conditions"
-616,43528698,43529635,6,1,"43528652.43528385.43529635",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Other conditions"
-617,43528698,43529635,6,1,"43528652.43529842.43529635",1,"Please indicate if your mother has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Other conditions"
-618,43528698,43528510,6,1,"43528652.43528385.43528510",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Cancer"
-619,43528698,43528510,6,1,"43528652.43529842.43528510",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Cancer"
-620,43528698,43528559,6,1,"43528652.43528385.43528559",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Heart and blood conditions"
-621,43528698,43528559,6,1,"43528652.43529842.43528559",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Heart and blood conditions"
-622,43528698,43528629,6,1,"43528652.43528385.43528629",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Digestive conditions"
-623,43528698,43528629,6,1,"43528652.43529842.43528629",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Digestive conditions"
-624,43528698,43528675,6,1,"43528652.43528385.43528675",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-625,43528698,43528675,6,1,"43528652.43529842.43528675",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-626,43528698,43529153,6,1,"43528652.43528385.43529153",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Kidney conditions"
-627,43528698,43529153,6,1,"43528652.43529842.43529153",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Kidney conditions"
-628,43528698,43529763,6,1,"43528652.43528385.43529763",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Lung conditions"
-629,43528698,43529763,6,1,"43528652.43529842.43529763",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Lung conditions"
-630,43528698,43528489,6,1,"43528652.43528385.43528489",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Brain and nervous system conditions"
-631,43528698,43528489,6,1,"43528652.43529842.43528489",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Brain and nervous system conditions"
-632,43528698,43529218,6,1,"43528652.43528385.43529218",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Mental Health or substance use of conditions"
-633,43528698,43529218,6,1,"43528652.43529842.43529218",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Mental Health or substance use of conditions"
-634,43528698,43528486,6,1,"43528652.43528385.43528486",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-635,43528698,43528486,6,1,"43528652.43529842.43528486",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-636,43528698,43529961,6,1,"43528652.43528385.43529961",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hearing and eye conditions"
-637,43528698,43529961,6,1,"43528652.43529842.43529961",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hearing and eye conditions"
-638,43528698,43529640,6,1,"43528652.43528385.43529640",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Other conditions"
-639,43528698,43529640,6,1,"43528652.43529842.43529640",1,"Please indicate if your father has ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Other conditions"
-640,43528698,43528513,6,1,"43528652.43528385.43528513",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Cancer"
-641,43528698,43528513,6,1,"43528652.43529842.43528513",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Cancer"
-642,43528698,43528561,6,1,"43528652.43528385.43528561",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Heart and blood conditions"
-643,43528698,43528561,6,1,"43528652.43529842.43528561",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Heart and blood conditions"
-644,43528698,702788,6,1,"43528652.43528385.702788",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Digestive conditions"
-645,43528698,702788,6,1,"43528652.43529842.702788",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Digestive conditions"
-646,43528698,702783,6,1,"43528652.43528385.702783",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Hormone/endocrine conditions"
-647,43528698,702783,6,1,"43528652.43529842.702783",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Hormone/endocrine conditions"
-648,43528698,43529156,6,1,"43528652.43528385.43529156",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Kidney conditions:"
-649,43528698,43529156,6,1,"43528652.43529842.43529156",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Kidney conditions:"
-650,43528698,43529765,6,1,"43528652.43528385.43529765",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Lung conditions"
-651,43528698,43529765,6,1,"43528652.43529842.43529765",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Lung conditions"
-652,43528698,43529270,6,1,"43528652.43528385.43529270",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Brain and nervous system conditions"
-653,43528698,43529270,6,1,"43528652.43529842.43529270",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Brain and nervous system conditions"
-654,43528698,43529215,6,1,"43528652.43528385.43529215",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Mental health or substance use of conditions"
-655,43528698,43529215,6,1,"43528652.43529842.43529215",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Mental health or substance use of conditions"
-656,43528698,43529813,6,1,"43528652.43528385.43529813",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Bone, joint and muscle conditions"
-657,43528698,43529813,6,1,"43528652.43529842.43529813",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Bone, joint and muscle conditions"
-658,43528698,43529964,6,1,"43528652.43528385.43529964",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Hearing and eye conditions"
-659,43528698,43529964,6,1,"43528652.43529842.43529964",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Hearing and eye conditions"
-660,43528698,43529643,6,1,"43528652.43528385.43529643",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Other conditions"
-661,43528698,43529643,6,1,"43528652.43529842.43529643",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. If you have more than one brother or sister, check the box if any of your brothers or sisters have the condition (select all that apply): Other conditions"
-662,43528698,43528509,6,1,"43528652.43528385.43528509",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Cancer"
-663,43528698,43528509,6,1,"43528652.43529842.43528509",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Cancer"
-664,43528698,43528558,6,1,"43528652.43528385.43528558",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Heart and blood Conditions"
-665,43528698,43528558,6,1,"43528652.43529842.43528558",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Heart and blood Conditions"
-666,43528698,43528628,6,1,"43528652.43528385.43528628",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Digestive conditions"
-667,43528698,43528628,6,1,"43528652.43529842.43528628",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Digestive conditions"
-668,43528698,43528674,6,1,"43528652.43528385.43528674",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-669,43528698,43528674,6,1,"43528652.43529842.43528674",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-670,43528698,43529152,6,1,"43528652.43528385.43529152",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Kidney conditions"
-671,43528698,43529152,6,1,"43528652.43529842.43529152",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Kidney conditions"
-672,43528698,43529762,6,1,"43528652.43528385.43529762",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Lung conditions"
-673,43528698,43529762,6,1,"43528652.43529842.43529762",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Lung conditions"
-674,43528698,43529268,6,1,"43528652.43528385.43529268",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Brain and nervous system conditions"
-675,43528698,43529268,6,1,"43528652.43529842.43529268",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Brain and nervous system conditions"
-676,43528698,43529213,6,1,"43528652.43528385.43529213",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-677,43528698,43529213,6,1,"43528652.43529842.43529213",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-678,43528698,43529811,6,1,"43528652.43528385.43529811",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-679,43528698,43529811,6,1,"43528652.43529842.43529811",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-680,43528698,43529960,6,1,"43528652.43528385.43529960",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hearing and eye conditions"
-681,43528698,43529960,6,1,"43528652.43529842.43529960",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hearing and eye conditions"
-682,43528698,43529632,6,1,"43528652.43528385.43529632",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Other conditions"
-683,43528698,43529632,6,1,"43528652.43529842.43529632",1,"Please indicate if your daughter(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Other conditions"
-684,43528698,43528514,6,1,"43528652.43528385.43528514",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Cancer"
-685,43528698,43528514,6,1,"43528652.43529842.43528514",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Cancer"
-686,43528698,43528562,6,1,"43528652.43528385.43528562",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Heart and blood conditions"
-687,43528698,43528562,6,1,"43528652.43529842.43528562",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Heart and blood conditions"
-688,43528698,43528633,6,1,"43528652.43528385.43528633",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Digestive conditions"
-689,43528698,43528633,6,1,"43528652.43529842.43528633",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Digestive conditions"
-690,43528698,43528677,6,1,"43528652.43528385.43528677",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-691,43528698,43528677,6,1,"43528652.43529842.43528677",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-692,43528698,43529157,6,1,"43528652.43528385.43529157",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Kidney conditions"
-693,43528698,43529157,6,1,"43528652.43529842.43529157",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Kidney conditions"
-694,43528698,43529766,6,1,"43528652.43528385.43529766",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Lung conditions"
-695,43528698,43529766,6,1,"43528652.43529842.43529766",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Lung conditions"
-696,43528698,43529271,6,1,"43528652.43528385.43529271",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Brain and nervous system conditions"
-697,43528698,43529271,6,1,"43528652.43529842.43529271",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Brain and nervous system conditions"
-698,43528698,43529216,6,1,"43528652.43528385.43529216",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-699,43528698,43529216,6,1,"43528652.43529842.43529216",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-700,43528698,43529814,6,1,"43528652.43528385.43529814",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-701,43528698,43529814,6,1,"43528652.43529842.43529814",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-702,43528698,43529965,6,1,"43528652.43528385.43529965",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hearing and eye conditions"
-703,43528698,43529965,6,1,"43528652.43529842.43529965",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Hearing and eye conditions"
-704,43528698,43529637,6,1,"43528652.43528385.43529637",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Other conditions"
-705,43528698,43529637,6,1,"43528652.43529842.43529637",1,"Please indicate if your son(s) has/have ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply): Other conditions"
-706,43528698,43528511,6,1,"43528652.43528385.43528511",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Cancer"
-707,43528698,43528511,6,1,"43528652.43529842.43528511",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Cancer"
-708,43528698,43528560,6,1,"43528652.43528385.43528560",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Heart and blood conditions"
-709,43528698,43528560,6,1,"43528652.43529842.43528560",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Heart and blood conditions"
-710,43528698,43528630,6,1,"43528652.43528385.43528630",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Digestive conditions"
-711,43528698,43528630,6,1,"43528652.43529842.43528630",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Digestive conditions"
-712,43528698,43528676,6,1,"43528652.43528385.43528676",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-713,43528698,43528676,6,1,"43528652.43529842.43528676",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hormone/endocrine conditions"
-714,43528698,43529154,6,1,"43528652.43528385.43529154",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Kidney conditions"
-715,43528698,43529154,6,1,"43528652.43529842.43529154",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Kidney conditions"
-716,43528698,43529764,6,1,"43528652.43528385.43529764",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Lung Conditions"
-717,43528698,43529764,6,1,"43528652.43529842.43529764",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Lung Conditions"
-718,43528698,43529269,6,1,"43528652.43528385.43529269",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Brain and nervous system conditions"
-719,43528698,43529269,6,1,"43528652.43529842.43529269",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Brain and nervous system conditions"
-720,43528698,43529214,6,1,"43528652.43528385.43529214",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-721,43528698,43529214,6,1,"43528652.43529842.43529214",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Mental health or substance use of conditions"
-722,43528698,43529812,6,1,"43528652.43528385.43529812",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-723,43528698,43529812,6,1,"43528652.43529842.43529812",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Bone, joint and muscle conditions"
-724,43528698,43529962,6,1,"43528652.43528385.43529962",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hearing and eye conditions"
-725,43528698,43529962,6,1,"43528652.43529842.43529962",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Hearing and eye conditions"
-726,43528698,43529634,6,1,"43528652.43528385.43529634",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Other conditions"
-727,43528698,43529634,6,1,"43528652.43529842.43529634",1,"Please indicate if your grandparent(s) have ever been diagnosed with the following health conditions and/or health events. Think only of those people you are related to by blood. (select all that apply): Other conditions"
+id,survey_concept_id,question_concept_id,survey_order_number,question_order_number,"path",sub
+1,1586134,1586135,1,1,"1586135",0
+2,1586134,1586140,1,2,"1586140",0
+4,1586134,1586151,1,2,"1586140.1586142.1586151",1
+5,1586134,1586152,1,2,"1586140.1586143.1586152",1
+6,1586134,1586156,1,2,"1586140.1586147.1586156",1
+9,1586134,1586155,1,2,"1586140.1586146.1586155",1
+10,1586134,1585845,1,3,"1585845",0
+11,1586134,1585838,1,4,"1585838",0
+12,1586134,1585348,1,4,"1585838.1585841.1585348",1
+13,1586134,1585348,1,4,"1585838.1585842.1585348",1
+14,1586134,1585348,1,4,"1585838.1585843.1585348",1
+15,1586134,1585899,1,5,"1585899",0
+16,1586134,1585357,1,5,"1585899.1585904.1585357",1
+17,1586134,1585940,1,6,"1585940",0
+18,1586134,1585852,1,7,"1585852",0
+19,1586134,1585892,1,8,"1585892",0
+22,1586134,1585386,1,9,"1585386",0
+23,1586134,43528428,1,9,"1585386.1585387.43528428",1
+24,1586134,1585952,1,10,"1585952",0
+25,1586134,1585375,1,11,"1585375",0
+26,1586134,1585370,1,12,"1585370",0
+27,1586134,1585402,1,12,"1585370.1585373.1585402",1
+28,1586134,1585879,1,13,"1585879",0
+29,1586134,1585886,1,14,"1585886",0
+30,1585710,1585766,2,1,"1585766",0
+31,1585710,1585772,2,2,"1585772",0
+32,1585710,1585778,2,3,"1585778",0
+33,1585710,1585711,2,4,"1585711",0
+34,1585710,1585717,2,5,"1585717",0
+35,1585710,1585723,2,6,"1585723",0
+36,1585710,1585729,2,7,"1585729",0
+37,1585710,1585735,2,8,"1585735",0
+38,1585710,1585741,2,9,"1585741",0
+39,1585710,1585747,2,10,"1585747",0
+40,1585710,1585748,2,11,"1585748",0
+41,1585710,1585754,2,12,"1585754",0
+42,1585710,1585760,2,13,"1585760",0
+43,1585710,1585784,2,14,"1585784",0
+44,1585710,1585811,2,14,"1585784.1585785.1585811",1
+45,1585710,1585811,2,14,"1585784.1585788.1585811",1
+46,1585710,1585789,2,14,"1585784.1585786.1585789",1
+47,1585710,1585789,2,14,"1585784.1585787.1585789",1
+48,1585710,1585791,2,14,"1585784.1585786.1585791",1
+50,1585710,1585796,2,14,"1585784.1585786.1585791.1585792.1585796",1
+51,1585710,1585796,2,14,"1585784.1585786.1585791.1585794.1585796",1
+52,1585710,1585796,2,14,"1585784.1585786.1585791.903079.1585796",1
+56,1585710,1585803,2,15,"1585803",0
+57,1585710,1585806,2,15,"1585803.1585804.1585806",1
+58,1585710,1585815,2,16,"1585815",0
+59,1585855,1585857,3,1,"1585857",0
+60,1585855,1585860,3,1,"1585857.1585858.1585860",1
+62,1585855,1585867,3,1,"1585857.1585858.1585867",1
+67,1585855,1586166,3,2,"1586166",0
+68,1585855,1586169,3,2,"1586166.1586167.1586169",1
+69,1585855,1586174,3,3,"1586174",0
+70,1585855,1586177,3,3,"1586174.1586175.1586177",1
+71,1585855,1586182,3,4,"1586182",0
+72,1585855,1586185,3,4,"1586182.1586183.1586185",1
+73,1585855,1586190,3,5,"1586190",0
+74,1585855,1586193,3,5,"1586190.1586191.1586193",1
+75,1585855,1586198,3,6,"1586198",0
+76,1585855,1586201,3,6,"1586198.1586199.1586201",1
+77,1585855,1586207,3,6,"1586198.1586199.1586201.1586203.1586207",1
+78,1585855,1586207,3,6,"1586198.1586199.1586201.1586204.1586207",1
+79,1585855,1586207,3,6,"1586198.1586199.1586201.1586205.1586207",1
+80,1585855,1586207,3,6,"1586198.1586199.1586201.1586206.1586207",1
+81,1585855,1586213,3,6,"1586198.1586199.1586201.1586203.1586213",1
+82,1585855,1586213,3,6,"1586198.1586199.1586201.1586204.1586213",1
+83,1585855,1586213,3,6,"1586198.1586199.1586201.1586205.1586213",1
+84,1585855,1586213,3,6,"1586198.1586199.1586201.1586206.1586213",1
+85,1585855,1585636,3,7,"1585636",0
+86,1585855,1585650,3,7,"1585636.1585637.1585650",1
+87,1585855,1585656,3,7,"1585636.1585638.1585656",1
+88,1585855,1585662,3,7,"1585636.1585639.1585662",1
+89,1585855,1585668,3,7,"1585636.1585640.1585668",1
+90,1585855,1585674,3,7,"1585636.1585641.1585674",1
+91,1585855,1585680,3,7,"1585636.1585642.1585656",1
+92,1585855,1585686,3,7,"1585636.1585643.1585656",1
+93,1585855,1585692,3,7,"1585636.1585644.1585656",1
+94,1585855,1585698,3,7,"1585636.1585645.1585656",1
+95,1585855,1585704,3,7,"1585636.1585646.1585656",1
+96,43529712,1384522,4,1,"1384522",0
+97,43529712,43530302,4,1,"1384522.43528401.43530302",1
+98,43529712,43530461,4,1,"1384522.43528401.43530461",1
+99,43529712,43528786,4,1,"1384522.43528401.43528786",1
+100,43529712,43530303,4,1,"1384522.43528442.43530303",1
+101,43529712,43530414,4,1,"1384522.43528442.43530414",1
+102,43529712,43528787,4,1,"1384522.43528442.43528787",1
+103,43529712,43530304,4,1,"1384522.1384512.43530304",1
+104,43529712,43530462,4,1,"1384522.1384512.43530462",1
+105,43529712,43528788,4,1,"1384522.1384512.43528788",1
+106,43529712,43530305,4,1,"1384522.43528580.43530305",1
+107,43529712,43530463,4,1,"1384522.43528580.43530463",1
+108,43529712,4352878,4,1,"1384522.43528580.43528789",1
+109,43529712,43530306,4,1,"1384522.1384497.43530306",1
+110,43529712,43530464,4,1,"1384522.1384497.43530464",1
+111,43529712,43528790,4,1,"1384522.1384497.43528790",1
+112,43529712,43530307,4,1,"1384522.43528910.43530307",1
+113,43529712,43530465,4,1,"1384522.43528910.43530465",1
+114,43529712,43528791,4,1,"1384522.43528910.43528791",1
+115,43529712,43530308,4,1,"1384522.43528918.43530308",1
+116,43529712,43530466,4,1,"1384522.43528918.43530466",1
+117,43529712,43528792,4,1,"1384522.43528918.43528792",1
+118,43529712,43530309,4,1,"1384522.43528936.43530309",1
+119,43529712,43530467,4,1,"1384522.43528936.43530467",1
+120,43529712,43528793,4,1,"1384522.43528936.43528793",1
+121,43529712,43530310,4,1,"1384522.43529063.43530310",1
+122,43529712,43530468,4,1,"1384522.43529063.43530468",1
+123,43529712,1384437,4,1,"1384522.43529063.1384437",1
+124,43529712,43530311,4,1,"1384522.1384469.43530311",1
+125,43529712,1384448,4,1,"1384522.1384469.43530311",1
+126,43529712,43528795,4,1,"1384522.1384469.43530311",1
+127,43529712,43530312,4,1,"1384522.43529748.43530312",1
+128,43529712,43530469,4,1,"1384522.43529748.43530469",1
+129,43529712,43528796,4,1,"1384522.43529748.43528796",1
+130,43529712,43530313,4,1,"1384522.1384467.43530313",1
+131,43529712,43530470,4,1,"1384522.1384467.43530470",1
+132,43529712,43528797,4,1,"1384522.1384467.43528797",1
+133,43529712,43530314,4,1,"1384522.43529874.43530314",1
+134,43529712,43530471,4,1,"1384522.43529874.43530471",1
+135,43529712,43528798,4,1,"1384522.43529874.43528798",1
+136,43529712,43530315,4,1,"1384522.43529918.43530315",1
+137,43529712,43530472,4,1,"1384522.43529918.43530472",1
+138,43529712,43528799,4,1,"1384522.43529918.43528799",1
+139,43529712,1384423,4,1,"1384522.1384638.1384423",1
+140,43529712,1384462,4,1,"1384522.1384638.1384462",1
+141,43529712,1384420,4,1,"1384522.1384638.1384420",1
+142,43529712,1384592,4,2,"1384592",0
+143,43529712,43530388,4,2,"1384592.43528439.43530388",1
+144,43529712,43530546,4,2,"1384592.43528439.43530546",1
+145,43529712,43528873,4,2,"1384592.43528439.43528873",1
+146,43529712,1384608,4,2,"1384592.1384567.1384608",1
+147,43529712,1384393,4,2,"1384592.1384567.1384393",1
+148,43529712,1384587,4,2,"1384592.1384567.1384587",1
+149,43529712,43530390,4,2,"1384592.43529837.43530390",1
+150,43529712,43530548,4,2,"1384592.43529837.43530548",1
+151,43529712,43528875,4,2,"1384592.43529837.43528875",1
+152,43529712,1384651,4,2,"1384592.1384564.1384651",1
+153,43529712,1384635,4,2,"1384592.1384564.1384635",1
+154,43529712,1384476,4,2,"1384592.1384564.1384476",1
+155,43529712,43528760,4,3,"43528760",0
+156,43529712,43530282,4,3,"43528760.43528472.43530282",1
+157,43529712,43530440,4,3,"43528760.43528472.43530440",1
+158,43529712,43528766,4,3,"43528760.43528472.43528766",1
+159,43529712,43530283,4,3,"43528760.1384404.43530283",1
+160,43529712,43530441,4,3,"43528760.1384404.43530441",1
+161,43529712,43528767,4,3,"43528760.1384404.43528767",1
+162,43529712,43530284,4,3,"43528760.43528480.43530284",1
+163,43529712,43530442,4,3,"43528760.43528480.43530442",1
+164,43529712,43528768,4,3,"43528760.43528480.43528768",1
+165,43529712,43530285,4,3,"43528760.43528492.43530285",1
+166,43529712,43530443,4,3,"43528760.43528492.43530285",1
+167,43529712,43528769,4,3,"43528760.43528492.43530285",1
+168,43529712,43530286,4,3,"43528760.43528500.43530286",1
+169,43529712,43530444,4,3,"43528760.43528500.43530444",1
+170,43529712,43528770,4,3,"43528760.43528500.43528770",1
+171,43529712,43530287,4,3,"43528760.43528539.43530287",1
+172,43529712,43530445,4,3,"43528760.43528539.43530445",1
+173,43529712,43528771,4,3,"43528760.43528539.43528771",1
+174,43529712,43530288,4,3,"43528760.43528565.43530288",1
+175,43529712,43530446,4,3,"43528760.43528565.43530446",1
+176,43529712,43528772,4,3,"43528760.43528565.43528772",1
+177,43529712,43530289,4,3,"43528760.43528668.43530289",1
+178,43529712,43530447,4,3,"43528760.43528668.43530447",1
+179,43529712,43528773,4,3,"43528760.43528668.43528773",1
+180,43529712,43530290,4,3,"43528760.43528679.43530290",1
+181,43529712,43530448,4,3,"43528760.43528679.43530448",1
+182,43529712,43528774,4,3,"43528760.43528679.43528774",1
+183,43529712,43530291,4,3,"43528760.43528693.43530291",1
+184,43529712,43530449,4,3,"43528760.43528693.43530449",1
+185,43529712,43528775,4,3,"43528760.43528693.43528775",1
+186,43529712,43530292,4,3,"43528760.43528695.43530292",1
+187,43529712,43530450,4,3,"43528760.43528695.43530450",1
+188,43529712,43528776,4,3,"43528760.43528695.43528776",1
+189,43529712,43530293,4,3,"43528760.43528886.43530293",1
+190,43529712,43530451,4,3,"43528760.43528886.43530451",1
+191,43529712,43528777,4,3,"43528760.43528886.43528777",1
+192,43529712,43530294,4,3,"43528760.43529136.43530294",1
+193,43529712,43530452,4,3,"43528760.43529136.43530452",1
+194,43529712,43528778,4,3,"43528760.43529136.43528778",1
+195,43529712,1384390,4,4,"1384390",0
+196,43529712,43530316,4,4,"1384390.1384603.43530316",1
+197,43529712,43530473,4,4,"1384390.1384603.43530473",1
+198,43529712,43528800,4,4,"1384390.1384603.43528800",1
+199,43529712,43530317,4,4,"1384390.1384417.43530317",1
+200,43529712,43530474,4,4,"1384390.1384417.43530474",1
+201,43529712,43528801,4,4,"1384390.1384417.43528801",1
+202,43529712,1384660,4,4,"1384390.1384519.1384660",1
+203,43529712,1384609,4,4,"1384390.1384519.1384609",1
+204,43529712,1384494,4,4,"1384390.1384519.1384494",1
+205,43529712,43530318,4,4,"1384390.1384445.43530318",1
+206,43529712,43530475,4,4,"1384390.1384445.43530475",1
+207,43529712,43528802,4,4,"1384390.1384445.43528802",1
+208,43529712,43530319,4,4,"1384390.1384472.43530319",1
+209,43529712,43530476,4,4,"1384390.1384472.43530476",1
+210,43529712,43528804,4,4,"1384390.1384472.43528804",1
+211,43529712,43530320,4,4,"1384390.1384411.43530320",1
+212,43529712,43530477,4,4,"1384390.1384411.43530477",1
+213,43529712,43528805,4,4,"1384390.1384411.43528805",1
+214,43529712,43530321,4,4,"1384390.1384439.43530321",1
+215,43529712,43530478,4,4,"1384390.1384439.43530478",1
+216,43529712,43528806,4,4,"1384390.1384439.43528806",1
+217,43529712,43530322,4,4,"1384390.1384491.43530322",1
+218,43529712,43530479,4,4,"1384390.1384491.43530479",1
+219,43529712,43528807,4,4,"1384390.1384491.43528807",1
+220,43529712,43530323,4,4,"1384390.1384440.43530323",1
+221,43529712,43530480,4,4,"1384390.1384440.43530480",1
+222,43529712,43528808,4,4,"1384390.1384440.43528808",1
+223,43529712,43530324,4,4,"1384390.1384548.43530324",1
+224,43529712,43530481,4,4,"1384390.1384548.43530481",1
+225,43529712,43528809,4,4,"1384390.1384548.43528809",1
+226,43529712,43530325,4,4,"1384390.1384583.43530325",1
+227,43529712,43530482,4,4,"1384390.1384583.43530482",1
+228,43529712,43528810,4,4,"1384390.1384583.43528810",1
+229,43529712,43530326,4,4,"1384390.1384565.43530326",1
+230,43529712,43530483,4,4,"1384390.1384565.43530483",1
+231,43529712,43528811,4,4,"1384390.1384565.43528811",1
+232,43529712,43530327,4,4,"1384390.1384405.43530327",1
+233,43529712,43530484,4,4,"1384390.1384405.43530484",1
+234,43529712,43528812,4,4,"1384390.1384405.43528812",1
+235,43529712,43530328,4,4,"1384390.1384604.43530328",1
+236,43529712,43530485,4,4,"1384390.1384604.43530485",1
+237,43529712,43528813,4,4,"1384390.1384604.43528813",1
+238,43529712,1384460,4,4,"1384390.1384594.1384460",1
+239,43529712,1384649,4,4,"1384390.1384594.1384649",1
+240,43529712,1384468,4,4,"1384390.1384594.1384468",1
+241,43529712,43528758,4,5,"43528758",0
+242,43529712,43530329,4,5,"43528758.43529066.43530329",1
+243,43529712,43530486,4,5,"43528758.43529066.43530486",1
+244,43529712,43528814,4,5,"43528758.43529066.43528814",1
+245,43529712,43530330,4,5,"43528758.43529075.43530330",1
+246,43529712,43530487,4,5,"43528758.43529075.43530487",1
+247,43529712,43528815,4,5,"43528758.43529075.43528815",1
+248,43529712,1384532,4,5,"43528758.43529727.1384532",1
+249,43529712,1384543,4,5,"43528758.43529727.1384543",1
+250,43529712,1384566,4,5,"43528758.43529727.1384566",1
+251,43529712,43530334,4,5,"43528758.43529923.43530334",1
+252,43529712,43530491,4,5,"43528758.43529923.43530491",1
+253,43529712,43528819,4,5,"43528758.43529923.43528819",1
+254,43529712,43530335,4,5,"43528758.43529932.43530335",1
+255,43529712,43530492,4,5,"43528758.43529932.43530492",1
+256,43529712,43528820,4,5,"43528758.43529932.43528820",1
+257,43529712,43530331,4,5,"43528758.43529668.43530331",1
+258,43529712,43530488,4,5,"43528758.43529668.43530488",1
+259,43529712,43528816,4,5,"43528758.43529668.43528816",1
+260,43529712,43530332,4,5,"43528758.43529676.43530332",1
+261,43529712,43530489,4,5,"43528758.43529676.43530489",1
+262,43529712,43528817,4,5,"43528758.43529676.43528817",1
+263,43529712,1384538,4,5,"43528758.1384666.1384538",1
+264,43529712,1384672,4,5,"43528758.1384666.1384672",1
+265,43529712,1384641,4,5,"43528758.1384666.1384641",1
+266,43529712,1384487,4,6,"1384487",0
+267,43529712,43530350,4,6,"1384487.1384395.43530350",1
+268,43529712,43530508,4,6,"1384487.1384395.43530508",1
+269,43529712,43528835,4,6,"1384487.1384395.43528835",1
+270,43529712,43530352,4,7,"1384487.1384563.43530352",1
+271,43529712,43530510,4,7,"1384487.1384563.43530510",1
+272,43529712,43528837,4,7,"1384487.1384563.43528837",1
+273,43529712,43530353,4,7,"1384487.1384414.43530353",1
+274,43529712,43530511,4,7,"1384487.1384414.43530511",1
+275,43529712,43528838,4,7,"1384487.1384414.43528838",1
+276,43529712,43530351,4,7,"1384487.1384515.43530351",1
+277,43529712,43530509,4,7,"1384487.1384515.43530509",1
+278,43529712,43528836,4,7,"1384487.1384515.43528836",1
+279,43529712,1384493,4,7,"1384487.1384646.1384493",1
+280,43529712,1384661,4,7,"1384487.1384646.1384661",1
+281,43529712,1384612,4,7,"1384487.1384646.1384612",1
+282,43529712,43528757,4,8,"43528757",0
+283,43529712,43530392,4,8,"43528757.43528524.43530392",1
+284,43529712,43530550,4,8,"43528757.43528524.43530550",1
+285,43529712,43528877,4,8,"43528757.43528524.43528877",1
+286,43529712,43530393,4,8,"43528757.43528713.43530393",1
+287,43529712,43530551,4,8,"43528757.43528713.43530551",1
+288,43529712,43528878,4,8,"43528757.43528713.43528878",1
+289,43529712,43530394,4,8,"43528757.1384657.43530394",1
+290,43529712,43530552,4,8,"43528757.1384657.43530552",1
+291,43529712,43528879,4,8,"43528757.1384657.43528879",1
+292,43529712,43530395,4,8,"43528757.43528742.43530395",1
+293,43529712,43530553,4,8,"43528757.43528742.43530553",1
+294,43529712,43528880,4,8,"43528757.43528742.43528880",1
+295,43529712,1384617,4,8,"43528757.1384547.1384617",1
+296,43529712,1384611,4,8,"43528757.1384547.1384611",1
+297,43529712,1384433,4,8,"43528757.1384547.1384433",1
+298,43529712,43530397,4,8,"43528757.43529616.43530397",1
+299,43529712,43530555,4,8,"43528757.43529616.43530555",1
+300,43529712,43528882,4,8,"43528757.43529616.43528882",1
+301,43529712,1384645,4,8,"43528757.1384422.1384645",1
+302,43529712,1384626,4,8,"43528757.1384422.1384626",1
+303,43529712,1384513,4,8,"43528757.1384422.1384513",1
+304,43529712,1384593,4,8,"43528757.1384653.1384593",1
+305,43529712,1384479,4,8,"43528757.1384653.1384479",1
+306,43529712,1384540,4,8,"43528757.1384653.1384540",1
+307,43529712,43530398,4,8,"43528757.1384534.43530398",1
+308,43529712,43530556,4,8,"43528757.1384534.43530556",1
+309,43529712,43528883,4,8,"43528757.1384534.43528883",1
+310,43529712,43530396,4,8,"43528757.1384389.43530396",1
+311,43529712,43530554,4,8,"43528757.1384389.43530554",1
+312,43529712,43528881,4,8,"43528757.1384389.43528881",1
+313,43529712,1384576,4,8,"43528757.1384452.1384576",1
+314,43529712,1384470,4,8,"43528757.1384452.1384470",1
+315,43529712,1384478,4,8,"43528757.1384452.1384478",1
+316,43529712,1384410,4,8,"43528757.1384471.1384410",1
+317,43529712,1384399,4,8,"43528757.1384471.1384399",1
+318,43529712,1384671,4,8,"43528757.1384471.1384671",1
+319,43529712,43528759,4,9,"43528759",0
+320,43529712,43530336,4,9,"43528759.43528474.43530336",1
+321,43529712,43530493,4,9,"43528759.43528474.43530493",1
+322,43529712,43528821,4,9,"43528759.43528474.43528821",1
+323,43529712,43530337,4,9,"43528759.43528528.43530337",1
+324,43529712,43530494,4,9,"43528759.43528528.43530494",1
+325,43529712,43528822,4,9,"43528759.43528528.43528822",1
+326,43529712,43530338,4,9,"43528759.43528659.43530338",1
+327,43529712,43530495,4,9,"43528759.43528659.43530495",1
+328,43529712,43528823,4,9,"43528759.43528659.43528823",1
+329,43529712,43530339,4,9,"43528759.43528699.43530339",1
+330,43529712,43530496,4,9,"43528759.43528699.43530496",1
+331,43529712,43528824,4,9,"43528759.43528699.43528824",1
+332,43529712,43530343,4,9,"43528759.43529265.43530343",1
+333,43529712,43530500,4,9,"43528759.43529265.43530500",1
+334,43529712,43528828,4,9,"43528759.43529265.43528828",1
+335,43529712,1384570,4,9,"43528759.1384648.1384570",1
+336,43529712,1384554,4,9,"43528759.1384648.1384554",1
+337,43529712,1384388,4,9,"43528759.1384648.1384388",1
+338,43529712,43530340,4,9,"43528759.43528731.43530340",1
+339,43529712,43530497,4,9,"43528759.43528731.43530497",1
+340,43529712,43528825,4,9,"43528759.43528731.43528825",1
+341,43529712,43530342,4,9,"43528759.43529196.43530342",1
+342,43529712,43530499,4,9,"43528759.43529196.43530499",1
+343,43529712,43528827,4,9,"43528759.43529196.43528827",1
+344,43529712,43530344,4,9,"43528759.43529917.43530344",1
+345,43529712,43530501,4,9,"43528759.43529917.43530501",1
+346,43529712,43528829,4,9,"43528759.43529917.43528829",1
+347,43529712,43530341,4,9,"43528759.1384396.43530341",1
+348,43529712,43530498,4,9,"43528759.1384396.43530498",1
+349,43529712,43528826,4,9,"43528759.1384396.43528826",1
+350,43529712,1384556,4,9,"43528759.1384428.1384556",1
+351,43529712,1384667,4,9,"43528759.1384428.1384667",1
+352,43529712,1384663,4,9,"43528759.1384428.1384663",1
+353,43529712,1384662,4,10,"1384662",1
+354,43529712,1384553,4,10,"1384662.1384578.1384553",1
+355,43529712,1384637,4,10,"1384662.1384578.1384637",1
+356,43529712,1384442,4,10,"1384662.1384578.1384442",1
+357,43529712,43530345,4,10,"1384662.1384659.43530345",1
+358,43529712,43530502,4,10,"1384662.1384659.43530502",1
+359,43529712,43528830,4,10,"1384662.1384659.43528830",1
+360,43529712,1384418,4,10,"1384662.1384454.1384418",1
+361,43529712,1384552,4,10,"1384662.1384454.1384552",1
+362,43529712,1384627,4,10,"1384662.1384454.1384627",1
+363,43529712,1384401,4,10,"1384662.1384581.1384401",1
+364,43529712,1384619,4,10,"1384662.1384581.1384619",1
+365,43529712,1384535,4,10,"1384662.1384581.1384535",1
+366,43529712,1384506,4,10,"1384662.1384429.1384506",1
+367,43529712,1384620,4,10,"1384662.1384429.1384620",1
+368,43529712,1384447,4,10,"1384662.1384429.1384447",1
+369,43529712,43530346,4,10,"1384662.1384588.43530346",1
+370,43529712,43530503,4,10,"1384662.1384588.43530503",1
+371,43529712,43528831,4,10,"1384662.1384588.43528831",1
+372,43529712,43530347,4,10,"1384662.1384391.43530347",1
+373,43529712,43530505,4,10,"1384662.1384391.43530505",1
+374,43529712,43528832,4,10,"1384662.1384391.43528832",1
+375,43529712,1384431,4,10,"1384662.1384449.1384431",1
+376,43529712,1384432,4,10,"1384662.1384449.1384432",1
+377,43529712,1384628,4,10,"1384662.1384449.1384628",1
+378,43529712,43530349,4,10,"1384662.1384614.43530349",1
+379,43529712,43530507,4,10,"1384662.1384614.43530507",1
+380,43529712,43528834,4,10,"1384662.1384614.43528834",1
+381,43529712,1384465,4,10,"1384662.1384520.1384465",1
+382,43529712,1384621,4,10,"1384662.1384520.1384621",1
+383,43529712,1384398,4,10,"1384662.1384520.1384398",1
+384,43529712,1384537,4,10,"1384662.1384406.1384537",1
+385,43529712,1384438,4,10,"1384662.1384406.1384438",1
+386,43529712,1384642,4,10,"1384662.1384406.1384642",1
+387,43529712,1384463,4,10,"1384662.1384453.1384463",1
+388,43529712,1384573,4,10,"1384662.1384453.1384573",1
+389,43529712,1384664,4,10,"1384662.1384453.1384664",1
+390,43529712,1384511,4,10,"1384662.1384610.1384511",1
+391,43529712,1384416,4,10,"1384662.1384610.1384416",1
+392,43529712,1384505,4,10,"1384662.1384610.1384505",1
+393,43529712,43530348,4,10,"1384662.1384555.43530348",1
+394,43529712,43530506,4,10,"1384662.1384555.43530506",1
+395,43529712,43528833,4,10,"1384662.1384555.43528833",1
+396,43529712,1384596,4,10,"1384662.1384408.1384596",1
+397,43529712,1384652,4,10,"1384662.1384408.1384652",1
+398,43529712,1384602,4,10,"1384662.1384408.1384602",1
+399,43529712,1384459,4,10,"1384662.1384527.1384459",1
+400,43529712,1384492,4,10,"1384662.1384527.1384492",1
+401,43529712,1384424,4,10,"1384662.1384527.1384424",1
+402,43529712,1384489,4,10,"1384662.1384484.1384489",1
+403,43529712,1384647,4,10,"1384662.1384484.1384647",1
+404,43529712,1384517,4,10,"1384662.1384484.1384517",1
+405,43529712,1384526,4,11,"1384526",0
+406,43529712,1384597,4,11,"1384526.1384415.1384597",1
+407,43529712,1384426,4,11,"1384526.1384415.1384426",1
+408,43529712,1384482,4,11,"1384526.1384415.1384482",1
+409,43529712,43530365,4,11,"1384526.1384585.43530365",1
+410,43529712,43530523,4,11,"1384526.1384585.43530523",1
+411,43529712,43528850,4,11,"1384526.1384585.43528850",1
+412,43529712,43530366,4,11,"1384526.1384402.43530366",1
+413,43529712,43530524,4,11,"1384526.1384402.43530524",1
+414,43529712,43528851,4,11,"1384526.1384402.43528851",1
+415,43529712,43530367,4,11,"1384526.1384435.43530367",1
+416,43529712,43530525,4,11,"1384526.1384435.43530525",1
+417,43529712,43528852,4,11,"1384526.1384435.43528852",1
+418,43529712,43530368,4,11,"1384526.1384524.43530368",1
+419,43529712,43530526,4,11,"1384526.1384524.43530526",1
+420,43529712,43528853,4,11,"1384526.1384524.43528853",1
+421,43529712,43530369,4,11,"1384526.1384444.43530369",1
+422,43529712,43530527,4,11,"1384526.1384444.43530527",1
+423,43529712,43528854,4,11,"1384526.1384444.43528854",1
+424,43529712,1384633,4,11,"1384526.1384607.1384633",1
+425,43529712,1384670,4,11,"1384526.1384607.1384670",1
+426,43529712,1384451,4,11,"1384526.1384607.1384451",1
+427,43529712,43530370,4,11,"1384526.1384531.43530370",1
+428,43529712,43530528,4,11,"1384526.1384531.43530528",1
+429,43529712,43528855,4,11,"1384526.1384531.43528855",1
+430,43529712,43530371,4,11,"1384526.1384427.43530371",1
+431,43529712,43530529,4,11,"1384526.1384427.43530529",1
+432,43529712,43528856,4,11,"1384526.1384427.43528856",1
+433,43529712,43530372,4,11,"1384526.1384591.43530372",1
+434,43529712,43530530,4,11,"1384526.1384591.43530530",1
+435,43529712,43528857,4,11,"1384526.1384591.43528857",1
+436,43529712,43530373,4,11,"1384526.1384503.43530373",1
+437,43529712,43530531,4,11,"1384526.1384503.43530531",1
+438,43529712,43528858,4,11,"1384526.1384503.43528858",1
+439,43529712,43530374,4,11,"1384526.1384650.43530374",1
+440,43529712,43530532,4,11,"1384526.1384650.43530532",1
+441,43529712,43528859,4,11,"1384526.1384650.43528859",1
+442,43529712,43530375,4,11,"1384526.1384599.43530375",1
+443,43529712,43530533,4,11,"1384526.1384599.43530533",1
+444,43529712,43528860,4,11,"1384526.1384599.43528860",1
+445,43529712,43530377,4,11,"1384526.1384568.43530377",1
+446,43529712,43530536,4,11,"1384526.1384568.43530536",1
+447,43529712,43528862,4,11,"1384526.1384568.43528862",1
+448,43529712,43530378,4,11,"1384526.1384616.43530378",1
+449,43529712,43530537,4,11,"1384526.1384616.43530537",1
+450,43529712,43528863,4,11,"1384526.1384616.43528863",1
+451,43529712,43530379,4,11,"1384526.1384577.43530379",1
+452,43529712,1384655,4,11,"1384526.1384577.1384655",1
+453,43529712,43528864,4,11,"1384526.1384577.43528864",1
+454,43529712,43530380,4,11,"1384526.1384496.43530380",1
+455,43529712,43530538,4,11,"1384526.1384496.43530538",1
+456,43529712,43528865,4,11,"1384526.1384496.43528865",1
+457,43529712,1384560,4,11,"1384526.1384582.1384560",1
+458,43529712,1384456,4,11,"1384526.1384582.1384456",1
+459,43529712,1384528,4,11,"1384526.1384582.1384528",1
+460,43529712,1384495,4,12,"1384495",0
+461,43529712,1384490,4,12,"1384495.1384600.1384490",1
+462,43529712,1384625,4,12,"1384495.1384600.1384625",1
+463,43529712,1384518,4,12,"1384495.1384600.1384625",1
+464,43529712,43530356,4,12,"1384495.1384475.43530356",1
+465,43529712,43530514,4,12,"1384495.1384475.43530514",1
+466,43529712,43528841,4,12,"1384495.1384475.43528841",1
+467,43529712,43530354,4,12,"1384495.1384510.43530354",1
+468,43529712,43530512,4,12,"1384495.1384510.43530512",1
+469,43529712,43528839,4,12,"1384495.1384510.43528839",1
+470,43529712,1384630,4,12,"1384495.1384458.1384630",1
+471,43529712,1384574,4,12,"1384495.1384458.1384574",1
+472,43529712,1384486,4,12,"1384495.1384458.1384486",1
+473,43529712,43530357,4,12,"1384495.1384669.43530357",1
+474,43529712,43530515,4,12,"1384495.1384669.43530515",1
+475,43529712,43528842,4,12,"1384495.1384669.43528842",1
+476,43529712,43530358,4,12,"1384495.1384656.43530358",1
+477,43529712,43530516,4,12,"1384495.1384656.43530516",1
+478,43529712,43528843,4,12,"1384495.1384656.43528843",1
+479,43529712,1384480,4,12,"1384495.1384413.1384480",1
+480,43529712,1384514,4,12,"1384495.1384413.1384514",1
+481,43529712,1384601,4,12,"1384495.1384413.1384601",1
+482,43529712,43530359,4,12,"1384495.1384558.43530359",1
+483,43529712,43530517,4,12,"1384495.1384558.43530517",1
+484,43529712,43528844,4,12,"1384495.1384558.43528844",1
+485,43529712,43530360,4,12,"1384495.1384622.43530360",1
+486,43529712,43530518,4,12,"1384495.1384622.43530518",1
+487,43529712,43528845,4,12,"1384495.1384622.43528845",1
+488,43529712,43530361,4,12,"1384495.1384443.43530361",1
+489,43529712,43530519,4,12,"1384495.1384443.43530519",1
+490,43529712,43528846,4,12,"1384495.1384443.43528846",1
+491,43529712,43530362,4,12,"1384495.1384557.43530362",1
+492,43529712,43530520,4,12,"1384495.1384557.43530520",1
+493,43529712,43528847,4,12,"1384495.1384557.43528847",1
+494,43529712,43530363,4,12,"1384495.1384464.43530363",1
+495,43529712,43530521,4,12,"1384495.1384464.43530521",1
+496,43529712,43528848,4,12,"1384495.1384464.43528848",1
+497,43529712,1384539,4,12,"1384495.1384549.1384539",1
+498,43529712,1384425,4,12,"1384495.1384549.1384425",1
+499,43529712,1384584,4,12,"1384495.1384549.1384584",1
+500,43529712,1384430,4,13,"1384430",0
+501,43529712,43530381,4,13,"1384430.43528355.43530381",1
+502,43529712,43530539,4,13,"1384430.43528355.43530539",1
+503,43529712,43528866,4,13,"1384430.43528355.43528866",1
+504,43529712,43530382,4,13,"1384430.43528377.43530382",1
+505,43529712,43530540,4,13,"1384430.43528377.43530540",1
+506,43529712,43528867,4,13,"1384430.43528377.43528867",1
+507,43529712,1384474,4,13,"1384430.1385329.1384474",1
+508,43529712,1384636,4,13,"1384430.1385329.1384636",1
+509,43529712,1384624,4,13,"1384430.1385329.1384624",1
+510,43529712,43530383,4,13,"1384430.43528684.43530383",1
+511,43529712,43530541,4,13,"1384430.43528684.43530541",1
+512,43529712,43528868,4,13,"1384430.43528684.43528868",1
+513,43529712,1384605,4,13,"1384430.1384407.1384605",1
+514,43529712,1384542,4,13,"1384430.1384407.1384542",1
+515,43529712,1384668,4,13,"1384430.1384407.1384668",1
+516,43529712,43530384,4,13,"1384430.43529594.43530384",1
+517,43529712,43530542,4,13,"1384430.43529594.43530542",1
+518,43529712,43528869,4,13,"1384430.43529594.43528869",1
+519,43529712,1384501,4,13,"1384430.1384618.1384501",1
+520,43529712,1384509,4,13,"1384430.1384618.1384509",1
+521,43529712,1384507,4,13,"1384430.1384618.1384507",1
+522,43529712,1384530,4,13,"1384430.1384392.1384530",1
+523,43529712,1384569,4,13,"1384430.1384392.1384569",1
+524,43529712,1384572,4,13,"1384430.1384392.1384572",1
+525,43529712,43530385,4,13,"1384430.43529831.43530385",1
+526,43529712,43530543,4,13,"1384430.43529831.43530543",1
+527,43529712,43528870,4,13,"1384430.43529831.43528870",1
+528,43529712,43530386,4,13,"1384430.43529967.43530386",1
+529,43529712,43530544,4,13,"1384430.43529967.43530544",1
+530,43529712,43528871,4,13,"1384430.43529967.43528871",1
+531,43529712,43530387,4,13,"1384430.43529968.43530387",1
+532,43529712,43530545,4,13,"1384430.43529968.43530545",1
+533,43529712,43528872,4,13,"1384430.43529968.43528872",1
+534,43529712,1384409,4,13,"1384430.1384631.1384409",1
+535,43529712,1384394,4,13,"1384430.1384631.1384394",1
+534,43529712,1384589,4,13,"1384430.1384631.1384589",1
+536,43528895,43530418,5,1,"43530418",0
+537,43528895,43530559,5,2,"43530559",0
+538,43528895,43530562,5,3,"43530562",0
+540,43528895,43530593,5,4,"43530593",0
+541,43528895,43530595,5,5,"43530595",0
+542,43528895,43528660,5,6,"43528660",0
+543,43528895,43530588,5,6,"43528660.43530243.43530588",1
+544,43528895,43530404,5,7,"43530404",0
+545,43528895,43529973,5,7,"43530404.43530246.43529973",1
+546,43528895,43530401,5,8,"43530401",0
+547,43528895,43529975,5,8,"43530401.43530247.43529975",1
+548,43528895,43530402,5,9,"43530402",0
+549,43528895,43529977,5,9,"43530402.43530245.43529977",1
+550,43528895,43530403,5,10,"43530403",0
+551,43528895,43530591,5,10,"43530403.43530242.43530591",1
+552,43528895,43530406,5,11,"43530406",0
+553,43528895,43530590,5,11,"43530406.43530249.43530590",1
+554,43528895,43530399,5,12,"43530399",0
+555,43528895,43530589,5,12,"43530399.43530240.43530589",1
+556,43528895,43530405,5,13,"43530405",0
+557,43528895,43530592,5,13,"43530405.43530249.43530592",1
+558,43528895,43530400,5,14,"43530400",0
+559,43528895,43529974,5,14,"43530400.43530241.43529974",1
+560,43528895,43528661,5,15,"43528661",0
+561,43528895,43529976,5,15,"43528661.43530244.43529976",1
+562,43528895,43530407,5,16,"43530407",0
+563,43528895,43529978,5,16,"43530407.43530250.43529978",1
+564,43528895,43530439,5,17,"43530439",0
+565,43528895,43530437,5,18,"43530437",0
+566,43528895,43530438,5,19,"43530438",0
+567,43528895,43529906,5,20,"43529906",0
+568,43528895,43530268,5,21,"43530268",0
+569,43528895,43530594,5,22,"43530594",0
+570,43528895,43529905,5,23,"43529905",0
+571,43528895,43529903,5,24,"43529903",0
+572,43528895,43529904,5,25,"43529904",0
+573,43528895,43530583,5,26,"43530583",0
+574,43528895,43530585,5,27,"43530585",0
+575,43528895,43530584,5,28,"43530584",0
+576,43528895,43530411,5,29,"43530411",0
+577,43528895,43530410,5,30,"43530410",0
+578,43528895,43528663,5,31,"43528663",0
+579,43528895,43528662,5,32,"43528662",0
+580,43528895,43530408,5,33,"43530408",0
+581,43528895,43528664,5,34,"43528664",0
+582,43528895,43530412,5,35,"43530412",0
+583,43528995,43530409,5,36,"43530409",0
+584,43528895,43530409,5,36,"43530409",0
+585,43528895,43530557,5,37,"43530557",0
+586,43528895,43530416,5,38,"43530416",0
+587,43528895,43530417,5,39,"43530417",0
+588,43528895,43530415,5,40,"43530415",0
+589,43528895,43530413,5,41,"43530413",0
+590,43528895,43528665,5,42,"43528665",0
+591,43528895,43528666,5,43,"43528666",0
+592,43528895,43529901,5,44,"43529901",0
+593,43528895,43529902,5,45,"43529902",0
+594,43528895,43529899,5,46,"43529899",0
+595,43528698,43528652,6,1,"43528652",0
+596,43528698,43528512,6,1,"43528652.43528385.43528512",1
+597,43528698,43528512,6,1,"43528652.43529842.43528512",1
+598,43528698,43528917,6,1,"43528652.43528385.43528917",1
+599,43528698,43528917,6,1,"43528652.43529842.43528917",1
+600,43528698,43528631,6,1,"43528652.43528385.43528631",1
+601,43528698,43528631,6,1,"43528652.43529842.43528631",1
+602,43528698,43528944,6,1,"43528652.43528385.43528944",1
+603,43528698,43528944,6,1,"43528652.43529842.43528944",1
+604,43528698,43529155,6,1,"43528652.43528385.43529155",1
+605,43528698,43529155,6,1,"43528652.43529842.43529155",1
+606,43528698,43529191,6,1,"43528652.43528385.43529191",1
+607,43528698,43529191,6,1,"43528652.43529842.43529191",1
+608,43528698,43528490,6,1,"43528652.43529842.43528490",1
+609,43528698,43528490,6,1,"43528652.43529842.43528490",1
+610,43528698,43530563,6,1,"43528652.43528385.43530563",1
+611,43528698,43530563,6,1,"43528652.43529842.43530563",1
+612,43528698,43528487,6,1,"43528652.43528385.43528487",1
+613,43528698,43528487,6,1,"43528652.43529842.43528487",1
+614,43528698,43529963,6,1,"43528652.43528385.43529963",1
+615,43528698,43529963,6,1,"43528652.43529842.43529963",1
+616,43528698,43529635,6,1,"43528652.43528385.43529635",1
+617,43528698,43529635,6,1,"43528652.43529842.43529635",1
+618,43528698,43528510,6,1,"43528652.43528385.43528510",1
+619,43528698,43528510,6,1,"43528652.43529842.43528510",1
+620,43528698,43528559,6,1,"43528652.43528385.43528559",1
+621,43528698,43528559,6,1,"43528652.43529842.43528559",1
+622,43528698,43528629,6,1,"43528652.43528385.43528629",1
+623,43528698,43528629,6,1,"43528652.43529842.43528629",1
+624,43528698,43528675,6,1,"43528652.43528385.43528675",1
+625,43528698,43528675,6,1,"43528652.43529842.43528675",1
+626,43528698,43529153,6,1,"43528652.43528385.43529153",1
+627,43528698,43529153,6,1,"43528652.43529842.43529153",1
+628,43528698,43529763,6,1,"43528652.43528385.43529763",1
+629,43528698,43529763,6,1,"43528652.43529842.43529763",1
+630,43528698,43528489,6,1,"43528652.43528385.43528489",1
+631,43528698,43528489,6,1,"43528652.43529842.43528489",1
+632,43528698,43529218,6,1,"43528652.43528385.43529218",1
+633,43528698,43529218,6,1,"43528652.43529842.43529218",1
+634,43528698,43528486,6,1,"43528652.43528385.43528486",1
+635,43528698,43528486,6,1,"43528652.43529842.43528486",1
+636,43528698,43529961,6,1,"43528652.43528385.43529961",1
+637,43528698,43529961,6,1,"43528652.43529842.43529961",1
+638,43528698,43529640,6,1,"43528652.43528385.43529640",1
+639,43528698,43529640,6,1,"43528652.43529842.43529640",1
+640,43528698,43528513,6,1,"43528652.43528385.43528513",1
+641,43528698,43528513,6,1,"43528652.43529842.43528513",1
+642,43528698,43528561,6,1,"43528652.43528385.43528561",1
+643,43528698,43528561,6,1,"43528652.43529842.43528561",1
+644,43528698,702788,6,1,"43528652.43528385.702788",1
+645,43528698,702788,6,1,"43528652.43529842.702788",1
+646,43528698,702783,6,1,"43528652.43528385.702783",1
+647,43528698,702783,6,1,"43528652.43529842.702783",1
+648,43528698,43529156,6,1,"43528652.43528385.43529156",1
+649,43528698,43529156,6,1,"43528652.43529842.43529156",1
+650,43528698,43529765,6,1,"43528652.43528385.43529765",1
+651,43528698,43529765,6,1,"43528652.43529842.43529765",1
+652,43528698,43529270,6,1,"43528652.43528385.43529270",1
+653,43528698,43529270,6,1,"43528652.43529842.43529270",1
+654,43528698,43529215,6,1,"43528652.43528385.43529215",1
+655,43528698,43529215,6,1,"43528652.43529842.43529215",1
+656,43528698,43529813,6,1,"43528652.43528385.43529813",1
+657,43528698,43529813,6,1,"43528652.43529842.43529813",1
+658,43528698,43529964,6,1,"43528652.43528385.43529964",1
+659,43528698,43529964,6,1,"43528652.43529842.43529964",1
+660,43528698,43529643,6,1,"43528652.43528385.43529643",1
+661,43528698,43529643,6,1,"43528652.43529842.43529643",1
+662,43528698,43528509,6,1,"43528652.43528385.43528509",1
+663,43528698,43528509,6,1,"43528652.43529842.43528509",1
+664,43528698,43528558,6,1,"43528652.43528385.43528558",1
+665,43528698,43528558,6,1,"43528652.43529842.43528558",1
+666,43528698,43528628,6,1,"43528652.43528385.43528628",1
+667,43528698,43528628,6,1,"43528652.43529842.43528628",1
+668,43528698,43528674,6,1,"43528652.43528385.43528674",1
+669,43528698,43528674,6,1,"43528652.43529842.43528674",1
+670,43528698,43529152,6,1,"43528652.43528385.43529152",1
+671,43528698,43529152,6,1,"43528652.43529842.43529152",1
+672,43528698,43529762,6,1,"43528652.43528385.43529762",1
+673,43528698,43529762,6,1,"43528652.43529842.43529762",1
+674,43528698,43529268,6,1,"43528652.43528385.43529268",1
+675,43528698,43529268,6,1,"43528652.43529842.43529268",1
+676,43528698,43529213,6,1,"43528652.43528385.43529213",1
+677,43528698,43529213,6,1,"43528652.43529842.43529213",1
+678,43528698,43529811,6,1,"43528652.43528385.43529811",1
+679,43528698,43529811,6,1,"43528652.43529842.43529811",1
+680,43528698,43529960,6,1,"43528652.43528385.43529960",1
+681,43528698,43529960,6,1,"43528652.43529842.43529960",1
+682,43528698,43529632,6,1,"43528652.43528385.43529632",1
+683,43528698,43529632,6,1,"43528652.43529842.43529632",1
+684,43528698,43528514,6,1,"43528652.43528385.43528514",1
+685,43528698,43528514,6,1,"43528652.43529842.43528514",1
+686,43528698,43528562,6,1,"43528652.43528385.43528562",1
+687,43528698,43528562,6,1,"43528652.43529842.43528562",1
+688,43528698,43528633,6,1,"43528652.43528385.43528633",1
+689,43528698,43528633,6,1,"43528652.43529842.43528633",1
+690,43528698,43528677,6,1,"43528652.43528385.43528677",1
+691,43528698,43528677,6,1,"43528652.43529842.43528677",1
+692,43528698,43529157,6,1,"43528652.43528385.43529157",1
+693,43528698,43529157,6,1,"43528652.43529842.43529157",1
+694,43528698,43529766,6,1,"43528652.43528385.43529766",1
+695,43528698,43529766,6,1,"43528652.43529842.43529766",1
+696,43528698,43529271,6,1,"43528652.43528385.43529271",1
+697,43528698,43529271,6,1,"43528652.43529842.43529271",1
+698,43528698,43529216,6,1,"43528652.43528385.43529216",1
+699,43528698,43529216,6,1,"43528652.43529842.43529216",1
+700,43528698,43529814,6,1,"43528652.43528385.43529814",1
+701,43528698,43529814,6,1,"43528652.43529842.43529814",1
+702,43528698,43529965,6,1,"43528652.43528385.43529965",1
+703,43528698,43529965,6,1,"43528652.43529842.43529965",1
+704,43528698,43529637,6,1,"43528652.43528385.43529637",1
+705,43528698,43529637,6,1,"43528652.43529842.43529637",1
+706,43528698,43528511,6,1,"43528652.43528385.43528511",1
+707,43528698,43528511,6,1,"43528652.43529842.43528511",1
+708,43528698,43528560,6,1,"43528652.43528385.43528560",1
+709,43528698,43528560,6,1,"43528652.43529842.43528560",1
+710,43528698,43528630,6,1,"43528652.43528385.43528630",1
+711,43528698,43528630,6,1,"43528652.43529842.43528630",1
+712,43528698,43528676,6,1,"43528652.43528385.43528676",1
+713,43528698,43528676,6,1,"43528652.43529842.43528676",1
+714,43528698,43529154,6,1,"43528652.43528385.43529154",1
+715,43528698,43529154,6,1,"43528652.43529842.43529154",1
+716,43528698,43529764,6,1,"43528652.43528385.43529764",1
+717,43528698,43529764,6,1,"43528652.43529842.43529764",1
+718,43528698,43529269,6,1,"43528652.43528385.43529269",1
+719,43528698,43529269,6,1,"43528652.43529842.43529269",1
+720,43528698,43529214,6,1,"43528652.43528385.43529214",1
+721,43528698,43529214,6,1,"43528652.43529842.43529214",1
+722,43528698,43529812,6,1,"43528652.43528385.43529812",1
+723,43528698,43529812,6,1,"43528652.43529842.43529812",1
+724,43528698,43529962,6,1,"43528652.43528385.43529962",1
+725,43528698,43529962,6,1,"43528652.43529842.43529962",1
+726,43528698,43529634,6,1,"43528652.43528385.43529634",1
+727,43528698,43529634,6,1,"43528652.43529842.43529634",1
