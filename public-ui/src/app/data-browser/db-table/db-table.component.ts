@@ -194,11 +194,12 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         this.expanded = true;
       }
     }
-
     if (this.selectedConcept && this.selectedConcept.conceptCode === concept.conceptCode) {
       // if already expanded than just change the graph
       if (sources) {
         this.graphToShow = GraphType.Sources;
+      } else if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+        this.graphToShow = GraphType.Values;
       } else {
         this.graphToShow = GraphType.BiologicalSex;
       }
@@ -234,9 +235,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       setTimeout(() => { // wait till previous selected row shrinks
         this.scrollTo('#c' + this.selectedConcept.conceptCode);
       }, 1);
-    }
-    if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
-      this.graphToShow = GraphType.Values;
     }
   }
 
@@ -441,20 +439,18 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    console.log(e);
     this.clickAlertBox('Link copied to clipboard', e);
   }
-  public clickAlertBox(message, e) {
+  public clickAlertBox(message: string, e: any) {
     const alertBox = document.createElement('div');
     alertBox.style.position = 'absolute';
-    alertBox.style.padding = '.5rem';
-    alertBox.style.fontSize = '14px';
-    alertBox.style.borderRadius = '4px';
-    alertBox.style.background = 'white';
-    alertBox.style.border = '1px solid';
-    alertBox.style.top = e.pageY + 'px';
-    alertBox.style.left = e.pageX - 30 + 'px';
-    alertBox.innerText = message;
+    alertBox.style.top = e.pageY + 10 + 'px';
+    alertBox.style.left = e.pageX - 60 + 'px';
+    alertBox.innerHTML =
+      `<div class="copy-alert">
+      ${message}
+    </div>`;
+    // alertBox.innerText = message;
     document.body.appendChild(alertBox);
     setTimeout(() => {
       document.body.removeChild(alertBox);
