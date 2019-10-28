@@ -512,6 +512,10 @@ definitions:
         description: count
         type: integer
         format: int64
+      sourceCount:
+        description: count
+        type: integer
+        format: int64
       domainId:
         description: domain id
         type: string

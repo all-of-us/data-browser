@@ -22,7 +22,8 @@ public class CBCriteria {
     private String name;
     private boolean group;
     private boolean selectable;
-    private String count;
+    private Long count;
+    private Long sourceCount;
     private String conceptId;
     private String domainId;
     private boolean attribute;
@@ -148,15 +149,15 @@ public class CBCriteria {
     }
 
     @Column(name = "est_count")
-    public String getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
-    public CBCriteria count(String count) {
+    public CBCriteria count(Long count) {
         this.count = count;
         return this;
     }
@@ -164,6 +165,20 @@ public class CBCriteria {
     @Transient
     public long getLongCount() {
         return Long.valueOf(this.count);
+    }
+
+    @Transient
+    public Long getSourceCount() {
+        return sourceCount;
+    }
+
+    public void setSourceCount(Long sourceCount) {
+        this.sourceCount = sourceCount;
+    }
+
+    public CBCriteria sourceCount(Long sourceCount) {
+        this.sourceCount = sourceCount;
+        return this;
     }
 
     @Column(name = "concept_id")
