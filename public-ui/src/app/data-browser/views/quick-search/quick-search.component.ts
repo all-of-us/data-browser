@@ -103,16 +103,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         'grouped by age at occurrence and gender, for each ' +
         'program physical measurement.';
     }
-    // Get search result from localStorage
-    this.prevSearchText = localStorage.getItem('searchText');
-    if (!this.prevSearchText) {
-      this.prevSearchText = localStorage.getItem('searchTermBeforeBack');
-      localStorage.removeItem('searchTermBeforeBack');
-      if (!this.prevSearchText) {
-        this.prevSearchText = '';
-      }
-    }
-    this.searchText.setValue(this.prevSearchText);
     this.subscriptions.push(
       this.api.getParticipantCount().subscribe(
         result => this.totalParticipants = result.countValue)
