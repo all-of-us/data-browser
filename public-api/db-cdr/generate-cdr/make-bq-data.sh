@@ -341,7 +341,7 @@ set sm.question_count=num_questions from
     on r.stratum_1 = CAST(sq.survey_concept_id AS STRING)
   join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
     on sq.question_concept_id = qc.concept_id
-where r.analysis_id = 3110 and qc.count_value > 0 and sq.sub=0 and sq.survey_concept_id in (1586134, 1585855, 1585710)
+where r.analysis_id = 3110 and qc.count_value > 0 and sq.sub=0
   group by survey_concept_id)
 where CAST(sm.concept_id AS STRING) = survey_concept_id
 "
