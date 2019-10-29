@@ -567,7 +567,7 @@ id,survey_concept_id,question_concept_id,survey_order_number,question_order_numb
 580,43528895,43530408,5,33,"43530408",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Eyeglasses"
 581,43528895,43528664,5,34,"43528664",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a regular doctor or general health provider (in primary care, general practice, internal medicine, family medicine)"
 582,43528895,43530412,5,35,"43530412",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a specialist"
-583,43528995,43530409,5,36,"43530409",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Follow-up care" 
+583,43528895,43530409,5,36,"43530409",0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Follow-up care" 
 585,43528895,43530557,5,37,"43530557",0,"If you get sick or have an accident, how worried are you that you will be able to pay your medical bills? Are you very worried, somewhat worried, or not at all worried?"
 586,43528895,43530416,5,38,"43530416",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You skipped medication doses to save money"
 587,43528895,43530417,5,39,"43530417",0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You took less medicine to save money"
