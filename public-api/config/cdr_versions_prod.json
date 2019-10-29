@@ -16,10 +16,10 @@
     "name": "All of Us Dataset v1",
     "dataAccessLevel": 1,
     "bigqueryProject": "aou-res-curation-prod",
-    "bigqueryDataset": "R2018Q4R1",
-    "creationTime": "2018-11-13 15:09:27Z",
+    "bigqueryDataset": "combined20191004_dbrowser",
+    "creationTime": "2019-10-10 16:12:49Z",
     "releaseNumber": 1,
-    "numParticipants": 116460,
+    "numParticipants": 243380,
     "publicDbName": "p_2019q1_22"
   }
 ]
