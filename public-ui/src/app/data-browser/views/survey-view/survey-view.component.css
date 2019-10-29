@@ -16,6 +16,10 @@ strong {
     padding: 18px;
 }
 
+.survey-note {
+    margin: 5px;
+}
+
 .title-container * {
     padding-right: 18px;
     margin: 0;
@@ -75,6 +79,11 @@ strong {
 
 .pdf-link {
     padding-top: 1rem;
+}
+
+.bold-note-heading {
+    font-family: GothamBold, Arial, sans-serif;
+    font-weight: bold;
 }
 
 @media only screen and (min-width: 768px) {

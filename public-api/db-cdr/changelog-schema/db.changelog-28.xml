@@ -8,9 +8,8 @@
   <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-28">
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
-      <not>
+        <tableExists tableName="criteria"></tableExists>
         <indexExists tableName="criteria" indexName="name_code_index"></indexExists>
-      </not>
     </preConditions>
     <sql dbms="mysql">
       ALTER TABLE criteria

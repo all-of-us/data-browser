@@ -108,7 +108,7 @@ app-spinner {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: calc(((100%/12)*3) - 14px);
+    /* min-width: calc(((100%/12)*3) - 14px); */
     max-width: calc(((100%/12)*3) - 18px);
     margin-right: 18px;
     margin-bottom: 18px;
@@ -207,7 +207,7 @@ app-spinner {
     }
     .result-box {
         height: auto;
-        min-width: calc(((100%/12)*6) - 9px);
+        min-width: calc(((100%/12)*6) - 18px);
         margin-bottom: 18px;
     }
     .result-box:nth-of-type(2) {

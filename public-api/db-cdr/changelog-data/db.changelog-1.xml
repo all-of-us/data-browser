@@ -9,6 +9,14 @@
 
     <validCheckSum>ANY</validCheckSum>
 
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="criteria"></tableExists>
+        <tableExists tableName="criteria_attribute"></tableExists>
+        <tableExists tableName="achilles_analysis"></tableExists>
+      </not>
+    </preConditions>
+
     <delete tableName="criteria"/>
     <delete tableName="criteria_attribute"/>
     <delete tableName="achilles_analysis"/>

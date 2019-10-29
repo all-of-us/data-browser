@@ -58,9 +58,24 @@ fi
 echo "Creating database ..."
 mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} < ${CREATE_DB_FILE}
 
+if [ "${RUN_LIST}" == "data" ]
+then
+    echo "Copying csv files from gs://aou-db-test-local-csv"
+    # make sure csv folder is empty
+    rm -rf "$(dirname "${BASH_SOURCE}")/../csv"
+    mkdir "$(dirname "${BASH_SOURCE}")/../csv"
+    # copy down csv files from bucket
+    gsutil -m cp gs://aou-db-test-local-csv/*.csv "$(dirname "${BASH_SOURCE}")/../csv"
+fi
+
 # Use liquibase to generate the schema and data
 echo "Running liquibase "
-../gradlew update -PrunList=${RUN_LIST} ${CONTEXT}
+(cd "$(dirname "${BASH_SOURCE}")/.." && ../gradlew update -PrunList=${RUN_LIST} ${CONTEXT})
+
+if [ "${RUN_LIST}" == "data" ]
+then
+    rm -rf "$(dirname "${BASH_SOURCE}")/../csv"
+fi
 
 # Success
 exit 0
