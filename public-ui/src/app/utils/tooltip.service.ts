@@ -67,6 +67,12 @@ export class TooltipService {
       including general health, daily activities, and women’s health topics.`;
   lifestyleSurvey = `This survey asks questions about a participant’s use of tobacco, alcohol,
    and recreational drugs.`;
+  personalMedicalHistory = `This survey collects information about past medical history,
+  including medical conditions.`;
+  healthcareAccess = `This survey asks questions about participants' access
+  to and use of health care.`;
+  familyHistory = `This survey collects information about the medical history of
+  participants' immediate biological family members`;
   physicalMeasurements = `Measurements taken at the time of participant enrollment,
  including blood pressure, heart rate, height, weight, waist and hip circumference,
   pregnancy status and wheelchair use.`;
@@ -86,7 +92,10 @@ export class TooltipService {
       'diagnostic or therapeutic purposes are captured by the procedures domain.',
     'the basics': this.theBasicsSurvey,
     'overall health': this.overallHealthSurvey,
-    'lifestyle': this.lifestyleSurvey
+    'lifestyle': this.lifestyleSurvey,
+    'personal medical history': this.personalMedicalHistory,
+    'family history': this.familyHistory,
+    'healthcare access & utilization': this.healthcareAccess
   };
   conceptCodeHelpText1 = 'The concept code is an additional piece of information that\n' +
     'can be utilized to find medical concepts in the ';
