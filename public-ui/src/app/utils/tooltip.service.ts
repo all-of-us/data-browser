@@ -94,7 +94,7 @@ export class TooltipService {
     'overall health': this.overallHealthSurvey,
     'lifestyle': this.lifestyleSurvey,
     'personal medical history': this.personalMedicalHistory,
-    'family history': this.familyHistory,
+    'family medical history': this.familyHistory,
     'healthcare access & utilization': this.healthcareAccess
   };
   conceptCodeHelpText1 = 'The concept code is an additional piece of information that\n' +
