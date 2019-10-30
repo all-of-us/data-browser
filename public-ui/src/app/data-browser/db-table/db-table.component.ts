@@ -302,7 +302,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
         localStorage.setItem('measurementTestsChecked', 'false');
       }
       localStorage.setItem('measurementOrdersChecked',
-        this.measurementOrdersChecked.value === true ? 'true': 'false');
+        this.measurementOrdersChecked.value === true ? 'true' : 'false');
     }
     if (box === 'orders') {
       if (value) {
@@ -313,7 +313,7 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
         localStorage.setItem('measurementOrdersChecked', 'false');
       }
       localStorage.setItem('measurementTestsChecked',
-        this.measurementTestsChecked.value === true ? 'true': 'false');
+        this.measurementTestsChecked.value === true ? 'true' : 'false');
     }
   }
 
