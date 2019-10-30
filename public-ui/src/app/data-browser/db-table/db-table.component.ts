@@ -301,6 +301,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
         localStorage.setItem('measurementTestsChecked', 'false');
       }
+      localStorage.setItem('measurementOrdersChecked',
+        this.measurementOrdersChecked.value === true ? 'true': 'false');
     }
     if (box === 'orders') {
       if (value) {
@@ -310,6 +312,8 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
         this.measurementOrdersChecked.setValue(false);
         localStorage.setItem('measurementOrdersChecked', 'false');
       }
+      localStorage.setItem('measurementTestsChecked',
+        this.measurementTestsChecked.value === true ? 'true': 'false');
     }
   }
 

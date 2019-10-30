@@ -652,6 +652,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Slice<Concept> concepts = null;
         int measurementTests = 1;
         int measurementOrders = 1;
+
         if (domainId != null && domainId.equals("Measurement")) {
             if (searchConceptsRequest.getMeasurementTests() != null) {
                 measurementTests = searchConceptsRequest.getMeasurementTests();
