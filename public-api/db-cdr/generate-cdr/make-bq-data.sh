@@ -292,18 +292,6 @@ and d.domain_id='Physical Measurements' "
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
-(select count(distinct ob.person_id) as count_val,cr.concept_id_2 as survey_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_concept_relationship\` cr
-on ob.observation_source_concept_id=cr.concept_id_1 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
-on cr.concept_id_2=sm.concept_id
-group by cr.concept_id_2)
-where c1.concept_id=survey_concept_id
-and c1.concept_id not in (1384403, 43529654, 43528428)"
-
-# Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
-set c1.count_value=count_val from
 (select ob.observation_source_concept_id as concept, count(distinct ob.person_id) as count_val from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
 where ob.observation_source_concept_id in (1384403, 43529654, 43528428)
 group by observation_source_concept_id)
@@ -341,7 +329,7 @@ set sm.question_count=num_questions from
     on r.stratum_1 = CAST(sq.survey_concept_id AS STRING)
   join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
     on sq.question_concept_id = qc.concept_id
-where r.analysis_id = 3110 and qc.count_value > 0 and sq.sub=0 and sq.survey_concept_id in (1586134, 1585855, 1585710)
+where r.analysis_id = 3110 and qc.count_value > 0 and sq.sub=0
   group by survey_concept_id)
 where CAST(sm.concept_id AS STRING) = survey_concept_id
 "
@@ -425,6 +413,11 @@ set c.concept_name=sqm.question_text
 from  (select distinct question_concept_id , question_text
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_question_map\`) as sqm
 where c.concept_id = sqm.question_concept_id"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+set concept_name=REGEXP_REPLACE(concept_name, 'PMI:', '')
+where concept_name like '%PMI:%' "
 
 #######################
 # Drop views created #

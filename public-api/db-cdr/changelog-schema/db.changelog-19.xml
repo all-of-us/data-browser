@@ -22,20 +22,6 @@
     <dropIndex tableName="concept" indexName="concept_code_index"></dropIndex>
   </changeSet>
 
-  <changeSet id="add synonyms_index full_text" author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN">
-    <validCheckSum>ANY</validCheckSum>
-    <preConditions onFail="MARK_RAN">
-      <not>
-      <indexExists tableName="concept" indexName="search_index"></indexExists>
-      </not>
-    </preConditions>
-    <sql dbms="mysql">
-      ALTER TABLE concept
-      ADD FULLTEXT INDEX search_index
-      (concept_name,concept_code,vocabulary_id,synonyms);
-    </sql>
-  </changeSet>
-
   <changeSet author="srushtigangireddy" id="drop domain_info pk" runAlways="true">
     <validCheckSum>ANY</validCheckSum> <preConditions onFail="MARK_RAN">
     <primaryKeyExists tableName="domain_info"/> </preConditions>
