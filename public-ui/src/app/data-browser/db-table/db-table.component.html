@@ -247,7 +247,7 @@
 
     <div class="row-expansion" *ngIf="searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode" #chartElement>
       <div class="graph-menu">
-        <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}"
+        <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"
           (click)="selectGraph(g, r)" class="chart-choice">
             <span>{{g}}</span>
             <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName)">

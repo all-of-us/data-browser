@@ -88,6 +88,16 @@
             unique="false">
       <column name="standard_concept" type="varchar(1)"/>
     </createIndex>
+    <sql dbms="mysql">
+      ALTER TABLE concept
+      ADD INDEX domain_count_index
+      (domain_id,has_counts);
+    </sql>
+    <sql dbms="mysql">
+      ALTER TABLE concept
+      ADD FULLTEXT INDEX concept_name_index
+      (concept_name);
+    </sql>
   </changeSet>
 
   <changeSet id="add synonyms_index full_text" author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN">

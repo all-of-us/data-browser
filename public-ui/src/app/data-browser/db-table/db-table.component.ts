@@ -184,9 +184,9 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
-      if (this.measurementTestsChecked.value === true) {
+      if (concept.measurementConceptInfo !== null && concept.measurementConceptInfo.hasValues === 1) {
         this.graphToShow = GraphType.Values;
-      } else {
+      } else if (concept.measurementConceptInfo !== null && concept.measurementConceptInfo.hasValues === 0) {
         this.graphToShow = GraphType.BiologicalSex;
       }
     } else {
@@ -356,6 +356,17 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
       measurementOrders: orderFilter
     };
     return measurementSearchRequestWithFilter;
+  }
+  
+  public getGraphButtons(r: any) {
+    if (r.domainId.toLowerCase() === 'measurement') {
+      if (r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1) {
+        return ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
+      } else if (r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 0) {
+        return ['Sex Assigned at Birth', 'Age', 'Sources'];
+      }
+    }
+    return this.graphButtons;
   }
 
   public ngOnDestroy() {

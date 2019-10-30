@@ -156,6 +156,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
+      const testFilter = localStorage.getItem('measurementTestsChecked') ?
+        (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+      const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+        (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
       if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
         this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
       } else {
