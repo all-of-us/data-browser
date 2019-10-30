@@ -980,6 +980,7 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.$
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and o.observation_source_concept_id not in (40766240,43528428,1585389)
 Group by sm.concept_id"
 
 # Gender breakdown of people who took each survey (Row for combinations of each survey and gender)
