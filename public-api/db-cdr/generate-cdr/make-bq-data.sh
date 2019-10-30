@@ -416,7 +416,8 @@ where c.concept_id = sqm.question_concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set concept_name='Skip' where concept_name like '%PMI: Skip%';"
+set concept_name=REGEXP_REPLACE(concept_name, 'PMI:', '')
+where concept_name like '%PMI:%' "
 
 #######################
 # Drop views created #
