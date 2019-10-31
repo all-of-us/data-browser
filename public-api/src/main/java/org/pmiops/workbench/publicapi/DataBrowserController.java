@@ -652,6 +652,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Slice<Concept> concepts = null;
         int measurementTests = 1;
         int measurementOrders = 1;
+
         if (domainId != null && domainId.equals("Measurement")) {
             if (searchConceptsRequest.getMeasurementTests() != null) {
                 measurementTests = searchConceptsRequest.getMeasurementTests();
@@ -1400,6 +1401,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if(otherBinMax != null && otherBinMin != null){
                 otherBinRanges = makeBins(otherBinMin, otherBinMax, otherBinWidth);
             }
+
+            Collections.sort(maleBinRanges);
+            Collections.sort(femaleBinRanges);
+            Collections.sort(otherBinRanges);
 
             ArrayList<String> maleRangesInResults = new ArrayList<>();
             maleRangesInResults.add(("< " + trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(0)))));

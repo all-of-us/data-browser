@@ -156,6 +156,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
+      const testFilter = localStorage.getItem('measurementTestsChecked') ?
+        (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
+      const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
+        (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
       if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
         this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
       } else {
@@ -268,6 +272,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     } else if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && (!results.items || results.items.length <= 0)) {
       this.searchRequest.pageNumber = 0;
+      this.searchRequest.measurementTests = localStorage.getItem('measurementTestsChecked') === 'false' ? 0 : 1;
+      this.searchRequest.measurementOrders = localStorage.getItem('measurementOrdersChecked') === 'false' ? 0 : 1;
       this.api.searchConcepts(this.searchRequest).subscribe((res) => {
         if (res.items && res.items.length > 0) {
           this.processSearchResults(res);
@@ -377,6 +383,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         minCount: 1,
         pageNumber: this.currentPage - 1,
       };
+      if (this.ehrDomain.domain.toLowerCase() === 'measurement') {
+        if (localStorage.getItem('measurementTestsChecked') === null) {
+          this.testFilter = 1;
+        } else {
+          this.testFilter = localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0;
+        }
+        if (localStorage.getItem('measurementOrdersChecked') === null) {
+          this.orderFilter = 1;
+        } else {
+          this.orderFilter = localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0;
+        }
+        this.searchRequest.measurementTests = this.testFilter;
+        this.searchRequest.measurementOrders = this.orderFilter;
+      }
     }
     this.prevSearchText = query;
     return this.api.searchConcepts(this.searchRequest);
