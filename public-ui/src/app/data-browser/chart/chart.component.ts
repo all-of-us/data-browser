@@ -1019,10 +1019,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const a of this.analysis.results) {
       let toolTipText = '';
       if (a.countValue > 20 ) {
-        toolTipText =  'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>'+
+        toolTipText =  'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
           '<br/>' + 'Participant Count: ' + '<b>' + a.countValue + '</b>';
       } else {
-        toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>'+
+        toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
           '<br/>' + 'Participant Count: ';
       }
       data.push({
