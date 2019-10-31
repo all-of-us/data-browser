@@ -19,6 +19,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
   ageChartTitle = 'Age When Physical Measurement Was Taken';
+  bsChartTitle = 'Sex Assigned At Birth Chart';
 
   // Todo put constants in a class for use in other views
   chartType = 'bar';
@@ -101,6 +102,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   showMeasurement(group: any, concept: any) {
+    console.log('here');
+    console.log(concept);
     this.selectedGroup = group;
     this.selectedConcept = concept;
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
