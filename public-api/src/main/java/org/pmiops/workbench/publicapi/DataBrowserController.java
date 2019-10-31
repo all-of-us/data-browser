@@ -1402,6 +1402,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 otherBinRanges = makeBins(otherBinMin, otherBinMax, otherBinWidth);
             }
 
+            Collections.sort(maleBinRanges);
+            Collections.sort(femaleBinRanges);
+            Collections.sort(otherBinRanges);
+
             ArrayList<String> maleRangesInResults = new ArrayList<>();
             maleRangesInResults.add(("< " + trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(0)))));
             for (int k=0; k<maleBinRanges.size()-1;k++) {
