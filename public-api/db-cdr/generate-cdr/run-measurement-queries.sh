@@ -75,6 +75,8 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      group by co1.measurement_source_concept_id"
 
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     select 0, 3000 as analysis_id,
     CAST(co1.observation_concept_id AS STRING) as stratum_1,
    'Measurement' as stratum_3,
