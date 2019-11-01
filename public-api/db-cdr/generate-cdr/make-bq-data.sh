@@ -419,6 +419,11 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set concept_name=REGEXP_REPLACE(concept_name, 'PMI:', '')
 where concept_name like '%PMI:%' "
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+set concept_name=REGEXP_REPLACE(concept_name, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
+where concept_name like '%Sex At Birth: Sex At Birth%' "
+
 #######################
 # Drop views created #
 #######################

@@ -1017,10 +1017,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return order.indexOf(a.stratum3) - order.indexOf(b.stratum3);
     });
     for (const a of this.analysis.results) {
+      let toolTipText = '';
+      if (a.countValue > 20 ) {
+        toolTipText =  'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
+          '<br/>' + 'Participant Count: ' + '<b>' + a.countValue + '</b>';
+      } else {
+        toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
+          '<br/>' + 'Participant Count: ';
+      }
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,
-        toolTipHelpText: a.analysisStratumName,
+        toolTipHelpText: toolTipText,
       });
       cats.push(a.analysisStratumName);
     }
