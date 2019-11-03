@@ -933,19 +933,14 @@ echo "Getting physical measurement participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-select 0 as id,3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
-count(distinct person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`
+select 0 as id, 3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
+((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)"
-
-echo "Getting pregnancy physical measurement participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-select 0 as id,3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
-count(distinct person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)) +
+(select count(distinct person_id) from  \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
 where observation_concept_id in (903120)
-or observation_source_concept_id in (903120)"
+or observation_source_concept_id in (903120))) as count_value,
+0 as source_count_value"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
