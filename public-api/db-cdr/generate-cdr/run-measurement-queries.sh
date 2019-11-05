@@ -81,18 +81,18 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     select 0, 3000 as analysis_id,
     CAST(co1.observation_concept_id AS STRING) as stratum_1,
    'Measurement' as stratum_3,
-    COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co2
+    COUNT(distinct co1.PERSON_ID) as count_value, (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2
     where co2.observation_source_concept_id=co1.observation_concept_id) as source_count_value
-     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co1
+     from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
      where co1.observation_concept_id in (903120)
      group by co1.observation_concept_id
      union all
       select 0 as id,3000 as analysis_id,CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
        'Measurement' as stratum_3,
       COUNT(distinct co1.PERSON_ID) as count_value,COUNT(distinct co1.PERSON_ID) as source_count_value
-      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co1
+      from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
       where co1.observation_source_concept_id in (903120)
-      and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\`)
+      and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
       group by co1.observation_source_concept_id"
 
      # Measurement concept by gender
@@ -131,10 +131,10 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       CAST(co1.observation_concept_id AS STRING) as stratum_1,
       CAST(p1.gender_concept_id AS STRING) as stratum_2,'Measurement' as stratum_3,
       COUNT(distinct p1.PERSON_ID) as count_value,
-      (select COUNT(distinct co2.person_id) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id
+      (select COUNT(distinct co2.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 on p2.person_id=co2.person_id
       where co2.observation_source_concept_id=co1.observation_concept_id and p2.gender_concept_id=p1.gender_concept_id) as source_count_value
       from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
-      \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co1
+      \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
       on p1.person_id = co1.person_id
       where co1.observation_concept_id in (903120)
       group by co1.observation_concept_id, p1.gender_concept_id
@@ -145,10 +145,10 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       COUNT(distinct p1.PERSON_ID) as count_value,
       COUNT(distinct p1.PERSON_ID) as source_count_value
       from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
-      \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co1
+      \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1
       on p1.person_id = co1.person_id
       where co1.observation_source_concept_id in (903120)
-      and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\`)
+      and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
       group by co1.observation_source_concept_id, p1.gender_concept_id"
 
      # Measurement by age deciles
@@ -200,7 +200,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       with m_age as
       (select observation_id,
       ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+      from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
       group by observation_id,age
       ),
       m_age_stratum as
@@ -217,11 +217,11 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       age_stratum as stratum_2,
       'Measurement' as stratum_3,
       count(distinct co1.person_id) as count_value,
-      (select COUNT(distinct co2.PERSON_ID) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co2 join m_age_stratum ca2
+      (select COUNT(distinct co2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co2 join m_age_stratum ca2
       on co2.observation_id = ca2.observation_id
       where co2.observation_source_concept_id=co1.observation_concept_id
       and ca2.age_stratum=ca.age_stratum) as source_count_value
-      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co1 join m_age_stratum ca on co1.observation_id = ca.observation_id
+      from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1 join m_age_stratum ca on co1.observation_id = ca.observation_id
       where co1.observation_concept_id in (903120)
       group by co1.observation_concept_id, stratum_2
       union all
@@ -229,9 +229,9 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       CAST(co1.observation_source_concept_id AS STRING) as stratum_1,
       age_stratum as stratum_2,'Measurement' as stratum_3,
       COUNT(distinct co1.person_id) as count_value,
-      COUNT(distinct co1.person_id) as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co1 join m_age_stratum ca
+      COUNT(distinct co1.person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co1 join m_age_stratum ca
       on co1.observation_id = ca.observation_id
-      where co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\`)
+      where co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
       and co1.observation_source_concept_id in (903120)
       group by co1.observation_source_concept_id, stratum_2"
 
@@ -840,13 +840,13 @@ if [[ "$tables" == *"_mapping_"* ]]; then
             cast(m1.value_as_concept_id as string) as stratum_5,
             count(distinct p1.person_id) as count_value,
             count(distinct p1.person_id) as source_count_value
-            FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` m1
+            FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` m1
             join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
             join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c2 on c2.concept_id=m1.value_as_concept_id
             join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.observation_source_concept_id=c1.concept_id
             where m1.value_as_concept_id != 0
             and m1.observation_source_concept_id in (903120)
-             and m1.observation_source_concept_id not in (select distinct observation_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\`)
+             and m1.observation_source_concept_id not in (select distinct observation_concept_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`)
             group by stratum_1,stratum_3,stratum_4,stratum_5"
 
       # Generating biological sex counts for measurement concepts for each unit
