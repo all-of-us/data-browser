@@ -21,36 +21,22 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   ngOnChanges() {
     if (this.node && this.node.group) {
       this.loading = true;
-      if (this.checkStorage(this.node)) {// if node exists in LS, use it.
-        this.node = JSON.parse(localStorage.getItem(this.node.code));
-        this.loading = false;
-        return;
-      } else {// if not get it from database
-        // this.loading = true;
-        setTimeout(() => {
-          this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
-            .subscribe({
-              next: result => {
-                if (result.items.length) {
-                  this.node['children'] = result.items;
-                  // built stash tree
-                  localStorage.setItem(this.node.code, JSON.stringify(this.node));
-                  this.loading = false;
-                }
+      // get it from database
+        this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
+          .subscribe({
+            next: result => {
+              if (result.items.length) {
+                this.node['children'] = result.items;
+                // built stash tree
+                localStorage.setItem(this.node.code, JSON.stringify(this.node));
+                this.loading = false;
               }
-            })
-          );
-        }, 50);
-      }
+            }
+          })
+        );
     }
   }
 
-  public checkStorage(node: any) {
-    if (localStorage.getItem(node.code) !== null) {
-      return true;
-    }
-    return false;
-  }
 
   public conceptClick(node: any) {
     localStorage.setItem('treeHighlight', node.id);
