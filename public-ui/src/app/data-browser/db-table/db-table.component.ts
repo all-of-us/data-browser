@@ -214,7 +214,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   }
 
   public expandRow(concept: any, fromChart?: boolean) {
-    this.loadSourceTree(concept);
+    // this.loadSourceTree(concept);
     this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
@@ -281,11 +281,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (this.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
-      this.loadSourceTree(r);
-    }
-  }
-
-  private loadSourceTree(concept: Concept) {
+          this.loadSourceTree(r);
+        }
+      }
+      private loadSourceTree(concept: Concept) {
     // clear out treeData
     this.treeData = [];
     this.treeLoading = true;
@@ -295,19 +294,15 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         s.unsubscribe();
       }
     }
-    if (localStorage.getItem(concept.conceptCode) === null) {
-      this.subscriptions.push(this.api.getCriteriaRolledCounts(concept.conceptId)
+      this.subscriptions.push(
+        this.api.getCriteriaRolledCounts(concept.conceptId, this.ehrDomain.domain)
         .subscribe({
           next: result => {
             this.treeData = [result.parent];
+            console.log(result);
             this.treeLoading = false;
           }
         }));
-    } else {
-      // get stashed built tree from recursive tree component
-      this.treeData = [JSON.parse(localStorage.getItem(concept.conceptCode))];
-      this.treeLoading = false;
-    }
   }
 
   public toolTipPos(g: string) {

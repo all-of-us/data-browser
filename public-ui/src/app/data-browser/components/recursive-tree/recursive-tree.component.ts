@@ -37,7 +37,6 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
     }
   }
 
-
   public conceptClick(node: any) {
     localStorage.setItem('treeHighlight', node.id);
     this.conceptSelected.emit(node);
