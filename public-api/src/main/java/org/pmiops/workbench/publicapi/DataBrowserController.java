@@ -518,30 +518,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
             Multimap<Long, CBCriteria> parentCriteria = Multimaps
                     .index(criteriaList, CBCriteria::getParentId);
-            List<CBCriteria> childrenList = new ArrayList<>();
-            if (standardParent == null && sourceParent == null) {
-                childrenList = parentCriteria.get(parent.getId()).stream().collect(Collectors.toList());
-            } else {
-                childrenList = parentCriteria.get(standardParent.getId()).stream().collect(Collectors.toList());
-                childrenList.addAll(parentCriteria.get(sourceParent.getId()).stream().collect(Collectors.toList()));
-                Multimap<String, CBCriteria> childCriteriaByConcept = Multimaps
-                        .index(criteriaList, CBCriteria::getConceptId);
-                for (String conceptKey: childCriteriaByConcept.keys()) {
-                    List<CBCriteria> childCriteria = childCriteriaByConcept.get(conceptKey).stream().collect(Collectors.toList());
-                    if (childCriteria.size() > 1) {
-                        CBCriteria standardChild = childCriteria.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList()).get(0);
-                        CBCriteria sourceChild = childCriteria.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList()).get(0);
-                        standardChild.setSourceCount(sourceChild.getCount());
-                        childrenList.add(standardChild);
-                    } else {
-                        childrenList.add(childCriteria.get(0));
-                    }
-                }
-                Collections.sort(childrenList, Comparator.comparing((CBCriteria criteria) -> criteria.getCount()));
-            }
-            CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-            criteriaListResponse.setItems(childrenList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
-            response.setChildren(criteriaListResponse);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.ok(response);
