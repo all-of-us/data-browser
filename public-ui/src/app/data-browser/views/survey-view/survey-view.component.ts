@@ -625,4 +625,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.agePercentageAnalysis.analysisId = 3332;
     question.agePercentageAnalysis = this.agePercentageAnalysis;
   }
+  
+  public clearSearch() {
+    this.searchText.setValue('');
+  }
 }
