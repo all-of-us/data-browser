@@ -17,6 +17,11 @@ strong {
     margin-left: 0;
 }
 
+.clear-icon {
+    float: right;
+    margin-top: 3.5%;
+}
+
 .icons {
     width: 100px;
     margin-left: 1.5rem;

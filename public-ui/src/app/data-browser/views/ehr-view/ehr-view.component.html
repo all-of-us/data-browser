@@ -6,6 +6,7 @@
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
       <input type="text" aria-label="EHR Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText"
         style="height:auto" autofocus>
+      <div class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
     </div>
   </div>
   <app-spinner [loading]="loading"></app-spinner>
