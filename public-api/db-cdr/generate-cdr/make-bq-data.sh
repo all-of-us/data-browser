@@ -424,6 +424,17 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set concept_name=REGEXP_REPLACE(concept_name, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
 where concept_name like '%Sex At Birth: Sex At Birth%' "
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
+set stratum_4=REGEXP_REPLACE(stratum_4, 'PMI:', '')
+where stratum_4 like '%PMI:%' "
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
+set stratum_4=REGEXP_REPLACE(stratum_4, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
+where stratum_4 like '%Sex At Birth: Sex At Birth%' "
+
+
 #######################
 # Drop views created #
 #######################
