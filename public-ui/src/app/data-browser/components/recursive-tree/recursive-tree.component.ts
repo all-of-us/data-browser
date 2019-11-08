@@ -27,8 +27,6 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
             next: result => {
               if (result.items.length) {
                 this.node['children'] = result.items;
-                // built stash tree
-                localStorage.setItem(this.node.code, JSON.stringify(this.node));
                 this.loading = false;
               }
             }
