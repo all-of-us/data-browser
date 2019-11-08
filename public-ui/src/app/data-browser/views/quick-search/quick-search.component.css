@@ -109,7 +109,7 @@ app-spinner {
     flex-direction: column;
     justify-content: space-between;
     /* min-width: calc(((100%/12)*3) - 14px); */
-    max-width: calc(((100%/12)*3) - 18px);
+    width: calc(((100%/12)*3) - 18px);
     margin-right: 18px;
     margin-bottom: 18px;
     border-radius: 5px;
