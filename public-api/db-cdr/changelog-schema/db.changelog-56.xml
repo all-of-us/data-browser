@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+  <changeSet id="add synonyms_index full_text" author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <indexExists tableName="cb_criteria" indexName="idx_parent_id"></indexExists>
+      </not>
+    </preConditions>
+    <sql dbms="mysql">
+      ALTER TABLE cb_criteria
+      ADD INDEX idx_parent_id
+      (parent_id);
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>
+

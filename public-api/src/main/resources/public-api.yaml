@@ -547,9 +547,6 @@ definitions:
       parent:
         description: parent row
         $ref: "#/definitions/CBCriteria"
-      children:
-        description: children row
-        $ref: "#/definitions/CriteriaListResponse"
 
   QuestionConcept:
     type: object
