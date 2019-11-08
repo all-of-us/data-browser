@@ -17,6 +17,8 @@ export class ChartService {
     style: {
       color: '#666',
       fontWeight: 'bold',
+      whiteSpace: 'wrap',
+      textOverflow: 'ellipsis'
     }
   };
   yAxisTitle = {
@@ -24,6 +26,8 @@ export class ChartService {
     style: {
       color: '#666',
       fontSize: '12px',
+      whiteSpace: 'wrap',
+      textOverflow: 'ellipsis'
     }
   };
   notEnabled = { enabled: false };

@@ -185,6 +185,10 @@
   align-items: center;
 }
 
+.clear-search-icon {
+  color: black;
+}
+
 .graph-menu {
   width: 100%;
   display: flex;

@@ -255,7 +255,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         [],
         {
           relativeTo: this.route,
-          queryParams: { search: this.prevSearchText }
+          queryParams: { search: this.searchText.value }
         });
     } else {
       this.router.navigate(
@@ -340,7 +340,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.router.navigate(
         ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
         {
-          queryParams: {search: this.searchFromUrl}
+          queryParams: {search: this.searchText.value}
         }
       );
     }
@@ -461,5 +461,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.currentPage = 1;
       this.loadPage();
     }
+  }
+
+  public clearSearch() {
+    this.searchText.setValue('');
   }
 }

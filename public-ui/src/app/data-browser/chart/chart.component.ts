@@ -154,6 +154,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           }
         },
         min: ((this.analysis &&
@@ -170,6 +172,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? {
           style: {
             fontSize: '12px',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -179,6 +183,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } : {
           style: {
             fontSize: '12px',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
