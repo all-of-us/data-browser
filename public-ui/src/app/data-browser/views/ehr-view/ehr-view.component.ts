@@ -462,7 +462,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.loadPage();
     }
   }
-  
+
   public clearSearch() {
     this.searchText.setValue('');
   }
