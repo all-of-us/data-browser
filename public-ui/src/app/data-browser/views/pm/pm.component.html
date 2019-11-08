@@ -47,7 +47,7 @@
             </div>
           </ng-container>
           <ng-template #stackedChart>
-            <div class="chart-item">
+            <div class="chart-item stacked-chart-item">
               <app-chart *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [conceptId]="selectedConcept.conceptId"
                          [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
               [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue">
