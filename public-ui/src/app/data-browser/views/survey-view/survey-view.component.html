@@ -220,7 +220,7 @@
                         </div>
 
                         <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                          <button class="icon-btn" *ngIf="!sqa.subQuestions">
+                          <button class="icon-btn" *ngIf="!sqa.subQuestions && sqa.stratum4 != 'Did not answer'">
                             <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                           </button>
                           <button class="icon-btn" *ngIf="sqa.subQuestions">
@@ -292,7 +292,7 @@
                               </div>
 
                               <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                                <button class="icon-btn" *ngIf="!sqa2.subQuestions">
+                                <button class="icon-btn" *ngIf="!sqa2.subQuestions && sqa2.stratum4 != 'Did not answer'">
                                   <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                 </button>
                                 <button class="icon-btn" *ngIf="sqa2.subQuestions">
