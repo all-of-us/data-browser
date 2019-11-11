@@ -160,8 +160,7 @@ export class TooltipService {
   genderIdentityQuestionHelpText2 = `Research Program. Because participants can select more than one option,
   counts and percentages may not add up to 100%`;
   genderIdentityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
-  q2RolledCategoriesHelpText = `“Other” includes the following categories: American Indian
-  or Alaska Native, Middle Eastern or North African,
+  q2RolledCategoriesHelpText = `“Other” includes the following categories: Middle Eastern or North African,
   Native Hawaiian or other Pacific Islander, and None of these describe me.`;
   constructor() { }
 
