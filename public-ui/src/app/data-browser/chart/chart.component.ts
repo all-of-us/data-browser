@@ -114,8 +114,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
               return this.point.toolTipHelpText;
             }
           }
-          // If not <= 20, use the default formatter
-          return this.point.toolTipHelpText;
         },
         useHTML: true,
         backgroundColor: '#f0f2f3',

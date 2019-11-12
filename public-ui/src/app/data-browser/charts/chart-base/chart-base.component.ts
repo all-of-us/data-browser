@@ -64,8 +64,6 @@ export class ChartBaseComponent {
               return this.point.toolTipHelpText;
             }
           }
-          // If not <= 20, use the default formatter
-          return this.point.toolTipHelpText;
         },
         useHTML: true,
         style: {
