@@ -522,7 +522,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
-        yAxisLabel = '% of Each Biological Sex that answered with ' + this.selectedResult.stratum4;
+        yAxisLabel = '% of Each Sex that answered with ' + this.selectedResult.stratum4;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
@@ -531,13 +531,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (a.percentage === null || a.percentage === 0) {
           toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Biological Sex that answered' + ': '
+            '<br/> % of Each Sex that answered' + ': '
             + '<b>' + (a.percentage) + '% </b>' +
             '<br/> Participant Count: ';
         } else {
           toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Biological Sex that answered' + ': '
+            '<br/> % of Each Sex that answered' + ': '
             + '<b>' + (a.percentage) + '% </b>' +
             '<br/> Participant Count: ';
         }
@@ -560,7 +560,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-        yAxisLabel = '% of Each Biological Sex with ' + this.conceptName;
+        yAxisLabel = '% of Each Sex with ' + this.conceptName;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
@@ -568,12 +568,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
         if (a.stratum4 == null) {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName +
+            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
             ': <b>' + 0 + '% </b>' +
             '<br/> Participant Count: ' ;
         } else {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName +
+            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
             ': <b>' + (+a.stratum4) + '% </b>' +
             '<br/> Participant Count: ';
         }
