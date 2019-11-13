@@ -1084,12 +1084,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return 0;
     }
   }
-  
+
   public getSurveyAnswerText(answer: string) {
     if (answer.includes(':')) {
-      var answer_split = answer.split(':');
-      var result = '';
-      for (let i = 0; i < answer_split.length-1; i++) {
+      const answer_split = answer.split(':');
+      let result = '';
+      for (let i = 0; i < answer_split.length - 1; i++) {
         result += answer_split[i];
       }
       result += '<b>' + answer_split[answer_split.length-1] + '</b>';
