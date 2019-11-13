@@ -70,8 +70,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    const maxYAxis = Math.max.apply(Math, options.series[0]['data'].map(function(o)
-    { return o.y; }));
+    const maxYAxis = Math.max.apply(
+      Math, options.series[0]['data'].map(function(o) { return o.y; }));
     return {
       chart: options.chart,
       lang: this.dbc.lang,
@@ -591,7 +591,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
         data.push({
           name: a.analysisStratumName
-          , y: +(a.percentage), color: color, sliced: true,
+          , y: Math.round(+(a.percentage)), color: color, sliced: true,
           toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
         });
         cats.push(a.analysisStratumName);
@@ -606,7 +606,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           data.push({
             name: a.analysisStratumName
-            , y: +(a.stratum4), color: color, sliced: true,
+            , y: Math.round(+(a.stratum4)), color: color, sliced: true,
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
@@ -809,7 +809,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           data.push({
             name: a.analysisStratumName,
-            y: +(a.stratum4), color: color,
+            y: Math.round(+(a.stratum4)), color: color,
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
@@ -823,7 +823,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           data.push({
             name: a.analysisStratumName,
-            y: +(a.percentage), color: color,
+            y: Math.round(+(a.percentage)), color: color,
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
