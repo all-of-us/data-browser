@@ -1092,7 +1092,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       for (let i = 0; i < answer_split.length - 1; i++) {
         result += answer_split[i];
       }
-      result += '<b>' + answer_split[answer_split.length-1] + '</b>';
+      result += '<b>' + answer_split[answer_split.length - 1] + '</b>';
       return result;
     }
     return '<b>' + answer + '</b>';
