@@ -70,7 +70,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    const maxYAxis = Math.max.apply(Math, options.series[0]['data'].map(function(o) { return o.y; }));
+    const maxYAxis = Math.max.apply(Math, options.series[0]['data'].map(function(o)
+    { return o.y; }));
     return {
       chart: options.chart,
       lang: this.dbc.lang,
@@ -170,7 +171,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
           (this.surveyAnalysis &&
             (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
-              this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? 100 : maxYAxis,
+              this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID)))
+          ? 100 : maxYAxis,
         labels: ((this.analysis &&
           (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
           this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
