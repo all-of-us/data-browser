@@ -511,11 +511,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         if (a.countValue > 20) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ';
         }
@@ -529,13 +529,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> % of Each Sex that answered' + ': '
             + '<b>' + (a.percentage) + '% </b>' +
             '<br/> Participant Count: ';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> % of Each Sex that answered' + ': '
             + '<b>' + (a.percentage) + '% </b>' +
@@ -549,13 +549,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
           'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
           'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.analysis &&
@@ -763,11 +763,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         if (a.countValue > 20 ) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + 'Participant Count: ' + '<b>' +  a.countValue + '</b>';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + 'Participant Count: ';
         }
@@ -775,12 +775,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         yAxisLabel = '% of Each Age that answered with ' + this.selectedResult.stratum4;
         ageHelpText = 'Age When Survey Was Taken';
         if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  0 + '% </b>' +
             '<br/> Participant Count: ';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  +(a.percentage) + '% </b>' +
             '<br/> Participant Count: ';
@@ -1079,5 +1079,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     } else {
       return 0;
     }
+  }
+  
+  public getSurveyAnswerText(answer: string) {
+    if (answer.includes(':')) {
+      var answer_split = answer.split(':');
+      var result = '';
+      for (let i = 0; i < answer_split.length-1; i++) {
+        result += answer_split[i] + ':';
+      }
+      result += '<b>' + answer_split[answer_split.length-1] + '</b>';
+      return result;
+    }
+    return '<b>' + answer + '</b>';
   }
 }
