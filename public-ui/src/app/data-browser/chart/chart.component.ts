@@ -541,13 +541,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> % of Each Sex that answered' + ': '
-            + '<b>' + (a.percentage) + '% </b>' +
+            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
             '<br/> Participant Count: ';
         } else {
           toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> % of Each Sex that answered' + ': '
-            + '<b>' + (a.percentage) + '% </b>' +
+            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
@@ -583,7 +583,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
             '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
-            ': <b>' + (+a.stratum4) + '% </b>' +
+            ': <b>' + Math.round((+a.stratum4)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
@@ -766,7 +766,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' +
             '<br/>' + '% of Each Age with ' + this.conceptName +
-            ': <b>' + (+(a.stratum4)) + '% </b>' +
+            ': <b>' + Math.round(+(a.stratum4)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
@@ -795,7 +795,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
             '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
-            '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  +(a.percentage) + '% </b>' +
+            '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  Math.round(+(a.percentage)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
