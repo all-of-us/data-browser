@@ -986,7 +986,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series.pointPadding = 0;
       series.borderWidth = 0;
       series.groupPadding = 0;
-      series.pointWidth = 18;
+      series.pointWidth = data.length >= 15 ? 15 : 18;
       series.shadow = false;
     }
     return {
@@ -1086,7 +1086,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       var answer_split = answer.split(':');
       var result = '';
       for (let i = 0; i < answer_split.length-1; i++) {
-        result += answer_split[i] + ':';
+        result += answer_split[i];
       }
       result += '<b>' + answer_split[answer_split.length-1] + '</b>';
       return result;
