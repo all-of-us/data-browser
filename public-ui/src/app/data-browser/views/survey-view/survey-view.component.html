@@ -11,13 +11,14 @@
           <li>Gathered directly from participants through electronic surveys</li>
           <li>Grouped into bins of 20 to protect privacy</li>
         </ul>
-        For more information about this survey, please visit the <a href="https://www.researchallofus.org/data/data-sources/survey-explorer/">Survey Explorer</a>
+        For more information about this survey, please visit the <a target="_blank" href="https://www.researchallofus.org/data-sources/survey-explorer">Survey Explorer</a>
       </div>
     </div>
     <div class="search-bar-container">
       <div id="db-search-bar">
         <clr-icon shape="search" class="is-info search-icon"></clr-icon>
         <input type="text" aria-label="Survey Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText" style="height:auto" autofocus>
+        <div *ngIf="searchText.value"  class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
       </div>
     </div>
     <app-spinner [loading]="loading"></app-spinner>
@@ -220,7 +221,7 @@
                         </div>
 
                         <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                          <button class="icon-btn" *ngIf="!sqa.subQuestions">
+                          <button class="icon-btn" *ngIf="!sqa.subQuestions && sqa.stratum4 != 'Did not answer'">
                             <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                           </button>
                           <button class="icon-btn" *ngIf="sqa.subQuestions">
@@ -292,7 +293,7 @@
                               </div>
 
                               <div class=" info-text tbl-d display-body info-text display-body info-text graph-btn">
-                                <button class="icon-btn" *ngIf="!sqa2.subQuestions">
+                                <button class="icon-btn" *ngIf="!sqa2.subQuestions && sqa2.stratum4 != 'Did not answer'">
                                   <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                 </button>
                                 <button class="icon-btn" *ngIf="sqa2.subQuestions">

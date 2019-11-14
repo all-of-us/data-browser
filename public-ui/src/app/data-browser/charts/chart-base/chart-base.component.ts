@@ -53,17 +53,24 @@ export class ChartBaseComponent {
       title: this.chartService.mainTitle,
       xAxis: {
         categories: this.categoryArr,
+        labels: {
+          style: {
+            fontSize: '12px',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
+          },
+        },
         title: this.chartService.xAxisTitle,
         tickLength: 0,
         lineWidth: 1,
-        lineColor: '#979797'
+        lineColor: '#979797',
       },
       yAxis: {
         title: this.chartService.yAxisTitle,
         tickLength: 0,
         lineWidth: 1,
         lineColor: '#979797',
-        gridLineColor: 'transparent'
+        gridLineColor: 'transparent',
       },
       legend: this.chartService.notEnabled,
       credits: this.chartService.notEnabled,

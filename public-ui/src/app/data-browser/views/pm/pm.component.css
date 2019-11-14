@@ -23,6 +23,10 @@
     padding: 0 9px;
 }
 
+.stacked-chart-item {
+    margin-left: 4%;
+}
+
 .group-name {
     font-size: 1.4em;
     white-space: nowrap;

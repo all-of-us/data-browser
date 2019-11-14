@@ -295,7 +295,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (obj) {
       const survey = JSON.parse(obj);
       this.surveyConceptId = survey.conceptId;
-      this.surveyPdfUrl = '/assets/surveys/' + survey.name.replace(' ', '_') + '.pdf';
+      if (this.surveyConceptId === 43528895) {
+        this.surveyPdfUrl = '/assets/surveys/' +
+          'Healthcare Access Utilization'.split(' ').join('_') + '.pdf';
+      } else {
+        this.surveyPdfUrl = '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
+      }
       this.getSurveyResults();
     }
   }
@@ -619,5 +624,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.agePercentageAnalysis.surveyQuestionResults = surveyQuestionResultsWithPercentage2;
     this.agePercentageAnalysis.analysisId = 3332;
     question.agePercentageAnalysis = this.agePercentageAnalysis;
+  }
+
+  public clearSearch() {
+    this.searchText.setValue('');
   }
 }

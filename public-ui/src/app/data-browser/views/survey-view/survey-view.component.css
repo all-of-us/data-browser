@@ -16,6 +16,11 @@ strong {
     padding: 18px;
 }
 
+.clear-icon {
+    float: right;
+    margin-top: 1.5%;
+}
+
 .survey-note {
     margin: 5px;
 }

@@ -228,15 +228,15 @@
     <div class="row-expansion" *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
       #chartElement>
       <div class="graph-menu">
-        <div *ngFor="let g of graphButtons" [ngClass]="{'active':graphToShow === g}" (click)="selectGraph(g, r)"
-          class="chart-choice">
-          <span>{{g}}</span>
-          <clr-tooltip>
-            <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-            <clr-tooltip-content clrPosition="{{toolTipPos(g)}}" clrSize="lg" *clrIfOpen>
-              <div class="tooltip-label">{{showToolTip(g)}}</div>
-            </clr-tooltip-content>
-          </clr-tooltip>
+        <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"
+          (click)="selectGraph(g, r)" class="chart-choice">
+            <span>{{g}}</span>
+            <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName)">
+              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+              <clr-tooltip-content clrPosition="{{toolTipPos(g)}}" clrSize="lg" *clrIfOpen>
+                <div class="tooltip-label">{{showToolTip(g)}}</div>
+              </clr-tooltip-content>
+            </clr-tooltip>
         </div>
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">

@@ -239,6 +239,18 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         this.scrollTo('#c' + this.selectedConcept.conceptCode);
       }, 1);
     }
+    this.resetSelectedGraphs();
+    if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+      if (concept.measurementConceptInfo !== null &&
+        concept.measurementConceptInfo.hasValues === 1) {
+        this.graphToShow = GraphType.Values;
+      } else if (concept.measurementConceptInfo !== null &&
+        concept.measurementConceptInfo.hasValues === 0) {
+        this.graphToShow = GraphType.BiologicalSex;
+      }
+    } else {
+      this.graphToShow = GraphType.BiologicalSex;
+    }
   }
 
   public scrollTo(id: string) {
@@ -364,6 +376,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
         localStorage.setItem('measurementTestsChecked', 'false');
       }
+      localStorage.setItem('measurementOrdersChecked',
+        this.measurementOrdersChecked.value === true ? 'true' : 'false');
     }
     if (box === 'orders') {
       if (value) {
@@ -373,6 +387,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         this.measurementOrdersChecked.setValue(false);
         localStorage.setItem('measurementOrdersChecked', 'false');
       }
+      localStorage.setItem('measurementTestsChecked',
+        this.measurementTestsChecked.value === true ? 'true' : 'false');
     }
   }
 
@@ -453,8 +469,16 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     setTimeout(() => {
       document.body.removeChild(alertBox);
     }, 400);
+  }
 
-
-
+  public getGraphButtons(r: any) {
+    if (r.domainId.toLowerCase() === 'measurement') {
+      if (r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues === 1) {
+        return ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
+      } else if (r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues === 0) {
+        return ['Sex Assigned at Birth', 'Age', 'Sources'];
+      }
+    }
+    return this.graphButtons;
   }
 }

@@ -215,7 +215,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     SurveyQuestionAnalysis genderAnalysis=null;
                     SurveyQuestionAnalysis ageAnalysis=null;
                     SurveyQuestionAnalysis genderIdentityAnalysis=null;
-                    SurveyQuestionAnalysis raceEthnicityAnalysis=null;
                     SurveyQuestionAnalysis genderCountAnalysis = null;
                     SurveyQuestionAnalysis ageCountAnalysis = null;
                     if(concept.getCountAnalysis() != null){
@@ -229,9 +228,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                     if(concept.getGenderIdentityAnalysis() != null){
                         genderIdentityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderIdentityAnalysis());
-                    }
-                    if(concept.getRaceEthnicityAnalysis() != null){
-                        raceEthnicityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getRaceEthnicityAnalysis());
                     }
                     if(concept.getGenderCountAnalysis() != null) {
                         genderCountAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderCountAnalysis());
@@ -252,7 +248,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis)
                             .genderIdentityAnalysis(genderIdentityAnalysis)
-                            .raceEthnicityAnalysis(raceEthnicityAnalysis)
                             .genderCountAnalysis(genderCountAnalysis)
                             .ageCountAnalysis(ageCountAnalysis);
                 }
@@ -365,7 +360,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .genderAnalysis(ca.getGenderAnalysis())
                             .genderPercentageAnalysis(ca.getGenderPercentageAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
-                            .raceEthnicityAnalysis(ca.getRaceEthnicityAnalysis())
                             .ageAnalysis(ca.getAgeAnalysis())
                             .agePercentageAnalysis(ca.getAgePercentageAnalysis())
                             .raceAnalysis(ca.getRaceAnalysis())
@@ -524,30 +518,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
             Multimap<Long, CBCriteria> parentCriteria = Multimaps
                     .index(criteriaList, CBCriteria::getParentId);
-            List<CBCriteria> childrenList = new ArrayList<>();
-            if (standardParent == null && sourceParent == null) {
-                childrenList = parentCriteria.get(parent.getId()).stream().collect(Collectors.toList());
-            } else {
-                childrenList = parentCriteria.get(standardParent.getId()).stream().collect(Collectors.toList());
-                childrenList.addAll(parentCriteria.get(sourceParent.getId()).stream().collect(Collectors.toList()));
-                Multimap<String, CBCriteria> childCriteriaByConcept = Multimaps
-                        .index(criteriaList, CBCriteria::getConceptId);
-                for (String conceptKey: childCriteriaByConcept.keys()) {
-                    List<CBCriteria> childCriteria = childCriteriaByConcept.get(conceptKey).stream().collect(Collectors.toList());
-                    if (childCriteria.size() > 1) {
-                        CBCriteria standardChild = childCriteria.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList()).get(0);
-                        CBCriteria sourceChild = childCriteria.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList()).get(0);
-                        standardChild.setSourceCount(sourceChild.getCount());
-                        childrenList.add(standardChild);
-                    } else {
-                        childrenList.add(childCriteria.get(0));
-                    }
-                }
-                Collections.sort(childrenList, Comparator.comparing((CBCriteria criteria) -> criteria.getCount()));
-            }
-            CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-            criteriaListResponse.setItems(childrenList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
-            response.setChildren(criteriaListResponse);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.ok(response);
@@ -658,6 +628,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Slice<Concept> concepts = null;
         int measurementTests = 1;
         int measurementOrders = 1;
+
         if (domainId != null && domainId.equals("Measurement")) {
             if (searchConceptsRequest.getMeasurementTests() != null) {
                 measurementTests = searchConceptsRequest.getMeasurementTests();
@@ -1007,9 +978,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
                     conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == RACE_ETHNICITY_ANALYSIS_ID){
-                    addRaceEthnicityStratum(aa);
-                    conceptAnalysis.setRaceEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_ANALYSIS_ID){
                     addAgeStratum(aa, conceptId, null);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -1302,15 +1270,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
     }
 
-    public void addRaceEthnicityStratum(AchillesAnalysis aa){
-        for(AchillesResult ar: aa.getResults()){
-            String analysisStratumName=ar.getAnalysisStratumName();
-            if (analysisStratumName == null || analysisStratumName.equals("")) {
-                ar.setAnalysisStratumName(QuestionConcept.raceEthnicityStratumNameMap.get(ar.getStratum2()));
-            }
-        }
-    }
-
     public void addEthnicityStratum(AchillesAnalysis aa) {
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
@@ -1418,6 +1377,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if(otherBinMax != null && otherBinMin != null){
                 otherBinRanges = makeBins(otherBinMin, otherBinMax, otherBinWidth);
             }
+
+            Collections.sort(maleBinRanges);
+            Collections.sort(femaleBinRanges);
+            Collections.sort(otherBinRanges);
 
             ArrayList<String> maleRangesInResults = new ArrayList<>();
             maleRangesInResults.add(("< " + trimTrailingZeroDecimals(String.valueOf(maleBinRanges.get(0)))));

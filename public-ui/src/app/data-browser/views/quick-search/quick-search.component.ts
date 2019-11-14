@@ -246,4 +246,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       label, this.searchText.value, action);
   }
+
+  public clearSearch() {
+    this.searchText.setValue('');
+  }
 }

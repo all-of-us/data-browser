@@ -4,7 +4,7 @@
       <p id="db-desc" class="body-default">
         The Data Browser provides interactive views of the publicly available <span class="allofus-italics">All of Us</span> Research Program participant data.
         Currently, participant provided information, including surveys and physical measurements taken at the time of
-        participant enrollment , as well as electronic health record data are available.
+        participant enrollment, as well as electronic health record data are available.
         The <span class="allofus-italics">All of Us</span> Research Program data will include more data types over time.
         <br><br>
         In order to protect participant privacy, the data is limited to aggregate counts and summary
@@ -29,6 +29,7 @@
         <clr-icon shape="search" class="is-info search-icon"></clr-icon>
         <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search"
           [formControl]="searchText" style="height:auto">
+        <div *ngIf="searchText.value"  class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
       </div>
       <span class="result-body-item cdr-info" *ngIf="creationTime">
         Data based on Curated Data Repository (CDR) dated

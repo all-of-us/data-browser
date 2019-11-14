@@ -133,6 +133,12 @@ else
     done
 fi
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` AS
+select p.* from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+where p.person_id not in
+(select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+
 # Next Populate achilles_results
 echo "Running achilles queries..."
 
@@ -140,14 +146,14 @@ echo "Getting person count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, count_value,source_count_value) select 0 as id, 1 as analysis_id,  COUNT(distinct person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`"
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`"
 
 # Gender count
 echo "Getting gender count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 2 as analysis_id,  cast (gender_concept_id as STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by GENDER_CONCEPT_ID"
 
 # Age count
@@ -156,7 +162,7 @@ echo "Getting age count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 3 as analysis_id,  CAST(year_of_birth AS STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by YEAR_OF_BIRTH"
 
 #  4	Number of persons by race
@@ -164,7 +170,7 @@ echo "Getting race count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 4 as analysis_id,  CAST(RACE_CONCEPT_ID AS STRING) as stratum_1, COUNT(distinct person_id) as count_value,0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by RACE_CONCEPT_ID"
 
 # 5	Number of persons by ethnicity
@@ -172,7 +178,7 @@ echo "Getting ethnicity count"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 5 as analysis_id,  CAST(ETHNICITY_CONCEPT_ID AS STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by ETHNICITY_CONCEPT_ID"
 
 # 6 Number of person by age decile
@@ -182,7 +188,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with person_age as
 (select person_id,
 ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by person_id,age
 )
 select 0, 6 as analysis_id,
@@ -202,7 +208,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0, 10 as analysis_id,  CAST(year_of_birth AS STRING) as stratum_1,
   CAST(gender_concept_id AS STRING) as stratum_2,
   COUNT(distinct person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by YEAR_OF_BIRTH, gender_concept_id"
 
 # 12	Number of persons by race and ethnicity
@@ -212,7 +218,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2, count_value,source_count_value)
 select 0, 12 as analysis_id, CAST(RACE_CONCEPT_ID AS STRING) as stratum_1, CAST(ETHNICITY_CONCEPT_ID AS STRING) as stratum_2, COUNT(distinct person_id) as count_value,
 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
 group by RACE_CONCEPT_ID,ETHNICITY_CONCEPT_ID"
 
 # Fetches data needed for concept counts (3000), biological sex (3101), age (3102) charts
@@ -257,9 +263,9 @@ for index in "${!domain_names[@]}"; do
     CAST(co1.${concept_id} AS STRING) as stratum_1,
     CAST(p1.gender_concept_id AS STRING) as stratum_2, \"${domain_stratum}\" as stratum_3,
     COUNT(distinct p1.PERSON_ID) as count_value,
-    (select COUNT(distinct p2.PERSON_ID) from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p2 inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
+    (select COUNT(distinct p2.PERSON_ID) from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p2 inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
     on p2.person_id=co2.person_id where co2.${source_concept_id}=co1.${concept_id} and p2.gender_concept_id = p1.gender_concept_id) as source_count_value
-    from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p1 inner join
     \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
     on p1.person_id = co1.person_id
     join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=co1.${concept_id} and c.domain_id=\"${domain_stratum}\"
@@ -269,7 +275,7 @@ for index in "${!domain_names[@]}"; do
     select 0, 3101 as analysis_id,CAST(co1.${source_concept_id} AS STRING) as stratum_1,CAST(p1.gender_concept_id AS STRING) as stratum_2,
     \"${domain_stratum}\" as stratum_3,
     COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value from
-    \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+    \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p1 inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
     on p1.person_id = co1.person_id
     join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=co1.${source_concept_id} and c.domain_id=\"${domain_stratum}\"
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
@@ -286,7 +292,7 @@ for index in "${!domain_names[@]}"; do
     with ehr_age as
     (select ${table_id},
     ceil(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY)/365.25) as age
-    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
     group by ${table_id},age
     ),
     ehr_age_stratum as
@@ -329,7 +335,7 @@ for index in "${!domain_names[@]}"; do
     with current_person_age as
     (select person_id,
     ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
-    from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
     group by person_id,age
     ),
     current_person_age_stratum as
@@ -380,7 +386,7 @@ for index in "${!domain_names[@]}"; do
     (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
     select 0 as id,3300 as analysis_id, \"${domain_concept_id}\" as stratum_1, \"${domain_stratum}\" as stratum_3,cast(p.gender_concept_id as string) as stratum_4,
     count(distinct co.person_id) as count_value,
-    0 as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    0 as source_count_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
     on p.person_id=co.person_id
     group by p.gender_concept_id"
 
@@ -392,7 +398,7 @@ for index in "${!domain_names[@]}"; do
     with ehr_age as
     (select ${table_id},
     ceil(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY)/365.25) as age
-    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
     group by ${table_id},age
     ),
     ehr_age_stratum as
@@ -524,7 +530,7 @@ On o.observation_source_concept_id=sq.question_concept_id
 join single_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
+where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586144,1586148,1586145,903070))
 group by o.observation_source_concept_id,c.concept_name,sm.concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -555,7 +561,7 @@ main_questions_count as
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -570,7 +576,7 @@ select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.o
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -589,7 +595,7 @@ select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.o
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -623,7 +629,7 @@ select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.o
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join single_answered_people sap on sap.person_id=o.person_id
@@ -646,7 +652,7 @@ select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.o
 'More than one race/ethnicity' as stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join multiple_answered_people sap on sap.person_id=o.person_id
@@ -667,13 +673,13 @@ select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.o
 CAST(903070 as string) as stratum_3,'Other' as stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join single_answered_people spa on spa.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
+where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586144,1586148,1586145,903070))
 group by sm.concept_id,o.observation_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -684,7 +690,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -704,7 +710,7 @@ survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -788,7 +794,7 @@ survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -826,7 +832,7 @@ survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -864,7 +870,7 @@ survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -885,7 +891,7 @@ join single_answered_people sap on sap.person_id=o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586141,1586144,1586148,1586145,903070))
+where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586144,1586148,1586145,903070))
 group by sm.concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
 
@@ -897,7 +903,7 @@ with survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -927,20 +933,35 @@ echo "Getting physical measurement participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
-select 0 as id,3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
-count(distinct person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`
+select 0 as id, 3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
+((select count(distinct person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\`
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)"
+or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)) +
+(select count(distinct person_id) from  \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+where observation_concept_id in (903120)
+or observation_source_concept_id in (903120))) as count_value,
+0 as source_count_value"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id,3300 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
-count(distinct m.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+count(distinct m.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
 on p.person_id=m.person_id
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+group by p.gender_concept_id"
+
+echo "Getting physical measurement participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id,3300 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
+count(distinct m.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` m join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
+on p.person_id=m.person_id
+where observation_concept_id in (903120)
+or observation_source_concept_id in (903120)
 group by p.gender_concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -949,7 +970,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with m_age as
 (select measurement_id,
 ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 group by measurement_id,age
@@ -969,6 +990,32 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join m_ag
 on m.measurement_id=p.measurement_id
 group by age_stratum"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+with m_age as
+(select observation_id,
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
+where observation_concept_id in (903120)
+or observation_source_concept_id in (903120)
+group by observation_id,age
+),
+m_age_stratum as
+(
+select observation_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from m_age
+group by observation_id,age_stratum
+)
+select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
+count(distinct m.person_id) as count_value, 0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` m join m_age_stratum p
+on m.observation_id=p.observation_id
+group by age_stratum"
+
 # Count of people who took each survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -980,6 +1027,7 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.$
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and o.observation_source_concept_id not in (40766240,43528428,1585389)
 Group by sm.concept_id"
 
 # Gender breakdown of people who took each survey (Row for combinations of each survey and gender)
@@ -990,7 +1038,7 @@ select 0, 3101 as analysis_id,
 CAST(sm.concept_id AS STRING) as stratum_1,
 CAST(p1.gender_concept_id AS STRING) as stratum_2,'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
 on p1.person_id = ob1.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
@@ -1007,7 +1055,7 @@ with survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -1039,7 +1087,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with current_person_age as
 (select person_id,
 ceil(TIMESTAMP_DIFF(current_timestamp(), birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
 group by person_id,age
 ),
 current_person_age_stratum as
@@ -1072,7 +1120,7 @@ CAST(sm.concept_id AS STRING) as stratum_1,
 CAST(p1.race_concept_id as string) as stratum_2,
 'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
 on p1.person_id = ob1.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
@@ -1091,7 +1139,7 @@ CAST(sm.concept_id AS STRING) as stratum_1,
 CAST(p1.ethnicity_concept_id as string) as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob1
 on p1.person_id = ob1.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
@@ -1106,7 +1154,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
 select 0 as id, 3200 as analysis_id, cast(cr.concept_id_2 as string) as stratum_1,
 cast(p.gender_concept_id as string) as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=ob.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=ob.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_concept_relationship\` cr
 on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
 on cr.concept_id_2=sm.concept_id
@@ -1120,7 +1168,7 @@ with survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as
@@ -1153,7 +1201,7 @@ main_questions_count as
 (select 0,3320 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -1166,7 +1214,7 @@ sub_1_questions_count as
 select 0,3320 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -1183,7 +1231,7 @@ sub_2_questions_count as
 select 0,3320 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o on p.person_id = o.person_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
@@ -1216,7 +1264,7 @@ survey_age as
 (
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum as

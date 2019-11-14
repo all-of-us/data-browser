@@ -22,6 +22,11 @@ h5.secondary-display {
     padding: 18px;
 }
 
+.clear-icon {
+    float: right;
+    margin-top: 1.5%;
+}
+
 .results {
     padding: 18px;
     padding-top: 36px;

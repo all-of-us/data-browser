@@ -70,6 +70,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
+    const maxYAxis = Math.max.apply(
+      Math, options.series[0]['data'].map(function(o) { return o.y; }));
     return {
       chart: options.chart,
       lang: this.dbc.lang,
@@ -154,6 +156,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           }
         },
         min: ((this.analysis &&
@@ -162,6 +166,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           (this.surveyAnalysis &&
             (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
           this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? 0 : 20,
+        max: ((this.analysis &&
+          (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
+            this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
+          (this.surveyAnalysis &&
+            (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
+              this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID)))
+          ? 100 : maxYAxis,
         labels: ((this.analysis &&
           (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
           this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
@@ -170,6 +181,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? {
           style: {
             fontSize: '12px',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -179,6 +192,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } : {
           style: {
             fontSize: '12px',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -505,34 +520,34 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         if (a.countValue > 20) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ';
         }
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
-        yAxisLabel = '% of Each Biological Sex that answered with ' + this.selectedResult.stratum4;
+        yAxisLabel = '% of Each Sex that answered with ' + this.selectedResult.stratum4;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Biological Sex that answered' + ': '
-            + '<b>' + (a.percentage) + '% </b>' +
+            '<br/> % of Each Sex that answered' + ': '
+            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
             '<br/> Participant Count: ';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Biological Sex that answered' + ': '
-            + '<b>' + (a.percentage) + '% </b>' +
+            '<br/> % of Each Sex that answered' + ': '
+            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
@@ -543,18 +558,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
           'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
-        toolTipHelpText = 'Answer: ' + a.stratum4 + ' <br/> ' +
+        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
           'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-        yAxisLabel = '% of Each Biological Sex with ' + this.conceptName;
+        yAxisLabel = '% of Each Sex with ' + this.conceptName;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
@@ -562,13 +577,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
         if (a.stratum4 == null) {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName +
+            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
             ': <b>' + 0 + '% </b>' +
             '<br/> Participant Count: ' ;
         } else {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Biological Sex with ' + this.conceptName +
-            ': <b>' + (+a.stratum4) + '% </b>' +
+            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
+            ': <b>' + Math.round((+a.stratum4)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
@@ -576,7 +591,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
         data.push({
           name: a.analysisStratumName
-          , y: +(a.percentage), color: color, sliced: true,
+          , y: Math.round(+(a.percentage)), color: color, sliced: true,
           toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
         });
         cats.push(a.analysisStratumName);
@@ -591,7 +606,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           data.push({
             name: a.analysisStratumName
-            , y: +(a.stratum4), color: color, sliced: true,
+            , y: Math.round(+(a.stratum4)), color: color, sliced: true,
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
@@ -751,17 +766,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' +
             '<br/>' + '% of Each Age with ' + this.conceptName +
-            ': <b>' + (+(a.stratum4)) + '% </b>' +
+            ': <b>' + Math.round(+(a.stratum4)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         if (a.countValue > 20 ) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
+            '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + 'Participant Count: ' + '<b>' +  a.countValue + '</b>';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
+            '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + 'Participant Count: ';
         }
@@ -769,14 +786,16 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         yAxisLabel = '% of Each Age that answered with ' + this.selectedResult.stratum4;
         ageHelpText = 'Age When Survey Was Taken';
         if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
+            '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  0 + '% </b>' +
             '<br/> Participant Count: ';
         } else {
-          toolTipHelpText = 'Answer: ' + a.stratum4 + '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
+            '<br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
-            '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  +(a.percentage) + '% </b>' +
+            '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  Math.round(+(a.percentage)) + '% </b>' +
             '<br/> Participant Count: ';
         }
       }
@@ -790,7 +809,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           data.push({
             name: a.analysisStratumName,
-            y: +(a.stratum4), color: color,
+            y: Math.round(+(a.stratum4)), color: color,
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
@@ -804,7 +823,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         } else {
           data.push({
             name: a.analysisStratumName,
-            y: +(a.percentage), color: color,
+            y: Math.round(+(a.percentage)), color: color,
             toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
           });
         }
@@ -980,7 +999,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series.pointPadding = 0;
       series.borderWidth = 0;
       series.groupPadding = 0;
-      series.pointWidth = 18;
+      series.pointWidth = data.length >= 15 ? 15 : 18;
       series.shadow = false;
     }
     return {
@@ -1017,10 +1036,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return order.indexOf(a.stratum3) - order.indexOf(b.stratum3);
     });
     for (const a of this.analysis.results) {
+      let toolTipText = '';
+      if (a.countValue > 20 ) {
+        toolTipText =  'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
+          '<br/>' + 'Participant Count: ' + '<b>' + a.countValue + '</b>';
+      } else {
+        toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
+          '<br/>' + 'Participant Count: ';
+      }
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,
-        toolTipHelpText: a.analysisStratumName,
+        toolTipHelpText: toolTipText,
       });
       cats.push(a.analysisStratumName);
     }
@@ -1039,7 +1066,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       pointWidth: this.pointWidth,
       xAxisTitle: '',
-      yAxisTitle: null,
+      yAxisTitle: 'Participant Count',
     };
   }
 
@@ -1065,5 +1092,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     } else {
       return 0;
     }
+  }
+
+  public getSurveyAnswerText(answer: string) {
+    if (answer.includes(':')) {
+      const answer_split = answer.split(':');
+      let result = '';
+      for (let i = 0; i < answer_split.length - 1; i++) {
+        result += answer_split[i];
+      }
+      result += '<b>' + answer_split[answer_split.length - 1] + '</b>';
+      return result;
+    }
+    return '<b>' + answer + '</b>';
   }
 }
