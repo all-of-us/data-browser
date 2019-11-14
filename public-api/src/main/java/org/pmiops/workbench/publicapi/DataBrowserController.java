@@ -275,7 +275,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .sourceCount(criteria.getSourceCount())
                             .domainId(criteria.getDomainId())
                             .conceptId(criteria.getConceptId())
-                            .path(criteria.getPath());
+                            .path(criteria.getPath())
+                            .canSelect(criteria.getCanSelect());
                 }
             };
 
@@ -496,8 +497,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
-        Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps
-                .index(criteriaList, CBCriteria::getConceptId);
+        Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
         CriteriaParentResponse response = new CriteriaParentResponse();
         if (criteriaList.size() > 0) {
             List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());

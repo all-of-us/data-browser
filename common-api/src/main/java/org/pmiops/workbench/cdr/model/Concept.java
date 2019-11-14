@@ -274,6 +274,7 @@ public class Concept {
     public void setMeasurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
         this.measurementConceptInfo = measurementConceptInfo;
     }
+
     public Concept measurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
         this.measurementConceptInfo = measurementConceptInfo;
         return this;
