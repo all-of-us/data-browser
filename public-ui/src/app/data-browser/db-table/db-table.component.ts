@@ -242,7 +242,6 @@ export class DbTableComponent implements OnInit, OnChanges, OnDestroy {
         this.ehrDomain.domain.toLowerCase())
         .subscribe({
           next: result => {
-            console.log(result);
             this.treeData = [result.parent];
             this.treeLoading = false;
           }
