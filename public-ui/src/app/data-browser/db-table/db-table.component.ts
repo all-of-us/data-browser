@@ -217,7 +217,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   }
 
   public expandRow(concept: any, fromChart?: boolean) {
-    // this.loadSourceTree(concept);
     this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
@@ -239,7 +238,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         this.scrollTo('#c' + this.selectedConcept.conceptCode);
       }, 1);
     }
-    this.resetSelectedGraphs();
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
       if (concept.measurementConceptInfo !== null &&
         concept.measurementConceptInfo.hasValues === 1) {
@@ -248,9 +246,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         concept.measurementConceptInfo.hasValues === 0) {
         this.graphToShow = GraphType.BiologicalSex;
       }
-    } else {
-      this.graphToShow = GraphType.BiologicalSex;
-    }
+    } 
   }
 
   public scrollTo(id: string) {
