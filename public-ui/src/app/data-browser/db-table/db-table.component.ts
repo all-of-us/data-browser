@@ -246,7 +246,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         concept.measurementConceptInfo.hasValues === 0) {
         this.graphToShow = GraphType.BiologicalSex;
       }
-    } 
+    }
   }
 
   public scrollTo(id: string) {
