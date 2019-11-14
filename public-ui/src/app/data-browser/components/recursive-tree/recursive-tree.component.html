@@ -1,9 +1,24 @@
-<span class="tree-row" [ngClass]="[node && node.group ? 'hasChildren':'noChildren' , opened ? 'opened':'']"
-  (click)="opened=!opened"><span>{{node.name}}</span> <span class="blue-text">({{node.count | number}})</span></span>
-<app-spinner [loading]="node.group && loading && opened" [dots]="true"></app-spinner>
-<div class="children" *ngIf="node.children && opened">
-  <div *ngFor="let child of node.children" class="child">
-    <app-recursive-tree [node]="child">
-    </app-recursive-tree>
+<ng-container *ngIf="node; else noNode">
+  <div class="tree-row">
+    <ng-container *ngIf="node.children; else noChildren">
+      <clr-icon class="handle" shape="angle" [ngClass]="[opened ? 'opened':'']" (click)="opened=!opened"></clr-icon>
+    </ng-container>
+    <ng-template #noChildren>
+      <div *ngIf="loading" class="spinner spinner-sm loading"></div>
+      <div *ngIf="!loading" class="noChildren"></div>
+    </ng-template>
+    <div (click)="conceptClick(node); $event.stopPropagation()" [ngClass]="[highlightService.getHighlightId() == node.id? 'tree-active':'']">{{node.name}}</div> <span class="count">{{node.count | number}}</span>
   </div>
-</div>
+
+  <app-spinner [loading]="node.group && loading && opened" [dots]="true"></app-spinner>
+
+  <div class="children" *ngIf="node.children && opened">
+    <div *ngFor="let child of node.children" class="child">
+      <app-recursive-tree class="child" (conceptSelected)="conceptClick($event)" [node]="child">
+      </app-recursive-tree>
+    </div>
+  </div>
+</ng-container>
+<ng-template #noNode>
+  <h1>no source tree available</h1>
+</ng-template>

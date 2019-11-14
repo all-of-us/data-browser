@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { AchillesResult } from '../../../publicGenerated/model/achillesResult';
 import { Analysis } from '../../../publicGenerated/model/analysis';
@@ -15,12 +15,12 @@ import { GraphType } from '../../utils/enum-defs';
   templateUrl: './concept-charts.component.html',
   styleUrls: ['./concept-charts.component.css', '../../styles/page.css']
 })
-export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
+export class ConceptChartsComponent implements OnChanges, OnDestroy {
   @Input() concept: Concept;
   @Input() backgroundColor = 'transparent'; // background color to pass to the chart component
   @Input() showGraph = GraphType.None;
-  @Input() showRace = false;
-  @Input() showEthnicity = false;
+  // @Input() showRace = false;
+  // @Input() showEthnicity = false;
   @Input() searchTerm = '';
 
   private subscriptions: ISubscription[] = [];
@@ -56,41 +56,6 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
 
   loading() {
     return this.loadingStack.length > 0;
-  }
-
-  ngOnInit() {
-    // Get chart results for concept
-    this.loadingStack.push(true);
-    const conceptIdStr = '' + this.concept.conceptId.toString();
-    this.conceptName = this.concept.conceptName;
-    this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
-      this.concept.domainId).subscribe(
-      results => {
-        this.results = results.items;
-        this.analyses = results.items[0];
-        this.selectedSubGraph = 'Count';
-        this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
-        this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-        this.organizeGenders(this.analyses.genderAnalysis);
-        this.fetchMeasurementGenderResults();
-        // Set this var to make template simpler.
-        // We can just loop through the results and show bins
-        this.loadingStack.pop();
-      }));
-    this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
-      results => {
-        this.sourceConcepts = results.items;
-        if (this.sourceConcepts.length > 10) {
-          this.sourceConcepts = this.sourceConcepts.slice(0, 10);
-        }
-        this.loadingStack.pop();
-      }));
-    this.subscriptions.push(this.api.getEhrCountAnalysis(this.concept.domainId).subscribe(
-      results => {
-        this.domainCountAnalysis = results;
-      }
-    ));
   }
 
   public fetchMeasurementGenderResults() {
@@ -137,6 +102,38 @@ export class ConceptChartsComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
   ngOnChanges() {
+    // Get chart results for concept
+    this.loadingStack.push(true);
+    const conceptIdStr = '' + this.concept.conceptId.toString();
+    this.conceptName = this.concept.conceptName;
+    this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
+      this.concept.domainId).subscribe(
+      results => {
+        this.results = results.items;
+        this.analyses = results.items[0];
+        this.selectedSubGraph = 'Count';
+        this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
+        this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
+        this.organizeGenders(this.analyses.genderAnalysis);
+        this.fetchMeasurementGenderResults();
+        // Set this var to make template simpler.
+        // We can just loop through the results and show bins
+        this.loadingStack.pop();
+      }));
+    this.loadingStack.push(true);
+    this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
+      results => {
+        this.sourceConcepts = results.items;
+        if (this.sourceConcepts.length > 10) {
+          this.sourceConcepts = this.sourceConcepts.slice(0, 10);
+        }
+        this.loadingStack.pop();
+      }));
+    this.subscriptions.push(this.api.getEhrCountAnalysis(this.concept.domainId).subscribe(
+      results => {
+        this.domainCountAnalysis = results;
+      }
+    ));
     if (this.showGraph !== GraphType.Values) {
       this.displayMeasurementGraphs = false;
     } else {

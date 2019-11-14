@@ -1,0 +1,46 @@
+<div class="source-layout"
+  *ngIf="concept.vocabularyId === 'SNOMED' && (concept.domainId === 'Condition' || concept.domainId === 'Procedure')">
+  <aside>
+    <div class="concept-box">
+      <div class="concept-box_info">
+        <ng-container *ngIf="treeConcept && treeConcept.conceptId; else default">
+          <p><strong>{{treeConcept.conceptName}}</strong></p>
+          <p>SNOMED Code: {{treeConcept.conceptCode}}</p>
+          <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
+          <a class="explore" *ngIf="treeConcept.explorable" (click)="exploreConcept.emit(treeConcept)">Explore this concept.</a>
+        </ng-container>
+      </div>
+      <ng-template #default>
+        <div class="concept-box_info">
+          <p><strong>{{concept.conceptName}}</strong></p>
+          <p>SNOMED Code: {{concept.conceptCode}}</p>
+          <p>OMOP Concept Id: {{concept.conceptId}}</p>
+        </div>
+        <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+        </app-concept-charts>
+      </ng-template>
+      <ng-container *ngIf="treeConcept">
+        <app-concept-charts [concept]="treeConcept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+        </app-concept-charts>
+      </ng-container>
+    </div>
+  </aside>
+  <div class="tree-view">
+    <p class="tree-heading">Count Breakdown ({{concept.vocabularyId}})
+      <clr-tooltip>
+        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+        <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
+          <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </p>
+    <div class="tree">
+      <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
+      <ng-container *ngIf="!treeLoading">
+        <div *ngFor="let node of treeData" class="tree-top">
+          <app-source-tree (conceptSelect)="conceptTreeClick($event)" [rootNode]="node"></app-source-tree>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

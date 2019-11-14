@@ -42,11 +42,12 @@
             [standardConcepts]="standardConcepts"
             [medlinePlusLink]="medlinePlusLink"
             [selectedConcept]="selectedConcept"
-            [searchRequest]="searchRequest"
+            [searchRequest]="searchRequest" 
+            [totalResults]="totalResults" 
             [currentPage]="currentPage"
             [graphToShow]="graphToShow"
-            [totalResults]="totalResults"
-            [items]="items"></db-table>
+            [items]="items"
+            (exploreConcept)=exploreConcept($event)></db-table>
           </div>
           <pagination-controls (pageChange)="currentPage = $event; 
           getNextPage($event)" directionLinks="true" autoHide="true" previousLabel="Previous" nextLabel="Next"

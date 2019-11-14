@@ -1,6 +1,8 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
+import { Concept, DataBrowserService } from '../../../../publicGenerated';
+import { TreeHighlightService } from '../../services/tree-highlight.service';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -10,24 +12,34 @@ import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.
 export class RecursiveTreeComponent implements OnChanges, OnDestroy {
   @Input() node: any;
   @Input() opened = false;
-  @Input() loading = true;
+  @Input() loading: boolean;
+  @Output() conceptSelected: EventEmitter<any> = new EventEmitter;
+  highlightId: string;
   private subscriptions: ISubscription[] = [];
-  constructor(private api: DataBrowserService) { }
+  constructor(private api: DataBrowserService, public highlightService: TreeHighlightService) { }
 
   ngOnChanges() {
     if (this.node && this.node.group) {
-      this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
-        .subscribe({
-          next: result => {
-            if (result.items.length) {
-              this.node['children'] = result.items;
-              this.loading = false;
+      this.loading = true;
+      // get it from database
+        this.subscriptions.push(this.api.getCriteriaChildren(this.node.id)
+          .subscribe({
+            next: result => {
+              if (result.items.length) {
+                this.node['children'] = result.items;
+                this.loading = false;
+              }
             }
-          }
-        })
+          })
         );
-      }
+    }
   }
+
+  public conceptClick(node: any) {
+    localStorage.setItem('treeHighlight', node.id);
+    this.conceptSelected.emit(node);
+  }
+
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();

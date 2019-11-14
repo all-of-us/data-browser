@@ -1,3 +1,4 @@
+
 <div class="results-grid" *ngIf="(items && items.length > 0) || (measurementTestsChecked.value === false && measurementOrdersChecked.value === false)">
   <div class="domain-info-layout">
     <span>
@@ -50,7 +51,7 @@
     </div>
   </div>
   <div class="tbl-r tbl-head">
-    <div class="tbl-d first body-lead info-text"> {{ehrDomain.name}}
+    <div class="tbl-d body-lead"> {{ehrDomain.name}}
       <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Domain name tooltip hover in matching concepts table')">
         <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
         <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
@@ -58,48 +59,26 @@
         </clr-tooltip-content>
       </clr-tooltip>
     </div>
-    <div class="tbl-r-group">
-      <div class="tbl-d body-lead info-text"> Participants of {{totalParticipants | number}}
-        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Participant count tooltip hover')">
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div>
-      <div class="tbl-d body-lead info-text"> % of
-        {{totalParticipants | number}}
-        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Percentage of participant count tooltip hover')">
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">The overall participant count of this medical concept divided
-              by the total number of participants
-            </div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div>
-      <div class="tbl-d  body-lead info-text">
-        Vocabulary Code
-        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Vocabulary code tooltip hover')">
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.vocabularyCodeHelpText}}
-            </div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div>
-      <div class="tbl-d body-lead info-text">
-        Concept Code
-        <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept code tooltip hover')">
-          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-            <div class="tooltip-label">{{tooltipText.conceptCodeHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i>
-              {{tooltipText.conceptCodeHelpText2}} <i>{{tooltipText.allOfUsHelpText}}</i>
-              {{tooltipText.conceptCodeHelpText3}}</div>
-          </clr-tooltip-content>
-        </clr-tooltip>
-      </div>
-      <div class="tbl-d body-lead info-text" *ngIf="ehrDomain.domain.toLowerCase() === 'measurement'">
+    <div class="tbl-d body-lead"> Participants of {{totalParticipants | number}}
+      <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Participant count tooltip hover')">
+        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+          <div class="tooltip-label">{{tooltipText.participantCountHelpText}}</div>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+    <div class="tbl-d body-lead"> % of
+      {{totalParticipants | number}}
+      <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Percentage of participant count tooltip hover')">
+        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
+        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
+          <div class="tooltip-label">The overall participant count of this medical concept divided
+            by the total number of participants
+          </div>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+     <div class="tbl-d body-lead info-text" *ngIf="ehrDomain.domain.toLowerCase() === 'measurement'">
         Data Type
         <div class="dropdown bottom-left" [ngClass]="selectedFilterGrid?'open':''">
           <button class="dropdown-toggle">
@@ -119,24 +98,21 @@
           </div>
         </div>
       </div>
-      <div class="tbl-d body-lead info-text"> View graphs
-      </div>
-    </div>
   </div>
-  
-  <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r " [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
+
+  <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r "
+    [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
     *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
-    <div class="tbl-r" (click)="expandRow(r)">
-      <div class="body-lead info-text tbl-d first"
+    <div [ngClass]="ehrDomain.domain === 'MEASUREMENT'?'tbl-r_labs':'tbl-r'"  (click)="expandRow(r)">
+      <div class="body-lead tbl-d"
         *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
         <div class="code-tooltip">
           <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
           </app-highlight-search>
         </div>
       </div>
-
       <ng-template #code_match_standard>
-        <div class="body-lead info-text tbl-d first"
+        <div class="body-lead tbl-d"
           *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
           <div class="code-tooltip"
             *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
@@ -146,39 +122,33 @@
         </div>
       </ng-template>
       <ng-template #code_match_not_standard>
-        <div class="body-lead info-text tbl-d first">
+        <div class="body-lead tbl-d">
           <div class="code-tooltip">
-              <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
-                {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
-              </span>
+            <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
+              {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
+            </span>
             <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
             <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
             </app-highlight-search>
           </div>
         </div>
       </ng-template>
-      <div class="tbl-r-group">
-        <div class="body-lead info-text tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
-          &le; {{r.countValue | number}}
+
+      <div class="body-lead tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
+        &le; {{r.countValue | number}}
+      </div>
+      <ng-template #Non20Counts>
+        <div class="body-lead tbl-d">
+          {{r.countValue | number}}
         </div>
-        <ng-template #Non20Counts>
-          <div class="body-lead info-text tbl-d">
-            {{r.countValue | number}}
-          </div>
-        </ng-template>
-        <div class="body-lead info-text tbl-d">
-          {{participantPercentage(r.countValue) | number}}%
-        </div>
-        <ng-template #noConceptSynonyms>
-          <div class="body-lead info-text tbl-d"></div>
-        </ng-template>
-        <div class="body-lead info-text tbl-d">
-          {{r.vocabularyId}} {{r.conceptCode}}
-        </div>
-        <div class="body-lead info-text tbl-d">
-          {{r.conceptId}}
-        </div>
-        <div class="body-lead info-text tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
+      </ng-template>
+      <div class="body-lead tbl-d">
+        {{participantPercentage(r.countValue) | number}}%
+      </div>
+      <ng-template #noConceptSynonyms>
+        <div class="body-lead tbl-d"></div>
+      </ng-template>
+    <div class="body-lead tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
           <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder" class="vial-span">
             <clr-tooltip>
               <i class="fas fa-vial solid fa-lg" clrTooltipTrigger></i>
@@ -198,18 +168,31 @@
             </clr-tooltip>
             </span></ng-template>
         </div>
-        <div class="body-lead info-text tbl-d">
-          <button class="icon-btn">
-            <clr-icon [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'is-solid':''" shape="bar-chart" class="bar-chart-icon">
-            </clr-icon>
-          </button>
-        </div>
+      <div class="body-lead tbl-d icon-btn-group">
+        <button (click)="checkIfExpanded(r,$event);$event.stopPropagation()"  class="icon-btn">
+          <clr-icon [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow != 'Sources'?'is-solid':''"
+            shape="bar-chart" class="icon-choice">
+          </clr-icon>
+        </button>
+        <button class="icon-btn icon-choice">
+          <div (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()"
+            [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow == 'Sources'?'source-btn_active':'source-btn'">
+          </div>
+        </button>
+        <clr-dropdown>
+        <button clrDropdownTrigger aria-label="share button" (click)="$event.stopPropagation()"class="icon-btn">
+          <clr-icon shape="share" class="is-solid icon-choice">
+          </clr-icon>
+        </button>
+        <clr-dropdown-menu (click)="$event.stopPropagation()" style="width: 10rem; text-align: left;"clrPosition="bottom-right" *clrIfOpen>
+          <button clrDropdownItem (click)="share(r.conceptName,$event);$event.stopPropagation()" class="btn btn-sm">Copy link to clipboard</button>
+        </clr-dropdown-menu>
+      </clr-dropdown>
       </div>
     </div>
-    <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)"
-      class="body-lead info-text aka">
-      <div *ngIf="r.conceptSynonyms;else noConceptSynonyms"
-        (click)="$event.stopPropagation();toggleSynonyms(r)" class="aka-text">
+    <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)" class="body-lead aka-layout aka">
+      <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
+        class="aka-text">
         <span>Also Known As</span>
         <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept synonyms tooltip hover on concept ' + r.conceptName)">
           <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon aka-info">
@@ -222,30 +205,28 @@
           </clr-tooltip-content>
         </clr-tooltip>
       </div>
-      <div class="synonyms-text">
-        <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-          *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
-          [searchTerm]="prevSearchText">
-        </app-highlight-search>
-        <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-          *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]"
-          [searchTerm]="prevSearchText">
-        </app-highlight-search>
-        <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
-          *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
-          See
-          Less
-        </a>
-        <ng-template #seeMore>
-          <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
-            *ngIf="synonymString[r.conceptId].length > 100"> See More
-            <clr-icon shape="ellipsis-horizontal"></clr-icon>
-          </a>
-        </ng-template>
-      </div>
-    </div>
 
-    <div class="row-expansion" *ngIf="searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode" #chartElement>
+      <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+        *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
+        [searchTerm]="prevSearchText">
+      </app-highlight-search>
+      <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+        *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
+      </app-highlight-search>
+      <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
+        *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
+        See
+        Less
+      </a>
+      <ng-template #seeMore>
+        <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
+          *ngIf="synonymString[r.conceptId].length > 100">
+          <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
+        </a>
+      </ng-template>
+    </div>
+    <div class="row-expansion" *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
+      #chartElement>
       <div class="graph-menu">
         <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"
           (click)="selectGraph(g, r)" class="chart-choice">
@@ -259,33 +240,8 @@
         </div>
       </div>
       <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-        <div class="source-layout"
-          *ngIf="r.vocabularyId === 'SNOMED' && (r.domainId === 'Condition' || r.domainId === 'Procedure'); else NonRolledUp">
-          <div class="source-item">
-            <aside class="source-tree">
-              <p><b>SNOMED Code:</b> {{r.conceptCode}}</p>
-              <p><b>OMOP Concept Id:</b> {{r.conceptId}}</p>
-              <p class="tree-heading">Count Breakdown ({{r.vocabularyId}})
-                <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Sources chart tooltip hover on concept ' + r.conceptName)">
-                  <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                  <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                    <div class="tooltip-label">{{tooltipText.rolledUpConceptsHelpText}}</div>
-                  </clr-tooltip-content>
-                </clr-tooltip>
-              </p>
-              <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
-              <ng-container *ngIf="!treeLoading">
-                <div *ngFor="let node of treeData" class="tree-top">
-                  <app-source-tree [rootNode]="node"></app-source-tree>
-                </div>
-              </ng-container>
-            </aside>
-          </div>
-          <div class="source-item">
-            <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
-            </app-concept-charts>
-          </div>
-        </div>
+        <app-sources (exploreConcept)="exploreConcept.emit($event)" [ehrDomain]="ehrDomain" [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
+
       </ng-container>
       <ng-template #NonRolledUp>
         <div class="graph-item">

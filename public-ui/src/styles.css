@@ -9,6 +9,7 @@
  */
 
 html {
+  font-size: 18px;
   line-height: 1.15;
   /* 1 */
   -webkit-text-size-adjust: 100%;
@@ -536,10 +537,14 @@ a a:link a:visited {
 .toggle-link {
   cursor: pointer;
 }
-
-.source-item .concept-charts.chart {
-  margin:0;
+.copy-alert {
+    border: 1px solid #2f2e7e;
+    background:white;
+    border-radius: 2px;
+    font-size:10px;
+    padding: 1em;
 }
+
 
 .highcharts-container{
   overflow:visible !important;
@@ -563,8 +568,16 @@ a a:link a:visited {
     padding: 0;
   }
 }
+/* Must override 3 party component styles here, globally as angular component styles don't apply to child components used
+ * in the template ie clarity components. 
+ */
 
-.ngx-pagination {
+ .tooltip-content {
+  font-size:12px!important;
+  line-height: 18px!important;
+}
+
+ .ngx-pagination {
   margin-bottom: 0 !important;
   padding-top: .5rem!important;
 }
@@ -583,6 +596,3 @@ a a:link a:visited {
 .ngx-pagination .current span {
   color:white!important;
 }
-/* Must override clarity styles here, globally as angular component styles don't apply to child components used
- * in the template ie clarity components.
- */

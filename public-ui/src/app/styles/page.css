@@ -91,6 +91,14 @@
   width: calc((100%/12)*10);
   margin: 0 auto;
 }
+.concept-charts {
+  width: calc((100%/12)*10);
+  margin: 0 auto;
+}
+.source-chart {
+  width:100%;
+  margin-left:-1rem;
+}
 
 .info-icon {
   color: #337AB7;
@@ -175,7 +183,7 @@
 }
 
 .info-text {
-  font-size: 16px;
+  font-size: 14px;
   align-items: center;
   display: flex;
 }
@@ -205,7 +213,7 @@
 }
 
 .chart-choice .tooltip {
-  margin-left:.25rem;
+  margin-left: .25rem;
 }
 
 .sub-chart-choice {
@@ -217,7 +225,7 @@
 }
 
 .survey-chart-choice .tooltip {
-  margin-left:.25rem;
+  margin-left: .25rem;
 }
 
 .chart-choice:hover {
@@ -236,15 +244,13 @@
   cursor: pointer;
 }
 
-.unit-choice.active, .sub-graph-choice.active{
+.unit-choice.active, .sub-graph-choice.active {
   border-style: solid;
   border-color: #BEE1FF;
   border-radius: 2px 2px 2px 2px;
 }
 
-
-
-.survey-answer-level-1.active, .survey-answer-level-2.active{
+.survey-answer-level-1.active, .survey-answer-level-2.active {
   font-weight: bold;
 }
 
@@ -253,100 +259,10 @@
   cursor: pointer;
 }
 
-/* •••• table with fisrt column maxwidth 50% •••• */
-
-.tbl-r {
-  display: flex;
-  justify-content: space-between;
-}
-
-.tbl-r-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 35rem;
-}
-
-.tbl-r-group .tbl-d:last-of-type {
-  width: 5rem;
-  white-space: nowrap;
-  text-align: center;
-}
-.tbl-r-group .tbl-d:last-of-type button {
-  width:100%;
-}
-
-.tbl-r.tbl-head {
-  padding: 9px;
-  border-radius: 3px 3px 0 0;
-}
-
-.tbl-d {
-  padding: 0 9px;
-  position: relative;
-  width: calc(24%);
-}
-
-.row-expansion {
-  width: 100%;
-  text-align: center;
-  padding-top: 9px;
-  background: #f6f6f8;
-  border-top: none;
-  padding-bottom: calc(9px*3);
-}
-
-.tbl-r-state {
-  background: #f6f6f8;
-}
-
-.tbl-r-expanded {
-  border-left: 1px solid #CCCCCC;
-  border-right: 1px solid #CCCCCC;
-}
-
-.tbl-exp-r .tbl-r .tbl-d {
-  max-width: 50%;
-}
-
-.tbl-exp-r {
-  border: 1px solid #CCCCCC;
-  border-bottom: none;
-  cursor: pointer;
-  transition: .2s background ease-out;
-  padding: 9px;
-  min-width: 810px;
-}
-
-.tbl-exp-r *.tbl-exp-r {
-  border-left: none;
-  border-right: none;
-  padding: 0.5rem 0;
-  min-width: auto;
-}
-
-.tbl-exp-r:last-of-type {
-  border-bottom: 1px solid #CCCCCC;
-}
-
-.tbl-exp-r:hover {
-  background: #f6f6f8;
-  transition: .1s background ease-in;
-}
-
-.tbl-d.first {
-  width: 30%;
-}
-
 @media only screen and (min-width: 1168px) {
-  .tbl-d.first {
+  /* .tbl-d.first {
     min-width: 10rem;
-  }
-}
-
-.tbl-r {
-  text-align: left;
-  min-width: 810px;
+  } */
 }
 
 /**** ##MAILCHIMP ***/
@@ -376,29 +292,6 @@
 .mc-field-group input {
   width: 100%;
   max-width: 320px;
-}
-
-.tree-top {
-  padding: 1em;
-  padding-top: 0;
-  overflow: scroll;
-  height: 11rem;
-}
-
-.source-tree {
-  width: calc((100%/12)*10);
-  margin: 0 auto;
-  padding: 1em;
-  width: 90%;
-  text-align: left;
-}
-
-.source-tree p {
-  margin: 0;
-}
-
-.tree-heading {
-  padding-top: 1em;
 }
 
 .allofus-italics {

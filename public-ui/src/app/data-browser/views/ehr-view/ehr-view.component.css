@@ -37,24 +37,17 @@ h5.secondary-display {
     background: white;
 }
 
-.aka-text {
-    width: 170px;
-    font-family: Arial, sans-serif;
-    font-style: italic;
-    color: rgb(150 150 150);
-    display: flex;
-    align-items: center;
-}
-
-.aka-info {
-    opacity: .7;
-}
-
-
-
 .top-concepts-chart {
     width: 100%;
     margin: 0 auto;
     display: block;
+}
+
+
+@media (max-width: 900px) {
+    .results {
+      padding: 0;
+      padding-top: 36px;
+    }
 }
 

@@ -182,6 +182,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         }));
       this.subscriptions.push(this.searchText.valueChanges
         .subscribe((query) => {
+          if (query == null) {
+            query = '';
+          }
+          localStorage.setItem('searchText', query);
         }));
     }
   }
@@ -214,6 +218,21 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           });
         })
     );
+  }
+
+  public exploreConcept(e) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { search: e.conceptCode }
+      });
+    setTimeout(() => {
+      // trigger the TreeData
+      this.treeData = [1];
+      this.selectedConcept = e;
+      localStorage.setItem('selectedConceptCode', e.conceptCode);
+    }, 20);
   }
 
   public getNumberOfPages(query: string) {
