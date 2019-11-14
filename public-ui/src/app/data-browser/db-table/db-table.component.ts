@@ -153,6 +153,9 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         this.expandRow(this.selectedConcept, true);
       }
     }
+    if (changes.treeData && changes.treeData.currentValue) {
+      this.loadSourceTree(this.selectedConcept)
+    }
   }
 
   public ngOnDestroy() {
