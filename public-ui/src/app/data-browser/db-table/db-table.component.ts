@@ -154,7 +154,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       }
     }
     if (changes.treeData && changes.treeData.currentValue) {
-      this.loadSourceTree(this.selectedConcept)
+      this.loadSourceTree(this.selectedConcept);
     }
   }
 
