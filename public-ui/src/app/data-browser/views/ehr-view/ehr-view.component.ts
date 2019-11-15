@@ -15,7 +15,6 @@ import { StandardConceptFilter } from '../../../../publicGenerated/model/standar
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
 import { TooltipService } from '../../../utils/tooltip.service';
-import {distinctUntilChanged} from "rxjs/operator/distinctUntilChanged";
 
 /* This displays concept search for a Domain. */
 
@@ -186,7 +185,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             this.toggleTopConcepts();
           }
         }));
-      
       this.subscriptions.push(this.searchText.valueChanges
         .subscribe((query) => {
           if (query == null) {
