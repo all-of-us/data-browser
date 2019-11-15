@@ -233,7 +233,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.treeData = [1];
       this.selectedConcept = e;
-    }, 5000);
+    }, 2000);
   }
 
   public getNumberOfPages(query: string) {
