@@ -51,7 +51,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
     (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true);
   standardConceptIds: number[];
-  chartLoadCheck = 0;
   private subscriptions: ISubscription[] = [];
   private initSubscription: ISubscription = null;
   constructor(
