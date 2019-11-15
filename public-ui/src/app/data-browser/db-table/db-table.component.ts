@@ -149,11 +149,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       }));
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
-      if (changes.selectedConcept && changes.selectedConcept.currentValue) {
-        this.expandRow(this.selectedConcept, true);
-      }
+      this.expandRow(this.selectedConcept, true);
     }
     if (changes.treeData && changes.treeData.currentValue) {
+      this.selectedConcept = JSON.parse(localStorage.getItem('selectedConcept'));
       this.loadSourceTree(this.selectedConcept);
     }
   }
@@ -251,9 +250,12 @@ export class DbTableComponent implements OnChanges, OnDestroy {
 
   public scrollTo(id: string) {
     const el = this.elm.nativeElement.querySelector(id);
-    if (el.length > 0) {
+    if (el !== null) {
       el.scrollIntoView({ behavior: 'smooth' });
-    }
+      console.log("scrollTO sucessfull");
+    }else {
+    console.log("scrollTO failed");
+  }
   }
 
   public checkCount(count: number) {
@@ -312,7 +314,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         .subscribe({
           next: result => {
             this.treeData = [result.parent];
-            console.log(result);
+            console.log(result);  
             this.treeLoading = false;
           }
         }));
