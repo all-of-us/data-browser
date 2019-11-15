@@ -139,9 +139,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     // if no domainObj or if the domain in the obj doesn't match the route
     if (!domainObj || domainObj.domain !== this.domainId) {
       this.getThisDomain();
+    } else {
+      this.setDomain();
     }
-    this.setDomain();
-    this.domainSetup(this.ehrDomain);
     if (this.currentPage !== 1) {
       this.showTopConcepts = false;
     } else { this.showTopConcepts = true; }
@@ -166,14 +166,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
-        .subscribe(results => this.searchCallback(results));
+        .subscribe(results => {
+            this.searchCallback(results);
+          }
+          );
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(1500)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({
-          next: results => this.searchCallback(results),
+          next: results => {
+            this.searchCallback(results);
+          },
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
@@ -269,21 +274,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public searchCallback(results: any) {
-    if (this.searchText.value) {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          queryParams: { search: this.searchText.value }
-        });
-    } else {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          replaceUrl: true
-        });
-    }
     if (this.prevSearchText && this.prevSearchText.length >= 3 &&
       results && results.items && results.items.length > 0) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
@@ -357,11 +347,18 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public searchDomain(query: string) {
     if (query != null && query !== ' ' && query) {
       this.router.navigate(
-        ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
+        [],
         {
-          queryParams: {search: this.searchText.value}
-        }
-      );
+          relativeTo: this.route,
+          queryParams: { search: this.searchText.value }
+        });
+    } else {
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          replaceUrl: true
+        });
     }
     this.getNumberOfPages(query);
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
@@ -469,6 +466,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public getNextPage(event) {
     this.selectedConcept = undefined;
     this.searchRequest.pageNumber = this.currentPage;
+    this.searchFromUrl = this.prevSearchText;
     window.scrollTo(0, 0);
     this.loadPage();
   }

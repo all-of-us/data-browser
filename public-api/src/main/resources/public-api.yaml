@@ -405,6 +405,10 @@ definitions:
         type: "array"
         items:
           type: "string"
+      canSelect:
+        description: filters clickable concepts
+        type: integer
+        format: int32
       measurementConceptInfo:
         description: measurement concept info
         type: object
