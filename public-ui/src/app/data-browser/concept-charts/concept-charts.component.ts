@@ -103,6 +103,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   }
   ngOnChanges() {
     // Get chart results for concept
+    console.log('loading chart');
     this.loadingStack.push(true);
     const conceptIdStr = '' + this.concept.conceptId.toString();
     this.conceptName = this.concept.conceptName;

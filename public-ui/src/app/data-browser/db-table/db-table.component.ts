@@ -51,6 +51,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   measurementOrdersChecked: FormControl = new FormControl(localStorage.getItem('measurementOrdersChecked') ?
     (localStorage.getItem('measurementOrdersChecked') === 'true' ? true : false) : true);
   standardConceptIds: number[];
+  chartLoadCheck = 0;
   private subscriptions: ISubscription[] = [];
   private initSubscription: ISubscription = null;
   constructor(
@@ -71,7 +72,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (this.searchText.value && this.searchText.value != null) {
       this.initSubscription = this.api.getDomainSearchResults
-        (this.searchText, testFilter, orderFilter)
+        (this.searchText.value, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -226,6 +227,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       if (fromChart && localStorage.getItem('selectedConceptCode')) {
         this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
+          this.chartLoadCheck++;
           this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));
         }, 50);
       } else {
@@ -310,7 +312,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         .subscribe({
           next: result => {
             this.treeData = [result.parent];
-            console.log(result);
             this.treeLoading = false;
           }
         }));

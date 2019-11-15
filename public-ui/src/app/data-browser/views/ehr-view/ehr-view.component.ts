@@ -15,6 +15,7 @@ import { StandardConceptFilter } from '../../../../publicGenerated/model/standar
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
 import { TooltipService } from '../../../utils/tooltip.service';
+import {distinctUntilChanged} from "rxjs/operator/distinctUntilChanged";
 
 /* This displays concept search for a Domain. */
 
@@ -166,20 +167,26 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
-        .subscribe(results => this.searchCallback(results));
+        .subscribe(results => {
+            this.searchCallback(results);
+          }
+          );
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(1500)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({
-          next: results => this.searchCallback(results),
+          next: results => {
+            this.searchCallback(results);
+          },
           error: err => {
             console.log('Error searching: ', err);
             this.loading = false;
             this.toggleTopConcepts();
           }
         }));
+      
       this.subscriptions.push(this.searchText.valueChanges
         .subscribe((query) => {
           if (query == null) {
@@ -274,7 +281,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         [],
         {
           relativeTo: this.route,
-          queryParams: { search: this.searchText.value }
+          queryParams: { search: this.searchText.value },
+          replaceUrl: true
         });
     } else {
       this.router.navigate(
@@ -359,7 +367,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.router.navigate(
         ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
         {
-          queryParams: {search: this.searchText.value}
+          queryParams: {search: this.searchText.value},
+          replaceUrl: true,
         }
       );
     }
@@ -469,6 +478,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public getNextPage(event) {
     this.selectedConcept = undefined;
     this.searchRequest.pageNumber = this.currentPage;
+    this.searchFromUrl = this.prevSearchText;
     window.scrollTo(0, 0);
     this.loadPage();
   }

@@ -250,6 +250,7 @@
         </div>
       </ng-template>
       <ng-template #NonSourceCharts>
+        <p>{{chartLoadCheck}}</p>
         <div class="graph-item">
           <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
           </app-concept-charts>
