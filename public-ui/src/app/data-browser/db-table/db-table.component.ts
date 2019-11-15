@@ -226,7 +226,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       if (fromChart && localStorage.getItem('selectedConceptCode')) {
         this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
-          this.chartLoadCheck++;
           this.scrollTo('#c' + localStorage.getItem('selectedConceptCode'));
         }, 50);
       } else {
