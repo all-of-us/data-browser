@@ -280,7 +280,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         {
           relativeTo: this.route,
           queryParams: { search: this.searchText.value },
-          replaceUrl: true
         });
     } else {
       this.router.navigate(
@@ -366,7 +365,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
         {
           queryParams: {search: this.searchText.value},
-          replaceUrl: true,
         }
       );
     }
