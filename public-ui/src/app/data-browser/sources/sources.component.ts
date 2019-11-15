@@ -32,7 +32,7 @@ export class SourcesComponent implements OnChanges {
         this.treeConcept['conceptId'] = node.conceptId;
         this.treeConcept['explorable'] = false;
         this.treeConcept['domainId'] = this.ehrDomain.domain;
-      } else if (results.items[0].canSelect === 0) {
+      } else if (results.items[0]['canSelect'] === 0) {
         this.treeConcept = results.items[0];
         this.treeConcept['explorable'] = false;
       } else {
