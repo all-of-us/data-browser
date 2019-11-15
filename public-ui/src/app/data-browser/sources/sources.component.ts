@@ -26,7 +26,6 @@ export class SourcesComponent implements OnChanges {
   public conceptTreeClick(node) {
     this.api.getSourceConcepts(node.conceptId).subscribe(results => {
       this.treeConcept = {};
-      console.log(results,'resutstt');
       if (!results.items[0]) {
         this.treeConcept['conceptName'] = node.name;
         this.treeConcept['conceptCode'] = node.code;
