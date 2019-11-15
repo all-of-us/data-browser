@@ -26,13 +26,16 @@ export class SourcesComponent implements OnChanges {
   public conceptTreeClick(node) {
     this.api.getSourceConcepts(node.conceptId).subscribe(results => {
       this.treeConcept = {};
-      console.log(results);
+      console.log(results,'resutstt');
       if (!results.items[0]) {
         this.treeConcept['conceptName'] = node.name;
         this.treeConcept['conceptCode'] = node.code;
         this.treeConcept['conceptId'] = node.conceptId;
         this.treeConcept['explorable'] = false;
         this.treeConcept['domainId'] = this.ehrDomain.domain;
+      } else if (results.items[0].canSelect === 0) {
+        this.treeConcept = results.items[0];
+        this.treeConcept['explorable'] = false;
       } else {
         this.treeConcept = results.items[0];
         this.treeConcept['explorable'] = true;
