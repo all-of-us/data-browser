@@ -222,19 +222,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public exploreConcept(e) {
     localStorage.setItem('selectedConceptCode', e.conceptCode);
-    localStorage.setItem('selectedConcept',JSON.stringify(e));
+    localStorage.setItem('selectedConcept', JSON.stringify(e));
     this.router.navigate(
       [],
       {
         relativeTo: this.route,
         queryParams: { search: e.conceptCode }
       });
-            // trigger the TreeData
-      setTimeout(()=>{
-        this.treeData = [1];
-        this.selectedConcept = e;
-      },5000)
-}
+    // trigger the TreeData
+    setTimeout(() => {
+      this.treeData = [1];
+      this.selectedConcept = e;
+    }, 5000);
+  }
 
   public getNumberOfPages(query: string) {
     let domainResults = null;
@@ -255,7 +255,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
     } else {
-      this.subscriptions.push(this.api.getDomainTotals(testFilter , orderFilter)
+      this.subscriptions.push(this.api.getDomainTotals(testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -306,41 +306,41 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.processSearchResults(results);
   }
 
-  public processSearchResults (results) {
-      this.searchResult = results;
-      this.searchResult.items = this.searchResult.items.filter(
-        x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
-      this.items = this.searchResult.items;
-      this.items = this.items.sort((a, b) => {
-          if (a.countValue > b.countValue) {
-            return -1;
-          }
-          if (a.countValue < b.countValue) {
-            return 1;
-          }
-          return 0;
-        }
-      );
-      for (const concept of this.items) {
-        this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+  public processSearchResults(results) {
+    this.searchResult = results;
+    this.searchResult.items = this.searchResult.items.filter(
+      x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
+    this.items = this.searchResult.items;
+    this.items = this.items.sort((a, b) => {
+      if (a.countValue > b.countValue) {
+        return -1;
       }
-      if (this.searchResult.standardConcepts) {
-        this.standardConcepts = this.searchResult.standardConcepts;
-        this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
-      } else {
-        this.standardConcepts = [];
+      if (a.countValue < b.countValue) {
+        return 1;
       }
-      if (this.currentPage === 1) {
-        this.top10Results = this.searchResult.items.slice(0, 10);
-      }
-      /*
-      this.getTopTen(this.prevSearchText).subscribe((res) => {
-        console.log(res.items.slice(0,10));
-        this.top10Results = res.items.slice(0, 10);
-      });
-      */
-      this.loading = false;
+      return 0;
     }
+    );
+    for (const concept of this.items) {
+      this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+    }
+    if (this.searchResult.standardConcepts) {
+      this.standardConcepts = this.searchResult.standardConcepts;
+      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+    } else {
+      this.standardConcepts = [];
+    }
+    if (this.currentPage === 1) {
+      this.top10Results = this.searchResult.items.slice(0, 10);
+    }
+    /*
+    this.getTopTen(this.prevSearchText).subscribe((res) => {
+      console.log(res.items.slice(0,10));
+      this.top10Results = res.items.slice(0, 10);
+    });
+    */
+    this.loading = false;
+  }
 
   public getTopTen(query: string) {
     const maxResults = 10;
@@ -360,7 +360,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.router.navigate(
         ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
         {
-          queryParams: {search: this.searchText.value}
+          queryParams: { search: this.searchText.value }
         }
       );
     }
