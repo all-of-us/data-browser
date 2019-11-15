@@ -252,10 +252,9 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     const el = this.elm.nativeElement.querySelector(id);
     if (el !== null) {
       el.scrollIntoView({ behavior: 'smooth' });
-      console.log("scrollTO sucessfull");
-    }else {
-    alert('scrollTO failed');
-  }
+    } else {
+      alert('scrollTO failed');
+    }
   }
 
   public checkCount(count: number) {
@@ -296,10 +295,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (this.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
-          this.loadSourceTree(r);
-        }
-      }
-      private loadSourceTree(concept: Concept) {
+      this.loadSourceTree(r);
+    }
+  }
+  private loadSourceTree(concept: Concept) {
     // clear out treeData
     this.treeData = [];
     this.treeLoading = true;
@@ -309,12 +308,12 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         s.unsubscribe();
       }
     }
-      this.subscriptions.push(
-        this.api.getCriteriaRolledCounts(concept.conceptId, this.ehrDomain.domain)
+    this.subscriptions.push(
+      this.api.getCriteriaRolledCounts(concept.conceptId, this.ehrDomain.domain)
         .subscribe({
           next: result => {
             this.treeData = [result.parent];
-            console.log(result);  
+            console.log(result);
             this.treeLoading = false;
           }
         }));
