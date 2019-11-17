@@ -476,4 +476,9 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     }
     return this.graphButtons;
   }
+  
+  public checkExpansion(concept: any) {
+    var flag = this.expanded && this.searchRequest && this.selectedConcept && this.selectedConcept.conceptCode == concept.conceptCode;
+    return flag;
+  }
 }

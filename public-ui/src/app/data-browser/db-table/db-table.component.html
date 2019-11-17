@@ -225,7 +225,7 @@
         </a>
       </ng-template>
     </div>
-    <div class="row-expansion" *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
+    <div class="row-expansion" *ngIf="checkExpansion(r)"
       #chartElement>
       <div class="graph-menu">
         <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"

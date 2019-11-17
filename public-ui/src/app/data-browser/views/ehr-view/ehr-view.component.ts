@@ -134,7 +134,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = localStorage.getItem('searchText');
       }
     }
-    this.searchText.setValue(this.prevSearchText);
+    //this.searchText.setValue(this.prevSearchText);
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
     // if no domainObj or if the domain in the obj doesn't match the route
     if (!domainObj || domainObj.domain !== this.domainId) {
@@ -169,7 +169,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .subscribe(results => {
             this.searchCallback(results);
           }
-          );
+        );
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(1500)
@@ -187,9 +187,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         }));
       this.subscriptions.push(this.searchText.valueChanges
         .subscribe((query) => {
-          if (query == null) {
-            query = '';
-          }
           localStorage.setItem('searchText', query);
         }));
     }

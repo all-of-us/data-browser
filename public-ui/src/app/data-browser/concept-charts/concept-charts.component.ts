@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { AchillesResult } from '../../../publicGenerated/model/achillesResult';
 import { Analysis } from '../../../publicGenerated/model/analysis';
@@ -15,7 +15,7 @@ import { GraphType } from '../../utils/enum-defs';
   templateUrl: './concept-charts.component.html',
   styleUrls: ['./concept-charts.component.css', '../../styles/page.css']
 })
-export class ConceptChartsComponent implements OnChanges, OnDestroy {
+export class ConceptChartsComponent implements OnChanges, OnDestroy, OnInit {
   @Input() concept: Concept;
   @Input() backgroundColor = 'transparent'; // background color to pass to the chart component
   @Input() showGraph = GraphType.None;
@@ -56,6 +56,9 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
 
   loading() {
     return this.loadingStack.length > 0;
+  }
+  
+  ngOnInit() {
   }
 
   public fetchMeasurementGenderResults() {
@@ -101,7 +104,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
       }
     }
   }
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     // Get chart results for concept
     this.loadingStack.push(true);
     const conceptIdStr = '' + this.concept.conceptId.toString();
