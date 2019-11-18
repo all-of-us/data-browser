@@ -311,7 +311,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         .subscribe({
           next: result => {
             this.treeData = [result.parent];
-            console.log(result);
             this.treeLoading = false;
           }
         }));
