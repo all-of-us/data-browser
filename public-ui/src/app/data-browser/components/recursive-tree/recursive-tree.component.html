@@ -1,5 +1,5 @@
 <ng-container *ngIf="node; else noNode">
-  <div class="tree-row">
+  <div [ngClass]="[highlightService.getHighlightId() == node.id? 'tree-active':'']" class="tree-row">
     <ng-container *ngIf="node.children; else noChildren">
       <clr-icon class="handle" shape="angle" [ngClass]="[opened ? 'opened':'']" (click)="opened=!opened"></clr-icon>
     </ng-container>
@@ -7,7 +7,7 @@
       <div *ngIf="loading" class="spinner spinner-sm loading"></div>
       <div *ngIf="!loading" class="noChildren"></div>
     </ng-template>
-    <div (click)="conceptClick(node); $event.stopPropagation()" [ngClass]="[highlightService.getHighlightId() == node.id? 'tree-active':'']">{{node.name}}</div> <span class="count">{{node.count | number}}</span>
+    <div (click)="conceptClick(node); $event.stopPropagation()" >{{node.name}}<span class="count">{{node.count | number}}</span></div> 
   </div>
 
   <app-spinner [loading]="node.group && loading && opened" [dots]="true"></app-spinner>
