@@ -254,7 +254,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       el.scrollIntoView({ behavior: 'smooth' });
     } else {
       console.log('Scroll failed ID:', id);
-      
+
     }
   }
 
