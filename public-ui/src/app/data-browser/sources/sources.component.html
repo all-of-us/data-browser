@@ -7,7 +7,7 @@
           <p><strong>{{treeConcept.conceptName}}</strong></p>
           <p>SNOMED Code: {{treeConcept.conceptCode}}</p>
           <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
-          <a class="explore" *ngIf="treeConcept.explorable" (click)="exploreConcept.emit(treeConcept)">Explore this concept.</a>
+          <a [routerLink]="['/ehr/' + ehrDomain.name.toLowerCase()]" [queryParams]="{search:treeConcept.conceptId}"  class="explore" *ngIf="treeConcept.explorable" (click)="exploreConcept.emit(treeConcept)">Explore this concept.</a>
         </ng-container>
       </div>
       <ng-template #default>
