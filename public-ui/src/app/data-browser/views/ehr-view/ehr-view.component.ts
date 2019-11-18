@@ -227,7 +227,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       [],
       {
         relativeTo: this.route,
-        queryParams: { search: e.conceptCode }
+        queryParams: { search: e.conceptId }
       });
     // trigger the TreeData
     setTimeout(() => {
