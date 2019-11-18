@@ -174,8 +174,8 @@
             shape="bar-chart" class="icon-choice">
           </clr-icon>
         </button>
-        <button class="icon-btn icon-choice">
-          <div (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()"
+        <button (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()" class="icon-btn icon-choice">
+          <div
             [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow == 'Sources'?'source-btn_active':'source-btn'">
           </div>
         </button>
