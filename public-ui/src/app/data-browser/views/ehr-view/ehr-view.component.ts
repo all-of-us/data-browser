@@ -221,7 +221,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public exploreConcept(e) {
-    localStorage.setItem('selectedConceptCode', e.conceptCode);
+    localStorage.setItem('selectedConceptCode', e.conceptId.toString());
     localStorage.setItem('selectedConcept', JSON.stringify(e));
     this.router.navigate(
       [],
@@ -476,7 +476,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public selectConcept(concept: Concept, fromChart?: boolean) {
     this.selectedConcept = concept;
-    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptCode);
+    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptId.toString());
     if (fromChart && this.currentPage !== 1) {
       this.currentPage = 1;
       this.loadPage();

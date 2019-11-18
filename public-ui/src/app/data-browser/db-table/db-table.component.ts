@@ -234,7 +234,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     } else {
       this.selectedConcept = concept;
       setTimeout(() => { // wait till previous selected row shrinks
-        this.scrollTo('#c' + this.selectedConcept.conceptCode);
+        this.scrollTo('#c' + this.selectedConcept.conceptId);
       }, 1);
     }
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
@@ -252,7 +252,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     const el = this.elm.nativeElement.querySelector(id);
     if (el !== null) {
       el.scrollIntoView({ behavior: 'smooth' });
-    } 
+    } else {
+      console.log('Scroll failed ID:', id);
+      
+    }
   }
 
   public checkCount(count: number) {
