@@ -61,4 +61,5 @@
   <include file="changelog-schema/db.changelog-54.xml"/>
   <include file="changelog-schema/db.changelog-55.xml"/>
   <include file="changelog-schema/db.changelog-56.xml"/>
+  <include file="changelog-schema/db.changelog-57.xml"/>
 </databaseChangeLog>

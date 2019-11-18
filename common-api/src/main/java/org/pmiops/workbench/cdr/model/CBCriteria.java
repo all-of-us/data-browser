@@ -8,6 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
@@ -33,6 +37,7 @@ public class CBCriteria {
     private boolean hierarchy;
     private boolean ancestorData;
     private boolean standard;
+    private int canSelect;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +66,20 @@ public class CBCriteria {
 
     public CBCriteria parentId(long parentId) {
         this.parentId = parentId;
+        return this;
+    }
+
+    @Column(name = "can_select")
+    public int getCanSelect() {
+        return canSelect;
+    }
+
+    public void setCanSelect(int canSelect) {
+        this.canSelect = canSelect;
+    }
+
+    public CBCriteria canSelect(int canSelect) {
+        this.canSelect = canSelect;
         return this;
     }
 

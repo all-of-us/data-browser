@@ -63,16 +63,7 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
     let toolTipText;
     if (concept.countValue > 20) {
       let tempConceptNameText = '';
-      if (concept.conceptName.length > 100) {
-        const conceptNameSplit = this.chunkString(concept.conceptName, 100);
-        for (const name of conceptNameSplit) {
-          if (name) {
-            tempConceptNameText += name + '</br>';
-          }
-        }
-      } else {
-        tempConceptNameText = concept.conceptName;
-      }
+      tempConceptNameText = concept.conceptName;
       toolTipText = tempConceptNameText +
         ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
         '<br/>' + '<b> Participant Count: ' + '</b>' + concept.countValue;
@@ -82,22 +73,6 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
         '<br/>' + '<b> Participant Count: </b>';
     }
     return toolTipText;
-  }
-
-  private chunkString(str: string, limit: number) {
-    const input = str.trim().split(' ');
-    let [index, output] = [0, []];
-    output[index] = '';
-    input.forEach(word => {
-      const temp = `${output[index]} ${word}`.trim();
-      if (temp.length <= limit) {
-        output[index] = temp;
-      } else {
-        index++;
-        output[index] = word;
-      }
-    });
-    return output;
   }
 }
 

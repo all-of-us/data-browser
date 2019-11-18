@@ -83,16 +83,39 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         outside: true,
         formatter: function(tooltip) {
           if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('% of') === -1) {
-            return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
+            if (this.point.toolTipHelpText.length >= 100) {
+              return '<div style="width: 500px; white-space: normal;">' +
+                this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>' +
+                '</div>';
+            } else {
+              return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
+            }
           } else if (this.point.toolTipHelpText.indexOf('% of') >= 0) {
             if (this.point.actualCount <= 20) {
-              return this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>';
+              if (this.point.toolTipHelpText.length >= 100) {
+                return '<div style="width: 500px; white-space: normal;">' +
+                  this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>' +
+                  '</div>';
+              } else {
+                return this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>';
+              }
             } else {
-              return this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>';
+              if (this.point.toolTipHelpText.length >= 100) {
+                return '<div style="width: 500px; white-space: normal;">' +
+                  this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>' +
+                  '</div>';
+              } else {
+                return this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>';
+              }
+            }
+          } else {
+            if (this.point.toolTipHelpText.length >= 100) {
+              return '<div style="width: 500px; white-space: normal;">' +
+                this.point.toolTipHelpText + '</div>';
+            } else {
+              return this.point.toolTipHelpText;
             }
           }
-          // If not <= 20, use the default formatter
-          return this.point.toolTipHelpText;
         },
         useHTML: true,
         backgroundColor: '#f0f2f3',
