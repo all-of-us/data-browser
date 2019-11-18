@@ -149,11 +149,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       }));
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
-      if (changes.selectedConcept && changes.selectedConcept.currentValue) {
-        this.expandRow(this.selectedConcept, true);
-      }
+      this.expandRow(this.selectedConcept, true);
     }
     if (changes.treeData && changes.treeData.currentValue) {
+      this.selectedConcept = JSON.parse(localStorage.getItem('selectedConcept'));
       this.loadSourceTree(this.selectedConcept);
     }
   }
@@ -235,7 +234,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     } else {
       this.selectedConcept = concept;
       setTimeout(() => { // wait till previous selected row shrinks
-        this.scrollTo('#c' + this.selectedConcept.conceptCode);
+        this.scrollTo('#c' + this.selectedConcept.conceptId);
       }, 1);
     }
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
@@ -251,7 +250,12 @@ export class DbTableComponent implements OnChanges, OnDestroy {
 
   public scrollTo(id: string) {
     const el = this.elm.nativeElement.querySelector(id);
-    el.scrollIntoView({ behavior: 'smooth' });
+    if (el !== null) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.log('Scroll failed ID:', id);
+
+    }
   }
 
   public checkCount(count: number) {
@@ -292,10 +296,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (this.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
-          this.loadSourceTree(r);
-        }
-      }
-      private loadSourceTree(concept: Concept) {
+      this.loadSourceTree(r);
+    }
+  }
+  private loadSourceTree(concept: Concept) {
     // clear out treeData
     this.treeData = [];
     this.treeLoading = true;
@@ -305,8 +309,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         s.unsubscribe();
       }
     }
-      this.subscriptions.push(
-        this.api.getCriteriaRolledCounts(concept.conceptId, this.ehrDomain.domain)
+    this.subscriptions.push(
+      this.api.getCriteriaRolledCounts(concept.conceptId, this.ehrDomain.domain)
         .subscribe({
           next: result => {
             this.treeData = [result.parent];

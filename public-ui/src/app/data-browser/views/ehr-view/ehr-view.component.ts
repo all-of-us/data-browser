@@ -226,18 +226,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   }
 
   public exploreConcept(e) {
+    localStorage.setItem('selectedConceptCode', e.conceptId.toString());
+    localStorage.setItem('selectedConcept', JSON.stringify(e));
     this.router.navigate(
       [],
       {
         relativeTo: this.route,
-        queryParams: { search: e.conceptCode }
+        queryParams: { search: e.conceptId }
       });
+    // trigger the TreeData
     setTimeout(() => {
-      // trigger the TreeData
       this.treeData = [1];
       this.selectedConcept = e;
-      localStorage.setItem('selectedConceptCode', e.conceptCode);
-    }, 20);
+    }, 2000);
   }
 
   public getNumberOfPages(query: string) {
@@ -259,7 +260,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
     } else {
-      this.subscriptions.push(this.api.getDomainTotals(testFilter , orderFilter)
+      this.subscriptions.push(this.api.getDomainTotals(testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -295,41 +296,41 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     this.processSearchResults(results);
   }
 
-  public processSearchResults (results) {
-      this.searchResult = results;
-      this.searchResult.items = this.searchResult.items.filter(
-        x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
-      this.items = this.searchResult.items;
-      this.items = this.items.sort((a, b) => {
-          if (a.countValue > b.countValue) {
-            return -1;
-          }
-          if (a.countValue < b.countValue) {
-            return 1;
-          }
-          return 0;
-        }
-      );
-      for (const concept of this.items) {
-        this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+  public processSearchResults(results) {
+    this.searchResult = results;
+    this.searchResult.items = this.searchResult.items.filter(
+      x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
+    this.items = this.searchResult.items;
+    this.items = this.items.sort((a, b) => {
+      if (a.countValue > b.countValue) {
+        return -1;
       }
-      if (this.searchResult.standardConcepts) {
-        this.standardConcepts = this.searchResult.standardConcepts;
-        this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
-      } else {
-        this.standardConcepts = [];
+      if (a.countValue < b.countValue) {
+        return 1;
       }
-      if (this.currentPage === 1) {
-        this.top10Results = this.searchResult.items.slice(0, 10);
-      }
-      /*
-      this.getTopTen(this.prevSearchText).subscribe((res) => {
-        console.log(res.items.slice(0,10));
-        this.top10Results = res.items.slice(0, 10);
-      });
-      */
-      this.loading = false;
+      return 0;
     }
+    );
+    for (const concept of this.items) {
+      this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+    }
+    if (this.searchResult.standardConcepts) {
+      this.standardConcepts = this.searchResult.standardConcepts;
+      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
+    } else {
+      this.standardConcepts = [];
+    }
+    if (this.currentPage === 1) {
+      this.top10Results = this.searchResult.items.slice(0, 10);
+    }
+    /*
+    this.getTopTen(this.prevSearchText).subscribe((res) => {
+      console.log(res.items.slice(0,10));
+      this.top10Results = res.items.slice(0, 10);
+    });
+    */
+    this.loading = false;
+  }
 
   public getTopTen(query: string) {
     const maxResults = 10;
@@ -473,7 +474,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
 
   public selectConcept(concept: Concept, fromChart?: boolean) {
     this.selectedConcept = concept;
-    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptCode);
+    localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptId.toString());
     if (fromChart && this.currentPage !== 1) {
       this.currentPage = 1;
       this.loadPage();

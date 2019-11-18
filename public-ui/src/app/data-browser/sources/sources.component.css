@@ -16,6 +16,8 @@ aside {
     font-size: 14px;
     text-align: left;
     color:#0079b8;
+    cursor: pointer;
+    z-index: 100;
 }
 
 .source-item:not(:nth-of-type(2)) {

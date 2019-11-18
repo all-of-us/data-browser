@@ -100,7 +100,7 @@
       </div>
   </div>
 
-  <div [attr.id]="'c'+r.conceptCode" class="tbl-exp-r "
+  <div [attr.id]="'c'+r.conceptId" class="tbl-exp-r "
     [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
     *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
     <div [ngClass]="ehrDomain.domain === 'MEASUREMENT'?'tbl-r_labs':'tbl-r'"  (click)="expandRow(r)">
