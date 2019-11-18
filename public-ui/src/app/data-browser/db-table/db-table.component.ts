@@ -252,9 +252,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     const el = this.elm.nativeElement.querySelector(id);
     if (el !== null) {
       el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      alert('scrollTO failed');
-    }
+    } 
   }
 
   public checkCount(count: number) {
