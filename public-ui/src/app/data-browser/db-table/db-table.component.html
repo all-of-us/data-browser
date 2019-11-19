@@ -213,13 +213,13 @@
       <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
         *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
       </app-highlight-search>
-      <a tabindex="0" (keyup.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
+      <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
         *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
         See
         Less
       </a>
       <ng-template #seeMore>
-        <a tabindex="0" (keyup.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
+        <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
           *ngIf="synonymString[r.conceptId].length > 100">
           <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
         </a>
@@ -229,7 +229,7 @@
       #chartElement>
       <div class="graph-menu">
         <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"
-        tabindex="0" (keyup.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
+        tabindex="0" (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
             <span>{{g}}</span>
             <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName)">
               <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
