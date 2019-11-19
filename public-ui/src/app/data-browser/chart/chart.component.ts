@@ -1083,7 +1083,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: { type: 'column', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
       series: [series],
-      pointWidth: 20,
       categories: cats,
       xAxis: {
         categories: cats,
