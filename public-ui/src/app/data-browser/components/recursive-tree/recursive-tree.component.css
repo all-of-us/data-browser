@@ -14,7 +14,7 @@
     color: white;
     border-radius: .5rem;
     font-size: .7em;
-    padding: 0.025rem .5rem;
+    padding: 0.125rem .5rem;
     margin-left: .25rem;
     align-self: center;
 }
@@ -65,6 +65,7 @@
 .tree-row {
     align-items: flex-start;
     display: flex;
+    text-align: left;
 }
 
 .small-spinner {
