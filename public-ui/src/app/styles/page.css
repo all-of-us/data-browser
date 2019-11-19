@@ -297,3 +297,86 @@
 .allofus-italics {
   font-style: italic;
 }
+
+.survey-tbl-r {
+  display: flex;
+  justify-content: space-between;
+}
+
+.survey-tbl-r-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 35rem;
+}
+
+.survey-tbl-r-group .survey-tbl-d:last-of-type {
+  width: 5rem;
+  white-space: nowrap;
+  text-align: center;
+}
+.survey-tbl-r-group .survey-tbl-d:last-of-type button {
+  width:100%;
+}
+
+.survey-tbl-r.survey-tbl-head {
+  padding: 9px;
+  border-radius: 3px 3px 0 0;
+}
+
+.survey-tbl-d {
+  padding: 0 9px;
+  position: relative;
+  width: calc(24%);
+}
+
+.survey-row-expansion {
+  width: 100%;
+  text-align: center;
+  padding-top: 9px;
+  background: #f6f6f8;
+  border-top: none;
+  padding-bottom: calc(9px*3);
+}
+
+.survey-tbl-r-state {
+  background: #f6f6f8;
+}
+
+.survey-tbl-r-expanded {
+  border-left: 1px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
+}
+
+.survey-tbl-exp-r .survey-tbl-r .survey-tbl-d {
+  max-width: 50%;
+}
+
+.survey-tbl-exp-r {
+  border: 1px solid #CCCCCC;
+  border-bottom: none;
+  cursor: pointer;
+  transition: .2s background ease-out;
+  padding: 9px;
+  min-width: 810px;
+}
+
+.survey-tbl-exp-r *.survey-tbl-exp-r {
+  border-left: none;
+  border-right: none;
+  padding: 0.5rem 0;
+  min-width: auto;
+}
+
+.survey-tbl-exp-r:last-of-type {
+  border-bottom: 1px solid #CCCCCC;
+}
+
+.survey-tbl-exp-r:hover {
+  background: #f6f6f8;
+  transition: .1s background ease-in;
+}
+
+.survey-tbl-d.first {
+  width: 30%;
+}
