@@ -19,7 +19,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() surveyAnalysis: SurveyQuestionAnalysis;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
   @Input() selectedResult: any; // For ppi question, this is selected answer.
-  @Input() pointWidth = 15;   // Optional width of bar or point or box plot
+  @Input() pointWidth = 30;   // Optional width of bar or point or box plot
   @Input() backgroundColor = 'transparent'; // Optional background color
   @Input() chartTitle: string;
   @Input() conceptId: string;
@@ -1083,6 +1083,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       chart: { type: 'column', backgroundColor: this.backgroundColor },
       title: { text: this.chartTitle },
       series: [series],
+      pointWidth: 20,
       categories: cats,
       xAxis: {
         categories: cats,
