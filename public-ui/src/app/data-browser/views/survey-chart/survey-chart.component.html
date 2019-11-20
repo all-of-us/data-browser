@@ -1,6 +1,6 @@
 <div class="survey-graph-menu">
   <div *ngFor="let g of graphButtons"
-       [ngClass]="{'active':question.graphToShow === g}" (click)="$event.stopPropagation();selectGraphType(g,question,answer)"
+       [ngClass]="{'active':question.graphToShow === g}" tabindex="0" (keydown.enter)="selectGraphType(g,question,answer)"  (click)="$event.stopPropagation();selectGraphType(g,question,answer)"
        class="survey-chart-choice">
     <span>{{g}}</span>
     <clr-tooltip (mouseenter)="hoverOnTooltip(question, answer , g, 'Graph Help Text')">
@@ -13,7 +13,7 @@
 </div>
 <div class="col-md">
   <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':question.graphDataToShow === sg}"
-       (click)="$event.stopPropagation();selectGraph(sg,question,answer)" class="btn btn-link sub-graph-choice">
+  tabindex="0" (keydown.enter)="selectGraph(sg,question,answer)" (click)="$event.stopPropagation();selectGraph(sg,question,answer)" class="btn btn-link sub-graph-choice">
     {{sg}}</div>
 </div>
 <ng-container *ngIf="isPercentageAnalysis(question); else CountChart">
