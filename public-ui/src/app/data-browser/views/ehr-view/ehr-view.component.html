@@ -5,7 +5,7 @@
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
       <input type="text" aria-label="EHR Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText"
-        style="height:auto" autofocus>
+        style="height:auto" tabindex="0">
       <div *ngIf="searchText.value" class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
     </div>
   </div>
