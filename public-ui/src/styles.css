@@ -596,3 +596,7 @@ a a:link a:visited {
 .ngx-pagination .current span {
   color:white!important;
 }
+
+body *:focus{
+  outline: 1px solid #2691d0;
+}   
