@@ -29,4 +29,7 @@ export class RhHeaderComponent implements OnInit {
   public toggleTopMenu() {
     this.openTopMenu = !this.openTopMenu;
   }
+  public openMenu() {
+    alert();
+  }
 }
