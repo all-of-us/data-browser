@@ -174,8 +174,8 @@
             shape="bar-chart" class="icon-choice">
           </clr-icon>
         </button>
-        <button class="icon-btn icon-choice">
-          <div (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()"
+        <button (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()" class="icon-btn icon-choice">
+          <div
             [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow == 'Sources'?'source-btn_active':'source-btn'">
           </div>
         </button>
@@ -213,13 +213,13 @@
       <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
         *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
       </app-highlight-search>
-      <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
+      <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
         *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
         See
         Less
       </a>
       <ng-template #seeMore>
-        <a (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
+        <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
           *ngIf="synonymString[r.conceptId].length > 100">
           <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
         </a>
@@ -229,7 +229,7 @@
       #chartElement>
       <div class="graph-menu">
         <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"
-          (click)="selectGraph(g, r)" class="chart-choice">
+        tabindex="0" (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
             <span>{{g}}</span>
             <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName)">
               <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
