@@ -216,6 +216,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   }
 
   public expandRow(concept: any, fromChart?: boolean) {
+    this.loadSourceTree(concept);
     this.expanded = true;
     // analytics
     this.dbc.triggerEvent('conceptClick', 'Concept', 'Click',
