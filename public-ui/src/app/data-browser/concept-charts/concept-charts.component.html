@@ -110,18 +110,4 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
       </div>
     </ng-template>
   </ng-container>
-
-  <!-- show race totals  if we want -->
-  <div class="chart" *ngIf="showRace && analyses.raceAnalysis ">
-    <app-chart [analysis]="analyses.raceAnalysis" [pointWidth]="20" [backgroundColor]="backgroundColor"
-      [chartTitle]="'Race'" [conceptName]="conceptName">
-    </app-chart>
-  </div>
-  <!-- show ethnicity totals  if we want -->
-  <div class="chart" *ngIf="showEthnicity && analyses.ethnicityAnalysis ">
-    <app-chart [analysis]="analyses.ethnicityAnalysis" [pointWidth]="20" [backgroundColor]="backgroundColor"
-      [chartTitle]="'Ethnicity'" [conceptName]="conceptName">
-    </app-chart>
-  </div>
-
 </div>
