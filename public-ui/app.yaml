@@ -10,12 +10,17 @@ handlers:
   # TODO(calbach): Bump max-age to 1y once we've verified this is correct.
   http_headers:
     Strict-Transport-Security: "max-age=86400; includeSubDomains; preload"
+    X-Content-Type-Options: "nosniff"
+    X-XSS-Protection: "1"
+
 - url: /.*
   static_files: dist/index.html
   upload: dist/index.html
   secure: always
   http_headers:
     Strict-Transport-Security: "max-age=86400; includeSubDomains; preload"
+    X-Content-Type-Options: "nosniff"
+    X-XSS-Protection: "1"
 
 # If a file (relative path under public-ui/) matches this regex, do not upload it.
 # Skip everything not starting with "dist".
