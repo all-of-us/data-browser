@@ -208,7 +208,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     } else if (sources) { // if not expand the row
       this.graphToShow = GraphType.Sources;
       this.loadSourceTree(concept);
-      this.expandRow(concept,false,true);
+      this.expandRow(concept, false, true);
     } else {
       this.graphToShow = GraphType.BiologicalSex;
       this.expandRow(concept);
