@@ -242,7 +242,6 @@ li.flip::before {
 
   .headwrap {
     display:flex;
-    flex-direction: column;
     margin: 0;
     background: #ffffff;
   }
@@ -260,12 +259,13 @@ li.flip::before {
     display: flex;
     align-items: flex-end;
     margin-right: 1rem;
+    background:white;
   }
   .headwrap .site-branding-container .site-branding .logo {
     display: flex;
   }
   .headwrap .site-branding-container .site-branding .logo .site-logo {
-    max-width: 264px;
+    max-width: 225px;
   }
   .headwrap .site-branding-container .site-branding .logo .divider,
   .headwrap .site-branding-container .site-branding .logo .nih-logo {
@@ -310,7 +310,6 @@ li.flip::before {
   @media only screen and (min-width: 1168px) {
     .headwrap .site-nav-container {
       padding: 0 calc(10%);
-      background: #f0f0f1;
     }
     .headwrap .site-branding-container {
       margin-left: calc(10%);
