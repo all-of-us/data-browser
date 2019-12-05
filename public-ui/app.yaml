@@ -10,12 +10,19 @@ handlers:
   # TODO(calbach): Bump max-age to 1y once we've verified this is correct.
   http_headers:
     Strict-Transport-Security: "max-age=86400; includeSubDomains; preload"
+    X-Content-Type-Options: "nosniff"
+    X-XSS-Protection: "1"
+    Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com;"
+
 - url: /.*
   static_files: dist/index.html
   upload: dist/index.html
   secure: always
   http_headers:
     Strict-Transport-Security: "max-age=86400; includeSubDomains; preload"
+    X-Content-Type-Options: "nosniff"
+    X-XSS-Protection: "1"
+    Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com;"
 
 # If a file (relative path under public-ui/) matches this regex, do not upload it.
 # Skip everything not starting with "dist".

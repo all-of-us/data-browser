@@ -38,7 +38,7 @@
     </span>
     <h6 *ngIf="searchText.value" class="primary-display medline-link">Interested in general
       health information related to "{{getTerm()}}"?
-      <br /><a href="{{medlinePlusLink}}" target="_blank">Search MedlinePlus</a></h6>
+      <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer" >Search MedlinePlus</a></h6>
   </div>
   <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
     <div class=" db-alert">

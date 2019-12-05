@@ -101,6 +101,7 @@ dependencies {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
+  compile('org.springframework.boot:spring-boot-starter-security')
   compile 'io.swagger:swagger-annotations:1.5.16'
   compile 'com.google.code.gson:gson:2.8.5'
   compile 'org.hibernate:hibernate-core:5.2.10.Final'
