@@ -35,7 +35,9 @@ public class Concept {
     private Long sourceCountValue;
     private float prevalence;
     private List<String> synonyms = new ArrayList<>();
+    private List<String> drugBrands = new ArrayList<>();
     private String synonymsStr;
+    private String drugBrandNames;
     private int canSelect;
     private int hasCounts;
     private MeasurementConceptInfo measurementConceptInfo = null;
@@ -55,7 +57,8 @@ public class Concept {
                 .count(a.getCountValue())
                 .sourceCountValue(a.getSourceCountValue())
                 .prevalence(a.getPrevalence())
-                .synonymsStr(a.getSynonymsStr());
+                .synonymsStr(a.getSynonymsStr())
+                .drugBrandNames(a.getDrugBrandNames());
     }
 
     @Id
@@ -240,6 +243,31 @@ public class Concept {
         return this;
     }
 
+    @Column(name = "drug_brand_names")
+    public String getDrugBrandNames() { return drugBrandNames; }
+
+    public void setDrugBrandNames(String drugBrandNames) {
+        this.drugBrandNames = drugBrandNames;
+        drugBrands.clear();
+        if (drugBrandNames != null) {
+            String[] parts = drugBrandNames.split("(?<!\\|)\\|(?!\\|)");
+            if (parts.length > 1) {
+                // and the concept name if it shows up in the pipe-concatenated synonyms;
+                // unescape || to |.
+                drugBrands.addAll(Arrays.asList(parts).stream()
+                        .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
+                        .map((part) -> part.replaceAll("\\|\\|", "|"))
+                        .collect(Collectors.toList()));
+            }
+        }
+    }
+
+    public Concept drugBrandNames(String drugBrandNames) {
+        setDrugBrandNames(drugBrandNames);
+        return this;
+    }
+
+
     @Column(name = "has_counts")
     public int getHasCounts() {
         return hasCounts;
@@ -263,6 +291,14 @@ public class Concept {
     }
     public Concept synonyms(List<String> synonyms) {
         this.synonyms = synonyms;
+        return this;
+    }
+
+    @Transient
+    public List<String> getDrugBrands() { return drugBrands; }
+    public void setDrugBrands(List<String> drugBrands) { this.drugBrands = drugBrands; }
+    public Concept drugBrands(List<String> drugBrands) {
+        this.drugBrands = drugBrands;
         return this;
     }
 
@@ -295,12 +331,13 @@ public class Concept {
                 Objects.equals(vocabularyId, concept.vocabularyId) &&
                 Objects.equals(sourceCountValue,concept.sourceCountValue) &&
                 Objects.equals(domainId, concept.domainId) &&
-                Objects.equals(synonymsStr, concept.synonymsStr);
+                Objects.equals(synonymsStr, concept.synonymsStr) &&
+                Objects.equals(drugBrandNames, concept.drugBrandNames);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts);
+        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts, drugBrandNames);
     }
 
     @Override

@@ -413,6 +413,11 @@ definitions:
         description: measurement concept info
         type: object
         $ref: "#/definitions/MeasurementConceptInfo"
+      drugBrands:
+        description: drug brand names
+        type: "array"
+        items:
+          type: "string"
 
   ConceptListResponse:
     type: object

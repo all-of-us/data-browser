@@ -42,7 +42,7 @@ fi
 datasets=$(bq --project=$PUBLIC_PROJECT ls --max_results=100)
 if [ -z "$datasets" ]
 then
-  echo "$PUBLIC_PROJECT.$PUBLIC_DATASET does not exist. Please specify a valid project and dataset."
+  echo "No datasets in PUBLIC_PROJECT. Please specify a valid project and dataset."
   exit 1
 fi
 re=\\b$PUBLIC_DATASET\\b
