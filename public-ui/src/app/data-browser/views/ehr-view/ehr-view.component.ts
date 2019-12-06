@@ -439,7 +439,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     }
   }
-  
+
   public toggleDrugBrands(concept: any) {
     this.showMoreDrugBrands[concept.conceptId] = !this.showMoreDrugBrands[concept.conceptId];
   }
