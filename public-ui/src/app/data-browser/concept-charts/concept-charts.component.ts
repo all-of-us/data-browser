@@ -109,6 +109,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
       this.concept.domainId).subscribe(
       results => {
+        console.log(results);
+        console.log(results.items[0]);
         this.results = results.items;
         this.analyses = results.items[0];
         this.selectedSubGraph = 'Count';
