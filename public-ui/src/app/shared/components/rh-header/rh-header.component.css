@@ -412,11 +412,9 @@ li.flip::after, li.flip::before {
   }
   .site-nav-container {
     padding-right: calc(10%);
+
   }
 
-  .site-branding-container, .site-nav-container {
-    flex-basis: 50%;
-  }
   .site-branding-container .mobile-nav {
     display: none;
   }
