@@ -325,7 +325,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 
 #Drop similar_unit_concepts mapping table
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
-"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.similar_unit_concepts\` "
+"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.source_standard_unit_map\` "
 
 #Drop filter_conditions table
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
