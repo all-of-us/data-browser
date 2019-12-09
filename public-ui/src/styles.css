@@ -24,6 +24,8 @@ html {
    */
 
 body {
+  width: 100vw;
+  
   margin: 0;
 }
 
@@ -480,7 +482,7 @@ img {
   }
   /* outside container desktop */
   .db-container {
-    margin: 0 calc(5%);
+    margin: 0 calc(10%);
   }
 }
 

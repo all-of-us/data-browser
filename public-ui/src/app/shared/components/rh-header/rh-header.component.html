@@ -1,16 +1,6 @@
 <app-beta-bar></app-beta-bar>
 <div class="cta-bar">
-  <aside>
-
-    <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
-        rel="noopener">JoinAllofUs.org</a></p>
-    <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a>
-    </p>
-  </aside>
-</div>
-<div id="masthead" class="site-header">
-  <div class="headwrap">
-    <div class="site-branding-container">
+  <div class="site-branding-container">
       <div class="site-branding">
         <div class="logo">
           <div class="site-logo"><a href="{{allOfUsUrl}}/" class="custom-logo-link"><img width="4356" height="528"
@@ -27,15 +17,16 @@
           </div>
         </div><!-- .logo -->
       </div><!-- .site-branding -->
-      <div class="mobile-nav">
-        <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div><!-- .mobile-nav -->
     </div><!-- .site-branding-container -->
-
+  <aside>
+    <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
+        rel="noopener">JoinAllofUs.org</a></p>
+    <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a>
+    </p>
+  </aside>
+</div>
+<div id="masthead" class="site-header">
+  <div class="headwrap">
     <div class="site-nav-container">
       <div class="site-branding-nav">
         <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
@@ -97,6 +88,14 @@
                   </li>
                 </ul>
               </li>
+              <li class="main-menu-item menu-item-has-children">
+                <a href="{{allOfUsUrl}}/data/">Tools</a>
+                <ul class="sub-menu">
+                  <li class="menu-item">
+                    <a href="{{allOfUsUrl}}/data/workbench/">Workbench</a>
+                  </li>
+                </ul>
+              </li>
               <li class="main-menu-item">
                 <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
               </li>
@@ -116,6 +115,13 @@
               </li>
             </ul>
             <!-- ** Mobile Menu **-->
+            <div class="mobile-nav">
+              <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div><!-- .mobile-nav -->
             <ul *ngIf="openTopMenu" id="menu-mobile">
               <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout"
                 class="main-menu-item menu-item-has-children">
