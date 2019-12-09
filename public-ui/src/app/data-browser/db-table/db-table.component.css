@@ -52,6 +52,16 @@
     color: rgb(150 150 150);
 }
 
+.drug-brands-text {
+    /* width: 170px; */
+    font-family: Arial, sans-serif;
+    color: rgb(150 150 150);
+}
+
+.drug-brands-see-button {
+    margin: 0.5%;
+}
+
 .aka-info {
     opacity: .7;
 }
