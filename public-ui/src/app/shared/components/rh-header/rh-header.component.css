@@ -20,8 +20,11 @@ a:hover, a:link, a:visited a:active, a {
   justify-content: space-between;
   background: white;
   padding: 1rem;
+  flex-wrap: wrap;
 }
-
+.site-branding-container {
+  padding-right:3px;
+}
 .cta-bar aside {
   display: flex;
   flex-direction: column;
@@ -31,12 +34,11 @@ a:hover, a:link, a:visited a:active, a {
 
 .cta-bar aside p {  
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
 .cta-bar aside p a {
-  white-space: nowrap;
   color: #216FB5;
 }
 
@@ -279,7 +281,7 @@ li.flip::after, li.flip::before {
  .site-branding-container {
   display: flex;
   flex-direction: row;
-  padding: 1rem;
+  padding-top: 1rem;
   align-items: center;
   width: 100%;
 }
@@ -290,6 +292,7 @@ li.flip::after, li.flip::before {
   align-items: flex-end;
   margin-right: 1rem;
   background: white;
+  min-width: 10rem;
 }
 
 .site-branding-container .site-branding .logo {
@@ -309,43 +312,6 @@ li.flip::after, li.flip::before {
 .site-branding-container .header-widget a {
   color: #216fb4;
   text-decoration: none;
-}
-
-@media only screen and (min-width: 768px) {
-  .site-branding-container .site-branding .logo {
-    flex-direction: row;
-  }
-  .site-branding-container .site-branding .logo .divider {
-    display: flex;
-    width: 2px;
-    height: 32px;
-    background: #262262;
-    margin: 0 1rem;
-  }
-  .site-branding-container .site-branding .logo .nih-logo {
-    display: flex;
-  }
-  .site-branding-container .site-branding .logo .nih-logo img {
-    max-height: 32px;
-  }
-}
-
-/* when large */
-
-@media only screen and (min-width: 1168px) {
-  .cta-bar {
-    padding: 0 calc(10%);
-  }
-  .site-nav-container {
-    padding-right: calc(10%);
-  }
-
-  .site-branding-container, .site-nav-container {
-    flex-basis: 50%;
-  }
-  .site-branding-container .mobile-nav {
-    display: none;
-  }
 }
 
 .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu {
@@ -407,7 +373,54 @@ li.flip::after, li.flip::before {
   margin-top: -.2rem;
 }
 
-@media only screen and (min-width: 1168px) {
+/* when medium */
+
+@media only screen and (min-width: 768px) {
+  .site-branding-container .site-branding .logo {
+    flex-direction: row;
+  }
+  .cta-bar aside p {  
+    margin: 0;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .site-branding-container .site-branding .logo .divider {
+    display: flex;
+    width: 2px;
+    height: 32px;
+    background: #262262;
+    margin: 0 1rem;
+  }
+  .site-branding-container .site-branding .logo .nih-logo {
+    display: flex;
+  }
+  .site-branding-container .site-branding .logo .nih-logo img {
+    max-height: 32px;
+  }
+}
+
+/* when large */
+
+
+@media only screen and (min-width: 969px) {
+  .cta-bar {
+    padding: 0 calc(10%);
+  }
+  .cta-bar aside p {  
+    white-space: nowrap;
+  }
+  .site-nav-container {
+    padding-right: calc(10%);
+  }
+
+  .site-branding-container, .site-nav-container {
+    flex-basis: 50%;
+  }
+  .site-branding-container .mobile-nav {
+    display: none;
+  }
+
   .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu {
     display: flex;
     flex-direction: row;
