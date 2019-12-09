@@ -63,5 +63,10 @@
 		"mode": "NULLABLE",
 		"name": "has_counts",
 		"type": "INTEGER"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "drug_brand_names",
+		"type": "STRING"
 	}
 ]

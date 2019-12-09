@@ -48,7 +48,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   private initSearchSubscription: ISubscription = null;
   /* Show more synonyms when toggled */
   showMoreSynonyms = {};
+  showMoreDrugBrands = {};
   synonymString = {};
+  drugBrands = {};
   /* Show different graphs depending on domain we are in */
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts: boolean;
@@ -312,6 +314,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     );
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+      this.drugBrands[concept.conceptId] = concept.drugBrands;
     }
     if (this.searchResult.standardConcepts) {
       this.standardConcepts = this.searchResult.standardConcepts;
@@ -435,6 +438,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         'Click On See More Synonyms',
         concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     }
+  }
+
+  public toggleDrugBrands(concept: any) {
+    this.showMoreDrugBrands[concept.conceptId] = !this.showMoreDrugBrands[concept.conceptId];
   }
 
   public toggleTopConcepts() {

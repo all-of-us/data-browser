@@ -434,6 +434,35 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set stratum_4=REGEXP_REPLACE(stratum_4, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
 where stratum_4 like '%Sex At Birth: Sex At Birth%' "
 
+#Create temp table to store drug brand names
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
+(
+  ing_concept INT64,
+  drug_brand_names STRING
+);
+"
+
+#Fill drug brand names in temp table
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
+(ing_concept, drug_brand_names)
+select concept_id_2, string_agg(distinct replace(c.name,'|','||'),'|' order by replace(c.name,'|','||') asc) as drug_brand_names from
+\`$BQ_PROJECT.$BQ_DATASET.cb_criteria_relationship\` cr join
+\`$BQ_PROJECT.$BQ_DATASET.cb_criteria\` c on cr.concept_id_1=c.concept_id
+and c.domain_id='DRUG' and c.type='BRAND' and c.synonyms like '%drug_rank1%'
+group by concept_id_2
+"
+
+#Update concept with drug brand names
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` d
+set d.drug_brand_names = r.drug_brand_names from
+\`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\` r
+where d.concept_id=r.ing_concept"
+
 
 #######################
 # Drop views created #
@@ -453,5 +482,5 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_drug_exposure\`"
 
-
-
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"

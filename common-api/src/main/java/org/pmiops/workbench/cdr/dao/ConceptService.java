@@ -128,9 +128,6 @@ public class ConceptService {
     public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
                                          int measurementTests, int measurementOrders) {
 
-        System.out.println("*************************************************************");
-        System.out.println(page);
-        System.out.println("*************************************************************");
         Specification<Concept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();

@@ -24,7 +24,9 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() prevSearchText: string;
   @Input() ehrDomain: any;
   @Input() synonymString: any;
+  @Input() drugBrands: any;
   @Input() showMoreSynonyms: any;
+  @Input() showMoreDrugBrands: any;
   @Input() standardConcepts: any[];
   @Input() currentPage: number;
   @Input() totalParticipants: number;
@@ -280,6 +282,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         'Click On See More Synonyms',
         concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     }
+  }
+
+  public toggleDrugBrands(concept: any) {
+    this.showMoreDrugBrands[concept.conceptId] = !this.showMoreDrugBrands[concept.conceptId];
   }
 
   public participantPercentage(count: number) {

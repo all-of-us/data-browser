@@ -183,7 +183,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .prevalence(concept.getPrevalence())
                             .conceptSynonyms(concept.getSynonyms())
                             .canSelect(concept.getCanSelect())
-                            .measurementConceptInfo(measurementInfo);
+                            .measurementConceptInfo(measurementInfo)
+                            .drugBrands(concept.getDrugBrands());
                 }
             };
 
