@@ -37,8 +37,8 @@
       <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>
       <ng-container *ngIf="!treeLoading">
         <div *ngFor="let node of treeData" class="tree-top">
-          <app-source-tree *ngIf="node.group == false" [rootNode]="node"></app-source-tree>
-          <app-source-tree *ngIf="node.group" (conceptSelect)="conceptTreeClick($event,node)" [rootNode]="node"></app-source-tree>
+          <app-source-tree *ngIf="node && node.group == false" [rootNode]="node"></app-source-tree>
+          <app-source-tree *ngIf="node && node.group" (conceptSelect)="conceptTreeClick($event)" [rootNode]="node"></app-source-tree>
         </div>
       </ng-container>
     </div>
