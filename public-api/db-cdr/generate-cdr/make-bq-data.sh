@@ -80,7 +80,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum similar_unit_concepts measurement_concept_info survey_concept_relationship)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship)
 
 for t in "${create_tables[@]}"
 do
@@ -91,7 +91,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions similar_unit_concepts survey_concept_relationship)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions source_standard_unit_map survey_concept_relationship)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -434,6 +434,35 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set stratum_4=REGEXP_REPLACE(stratum_4, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
 where stratum_4 like '%Sex At Birth: Sex At Birth%' "
 
+#Create temp table to store drug brand names
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
+(
+  ing_concept INT64,
+  drug_brand_names STRING
+);
+"
+
+#Fill drug brand names in temp table
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
+(ing_concept, drug_brand_names)
+select concept_id_2, string_agg(distinct replace(c.name,'|','||'),'|' order by replace(c.name,'|','||') asc) as drug_brand_names from
+\`$BQ_PROJECT.$BQ_DATASET.cb_criteria_relationship\` cr join
+\`$BQ_PROJECT.$BQ_DATASET.cb_criteria\` c on cr.concept_id_1=c.concept_id
+and c.domain_id='DRUG' and c.type='BRAND' and c.synonyms like '%drug_rank1%'
+group by concept_id_2
+"
+
+#Update concept with drug brand names
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` d
+set d.drug_brand_names = r.drug_brand_names from
+\`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\` r
+where d.concept_id=r.ing_concept"
+
 
 #######################
 # Drop views created #
@@ -453,5 +482,5 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_drug_exposure\`"
 
-
-
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"

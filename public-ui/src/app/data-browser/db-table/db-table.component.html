@@ -38,7 +38,7 @@
     </span>
     <h6 *ngIf="searchText.value" class="primary-display medline-link">Interested in general
       health information related to "{{getTerm()}}"?
-      <br /><a href="{{medlinePlusLink}}" target="_blank">Search MedlinePlus</a></h6>
+      <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer" >Search MedlinePlus</a></h6>
   </div>
   <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
     <div class=" db-alert">
@@ -224,6 +224,31 @@
           <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
         </a>
       </ng-template>
+    </div>
+    <div *ngIf="drugBrands[r.conceptId] && drugBrands[r.conceptId].length > 0" (click)="expandRow(r)" class="body-lead aka-layout aka">
+      <div *ngIf="r.drugBrands;else noDrugBrands" (click)="$event.stopPropagation();toggleDrugBrands(r)"
+           class="aka-text">
+        <span>Found in these commercially branded products</span>
+        <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-less"
+           *ngIf="drugBrands[r.conceptId].length > 10 && showMoreDrugBrands[r.conceptId]; else seeMore">
+          See
+          Less
+        </a>
+        <ng-template #seeMore>
+          <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-more"
+             *ngIf="drugBrands[r.conceptId].length > 10">
+            See More
+          </a>
+        </ng-template>
+      </div>
+      <app-highlight-search (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
+                            *ngIf="!showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
+                            [searchTerm]="prevSearchText">
+      </app-highlight-search>
+      <clr-icon shape="ellipsis-horizontal" *ngIf="!showMoreDrugBrands[r.conceptId] && drugBrands[r.conceptId] && drugBrands[r.conceptId].length > 0"></clr-icon>
+      <app-highlight-search (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
+                            *ngIf="showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].join(', ')" [searchTerm]="prevSearchText">
+      </app-highlight-search>
     </div>
     <div class="row-expansion" *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
       #chartElement>
