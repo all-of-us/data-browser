@@ -556,7 +556,6 @@ input#s {
   .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg:first-child {
     width: 22px;
     vertical-align: text-bottom;
-    margin-right: 1.5rem;
     cursor: pointer;
     display: inline-block;
   }
