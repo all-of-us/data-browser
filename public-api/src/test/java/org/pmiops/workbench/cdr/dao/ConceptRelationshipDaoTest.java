@@ -72,7 +72,7 @@ public class ConceptRelationshipDaoTest {
 
 
     private Concept makeConcept(long conceptId, String conceptName, String standardConcept, String conceptCode, String conceptClassId, String vocabularyId, String domainId, long count, float prevalence,
-                                long sourceCountValue) {
+                                long sourceCountValue, int canSelect) {
         return new Concept()
                 .conceptId(conceptId)
                 .conceptName(conceptName)
