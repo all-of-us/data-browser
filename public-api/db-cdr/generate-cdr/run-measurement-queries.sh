@@ -605,7 +605,8 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
           join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
           on case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then m1.unit_concept_id = um.unit_concept_id
-             when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             when (m1.unit_concept_id is null and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then um.unit_concept_id=0
              else m1.unit_concept_id = um.unit_concept_id end
           where m1.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
           and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
@@ -770,7 +771,8 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
           join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
           case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then m1.unit_concept_id = um.unit_concept_id
-                       when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+                       when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+                       when (m1.unit_concept_id is null and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then um.unit_concept_id=0
                        else m1.unit_concept_id = um.unit_concept_id end
           join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
           where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
@@ -1387,7 +1389,8 @@ join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
 case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then m1.unit_concept_id = um.unit_concept_id
-             when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             when (m1.unit_concept_id is null and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then um.unit_concept_id=0
              else m1.unit_concept_id = um.unit_concept_id end
 where m1.measurement_concept_id > 0
 and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
@@ -1552,7 +1555,8 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`$
 join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
 case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then m1.unit_concept_id = um.unit_concept_id
-             when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and m1.unit_source_value is not null) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             when ((m1.unit_concept_id = 0 or m1.unit_concept_id is null) and (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then lower(m1.unit_source_value) = lower(um.unit_source_value)
+             when (m1.unit_concept_id is null and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then um.unit_concept_id=0
              else m1.unit_concept_id = um.unit_concept_id end
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
 where m1.measurement_source_concept_id > 0
