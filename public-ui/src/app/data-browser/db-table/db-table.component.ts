@@ -152,6 +152,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
       this.expandRow(this.selectedConcept, true);
+    } else {
+      this.standardConceptIds = this.standardConcepts.map(({ conceptId }) => conceptId);
     }
     if (changes.treeData && changes.treeData.currentValue) {
       this.selectedConcept = JSON.parse(localStorage.getItem('selectedConcept'));
