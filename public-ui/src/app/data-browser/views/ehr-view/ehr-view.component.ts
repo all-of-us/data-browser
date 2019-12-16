@@ -312,6 +312,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       return 0;
     }
     );
+    this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
+      'medlineplus&v%3Asources=medlineplus-bundle&query='
+      + this.getTerm();
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
       this.drugBrands[concept.conceptId] = concept.drugBrands;
@@ -364,9 +367,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         });
     }
     this.getNumberOfPages(query);
-    this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
-      'medlineplus&v%3Asources=medlineplus-bundle&query='
-      + query;
     // Unsubscribe from our initial search subscription if this is called again
     if (this.initSearchSubscription) {
       this.initSearchSubscription.unsubscribe();
