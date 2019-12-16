@@ -255,15 +255,18 @@ li.flip::after, li.flip::before {
 #site-navigation {
   font-family: 'Gotham A', 'Gotham B', 'Helvetica', sans-serif;
   font-weight: bold;
-}
-
-#menu-primary .sub-menu {
-  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
-  font-weight: normal;
-  text-transform: capitalize;
   font-size: 18px;
 }
 
+#menu-primary .sub-menu li {
+  /* line-height: 1rem; */
+}
+#menu-primary .sub-menu a {
+  font-family: 'GothamBook', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-weight: initial;
+  text-transform: capitalize;
+  
+}
 .headwrap {
   display: flex;
   margin: 0;
@@ -367,10 +370,18 @@ li.flip::after, li.flip::before {
 }
 
 .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li.menu-item-has-children:before {
-  content: '\25bc';
-  font-size: 1.1rem;
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 12px;
+  background-image: url("https://researchallofus.org//wp-content/themes/research-hub-wordpress-theme/media/2019/09/arrow-down-nav-mobile@2x.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
   float: right;
-  margin-top: -.2rem;
+  margin-top: 8px;
+  margin-right:8px;
+  cursor: pointer;
 }
 
 /* when medium */
