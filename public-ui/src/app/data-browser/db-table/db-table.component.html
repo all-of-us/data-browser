@@ -19,7 +19,7 @@
           <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText1}}</div>
+              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i> {{tooltipText.matchingConceptsHelpText2}}</div>
             </clr-tooltip-content>
           </clr-tooltip>
         </h5>
@@ -30,7 +30,7 @@
           <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
             <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText2}}</div>
+              <div class="tooltip-label">{{tooltipText.matchingConceptsHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i> {{tooltipText.matchingConceptsHelpText2}}</div>
             </clr-tooltip-content>
           </clr-tooltip>
         </h5>
