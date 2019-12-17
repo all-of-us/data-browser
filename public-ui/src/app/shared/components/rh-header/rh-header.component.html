@@ -1,32 +1,33 @@
 <app-beta-bar></app-beta-bar>
 <div class="cta-bar">
-    <aside>
-      <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
-          rel="noopener">JoinAllofUs.org</a></p>
-      <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a>
-      </p>
-    </aside>
-  </div>
-  <div id="masthead" class="site-header">
-    <div class="headwrap" [ngClass]="openTopMenu?'no-border':''">
-      <div class="site-branding-container">
-          <div class="site-branding">
-            <div class="logo">
-              <div class="site-logo"><a href="{{allOfUsUrl}}/" class="custom-logo-link"><img width="4356" height="528"
-                    src="/assets/db-images/allofus_research-hub_color.png" class="custom-logo" alt="All of Us Research Hub"
-                    itemprop="logo" /></a>
-              </div>
-              <div class="divider">
-              </div>
-              <div class="nih-logo">
-                <a href="https://allofus.nih.gov/" target="_blank">
-                  <img alt="National Institute of Health All of Us Research Program" class="nih_header"
-                    src="/assets/db-images/nih_allofus_color.png" />
-                </a>
-              </div>
-            </div><!-- .logo -->
-          </div><!-- .site-branding -->
-        </div><!-- .site-branding-container -->
+  <aside>
+    <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
+        rel="noopener">JoinAllofUs.org</a></p>
+    <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a>
+    </p>
+  </aside>
+  <a href="https://workbench.researchallofus.org/login" *ngIf="isAlpha" class="login-btn"> RESEARCHER LOGIN</a>
+</div>
+<div id="masthead" class="site-header">
+  <div class="headwrap" [ngClass]="openTopMenu?'no-border':''">
+    <div class="site-branding-container">
+      <div class="site-branding">
+        <div class="logo">
+          <div class="site-logo"><a href="{{allOfUsUrl}}/" class="custom-logo-link"><img width="4356" height="528"
+                src="/assets/db-images/allofus_research-hub_color.png" class="custom-logo" alt="All of Us Research Hub"
+                itemprop="logo" /></a>
+          </div>
+          <div class="divider">
+          </div>
+          <div class="nih-logo">
+            <a href="https://allofus.nih.gov/" target="_blank">
+              <img alt="National Institute of Health All of Us Research Program" class="nih_header"
+                src="/assets/db-images/nih_allofus_color.png" />
+            </a>
+          </div>
+        </div><!-- .logo -->
+      </div><!-- .site-branding -->
+    </div><!-- .site-branding-container -->
     <div class="site-nav-container">
       <div class="site-branding-nav">
         <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
@@ -83,9 +84,6 @@
                       </li>
                     </ul>
                   </li>
-                  <li class="menu-item">
-                    <a href="{{allOfUsUrl}}/data/workbench/">Workbench</a>
-                  </li>
                 </ul>
               </li>
               <li class="main-menu-item menu-item-has-children">
@@ -93,6 +91,9 @@
                 <ul class="sub-menu">
                   <li class="menu-item">
                     <a href="{{allOfUsUrl}}/workbench/">Workbench</a>
+                  </li>
+                  <li *ngIf="isAlpha" class="menu-item">
+                    <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/guides-support/">Guides & Support</a>
                   </li>
                 </ul>
               </li>
@@ -113,7 +114,7 @@
                   </li>
                 </ul>
               </li>
-              <li *ngIf="isAlpha" class="nav_apply">
+              <li href="https://www.researchallofus.org/apply/" *ngIf="isAlpha" class="nav_apply">
                 <a>APPLY</a>
               </li>
             </ul>
@@ -131,77 +132,83 @@
     </div><!-- .site-nav-container -->
   </div><!-- .headwrap -->
   <ul *ngIf="openTopMenu" id="menu-mobile">
-      <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout"
-        class="main-menu-item menu-item-has-children">
-        <a href="'{{allOfUsUrl}}/about/">About</a>
-        <ul [hidden]="!openAbout" class="sub-menu">
-          <li class="menu-item">
-            <a href="{{allOfUsUrl}}/about/about-the-research-hub/">About the Research Hub</a>
-          </li>
-          <li [ngClass]="openAboutResearch?'flip':''"
-            (click)="$event.stopPropagation();openAboutResearch = !openAboutResearch"
-            class="menu-item menu-item-has-children">
-            <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
-            <ul [hidden]="!openAboutResearch" class="sub-menu">
-              <li class="menu-item">
-                <a (click)="$event.stopPropagation();"
-                  href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher
-                  Workshops and Public Input</a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
-          </li>
-          <li class="menu-item">
-            <a href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
-          </li>
-        </ul>
-      </li>
-      <li [ngClass]="openDataTools?'flip':''" (click)="openDataTools = !openDataTools"
-        class="main-menu-item menu-item-has-children">
-        <a href="{{allOfUsUrl}}/data/">Data</a>
-        <ul [hidden]="!openDataTools" class="sub-menu">
-          <li class="menu-item">
-            <a href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
-          </li>
-          <li class="menu-item">
-            <a [routerLink]="['']">Data Browser</a>
-          </li>
-          <li [ngClass]="openDataToolsMethods?'flip':''"
-            (click)="$event.stopPropagation();openDataToolsMethods = !openDataToolsMethods"
-            class="menu-item menu-item-has-children">
-            <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
-            <ul [hidden]="!openDataToolsMethods" class="sub-menu">
-              <li class="menu-item">
-                <a (click)="$event.stopPropagation();"
-                  href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
-              </li>
-              <li class="menu-item">
-                <a (click)="$event.stopPropagation();"
-                  href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="{{allOfUsUrl}}/workbench/">Workbench</a>
-          </li>
-        </ul>
-      </li>
-      <li [ngClass]="openTools?'flip':''" (click)="openTools = !openTools"
-        class="main-menu-item menu-item-has-children">
-        <a href="{{allOfUsUrl}}/workbench/">Tools</a>
-        <ul [hidden]="!openTools" class="sub-menu">
-          <li class="menu-item">
-            <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/workbench/">Workbench</a>
-          </li>
-        </ul>
-      </li>
-      <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
-      <li class="main-menu-item-second">
-        <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/">
-          <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35"
-            autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
-      </li>
-    </ul><!-- #mobile-menu -->
+    <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout" class="main-menu-item menu-item-has-children">
+      <a href="'{{allOfUsUrl}}/about/">About</a>
+      <ul [hidden]="!openAbout" class="sub-menu">
+        <li class="menu-item">
+          <a href="{{allOfUsUrl}}/about/about-the-research-hub/">About the Research Hub</a>
+        </li>
+        <li [ngClass]="openAboutResearch?'flip':''"
+          (click)="$event.stopPropagation();openAboutResearch = !openAboutResearch"
+          class="menu-item menu-item-has-children">
+          <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
+          <ul [hidden]="!openAboutResearch" class="sub-menu">
+            <li class="menu-item">
+              <a (click)="$event.stopPropagation();"
+                href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher
+                Workshops and Public Input</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
+        </li>
+        <li class="menu-item">
+          <a href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
+        </li>
+      </ul>
+    </li>
+    <li [ngClass]="openDataTools?'flip':''" (click)="openDataTools = !openDataTools"
+      class="main-menu-item menu-item-has-children">
+      <a href="{{allOfUsUrl}}/data/">Data</a>
+      <ul [hidden]="!openDataTools" class="sub-menu">
+        <li class="menu-item">
+          <a href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
+        </li>
+        <li class="menu-item">
+          <a [routerLink]="['']">Data Browser</a>
+        </li>
+        <li [ngClass]="openDataToolsMethods?'flip':''"
+          (click)="$event.stopPropagation();openDataToolsMethods = !openDataToolsMethods"
+          class="menu-item menu-item-has-children">
+          <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
+          <ul [hidden]="!openDataToolsMethods" class="sub-menu">
+            <li class="menu-item">
+              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
+            </li>
+            <li class="menu-item">
+              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey
+                Explorer</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="{{allOfUsUrl}}/workbench/">Workbench</a>
+        </li>
+      </ul>
+    </li>
+    <li [ngClass]="openTools?'flip':''" (click)="openTools = !openTools" class="main-menu-item menu-item-has-children">
+      <a href="{{allOfUsUrl}}/workbench/">Tools</a>
+      <ul [hidden]="!openTools" class="sub-menu">
+        <li class="menu-item">
+          <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/workbench/">Workbench</a>
+        </li>
+        <li *ngIf="isAlpha" class="menu-item">
+          <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/guides-support/">Guides & Support</a>
+        </li>
+      </ul>
+    </li>
+    <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
+    <li class="main-menu-item-second">
+      <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/">
+        <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35"
+          autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
+    </li>
+    <li href="https://www.researchallofus.org/apply/" *ngIf="isAlpha" class="nav_apply">
+      <a>APPLY</a>
+    </li>
+    <li>
+      <a href="https://workbench.researchallofus.org/login" *ngIf="isAlpha" class="login-btn"> RESEARCHER LOGIN</a>
+    </li>
+  </ul><!-- #mobile-menu -->
 </div><!-- #masthead -->

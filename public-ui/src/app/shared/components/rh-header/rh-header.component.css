@@ -44,8 +44,32 @@ a:hover, a:link, a:visited a:active, a {
   color: #216FB5;
 }
 
-.menu-primary-container .main-menu-item {
+.cta-bar .login-btn, #menu-mobile li .login-btn {
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  border: 1px solid #262262;
+  color: #262262;
+  text-transform: uppercase;
+  padding: 5px 18px;
+  transition: background 150ms ease-in-out, color 150ms ease-in-out;
+}
 
+#menu-mobile li .login-btn {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+
+.cta-bar .login-btn {
+  display: none;
+}
+
+.cta-bar .login-btn:hover, #menu-mobile li .login-btn:hover {
+  color: white;
+  background: #262262;
 }
 
 #menu-mobile {
@@ -125,18 +149,22 @@ li.flip::before, li.flip::before {
   transform: rotate(180deg);
 }
 
+#menu-mobile li.nav_apply a {
+  padding: 13px 8px;
+  width: 100%;
+  display: inline-block;
+}
 
-.main-menu > .nav_apply {
-  padding: .7rem 1rem 13px;
+#menu-mobile li.nav_apply {
   border-bottom: none;
 }
 
-.main-menu > .nav_apply > a {
+.nav_apply>a {
   position: relative;
-  bottom:1px;
+  bottom: 1px;
   text-align: center;
   font-weight: 900;
-  padding:1px;
+  padding: 1px;
   background-image: linear-gradient(to bottom, #f9aa58, #f88d7b);
 }
 
@@ -321,7 +349,7 @@ li.flip::before, li.flip::before {
 .site-branding-container {
   padding-bottom: 14px;
   padding-left: 14px;
-  padding-top:14px;
+  padding-top: 14px;
   width: 100%;
 }
 
@@ -452,21 +480,16 @@ li.flip::before, li.flip::before {
 
 @media only screen and (min-width: 969px) {
   .cta-bar {
-    padding: 0 calc(10%);
-    padding-top:14px;
+    padding-top: 14px;
     flex-wrap: nowrap;
+    display: flex;
+    align-items: flex-end;
   }
   .cta-bar aside p {
     white-space: nowrap;
   }
-  .site-nav-container {
-    padding-right: calc(10%);
-  }
   .site-branding-container .mobile-nav {
     display: none;
-  }
-  .site-branding-container {
-    padding-left: calc(10%);
   }
   .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu {
     display: flex;
@@ -601,11 +624,24 @@ input#s {
 /* when LARGE  */
 
 @media only screen and (min-width: 1168px) {
+  .cta-bar {
+    padding-left: calc(10%);
+    padding-right: calc(5%);
+  }
+  .site-branding-container {
+    padding-left: calc(10%);
+  }
+  .cta-bar .login-btn {
+    display: inline-block;
+  }
   .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg:first-child {
     width: 22px;
     vertical-align: text-bottom;
     cursor: pointer;
     display: inline-block;
+  }
+  .site-nav-container {
+    margin-right: calc(5%);
   }
   .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li.icon_search ul.sub-menu {
     display: none;
