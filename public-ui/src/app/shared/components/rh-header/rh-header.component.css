@@ -44,6 +44,10 @@ a:hover, a:link, a:visited a:active, a {
   color: #216FB5;
 }
 
+.menu-primary-container .main-menu-item {
+
+}
+
 #menu-mobile {
   padding: 18px;
   visibility: visible;
@@ -119,6 +123,21 @@ a:hover, a:link, a:visited a:active, a {
 li.flip::before, li.flip::before {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+
+
+.main-menu > .nav_apply {
+  padding: .7rem 1rem 13px;
+  border-bottom: none;
+}
+
+.main-menu > .nav_apply > a {
+  position: relative;
+  bottom:1px;
+  text-align: center;
+  font-weight: 900;
+  padding:1px;
+  background-image: linear-gradient(to bottom, #f9aa58, #f88d7b);
 }
 
 #menu-mobile li ul.sub-menu {
