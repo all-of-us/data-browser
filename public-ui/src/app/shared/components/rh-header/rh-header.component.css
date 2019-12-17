@@ -82,28 +82,37 @@ a:hover, a:link, a:visited a:active, a {
   font-size: 19.8px;
 }
 
-#menu-mobile li.main-menu-item::after {
-  content: '\25bc';
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+#menu-mobile li.main-menu-item::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 12px;
+  background-image: url("/assets/icons/arrow-down-nav-mobile.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  float: right;
+  margin-top: 8px;
+  margin-right:8px;
   cursor: pointer;
-  line-height: 1;
-  color: rgba(38, 34, 98, 1);
-  vertical-align: middle;
-  margin-right: 1rem;
-  margin-top: -8px;
 }
 
 #menu-mobile li ul.sub-menu li.menu-item-has-children::before {
-  content: '\25BC';
-  position: relative;
-  cursor: pointer;
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 12px;
+  background-image: url("/assets/icons/arrow-down-nav-mobile.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
   float: right;
-  margin-right: 3rem;
+  margin-top: 8px;
+  margin-right:24px;
+  cursor: pointer;
 }
 
-li.flip::after, li.flip::before {
+li.flip::before, li.flip::before {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
@@ -255,15 +264,18 @@ li.flip::after, li.flip::before {
 #site-navigation {
   font-family: 'Gotham A', 'Gotham B', 'Helvetica', sans-serif;
   font-weight: bold;
-}
-
-#menu-primary .sub-menu {
-  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
-  font-weight: normal;
-  text-transform: capitalize;
   font-size: 18px;
 }
 
+#menu-primary .sub-menu li {
+  /* line-height: 1rem; */
+}
+#menu-primary .sub-menu a {
+  font-family: 'GothamBook', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-weight: initial;
+  text-transform: capitalize;
+  
+}
 .headwrap {
   display: flex;
   margin: 0;
@@ -367,10 +379,18 @@ li.flip::after, li.flip::before {
 }
 
 .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li.menu-item-has-children:before {
-  content: '\25bc';
-  font-size: 1.1rem;
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 12px;
+  background-image: url("/assets/icons/arrow-down-nav-mobile.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
   float: right;
-  margin-top: -.2rem;
+  margin-top: 8px;
+  margin-right:8px;
+  cursor: pointer;
 }
 
 /* when medium */
@@ -489,7 +509,7 @@ li.flip::after, li.flip::before {
     padding-bottom: 5px;
     border-bottom: 3px solid #262262;
   }
-  .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(1):hover>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(1):focus>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(2):hover>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(2):focus>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(3):hover>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(3):focus>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.icon_search:hover>a:after, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.icon_search:focus>a:after {
+  .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(1):hover>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(1):focus>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(2):hover>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(2):focus>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(3):hover>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:nth-child(3):focus>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.icon_search:hover>a:before, .site-nav-container .site-branding-nav nav.main-navigation .menu-primary-container ul.main-menu>li.icon_search:focus>a:before {
     border-style: solid;
     content: " ";
     border-color: transparent;
@@ -531,7 +551,7 @@ li.flip::after, li.flip::before {
 }
 
 #searchsubmit {
-  background: url('https://www.staging.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_search.png');
+  background: url('/assets/icons/icon_search.png');
   border: none;
   width: 22px;
   height: 22px;
