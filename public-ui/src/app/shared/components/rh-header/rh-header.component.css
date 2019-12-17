@@ -434,6 +434,7 @@ li.flip::before, li.flip::before {
 @media only screen and (min-width: 969px) {
   .cta-bar {
     padding: 0 calc(10%);
+    padding-top:14px;
     flex-wrap: nowrap;
   }
   .cta-bar aside p {
