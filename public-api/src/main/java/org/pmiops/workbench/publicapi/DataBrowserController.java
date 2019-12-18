@@ -1011,7 +1011,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                     if(!unit.equalsIgnoreCase("no unit")) {
                                         processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
                                     } else {
-                                        //Seperate text and numeric values
                                         ArrayList<AchillesResult> textValues = new ArrayList<>();
                                         ArrayList<AchillesResult> numericValues = new ArrayList<>();
                                         // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
