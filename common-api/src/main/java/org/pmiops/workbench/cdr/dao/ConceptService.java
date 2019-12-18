@@ -151,6 +151,8 @@ public class ConceptService {
                     modifiedWords.add(key);
                 } else if (key.contains("*") && key.length() > 1) {
                     modifiedWords.add(key);
+                } else if (key.startsWith("+")) {
+                    modifiedWords.add(key);
                 } else {
                     if (searchType == SearchType.SURVEY_COUNTS) {
                         if (!key.endsWith("*")) {
