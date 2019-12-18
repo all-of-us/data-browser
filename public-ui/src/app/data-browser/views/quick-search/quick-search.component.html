@@ -102,7 +102,7 @@
     </div>
     <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
     <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
-      <div (click)="viewSurvey(r, searchText.value)" class="result-box" *ngFor="let r of surveyResults">
+      <div tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)" class="result-box" *ngFor="let r of surveyResults">
         <p class="result-box-title">
           {{r.name}}
           <clr-tooltip (mouseenter)="hoverOnTooltip('Homepage Tooltip Hover', null, 'Hover on Survey Tile ' + r.name + ' tooltip')">
@@ -133,9 +133,9 @@
           </div>
         </div>
           <div class="result-box-link">
-            <a *ngIf="!searchText.value" class="result-bottom-link" (click)="viewSurvey(r, null)">
+            <a *ngIf="!searchText.value" class="result-bottom-link"  tabindex="0" (keydown.enter)="viewSurvey(r, null)" (click)="viewSurvey(r, null)">
               View Complete Survey</a>
-            <a *ngIf="searchText.value" class="result-bottom-link" (click)="viewSurvey(r, searchText.value)"> View Results </a>
+            <a *ngIf="searchText.value" class="result-bottom-link" tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
           </div>
       </div>
       <!-- toDO: style noresults -->
