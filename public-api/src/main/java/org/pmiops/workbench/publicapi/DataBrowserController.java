@@ -550,8 +550,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         toMatchConceptIds.add(conceptId);
         List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
         if (drugMatchedConceptIds.size() > 0) {
-            System.out.println("******************here***************");
-            System.out.println(drugMatchedConceptIds.size());
             toMatchConceptIds.addAll(drugMatchedConceptIds);
         }
 
