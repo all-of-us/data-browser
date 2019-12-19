@@ -230,7 +230,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
       find(aa => aa.unitName === unit);
     }
     if (this.mixtureOfValues) {
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.
+      this.toDisplayMeasurementGenderAnalysis.results =
+        this.toDisplayMeasurementGenderAnalysis.results.
       filter(r => r.measurementValueType === 'text');
       this.selectedMeasurementType = 'No Unit (Text)';
     }
@@ -278,21 +279,27 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
 
   public showSpecificMeasurementTypeValues(su) {
     if (su.toLowerCase().indexOf('text') >= 0) {
-      this.toDisplayMeasurementGenderAnalysis = {...this.analyses.measurementValueGenderAnalysis.find
+      this.toDisplayMeasurementGenderAnalysis =
+        {...this.analyses.measurementValueGenderAnalysis.find
         (aa => aa.unitName === 'No unit')};
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter
+      this.toDisplayMeasurementGenderAnalysis.results =
+        this.toDisplayMeasurementGenderAnalysis.results.filter
       (r => r.measurementValueType === 'text');
       if (this.analyses.measurementGenderCountAnalysis) {
-        this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.find
+        this.toDisplayMeasurementGenderCountAnalysis =
+          this.analyses.measurementGenderCountAnalysis.find
         (aa => aa.unitName === 'No unit');
       }
     } else {
-      this.toDisplayMeasurementGenderAnalysis = {...this.analyses.measurementValueGenderAnalysis.find
+      this.toDisplayMeasurementGenderAnalysis =
+        {...this.analyses.measurementValueGenderAnalysis.find
         (aa => aa.unitName === 'No unit')};
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter
+      this.toDisplayMeasurementGenderAnalysis.results =
+        this.toDisplayMeasurementGenderAnalysis.results.filter
       (r => r.measurementValueType === 'numeric');
       if (this.analyses.measurementGenderCountAnalysis) {
-        this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.find
+        this.toDisplayMeasurementGenderCountAnalysis =
+          this.analyses.measurementGenderCountAnalysis.find
         (aa => aa.unitName === 'No unit');
       }
     }
