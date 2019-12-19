@@ -13,6 +13,10 @@
       <div class="tooltip-label">Toggle here to view unit specific histograms</div>
     </clr-tooltip-content>
   </clr-tooltip>
+  <div *ngIf="mixtureOfValues">
+    <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"
+         (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link sub-graph-choice">{{su}}</div>
+  </div>
 </div>
 
 <div *ngIf="!loading()" class="concept-charts">
