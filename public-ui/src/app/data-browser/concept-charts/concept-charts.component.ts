@@ -279,8 +279,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
 
   public showSpecificMeasurementTypeValues(su) {
     if (su.toLowerCase().indexOf('text') >= 0) {
-      this.toDisplayMeasurementGenderAnalysis =
-        {...this.analyses.measurementValueGenderAnalysis.find
+      this.toDisplayMeasurementGenderAnalysis = {
+        ...this.analyses.measurementValueGenderAnalysis.find
         (aa => aa.unitName === 'No unit')};
       this.toDisplayMeasurementGenderAnalysis.results =
         this.toDisplayMeasurementGenderAnalysis.results.filter
@@ -292,8 +292,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
       }
     } else {
       this.toDisplayMeasurementGenderAnalysis =
-        {...this.analyses.measurementValueGenderAnalysis.find
-        (aa => aa.unitName === 'No unit')};
+        {...this.analyses.measurementValueGenderAnalysis.find(
+          aa => aa.unitName === 'No unit')};
       this.toDisplayMeasurementGenderAnalysis.results =
         this.toDisplayMeasurementGenderAnalysis.results.filter
       (r => r.measurementValueType === 'numeric');
