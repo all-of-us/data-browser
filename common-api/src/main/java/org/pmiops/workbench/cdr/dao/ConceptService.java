@@ -69,7 +69,7 @@ public class ConceptService {
         this.conceptDao = conceptDao;
     }
 
-    public static String modifyMultipleMatchKeyword(String query, SearchType searchType) {
+    public static String prevModifyMultipleMatchKeyword(String query, SearchType searchType) {
         // This function modifies the keyword to match all the words if multiple words are present(by adding + before each word to indicate match that matching each word is essential)
         if (query == null || query.trim().isEmpty()) {
             return null;
@@ -122,6 +122,53 @@ public class ConceptService {
         return query2.toString();
     }
 
+    public static String modifyMultipleMatchKeyword(String query, SearchType searchType) {
+        // This function modifies the keyword to match all the words if multiple words are present(by adding + before each word to indicate match that matching each word is essential)
+        if (query == null || query.trim().isEmpty()) {
+            return null;
+        }
+        String[] keywords = query.split("[,+\\s+]");
+        List<String> modifiedWords = new ArrayList<>();
+        if (keywords.length == 1) {
+            return query;
+        } else if (query.startsWith("\"") && query.endsWith("\"")) {
+            return query.replaceAll("\"", "\'");
+        } else {
+            for (String key: keywords) {
+                if (key.length() < 3) {
+                    if (searchType == SearchType.SURVEY_COUNTS) {
+                        if (!key.endsWith("*")) {
+                            modifiedWords.add(new String("+" + key + "*"));
+                        } else {
+                            modifiedWords.add(new String("+" + key));
+                        }
+                    } else {
+                        modifiedWords.add(key);
+                    }
+                } else if (key.contains(".") && !key.contains("\"")) {
+                    modifiedWords.add(new String("\"" + key + "\""));
+                } else if (key.contains("-")) {
+                    modifiedWords.add(key);
+                } else if (key.contains("*") && key.length() > 1) {
+                    modifiedWords.add(key);
+                } else if (key.startsWith("+")) {
+                    modifiedWords.add(key);
+                } else {
+                    if (searchType == SearchType.SURVEY_COUNTS) {
+                        if (!key.endsWith("*")) {
+                            modifiedWords.add(new String("+" + key + "*"));
+                        } else {
+                            modifiedWords.add(new String("+" + key));
+                        }
+                    } else {
+                        modifiedWords.add(new String("+" + key));
+                    }
+                }
+            }
+        }
+        return String.join(" ", modifiedWords);
+    }
+
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
@@ -139,6 +186,7 @@ public class ConceptService {
                             (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
                     final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
+
                     Expression<Double> matchExp = null;
 
                     if (keyword != null) {
