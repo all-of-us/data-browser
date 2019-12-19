@@ -132,7 +132,7 @@ public class ConceptService {
         if (keywords.length == 1) {
             return query;
         } else if (query.startsWith("\"") && query.endsWith("\"")) {
-            return query.replaceAll("\"", "\'");
+            return query;
         } else {
             for (String key: keywords) {
                 if (key.length() < 3) {
