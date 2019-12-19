@@ -230,8 +230,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
       find(aa => aa.unitName === unit);
     }
     if (this.mixtureOfValues) {
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter
-      (r => r.measurementValueType === 'text');
+      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.
+      filter(r => r.measurementValueType === 'text');
       this.selectedMeasurementType = 'No Unit (Text)';
     }
   }
