@@ -9,7 +9,6 @@ import { ConceptAnalysis } from '../../../publicGenerated/model/conceptAnalysis'
 import { ConceptWithAnalysis } from '../../utils/conceptWithAnalysis';
 import { DbConfigService } from '../../utils/db-config.service';
 import { GraphType } from '../../utils/enum-defs';
-import {text} from "@angular/core/src/render3/instructions";
 
 @Component({
   selector: 'app-concept-charts',
@@ -212,8 +211,10 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   showMeasurementGenderHistogram(unit: string) {
     this.selectedUnit = unit;
     if (this.selectedUnit.toLowerCase() === 'no unit') {
-      let numericResults = this.analyses.measurementValueGenderAnalysis.find(aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'numeric');
-      let textResults = this.analyses.measurementValueGenderAnalysis.find(aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'text');
+      const numericResults = this.analyses.measurementValueGenderAnalysis.find
+      (aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'numeric');
+      const textResults = this.analyses.measurementValueGenderAnalysis.find
+      (aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'text');
       if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
         this.mixtureOfValues = true;
       } else {
@@ -222,13 +223,15 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     } else {
       this.mixtureOfValues = false;
     }
-    this.toDisplayMeasurementGenderAnalysis = { ...this.analyses.measurementValueGenderAnalysis.find(aa => aa.unitName === unit) };
+    this.toDisplayMeasurementGenderAnalysis = { ...this.analyses.measurementValueGenderAnalysis.find
+      (aa => aa.unitName === unit) };
     if (this.analyses.measurementGenderCountAnalysis) {
       this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.
       find(aa => aa.unitName === unit);
     }
     if (this.mixtureOfValues) {
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
+      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter
+      (r => r.measurementValueType === 'text');
       this.selectedMeasurementType = 'No Unit (Text)';
     }
   }
@@ -275,16 +278,22 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
 
   public showSpecificMeasurementTypeValues(su) {
     if (su.toLowerCase().indexOf('text') >= 0) {
-      this.toDisplayMeasurementGenderAnalysis = {...this.analyses.measurementValueGenderAnalysis.find(aa => aa.unitName === 'No unit')};
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
+      this.toDisplayMeasurementGenderAnalysis = {...this.analyses.measurementValueGenderAnalysis.find
+        (aa => aa.unitName === 'No unit')};
+      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter
+      (r => r.measurementValueType === 'text');
       if (this.analyses.measurementGenderCountAnalysis) {
-        this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.find(aa => aa.unitName === 'No unit');
+        this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.find
+        (aa => aa.unitName === 'No unit');
       }
     } else {
-      this.toDisplayMeasurementGenderAnalysis = {...this.analyses.measurementValueGenderAnalysis.find(aa => aa.unitName === 'No unit')};
-      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'numeric');
+      this.toDisplayMeasurementGenderAnalysis = {...this.analyses.measurementValueGenderAnalysis.find
+        (aa => aa.unitName === 'No unit')};
+      this.toDisplayMeasurementGenderAnalysis.results = this.toDisplayMeasurementGenderAnalysis.results.filter
+      (r => r.measurementValueType === 'numeric');
       if (this.analyses.measurementGenderCountAnalysis) {
-        this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.find(aa => aa.unitName === 'No unit');
+        this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.find
+        (aa => aa.unitName === 'No unit');
       }
     }
   }
