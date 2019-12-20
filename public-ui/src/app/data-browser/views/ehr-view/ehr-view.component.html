@@ -18,11 +18,11 @@
             <section *ngIf="items.length > 0">
               <!-- Top summary boxes -- only show if have results -->
               <h5 id="domain-summary" class="secondary-display">
-                <a class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending
+                <div class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending
                   Participant Counts
                   <clr-icon size="20" *ngIf="!showTopConcepts" shape="caret" dir="right"></clr-icon>
                   <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
-                </a>
+                </div>
               </h5>
               <div *ngIf="showTopConcepts">
                 <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results"></chart-top-results>

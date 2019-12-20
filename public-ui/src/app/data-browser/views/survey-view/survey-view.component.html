@@ -72,10 +72,10 @@
               </app-highlight-search>
             </div>
           </div>
-          <div class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q)" (click)="toggleAnswer(q)"> See Answers
+          <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q)" (click)="toggleAnswer(q)"> See Answers
             <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
             <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
-          </div>
+          </a>
           <div class="survey-tbl" [hidden]="!showAnswer[q.conceptId]">
             <div class="survey-tbl-r survey-tbl-head">
               <div class="info-text first survey-tbl-d">

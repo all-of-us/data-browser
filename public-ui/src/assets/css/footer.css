@@ -24,6 +24,10 @@
   padding: 0;
   list-style: none;
 }
+#colophon a:hover {
+    text-decoration: underline;
+    color: #337AB7;
+}
 
 #colophon .widget-column {
   display: flex;
