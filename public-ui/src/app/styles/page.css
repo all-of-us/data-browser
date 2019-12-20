@@ -250,6 +250,14 @@
   border-radius: 2px 2px 2px 2px;
 }
 
+.measurement-filter-choice.active {
+  text-decoration: underline;
+}
+
+.measurement-filter-choice {
+  color: #262262;
+}
+
 .survey-answer-level-1.active, .survey-answer-level-2.active {
   font-weight: bold;
 }

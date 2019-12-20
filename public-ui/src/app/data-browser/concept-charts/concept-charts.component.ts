@@ -278,6 +278,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   }
 
   public showSpecificMeasurementTypeValues(su) {
+    this.selectedMeasurementType = su;
     if (su.toLowerCase().indexOf('text') >= 0) {
       this.toDisplayMeasurementGenderAnalysis = {
         ...this.analyses.measurementValueGenderAnalysis.find

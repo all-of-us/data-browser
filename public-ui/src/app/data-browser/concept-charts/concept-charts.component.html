@@ -15,7 +15,7 @@
   </clr-tooltip>
   <div *ngIf="mixtureOfValues">
     <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"
-         (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link sub-graph-choice">{{su}}</div>
+         (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link measurement-filter-choice">{{su}}</div>
   </div>
 </div>
 
