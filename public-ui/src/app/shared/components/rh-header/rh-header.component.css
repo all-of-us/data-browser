@@ -621,6 +621,11 @@ input#s {
   vertical-align: middle;
 }
 
+.link:hover {
+  text-decoration: underline;
+  color: #337AB7;
+}
+
 /* when LARGE  */
 
 @media only screen and (min-width: 1168px) {

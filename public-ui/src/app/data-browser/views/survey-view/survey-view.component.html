@@ -11,7 +11,7 @@
           <li>Gathered directly from participants through electronic surveys</li>
           <li>Grouped into bins of 20 to protect privacy</li>
         </ul>
-        For more information about this survey, please visit the <a target="_blank" href="https://www.researchallofus.org/data-sources/survey-explorer" rel="noopener noreferrer">Survey Explorer</a>
+        For more information about this survey, please visit the <a target="_blank" href="https://www.researchallofus.org/data-sources/survey-explorer" rel="noopener noreferrer" class="link">Survey Explorer</a>
       </div>
     </div>
     <div class="search-bar-container">
@@ -23,7 +23,7 @@
     </div>
     <app-spinner [loading]="loading"></app-spinner>
     <section *ngIf="questions.length > 0 && !loading" class="results">
-      <a class="btn btn-link btn-sm" [routerLink]="['']">
+      <a class="btn btn-link btn-sm link" [routerLink]="['']">
         < Back to main search </a> <div class="db-card">
       <div class="survey-head">
         <div class="stat-container">
@@ -43,7 +43,7 @@
           </p>
         </div>
         <div class="pdf-link" (click)="downloadPdf()">
-          <a href="{{surveyPdfUrl}}" download>
+          <a href="{{surveyPdfUrl}}" download class="link">
             <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
           </a>
         </div>
@@ -72,7 +72,7 @@
               </app-highlight-search>
             </div>
           </div>
-          <div class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q)" (click)="toggleAnswer(q)"> See Answers
+          <div class="see-answers body-lead link" tabindex="0" (keydown.enter)="toggleAnswer(q)" (click)="toggleAnswer(q)"> See Answers
             <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
             <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
           </div>
