@@ -501,7 +501,7 @@ input[type=text], input[type=password] {
   height: 100vh;
 }
 
-.link:hover {
+a:hover {
   text-decoration: underline;
   color: #337AB7;
 }

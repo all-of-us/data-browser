@@ -621,7 +621,7 @@ input#s {
   vertical-align: middle;
 }
 
-.link:hover {
+a:hover {
   text-decoration: underline;
   color: #337AB7;
 }

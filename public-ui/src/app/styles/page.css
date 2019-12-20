@@ -22,7 +22,7 @@
   text-align: left;
 }
 
-.link:hover {
+a:hover {
   text-decoration: underline;
   color: #337AB7;
 }
