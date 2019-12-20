@@ -89,10 +89,10 @@
           </span>
         </div>
         <div class="result-box-link">
-          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="!searchText.value" class="result-bottom-link link"
+          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="!searchText.value" class="result-bottom-link"
             (click)="viewEhrDomain(r, null)">
             View Top {{r.name}} </a>
-          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="searchText.value" class="result-bottom-link link" (click)="viewEhrDomain(r, searchText.value)">
+          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r, searchText.value)">
             View Results </a>
         </div>
       </div>
@@ -133,9 +133,9 @@
           </div>
         </div>
           <div class="result-box-link">
-            <a *ngIf="!searchText.value" class="result-bottom-link link"  tabindex="0" (keydown.enter)="viewSurvey(r, null)" (click)="viewSurvey(r, null)">
+            <a *ngIf="!searchText.value" class="result-bottom-link"  tabindex="0" (keydown.enter)="viewSurvey(r, null)" (click)="viewSurvey(r, null)">
               View Complete Survey</a>
-            <a *ngIf="searchText.value" class="result-bottom-link link" tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
+            <a *ngIf="searchText.value" class="result-bottom-link" tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
           </div>
       </div>
       <!-- toDO: style noresults -->
@@ -176,7 +176,7 @@
           </span>
         </div>
           <div class="result-box-link">
-            <a class="result-bottom-link link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+            <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
           </div>
       </div>
     </div>

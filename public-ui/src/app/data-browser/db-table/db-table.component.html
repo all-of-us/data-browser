@@ -213,13 +213,13 @@
       <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
         *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
       </app-highlight-search>
-      <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less link"
+      <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
         *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
         See
         Less
       </a>
       <ng-template #seeMore>
-        <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more link"
+        <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"  (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
           *ngIf="synonymString[r.conceptId].length > 100">
           <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
         </a>
@@ -228,13 +228,13 @@
     <div *ngIf="drugBrands[r.conceptId] && drugBrands[r.conceptId].length > 0" (click)="expandRow(r)" class="body-lead aka-layout aka">
       <div *ngIf="r.drugBrands;else noDrugBrands" (click)="$event.stopPropagation();toggleDrugBrands(r)">
         <span class="aka-text drug-brands-meta">Found in these commercially branded products</span>
-        <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-less link"
+        <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-less"
            *ngIf="drugBrands[r.conceptId].length > 10 && showMoreDrugBrands[r.conceptId]; else seeMore">
           See
           Less
         </a>
         <ng-template #seeMore>
-          <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-more link"
+          <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-more"
              *ngIf="drugBrands[r.conceptId].length > 10">
             <clr-icon shape="ellipsis-horizontal" *ngIf="!showMoreDrugBrands[r.conceptId]"></clr-icon> See More
           </a>
