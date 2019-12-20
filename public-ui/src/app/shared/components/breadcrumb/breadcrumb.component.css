@@ -2,7 +2,6 @@
   background: #f6f6f8;
 }
 
-
 .breadcrumbs {
   display: flex;
   flex-wrap: wrap;
@@ -22,6 +21,10 @@
   font-weight: 400;
   color: #2691D0;
   text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
 }
 
 .breadcrumb:after {
