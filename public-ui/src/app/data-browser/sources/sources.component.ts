@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DataBrowserService } from 'publicGenerated';
 import { Concept } from '../../../publicGenerated';
 import { TooltipService } from '../../utils/tooltip.service';
@@ -7,7 +7,7 @@ import { TooltipService } from '../../utils/tooltip.service';
   templateUrl: './sources.component.html',
   styleUrls: ['../../styles/template.css', './sources.component.css']
 })
-export class SourcesComponent implements OnChanges {
+export class SourcesComponent {
   @Input() concept: Concept;
   @Input() treeLoading: boolean;
   @Input() treeData: any[];
@@ -20,8 +20,6 @@ export class SourcesComponent implements OnChanges {
     public tooltipText: TooltipService,
     private api: DataBrowserService) { }
 
-  ngOnChanges() {
-  }
 
   public conceptTreeClick(node) {
     this.api.getSourceConcepts(node.conceptId).subscribe(results => {

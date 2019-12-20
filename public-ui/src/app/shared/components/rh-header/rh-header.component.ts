@@ -15,11 +15,13 @@ export class RhHeaderComponent implements OnInit {
   openDAboutResearch = false;
   openDData = false;
   allOfUsUrl: string;
+  isAlpha: boolean;
 
   constructor() {}
 
   ngOnInit() {
     this.allOfUsUrl = environment.researchAllOfUsUrl;
+    this.isAlpha = environment.isAlpha;
   }
 
   public searchHub(form) {

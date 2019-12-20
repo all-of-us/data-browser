@@ -1,12 +1,12 @@
 [
   {
     "mode": "REQUIRED",
-    "name": "source_unit_concept",
+    "name": "source_concept",
     "type": "INTEGER"
   },
   {
     "mode": "REQUIRED",
-    "name": "destination_unit_concept",
+    "name": "standard_concept",
     "type": "INTEGER"
   }
 ]

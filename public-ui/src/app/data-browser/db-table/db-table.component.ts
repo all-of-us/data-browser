@@ -24,7 +24,9 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() prevSearchText: string;
   @Input() ehrDomain: any;
   @Input() synonymString: any;
+  @Input() drugBrands: any;
   @Input() showMoreSynonyms: any;
+  @Input() showMoreDrugBrands: any;
   @Input() standardConcepts: any[];
   @Input() currentPage: number;
   @Input() totalParticipants: number;
@@ -150,6 +152,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
       this.expandRow(this.selectedConcept, true);
+    } else {
+      this.standardConceptIds = this.standardConcepts.map(({ conceptId }) => conceptId);
     }
     if (changes.treeData && changes.treeData.currentValue) {
       this.selectedConcept = JSON.parse(localStorage.getItem('selectedConcept'));
@@ -200,7 +204,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       // if already expanded than just change the graph
       if (sources) {
         this.graphToShow = GraphType.Sources;
-      } else if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+      } else if (!sources && this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
         this.graphToShow = GraphType.Values;
       } else {
         this.graphToShow = GraphType.BiologicalSex;
@@ -208,14 +212,14 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     } else if (sources) { // if not expand the row
       this.graphToShow = GraphType.Sources;
       this.loadSourceTree(concept);
-      this.expandRow(concept);
+      this.expandRow(concept, false, true);
     } else {
       this.graphToShow = GraphType.BiologicalSex;
       this.expandRow(concept);
     }
   }
 
-  public expandRow(concept: any, fromChart?: boolean) {
+  public expandRow(concept: any, fromChart?: boolean, sources?: boolean) {
     this.loadSourceTree(concept);
     this.expanded = true;
     // analytics
@@ -240,11 +244,13 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     }
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
       if (concept.measurementConceptInfo !== null &&
-        concept.measurementConceptInfo.hasValues === 1) {
+        concept.measurementConceptInfo.hasValues === 1 && !sources) {
         this.graphToShow = GraphType.Values;
       } else if (concept.measurementConceptInfo !== null &&
-        concept.measurementConceptInfo.hasValues === 0) {
+        concept.measurementConceptInfo.hasValues === 0 && !sources) {
         this.graphToShow = GraphType.BiologicalSex;
+      } else if (sources) {
+        this.graphToShow = GraphType.Sources;
       }
     }
   }
@@ -278,6 +284,10 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         'Click On See More Synonyms',
         concept.conceptName + ' - ' + concept.domainId, this.prevSearchText, null);
     }
+  }
+
+  public toggleDrugBrands(concept: any) {
+    this.showMoreDrugBrands[concept.conceptId] = !this.showMoreDrugBrands[concept.conceptId];
   }
 
   public participantPercentage(count: number) {

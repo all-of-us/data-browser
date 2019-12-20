@@ -42,7 +42,7 @@ fi
 datasets=$(bq --project=$PUBLIC_PROJECT ls --max_results=100)
 if [ -z "$datasets" ]
 then
-  echo "$PUBLIC_PROJECT.$PUBLIC_DATASET does not exist. Please specify a valid project and dataset."
+  echo "No datasets in PUBLIC_PROJECT. Please specify a valid project and dataset."
   exit 1
 fi
 re=\\b$PUBLIC_DATASET\\b
@@ -325,7 +325,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 
 #Drop similar_unit_concepts mapping table
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
-"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.similar_unit_concepts\` "
+"drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.source_standard_unit_map\` "
 
 #Drop filter_conditions table
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \

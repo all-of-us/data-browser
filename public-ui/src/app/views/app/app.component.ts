@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.removeItem('searchText');
+    localStorage.removeItem('treeHighlight');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
     this.serverConfigService.getConfig().subscribe((config) => {

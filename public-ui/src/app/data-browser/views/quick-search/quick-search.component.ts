@@ -74,8 +74,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
-    this.dbc.getPmGroups().subscribe(results => {
-    });
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
       this.title = 'Electronic Health Data';
@@ -103,6 +101,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         'grouped by age at occurrence and gender, for each ' +
         'program physical measurement.';
     }
+    // Get search result from localStorage
+    this.prevSearchText = localStorage.getItem('searchText');
+    if (!this.prevSearchText) {
+      this.prevSearchText = '';
+    }
+    this.searchText.setValue(this.prevSearchText);
     this.subscriptions.push(
       this.api.getParticipantCount().subscribe(
         result => this.totalParticipants = result.countValue)
@@ -131,7 +135,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
           if (!this.prevSearchText) {
             this.searchCallback(data);
           }
-          this.loading = false;
         })
     );
 
@@ -207,7 +210,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         r.name, null, null);
     }
     localStorage.setItem('surveyModule', JSON.stringify(r));
-    localStorage.setItem('searchText', this.prevSearchText);
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
         if (search) {
@@ -226,7 +228,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         r.name, null, null);
     }
     localStorage.setItem('ehrDomain', JSON.stringify(r));
-    localStorage.setItem('searchText', this.prevSearchText);
     const url = 'ehr/' +
       this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
     this.router.navigate([url], { queryParams: { search: search } });

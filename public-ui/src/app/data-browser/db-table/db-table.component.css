@@ -52,6 +52,10 @@
     color: rgb(150 150 150);
 }
 
+.drug-brands-meta {
+    margin: 0.5%;
+}
+
 .aka-info {
     opacity: .7;
 }

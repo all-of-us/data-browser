@@ -30,6 +30,7 @@
 8502,"SMU"
 8503,"DILS"
 8504,"gram"
+8504,"GRAM"
 8505,"hour"
 8506,"lytic unit 30 (number of cells to achieve 30% lysis of the target cells)"
 8508,"Note"
@@ -51,7 +52,7 @@
 8529,"index"
 8530,"{ref}"
 8531,"DNRTNP"
-8533,"Inches"
+9330,"Inches"
 8534,"Motile"
 8535,"Normal"
 8538,"Uptake"
@@ -132,8 +133,8 @@
 8647,"per microliter"
 8648,"percent of normal"
 8649,"percent uptake"
-8653,"degree Celsius"
-8653,"degrees celcius"
+586323,"degree Celsius"
+586323,"degrees celcius"
 8654,"Enzyme activity"
 8655,"Farad per liter"
 8656,"Low Power Field"
@@ -152,7 +153,7 @@
 8688,"percent baseline"
 8695,"Ehrlich unit per milliliter"
 8698,"liter per minute"
-8700,"Milligram per day"
+8909,"Milligram per day"
 8701,"nanogram per gram"
 8703,"parts per billion"
 8704,"picogram per cell"
@@ -240,7 +241,7 @@
 8909,"milligram per 24 hours"
 8910,"millimole per 24 hours"
 8915,"unit per gram of creatinine"
-8916,"Unit per gram of Hemoglobin"
+9651,"Unit per gram of Hemoglobin"
 8923,"international unit per liter"
 8924,"kilounit per liter class"
 8927,"meter per square kilogram"
@@ -260,7 +261,7 @@
 8980,"arbitrary unit per milliliter"
 8985,"international unit per milliliter"
 8989,"microgram of fibrinogen equivalent unit per milliliter"
-8990,"Microgram per milliliter of FEU"
+8989,"Microgram per milliliter of FEU"
 8991,"milliosmole per kilogram of H20"
 8992,"nanogram per deciliter per hour"
 8993,"nanomole per hour and milligram"
@@ -978,7 +979,7 @@
 4085095,"Unit of angular velocity"
 4086062,"Btu/h"
 4086063,"Unit of acceleration"
-4086539,"mCi"
+405863239,"mCi"
 4086540,"pL"
 4086541,"fl oz"
 4086542,"ft3"
@@ -1098,7 +1099,7 @@
 4107860,"m/s2"
 4109669,"Unit of electrical charge"
 4109670,"millicoulomb"
-4112118,"/hour"
+8505,"/hour"
 4112993,"coulomb"
 4113338,"ug/1000kcal"
 4113339,"% energy intake from fat"
@@ -1111,7 +1112,7 @@
 4116131,"% energy intake from alcohol"
 4117636,"fmol/24h"
 4117637,"L/h"
-4117638,"mEq/day"
+44777582,"mEq/day"
 4117639,"amol/platelet"
 4117640,"casts/LPF"
 4117641,"cells/L"
@@ -1120,7 +1121,7 @@
 4117644,"Dye units/L"
 4117645,"Ercs/uL"
 4117646,"g Hb/mol Hb"
-4117647,"GPL/mL"
+9157,"GPL/mL"
 4117648,"IU/stool"
 4117649,"IU/h"
 4117650,"International unit per millimole of creatinine"
@@ -1153,7 +1154,7 @@
 4117788,"bar - pressure"
 4117789,"lb/sq. in"
 4117790,"Unit of area"
-4117839,"IU/mL"
+8985,"IU/mL"
 4117791,"/10 min"
 4117792,"/40"
 4117793,"/day"
@@ -1166,8 +1167,8 @@
 4117800,"L/cmH2O"
 4117801,"nmol/24h"
 4117802,"fmol/day"
-4117803,"L/day"
-4117804,"L/24h"
+8857,"L/day"
+8857,"L/24h"
 4117805,"mL/day"
 9557,"mEq/L"
 4117807,"osmol/L"
@@ -1207,16 +1208,16 @@
 4117967,"mL/24h"
 4117968,"mosmol/L"
 4117969,"osmol/kg"
-4117970,"Arbitrary unit/liter"
+44777561,"Arbitrary unit/liter"
 4117971,"amol/Erc"
-4117972,"cells/LPF"
+8765,"cells/LPF"
 4117973,"/30 min"
 4117974,"/week"
 4117975,"/year"
 4117976,"diopters +"
 4117977,"J/sq. cm"
 9531,"kg/sq. m"
-4117990,"MPL/mL"
+9158,"MPL/mL"
 4117991,"International unit per gram of creatinine"
 4117992,"ug/dL Ercs"
 4117993,"ug/g dry weight tissue"
@@ -1235,7 +1236,7 @@
 4118005,"nmol/h/mg prot"
 4118006,"nmol/h/mL"
 4118123,"Unit of rate"
-4118124,"beats/min"
+8514,"beats/min"
 4118125,"cm/s"
 8752,"mm/h"
 4118127,"mm/s"
@@ -1252,7 +1253,7 @@
 4118142,"Hz"
 4118143,"/24h"
 4118144,"/ejaculate"
-4118145,"/mL"
+8587,"/mL"
 4118146,"cmH2O/L/s"
 4118147,"dB HL"
 4118148,"dB SPL"
@@ -1261,8 +1262,8 @@
 4118152,"L/kPa"
 4118153,"L/s/kPa"
 4118154,"L/sq. m/min"
-4118155,"mL/min"
-4118156,"mL/dL"
+8795,"mL/min"
+9570,"mL/dL"
 4118157,"mEq/min"
 8862,"mosmol/kg"
 4118160,"casts/HPF"
@@ -1297,8 +1298,8 @@
 4118312,"nmol/min/mg Hb"
 4118313,"L/min"
 4118314,"International unit measurement"
-4118315,"iu"
-4118318,"kIU/L"
+8718,"iu"
+8810,"kIU/L"
 9040,"mIU/L"
 4118320,"mIU/kg"
 4118321,"Unit of pressure"
@@ -1336,9 +1337,9 @@
 4119683,"Fraction of total Hb"
 4120385,"g/1000kcal"
 4120386,"mg/1000kcal"
-4120599,"/second"
+8555,"/second"
 4120712,"OD units"
-4120713,"% normal"
+8554,"% normal"
 4120714,"% normal forms"
 4120715,"% of total"
 4120716,"% positive cells"
@@ -1353,10 +1354,10 @@
 8845,"pg/mL"
 8749,"umol/L"
 4120727,"umol/dL"
-4120728,"g/24h"
+8807,"g/24h"
 4120729,"kg/24h"
 4120730,"mg/h"
-4120731,"mg/day"
+8909,"mg/day"
 4120733,"mmol/min"
 4120734,"nmol/h"
 4120846,"mg/exchange"
@@ -1406,13 +1407,13 @@
 8840,"mg/dL"
 8837,"ug/dL"
 4121398,"ug/kg"
-4121399,"pg/L"
+9625,"pg/L"
 4121400,"pg/dL"
 4121401,"fg/L"
 8753,"mmol/litre"
 4121403,"umol/g"
 4121404,"nmol/kg"
-4121405,"pmol/L"
+8729,"pmol/L"
 4121406,"fmol/kg"
 4121407,"kat/L"
 4121408,"nmol/g"
@@ -1423,7 +1424,7 @@
 4121489,"weber"
 4121524,"microgram/hour"
 8906,"ug/day"
-4121526,"mmol/day"
+8910,"mmol/day"
 4121527,"umol/h"
 4121528,"umol/day"
 4122376,"SI Unit of length"
@@ -1433,17 +1434,18 @@
 4122380,"Non-SI unit of length"
 4122381,"yd"
 4122382,"SI unit of mass"
-4122383,"kg"
-4122384,"mg"
+9529,"kg"
+8576,"mg"
 4122385,"microgram"
-4122386,"oz"
+9373,"oz"
+9373,"OZ"
 4122387,"stones - unit"
 4122388,"SI unit of time"
 4122389,"ns"
 8550,"min"
 4122391,"clockface hours"
 4122392,"month"
-8653,"degrees C"
+586323,"degrees C"
 4122394,"SI unit of amount of substance"
 4122395,"mol"
 4122396,"micromol"
@@ -1496,7 +1498,9 @@
 8504,"gram"
 4124423,"Non-SI unit of mass"
 4124424,"tonne"
-4124425,"lb"
+8739,"lb"
+8739,"LB"
+8739,"LBS"
 4124426,"degrees K"
 9630,"pmol"
 4124428,"fmol"
@@ -1655,8 +1659,8 @@
 4170769,"Packet - unit of product usage"
 4171063,"dollars/min"
 4171072,"ng/gm"
-4171221,"GPL unit"
-4171221,"GPL Units"
+9100,"GPL unit"
+9100,"GPL Units"
 4171235,"gm/specimen"
 8647,"/mcL"
 4171561,"dollars/year"
@@ -1708,7 +1712,7 @@
 4188673,"unit/gram"
 4188674,"U/m2"
 4188676,"Units per unit mass"
-4189167,"Ehrlich unit"
+4196517,"Ehrlich unit"
 4189337,"Mass per unit volume per unit time"
 4189492,"mCi/kg"
 4189493,"mEq/kg/hr"
@@ -1716,7 +1720,7 @@
 4189495,"mL/m2"
 4189497,"mU/g"
 4189498,"mU/min"
-4189512,"ng/mL/hr"
+9020,"ng/mL/hr"
 4190115,"Euro"
 4190380,"g/5hr"
 4190513,"IU/kg/hr"
@@ -1862,7 +1866,7 @@
 9096,"LogIU/mL"
 4303654,"thou/mcL"
 4303660,"GBq/ml"
-4303686,"MPL unit"
+9101,"MPL unit"
 4303959,"dollars/month"
 4303978,"nmol/mg Cr"
 8815,"x10(6)/mcL"
@@ -1880,7 +1884,7 @@
 9156,"APL unit/mL"
 4304885,"Unit/10(10)"
 4304908,"Kcal/kg/hr"
-4305035,"mOsm/kg H2O"
+8991,"mOsm/kg H2O"
 4305036,"mcg/spec"
 4305058,"Unit of bone density"
 4305370,"Box - unit of product usage"
@@ -2128,9 +2132,9 @@
 44783458,"Nanogram per milliliter D-dimer unit"
 44783461,"Milligram per liter fibrinogen equivalent unit"
 44783463,"Milligram per liter D-dimer unit"
-8990,"Microgram per milliliter fibrinogen equivalent unit"
+8989,"Microgram per milliliter fibrinogen equivalent unit"
 44783472,"Microgram per milliliter D-dimer unit"
-44783988,"Ehrlich units per deciliter"
+8829,"Ehrlich units per deciliter"
 44784127,"ug/2 hours"
 44802458,"5 millilitre medicine spoonful - unit of product usage"
 44819154,"millicurie"
@@ -2279,7 +2283,7 @@
 45757548,"Milligram of phenytoin sodium equivalents"
 8873,"Log copies/mL"
 45757634,"Kilodyne per square centimeter"
-45757636,"APL unit"
+9099,"APL unit"
 45757637,"Pump - unit of product usage"
 45763928,"Vaginal suppository - unit of product usage"
 45763929,"Pastille - unit of product usage"
@@ -2374,9 +2378,9 @@
 9225,"%A1C"
 8540,"BU"
 8540,"bu"
-4124425,"pounds"
-4124425,"lbs"
-4124425,"lb"
+8739,"pounds"
+8739,"lbs"
+8739,"lb"
 8582,"cm"
 9483,"cm2"
 8588,"mm"
@@ -2415,8 +2419,8 @@
 8985,"IU/mL"
 8985,"IU/ml"
 8985,"[iU]/mL"
-8653,"C"
-8653,"DegC"
+586323,"C"
+586323,"DegC"
 9093,"m[IU]/mL"
 9093,"m[IU]/L"
 9093,"MIUML"
@@ -2441,7 +2445,7 @@
 8734,"10*12/L"
 8734,"10E12/L"
 8734,"x10^12/L"
-8990,"ug/mL FEU"
+8989,"ug/mL FEU"
 9246,"pgm"
 9502,"G"
 9502,"g"
@@ -2475,7 +2479,8 @@
 8738,"% inhibit"
 8810,"kU/L"
 8483,"counts per minute"
-8739,"ounces"
+9373,"ounces"
+9373,"Ounces"
 8739,"lb"
 8739,"[lb_us]"
 8479,"cP"
@@ -2503,7 +2508,7 @@
 8494,"MoM"
 9017,"mg/gA{creat}"
 9557,"MEQL"
-4118318,"k[IU]/L"
+8810,"k[IU]/L"
 8751,"mg/L"
 8751,"MGL"
 8751,"mg/l"
@@ -2607,9 +2612,9 @@
 9032,"/100 WBC"
 9032,"/100.{WBC}"
 9032,"%WBC"
-4189512,"ng/mL/h"
-4189512,"ng/mL{FEU}"
-4189512,"ng/mL"
+9020,"ng/mL/h"
+9020,"ng/mL{FEU}"
+9020,"ng/mL"
 9289,"F"
 9289,"[degF]"
 9289,"Fahrenheit"
@@ -2651,12 +2656,12 @@
 8554,"% baseline"
 44777531,"m3"
 4305036,"mcg/spec"
-4305035,"mOsm/Kg_H2O"
+8991,"mOsm/Kg_H2O"
 4304553,"mcmol/gm_Cr"
 4136788,"TORR"
-8533,"in"
-8533,"inch"
-8533,"inches"
+9330,"in"
+9330,"inch"
+9330,"inches"
 9557,"mEQ/L"
 9557,"10*-3.eq/L"
 9557,"mEq/L"
@@ -2737,11 +2742,11 @@
 8566,"x10E3"
 8566,10E3
 8566,x10^3
-4118124,bpm
-4118124,beats/min
+8514,bpm
+8514,beats/min
 4118125,cm/sec
 44777582,mEq/24hr
-8990,mcg/mL FEU
+8989,mcg/mL FEU
 8752,mm/h
 8815,million/ul
 8815,10*6/uL
@@ -2786,7 +2791,7 @@
 8564,pg
 8564,PG
 8820,pg/dL
-44783988,{Ehrlich'U}/dL
+8829,{Ehrlich'U}/dL
 8923,IU/L
 8923,[IU]/L
 8815,x10(6)/mcL
@@ -2821,7 +2826,7 @@
 8576,mg
 8577,nM
 8577,nm
-4118145,mL
+8587,mL
 4119681,COUNTED
 8837,ug/dl
 8837,mcg/dL
@@ -2852,7 +2857,7 @@
 8840,mg_dl
 8840,mg/dL
 9096,log10 IU/mL
-4120713,% normal
+8554,% normal
 8842,ng/mL
 8842,ng/ml
 8842,NG/ML
@@ -2873,7 +2878,7 @@
 9101,[MPL'U]
 9101,"MPL Units"
 9101,MPL
-4117647,GPL U/mL
+9157,GPL U/mL
 8862,mosm/kg
 8862,MOSM/KG
 8862,mOsm/kg
@@ -2935,8 +2940,8 @@
 8749,umol/L
 8600,[ELU]
 8600,EU
-4120728,g/(24.h)
-4120728,g/24 h
+8807,g/(24.h)
+8807,g/24 h
 8859,ug/ml
 8859,mcg/mL
 8859,ug/mL
@@ -3013,7 +3018,7 @@
 9665,ul
 9665,/uL
 9156,APL
-45757636,[APL'U]
+9099,[APL'U]
 8645,u/l
 8645,U/L
 8645,UNITL
@@ -3039,10 +3044,10 @@
 8910,mmol/24hr
 8930,mL/24 h
 9426,EU/dl
-8916,U/gHGB
+9651,U/gHGB
 9428,rbc/ul
 8765,/[LPF]
-4171221,GPL
+9100,GPL
 8664,AU
 8923,[iU]/L
 8923,IU/L
@@ -3056,20 +3061,20 @@
 8752,mm/hr(s)
 4212719,E.U./dL
 8785,/MM3
-8653,"Degree_C"
-8653,"degrees celcius"
-8653,Celsius
+586323,"Degree_C"
+586323,"degrees celcius"
+586323,Celsius
 8645,U/L
 8950,g/dL (calc)
 8698,L/min
 8698,L/MIN
 9211,minute(s)
-8700,mg/24h
-8700,MG/24_HR
+8909,mg/24h
+8909,MG/24_HR
 8703,[ppb]
 8703,ppb
-8700,mg/day
-8700,mg/d
+8909,mg/day
+8909,mg/d
 8555,second(s)
 9213,/100WBC
 8526,total_#
@@ -3098,8 +3103,8 @@
 8686,"/CUMM"
 8686,"mm^3"
 8695,"EU/mL"
-8700,"mg/24h"
-8700,"MG/24_HR"
+8909,"mg/24h"
+8909,"MG/24_HR"
 8703,"ppb"
 8712,"Ery/uL"
 8713,"gdl"
@@ -3196,7 +3201,7 @@
 8961,"x10^3/mm3"
 8961,"x10^3/mm^3"
 8985,"IntUnits/mL"
-8990,"ug/mLFEU"
+8989,"ug/mLFEU"
 8991,"mosm/KgH2O"
 8991,"mosm/Kg_H2"
 8991,"mosm/Kg_H2O"
@@ -3258,13 +3263,13 @@
 9670,"umol/m"
 9675,"umol/mol_CRT"
 8505,"hrs"
-4117638,"mEq/24_hr"
+44777582,"mEq/24_hr"
 8784,"CEL/UL"
 9093,"uU/ml"
 4117660,"mU/L"
 4117825,"pg/cell"
 8985,"IUI/mL"
-4117970,"unit/L"
+44777561,"unit/L"
 4117974,"L/week"
 9651,"U/g_Hb"
 8763,"unit/mL"
