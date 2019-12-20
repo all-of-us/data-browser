@@ -697,6 +697,9 @@ definitions:
       analysisStratumName:
         description: stratum 5 Name
         type: string
+      measurementValueType:
+        description: measurement value type (text / numeric)
+        type: string
       countValue:
         description: count
         type: integer
