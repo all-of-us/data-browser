@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { HeaderFooterService } from './services/header-footer.service';
 //  components
 import { BetaBarComponent } from '../components/beta-bar/beta-bar.component';
 import { EmergencyComponent } from '../views/emergency/emergency.component';
@@ -51,6 +51,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     BetaBarComponent,
     SpinnerComponent,
     LocalStorageModule
+  ],
+  providers: [
+    HeaderFooterService
   ]
 })
 export class SharedModule { }
