@@ -14,7 +14,7 @@
         </h5>
       </ng-template>
       <ng-container *ngIf="!searchText.value; else no_search_term">
-        <h5 id="domain-name" class="primary-display">
+        <h5 id="domain-name-text" class="primary-display">
           concepts for this domain
           <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -25,7 +25,7 @@
         </h5>
       </ng-container>
       <ng-template #no_search_term>
-        <h5 id="domain-name" class="primary-display" *ngIf="searchText.value">
+        <h5 id="domain-name-text" class="primary-display" *ngIf="searchText.value">
           matching medical concepts
           <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
