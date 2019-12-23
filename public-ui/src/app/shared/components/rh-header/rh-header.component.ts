@@ -18,6 +18,7 @@ export class RhHeaderComponent implements OnInit {
   allOfUsUrl: string;
   isAlpha: boolean;
   menuItems: object[];
+  subTitle: boolean;
 
   constructor( public hFService: HeaderFooterService) {}
 
@@ -36,7 +37,10 @@ export class RhHeaderComponent implements OnInit {
   public toggleTopMenu() {
     this.openTopMenu = !this.openTopMenu;
   }
-  public openMenu() {
-    alert();
+
+  public toggleSub(title) { 
+    this.subTitle = title
   }
+
+
 }

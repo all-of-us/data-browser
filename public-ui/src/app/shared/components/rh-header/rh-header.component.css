@@ -230,13 +230,15 @@ li.flip::before, li.flip::before {
   color: #262262;
 }
 
-#menu-primary .sub-menu a {
+.sub-menu>li * {
   font-family: 'GothamBook', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: initial;
-  text-transform: capitalize;
-}
+  text-transform: capitalize!important;
+} 
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu {
+
+.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu,
+.sub-menu li ul {
   list-style: none;
 }
 
@@ -566,6 +568,8 @@ input#s {
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a {
     padding: 10px 25px;
+    position: relative;
+    top: 2px;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a {
     padding: 10px;
@@ -591,7 +595,7 @@ input#s {
     padding-left: 0;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, .1);
     background: #fff;
-    top: 34px;
+    top: 36px;
     width: 300px;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
@@ -632,6 +636,6 @@ input#s {
     transform: translateX(-50%);
     z-index: 10999;
     position: absolute;
-    top: 35px;
+    top: 36px;
   }
 }
