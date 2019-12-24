@@ -67,6 +67,11 @@ app-spinner {
     font-size: 18px;
 }
 
+.icon-link {
+    color: #0079b8;
+    font-size: 18px;
+}
+
 .search {
     display: flex;
     flex-wrap: wrap;

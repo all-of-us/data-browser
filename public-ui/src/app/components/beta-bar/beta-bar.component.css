@@ -10,9 +10,14 @@ a {
     color: #007cbb;
 }
 
+.beta-link {
+    font-size: 19px;
+    font-weight: bolder;
+}
+
 .left {
     width: calc((100%/12)*3);
-    background: #a27db7;
+    background: #816492;
     color: white;
     display: flex;
     padding: 0 1rem;
