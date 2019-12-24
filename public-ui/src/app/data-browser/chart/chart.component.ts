@@ -213,7 +213,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             return label;
           },
           useHTML: true,
-        } : ("dataOnlyLT20" in options.series[0] && options.series[0].dataOnlyLT20 != null && options.series[0].dataOnlyLT20) ?
+        } : ('dataOnlyLT20' in options.series[0] && options.series[0].dataOnlyLT20 != null
+          && options.series[0].dataOnlyLT20) ?
          {
           style: {
             fontSize: '12px',
@@ -502,7 +503,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
     }
-    let temp = data.filter(x => x.y > 20);
+    const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     // Override tooltip and colors and such
     const series = {
@@ -684,7 +685,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
-    let temp = data.filter(x => x.y > 20);
+    const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
@@ -739,7 +740,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
-    let temp = data.filter(x => x.y > 20);
+    const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
@@ -891,7 +892,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       cats.push(a.analysisStratumName);
     }
-    let temp = data.filter(x => x.y > 20);
+    const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName,
@@ -1045,7 +1046,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       this.analysis.unitName = 'centimeter';
     }
     const unit = this.analysis.unitName ? this.analysis.unitName : '';
-    let temp = data.filter(x => x.y > 20);
+    const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false: true;
     const series: any = {
       name: this.analysis.analysisName,
@@ -1115,7 +1116,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       });
       cats.push(a.analysisStratumName);
     }
-    let temp = data.filter(x => x.y > 20);
+    const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 20 ? false : true;
     const series = {
       name: seriesName,
