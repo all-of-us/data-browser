@@ -1,4 +1,4 @@
-<div class="source-layout">
+<div class="source-layout" *ngIf="ehrDomain.domain === 'CONDITION' || ehrDomain.domain === 'PROCEDURE'; else NoSourceTreeLayout">
   <aside>
     <div class="concept-box">
       <div class="concept-box_info">
@@ -44,3 +44,28 @@
     </div>
   </div>
 </div>
+<ng-template #NoSourceTreeLayout>
+  <div class="concept-box">
+    <div class="concept-box_info">
+      <ng-container *ngIf="treeConcept && treeConcept.conceptId; else default">
+        <p><strong>{{treeConcept.conceptName}}</strong></p>
+        <p>{{concept.vocabularyId}} Code: {{treeConcept.conceptCode}}</p>
+        <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
+        <a [routerLink]="['/ehr/' + ehrDomain.name.toLowerCase()]" [queryParams]="{search:treeConcept.conceptId}"  class="explore" *ngIf="treeConcept.explorable" (click)="exploreConcept.emit(treeConcept)">Explore this concept.</a>
+      </ng-container>
+    </div>
+    <ng-template #default>
+      <div class="concept-box_info">
+        <p><strong>{{concept.conceptName}}</strong></p>
+        <p>{{concept.vocabularyId}} Code: {{concept.conceptCode}}</p>
+        <p>OMOP Concept Id: {{concept.conceptId}}</p>
+      </div>
+      <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+      </app-concept-charts>
+    </ng-template>
+    <ng-container *ngIf="treeConcept">
+      <app-concept-charts [concept]="treeConcept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+      </app-concept-charts>
+    </ng-container>
+  </div>
+</ng-template>
