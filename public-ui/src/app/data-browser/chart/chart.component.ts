@@ -503,7 +503,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     }
     let temp = data.filter(x => x.y > 20);
-    let dataOnlyLT20 = temp.length > 0 ? false : true;
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     // Override tooltip and colors and such
     const series = {
       name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'], dataOnlyLT20: dataOnlyLT20
@@ -685,7 +685,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return 0;
     });
     let temp = data.filter(x => x.y > 20);
-    let dataOnlyLT20 = temp.length > 0 ? false : true;
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
     };
@@ -740,7 +740,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return 0;
     });
     let temp = data.filter(x => x.y > 20);
-    let dataOnlyLT20 = temp.length > 0 ? false : true;
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
     };
@@ -892,7 +892,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       cats.push(a.analysisStratumName);
     }
     let temp = data.filter(x => x.y > 20);
-    let dataOnlyLT20 = temp.length > 0 ? false : true;
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName,
       colorByPoint: true,
@@ -1046,7 +1046,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     const unit = this.analysis.unitName ? this.analysis.unitName : '';
     let temp = data.filter(x => x.y > 20);
-    let dataOnlyLT20 = temp.length > 0 ? false: true;
+    const dataOnlyLT20 = temp.length > 0 ? false: true;
     const series: any = {
       name: this.analysis.analysisName,
       colorByPoint: true,
@@ -1116,7 +1116,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       cats.push(a.analysisStratumName);
     }
     let temp = data.filter(x => x.y > 20);
-    let dataOnlyLT20 = temp.length > 20 ? false : true;
+    const dataOnlyLT20 = temp.length > 20 ? false : true;
     const series = {
       name: seriesName,
       colorByPoint: true,
