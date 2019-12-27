@@ -31,7 +31,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() currentPage: number;
   @Input() totalParticipants: number;
   @Input() graphButtons: any[];
-  @Input() graphToShow: any;
   @Input() treeData: any;
   @Input() treeLoading: boolean;
   @Input() graphType: any;
@@ -116,8 +115,9 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         const measurementSearchRequestWithFilter =
           this.makeMeasurementSearchRequest(getTests, getOrders);
         this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-          results =>
-            this.items = results.items);
+          results => {
+            this.items = results.items;
+          });
         if (this.searchRequest.query && this.searchRequest.query !== null) {
           this.getMeasurementSearchResultTotals(getTests, getOrders);
         } else {
@@ -141,8 +141,18 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         const measurementSearchRequestWithFilter =
           this.makeMeasurementSearchRequest(getTests, getOrders);
         this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-          results =>
-            this.items = results.items);
+          results => {
+            this.items = results.items;
+            for (const concept of this.items) {
+              if (concept.measurementConceptInfo !== null && concept.measurementConceptInfo.hasValues === 1) {
+                concept.graphToShow = GraphType.Values;
+              } else {
+                concept.graphToShow = GraphType.BiologicalSex;
+              }
+              this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+              this.drugBrands[concept.conceptId] = concept.drugBrands;
+            }
+          });
         if (this.searchRequest.query && this.searchRequest.query !== null) {
           this.getMeasurementSearchResultTotals(getTests, getOrders);
         } else {
@@ -203,18 +213,18 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (this.selectedConcept && this.selectedConcept.conceptCode === concept.conceptCode) {
       // if already expanded than just change the graph
       if (sources) {
-        this.graphToShow = GraphType.Sources;
+        concept.graphToShow = GraphType.Sources;
       } else if (!sources && this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
-        this.graphToShow = GraphType.Values;
+        concept.graphToShow = GraphType.Values;
       } else {
-        this.graphToShow = GraphType.BiologicalSex;
+        concept.graphToShow = GraphType.BiologicalSex;
       }
     } else if (sources) { // if not expand the row
-      this.graphToShow = GraphType.Sources;
+      concept.graphToShow = GraphType.Sources;
       this.loadSourceTree(concept);
       this.expandRow(concept, false, true);
     } else {
-      this.graphToShow = GraphType.BiologicalSex;
+      concept.graphToShow = GraphType.BiologicalSex;
       this.expandRow(concept);
     }
   }
@@ -245,12 +255,12 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
       if (concept.measurementConceptInfo !== null &&
         concept.measurementConceptInfo.hasValues === 1 && !sources) {
-        this.graphToShow = GraphType.Values;
+        concept.graphToShow = GraphType.Values;
       } else if (concept.measurementConceptInfo !== null &&
         concept.measurementConceptInfo.hasValues === 0 && !sources) {
-        this.graphToShow = GraphType.BiologicalSex;
+        concept.graphToShow = GraphType.BiologicalSex;
       } else if (sources) {
-        this.graphToShow = GraphType.Sources;
+        concept.graphToShow = GraphType.Sources;
       }
     }
   }
@@ -273,8 +283,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     }
   }
 
-  public resetSelectedGraphs() {
-    this.graphToShow = GraphType.None;
+  public resetSelectedGraphs(concept: any) {
+    concept.graphToShow = GraphType.None;
   }
 
   public toggleSynonyms(concept: any) {
@@ -299,12 +309,12 @@ export class DbTableComponent implements OnChanges, OnDestroy {
 
 
   public selectGraph(g: string, r: any) {
-    this.resetSelectedGraphs();
-    this.graphToShow = g;
+    this.resetSelectedGraphs(r);
+    r.graphToShow = g;
     this.dbc.triggerEvent('conceptClick', 'Concept Graph',
-      'Click On ' + this.graphToShow + ' Chart',
+      'Click On ' + r.graphToShow + ' Chart',
       r.conceptName + ' - ' + r.domainId, this.prevSearchText, null);
-    if (this.graphToShow === GraphType.Sources &&
+    if (r.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && r.vocabularyId === 'SNOMED')
         || (r.domainId === 'Procedure' && r.vocabularyId === 'SNOMED'))) {
       this.loadSourceTree(r);
