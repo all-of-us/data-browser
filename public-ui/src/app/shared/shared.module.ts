@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { HeaderFooterService } from './services/header-footer.service';
 //  components
 import { BetaBarComponent } from '../components/beta-bar/beta-bar.component';
 import { EmergencyComponent } from '../views/emergency/emergency.component';
@@ -15,6 +14,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { HeaderFooterService } from './services/header-footer.service';
 
 @NgModule({
   imports: [

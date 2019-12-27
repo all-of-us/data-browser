@@ -11,7 +11,7 @@ export class HeaderFooterService {
       {
         title: 'about',
         url: 'https://www.researchallofus.org/about-the-research-hub/',
-        submenu:true,
+        submenu: true,
         sub0: [{
           title: 'About the Research Hub ',
           url: 'https://www.researchallofus.org/about-the-research-hub/',
@@ -78,7 +78,7 @@ export class HeaderFooterService {
           submenu: false,
         }]
       }
-    ]
-   }
+    ];
+  }
 
 }

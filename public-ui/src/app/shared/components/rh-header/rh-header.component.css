@@ -152,7 +152,7 @@ li.flip::before, li.flip::before {
   padding-bottom: 14px;
   padding-left: 14px;
   padding-top: 14px;
-  width: 100%;
+  width: 50%;
 }
 
 .site-branding-container .site-branding {
@@ -162,6 +162,7 @@ li.flip::before, li.flip::before {
   margin-right: 1rem;
   background: white;
   min-width: 10rem;
+  flex-wrap: wrap;
 }
 
 .site-branding-container .site-branding .logo {
@@ -193,8 +194,9 @@ li.flip::before, li.flip::before {
 }
 
 .site-nav-container {
-  width: 100vw;
+  width: 50%;
   z-index: 1099;
+  
 }
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
@@ -274,18 +276,14 @@ li.flip::before, li.flip::before {
 
 /* search in nav */
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search ul.sub-menu {
-  display: flex;
-  padding-left: 0;
-}
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg {
   stroke: #262262;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg:first-child {
+/* .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg:first-child {
   display: none;
-}
+} */
 
 #searchsubmit {
   background: url('/assets/icons/icon_search.png');
@@ -493,7 +491,10 @@ input#s {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search ul.sub-menu {
     display: none;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus ul.sub-menu {
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
+    display:none;
+  }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
     display: flex;
     position: absolute;
     right: 0;
@@ -513,31 +514,9 @@ input#s {
   }
 }
 
-/* when medium */
 
-@media only screen and (min-width: 768px) {
-  .cta-bar aside p {
-    margin: 0;
-    font-size: 14px;
-    white-space: nowrap;
-  }
-  .site-branding-container .site-branding .logo {
-    flex-direction: row;
-  }
-  .site-branding-container .site-branding .logo .divider {
-    display: flex;
-    width: 2px;
-    height: 32px;
-    background: #262262;
-    margin: 0 1rem;
-  }
-  .site-branding-container .site-branding .logo .nih-logo {
-    display: flex;
-  }
-  .site-branding-container .site-branding .logo .nih-logo img {
-    max-height: 32px;
-  }
-}
+
+/* when medium */
 
 @media only screen and (min-width: 969px) {
   .cta-bar {
@@ -549,7 +528,7 @@ input#s {
   .cta-bar aside p {
     white-space: nowrap;
   }
-  .site-branding-container .mobile-nav {
+ .mobile-nav {
     display: none;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
@@ -583,11 +562,20 @@ input#s {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
     display: inherit;
   }
+
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    top:38px;
+  }
+
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a:focus+ul.sub-menu,
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>ul.sub-menu.open,
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, 
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a:focus+ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu,                      
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, 
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus+ul.sub-menu,                      
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>.sub-menu:focus-within
   {
     display:block;
@@ -595,7 +583,7 @@ input#s {
     padding-left: 0;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, .1);
     background: #fff;
-    top: 36px;
+    top: 38px;
     width: 300px;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
@@ -613,12 +601,7 @@ input#s {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover a svg, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover>a svg, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus a svg, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus>a svg {
     stroke: #ffffff;
   }
-/* .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a:focus+ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu,                      
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>.sub-menu:focus-within  {
-    display: block;
-    position: ab;
-    background:red!important;
-  } */
+
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu li a:hover, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu li a:focus {
     background: transparent;
     color: #262262;
@@ -637,5 +620,29 @@ input#s {
     z-index: 10999;
     position: absolute;
     top: 36px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .cta-bar aside p {
+    margin: 0;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .site-branding-container .site-branding .logo {
+    flex-direction: row;
+  }
+  .site-branding-container .site-branding .logo .divider {
+    display: flex;
+    width: 2px;
+    height: 32px;
+    background: #262262;
+    margin: 0 1rem;
+  }
+  .site-branding-container .site-branding .logo .nih-logo {
+    display: flex;
+  }
+  .site-branding-container .site-branding .logo .nih-logo img {
+    max-height: 32px;
   }
 }
