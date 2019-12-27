@@ -14,7 +14,7 @@
         </h5>
       </ng-template>
       <ng-container *ngIf="!searchText.value; else no_search_term">
-        <h5 id="domain-name" class="primary-display">
+        <h5 id="domain-name-text" class="primary-display">
           concepts for this domain
           <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -25,7 +25,7 @@
         </h5>
       </ng-container>
       <ng-template #no_search_term>
-        <h5 id="domain-name" class="primary-display" *ngIf="searchText.value">
+        <h5 id="domain-name-text" class="primary-display" *ngIf="searchText.value">
           matching medical concepts
           <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Matching medical concepts tooltip hover')">
             <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
@@ -38,7 +38,7 @@
     </span>
     <h6 *ngIf="searchText.value" class="primary-display medline-link">Interested in general
       health information related to "{{getTerm()}}"?
-      <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer" >Search MedlinePlus</a></h6>
+      <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
   </div>
   <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
     <div class=" db-alert">

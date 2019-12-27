@@ -395,6 +395,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
                             .analysisStratumName(o.getAnalysisStratumName())
+                            .measurementValueType(o.getMeasurementValueType())
                             .countValue(o.getCountValue())
                             .sourceCountValue(o.getSourceCountValue());
                 }
@@ -1011,10 +1012,19 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                     if(!unit.equalsIgnoreCase("no unit")) {
                                         processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
                                     } else {
+                                        //Seperate text and numeric values
                                         ArrayList<AchillesResult> textValues = new ArrayList<>();
                                         ArrayList<AchillesResult> numericValues = new ArrayList<>();
                                         // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
                                         for (AchillesResult result: unitGenderAnalysis.getResults()) {
+                                            if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
+                                                result.setMeasurementValueType("numeric");
+                                                numericValues.add(result);
+                                            } else {
+                                                result.setMeasurementValueType("text");
+                                                textValues.add(result);
+                                            }
+                                            /*
                                             String result_value = result.getStratum4();
                                             String numericResult = null;
                                             if (result_value != null && result_value.contains(" - ")) {
@@ -1038,8 +1048,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                                     textValues.add(result);
                                                 }
                                             }
+                                            */
                                         }
 
+                                        if (textValues.size() > 0) {
+                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "text");
+                                        }
+                                        if (numericValues.size() > 0) {
+                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
+                                        }
+/*
                                         if (textValues.size() > 0 && numericValues.size() > 0) {
                                             List<AchillesResult> filteredNumericResults = unitGenderAnalysis.getResults().stream().filter(ele -> textValues.stream()
                                                     .anyMatch(element -> element.getId()==ele.getId())).collect(Collectors.toList());
@@ -1048,6 +1066,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                         } else if (numericValues.size() > 0) {
                                             processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
                                         }
+                                        */
+                                        unitGenderAnalysis.setResults(results.get(unit));
+                                        unitGenderAnalysis.setUnitName(unit);
+
                                     }
                                     unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }

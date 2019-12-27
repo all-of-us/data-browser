@@ -39,7 +39,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     });
   }
   // Render new chart on changes
-  ngOnChanges() {
+  ngOnChanges(changes) {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
       (this.concepts && this.concepts.length) ||
       (this.surveyAnalysis && this.surveyAnalysis.surveyQuestionResults &&
@@ -238,7 +238,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',
-          }
+          },
         },
         categories: options.categories,
         // type: 'category',
@@ -246,7 +246,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           reserveSpace: true,
           style: {
             whiteSpace: 'wrap',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            width: '80px',
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);

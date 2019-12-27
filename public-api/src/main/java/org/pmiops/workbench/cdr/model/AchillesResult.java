@@ -21,6 +21,7 @@ public class AchillesResult  {
     private Long countValue;
     private Long sourceCountValue;
     private String analysisStratumName;
+    private String measurementValueType;
 
     public AchillesResult() {}
 
@@ -154,6 +155,18 @@ public class AchillesResult  {
     }
     public AchillesResult analysisStratumName(String val) {
         this.analysisStratumName = val;
+        return this;
+    }
+
+    @Transient
+    public String getMeasurementValueType() {
+        return measurementValueType;
+    }
+    public void setMeasurementValueType(String measurementValueType) {
+        this.measurementValueType = measurementValueType;
+    }
+    public AchillesResult measurementValueType(String val) {
+        this.measurementValueType = val;
         return this;
     }
 
