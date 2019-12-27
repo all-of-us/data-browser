@@ -144,7 +144,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
           results => {
             this.items = results.items;
             for (const concept of this.items) {
-              if (concept.measurementConceptInfo !== null && concept.measurementConceptInfo.hasValues === 1) {
+              if (concept.measurementConceptInfo !== null &&
+                concept.measurementConceptInfo.hasValues === 1) {
                 concept.graphToShow = GraphType.Values;
               } else {
                 concept.graphToShow = GraphType.BiologicalSex;
