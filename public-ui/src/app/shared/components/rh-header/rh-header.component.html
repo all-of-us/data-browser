@@ -63,7 +63,7 @@
                 </li>
               </ul>
             </li>
-            <li href="https://www.researchallofus.org/apply/" *ngIf="isAlpha" class="nav_apply">
+            <li href="https://www.researchallofus.org/apply/" *ngIf="workBenchIsBeta" class="nav_apply">
               <a>APPLY</a>
             </li>
           </ul>
@@ -147,13 +147,13 @@
       </ul>
     </li>
     <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
-    <li class="main-menu-item-second">
+    <li class="main-menu-item">
       <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/">
         <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35"
           autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
     </li>
-    <li href="https://www.researchallofus.org/apply/" *ngIf="workBenchIsBeta" class="nav_apply">
-      <a>APPLY</a>
+    <li *ngIf="workBenchIsBeta" class="nav_apply main-menu-item-second">
+      <a  href="https://www.researchallofus.org/apply/">APPLY</a>
     </li>
     <li>
       <a href="https://workbench.researchallofus.org/login" *ngIf="workBenchIsBeta" class="login-btn"> RESEARCHER LOGIN</a>

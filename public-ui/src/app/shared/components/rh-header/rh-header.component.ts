@@ -26,7 +26,6 @@ export class RhHeaderComponent implements OnInit {
     this.menuItems = this.hFService.menu;
     this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.workBenchIsBeta = environment.workBenchIsBeta;
-    console.log(this.menuItems);
 
   }
 
