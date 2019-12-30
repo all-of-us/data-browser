@@ -911,7 +911,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
               + '</b> <br/>' + 'Participant Count: ';
           } else {
-            tooltipText = tooltipText +' <b>' + a.stratum4
+            tooltipText = tooltipText + ' <b>' + a.stratum4
               + '</b> <br/>' + 'Participant Count: ';
           }
         } else {
