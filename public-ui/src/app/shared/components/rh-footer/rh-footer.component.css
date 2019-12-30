@@ -1,0 +1,35 @@
+footer {
+    background: rgba(38,34,98,1);
+    width: 100vw;
+    padding: 14px;
+}
+
+.site-logo, .nih-logo {
+    margin-top:1rem;
+    max-width: 330px;
+}
+.footer-menu {
+    list-style: none;
+}
+
+.foot-apply {
+    margin-top:1rem;
+    text-align: center;
+    background: #ffffff;
+    font-weight: 900;
+    font-size: 19px;
+    padding-top: .2em;
+    padding-bottom: .2em;
+    line-height: 1.2;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    min-width: max-content;
+    border-radius: 0px;
+    border: 1px solid #fff;
+    text-transform: uppercase;
+    width: 100%;
+    min-width: auto;
+    max-width: 100%;
+}
+.foot-apply a {
+    color: #262262;
+}

@@ -15,6 +15,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { RhFooterComponent } from './components/rh-footer/rh-footer.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     PageTemplateSignedOutComponent,
     RhHeaderComponent,
     BetaBarComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    RhFooterComponent
   ],
   exports: [
     CommonModule,
@@ -50,6 +52,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     RhHeaderComponent,
     BetaBarComponent,
     SpinnerComponent,
+    RhFooterComponent,
     LocalStorageModule
   ]
 })
