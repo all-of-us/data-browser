@@ -170,13 +170,13 @@
         </div>
       <div class="body-lead tbl-d icon-btn-group">
         <button (click)="checkIfExpanded(r,$event);$event.stopPropagation()"  class="icon-btn">
-          <clr-icon [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow != 'Sources'?'is-solid':''"
+          <clr-icon [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && r.graphToShow != 'Sources'?'is-solid':''"
             shape="bar-chart" class="icon-choice">
           </clr-icon>
         </button>
         <button (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()" class="icon-btn icon-choice">
           <div
-            [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && graphToShow == 'Sources'?'source-btn_active':'source-btn'">
+            [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && r.graphToShow == 'Sources'?'source-btn_active':'source-btn'">
           </div>
         </button>
         <clr-dropdown>
@@ -251,7 +251,7 @@
     <div class="row-expansion" *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
       #chartElement>
       <div class="graph-menu">
-        <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':graphToShow === g}"
+        <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':r.graphToShow === g}"
         tabindex="0" (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
             <span>{{g}}</span>
             <clr-tooltip (mouseenter)="hoverOnTooltip('EHR Tooltip Hover', null, 'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName)">
@@ -262,18 +262,18 @@
             </clr-tooltip>
         </div>
       </div>
-      <ng-container *ngIf="graphToShow === graphType.Sources; else NonSourceCharts">
-        <app-sources (exploreConcept)="exploreConcept.emit($event)" [ehrDomain]="ehrDomain" [graphToShow]="graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
+      <ng-container *ngIf="r.graphToShow === graphType.Sources; else NonSourceCharts">
+        <app-sources (exploreConcept)="exploreConcept.emit($event)" [ehrDomain]="ehrDomain" [graphToShow]="r.graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r" ></app-sources>
       </ng-container>
       <ng-template #NonRolledUp>
         <div class="graph-item">
-          <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+          <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
           </app-concept-charts>
         </div>
       </ng-template>
       <ng-template #NonSourceCharts>
         <div class="graph-item">
-          <app-concept-charts [concept]="r" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+          <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
           </app-concept-charts>
         </div>
       </ng-template>
