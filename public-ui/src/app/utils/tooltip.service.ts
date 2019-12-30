@@ -83,7 +83,7 @@ export class TooltipService {
     'drug': 'Medical concepts that capture information regarding prescription ' +
       'and over-the-counter medicines, vaccines, and large-molecule biologic therapies. ' +
       'Drug exposures can be related to orders, prescriptions written, pharmacy dispensing,' +
-      'procedural administrations, and patient-reported information.',
+      ' procedural administrations, and patient-reported information.',
     'measurement': 'Medical concepts that capture values resulting from ' +
       'examinations or tests are captured by the measurements domain. ' +
       'The measurements domain may include vital signs, lab values, ' +
