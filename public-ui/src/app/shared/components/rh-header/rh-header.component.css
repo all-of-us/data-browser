@@ -99,8 +99,8 @@ li.flip::before, li.flip::before {
 
 .cta-bar {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: flex-end;
   background: white;
   padding: 14px;
   flex-wrap: wrap;
