@@ -1,4 +1,5 @@
-<div class="source-layout">
+<div class="source-layout"
+  *ngIf="ehrDomain.domain === 'CONDITION' || ehrDomain.domain === 'PROCEDURE'; else NoSourceTreeLayout">
   <aside>
     <div class="concept-box">
       <div class="concept-box_info">
@@ -6,7 +7,9 @@
           <p><strong>{{treeConcept.conceptName}}</strong></p>
           <p>{{concept.vocabularyId}} Code: {{treeConcept.conceptCode}}</p>
           <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
-          <a [routerLink]="['/ehr/' + ehrDomain.name.toLowerCase()]" [queryParams]="{search:treeConcept.conceptId}"  class="explore" *ngIf="treeConcept.explorable" (click)="exploreConcept.emit(treeConcept)">Explore this concept.</a>
+          <a [routerLink]="['/ehr/' + ehrDomain.name.toLowerCase()]" [queryParams]="{search:treeConcept.conceptId}"
+            class="explore" *ngIf="treeConcept.explorable" (click)="exploreConcept.emit(treeConcept)">Explore this
+            concept.</a>
         </ng-container>
       </div>
       <ng-template #default>
@@ -38,9 +41,23 @@
       <ng-container *ngIf="!treeLoading">
         <div *ngFor="let node of treeData" class="tree-top">
           <app-source-tree *ngIf="node && node.group == false" [rootNode]="node"></app-source-tree>
-          <app-source-tree *ngIf="node && node.group" (conceptSelect)="conceptTreeClick($event)" [rootNode]="node"></app-source-tree>
+          <app-source-tree *ngIf="node && node.group" (conceptSelect)="conceptTreeClick($event)" [rootNode]="node">
+          </app-source-tree>
         </div>
       </ng-container>
     </div>
   </div>
 </div>
+<ng-template #NoSourceTreeLayout>
+  <div class="concept-box">
+    <div class="concept-box_info">
+      <div class="concept-box_info">
+        <p><strong>{{concept.conceptName}}</strong></p>
+        <p>{{concept.vocabularyId}} Code: {{concept.conceptCode}}</p>
+        <p>OMOP Concept Id: {{concept.conceptId}}</p>
+      </div>
+    </div>
+    <app-concept-charts [concept]="concept" [showGraph]="graphToShow" [backgroundColor]="'#ECF1F4'">
+    </app-concept-charts>
+  </div>
+</ng-template>
