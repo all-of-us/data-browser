@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import { HeaderFooterService } from '../../services/header-footer.service';
 @Component({
   selector: 'app-rh-header',
   templateUrl: './rh-header.component.html',
@@ -16,12 +17,16 @@ export class RhHeaderComponent implements OnInit {
   openDData = false;
   allOfUsUrl: string;
   workBenchIsBeta: boolean;
+  menuItems: object[];
+  subTitle: boolean;
 
-  constructor() {}
+  constructor(public hFService: HeaderFooterService) { }
 
   ngOnInit() {
+    this.menuItems = this.hFService.menu;
     this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.workBenchIsBeta = environment.workBenchIsBeta;
+
   }
 
   public searchHub(form) {
@@ -31,4 +36,10 @@ export class RhHeaderComponent implements OnInit {
   public toggleTopMenu() {
     this.openTopMenu = !this.openTopMenu;
   }
+
+  public toggleSub(title) {
+    this.subTitle = title;
+  }
+
+
 }

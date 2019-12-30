@@ -28,107 +28,55 @@
         </div><!-- .logo -->
       </div><!-- .site-branding -->
     </div><!-- .site-branding-container -->
+
     <div class="site-nav-container">
-      <div class="site-branding-nav">
-        <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
-          <div class="menu-primary-container">
-            <ul class="main-menu" id="menu-primary">
-              <li class="main-menu-item menu-item-has-children">
-                <a href="{{allOfUsUrl}}/about/">About</a>
-                <ul class="sub-menu">
-                  <li class="menu-item">
-                    <a href="{{allOfUsUrl}}/about/about-the-research-hub/">About the Research Hub</a>
-                  </li>
-                  <li [ngClass]="openDAboutResearch?'flip':''"
-                    (click)="$event.stopPropagation();openDAboutResearch = !openDAboutResearch"
-                    class="menu-item menu-item-has-children">
-                    <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
-                    <ul [hidden]="!openDAboutResearch" class="sub-menu" (click)="$event.stopPropagation();">
-                      <li class="menu-item">
-                        <a (click)="$event.stopPropagation();"
-                          href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher
-                          Workshops and Public Input</a>
+      <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
+        <div class="menu-primary-container">
+          <ul class="main-menu">
+            <li *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
+              <a tabindex="0" href="{{menu.url}}"> {{menu.title}}</a>
+              <ul *ngIf="menu.submenu" class="sub-menu">
+                <li (click)="toggleSub(sub.title); showSub1 = !showSub1" [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1}" *ngFor="let sub of menu.sub0">
+                  <a tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
+                    <ul *ngIf="sub.submenu && subTitle == sub.title && showSub1">
+                      <li *ngFor="let sub1 of sub.sub1">
+                        <a href="">{{sub1.title}}</a>
                       </li>
                     </ul>
-                  </li>
-                  <li class="menu-item">
-                    <a (click)="$event.stopPropagation();"
-                      href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
-                  </li>
-                  <li class="menu-item">
-                    <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/about/research-hub-updates/">Research
-                      Hub Updates</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="main-menu-item menu-item-has-children">
-                <a href="{{allOfUsUrl}}/data/">Data</a>
-                <ul class="sub-menu">
-                  <li class="menu-item">
-                    <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
-                  </li>
-                  <li class="menu-item">
-                    <a [routerLink]="['']">Data Browser</a>
-                  </li>
-                  <li [ngClass]="openDData?'flip':''" (click)="$event.stopPropagation();openDData = !openDData"
-                    class="menu-item menu-item-has-children">
-                    <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
-                    <ul [hidden]="!openDData" class="sub-menu">
-                      <li class="menu-item" (click)="$event.stopPropagation()">
-                        <a (click)="$event.stopPropagation();"
-                          href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
-                      </li>
-                      <li (click)="$event.stopPropagation()" class="menu-item">
-                        <a (click)="$event.stopPropagation();"
-                          href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey Explorer</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li class="main-menu-item menu-item-has-children">
-                <a href="{{allOfUsUrl}}/data/">Tools</a>
-                <ul class="sub-menu">
-                  <li class="menu-item">
-                    <a href="{{allOfUsUrl}}/workbench/">Workbench</a>
-                  </li>
-                  <li *ngIf="workBenchIsBeta" class="menu-item">
-                    <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/guides-support/">Guides & Support</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="main-menu-item">
-                <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
-              </li>
-              <li class="icon_search main-menu-item menu-item-has-children">
-                <a><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none"
-                    fill-rule="evenodd" stroke="#262262" stroke-linejoin="round" stroke-width="3">
-                    <path fill="none" d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z" />
-                    <path stroke-linecap="round" d="M13.848 13.848l5.84 5.84" /></svg></a>
-                <ul class="sub-menu">
-                  <li class="menu-item">
-                    <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform"
-                      action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search"
-                        type="text" value="" name="s" id="s" placeholder="search..." size="35"
-                        autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
-                  </li>
-                </ul>
-              </li>
-              <li href="https://www.researchallofus.org/apply/" *ngIf="workBenchIsBeta" class="nav_apply">
-                <a>APPLY</a>
-              </li>
-            </ul>
-            <!-- ** Mobile Menu **-->
-            <div class="mobile-nav">
-              <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div><!-- .mobile-nav -->
-          </div><!-- .menu-primary-container -->
-        </nav><!-- .main-navigation -->
-      </div><!-- .site-branding-nav -->
+                </li>
+              </ul>
+            </li>
+            <li class="main-menu-item ">
+              <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
+            </li>
+            <li class="icon_search main-menu-item menu-item-has-children">
+              <a><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none"
+                  fill-rule="evenodd" stroke="#262262" stroke-linejoin="round" stroke-width="3">
+                  <path fill="none" d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z" />
+                  <path stroke-linecap="round" d="M13.848 13.848l5.84 5.84" /></svg></a>
+              <ul class="sub-menu">
+                <li class="menu-item">
+                  <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform"
+                    action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search"
+                      type="text" value="" name="s" id="s" placeholder="search..." size="35" autocomplete="off" /><input
+                      type="submit" id="searchsubmit" value="" /></form>
+                </li>
+              </ul>
+            </li>
+            <li href="https://www.researchallofus.org/apply/" *ngIf="workBenchIsBeta" class="nav_apply">
+              <a>APPLY</a>
+            </li>
+          </ul>
+          <!-- ** Mobile Menu **-->
+          <div class="mobile-nav">
+            <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div><!-- .mobile-nav -->
+        </div><!-- .menu-primary-container -->
+      </nav><!-- .main-navigation -->
     </div><!-- .site-nav-container -->
   </div><!-- .headwrap -->
   <ul *ngIf="openTopMenu" id="menu-mobile">
@@ -199,13 +147,13 @@
       </ul>
     </li>
     <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
-    <li class="main-menu-item-second">
+    <li class="main-menu-item">
       <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/">
         <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35"
           autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
     </li>
-    <li href="https://www.researchallofus.org/apply/" *ngIf="workBenchIsBeta" class="nav_apply">
-      <a>APPLY</a>
+    <li *ngIf="workBenchIsBeta" class="nav_apply main-menu-item-second">
+      <a  href="https://www.researchallofus.org/apply/">APPLY</a>
     </li>
     <li>
       <a href="https://workbench.researchallofus.org/login" *ngIf="workBenchIsBeta" class="login-btn"> RESEARCHER LOGIN</a>
