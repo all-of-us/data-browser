@@ -170,6 +170,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     if(concept.getMeasurementConceptInfo() != null){
                         measurementInfo = TO_CLIENT_MEASUREMENT_CONCEPT_INFO.apply(concept.getMeasurementConceptInfo());
                     }
+                    String graphToShow = null;
+                    if (concept.getDomainId().equals("Measurement") && concept.getMeasurementConceptInfo() != null && concept.getMeasurementConceptInfo().getHasValues() == 1) {
+                        graphToShow = "Values";
+                    } else {
+                        graphToShow = "Sex Assigned at Birth";
+                    }
                     return new org.pmiops.workbench.model.Concept()
                             .conceptId(concept.getConceptId())
                             .conceptName(concept.getConceptName())
@@ -184,7 +190,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .conceptSynonyms(concept.getSynonyms())
                             .canSelect(concept.getCanSelect())
                             .measurementConceptInfo(measurementInfo)
-                            .drugBrands(concept.getDrugBrands());
+                            .drugBrands(concept.getDrugBrands())
+                            .graphToShow(graphToShow);
                 }
             };
 
