@@ -19,7 +19,7 @@ export class RhHeaderComponent implements OnInit {
   workBenchIsBeta: boolean;
   menuItems: object[];
   subTitle: boolean;
-  showSub1: boolean
+  showSub1: boolean;
   constructor(public hFService: HeaderFooterService) { }
 
   ngOnInit() {

@@ -81,8 +81,8 @@ export class HeaderFooterService {
         }]
       }
     ];
-    if ( this.workBenchIsBeta ) {
-      this.menu[2].sub0.push({title: 'Guides & Support', url:'https://www.researchallofus.org/guides-support/', submenu: false)
+    if (this.workBenchIsBeta) {
+      this.menu[2].sub0.push({ title: 'Guides & Support', url: 'https://www.researchallofus.org/guides-support/', submenu: false});
     }
   }
 
