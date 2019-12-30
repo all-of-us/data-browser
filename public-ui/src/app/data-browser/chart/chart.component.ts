@@ -906,13 +906,26 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (a.stratum2 !== 'No unit') {
         if (a.countValue <= 20) {
           tooltipText = '<b>' + analysisStratumName + '</b>' +
-            '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
-            + '</b> <br/>' + 'Participant Count: ';
+            '<br/>' + 'Measurement Value / Range:';
+          if (a.stratum4.indexOf('>=') > -1) {
+            tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
+              + '</b> <br/>' + 'Participant Count: ';
+          } else {
+            tooltipText = tooltipText + ' <b>' + a.stratum4
+              + '</b> <br/>' + 'Participant Count: ';
+          }
         } else {
           tooltipText = '<b>' + analysisStratumName + '</b>' +
-            '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
-            + '</b> <br/>' + 'Participant Count: ' +
-            '<b>' + a.countValue + '</b>';
+            '<br/>' + 'Measurement Value / Range:';
+          if (a.stratum4.indexOf('>=') > -1) {
+            tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
+              + '</b> <br/>' + 'Participant Count: ' +
+              '<b>' + a.countValue + '</b>';
+          } else {
+            tooltipText = tooltipText + ' <b>' + a.stratum4
+              + '</b> <br/>' + 'Participant Count: ' +
+              '<b>' + a.countValue + '</b>';
+          }
         }
       } else {
         if (a.countValue <= 20) {
