@@ -19,7 +19,7 @@ export class RhHeaderComponent implements OnInit {
   workBenchIsBeta: boolean;
   menuItems: object[];
   subTitle: boolean;
-
+  showSub1: boolean;
   constructor(public hFService: HeaderFooterService) { }
 
   ngOnInit() {
@@ -39,6 +39,8 @@ export class RhHeaderComponent implements OnInit {
 
   public toggleSub(title) {
     this.subTitle = title;
+    this.showSub1 = !this.showSub1;
+    console.log(this.subTitle, this.showSub1);
   }
 
 
