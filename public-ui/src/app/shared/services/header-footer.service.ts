@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class HeaderFooterService {
 
   menu: any;
-
+  workBenchIsBeta: boolean;
 
   constructor() {
+    this.workBenchIsBeta = environment.workBenchIsBeta;
     this.menu = [
       {
         title: 'about',
@@ -79,6 +81,9 @@ export class HeaderFooterService {
         }]
       }
     ];
+    if ( this.workBenchIsBeta ) {
+      this.menu[2].sub0.push({title: 'Guides & Support', url:'https://www.researchallofus.org/guides-support/', submenu: false)
+    }
   }
 
 }
