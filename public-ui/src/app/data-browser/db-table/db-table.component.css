@@ -52,10 +52,6 @@
     color: rgb(150 150 150);
 }
 
-.drug-brands-meta {
-    margin: 0.5%;
-}
-
 .aka-info {
     opacity: .7;
 }
@@ -64,7 +60,7 @@
     font-size: .8em;
 }
 
-.see-more, .see-less {
+.see-more, .see-less, .brands-link {
     display: inline;
     color: #216fb4;
     font-weight: 400;

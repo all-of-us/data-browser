@@ -228,15 +228,16 @@
     <div *ngIf="drugBrands[r.conceptId] && drugBrands[r.conceptId].length > 0" (click)="expandRow(r)" class="body-lead aka-layout aka">
       <div *ngIf="r.drugBrands;else noDrugBrands" (click)="$event.stopPropagation();toggleDrugBrands(r)">
         <span class="aka-text drug-brands-meta">Found in these commercially branded products</span>
-        <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-less"
+      </div>
+      <div>
+        <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link brands-link"
            *ngIf="drugBrands[r.conceptId].length > 10 && showMoreDrugBrands[r.conceptId]; else seeMore">
-          See
-          Less
+          See Less Brands <clr-icon shape="caret" dir="down"></clr-icon>
         </a>
         <ng-template #seeMore>
-          <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link see-more"
+          <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"  (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link brands-link"
              *ngIf="drugBrands[r.conceptId].length > 10">
-            <clr-icon shape="ellipsis-horizontal" *ngIf="!showMoreDrugBrands[r.conceptId]"></clr-icon> See More
+              See More Brands <clr-icon *ngIf="!showMoreDrugBrands[r.conceptId]" shape="caret" dir="right"></clr-icon>
           </a>
         </ng-template>
       </div>
