@@ -82,7 +82,16 @@ export class HeaderFooterService {
       }
     ];
     if (this.workBenchIsBeta) {
-      this.menu[2].sub0.push({ title: 'Guides & Support', url: 'https://www.researchallofus.org/guides-support/', submenu: false});
+      this.menu[2].sub0.push({
+        title: 'Guides & Support',
+        url: 'https://www.researchallofus.org/guides-support/',
+        submenu: false
+      });
+      this.menu[1].sub0.push({
+        title: 'Data Access',
+        url: 'https://www.researchallofus.org/data-access/',
+        submenu: false
+      });
     }
   }
 

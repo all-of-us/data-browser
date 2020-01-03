@@ -7,6 +7,7 @@ footer {
     width: 100vw;
     padding: 14px;
 }
+
 .footer-layout * {
     font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
     font-weight: normal;
@@ -25,7 +26,6 @@ footer {
 .site-logo, .nih-logo {
     margin-top: 1rem;
     max-width: 330px;
- 
 }
 
 .site-logo img, .nih-logo img {
@@ -35,7 +35,7 @@ footer {
 .main-menu {
     display: flex;
     justify-content: space-between;
-    width:80%;
+    width: 80%;
     margin: 0 2rem;
     margin-top: 1rem;
     /* flex-wrap: wrap; */
@@ -43,7 +43,7 @@ footer {
 
 .main-menu-item {
     width: fit-content;
-    padding:0 1rem;
+    padding: 0 1rem;
 }
 
 .main-menu-item>a {
@@ -56,10 +56,9 @@ footer {
     font-size: 0.9rem;
 }
 
-
 .sub-menu {
     margin-top: 1rem;
-    margin-left:0;
+    margin-left: 0;
 }
 
 .sub-menu li>a {
@@ -70,7 +69,8 @@ footer {
     color: white;
 }
 
-.foot-apply {
+.foot-apply a {
+    display: block;
     margin-top: 1rem;
     text-align: center;
     background: #ffffff;
@@ -87,22 +87,47 @@ footer {
     width: 100%;
     min-width: auto;
     max-width: 100%;
-}
-
-.foot-apply a {
     color: #262262;
 }
 
+.foot-apply a:hover {
+    background-color: rgba(190, 225, 255, 1);
+}
+
 .login-btn {
-    border: 1px white solid;
-    padding:.125rem;
-    margin-top:.5rem;
-    text-align: center;
-    line-height: 1rem;
+    width: 100%;
 }
 
 .login-btn a {
-    font-size:.7em;
-    color:white;
-    line-height: .7em;
+    display: block;
+    border: 1px white solid;
+    padding: 1em;
+    margin-top: .5rem;
+    text-align: center;
+    font-size: .7em;
+    color: white;
+    line-height: 1;
+    width: 100%;
+}
+
+.login-btn a:hover {
+    background-color: rgba(190, 225, 255, 1);
+    color: #262262;
+}
+
+@media only screen and (max-width:1168px) {
+    .footer-layout {
+        flex-direction: column;
+    }
+    .main-menu {
+        flex-direction: column;
+        margin: 0;
+        margin-top: .5rem;
+    }
+    .main-menu li {
+        padding: 0;
+    }
+    .sub-menu {
+        margin-top: 0;
+    }
 }

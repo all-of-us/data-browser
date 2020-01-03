@@ -359,6 +359,7 @@
 }
 .cta-col {
     width: 19%;
+    padding-right:11px;
 }
 .cta-col ul {
     list-style: none;
@@ -394,7 +395,7 @@
     font-size: 0.9rem;
     font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
     padding: .5rem;
-    padding-left:2rem;
+    padding-left:2.5rem;
     min-width: max-content;
     border-radius: 0px;
     border: 1px solid #fff;
@@ -406,9 +407,28 @@
     line-height: 1.5rem;
 }
 
+.sub-btn:focus {
+    color: rgba(190, 225, 255, 1);
+}
+
 .sub-btn:hover {
     background-color:white;
     background-image: url('/assets/icons/icon_enevelope-blue.png') ;
     color:#262262;
 }
 
+@media only screen and (max-width:1168px) {
+    .cta-layout {
+        flex-direction: column;
+        padding:0 14px;
+    }
+    .footer-boiler section {
+        padding: 0 14px;
+    }
+    .cta-col {
+        width:100%;
+    }
+    .social-links-menu {
+        width: 20%;
+    }
+}
