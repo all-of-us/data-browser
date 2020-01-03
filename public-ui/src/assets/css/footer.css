@@ -7,7 +7,7 @@
   font-weight: normal;
 }
 .site-info,
-.footer-boiler{
+.footer-boiler p{
   font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: normal;
   font-size: 14px;
@@ -211,8 +211,8 @@
     text-decoration: none
 }
 
-.footer-boiler .widget a {
-    text-decoration: underline
+.footer-boiler a, .site-info a {
+    color: rgba(190, 225, 255, 1)!important;
 }
 
 .allofus-italics {
@@ -344,7 +344,12 @@
 
 .db-footer {
     background: rgba(38, 34, 98, 1);
+    padding-bottom: 2rem;
 
+}
+
+.db-footer * {
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
 }
 
 .cta-layout{

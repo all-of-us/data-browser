@@ -7,6 +7,10 @@ footer {
     width: 100vw;
     padding: 14px;
 }
+.footer-layout * {
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+}
 
 .footer-layout {
     display: flex;
