@@ -11,7 +11,6 @@ a {
 }
 
 .beta-link {
-    font-size: 19px;
     font-weight: bolder;
 }
 
@@ -26,7 +25,7 @@ a {
 }
 
 .left span {
-    padding-left: .5rem;
+    text-align: center;
 }
 
 .right {
