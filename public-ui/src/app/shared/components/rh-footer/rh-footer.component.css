@@ -1,19 +1,73 @@
+ul {
+    list-style: none;
+}
+
 footer {
-    background: rgba(38,34,98,1);
+    background: rgba(38, 34, 98, 1);
     width: 100vw;
     padding: 14px;
 }
 
-.site-logo, .nih-logo {
-    margin-top:1rem;
-    max-width: 330px;
+.footer-layout {
+    display: flex;
+    justify-content: space-between;
 }
-.footer-menu {
-    list-style: none;
+
+.site-branding-container {
+    /* width: calc(100%/6); */
+    min-width: 250px;
+}
+
+.site-logo, .nih-logo {
+    margin-top: 1rem;
+    max-width: 330px;
+ 
+}
+
+.site-logo img, .nih-logo img {
+    width: 100%;
+}
+
+.main-menu {
+    display: flex;
+    justify-content: space-between;
+    width:80%;
+    margin: 0 2rem;
+    margin-top: 1rem;
+    /* flex-wrap: wrap; */
+}
+
+.main-menu-item {
+    width: fit-content;
+    padding:0 1rem;
+}
+
+.main-menu-item>a {
+    text-transform: uppercase;
+    font-family: GothamBold, Helvetica Neue, sans-serif;
+}
+
+.main-menu-item * {
+    color: white;
+    font-size: 0.9rem;
+}
+
+
+.sub-menu {
+    margin-top: 1rem;
+    margin-left:0;
+}
+
+.sub-menu li>a {
+    color: rgba(190, 225, 255, 1)
+}
+
+.sub-menu li>a:hover {
+    color: white;
 }
 
 .foot-apply {
-    margin-top:1rem;
+    margin-top: 1rem;
     text-align: center;
     background: #ffffff;
     font-weight: 900;
@@ -21,7 +75,7 @@ footer {
     padding-top: .2em;
     padding-bottom: .2em;
     line-height: 1.2;
-    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    font-family: GothamBold, 'Helvetica Neue', sans-serif;
     min-width: max-content;
     border-radius: 0px;
     border: 1px solid #fff;
@@ -30,6 +84,21 @@ footer {
     min-width: auto;
     max-width: 100%;
 }
+
 .foot-apply a {
     color: #262262;
+}
+
+.login-btn {
+    border: 1px white solid;
+    padding:.125rem;
+    margin-top:.5rem;
+    text-align: center;
+    line-height: 1rem;
+}
+
+.login-btn a {
+    font-size:.7em;
+    color:white;
+    line-height: .7em;
 }
