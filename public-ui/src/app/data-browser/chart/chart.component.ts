@@ -183,7 +183,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             textOverflow: 'ellipsis'
           }
         },
-        min: ((this.analysis &&
+        min: options.yAxisMin != null ? options.yAxisMin :
+          ((this.analysis &&
           (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
         this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
           (this.surveyAnalysis &&
@@ -212,7 +213,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             return label;
           },
           useHTML: true,
-        } : {
+        } : ('dataOnlyLT20' in options.series[0] && options.series[0].dataOnlyLT20 != null
+          && options.series[0].dataOnlyLT20) ?
+         {
           style: {
             fontSize: '12px',
             whiteSpace: 'wrap',
@@ -227,7 +230,18 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             return label;
           },
           useHTML: true,
-        },
+        } : {
+            style: {
+              fontSize: '12px',
+              whiteSpace: 'wrap',
+              textOverflow: 'ellipsis'
+            },
+            formatter: function () {
+              const label = this.axis.defaultLabelFormatter.call(this);
+              return label;
+            },
+            useHTML: true,
+          },
         lineWidth: 1,
         lineColor: this.dbc.AXIS_LINE_COLOR,
         gridLineColor: this.backgroundColor
@@ -405,6 +419,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       name: this.analysis.analysisName,
       colorByPoint: true,
       data: data,
+      dataOnlyLT20: false,
       colors: [this.dbc.COLUMN_COLOR],
       events: {
         click: seriesClick
@@ -426,6 +441,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxisTitle: this.analysis.analysisName,
       yAxisTitle: null,
       tooltip: { pointFormat: '{point.y}' },
+      yAxisMin: null
     };
   }
 
@@ -487,9 +503,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         cats.push(a.vocabularyId + '-' + a.conceptCode);
       }
     }
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     // Override tooltip and colors and such
     const series = {
       name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
+      dataOnlyLT20: dataOnlyLT20
     };
     return {
       chart: {
@@ -508,6 +527,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       pointWidth: 20,
       xAxisTitle: this.sources ? 'Source Concepts' : 'Top concepts',
       yAxisTitle: 'Participant Count',
+      yAxisMin: temp.length > 0 ? 0 : 20,
     };
   }
 
@@ -516,6 +536,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     let data = [];
     let cats = [];
     let yAxisLabel = null;
+    let percentageAnalysis = false;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -555,6 +576,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.surveyAnalysis &&
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
+        percentageAnalysis = true;
         yAxisLabel = '% of Each Sex that answered with ' + this.selectedResult.stratum4;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -593,6 +615,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       if (this.analysis &&
         this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
+        percentageAnalysis = true;
         yAxisLabel = '% of Each Sex with ' + this.conceptName;
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -663,8 +686,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
-      name: seriesName, colorByPoint: true, data: data,
+      name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
     };
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
@@ -678,7 +703,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.y} {point.name}</span>',
-      }
+      },
+      yAxisMin: percentageAnalysis ? 0 :
+        (temp.length > 0 ? 0 : 20)
     };
   }
 
@@ -714,8 +741,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return 0;
     });
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
-      name: seriesName, colorByPoint: true, data: data,
+      name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
     };
     return {
       chart: {
@@ -735,12 +764,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.y} {point.name} </span>'
-      }
+      },
+      yAxisMin: temp.length > 0 ? 0 : 20,
     };
   }
 
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string, analysisId: number) {
+    let percentageAnalysis = false;
     let yAxisLabel = null;
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
@@ -778,6 +809,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ';
         }
       } else if (analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
+        percentageAnalysis = true;
         yAxisLabel = '% of Each Age with ' + this.conceptName;
         ageHelpText = seriesName;
         if (a.stratum4 === null || a.stratum4 === '0') {
@@ -807,6 +839,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/>' + 'Participant Count: ';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
+        percentageAnalysis = true;
         yAxisLabel = '% of Each Age that answered with ' + this.selectedResult.stratum4;
         ageHelpText = 'Age When Survey Was Taken';
         if (a.percentage === null || a.percentage === 0) {
@@ -860,10 +893,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       cats.push(a.analysisStratumName);
     }
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = {
       name: seriesName,
       colorByPoint: true,
       data: data,
+      dataOnlyLT20: dataOnlyLT20
     };
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
@@ -880,7 +916,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.name}<br/ > {point.y}</span>'
-      }
+      },
+      yAxisMin: percentageAnalysis ? 0 :
+        (temp.length > 0 ? 0 : 20)
     };
   }
 
@@ -906,13 +944,26 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (a.stratum2 !== 'No unit') {
         if (a.countValue <= 20) {
           tooltipText = '<b>' + analysisStratumName + '</b>' +
-            '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
-            + '</b> <br/>' + 'Participant Count: ';
+            '<br/>' + 'Measurement Value / Range:';
+          if (a.stratum4.indexOf('>=') > -1) {
+            tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
+              + '</b> <br/>' + 'Participant Count: ';
+          } else {
+            tooltipText = tooltipText + ' <b>' + a.stratum4
+              + '</b> <br/>' + 'Participant Count: ';
+          }
         } else {
           tooltipText = '<b>' + analysisStratumName + '</b>' +
-            '<br/>' + 'Measurement Value / Range: <b>' + a.stratum4
-            + '</b> <br/>' + 'Participant Count: ' +
-            '<b>' + a.countValue + '</b>';
+            '<br/>' + 'Measurement Value / Range:';
+          if (a.stratum4.indexOf('>=') > -1) {
+            tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
+              + '</b> <br/>' + 'Participant Count: ' +
+              '<b>' + a.countValue + '</b>';
+          } else {
+            tooltipText = tooltipText + ' <b>' + a.stratum4
+              + '</b> <br/>' + 'Participant Count: ' +
+              '<b>' + a.countValue + '</b>';
+          }
         }
       } else {
         if (a.countValue <= 20) {
@@ -1009,10 +1060,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       this.analysis.unitName = 'centimeter';
     }
     const unit = this.analysis.unitName ? this.analysis.unitName : '';
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series: any = {
       name: this.analysis.analysisName,
       colorByPoint: true,
       data: data,
+      dataOnlyLT20: dataOnlyLT20,
       colors: [this.dbc.GENDER_PM_COLOR],
     };
     // Note that our data is binned already so we use a column chart to show histogram
@@ -1038,6 +1092,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         headerFormat: '{point.key} ' + unit + '<br/>',
         pointFormat: '{point.y} participants'
       },
+      yAxisMin: temp.length > 0 ? 0 : 20,
     };
   }
 
@@ -1075,10 +1130,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       });
       cats.push(a.analysisStratumName);
     }
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 20 ? false : true;
     const series = {
       name: seriesName,
       colorByPoint: true,
       data: data,
+      dataOnlyLT20: dataOnlyLT20
     };
     return {
       chart: { type: 'column', backgroundColor: this.backgroundColor },
@@ -1091,6 +1149,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       pointWidth: this.pointWidth,
       xAxisTitle: '',
       yAxisTitle: 'Participant Count',
+      yAxisMin: temp.length > 0 ? 0 : 20,
     };
   }
 

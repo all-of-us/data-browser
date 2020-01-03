@@ -475,8 +475,7 @@ input#s {
 
 @media only screen and (min-width:1168px) {
   .cta-bar {
-    padding-left: calc(10%);
-    padding-right: calc(5%);
+    padding: 0 calc(10%);
   }
   .site-branding-container {
     padding-left: calc(10%);

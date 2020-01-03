@@ -1,7 +1,5 @@
 @media (max-width: 978px) {
-    .db-container {
-        margin: 0 calc(10%);
-    }
+
     body {
         padding: 0;
     }

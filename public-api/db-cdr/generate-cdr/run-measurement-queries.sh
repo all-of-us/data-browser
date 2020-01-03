@@ -450,7 +450,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           CAST(p1.gender_concept_id AS STRING) as stratum_3,
                 case when bin_width != 0 then
                (case when iqr_min != iqr_max then
-               (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+               (case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
                   (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
                     when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
                     when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -525,7 +525,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                         else cast(value_as_number as string)
                        end) end)
                      when p10_value != p90_value then
-        (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+        (case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
                        (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
                      when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
                      then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -618,7 +618,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           CAST(p1.gender_concept_id AS STRING) as stratum_3,
                 case when bin_width != 0 then
                (case when iqr_min != iqr_max then
-       (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+       (case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
                       (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
                         when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
                         when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -693,7 +693,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                             else cast(value_as_number as string)
                            end) end)
                when p10_value != p90_value then
-               (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+               (case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
                (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
                             when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
                             then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -963,20 +963,20 @@ with rawdata_1815 as
 (select measurement_concept_id as subject_id, cast(unit_concept_id as string) as unit, p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
- where m.value_as_number is not null and m.measurement_concept_id > 0 and unit_concept_id != 0
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and unit_concept_id > 0
  union all
  select measurement_source_concept_id as subject_id, cast(unit_concept_id as string) as unit,p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
  where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
  m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
- and unit_concept_id != 0
+ and unit_concept_id > 0
  union all
  select measurement_concept_id as subject_id, cast(um.unit_concept_id as string) as unit, p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
  join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
- where m.value_as_number is not null and m.measurement_concept_id > 0 and (m.unit_concept_id = 0 or m.unit_concept_id is null) and m.unit_source_value is not null
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and (m.unit_concept_id <= 0 or m.unit_concept_id is null) and m.unit_source_value is not null
  union all
  select measurement_source_concept_id as subject_id, cast(um.unit_concept_id as string) as unit,p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
@@ -984,19 +984,19 @@ with rawdata_1815 as
  join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on lower(m.unit_source_value)=lower(um.unit_source_value)
  where m.value_as_number is not null and m.measurement_source_concept_id > 0 and
  m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
- and (m.unit_concept_id = 0 or m.unit_concept_id is null) and m.unit_source_value is not null
+ and (m.unit_concept_id <= 0 or m.unit_concept_id is null) and m.unit_source_value is not null
  union all
  select measurement_concept_id as subject_id, cast('0' as string), p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
- where m.value_as_number is not null and m.measurement_concept_id > 0 and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
+ where m.value_as_number is not null and m.measurement_concept_id > 0 and ((m.unit_concept_id <= 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
  union all
  select measurement_source_concept_id as subject_id, cast('0' as string),p.gender_concept_id as gender,
  cast(value_as_number as float64) as count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
  where m.value_as_number is not null and m.measurement_source_concept_id > 0
  and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
- and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))),
+ and ((m.unit_concept_id <= 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))),
 overallstats as
 (select subject_id as stratum1_id, unit as stratum2_id, gender as stratum3_id, cast(avg(1.0 * count_value) as float64) as avg_value,
 cast(stddev(count_value) as float64) as stdev_value, min(count_value) as min_value, max(count_value) as max_value,
@@ -1234,7 +1234,7 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
     case when bin_width != 0 then
    (case when iqr_min != iqr_max then
-   (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+   (case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
       (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
             when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
             when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -1309,7 +1309,7 @@ CAST(p1.gender_concept_id AS STRING) as stratum_3,
             else cast(value_as_number as string)
            end) end)
          when p10_value != p90_value then
-(case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+(case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
     (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
          when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
          then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
@@ -1402,7 +1402,7 @@ unit as stratum_2,
 CAST(p1.gender_concept_id AS STRING) as stratum_3,
     case when bin_width != 0 then
    (case when iqr_min != iqr_max then
-   (case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+   (case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
                   (case when m1.value_as_number < iqr_min then CONCAT('< ' , cast(round(iqr_min,2) as string))
                         when m1.value_as_number >= calc_iqr_max then CONCAT('>= ' , cast(round(calc_iqr_max,2) as string))
                         when (m1.value_as_number between iqr_min and iqr_min+bin_width) and m1.value_as_number < iqr_max
@@ -1477,7 +1477,7 @@ CAST(p1.gender_concept_id AS STRING) as stratum_3,
                         else cast(value_as_number as string)
                        end) end)
 when p10_value != p90_value then
-(case when (m1.unit_concept_id > 0 or m1.unit_source_value is not null) then
+(case when (m1.unit_concept_id > 0 or (m1.unit_source_value is not null and length(m1.unit_source_value) > 0)) then
 (case when m1.value_as_number < p10_value then CONCAT('< ' , cast(round(p10_value,2) as string))
 when (m1.value_as_number between p10_value and p10_value+((p90_value-p10_value)/11)) and m1.value_as_number <  p90_value
 then CONCAT(cast(round(p10_value,2) as string), ' - ', cast(round(p10_value+((p90_value-p10_value)/11),2) as string))
