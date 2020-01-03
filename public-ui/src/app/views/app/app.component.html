@@ -1,5 +1,5 @@
 <app-rh-header></app-rh-header>
-<main class="main-bg" *ngIf="(signedIn || !requireSignIn) else login">
+<main class="main-bg">
   <app-breadcrumb></app-breadcrumb>
   <div class="db-container">
     <router-outlet (activate)="onActivate($event)"></router-outlet>
