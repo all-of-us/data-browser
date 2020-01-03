@@ -515,10 +515,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             CBCriteria standardParent = null;
             CBCriteria sourceParent = null;
             if (parentList.size() > 1) {
-                standardParent = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList()).get(0);
-                sourceParent = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList()).get(0);
-                standardParent.setSourceCount(sourceParent.getCount());
-                parent = standardParent;
+                List<CBCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList());
+                standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
+                List<CBCriteria> sourceParentList = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList());
+                sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
+                if (standardParent != null) {
+                    if (sourceParent != null) {
+                        standardParent.setSourceCount(sourceParent.getCount());
+                    }
+                    parent = standardParent;
+                } else {
+                    parent = sourceParent;
+                }
             } else {
                 parent = parentList.get(0);
             }
