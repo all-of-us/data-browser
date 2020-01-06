@@ -18,7 +18,7 @@ export class TooltipService {
   electronic health record (EHR).`;
   surveyBSPercentageChartHelpText = `Percentages are calculated based on how many
   participants of the sex assigned selected this
-  answer  out of total number of participants of each sex assigned that answered this question (excluding skip codes).`;
+  answer  out of rounded participant count of each sex assigned that answered this question (excluding skip codes).`;
   surveyBSCountChartHelpText = `Counts are the total sum of participants of the
   sex assigned who selected this answer.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
@@ -32,7 +32,7 @@ export class TooltipService {
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
     'ages at which the participants took the indicated survey. \n' +
     'The percentages below are calculated based on how many participants of the age group ' +
-    'responded with this survey answer out of total number of participants of each age group that answered this question (excluding skip codes).';
+    'responded with this survey answer out of rounded participant count of each age group that answered this question (excluding skip codes).';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
   raceEthnicityChartHelpText = `“Race” refers to physical differences that groups and cultures
