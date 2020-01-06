@@ -35,8 +35,6 @@ const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [IsSafeGuard],
-    canActivateChild: [IsSafeGuard],
     runGuardsAndResolvers: 'always',
     children: [
       {
