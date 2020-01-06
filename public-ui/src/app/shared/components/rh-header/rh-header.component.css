@@ -104,6 +104,7 @@ li.flip::before, li.flip::before {
   background: white;
   padding: 14px;
   flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .cta-bar aside {
@@ -137,6 +138,7 @@ li.flip::before, li.flip::before {
 
 .cta-bar .login-btn {
   display: none;
+  margin-top:1rem;
 }
 
 .headwrap {
