@@ -1,13 +1,13 @@
 <app-rh-header></app-rh-header>
-<main class="main-bg">
+<main class="main-bg" *ngIf="true">
   <app-breadcrumb></app-breadcrumb>
   <div class="db-container">
     <router-outlet (activate)="onActivate()"></router-outlet>
   </div>
-</main>
-<!-- *** removed until strategic direction is provided for CTA section ***
+  <!-- *** removed until strategic direction is provided for CTA section ***
     <div class="cta-content dark">
-				<img src="https://aou-db-test.appspot.com/assets/images/applyForAccess_btn.png" /><h4>Find out more about <a href="##">Data Access Levels</a> and <a href="##">How to Apply</a>.</h4>
+      <img src="https://aou-db-test.appspot.com/assets/images/applyForAccess_btn.png" /><h4>Find out more about <a href="##">Data Access Levels</a> and <a href="##">How to Apply</a>.</h4>
 		</div> -->
-<!-- .cta-content -->
+  <!-- .cta-content -->
+</main>
 <app-rh-footer></app-rh-footer>

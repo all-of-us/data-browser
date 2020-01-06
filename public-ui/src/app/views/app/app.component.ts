@@ -33,8 +33,7 @@ export class AppComponent implements OnInit {
   private baseTitle: string;
   private overriddenPublicUrl: string = null;
   public noHeaderMenu = false;
-  signedIn = false;
-  requireSignIn = false;
+
 
   constructor(
     /* Ours */
@@ -53,13 +52,7 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('treeHighlight');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
-    this.serverConfigService.getConfig().subscribe((config) => {
-      this.requireSignIn = config.requireSignIn;
-    });
 
-    this.signInService.isSignedIn$.subscribe((isSignedIn) => {
-      this.signedIn = isSignedIn;
-    });
 
     window['setPublicApiUrl'] = (url: string) => {
       if (url) {
