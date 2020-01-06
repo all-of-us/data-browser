@@ -2,7 +2,7 @@
   <div class="breadcrumb">
     <a href="{{allOfUs}}/" class="breadcrumb-link">Home</a>
   </div>
-  <div class="breadcrumb">
+  <div class="breadcrumb" *ngIf="!workBenchIsBeta">
     <a href="{{allOfUs}}/data/" class="breadcrumb-link">Data</a>
   </div>
 
