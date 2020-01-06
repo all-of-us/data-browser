@@ -1,0 +1,66 @@
+<footer>
+  <div class="db-container">
+    <div class="footer-layout">
+      <div class="site-branding-container">
+        <div class="site-branding">
+          <div class="logo">
+            <div class="site-logo"><a href="{{allOfUsUrl}}/" class="custom-logo-link"><img
+                  src="/assets/db-images/allofus_research-hub_white.png" class="custom-logo"
+                  alt="All of Us Research Hub" itemprop="logo" /></a>
+            </div>
+            <div class="divider">
+            </div>
+            <div class="nih-logo">
+              <a href="https://allofus.nih.gov/" target="_blank">
+                <img alt="National Institute of Health All of Us Research Program" class="nih_header"
+                  src="/assets/db-images/nih_allofus_white.png" />
+              </a>
+            </div>
+          </div><!-- .logo -->
+        </div><!-- .site-branding -->
+      </div><!-- .site-branding-container -->
+      <ul class="main-menu">
+        <li *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
+          <a tabindex="0" href="{{menu.url}}"> {{menu.title}}</a>
+          <ul *ngIf="menu.submenu" class="sub-menu">
+            <li (click)="toggleSub(sub.title); showSub1 = !showSub1"
+              [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1}" *ngFor="let sub of menu.sub0">
+              <a tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
+              <ul *ngIf="sub.submenu">
+                <li *ngFor="let sub1 of sub.sub1">
+                  <a href="">{{sub1.title}}</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="main-menu-item ">
+          <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
+        </li>
+        <!-- <li class="icon_search main-menu-item menu-item-has-children">
+          <a><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none"
+              fill-rule="evenodd" stroke="#262262" stroke-linejoin="round" stroke-width="3">
+              <path fill="none" d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z" />
+              <path stroke-linecap="round" d="M13.848 13.848l5.84 5.84" /></svg></a>
+          <ul class="sub-menu">
+            <li class="menu-item">
+              <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform"
+                action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search" type="text"
+                  value="" name="s" id="s" placeholder="search..." size="35" autocomplete="off" /><input type="submit"
+                  id="searchsubmit" value="" /></form>
+            </li>
+          </ul>
+        </li> -->
+      </ul>
+      <ul class="footer-menu">
+        <li class="foot-apply">
+          <a href="https://www.researchallofus.org/apply/">APPLY</a>
+        </li>
+        <li class="login-btn">
+          <a href="https://workbench.researchallofus.org/login"> RESEARCHER
+            LOGIN</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>

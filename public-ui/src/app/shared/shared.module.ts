@@ -12,6 +12,7 @@ import { LoginComponent } from '../views/login/login.component';
 import { PageTemplateSignedOutComponent } from '../views/page-template-signed-out/page-template-signed-out.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
+import { RhFooterComponent } from './components/rh-footer/rh-footer.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderFooterService } from './services/header-footer.service';
@@ -34,7 +35,8 @@ import { HeaderFooterService } from './services/header-footer.service';
     PageTemplateSignedOutComponent,
     RhHeaderComponent,
     BetaBarComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    RhFooterComponent
   ],
   exports: [
     CommonModule,
@@ -50,6 +52,7 @@ import { HeaderFooterService } from './services/header-footer.service';
     RhHeaderComponent,
     BetaBarComponent,
     SpinnerComponent,
+    RhFooterComponent,
     LocalStorageModule
   ],
   providers: [

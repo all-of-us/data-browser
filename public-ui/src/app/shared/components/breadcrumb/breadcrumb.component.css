@@ -18,9 +18,10 @@
 }
 
 .breadcrumb a {
-  font-weight: 400;
-  color: #2691D0;
   text-decoration: none;
+  color: #0079b8;
+  font-size: 19px;
+  font-weight: bolder;
 }
 
 .breadcrumb a:hover {
@@ -37,6 +38,7 @@
 .breadcrumb-last a {
   color: #262262;
   font-weight: 500;
+  font-size: 19px;
   text-decoration: none;
   text-transform: capitalize;
   font-family: FFUnitStdBold,Arial, Helvetica, sans-serif;

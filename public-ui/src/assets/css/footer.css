@@ -6,11 +6,12 @@
   font-family: 'FFUnitStdRegular', 'Helvetica', sans-serif;
   font-weight: normal;
 }
-#colophon .site-info *,
-#colophon .widget-column.footer-boiler .widget * {
+.site-info,
+.footer-boiler p{
   font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: normal;
-  font-size: 15px;
+  font-size: 14px;
+  color:white;
 }
 #colophon .widget-column .widget p em {
   font-family: 'FFUnitStdItalic', 'Helvetica', sans-serif;
@@ -34,7 +35,7 @@
   flex-wrap: wrap;
   flex-direction: column;
 }
-#colophon .site-info {
+.site-info {
   color: rgba(255,255,255,1);
   text-align: center;
 }
@@ -140,6 +141,7 @@
   border: 1px solid;
   margin-bottom: 5px;
   vertical-align: text-bottom;
+  font-size: 1rem;
 }
 #mc_embed_signup .clear input {
   margin-top: 0;
@@ -209,8 +211,8 @@
     text-decoration: none
 }
 
-.footer-boiler .widget a {
-    text-decoration: underline
+.footer-boiler a, .site-info a {
+    color: rgba(190, 225, 255, 1)!important;
 }
 
 .allofus-italics {
@@ -338,4 +340,95 @@
 
 #content[tabindex="-1"]:focus {
     outline: 0
+}
+
+.db-footer {
+    background: rgba(38, 34, 98, 1);
+    padding-bottom: 2rem;
+
+}
+
+.db-footer * {
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+}
+
+.cta-layout{
+    padding-top:2rem;
+    display:flex;
+    justify-content: space-between;
+}
+.cta-col {
+    width: 19%;
+    padding-right:11px;
+}
+.cta-col ul {
+    list-style: none;
+}
+.cta-col ul li svg {
+    fill: white;
+}
+.cta-col ul li svg:hover {
+    fill: rgba(255,255,255,.6);
+}
+.cta-col p {
+    color:white;
+    font-size: 14px;
+}
+.cta-col p a {
+    color: rgba(190, 225, 255, 1);
+}
+
+.social-links-menu {
+    display: flex;
+    width: 55%;
+    justify-content: space-evenly;
+}
+
+.sub-btn {
+    display: block;
+    text-align: center;
+    background: transparent;
+    background-image: url('/assets/icons/icon_enevelope-white.png');
+    background-size: 20px 15px;
+    background-position: left 15px center;
+    background-repeat: no-repeat;
+    font-size: 0.9rem;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    padding: .5rem;
+    padding-left:2.5rem;
+    min-width: max-content;
+    border-radius: 0px;
+    border: 1px solid #fff;
+    text-transform: uppercase;
+    color: #fff;
+    width: 100%;
+    min-width: auto;
+    max-width: 100%;
+    line-height: 1.5rem;
+}
+
+.sub-btn:focus {
+    color: rgba(190, 225, 255, 1);
+}
+
+.sub-btn:hover {
+    background-color:white;
+    background-image: url('/assets/icons/icon_enevelope-blue.png') ;
+    color:#262262;
+}
+
+@media only screen and (max-width:1168px) {
+    .cta-layout {
+        flex-direction: column;
+        padding:0 14px;
+    }
+    .footer-boiler section {
+        padding: 0 14px;
+    }
+    .cta-col {
+        width:100%;
+    }
+    .social-links-menu {
+        width: 20%;
+    }
 }

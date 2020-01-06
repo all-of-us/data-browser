@@ -1,0 +1,133 @@
+ul {
+    list-style: none;
+}
+
+footer {
+    background: rgba(38, 34, 98, 1);
+    width: 100vw;
+    padding: 14px;
+}
+
+.footer-layout * {
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+}
+
+.footer-layout {
+    display: flex;
+    justify-content: space-between;
+}
+
+.site-branding-container {
+    /* width: calc(100%/6); */
+    min-width: 250px;
+}
+
+.site-logo, .nih-logo {
+    margin-top: 1rem;
+    max-width: 330px;
+}
+
+.site-logo img, .nih-logo img {
+    width: 100%;
+}
+
+.main-menu {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 2rem;
+    margin-top: 1rem;
+    /* flex-wrap: wrap; */
+}
+
+.main-menu-item {
+    width: fit-content;
+    padding: 0 1rem;
+}
+
+.main-menu-item>a {
+    text-transform: uppercase;
+    font-family: GothamBold, Helvetica Neue, sans-serif;
+}
+
+.main-menu-item * {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.sub-menu {
+    margin-top: 1rem;
+    margin-left: 0;
+}
+
+.sub-menu li>a {
+    color: rgba(190, 225, 255, 1)
+}
+
+.sub-menu li>a:hover {
+    color: white;
+}
+
+.foot-apply a {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    background: #ffffff;
+    font-weight: 900;
+    font-size: 19px;
+    padding-top: .2em;
+    padding-bottom: .2em;
+    line-height: 1.2;
+    font-family: GothamBold, 'Helvetica Neue', sans-serif;
+    min-width: max-content;
+    border-radius: 0px;
+    border: 1px solid #fff;
+    text-transform: uppercase;
+    width: 100%;
+    min-width: auto;
+    max-width: 100%;
+    color: #262262;
+}
+
+.foot-apply a:hover {
+    background-color: rgba(190, 225, 255, 1);
+}
+
+.login-btn {
+    width: 100%;
+}
+
+.login-btn a {
+    display: block;
+    border: 1px white solid;
+    padding: 1em;
+    margin-top: .5rem;
+    text-align: center;
+    font-size: .7em;
+    color: white;
+    line-height: 1;
+    width: 100%;
+}
+
+.login-btn a:hover {
+    background-color: rgba(190, 225, 255, 1);
+    color: #262262;
+}
+
+@media only screen and (max-width:1168px) {
+    .footer-layout {
+        flex-direction: column;
+    }
+    .main-menu {
+        flex-direction: column;
+        margin: 0;
+        margin-top: .5rem;
+    }
+    .main-menu li {
+        padding: 0;
+    }
+    .sub-menu {
+        margin-top: 0;
+    }
+}

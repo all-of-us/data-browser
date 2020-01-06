@@ -10,9 +10,13 @@ a {
     color: #007cbb;
 }
 
+.beta-link {
+    font-weight: bolder;
+}
+
 .left {
     width: calc((100%/12)*3);
-    background: #a27db7;
+    background: #816492;
     color: white;
     display: flex;
     padding: 0 1rem;
@@ -21,7 +25,7 @@ a {
 }
 
 .left span {
-    padding-left: .5rem;
+    text-align: center;
 }
 
 .right {
