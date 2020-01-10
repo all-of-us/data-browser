@@ -3,6 +3,10 @@ package org.pmiops.workbench.cdr.model;
 
 import javax.persistence.*;
 import java.util.*;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -151,45 +155,49 @@ public class QuestionConcept {
      * so that the return to the ui is a nice question object with analyses and results
      * Questions updated by reference
      */
-    public static void mapAnalysesToQuestions(List<QuestionConcept> questions, List<AchillesAnalysis> analyses) {
-        Map<Long, QuestionConcept> questionMap = new HashMap<Long, QuestionConcept>();
+    public static void mapAnalysesToQuestions(List<QuestionConcept> questions, List<AchillesAnalysis> analyses, List<SurveyQuestionMap> surveyQuestionPaths) {
+
+        Map<Long, AchillesAnalysis> analysisById = analyses.parallelStream().collect(Collectors.toMap(analysis -> analysis.getAnalysisId(), analysis -> analysis));
+        //MultiMap<Long, SurveyQuestionMap> pathsByQuestionId = surveyQuestionPaths.stream().collect(Collectors.toMap(sqm -> sqm.getQuestionConceptId(), sqm -> sqm));
+        Multimap<Long, SurveyQuestionMap> pathsByQuestionId = Multimaps.index(surveyQuestionPaths,SurveyQuestionMap::getQuestionConceptId);
+
+        AchillesAnalysis countAnalysis = new AchillesAnalysis(analysisById.get(SURVEY_COUNT_ANALYSIS_ID));
+        AchillesAnalysis genderAnalysis = new AchillesAnalysis(analysisById.get(SURVEY_GENDER_ANALYSIS_ID));
+        AchillesAnalysis ageAnalysis = new AchillesAnalysis(analysisById.get(SURVEY_AGE_ANALYSIS_ID));
+        AchillesAnalysis genderCountAnalysis = new AchillesAnalysis(analysisById.get(SURVEY_GENDER_QUESTION_COUNT_ANALYSIS_ID));
+        AchillesAnalysis ageCountAnalysis = new AchillesAnalysis(analysisById.get(SURVEY_AGE_QUESTION_COUNT_ANALYSIS_ID));
+
+        Multimap<String, AchillesResult> countAnalysisResultsById = Multimaps.index(analysisById.get(SURVEY_COUNT_ANALYSIS_ID).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> genderAnalysisResultsById = Multimaps.index(analysisById.get(SURVEY_GENDER_ANALYSIS_ID).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> ageAnalysisResultsById = Multimaps.index(analysisById.get(SURVEY_AGE_ANALYSIS_ID).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> genderCountAnalysisResultsById = Multimaps.index(analysisById.get(SURVEY_GENDER_QUESTION_COUNT_ANALYSIS_ID).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> ageCountAnalysisResultsById = Multimaps.index(analysisById.get(SURVEY_AGE_QUESTION_COUNT_ANALYSIS_ID).getResults(), AchillesResult::getStratum2);
+
         for (QuestionConcept q : questions) {
-            questionMap.put(q.getConceptId(), q);
-        }
 
-        for (AchillesAnalysis analysis : analyses) {
-            // Add stratum5Name to the results for the ui -- ie Male, Female , Age Decile name
-            for (AchillesResult r : analysis.getResults()) {
-                // Add analysis to question if need to
-                if (r.getStratum4().contains("PMI")) {
-                    r.setStratum4(r.getStratum4().replace("PMI", ""));
-                }
-                Long qid = Long.valueOf(r.getStratum2());
-                QuestionConcept q = questionMap.get(qid);
+            q.setQuestions(pathsByQuestionId.get(q.getConceptId()).parallelStream().collect(Collectors.toList()));
 
-                if (q.getAnalysis(analysis.getAnalysisId()) == null) {
-                    q.setAnalysis(new AchillesAnalysis(analysis));
-                }
-                AchillesAnalysis questionAnalysis = q.getAnalysis(analysis.getAnalysisId());
-                if (analysis.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID) {
-                    if (validAgeDeciles.contains(r.getStratum5())) {
-                        questionAnalysis.addResult(r);
-                    }
-                } else {
-                    questionAnalysis.addResult(r);
-                }
-                String rStratum5Name = r.getAnalysisStratumName();
-                if (rStratum5Name == null || rStratum5Name.equals("")) {
-                    if (analysis.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID && validAgeDeciles.contains(r.getStratum5())) {
-                        r.setAnalysisStratumName(ageStratumNameMap.get(r.getStratum5()));
-                    }
-                    if (analysis.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
-                        r.setAnalysisStratumName(genderStratumNameMap.get(r.getStratum5()));
-                    }
-                    if (analysis.getAnalysisId() == SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-                        r.setAnalysisStratumName(genderIdentityStratumNameMap.get(r.getStratum5()));
-                    }
-                }
+            AchillesAnalysis CountAnalysis = new AchillesAnalysis(countAnalysis);
+            AchillesAnalysis GenderAnalysis = new AchillesAnalysis(genderAnalysis);
+            AchillesAnalysis AgeAnalysis = new AchillesAnalysis(ageAnalysis);
+            AchillesAnalysis GenderCountAnalysis = new AchillesAnalysis(genderCountAnalysis);
+            AchillesAnalysis AgeCountAnalysis = new AchillesAnalysis(ageCountAnalysis);
+
+            try {
+                CountAnalysis.setResults(countAnalysisResultsById.get(String.valueOf(q.getConceptId())).parallelStream().collect(Collectors.toList()));
+                GenderAnalysis.setResults(genderAnalysisResultsById.get(String.valueOf(q.getConceptId())).parallelStream().collect(Collectors.toList()));
+                AgeAnalysis.setResults(ageAnalysisResultsById.get(String.valueOf(q.getConceptId())).parallelStream().collect(Collectors.toList()));
+                GenderCountAnalysis.setResults(genderCountAnalysisResultsById.get(String.valueOf(q.getConceptId())).parallelStream().collect(Collectors.toList()));
+                AgeCountAnalysis.setResults(ageCountAnalysisResultsById.get(String.valueOf(q.getConceptId())).parallelStream().collect(Collectors.toList()));
+
+                q.setAnalysis(CountAnalysis);
+                q.setAnalysis(GenderAnalysis);
+                q.setAnalysis(AgeAnalysis);
+                q.setAnalysis(GenderCountAnalysis);
+                q.setAnalysis(AgeCountAnalysis);
+
+            } catch (Exception e) {
+                System.out.println(q.getConceptId());
             }
         }
     }
@@ -280,7 +288,7 @@ public class QuestionConcept {
     }
 
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "concept")
+    @Transient
     public List<SurveyQuestionMap> getQuestions() {
         return questions;
     }

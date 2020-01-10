@@ -1,6 +1,8 @@
 package org.pmiops.workbench.publicapi;
 
 import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
@@ -25,6 +27,7 @@ import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
+import org.pmiops.workbench.cdr.dao.SurveyQuestionMapDao;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
@@ -78,6 +81,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private QuestionConceptDao  questionConceptDao;
     @Autowired
+    private SurveyQuestionMapDao surveyQuestionMapDao;
+    @Autowired
     private AchillesAnalysisDao achillesAnalysisDao;
     @Autowired
     private AchillesResultDao achillesResultDao;
@@ -109,6 +114,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
+
+    public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
+    public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
+    public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
+    public static final long SURVEY_GENDER_IDENTITY_ANALYSIS_ID = 3113;
+    public static final long SURVEY_RACE_ETHNICITY_ANALYSIS_ID = 3114;
+    public static final long SURVEY_GENDER_QUESTION_COUNT_ANALYSIS_ID = 3320;
+    public static final long SURVEY_AGE_QUESTION_COUNT_ANALYSIS_ID = 3321;
 
     public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3320;
     public static final long SURVEY_AGE_COUNT_ANALYSIS_ID = 3321;
@@ -418,6 +431,27 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 @Override
                 public SurveyQuestionResult apply(AchillesResult o) {
 
+                    if (o.getStratum4() != null && o.getStratum4().contains("PMI")) {
+                        o.setStratum4(o.getStratum4().replace("PMI", ""));
+                    }
+
+                    String rStratum5Name = o.getAnalysisStratumName();
+                    String analysisStratumName = o.getAnalysisStratumName();
+                    if (rStratum5Name == null || rStratum5Name.equals("")) {
+                        if (o.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID && QuestionConcept.validAgeDeciles.contains(o.getStratum5())) {
+                            o.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(o.getStratum5()));
+                            analysisStratumName = QuestionConcept.ageStratumNameMap.get(o.getStratum5());
+                        }
+                        if (o.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
+                            o.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(o.getStratum5()));
+                            analysisStratumName = QuestionConcept.genderStratumNameMap.get(o.getStratum5());
+                        }
+                        if (o.getAnalysisId() == SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
+                            o.setAnalysisStratumName(QuestionConcept.genderIdentityStratumNameMap.get(o.getStratum5()));
+                            analysisStratumName = QuestionConcept.genderIdentityStratumNameMap.get(o.getStratum5());
+                        }
+                    }
+
                     return new SurveyQuestionResult()
                             .id(o.getId())
                             .analysisId(o.getAnalysisId())
@@ -427,7 +461,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum4(o.getStratum4())
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
-                            .analysisStratumName(o.getAnalysisStratumName())
+                            .analysisStratumName(analysisStratumName)
                             .countValue(o.getCountValue())
                             .sourceCountValue(o.getSourceCountValue())
                             .subQuestions(null);
@@ -806,7 +840,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
         // Gets all the questions of each survey
-        List<QuestionConcept> questions = questionConceptDao.findSurveyQuestions(surveyConceptId);
+        List<QuestionConcept> questions = questionConceptDao.findSurveyQuestions(longSurveyConceptId);
+
+        List<SurveyQuestionMap> surveyQuestionPaths = surveyQuestionMapDao.findSurveyQuestionPaths(longSurveyConceptId);
 
         // Get survey definition
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
@@ -814,52 +850,77 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
 
         resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+
         // Get all analyses for question list and put the analyses on the question objects
         if (!questions.isEmpty()) {
-            // Put ids in array for query to get all results at once
-            List<String> qlist = new ArrayList();
-            for (QuestionConcept q : questions) {
-                qlist.add(String.valueOf(q.getConceptId()));
-            }
-
-            List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, qlist);
-            QuestionConcept.mapAnalysesToQuestions(questions, analyses);
+            List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId);
+            QuestionConcept.mapAnalysesToQuestions(questions, analyses, surveyQuestionPaths);
         }
 
-        List<QuestionConcept> subQuestions = questions.stream().
+        List<QuestionConcept> subQuestions = questions.parallelStream().
                 filter(q -> q.getQuestions().get(0).getSub() == 1).collect(Collectors.toList());
 
         List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
+        Map<Long, org.pmiops.workbench.model.QuestionConcept> questionsByConceptId = new HashMap<>();
+        for(org.pmiops.workbench.model.QuestionConcept qs: convertedQuestions) {
+            questionsByConceptId.put(qs.getConceptId(), qs);
+        }
+
+        Map<Long, Map<String, List<SurveyQuestionResult>>> surveyResultsByQuestionAndStratum3 = new HashMap<>();
+
+        for (Long key: questionsByConceptId.keySet()) {
+            org.pmiops.workbench.model.QuestionConcept q = questionsByConceptId.get(key);
+            Map<String, List<SurveyQuestionResult>> sqResults = new HashMap<>();
+            for (SurveyQuestionResult sqr: q.getCountAnalysis().getSurveyQuestionResults()) {
+                String stratum3 = sqr.getStratum3();
+                if (sqResults.containsKey(stratum3)) {
+                    sqResults.get(stratum3).add(sqr);
+                } else {
+                    sqResults.put(stratum3, new ArrayList<SurveyQuestionResult>() {{
+                        add(sqr);
+                    }});
+                }
+            }
+            surveyResultsByQuestionAndStratum3.put(key, sqResults);
+        }
 
         Collections.sort(subQuestions, (QuestionConcept q1, QuestionConcept q2) -> q1.getQuestions().get(0).getId() - q2.getQuestions().get(0).getId());
 
         for(QuestionConcept q: subQuestions) {
             List<SurveyQuestionMap> questionPaths = q.getQuestions();
             for(SurveyQuestionMap sqm: questionPaths) {
-                List<Integer> conceptPath = Arrays.asList(sqm.getPath().split("\\.")).stream().map(Integer::valueOf).collect(Collectors.toList());
-                if (conceptPath.size() == 3) {
-                    int questionConceptId = conceptPath.get(0);
-                    int resultConceptId = conceptPath.get(1);
-                    org.pmiops.workbench.model.QuestionConcept mainQuestion = convertedQuestions.stream().filter(mq -> mq.getConceptId() == questionConceptId).collect(Collectors.toList()).get(0);
-                    SurveyQuestionResult matchingSurveyResult = mainQuestion.getCountAnalysis().getSurveyQuestionResults().stream().filter(mr -> mr.getStratum3().equals(String.valueOf(resultConceptId))).collect(Collectors.toList()).get(0);
+                System.out.println(sqm.getPath());
+                String[] conceptPath = sqm.getPath().split("\\.");
+                if (conceptPath.length == 3) {
+                    Long questionConceptId = Long.valueOf(conceptPath[0]);
+                    String resultConceptId = conceptPath[1];
+                    org.pmiops.workbench.model.QuestionConcept mainQuestion = questionsByConceptId.get(questionConceptId);
+                    SurveyQuestionResult matchingSurveyResult = surveyResultsByQuestionAndStratum3.get(questionConceptId).get(resultConceptId).get(0);
+                    //SurveyQuestionResult matchingSurveyResult = mainQuestion.getCountAnalysis().getSurveyQuestionResults().stream().filter(mr -> mr.getStratum3().equals(String.valueOf(resultConceptId))).collect(Collectors.toList()).get(0);
                     List<org.pmiops.workbench.model.QuestionConcept> mappedSubQuestions = matchingSurveyResult.getSubQuestions();
                     if (mappedSubQuestions == null) {
                         mappedSubQuestions = new ArrayList<>();
                     }
                     mappedSubQuestions.add(TO_CLIENT_QUESTION_CONCEPT.apply(q));
                     matchingSurveyResult.setSubQuestions(mappedSubQuestions);
-                } else if (conceptPath.size() == 5) {
-                    int questionConceptId1 = conceptPath.get(0);
-                    int resultConceptId1 = conceptPath.get(1);
-                    int resultConceptId2 = conceptPath.get(3);
+                } else if (conceptPath.length == 5) {
+                    Long questionConceptId1 = Long.valueOf(conceptPath[0]);
+                    String resultConceptId1 = conceptPath[1];
+                    String resultConceptId2 = conceptPath[3];
 
-                    org.pmiops.workbench.model.QuestionConcept mainQuestion1 = convertedQuestions.stream().filter(mq -> mq.getConceptId() == questionConceptId1).collect(Collectors.toList()).get(0);
-                    SurveyQuestionResult matchingSurveyResult1 = mainQuestion1.getCountAnalysis().getSurveyQuestionResults().stream().filter(mr -> mr.getStratum3().equals(String.valueOf(resultConceptId1))).collect(Collectors.toList()).get(0);
+                    org.pmiops.workbench.model.QuestionConcept mainQuestion1 = questionsByConceptId.get(questionConceptId1);
+                    System.out.println(mainQuestion1.getConceptId());
+                    System.out.println(resultConceptId1);
+                    SurveyQuestionResult matchingSurveyResult1 = surveyResultsByQuestionAndStratum3.get(questionConceptId1).get(resultConceptId1).get(0);
                     List<org.pmiops.workbench.model.QuestionConcept> mainQuestion2List = matchingSurveyResult1.getSubQuestions();
                     if(mainQuestion2List != null) {
                         for(org.pmiops.workbench.model.QuestionConcept mainQuestion2: mainQuestion2List) {
-                            List<SurveyQuestionResult> matchingSurveyResults2 = mainQuestion2.getCountAnalysis().getSurveyQuestionResults().stream().filter(mr -> mr.getStratum3().equals(String.valueOf(resultConceptId2))).collect(Collectors.toList());
-                            if (matchingSurveyResults2.size() > 0 && mainQuestion2.getConceptId() == conceptPath.get(2).longValue()) {
+                            System.out.println(mainQuestion2.getConceptId());
+                            System.out.println(resultConceptId2);
+                            System.out.println(surveyResultsByQuestionAndStratum3.get(mainQuestion2.getConceptId()).get(resultConceptId2));
+                            List<SurveyQuestionResult> matchingSurveyResults2 = surveyResultsByQuestionAndStratum3.get(mainQuestion2.getConceptId()).get(resultConceptId2);
+                            // matchingSurveyResults2 is null
+                            if (matchingSurveyResults2.size() > 0 && mainQuestion2.getConceptId() == Long.valueOf(conceptPath[2])) {
                                 List<org.pmiops.workbench.model.QuestionConcept> mappedSubQuestions = matchingSurveyResults2.get(0).getSubQuestions();
                                 if (mappedSubQuestions == null) {
                                     mappedSubQuestions = new ArrayList<>();
@@ -873,7 +934,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        resp.setItems(convertedQuestions.stream().filter(q -> q.getQuestions().get(0).getSub() == 0).collect(Collectors.toList()));
+        resp.setItems(convertedQuestions.parallelStream().filter(q -> q.getQuestions().get(0).getSub() == 0).collect(Collectors.toList()));
         return ResponseEntity.ok(resp);
     }
 
@@ -886,8 +947,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
         EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
         ehrCountAnalysis.setDomainId(domainId);
-        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
-        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
+        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.parallelStream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
+        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.parallelStream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
         return ResponseEntity.ok(ehrCountAnalysis);
     }
 
@@ -899,7 +960,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(3321L);
         List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+        analysisListResponse.setItems(surveyQuestionCountList.parallelStream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
         return ResponseEntity.ok(analysisListResponse);
     }
 
@@ -972,7 +1033,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
                 //aa.setUnitName(unitName);
                 if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
-                    aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
+                    aa.setResults(aa.getResults().parallelStream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                 }
                 if (analysisId == COUNT_ANALYSIS_ID) {
                     conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -980,7 +1041,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     addGenderStratum(aa,2, conceptId, null);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if (analysisId == GENDER_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrGenderCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList());
+                    List<AchillesAnalysis> ehrGenderCountAnalysis = ehrAnalysesList.parallelStream().filter(a -> a.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList());
                     if (ehrGenderCountAnalysis != null && ehrGenderCountAnalysis.size() > 0) {
                         addGenderStratum(aa, 2, conceptId,  ehrGenderCountAnalysis.get(0).getResults());
                         conceptAnalysis.setGenderPercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -992,7 +1053,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     addAgeStratum(aa, conceptId, null);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
+                    List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.parallelStream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
                     if (ehrAgeCountAnalysis != null && ehrAgeCountAnalysis.size() > 0) {
                         addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults());
                     }

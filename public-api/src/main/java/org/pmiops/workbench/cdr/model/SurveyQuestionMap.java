@@ -116,8 +116,7 @@ public class SurveyQuestionMap  {
         return this;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="question_concept_id", referencedColumnName="concept_id", insertable=false, updatable=false)
+    @Transient
     public QuestionConcept getConcept() {
         return concept;
     }
