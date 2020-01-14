@@ -89,6 +89,65 @@ paths:
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
 
+  /v1/databrowser/survey-questions:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Gets the list of survey questions for a survey
+      operationId: "getSurveyQuestions"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: search_word
+          type: string
+          required: false
+          description: search word
+      responses:
+        200:
+          description: A collection of survey questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/survey-question-results:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Get the results & sub questions with results for survey question
+      operationId: "getSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: query
+          name: result_concept_id
+          type: string
+          required: false
+          description: result concept id
+        - in: query
+          name: level
+          type: integer
+          format: int32
+          required: false
+          description: level of sub question
+      responses:
+        200:
+          description: A collection of analysis objects
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
   /v1/databrowser/ehr-count-analysis:
     get:
       tags:
@@ -619,6 +678,7 @@ definitions:
         description: age count analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
 
+
   QuestionConceptListResponse:
     type: object
     required:
@@ -770,6 +830,10 @@ definitions:
           type: array
           items:
             $ref: "#/definitions/QuestionConcept"
+        hasSubQuestions:
+          description: flag if this results has sub question
+          type: integer
+          format: int32
 
 
   AchillesResultDist:
@@ -1030,6 +1094,38 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/ConceptAnalysis"
+
+  SurveyQuestionResultResponse:
+    type: object
+    required:
+      - surveyConceptId
+    properties:
+      surveyConceptId:
+        description: survey concept id
+        type: string
+      questionConceptId:
+        description: question concept id
+        type: string
+      countAnalysis:
+        description: count analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderAnalysis:
+        description: gender analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageAnalysis:
+        description: age analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderCountAnalysis:
+        description: gender percentage analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageCountAnalysis:
+        description: age percentage analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   EhrCountAnalysis:
     type: object

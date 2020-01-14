@@ -47,6 +47,7 @@ import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptListResponse;
+import org.pmiops.workbench.model.SurveyQuestionResultResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.MatchType;
@@ -109,6 +110,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
+
+    public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
+    public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
+    public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
 
     public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3320;
     public static final long SURVEY_AGE_COUNT_ANALYSIS_ID = 3321;
@@ -418,6 +423,23 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 @Override
                 public SurveyQuestionResult apply(AchillesResult o) {
 
+                    if (o.getStratum4() != null && o.getStratum4().contains("PMI")) {
+                        o.setStratum4(o.getStratum4().replace("PMI", ""));
+                    }
+
+                    String rStratum5Name = o.getAnalysisStratumName();
+                    String analysisStratumName = o.getAnalysisStratumName();
+                    if (rStratum5Name == null || rStratum5Name.equals("")) {
+                        if (o.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID && QuestionConcept.validAgeDeciles.contains(o.getStratum5())) {
+                            o.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(o.getStratum5()));
+                            analysisStratumName = QuestionConcept.ageStratumNameMap.get(o.getStratum5());
+                        }
+                        if (o.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
+                            o.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(o.getStratum5()));
+                            analysisStratumName = QuestionConcept.genderStratumNameMap.get(o.getStratum5());
+                        }
+                    }
+
                     return new SurveyQuestionResult()
                             .id(o.getId())
                             .analysisId(o.getAnalysisId())
@@ -430,7 +452,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .analysisStratumName(o.getAnalysisStratumName())
                             .countValue(o.getCountValue())
                             .sourceCountValue(o.getSourceCountValue())
-                            .subQuestions(null);
+                            .subQuestions(null)
+                            .hasSubQuestions(o.getHasSubQuestions());
                 }
             };
 
@@ -805,11 +828,324 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
+    public ResponseEntity<QuestionConceptListResponse> getSurveyQuestions(String surveyConceptId, String searchWord) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        long longSurveyConceptId = Long.parseLong(surveyConceptId);
+
+        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+
+        SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
+
+        resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+
+        String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
+
+        List<QuestionConcept> questions = new ArrayList<>();
+
+        if (searchWord == null || searchWord.isEmpty()) {
+            //Get all the questions
+            questions = questionConceptDao.getSurveyQuestions(surveyConceptId);
+        } else {
+            // Get only the matching questions
+            questions = questionConceptDao.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword);
+        }
+
+        List<String> questionConceptIds = new ArrayList<>();
+
+        for (QuestionConcept q: questions) {
+            questionConceptIds.add(String.valueOf(q.getConceptId()));
+        }
+
+        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, questionConceptIds);
+
+        List<AchillesResult> subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 3);
+
+        List<Long> subIds = new ArrayList<>();
+
+        for(AchillesResult sqr: subQuestionResults) {
+           subIds.add(sqr.getId());
+        }
+
+        Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> genderCountAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> ageCountAnalysisResultsByQuestion = new HashMap<>();
+
+        AchillesAnalysis countAnalysis = null;
+        AchillesAnalysis genderAnalysis = null;
+        AchillesAnalysis ageAnalysis = null;
+        AchillesAnalysis genderCountAnalysis = null;
+        AchillesAnalysis ageCountAnalysis = null;
+
+        for (AchillesAnalysis aa: analyses) {
+            if (aa.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
+                countAnalysis = aa;
+                for(AchillesResult ar: aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (subIds.contains(ar.getId())) {
+                        ar.setHasSubQuestions(1);
+                    } else {
+                        ar.setHasSubQuestions(0);
+                    }
+
+                    if (countAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = countAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        countAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
+                genderAnalysis = aa;
+                for(AchillesResult ar: aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (genderAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = genderAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        genderAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID) {
+                ageAnalysis = aa;
+                for (AchillesResult ar : aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (ageAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = ageAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        ageAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_GENDER_COUNT_ANALYSIS_ID) {
+                genderCountAnalysis = aa;
+                for (AchillesResult ar : aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (genderCountAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = genderCountAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        genderCountAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_AGE_COUNT_ANALYSIS_ID) {
+                ageCountAnalysis = aa;
+                for (AchillesResult ar : aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (ageCountAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = ageCountAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        ageCountAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+
+        }
+
+        for(QuestionConcept q: questions) {
+            AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
+            ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
+            ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
+            aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis gca = new AchillesAnalysis(genderCountAnalysis);
+            gca.setResults(genderCountAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis aca = new AchillesAnalysis(ageCountAnalysis);
+            aca.setResults(ageCountAnalysisResultsByQuestion.get(q.getConceptId()));
+            q.setAnalysis(ca);
+            q.setAnalysis(ga);
+            q.setAnalysis(aa);
+            q.setAnalysis(gca);
+            q.setAnalysis(aca);
+        }
+
+        List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
+        resp.setItems(convertedQuestions);
+        return ResponseEntity.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<QuestionConceptListResponse> getSurveyQuestionResults(String surveyConceptId, String questionConceptId, String resultConceptId, Integer level) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+
+        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+
+        int levelFlag = level == 1 ? 2 : 4;
+
+        List<QuestionConcept> subQuestions = questionConceptDao.findSubSurveyQuestions(new String(questionConceptId+"."+resultConceptId), levelFlag);
+
+        List<String> questionConceptIds = new ArrayList<>();
+
+        for(QuestionConcept q: subQuestions) {
+            questionConceptIds.add(String.valueOf(q.getConceptId()));
+        }
+
+        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
+
+        List<AchillesResult> subQuestionResults = null;
+        List<Long> subIds = null;
+
+        if (level == 1) {
+            subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 5);
+
+            subIds = new ArrayList<>();
+
+            for(AchillesResult sqr: subQuestionResults) {
+                subIds.add(sqr.getId());
+            }
+        }
+
+        Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> genderCountAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> ageCountAnalysisResultsByQuestion = new HashMap<>();
+
+        AchillesAnalysis countAnalysis = null;
+        AchillesAnalysis genderAnalysis = null;
+        AchillesAnalysis ageAnalysis = null;
+        AchillesAnalysis genderCountAnalysis = null;
+        AchillesAnalysis ageCountAnalysis = null;
+
+        for (AchillesAnalysis aa: analyses) {
+            if (aa.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
+                countAnalysis = aa;
+                for(AchillesResult ar: aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (subIds != null) {
+                        if (subIds.contains(ar.getId())) {
+                            ar.setHasSubQuestions(1);
+                        } else {
+                            ar.setHasSubQuestions(0);
+                        }
+                    }
+
+                    if (countAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = countAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        countAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
+                genderAnalysis = aa;
+                for(AchillesResult ar: aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (genderAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = genderAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        genderAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID) {
+                ageAnalysis = aa;
+                for (AchillesResult ar : aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (ageAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = ageAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        ageAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_GENDER_COUNT_ANALYSIS_ID) {
+                genderCountAnalysis = aa;
+                for (AchillesResult ar : aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (genderCountAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = genderCountAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        genderCountAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+            if (aa.getAnalysisId() == SURVEY_AGE_COUNT_ANALYSIS_ID) {
+                ageCountAnalysis = aa;
+                for (AchillesResult ar : aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (ageCountAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = ageCountAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        ageCountAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
+
+        }
+
+        for(QuestionConcept q: subQuestions) {
+            AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
+            ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
+            ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
+            aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis gca = new AchillesAnalysis(genderCountAnalysis);
+            gca.setResults(genderCountAnalysisResultsByQuestion.get(q.getConceptId()));
+            AchillesAnalysis aca = new AchillesAnalysis(ageCountAnalysis);
+            aca.setResults(ageCountAnalysisResultsByQuestion.get(q.getConceptId()));
+            q.setAnalysis(ca);
+            q.setAnalysis(ga);
+            q.setAnalysis(aa);
+            q.setAnalysis(gca);
+            q.setAnalysis(aca);
+        }
+
+        List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
+        resp.setItems(convertedQuestions);
+        return ResponseEntity.ok(resp);
+    }
+
+    @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyResults(String surveyConceptId) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         /* Set up the age and gender names */
         // Too slow and concept names wrong so we hardcode list
         // List<Concept> genders = conceptDao.findByConceptClassId("Gender");
+
 
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
@@ -822,6 +1158,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
 
         resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+        /*
         // Get all analyses for question list and put the analyses on the question objects
         if (!questions.isEmpty()) {
             // Put ids in array for query to get all results at once
@@ -882,6 +1219,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         resp.setItems(convertedQuestions.stream().filter(q -> q.getQuestions().get(0).getSub() == 0).collect(Collectors.toList()));
+        */
         return ResponseEntity.ok(resp);
     }
 
