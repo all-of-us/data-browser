@@ -150,7 +150,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       }));
   }
-  
+
   public processSurveyQuestions(results: any) {
     this.surveyResult = results;
     this.survey = this.surveyResult.survey;
@@ -169,7 +169,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.questions = this.surveyResult.items;
   }
-  
+
   public processSurveyQuestionResults(q) {
     q.graphToShow = GraphType.BiologicalSex;
     q.selectedAnalysis = q.genderAnalysis;
@@ -191,7 +191,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     q.countAnalysis.surveyQuestionResults.push(
       this.addDidNotAnswerResult(
         q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
-  
     q.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
       if (a1.countValue > a2.countValue) {
         return -1;
@@ -201,12 +200,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
-    
   }
 
   private getSurveyResults() {
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
-      this.subscriptions.push(this.api.getSurveyQuestions(this.surveyConceptId.toString(), this.searchText.value).subscribe({
+      this.subscriptions.push(this.api.getSurveyQuestions(this.surveyConceptId.toString(),
+        this.searchText.value).subscribe({
         next: x => {
           this.processSurveyQuestions(x);
           this.filterResults();
@@ -359,7 +358,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public toggleAnswer(q: any) {
-    var qClone = {...q};
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
         next: results => {
@@ -376,7 +374,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-    
     if (!this.showAnswer[q.conceptId]) {
       this.showAnswer[q.conceptId] = true;
       q.expanded = true;
@@ -580,7 +577,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public clearSearch() {
     this.searchText.setValue('');
   }
-  
+
   public getSubQuestions(a: any, level: number) {
     this.api.getSurveyQuestionResults(a.stratum1, a.stratum2, a.stratum3, level)
     .subscribe({
@@ -641,7 +638,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   public showGraph(a) {
     a.subQuestionFetchComplete = true;
   }
