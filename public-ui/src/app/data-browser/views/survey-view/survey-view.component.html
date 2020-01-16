@@ -76,7 +76,7 @@
             <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
             <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
           </a>
-            <div class="survey-tbl" [hidden]="!showAnswer[q.conceptId]">
+            <div class="survey-tbl" *ngIf="q.expanded && q.questionResultFetchComplete">
                 <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
                     </div>

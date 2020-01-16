@@ -70,25 +70,6 @@ paths:
           schema:
             "$ref": "#/definitions/CdrVersion"
 
-  /v1/databrowser/survey-results:
-    get:
-      tags:
-        - dataBrowser
-
-      description: Gets list of quetions with results for a survey
-      operationId: "getSurveyResults"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: string
-          required: true
-          description: survey concept id
-      responses:
-        200:
-          description: A collection of survey modules
-          schema:
-            $ref: "#/definitions/QuestionConceptListResponse"
-
   /v1/databrowser/survey-questions:
     get:
       tags:
@@ -147,6 +128,34 @@ paths:
           description: A collection of analysis objects
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/main-survey-question-results:
+    post:
+      tags:
+        - dataBrowser
+      description: Gets thw survey question analysis results
+      operationId: "getMainSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: body
+          name: question
+          description: question concept
+          schema:
+            $ref: "#/definitions/QuestionConcept"
+      responses:
+        200:
+          description: A collection of analysis objects
+          schema:
+            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
 
   /v1/databrowser/ehr-count-analysis:
     get:
@@ -690,6 +699,30 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/QuestionConcept"
+
+  SurveyQuestionAnalysisResponse:
+    type: object
+    required:
+      - countAnalysis
+    properties:
+      countAnalysis:
+        description: count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderAnalysis:
+        description: gender analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageAnalysis:
+        description: age analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderIdentityAnalysis:
+        description: gender identity analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderCountAnalysis:
+        description: gender count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageCountAnalysis:
+        description: age count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   SurveyQuestionMap:
     type: object
