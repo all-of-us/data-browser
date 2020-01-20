@@ -13,21 +13,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent,
-    data: { title: 'Sign In' }
-  },
-  {
-    path: 'ehr',
-    redirectTo: '',
-    pathMatch: 'full'
-  },
-  {
-    path: 'survey',
-    redirectTo: '',
-    pathMatch: 'full'
-  },
-  {
     path: 'error',
     pathMatch: 'full',
     component: EmergencyComponent,
@@ -36,6 +21,7 @@ const routes: Routes = [
   {
     path: '',
     runGuardsAndResolvers: 'always',
+    canActivateChild: [IsSafeGuard],
     children: [
       {
         path: '',
