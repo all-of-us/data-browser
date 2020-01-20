@@ -17,7 +17,6 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from 'environments/environment';
 
 import {ServerConfigService} from 'app/services/server-config.service';
-import { SignInService } from 'app/services/sign-in.service';
 
 export const overriddenUrlKey = 'allOfUsApiUrlOverride';
 export const overriddenPublicUrlKey = 'publicApiUrlOverride';
@@ -43,7 +42,6 @@ export class AppComponent implements OnInit {
     private locationService: Location,
     private router: Router,
     private serverConfigService: ServerConfigService,
-    private signInService: SignInService,
     private titleService: Title
   ) { }
 

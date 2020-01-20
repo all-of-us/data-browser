@@ -13,7 +13,6 @@ import * as StackTrace from 'stacktrace-js';
 import { DataBrowserModule } from './data-browser/data-browser.module';
 import { ErrorReporterService } from './services/error-reporter.service';
 import { ServerConfigService } from './services/server-config.service';
-import { SignInService } from './services/sign-in.service';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
@@ -26,15 +25,14 @@ import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 
 function getPublicBasePath() {
-  return localStorage.getItem(overriddenPublicUrlKey) || environment.publicApiUrl;
+  return  environment.publicApiUrl;
 }
 
 
 // "Configuration" means Swagger API Client configuration.
-export function getConfiguration(signInService: SignInService): Configuration {
+export function getConfiguration(): Configuration {
   return new Configuration({
     basePath: getPublicBasePath(),
-    accessToken: () => signInService.currentAccessToken
   });
 }
 
@@ -62,7 +60,6 @@ export function getConfigService(http: Http) {
     },
     {
       provide: Configuration,
-      deps: [SignInService],
       useFactory: getConfiguration
     },
     DbConfigService,
@@ -72,8 +69,7 @@ export function getConfigService(http: Http) {
       provide: ErrorHandler,
       deps: [ServerConfigService],
       useClass: ErrorReporterService,
-    },
-    SignInService,
+    }
   ],
   // This specifies the top-level components, to load first.
   bootstrap: [AppComponent]
