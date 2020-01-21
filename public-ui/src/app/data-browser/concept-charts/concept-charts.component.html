@@ -7,12 +7,7 @@
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
     (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
-  <clr-tooltip>
-    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-    <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-      <div class="tooltip-label">Toggle here to view unit specific histograms</div>
-    </clr-tooltip-content>
-  </clr-tooltip>
+  <app-tooltip [toolTipText1]="'Toggle here to view unit specific histograms'"></app-tooltip>
   <div *ngIf="mixtureOfValues">
     <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"
          (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link measurement-filter-choice">{{su}}</div>

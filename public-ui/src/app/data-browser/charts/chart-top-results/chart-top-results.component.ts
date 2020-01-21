@@ -22,6 +22,8 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
     this.chartOptions.plotOptions.series.pointWidth = 20;
     this.chartOptions.yAxis.title.text = 'Participant Count';
     this.chartOptions.xAxis.title.text = 'Top Concepts';
+    this.chartOptions.yAxis.title.style.fontSize = '14px';
+    this.chartOptions.xAxis.title.style.fontSize = '14px';
   }
 
 

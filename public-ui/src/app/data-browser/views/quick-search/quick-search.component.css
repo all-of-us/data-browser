@@ -81,7 +81,6 @@ app-spinner {
 }
 
 .search-title {
-    white-space: nowrap;
     display: flex;
 }
 

@@ -1,0 +1,6 @@
+<div class="tooltip" (mouseenter)="hoverOnTooltip()"><clr-icon shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
+  <span class="tooltiptext" *ngIf="haveMultipleTooltipTexts(); else singleTooltipText">
+    {{toolTipText1}} <span class="allofus-italics">{{toolTipText2}}</span> {{toolTipText3}} <span class="allofus-italics">{{toolTipText4}}</span> {{toolTipText5}}
+    </span>
+  <ng-template #singleTooltipText><span class="tooltiptext">{{toolTipText1}}</span></ng-template>
+</div>
