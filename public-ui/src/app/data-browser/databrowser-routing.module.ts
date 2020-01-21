@@ -19,6 +19,16 @@ const routes: Routes = [
     data: { title: 'ERROR' }
   },
   {
+    path: 'ehr',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
+    path: 'survey',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
     path: '',
     runGuardsAndResolvers: 'always',
     canActivateChild: [IsSafeGuard],
