@@ -9,7 +9,6 @@ import {DataBrowserModule} from '../../data-browser/data-browser.module';
 
 import {AppComponent} from './app.component';
 
-import {SignInService} from 'app/services/sign-in.service';
 
 describe('AppComponent', () => {
 
@@ -26,8 +25,7 @@ describe('AppComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        {provide: DataBrowserService, useValue: {}},
-        {provide: SignInService, useValue: {}}
+        {provide: DataBrowserService, useValue: {}}
       ] }).compileComponents();
   }));
 

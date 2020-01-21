@@ -8,7 +8,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 //  components
 import { BetaBarComponent } from '../components/beta-bar/beta-bar.component';
 import { EmergencyComponent } from '../views/emergency/emergency.component';
-import { LoginComponent } from '../views/login/login.component';
 import { PageTemplateSignedOutComponent } from '../views/page-template-signed-out/page-template-signed-out.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
@@ -31,7 +30,6 @@ import { HeaderFooterService } from './services/header-footer.service';
     HighlightSearchComponent,
     BreadcrumbComponent,
     EmergencyComponent,
-    LoginComponent,
     PageTemplateSignedOutComponent,
     RhHeaderComponent,
     BetaBarComponent,
@@ -47,7 +45,6 @@ import { HeaderFooterService } from './services/header-footer.service';
     HighlightSearchComponent,
     BreadcrumbComponent,
     EmergencyComponent,
-    LoginComponent,
     PageTemplateSignedOutComponent,
     RhHeaderComponent,
     BetaBarComponent,
