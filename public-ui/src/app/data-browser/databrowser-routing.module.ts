@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment';
 
 import { IsSafeGuard } from '../guards/is-safe-guard.service';
 import { EmergencyComponent } from '../views/emergency/emergency.component';
-import { LoginComponent } from '../views/login/login.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
