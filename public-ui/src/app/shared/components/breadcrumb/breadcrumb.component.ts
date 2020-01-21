@@ -52,7 +52,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       }
     }
     if (newLabel.toLowerCase().indexOf('utilization') > 0) {
-      newLabel = 'health-care-access-&-utilization survey';
+      newLabel = newLabel.replace('and', '&');
     }
     return {
       label: newLabel,
