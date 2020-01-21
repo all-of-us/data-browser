@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Concept} from "../../../../publicGenerated/model/concept";
-import {DbConfigService} from "../../../utils/db-config.service";
+import {DbConfigService} from '../../../utils/db-config.service';
 
 @Component({
   selector: 'app-tooltip',
@@ -17,12 +16,11 @@ export class TooltipComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() action: string;
   
-
   constructor(public dbc: DbConfigService) { }
 
   ngOnInit() {
   }
-  
+
   public haveMultipleTooltipTexts() {
     if (this.haveThreeToolTipTexts() || this.haveFiveToolTipTexts()) {
       return true;
@@ -30,10 +28,11 @@ export class TooltipComponent implements OnInit {
       return false;
     }
   }
-  
+
   public haveThreeToolTipTexts() {
     if (this.toolTipText1 && this.toolTipText2 && this.toolTipText3) {
-      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0 && this.toolTipText3.length > 0) {
+      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0
+        && this.toolTipText3.length > 0) {
         return true;
       } else {
         return false;
@@ -42,10 +41,11 @@ export class TooltipComponent implements OnInit {
       return false;
     }
   }
-  
+
   public haveFiveToolTipTexts() {
     if (this.toolTipText1 && this.toolTipText2 && this.toolTipText3 && this.toolTipText4 && this.toolTipText5) {
-      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0 && this.toolTipText3.length > 0 && this.toolTipText4.length > 0 && this.toolTipText5.length > 0) {
+      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0 && this.toolTipText3.length > 0
+        && this.toolTipText4.length > 0 && this.toolTipText5.length > 0) {
         return true;
       } else {
         return false;
@@ -54,7 +54,7 @@ export class TooltipComponent implements OnInit {
       return false;
     }
   }
-  
+
   public hoverOnTooltip() {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       this.label, this.searchTerm, this.action);
