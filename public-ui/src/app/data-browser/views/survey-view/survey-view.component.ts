@@ -297,7 +297,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.surveyConceptId = survey.conceptId;
       if (this.surveyConceptId === 43528895) {
         this.surveyPdfUrl = '/assets/surveys/' +
-          'Healthcare Access Utilization'.split(' ').join('_') + '.pdf';
+          'Health Care Access Utilization'.split(' ').join('_') + '.pdf';
       } else {
         this.surveyPdfUrl = '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
       }
