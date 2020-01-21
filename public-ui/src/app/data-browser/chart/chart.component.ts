@@ -180,7 +180,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             fontWeight: 'bold',
             textTransform: 'capitalize',
             whiteSpace: 'wrap',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            fontSize: '14px'
           }
         },
         min: options.yAxisMin != null ? options.yAxisMin :
@@ -252,6 +253,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',
+            fontSize: '14px'
           },
         },
         categories: options.categories,
@@ -262,6 +264,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis',
             width: '80px',
+            fontSize: '14px'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -433,7 +436,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxis: {
         labels: {
           style: {
-            align: 'right'
+            align: 'right',
+            fontSize: '12px'
           }
         }
       },
