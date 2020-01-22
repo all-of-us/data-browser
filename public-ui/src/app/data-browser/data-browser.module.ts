@@ -14,6 +14,7 @@ import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-r
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
+import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
 import { DbTableComponent } from './db-table/db-table.component';
@@ -25,7 +26,6 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { TooltipComponent } from './components/tooltip/tooltip.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
