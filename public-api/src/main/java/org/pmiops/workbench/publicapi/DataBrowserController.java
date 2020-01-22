@@ -833,8 +833,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
-        System.out.println(searchWord);
-
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
         SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
