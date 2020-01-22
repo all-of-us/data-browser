@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
 import {DbConfigService} from '../../../utils/db-config.service';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-tooltip',
@@ -15,7 +15,7 @@ export class TooltipComponent implements OnInit {
   @Input() label: string;
   @Input() searchTerm: string;
   @Input() action: string;
-  
+
   constructor(public dbc: DbConfigService) { }
 
   ngOnInit() {
@@ -43,9 +43,11 @@ export class TooltipComponent implements OnInit {
   }
 
   public haveFiveToolTipTexts() {
-    if (this.toolTipText1 && this.toolTipText2 && this.toolTipText3 && this.toolTipText4 && this.toolTipText5) {
-      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0 && this.toolTipText3.length > 0
-        && this.toolTipText4.length > 0 && this.toolTipText5.length > 0) {
+    if (this.toolTipText1 && this.toolTipText2 && this.toolTipText3 &&
+      this.toolTipText4 && this.toolTipText5) {
+      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0 &&
+        this.toolTipText3.length > 0 && this.toolTipText4.length > 0 &&
+        this.toolTipText5.length > 0) {
         return true;
       } else {
         return false;
