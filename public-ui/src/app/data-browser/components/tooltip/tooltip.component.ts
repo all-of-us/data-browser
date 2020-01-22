@@ -1,5 +1,5 @@
-import {DbConfigService} from '../../../utils/db-config.service';
 import {Component, Input, OnInit} from '@angular/core';
+import {DbConfigService} from '../../../utils/db-config.service';
 
 @Component({
   selector: 'app-tooltip',
