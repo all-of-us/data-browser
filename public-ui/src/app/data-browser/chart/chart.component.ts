@@ -205,7 +205,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
             this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? {
           style: {
-            fontSize: '12px',
+            fontSize: '14px',
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis'
           },
@@ -218,7 +218,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           && options.series[0].dataOnlyLT20) ?
          {
           style: {
-            fontSize: '12px',
+            fontSize: '14px',
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis'
           },
@@ -437,7 +437,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         labels: {
           style: {
             align: 'right',
-            fontSize: '12px'
+            fontSize: '14px'
           }
         }
       },
