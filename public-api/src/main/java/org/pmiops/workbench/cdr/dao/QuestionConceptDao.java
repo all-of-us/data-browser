@@ -32,11 +32,11 @@ public interface QuestionConceptDao extends CrudRepository<QuestionConcept, Long
 
 
     @Query(nativeQuery=true, value="select distinct c.* from concept c join survey_question_map sqm on c.concept_id=sqm.question_concept_id and sqm.survey_concept_id=?1 \n" +
-            "join achilles_results ar on sqm.question_concept_id=ar.stratum_2 and ar.analysis_id=3110 and (match(c.concept_name) against (?2 in boolean mode) > 0 or match(r.stratum_4) against(?2 in boolean mode) > 0) \n" +
+            "join achilles_results ar on sqm.question_concept_id=ar.stratum_2 and ar.analysis_id=3110 and (match(c.concept_name) against (?2 in boolean mode) > 0 or match(ar.stratum_4) against(?2 in boolean mode) > 0) \n" +
             "and sqm.sub=0 union distinct \n" +
             "select distinct c.* from concept c where concept_id in (select distinct SUBSTRING_INDEX(sqm.path, '.', 1) from survey_question_map sqm \n" +
             "join achilles_results ar on sqm.question_concept_id=ar.stratum_2 and ar.analysis_id=3110 and sqm.survey_concept_id=?1 \n" +
-            "and (match(sqm.question_text) against (?2 in boolean mode) > 0 or match(ar.stratum_4) against(?2 in boolean mode) > 0) and sqm.sub=1")
+            "where (match(sqm.question_text) against (?2 in boolean mode) > 0 or match(ar.stratum_4) against(?2 in boolean mode) > 0) and sqm.sub=1)")
     List<QuestionConcept> getMatchingSurveyQuestions(String survey_concept_id, String search_word);
 
     @Query(nativeQuery=true, value="select distinct c.* from concept c join survey_question_map sqm on sqm.question_concept_id=c.concept_id \n" +

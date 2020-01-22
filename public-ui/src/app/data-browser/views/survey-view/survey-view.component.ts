@@ -71,6 +71,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
+        this.searchText.setValue(this.prevSearchText);
       } else {
         this.prevSearchText = '';
       }
@@ -168,6 +169,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
     }
     this.questions = this.surveyResult.items;
+    this.questions.sort((a1, a2) => {
+      if (a1.actualQuestionNumber < a2.actualQuestionNumber) {
+        return -1;
+      }
+      if (a1.actualQuestionNumber > a2.actualQuestionNumber) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   public processSurveyQuestionResults(q) {
@@ -342,9 +352,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loading = true;
     if (this.surveyResult) {
       this.questions = this.surveyResult.items;
-    }
-    if (this.searchText.value && this.searchText.value.length > 0) {
-      this.questions = this.questions.filter(this.searchQuestion, this);
     }
     this.loading = false;
   }
