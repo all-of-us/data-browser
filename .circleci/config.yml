@@ -59,6 +59,25 @@ jobs:
             - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
           key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
+  public-api-integration-test:
+    <<: *java_defaults
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      - restore_cache:
+          keys:
+          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - api-cache-
+      - run:
+          name: Validate swagger definitions
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
+      - run:
+          name: Run integration tests
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb integration --env aou-db-prod
+
   public-api-build-test:
     <<: *java_defaults
     steps:
@@ -265,6 +284,16 @@ workflows:
           requires:
             - api-deps-check
             - public-ui-build-test
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - public-api-integration-test
 
 experimental:
   notify:
