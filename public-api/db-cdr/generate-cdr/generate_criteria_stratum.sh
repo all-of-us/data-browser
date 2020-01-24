@@ -366,3 +366,113 @@ from
   group by concept_id,age,cnt
   order by concept_id asc
 "
+
+echo "Inserting ICD10CM condition counts"
+
+echo "biological sex child concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
+select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
+and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD10CM' and cr.domain_id='CONDITION' and cr.synonyms like '%rank1%' and ar.stratum_3='Condition'
+group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
+
+echo "biological sex parent concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
+select concept_id, gender, 'biological_sex', 'Condition', cnt, 3101
+from
+  (select ancestor_concept_id as concept_id, p.gender_concept_id as gender, count(distinct b.person_id) cnt
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'ICD10CM'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and synonyms like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  group by 1,2) y
+  group by concept_id,gender,cnt
+  order by concept_id asc"
+
+echo "age child concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
+select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
+and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD10CM' and cr.domain_id='CONDITION' and cr.synonyms like '%rank1%' and ar.stratum_3='Condition'
+group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
+
+echo "age parent concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
+select concept_id, age, 'age', 'Condition', cnt, 3102
+from
+  (select ancestor_concept_id as concept_id, 2 as age, count(distinct b.person_id) cnt
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'ICD10CM'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and synonyms like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  where (extract(year from condition_start_date) - p.year_of_birth) >= 18 and (extract(year from condition_start_date) - p.year_of_birth) < 30
+  group by 1,2) y
+  group by concept_id,age,cnt
+  order by concept_id asc
+"
+
+echo "age parent concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
+select concept_id, age, 'age', 'Condition', cnt, 3102
+from
+  (select ancestor_concept_id as concept_id, cast(floor((extract(year from condition_start_date) - p.year_of_birth)/10) as int64) as age, count(distinct b.person_id) cnt
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'ICD10CM'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and synonyms like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  where (extract(year from condition_start_date) - p.year_of_birth) >= 30 and (extract(year from condition_start_date) - p.year_of_birth) < 90
+  group by 1,2) y
+  group by concept_id,age,cnt
+  order by concept_id asc
+"
+
+echo "age parent concept counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
+select concept_id, age, 'age', 'Condition', cnt, 3102
+from
+  (select ancestor_concept_id as concept_id, 9 as age, count(distinct b.person_id) cnt
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'ICD10CM'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and synonyms like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  where (extract(year from condition_start_date) - p.year_of_birth) >= 90
+  group by 1,2) y
+  group by concept_id,age,cnt
+  order by concept_id asc
+"
