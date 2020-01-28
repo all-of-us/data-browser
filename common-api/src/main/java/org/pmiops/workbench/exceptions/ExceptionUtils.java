@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 /** Utility methods related to exceptions. */
 public class ExceptionUtils {
 
-    public static boolean isGoogleServiceUnavailableException(IOException e) {
+    public static boolean isGoogleServiceUnavailableException(Exception e) {
         // We assume that any 500 range error for Google is something we should retry.
         if (e instanceof GoogleJsonResponseException) {
             int code = ((GoogleJsonResponseException) e).getDetails().getCode();
@@ -18,7 +18,7 @@ public class ExceptionUtils {
         return false;
     }
 
-    public static boolean isGoogleConflictException(IOException e) {
+    public static boolean isGoogleConflictException(Exception e) {
         if (e instanceof GoogleJsonResponseException) {
             int code = ((GoogleJsonResponseException) e).getDetails().getCode();
             return code == 409;
@@ -26,7 +26,7 @@ public class ExceptionUtils {
         return false;
     }
 
-    public static DataBrowserException convertGoogleIOException(IOException e) {
+    public static DataBrowserException convertGoogleIOException(Exception e) {
         if (isGoogleServiceUnavailableException(e)) {
             throw new ServerUnavailableException(e);
         } else if (isGoogleConflictException(e)) {

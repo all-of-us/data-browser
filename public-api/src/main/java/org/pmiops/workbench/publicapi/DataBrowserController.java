@@ -538,19 +538,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-            try {
-                List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
-            } catch(ServerErrorException se) {
-                throw new DataNotFoundException("No rolled counts available for this concept");
-            }
+            List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
             Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
             CriteriaParentResponse response = new CriteriaParentResponse();
             if (criteriaList.size() > 0) {
-                try{
-                    List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
-                } catch (NullPointerException ne) {
-                    throw new DataNotFoundException("No rolled counts available for this concept");
-                }
+                List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
                 CBCriteria parent = null;
                 CBCriteria standardParent = null;
                 CBCriteria sourceParent = null;
@@ -579,11 +571,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 return ResponseEntity.ok(response);
             }
             return ResponseEntity.ok(response);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
                 throw new ServerErrorException("Socket time-out error. Please retry after sometime");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -598,11 +590,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
             criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
             return ResponseEntity.ok(criteriaListResponse);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -658,11 +650,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
                     .collect(Collectors.toList()));
             return ResponseEntity.ok(response);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -761,101 +753,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
 
             response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-            return ResponseEntity.ok(response);CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-            Integer maxResults = searchConceptsRequest.getMaxResults();
-            if(maxResults == null || maxResults == 0){
-                maxResults = Integer.MAX_VALUE;
-            }
-
-            List<Long> drugConcepts = new ArrayList<>();
-
-            if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-                List<Long> drugMatchedConcepts = new ArrayList<>();
-                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-                if(drugMatchedConcepts.size() > 0) {
-                    drugConcepts = drugMatchedConcepts;
-                }
-            }
-
-            Integer minCount = searchConceptsRequest.getMinCount();
-            if(minCount == null){
-                minCount = 1;
-            }
-
-            StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
-
-
-            if(searchConceptsRequest.getQuery() == null || searchConceptsRequest.getQuery().isEmpty()){
-                if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
-                    standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
-                }
-            }else{
-                if(standardConceptFilter == null){
-                    standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
-                }
-            }
-
-            String domainId = null;
-            if (searchConceptsRequest.getDomain() != null) {
-                domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
-            }
-
-            ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
-
-            Slice<Concept> concepts = null;
-            int measurementTests = 1;
-            int measurementOrders = 1;
-
-            if (domainId != null && domainId.equals("Measurement")) {
-                if (searchConceptsRequest.getMeasurementTests() != null) {
-                    measurementTests = searchConceptsRequest.getMeasurementTests();
-                }
-                if (searchConceptsRequest.getMeasurementOrders() != null) {
-                    measurementOrders = searchConceptsRequest.getMeasurementOrders();
-                }
-            }
-            concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
-                    searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
-                    (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
-
-            ConceptListResponse response = new ConceptListResponse();
-
-            for(Concept con : concepts.getContent()){
-                String conceptCode = con.getConceptCode();
-                String conceptId = String.valueOf(con.getConceptId());
-
-                if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
-                    List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
-                    response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-                    response.setSourceOfStandardConcepts(con.getConceptId());
-                }
-
-                if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
-                    response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
-                    response.setMatchedConceptName(con.getConceptName());
-                }
-            }
-
-            if(response.getMatchType() == null && response.getStandardConcepts() == null){
-                response.setMatchType(MatchType.NAME);
-            }
-
-            List<Concept> conceptList = new ArrayList<>();
-
-            if (concepts != null) {
-                conceptList = new ArrayList(concepts.getContent());
-                if(response.getStandardConcepts() != null) {
-                    conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
-                }
-            }
-
-            response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
             return ResponseEntity.ok(response);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -900,11 +803,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     .collect(Collectors.toList()));
 
             return ResponseEntity.ok(response);
-        } catch (ServerErrorException) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -921,11 +824,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } catch(ServerErrorException se) {
                 throw new ServerErrorException("No data present in table cdr version");
             }
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -943,11 +846,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } catch(NullPointerException ne) {
                 throw new DataNotFoundException("No gender analysis data");
             }
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -961,11 +864,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
             addRaceStratum(raceAnalysis);
             return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -979,11 +882,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
             addEthnicityStratum(ethnicityAnalysis);
             return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1017,11 +920,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
             resp.setItems(convertedQuestions);
             return ResponseEntity.ok(resp);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1060,11 +963,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             resp.setAgeCountAnalysis(questionConcept.getAgeCountAnalysis());
 
             return ResponseEntity.ok(resp);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1107,11 +1010,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             resp.setItems(mappedQuestions);
             return ResponseEntity.ok(resp);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1131,11 +1034,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
             ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
             return ResponseEntity.ok(ehrCountAnalysis);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1153,11 +1056,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             AnalysisListResponse analysisListResponse = new AnalysisListResponse();
             analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
             return ResponseEntity.ok(analysisListResponse);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1380,11 +1283,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
             resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
             return ResponseEntity.ok(resp);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1409,11 +1312,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             ConceptListResponse resp = new ConceptListResponse();
             resp.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
             return ResponseEntity.ok(resp);
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -1426,11 +1329,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
             AchillesResult result = achillesResultDao.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID);
             return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
-        } catch(ServerErrorException se) {
-            if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
-            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
-                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+        } catch(Exception ie) {
+            if (ExceptionUtils.isSocketTimeoutException(ie)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
