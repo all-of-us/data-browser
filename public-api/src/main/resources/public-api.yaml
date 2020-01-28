@@ -1240,27 +1240,3 @@ definitions:
         default: 1
         description: By default all the measurement orders are returned
 
-  ErrorResponse:
-    type: object
-    properties:
-      message:
-        description: Error message
-        type: string
-      statusCode:
-        description: Http error status code
-        type: integer
-      errorClassName:
-        type: string
-      errorCode:
-        description: Short description of the type of error
-        $ref: "#/definitions/ErrorCode"
-      errorUniqueId:
-        type: string
-        description: Unique ID for this error response, for correlation with backend logs
-
-  ErrorCode:
-    type: string
-    description: Short parsable error descriptions
-    enum: [
-      ]
-

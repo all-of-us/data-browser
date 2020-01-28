@@ -751,7 +751,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
                 }
             }
-
             response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
             return ResponseEntity.ok(response);
         } catch(Exception ie) {
