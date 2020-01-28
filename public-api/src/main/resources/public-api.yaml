@@ -1262,7 +1262,5 @@ definitions:
     type: string
     description: Short parsable error descriptions
     enum: [
-        PARSE_ERROR,
-        USER_DISABLED
       ]
 
