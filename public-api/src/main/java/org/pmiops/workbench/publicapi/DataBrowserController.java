@@ -4,7 +4,9 @@ import java.util.logging.Logger;
 import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
+import org.springframework.http.HttpStatus;
 import com.google.common.collect.ImmutableList;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,6 +69,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import org.pmiops.workbench.exceptions.ExceptionUtils;
+import org.pmiops.workbench.exceptions.ServerErrorException;
+import org.pmiops.workbench.exceptions.DataNotFoundException;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
@@ -721,50 +726,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        /* Delete this once tested in test
-        List<DomainInfo> domainInfos = new ArrayList<>();
-        domainInfos.addAll(domainInfoDao.findByConceptIdNotOrderByDomainId(21L));
-
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
-        }
-
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            DomainInfo domainInfo= domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery);
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        } else if (measurementQuery == -1){
-            DomainInfo domainInfo= domainInfoDao.findByConceptId(21L);
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        } else if (measurementQuery == 2) {
-            DomainInfo domainInfo = domainInfoDao.findMeasurementDomainTotalsWithoutFilter();
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        }
-
-        Collections.sort(domainInfos);
-
-        List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
-
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(ImmutableList.copyOf(domainInfos).stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
-                */
 
         Integer getTests = null;
         Integer getOrders = null;
@@ -786,6 +747,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<DomainInfo> domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
         List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
 
+        if (domainInfos == null || surveyModules == null) {
+            throw new DataNotFoundException("No domain metadata available");
+        }
+
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
@@ -799,94 +764,150 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.CdrVersion> getCdrVersionUsed() {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
-        return ResponseEntity.ok(TO_CLIENT_CDR_VERSION.apply(cdrVersion));
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            try {
+                CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
+                return ResponseEntity.ok(TO_CLIENT_CDR_VERSION.apply(cdrVersion));
+            } catch(ServerErrorException se) {
+                throw new ServerErrorException("No data present in table cdr version");
+            }
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
-        addGenderStratum(genderAnalysis,1, "0", null);
-        return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            try {
+                AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
+                addGenderStratum(genderAnalysis,1, "0", null);
+                return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
+            } catch(NullPointerException ne) {
+                throw new DataNotFoundException("No gender analysis data");
+            }
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getRaceAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
-        addRaceStratum(raceAnalysis);
-        return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
+            addRaceStratum(raceAnalysis);
+            return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getEthnicityAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
-        addEthnicityStratum(ethnicityAnalysis);
-        return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
+            addEthnicityStratum(ethnicityAnalysis);
+            return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyQuestions(String surveyConceptId, String searchWord) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        long longSurveyConceptId = Long.parseLong(surveyConceptId);
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
-        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+            QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
-        SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
+            SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
 
-        resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+            resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
 
-        String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
+            String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
 
-        List<QuestionConcept> questions = new ArrayList<>();
+            List<QuestionConcept> questions = new ArrayList<>();
 
-        if (searchWord == null || searchWord.isEmpty()) {
-            //Get all the questions
-            questions = questionConceptDao.getSurveyQuestions(surveyConceptId);
-        } else {
-            // Get only the matching questions
-            questions = questionConceptDao.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword);
+            if (searchWord == null || searchWord.isEmpty()) {
+                //Get all the questions
+                questions = questionConceptDao.getSurveyQuestions(surveyConceptId);
+            } else {
+                // Get only the matching questions
+                questions = questionConceptDao.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword);
+            }
+
+            List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
+            resp.setItems(convertedQuestions);
+            return ResponseEntity.ok(resp);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
         }
-
-        List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
-        resp.setItems(convertedQuestions);
-        return ResponseEntity.ok(resp);
     }
 
     @Override
     public ResponseEntity<SurveyQuestionAnalysisResponse> getMainSurveyQuestionResults(String surveyConceptId, String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
 
-        List<String> questionConceptIds = new ArrayList<>();
-        questionConceptIds.add(questionConceptId);
+            List<String> questionConceptIds = new ArrayList<>();
+            questionConceptIds.add(questionConceptId);
 
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, questionConceptIds);
+            List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, questionConceptIds);
 
-        List<AchillesResult> subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 3);
+            List<AchillesResult> subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 3);
 
-        List<Long> subIds = new ArrayList<>();
+            List<Long> subIds = new ArrayList<>();
 
-        for(AchillesResult sqr: subQuestionResults) {
-            subIds.add(sqr.getId());
+            for(AchillesResult sqr: subQuestionResults) {
+                subIds.add(sqr.getId());
+            }
+
+            List<org.pmiops.workbench.model.QuestionConcept> questions = new ArrayList<>();
+            questions.add(question);
+
+            List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
+            org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
+
+            SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
+            resp.setCountAnalysis(questionConcept.getCountAnalysis());
+            resp.setGenderAnalysis(questionConcept.getGenderAnalysis());
+            resp.setAgeAnalysis(questionConcept.getAgeAnalysis());
+            resp.setGenderCountAnalysis(questionConcept.getGenderCountAnalysis());
+            resp.setAgeCountAnalysis(questionConcept.getAgeCountAnalysis());
+
+            return ResponseEntity.ok(resp);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
         }
-
-        List<org.pmiops.workbench.model.QuestionConcept> questions = new ArrayList<>();
-        questions.add(question);
-
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
-        org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
-
-        SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
-        resp.setCountAnalysis(questionConcept.getCountAnalysis());
-        resp.setGenderAnalysis(questionConcept.getGenderAnalysis());
-        resp.setAgeAnalysis(questionConcept.getAgeAnalysis());
-        resp.setGenderCountAnalysis(questionConcept.getGenderCountAnalysis());
-        resp.setAgeCountAnalysis(questionConcept.getAgeCountAnalysis());
-
-        return ResponseEntity.ok(resp);
     }
 
     @Override
@@ -954,7 +975,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
-
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();

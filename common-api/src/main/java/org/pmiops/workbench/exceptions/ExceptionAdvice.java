@@ -21,7 +21,7 @@ public class ExceptionAdvice {
   public ResponseEntity<?> messageNotReadableError(Exception e) {
     log.log(Level.INFO, "failed to parse HTTP request message, returning 400", e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-        WorkbenchException.errorResponse("failed to parse valid JSON request message")
+        DataBrowserException.errorResponse("failed to parse valid JSON request message")
             .statusCode(HttpStatus.BAD_REQUEST.value()));
   }
 
@@ -41,14 +41,14 @@ public class ExceptionAdvice {
     if (relevantError.getClass().getAnnotation(ResponseStatus.class) != null) {
       statusCode = relevantError.getClass().getAnnotation(ResponseStatus.class).value().value();
     }
-    if (relevantError instanceof WorkbenchException) {
+    if (relevantError instanceof DataBrowserException) {
       // Only include Exception details on Workbench errors.
       errorResponse.setMessage(relevantError.getMessage());
       errorResponse.setErrorClassName(relevantError.getClass().getName());
-      WorkbenchException workbenchException = (WorkbenchException) relevantError;
-      if (workbenchException.getErrorResponse() != null
-          && workbenchException.getErrorResponse().getErrorCode() != null) {
-        errorResponse.setErrorCode(workbenchException.getErrorResponse().getErrorCode());
+      DataBrowserException dataBrowserException = (DataBrowserException) relevantError;
+      if (dataBrowserException.getErrorResponse() != null
+          && dataBrowserException.getErrorResponse().getErrorCode() != null) {
+        errorResponse.setErrorCode(dataBrowserException.getErrorResponse().getErrorCode());
       }
     }
 
