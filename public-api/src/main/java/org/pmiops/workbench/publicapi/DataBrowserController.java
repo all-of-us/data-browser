@@ -7,6 +7,8 @@ import com.google.common.base.Strings;
 import org.springframework.http.HttpStatus;
 import com.google.common.collect.ImmutableList;
 import java.net.SocketTimeoutException;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -534,232 +536,379 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
-        Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
-        CriteriaParentResponse response = new CriteriaParentResponse();
-        if (criteriaList.size() > 0) {
-            List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
-            CBCriteria parent = null;
-            CBCriteria standardParent = null;
-            CBCriteria sourceParent = null;
-            if (parentList.size() > 1) {
-                List<CBCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList());
-                standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
-                List<CBCriteria> sourceParentList = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList());
-                sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
-                if (standardParent != null) {
-                    if (sourceParent != null) {
-                        standardParent.setSourceCount(sourceParent.getCount());
-                    }
-                    parent = standardParent;
-                } else {
-                    parent = sourceParent;
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            try {
+                List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
+            } catch(ServerErrorException se) {
+                throw new DataNotFoundException("No rolled counts available for this concept");
+            }
+            Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
+            CriteriaParentResponse response = new CriteriaParentResponse();
+            if (criteriaList.size() > 0) {
+                try{
+                    List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
+                } catch (NullPointerException ne) {
+                    throw new DataNotFoundException("No rolled counts available for this concept");
                 }
-            } else {
-                parent = parentList.get(0);
+                CBCriteria parent = null;
+                CBCriteria standardParent = null;
+                CBCriteria sourceParent = null;
+                if (parentList.size() > 1) {
+                    List<CBCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList());
+                    standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
+                    List<CBCriteria> sourceParentList = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList());
+                    sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
+                    if (standardParent != null) {
+                        if (sourceParent != null) {
+                            standardParent.setSourceCount(sourceParent.getCount());
+                        }
+                        parent = standardParent;
+                    } else {
+                        parent = sourceParent;
+                    }
+                } else {
+                    parent = parentList.get(0);
+                }
+                if (criteriaList.size() >= 1) {
+                    criteriaList.remove(parent);
+                }
+                response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
+                Multimap<Long, CBCriteria> parentCriteria = Multimaps
+                        .index(criteriaList, CBCriteria::getParentId);
+                return ResponseEntity.ok(response);
             }
-            if (criteriaList.size() >= 1) {
-                criteriaList.remove(parent);
-            }
-            response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
-            Multimap<Long, CBCriteria> parentCriteria = Multimaps
-                    .index(criteriaList, CBCriteria::getParentId);
             return ResponseEntity.ok(response);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
         }
-        return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<CriteriaListResponse> getCriteriaChildren(Long parentId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<CBCriteria> criteriaList = criteriaDao.findCriteriaChildren(parentId);
-        CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-        criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
-        return ResponseEntity.ok(criteriaListResponse);
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            List<CBCriteria> criteriaList = criteriaDao.findCriteriaChildren(parentId);
+            CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
+            criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
+            return ResponseEntity.ok(criteriaListResponse);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
-        String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
-        Long conceptId = 0L;
         try {
-            conceptId = Long.parseLong(query);
-        } catch (NumberFormatException e) {
-            // expected
-        }
-        // TODO: consider parallelizing these lookups
-        List<Long> toMatchConceptIds = new ArrayList<>();
-        toMatchConceptIds.add(conceptId);
-        List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
-        if (drugMatchedConceptIds.size() > 0) {
-            toMatchConceptIds.addAll(drugMatchedConceptIds);
-        }
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
+            String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
+            Long conceptId = 0L;
+            try {
+                conceptId = Long.parseLong(query);
+            } catch (NumberFormatException e) {
+                // expected
+            }
+            // TODO: consider parallelizing these lookups
+            List<Long> toMatchConceptIds = new ArrayList<>();
+            toMatchConceptIds.add(conceptId);
+            List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
+            if (drugMatchedConceptIds.size() > 0) {
+                toMatchConceptIds.addAll(drugMatchedConceptIds);
+            }
 
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
-        }
+            int measurementQuery = 0;
+            if (testFilter == 1 && orderFilter == 0) {
+                measurementQuery = 1;
+            } else if (testFilter == 0 && orderFilter == 1) {
+                measurementQuery = 0;
+            } else if (testFilter == 0 && orderFilter == 0) {
+                measurementQuery = -1;
+            } else if (testFilter == 1 && orderFilter == 1) {
+                measurementQuery = 2;
+            }
 
-        List<DomainInfo> domains = null;
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds, measurementQuery);
-        } else if (measurementQuery == -1){
-            domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(domainKeyword, query, toMatchConceptIds);
-        } else if (measurementQuery == 2) {
-            domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
-        }
+            List<DomainInfo> domains = null;
+            if (measurementQuery == 1 || measurementQuery == 0) {
+                domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds, measurementQuery);
+            } else if (measurementQuery == -1){
+                domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(domainKeyword, query, toMatchConceptIds);
+            } else if (measurementQuery == 2) {
+                domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
+            }
 
-        List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(domains.stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
-        return ResponseEntity.ok(response);
+            List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
+            DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
+            response.setDomainInfos(domains.stream()
+                    .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
+                    .collect(Collectors.toList()));
+            response.setSurveyModules(surveyModules.stream()
+                    .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
+                    .collect(Collectors.toList()));
+            return ResponseEntity.ok(response);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        Integer maxResults = searchConceptsRequest.getMaxResults();
-        if(maxResults == null || maxResults == 0){
-            maxResults = Integer.MAX_VALUE;
-        }
-
-        List<Long> drugConcepts = new ArrayList<>();
-
-        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Long> drugMatchedConcepts = new ArrayList<>();
-            drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-            if(drugMatchedConcepts.size() > 0) {
-                drugConcepts = drugMatchedConcepts;
-            }
-        }
-
-        Integer minCount = searchConceptsRequest.getMinCount();
-        if(minCount == null){
-            minCount = 1;
-        }
-
-        StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
-
-
-        if(searchConceptsRequest.getQuery() == null || searchConceptsRequest.getQuery().isEmpty()){
-            if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
-                standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
-            }
-        }else{
-            if(standardConceptFilter == null){
-                standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
-            }
-        }
-
-        String domainId = null;
-        if (searchConceptsRequest.getDomain() != null) {
-            domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
-        }
-
-        ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
-
-        Slice<Concept> concepts = null;
-        int measurementTests = 1;
-        int measurementOrders = 1;
-
-        if (domainId != null && domainId.equals("Measurement")) {
-            if (searchConceptsRequest.getMeasurementTests() != null) {
-                measurementTests = searchConceptsRequest.getMeasurementTests();
-            }
-            if (searchConceptsRequest.getMeasurementOrders() != null) {
-                measurementOrders = searchConceptsRequest.getMeasurementOrders();
-            }
-        }
-        concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
-                searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
-                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
-
-        ConceptListResponse response = new ConceptListResponse();
-
-        for(Concept con : concepts.getContent()){
-            String conceptCode = con.getConceptCode();
-            String conceptId = String.valueOf(con.getConceptId());
-
-            if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
-                List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
-                response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-                response.setSourceOfStandardConcepts(con.getConceptId());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            Integer maxResults = searchConceptsRequest.getMaxResults();
+            if(maxResults == null || maxResults == 0){
+                maxResults = Integer.MAX_VALUE;
             }
 
-            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
-                response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
-                response.setMatchedConceptName(con.getConceptName());
+            List<Long> drugConcepts = new ArrayList<>();
+
+            if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
+                List<Long> drugMatchedConcepts = new ArrayList<>();
+                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+                if(drugMatchedConcepts.size() > 0) {
+                    drugConcepts = drugMatchedConcepts;
+                }
+            }
+
+            Integer minCount = searchConceptsRequest.getMinCount();
+            if(minCount == null){
+                minCount = 1;
+            }
+
+            StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
+
+
+            if(searchConceptsRequest.getQuery() == null || searchConceptsRequest.getQuery().isEmpty()){
+                if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
+                    standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
+                }
+            }else{
+                if(standardConceptFilter == null){
+                    standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
+                }
+            }
+
+            String domainId = null;
+            if (searchConceptsRequest.getDomain() != null) {
+                domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
+            }
+
+            ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
+
+            Slice<Concept> concepts = null;
+            int measurementTests = 1;
+            int measurementOrders = 1;
+
+            if (domainId != null && domainId.equals("Measurement")) {
+                if (searchConceptsRequest.getMeasurementTests() != null) {
+                    measurementTests = searchConceptsRequest.getMeasurementTests();
+                }
+                if (searchConceptsRequest.getMeasurementOrders() != null) {
+                    measurementOrders = searchConceptsRequest.getMeasurementOrders();
+                }
+            }
+            concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
+                    searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
+                    (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
+
+            ConceptListResponse response = new ConceptListResponse();
+
+            for(Concept con : concepts.getContent()){
+                String conceptCode = con.getConceptCode();
+                String conceptId = String.valueOf(con.getConceptId());
+
+                if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
+                    List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
+                    response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+                    response.setSourceOfStandardConcepts(con.getConceptId());
+                }
+
+                if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
+                    response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
+                    response.setMatchedConceptName(con.getConceptName());
+                }
+            }
+
+            if(response.getMatchType() == null && response.getStandardConcepts() == null){
+                response.setMatchType(MatchType.NAME);
+            }
+
+            List<Concept> conceptList = new ArrayList<>();
+
+            if (concepts != null) {
+                conceptList = new ArrayList(concepts.getContent());
+                if(response.getStandardConcepts() != null) {
+                    conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+                }
+            }
+
+            response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+            return ResponseEntity.ok(response);CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            Integer maxResults = searchConceptsRequest.getMaxResults();
+            if(maxResults == null || maxResults == 0){
+                maxResults = Integer.MAX_VALUE;
+            }
+
+            List<Long> drugConcepts = new ArrayList<>();
+
+            if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
+                List<Long> drugMatchedConcepts = new ArrayList<>();
+                drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+                if(drugMatchedConcepts.size() > 0) {
+                    drugConcepts = drugMatchedConcepts;
+                }
+            }
+
+            Integer minCount = searchConceptsRequest.getMinCount();
+            if(minCount == null){
+                minCount = 1;
+            }
+
+            StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
+
+
+            if(searchConceptsRequest.getQuery() == null || searchConceptsRequest.getQuery().isEmpty()){
+                if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
+                    standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
+                }
+            }else{
+                if(standardConceptFilter == null){
+                    standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
+                }
+            }
+
+            String domainId = null;
+            if (searchConceptsRequest.getDomain() != null) {
+                domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
+            }
+
+            ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
+
+            Slice<Concept> concepts = null;
+            int measurementTests = 1;
+            int measurementOrders = 1;
+
+            if (domainId != null && domainId.equals("Measurement")) {
+                if (searchConceptsRequest.getMeasurementTests() != null) {
+                    measurementTests = searchConceptsRequest.getMeasurementTests();
+                }
+                if (searchConceptsRequest.getMeasurementOrders() != null) {
+                    measurementOrders = searchConceptsRequest.getMeasurementOrders();
+                }
+            }
+            concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
+                    searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
+                    (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
+
+            ConceptListResponse response = new ConceptListResponse();
+
+            for(Concept con : concepts.getContent()){
+                String conceptCode = con.getConceptCode();
+                String conceptId = String.valueOf(con.getConceptId());
+
+                if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
+                    List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
+                    response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+                    response.setSourceOfStandardConcepts(con.getConceptId());
+                }
+
+                if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
+                    response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
+                    response.setMatchedConceptName(con.getConceptName());
+                }
+            }
+
+            if(response.getMatchType() == null && response.getStandardConcepts() == null){
+                response.setMatchType(MatchType.NAME);
+            }
+
+            List<Concept> conceptList = new ArrayList<>();
+
+            if (concepts != null) {
+                conceptList = new ArrayList(concepts.getContent());
+                if(response.getStandardConcepts() != null) {
+                    conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+                }
+            }
+
+            response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+            return ResponseEntity.ok(response);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
             }
         }
-
-        if(response.getMatchType() == null && response.getStandardConcepts() == null){
-            response.setMatchType(MatchType.NAME);
-        }
-
-        List<Concept> conceptList = new ArrayList<>();
-
-        if (concepts != null) {
-            conceptList = new ArrayList(concepts.getContent());
-            if(response.getStandardConcepts() != null) {
-                conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
-            }
-        }
-
-        response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-        return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
 
-        Integer getTests = null;
-        Integer getOrders = null;
+            Integer getTests = null;
+            Integer getOrders = null;
 
-        if (testFilter == 1 && orderFilter == 1) {
-            getTests = 1;
-            getOrders = 0;
-        } else if (testFilter == 1 && orderFilter == 0) {
-            getTests = 1;
-            getOrders = 2;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            getTests = 2;
-            getOrders = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            getTests = 2;
-            getOrders = 2;
+            if (testFilter == 1 && orderFilter == 1) {
+                getTests = 1;
+                getOrders = 0;
+            } else if (testFilter == 1 && orderFilter == 0) {
+                getTests = 1;
+                getOrders = 2;
+            } else if (testFilter == 0 && orderFilter == 1) {
+                getTests = 2;
+                getOrders = 0;
+            } else if (testFilter == 0 && orderFilter == 0) {
+                getTests = 2;
+                getOrders = 2;
+            }
+
+            List<DomainInfo> domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
+            List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
+
+            if (domainInfos == null || surveyModules == null) {
+                throw new DataNotFoundException("No domain metadata available");
+            }
+
+            DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
+            response.setDomainInfos(domainInfos.stream()
+                    .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
+                    .collect(Collectors.toList()));
+            response.setSurveyModules(surveyModules.stream()
+                    .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
+                    .collect(Collectors.toList()));
+
+            return ResponseEntity.ok(response);
+        } catch (ServerErrorException) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
         }
-
-        List<DomainInfo> domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
-        List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
-
-        if (domainInfos == null || surveyModules == null) {
-            throw new DataNotFoundException("No domain metadata available");
-        }
-
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(domainInfos.stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
-
-        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -774,7 +923,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         } catch(ServerErrorException se) {
             if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -794,7 +945,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         } catch(ServerErrorException se) {
             if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -810,7 +963,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
         } catch(ServerErrorException se) {
             if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -826,7 +981,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
         } catch(ServerErrorException se) {
             if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -862,7 +1019,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             return ResponseEntity.ok(resp);
         } catch(ServerErrorException se) {
             if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -903,7 +1062,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             return ResponseEntity.ok(resp);
         } catch(ServerErrorException se) {
             if (ExceptionUtils.isSocketTimeoutException(se)) {
-                throw new ServerErrorException("Socket time-out error. Please retry after sometime");
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
             } else {
                 throw new ServerErrorException("Internal Server Error");
             }
@@ -912,194 +1073,225 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyQuestionResults(String surveyConceptId, String questionConceptId, String resultConceptId, Integer level) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
 
-        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+            QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
-        int levelFlag = level == 1 ? 2 : 4;
+            int levelFlag = level == 1 ? 2 : 4;
 
-        List<QuestionConcept> subQuestions = questionConceptDao.findSubSurveyQuestions(new String(questionConceptId+"."+resultConceptId), levelFlag);
+            List<QuestionConcept> subQuestions = questionConceptDao.findSubSurveyQuestions(new String(questionConceptId+"."+resultConceptId), levelFlag);
 
-        List<String> questionConceptIds = new ArrayList<>();
+            List<String> questionConceptIds = new ArrayList<>();
 
-        for(QuestionConcept q: subQuestions) {
-            questionConceptIds.add(String.valueOf(q.getConceptId()));
-        }
+            for(QuestionConcept q: subQuestions) {
+                questionConceptIds.add(String.valueOf(q.getConceptId()));
+            }
 
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
+            List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
 
-        List<AchillesResult> subQuestionResults = null;
-        List<Long> subIds = null;
+            List<AchillesResult> subQuestionResults = null;
+            List<Long> subIds = null;
 
-        if (level == 1) {
-            subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 5);
+            if (level == 1) {
+                subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 5);
 
-            subIds = new ArrayList<>();
+                subIds = new ArrayList<>();
 
-            for(AchillesResult sqr: subQuestionResults) {
-                subIds.add(sqr.getId());
+                for(AchillesResult sqr: subQuestionResults) {
+                    subIds.add(sqr.getId());
+                }
+            }
+
+            List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
+
+            resp.setItems(mappedQuestions);
+            return ResponseEntity.ok(resp);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
             }
         }
-
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
-
-        resp.setItems(mappedQuestions);
-        return ResponseEntity.ok(resp);
     }
 
     @Override
     public ResponseEntity<EhrCountAnalysis> getEhrCountAnalysis(String domainId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<Long> analysisIds = new ArrayList<>();
-        analysisIds.add(3300L);
-        analysisIds.add(3301L);
-        List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
-        EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
-        ehrCountAnalysis.setDomainId(domainId);
-        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
-        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
-        return ResponseEntity.ok(ehrCountAnalysis);
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            List<Long> analysisIds = new ArrayList<>();
+            analysisIds.add(3300L);
+            analysisIds.add(3301L);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+            EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
+            ehrCountAnalysis.setDomainId(domainId);
+            ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
+            ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
+            return ResponseEntity.ok(ehrCountAnalysis);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<AnalysisListResponse> getSurveyQuestionCounts(String questionConceptId, String questionPath) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<Long> analysisIds = new ArrayList<>();
-        analysisIds.add(3320L);
-        analysisIds.add(3321L);
-        List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
-        AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
-        return ResponseEntity.ok(analysisListResponse);
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            List<Long> analysisIds = new ArrayList<>();
+            analysisIds.add(3320L);
+            analysisIds.add(3321L);
+            List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
+            AnalysisListResponse analysisListResponse = new AnalysisListResponse();
+            analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+            return ResponseEntity.ok(analysisListResponse);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     @Override
     public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
-        List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
-        List<Long> analysisIds  = new ArrayList<>();
-        analysisIds.add(GENDER_ANALYSIS_ID);
-        analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
-        analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
-        analysisIds.add(GENDER_PERCENTAGE_ANALYSIS_ID);
-        analysisIds.add(AGE_PERCENTAGE_ANALYSIS_ID);
-        analysisIds.add(AGE_ANALYSIS_ID);
-        analysisIds.add(RACE_ANALYSIS_ID);
-        analysisIds.add(COUNT_ANALYSIS_ID);
-        analysisIds.add(ETHNICITY_ANALYSIS_ID);
-        analysisIds.add(MEASUREMENT_GENDER_ANALYSIS_ID);
-        analysisIds.add(MEASUREMENT_DIST_ANALYSIS_ID);
-        analysisIds.add(MEASUREMENT_GENDER_UNIT_ANALYSIS_ID);
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
+            List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
+            List<Long> analysisIds  = new ArrayList<>();
+            analysisIds.add(GENDER_ANALYSIS_ID);
+            analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
+            analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
+            analysisIds.add(GENDER_PERCENTAGE_ANALYSIS_ID);
+            analysisIds.add(AGE_PERCENTAGE_ANALYSIS_ID);
+            analysisIds.add(AGE_ANALYSIS_ID);
+            analysisIds.add(RACE_ANALYSIS_ID);
+            analysisIds.add(COUNT_ANALYSIS_ID);
+            analysisIds.add(ETHNICITY_ANALYSIS_ID);
+            analysisIds.add(MEASUREMENT_GENDER_ANALYSIS_ID);
+            analysisIds.add(MEASUREMENT_DIST_ANALYSIS_ID);
+            analysisIds.add(MEASUREMENT_GENDER_UNIT_ANALYSIS_ID);
 
-        List<Long> countAnalysisIds = new ArrayList<>();
-        countAnalysisIds.add(3300L);
-        countAnalysisIds.add(3301L);
-        List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(countAnalysisIds, domainId);
+            List<Long> countAnalysisIds = new ArrayList<>();
+            countAnalysisIds.add(3300L);
+            countAnalysisIds.add(3301L);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(countAnalysisIds, domainId);
 
-        List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
+            List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
 
-        Multimap<Long, AchillesResultDist> distResultsByAnalysisId = null;
-        if(overallDistResults != null){
-            distResultsByAnalysisId = Multimaps
-                    .index(overallDistResults, AchillesResultDist::getAnalysisId);
-        }
-
-        HashMap<Long,HashMap<String,List<AchillesResultDist>>> analysisDistResults = new HashMap<>();
-
-        for(Long key:distResultsByAnalysisId.keySet()){
-            Multimap<String,AchillesResultDist> conceptDistResults = Multimaps.index(distResultsByAnalysisId.get(key),AchillesResultDist::getStratum1);
-            for(String concept:conceptDistResults.keySet()) {
-                if(analysisDistResults.containsKey(key)){
-                    HashMap<String,List<AchillesResultDist>> results = analysisDistResults.get(key);
-                    results.put(concept,new ArrayList<>(conceptDistResults.get(concept)));
-                }else{
-                    HashMap<String,List<AchillesResultDist>> results = new HashMap<>();
-                    results.put(concept,new ArrayList<>(conceptDistResults.get(concept)));
-                    analysisDistResults.put(key,results);
-                }
-            }
-        }
-        for(String conceptId: conceptIds){
-            ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
-
-            boolean isMeasurement = false;
-
-            List<AchillesAnalysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,analysisIds);
-
-            HashMap<Long, AchillesAnalysis> analysisHashMap = new HashMap<>();
-            for(AchillesAnalysis aa: analysisList){
-                this.entityManager.detach(aa);
-                analysisHashMap.put(aa.getAnalysisId(), aa);
+            Multimap<Long, AchillesResultDist> distResultsByAnalysisId = null;
+            if(overallDistResults != null){
+                distResultsByAnalysisId = Multimaps
+                        .index(overallDistResults, AchillesResultDist::getAnalysisId);
             }
 
-            conceptAnalysis.setConceptId(conceptId);
-            Iterator it = analysisHashMap.entrySet().iterator();
-            while(it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                Long analysisId = (Long)pair.getKey();
-                AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
-                //aa.setUnitName(unitName);
-                if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
-                    aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
+            HashMap<Long,HashMap<String,List<AchillesResultDist>>> analysisDistResults = new HashMap<>();
+
+            for(Long key:distResultsByAnalysisId.keySet()){
+                Multimap<String,AchillesResultDist> conceptDistResults = Multimaps.index(distResultsByAnalysisId.get(key),AchillesResultDist::getStratum1);
+                for(String concept:conceptDistResults.keySet()) {
+                    if(analysisDistResults.containsKey(key)){
+                        HashMap<String,List<AchillesResultDist>> results = analysisDistResults.get(key);
+                        results.put(concept,new ArrayList<>(conceptDistResults.get(concept)));
+                    }else{
+                        HashMap<String,List<AchillesResultDist>> results = new HashMap<>();
+                        results.put(concept,new ArrayList<>(conceptDistResults.get(concept)));
+                        analysisDistResults.put(key,results);
+                    }
                 }
-                if (analysisId == COUNT_ANALYSIS_ID) {
-                    conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == GENDER_ANALYSIS_ID){
-                    addGenderStratum(aa,2, conceptId, null);
-                    conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if (analysisId == GENDER_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrGenderCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList());
-                    if (ehrGenderCountAnalysis != null && ehrGenderCountAnalysis.size() > 0) {
-                        addGenderStratum(aa, 2, conceptId,  ehrGenderCountAnalysis.get(0).getResults());
-                        conceptAnalysis.setGenderPercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+            }
+            for(String conceptId: conceptIds){
+                ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
+
+                boolean isMeasurement = false;
+
+                List<AchillesAnalysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,analysisIds);
+
+                HashMap<Long, AchillesAnalysis> analysisHashMap = new HashMap<>();
+                for(AchillesAnalysis aa: analysisList){
+                    this.entityManager.detach(aa);
+                    analysisHashMap.put(aa.getAnalysisId(), aa);
+                }
+
+                conceptAnalysis.setConceptId(conceptId);
+                Iterator it = analysisHashMap.entrySet().iterator();
+                while(it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    Long analysisId = (Long)pair.getKey();
+                    AchillesAnalysis aa = (AchillesAnalysis)pair.getValue();
+                    //aa.setUnitName(unitName);
+                    if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
+                        aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                     }
-                }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
-                    addGenderIdentityStratum(aa);
-                    conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == AGE_ANALYSIS_ID){
-                    addAgeStratum(aa, conceptId, null);
-                    conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
-                    if (ehrAgeCountAnalysis != null && ehrAgeCountAnalysis.size() > 0) {
-                        addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults());
-                    }
-                    conceptAnalysis.setAgePercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == RACE_ANALYSIS_ID){
-                    addRaceStratum(aa);
-                    conceptAnalysis.setRaceAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == ETHNICITY_ANALYSIS_ID){
-                    addEthnicityStratum(aa);
-                    conceptAnalysis.setEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == MEASUREMENT_GENDER_ANALYSIS_ID){
-                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
-                    List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
-                    HashMap<String,List<AchillesResultDist>> distResults = analysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
-                    if (distResults != null) {
-                        List<AchillesResultDist> conceptDistResults = distResults.get(conceptId);
-                        if(conceptDistResults != null){
-                            Multimap<String,AchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults,AchillesResultDist::getStratum2);
-                            for(String unit: unitDistResults.keySet()){
-                                if (results.keySet().contains(unit)) {
-                                    AchillesAnalysis unitGenderAnalysis = new AchillesAnalysis(aa);
-                                    unitGenderAnalysis.setResults(results.get(unit));
-                                    unitGenderAnalysis.setUnitName(unit);
-                                    if(!unit.equalsIgnoreCase("no unit")) {
-                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
-                                    } else {
-                                        //Seperate text and numeric values
-                                        ArrayList<AchillesResult> textValues = new ArrayList<>();
-                                        ArrayList<AchillesResult> numericValues = new ArrayList<>();
-                                        // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
-                                        for (AchillesResult result: unitGenderAnalysis.getResults()) {
-                                            if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
-                                                result.setMeasurementValueType("numeric");
-                                                numericValues.add(result);
-                                            } else {
-                                                result.setMeasurementValueType("text");
-                                                textValues.add(result);
-                                            }
+                    if (analysisId == COUNT_ANALYSIS_ID) {
+                        conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if(analysisId == GENDER_ANALYSIS_ID){
+                        addGenderStratum(aa,2, conceptId, null);
+                        conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if (analysisId == GENDER_PERCENTAGE_ANALYSIS_ID) {
+                        List<AchillesAnalysis> ehrGenderCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList());
+                        if (ehrGenderCountAnalysis != null && ehrGenderCountAnalysis.size() > 0) {
+                            addGenderStratum(aa, 2, conceptId,  ehrGenderCountAnalysis.get(0).getResults());
+                            conceptAnalysis.setGenderPercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                        }
+                    }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
+                        addGenderIdentityStratum(aa);
+                        conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if(analysisId == AGE_ANALYSIS_ID){
+                        addAgeStratum(aa, conceptId, null);
+                        conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
+                        List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
+                        if (ehrAgeCountAnalysis != null && ehrAgeCountAnalysis.size() > 0) {
+                            addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults());
+                        }
+                        conceptAnalysis.setAgePercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if(analysisId == RACE_ANALYSIS_ID){
+                        addRaceStratum(aa);
+                        conceptAnalysis.setRaceAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if(analysisId == ETHNICITY_ANALYSIS_ID){
+                        addEthnicityStratum(aa);
+                        conceptAnalysis.setEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+                    }else if(analysisId == MEASUREMENT_GENDER_ANALYSIS_ID){
+                        Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
+                        List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
+                        HashMap<String,List<AchillesResultDist>> distResults = analysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
+                        if (distResults != null) {
+                            List<AchillesResultDist> conceptDistResults = distResults.get(conceptId);
+                            if(conceptDistResults != null){
+                                Multimap<String,AchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults,AchillesResultDist::getStratum2);
+                                for(String unit: unitDistResults.keySet()){
+                                    if (results.keySet().contains(unit)) {
+                                        AchillesAnalysis unitGenderAnalysis = new AchillesAnalysis(aa);
+                                        unitGenderAnalysis.setResults(results.get(unit));
+                                        unitGenderAnalysis.setUnitName(unit);
+                                        if(!unit.equalsIgnoreCase("no unit")) {
+                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
+                                        } else {
+                                            //Seperate text and numeric values
+                                            ArrayList<AchillesResult> textValues = new ArrayList<>();
+                                            ArrayList<AchillesResult> numericValues = new ArrayList<>();
+                                            // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
+                                            for (AchillesResult result: unitGenderAnalysis.getResults()) {
+                                                if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
+                                                    result.setMeasurementValueType("numeric");
+                                                    numericValues.add(result);
+                                                } else {
+                                                    result.setMeasurementValueType("text");
+                                                    textValues.add(result);
+                                                }
                                             /*
                                             String result_value = result.getStratum4();
                                             String numericResult = null;
@@ -1125,14 +1317,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                                 }
                                             }
                                             */
-                                        }
+                                            }
 
-                                        if (textValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "text");
-                                        }
-                                        if (numericValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
-                                        }
+                                            if (textValues.size() > 0) {
+                                                processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "text");
+                                            }
+                                            if (numericValues.size() > 0) {
+                                                processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
+                                            }
 /*
                                         if (textValues.size() > 0 && numericValues.size() > 0) {
                                             List<AchillesResult> filteredNumericResults = unitGenderAnalysis.getResults().stream().filter(ele -> textValues.stream()
@@ -1143,51 +1335,60 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                             processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
                                         }
                                         */
-                                        unitGenderAnalysis.setResults(results.get(unit));
-                                        unitGenderAnalysis.setUnitName(unit);
+                                            unitGenderAnalysis.setResults(results.get(unit));
+                                            unitGenderAnalysis.setUnitName(unit);
 
+                                        }
+                                        unitSeperateAnalysis.add(unitGenderAnalysis);
                                     }
-                                    unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }
+                            }else {
+                                unitSeperateAnalysis.add(aa);
                             }
-                        }else {
-                            unitSeperateAnalysis.add(aa);
                         }
+                        addGenderStratum(aa,3, conceptId, null);
+                        isMeasurement = true;
+                        conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+                    }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
+                        Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
+                        List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
+                        for(String unit: results.keySet()){
+                            AchillesAnalysis unitGenderCountAnalysis = new AchillesAnalysis(aa);
+                            unitGenderCountAnalysis.setResults(results.get(unit));
+                            unitGenderCountAnalysis.setUnitName(unit);
+                            unitSeperateAnalysis.add(unitGenderCountAnalysis);
+                        }
+                        isMeasurement = true;
+                        conceptAnalysis.setMeasurementGenderCountAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                     }
-                    addGenderStratum(aa,3, conceptId, null);
-                    isMeasurement = true;
-                    conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
-                }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
-                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
+                }
+
+                if(isMeasurement){
+                    AchillesAnalysis measurementDistAnalysis = achillesAnalysisDao.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
+                    List<AchillesResultDist> achillesResultDistList = achillesResultDistDao.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
+                    HashMap<String,List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
                     List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
                     for(String unit: results.keySet()){
-                        AchillesAnalysis unitGenderCountAnalysis = new AchillesAnalysis(aa);
-                        unitGenderCountAnalysis.setResults(results.get(unit));
-                        unitGenderCountAnalysis.setUnitName(unit);
-                        unitSeperateAnalysis.add(unitGenderCountAnalysis);
+                        AchillesAnalysis mDistAnalysis = new AchillesAnalysis(measurementDistAnalysis);
+                        mDistAnalysis.setDistResults(results.get(unit));
+                        mDistAnalysis.setUnitName(unit);
+                        unitSeperateAnalysis.add(mDistAnalysis);
                     }
-                    isMeasurement = true;
-                    conceptAnalysis.setMeasurementGenderCountAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+                    conceptAnalysis.setMeasurementDistributionAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
                 }
+                conceptAnalysisList.add(conceptAnalysis);
             }
-
-            if(isMeasurement){
-                AchillesAnalysis measurementDistAnalysis = achillesAnalysisDao.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
-                List<AchillesResultDist> achillesResultDistList = achillesResultDistDao.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
-                HashMap<String,List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
-                List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
-                for(String unit: results.keySet()){
-                    AchillesAnalysis mDistAnalysis = new AchillesAnalysis(measurementDistAnalysis);
-                    mDistAnalysis.setDistResults(results.get(unit));
-                    mDistAnalysis.setUnitName(unit);
-                    unitSeperateAnalysis.add(mDistAnalysis);
-                }
-                conceptAnalysis.setMeasurementDistributionAnalysis(unitSeperateAnalysis.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+            resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
+            return ResponseEntity.ok(resp);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
             }
-            conceptAnalysisList.add(conceptAnalysis);
         }
-        resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
-        return ResponseEntity.ok(resp);
     }
 
     /**
@@ -1198,22 +1399,42 @@ public class DataBrowserController implements DataBrowserApiDelegate {
      */
     @Override
     public ResponseEntity<ConceptListResponse> getSourceConcepts(Long conceptId,Integer minCount) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        Integer count=minCount;
-        if(count == null){
-            count = 0;
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            Integer count=minCount;
+            if(count == null){
+                count = 0;
+            }
+            List<Concept> conceptList = conceptDao.findSourceConcepts(conceptId,count);
+            ConceptListResponse resp = new ConceptListResponse();
+            resp.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+            return ResponseEntity.ok(resp);
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
         }
-        List<Concept> conceptList = conceptDao.findSourceConcepts(conceptId,count);
-        ConceptListResponse resp = new ConceptListResponse();
-        resp.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-        return ResponseEntity.ok(resp);
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.AchillesResult> getParticipantCount() {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        AchillesResult result = achillesResultDao.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID);
-        return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+            AchillesResult result = achillesResultDao.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID);
+            return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
+        } catch(ServerErrorException se) {
+            if (ExceptionUtils.isSocketTimeoutException(se)) {
+                throw new ServerErrorException("Socket time-out error. Please retry after sometime.");
+            } else if (ExceptionUtils.isGoogleServiceUnavailableException(se)) {
+                throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.")
+            } else {
+                throw new ServerErrorException("Internal Server Error");
+            }
+        }
     }
 
     public ArrayList<Float> makeBins(Float min,Float max, Float binWidth) {

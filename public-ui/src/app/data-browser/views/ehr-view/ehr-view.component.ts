@@ -285,6 +285,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.searchRequest.pageNumber = 0;
       this.searchRequest.measurementTests = localStorage.getItem('measurementTestsChecked') === 'false' ? 0 : 1;
       this.searchRequest.measurementOrders = localStorage.getItem('measurementOrdersChecked') === 'false' ? 0 : 1;
+      console.log('here 2');
+      console.log(this.searchRequest);
       this.api.searchConcepts(this.searchRequest).subscribe((res) => {
         if (res.items && res.items.length > 0) {
           this.processSearchResults(res);
@@ -347,6 +349,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1,
       pageNumber: 0,
     };
+    console.log('here 3');
+    console.log(this.searchRequest);
     return this.api.searchConcepts(top10SearchRequest);
   }
 
@@ -418,6 +422,9 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       }
     }
     this.prevSearchText = query;
+    if (!query) {
+      this.searchRequest.query = '';
+    }
     return this.api.searchConcepts(this.searchRequest);
   }
 
