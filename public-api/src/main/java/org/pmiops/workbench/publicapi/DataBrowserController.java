@@ -829,6 +829,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
@@ -838,19 +841,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-            try {
-                AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
-                addGenderStratum(genderAnalysis,1, "0", null);
-                return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
-            } catch(NullPointerException ne) {
-                throw new DataNotFoundException("No gender analysis data");
-            }
+            AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
+            addGenderStratum(genderAnalysis,1, "0", null);
+            return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
         } catch(Exception ie) {
             if (ExceptionUtils.isSocketTimeoutException(ie)) {
                 throw new ServerErrorException("Socket time-out error. Please retry after sometime");
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
@@ -869,6 +871,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
@@ -887,6 +892,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
@@ -925,6 +933,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
@@ -968,6 +979,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
@@ -1015,6 +1029,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
