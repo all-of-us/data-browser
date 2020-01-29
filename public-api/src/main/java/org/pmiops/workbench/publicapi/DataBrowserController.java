@@ -1351,6 +1351,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             } else if (ExceptionUtils.isGoogleServiceUnavailableException(ie)) {
                 throw new ServerErrorException("Google service is unavailable right now. We are working on finding and fixing the root cause.");
             } else {
+                if (ie instanceof NullPointerException) {
+                    throw new ServerErrorException("Data not available");
+                }
                 throw new ServerErrorException("Internal Server Error");
             }
         }
