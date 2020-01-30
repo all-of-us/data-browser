@@ -100,65 +100,11 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     this.domainCounts();
     this.subscriptions.push(this.measurementTestsChecked.valueChanges
       .subscribe((query) => {
-        let getTests = 0;
-        let getOrders = 0;
-        if (query) {
-          getTests = 1;
-        } else {
-          getTests = 0;
-        }
-        if (this.measurementOrdersChecked.value) {
-          getOrders = 1;
-        } else {
-          getOrders = 0;
-        }
-        const measurementSearchRequestWithFilter =
-          this.makeMeasurementSearchRequest(getTests, getOrders);
-        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-          results => {
-            this.items = results.items;
-          });
-        if (this.searchRequest.query && this.searchRequest.query !== null) {
-          this.getMeasurementSearchResultTotals(getTests, getOrders);
-        } else {
-          this.getMeasurementDomainTotals(getTests, getOrders);
-        }
+        this.fetchMeasurementTestValueChangeResults(query);
       }));
     this.subscriptions.push(this.measurementOrdersChecked.valueChanges
       .subscribe((query) => {
-        let getTests = 0;
-        let getOrders = 0;
-        if (query) {
-          getOrders = 1;
-        } else {
-          getOrders = 0;
-        }
-        if (this.measurementTestsChecked.value) {
-          getTests = 1;
-        } else {
-          getTests = 0;
-        }
-        const measurementSearchRequestWithFilter =
-          this.makeMeasurementSearchRequest(getTests, getOrders);
-        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-          results => {
-            this.items = results.items;
-            for (const concept of this.items) {
-              if (concept.measurementConceptInfo !== null &&
-                concept.measurementConceptInfo.hasValues === 1) {
-                concept.graphToShow = GraphType.Values;
-              } else {
-                concept.graphToShow = GraphType.BiologicalSex;
-              }
-              this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
-              this.drugBrands[concept.conceptId] = concept.drugBrands;
-            }
-          });
-        if (this.searchRequest.query && this.searchRequest.query !== null) {
-          this.getMeasurementSearchResultTotals(getTests, getOrders);
-        } else {
-          this.getMeasurementDomainTotals(getTests, getOrders);
-        }
+        this.fetchMeasurementOrderValueChangeResults(query);
       }));
     if (changes.selectedConcept && changes.selectedConcept.currentValue) {
       this.standardConceptIds = this.standardConcepts.map(c => c.conceptId);
@@ -400,6 +346,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       }
       localStorage.setItem('measurementOrdersChecked',
         this.measurementOrdersChecked.value === true ? 'true' : 'false');
+      this.fetchMeasurementTestValueChangeResults(value);
     }
     if (box === 'orders') {
       if (value) {
@@ -411,6 +358,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       }
       localStorage.setItem('measurementTestsChecked',
         this.measurementTestsChecked.value === true ? 'true' : 'false');
+      this.fetchMeasurementOrderValueChangeResults(value);
     }
   }
 
@@ -502,5 +450,67 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       }
     }
     return this.graphButtons;
+  }
+  
+  public fetchMeasurementTestValueChangeResults(value: boolean) {
+    let getTests = 0;
+    let getOrders = 0;
+    if (value) {
+      getTests = 1;
+    } else {
+      getTests = 0;
+    }
+    if (this.measurementOrdersChecked.value) {
+      getOrders = 1;
+    } else {
+      getOrders = 0;
+    }
+    const measurementSearchRequestWithFilter =
+      this.makeMeasurementSearchRequest(getTests, getOrders);
+    this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+      results => {
+        this.items = results.items;
+      });
+    if (this.searchRequest.query && this.searchRequest.query !== null) {
+      this.getMeasurementSearchResultTotals(getTests, getOrders);
+    } else {
+      this.getMeasurementDomainTotals(getTests, getOrders);
+    }
+  }
+  
+  public fetchMeasurementOrderValueChangeResults(value: boolean) {
+    let getTests = 0;
+    let getOrders = 0;
+    if (value) {
+      getOrders = 1;
+    } else {
+      getOrders = 0;
+    }
+    if (this.measurementTestsChecked.value) {
+      getTests = 1;
+    } else {
+      getTests = 0;
+    }
+    const measurementSearchRequestWithFilter =
+      this.makeMeasurementSearchRequest(getTests, getOrders);
+    this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
+      results => {
+        this.items = results.items;
+        for (const concept of this.items) {
+          if (concept.measurementConceptInfo !== null &&
+            concept.measurementConceptInfo.hasValues === 1) {
+            concept.graphToShow = GraphType.Values;
+          } else {
+            concept.graphToShow = GraphType.BiologicalSex;
+          }
+          this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
+          this.drugBrands[concept.conceptId] = concept.drugBrands;
+        }
+      });
+    if (this.searchRequest.query && this.searchRequest.query !== null) {
+      this.getMeasurementSearchResultTotals(getTests, getOrders);
+    } else {
+      this.getMeasurementDomainTotals(getTests, getOrders);
+    }
   }
 }
