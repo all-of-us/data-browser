@@ -235,12 +235,8 @@
                                                 </div>
                                                 <div class="info-text survey-tbl-d display-body survey-question-heading">
                                                     <label class="participant-count">Participant Count</label>
-                                                    <clr-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1" (mouseenter)="hoverOnTooltip(q, 'Multiple Answers for this survey question help text')">
-                                                        <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                                                        <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                                                            <div class="tooltip-label">{{tooltipText.surveyParticipantCountHelpText}}</div>
-                                                        </clr-tooltip-content>
-                                                    </clr-tooltip>
+                                                    <app-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1" [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                                                                 [label]="getLabel(q,'Multiple Answers for this survey question help text')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
                                                 </div>
 
                                                 <div class=" info-text survey-tbl-d display-body survey-question-heading">
