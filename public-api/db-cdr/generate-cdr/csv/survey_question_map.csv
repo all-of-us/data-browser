@@ -1,4 +1,4 @@
-"id","survey_concept_id","question_concept_id","survey_order_number","question_order_Number","path","sub","question_text"
+"id","survey_concept_id","question_concept_id","survey_order_number","question_order_number","path","sub","question_text"
 1,1586134,1586135,1,1,1586135,0,"In what country were you born?"
 2,1586134,1586140,1,2,1586140,0,"Which categories describe you? Select all that apply. Note, you may select more than one group."
 4,1586134,1586151,1,2,"1586140.1586142.1586151",1,"Asian (For example: Asian Indian, Chinese, Filipino, Japanese, Korean, Vietnamese, etc.)"
