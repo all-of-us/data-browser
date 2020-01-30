@@ -451,7 +451,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     }
     return this.graphButtons;
   }
-  
+
   public fetchMeasurementTestValueChangeResults(value: boolean) {
     let getTests = 0;
     let getOrders = 0;
@@ -477,7 +477,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
       this.getMeasurementDomainTotals(getTests, getOrders);
     }
   }
-  
+
   public fetchMeasurementOrderValueChangeResults(value: boolean) {
     let getTests = 0;
     let getOrders = 0;
