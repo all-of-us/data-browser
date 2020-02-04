@@ -57,12 +57,8 @@
           <!-- show Age totals -->
           <div class="chart-item age-chart" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
             <div>{{ageChartTitle}}
-              <clr-tooltip (mouseenter)="hoverOnTooltip('Physical Measurements tooltip hover', 'Hover on pm age chart of concept' + selectedConcept.conceptName)">
-                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-                  <div class="tooltip-label">{{tooltipText.pmAgeChartHelpText}}</div>
-                </clr-tooltip-content>
-              </clr-tooltip>
+              <app-tooltip [toolTipText1]="tooltipText.pmAgeChartHelpText"
+              [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText" [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>
             </div>
             <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
               [backgroundColor]="backgroundColor" [domainType]="domainType">

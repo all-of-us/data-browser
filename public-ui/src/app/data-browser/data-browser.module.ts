@@ -14,6 +14,7 @@ import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-r
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
+import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
 import { DbTableComponent } from './db-table/db-table.component';
@@ -49,6 +50,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartBaseComponent,
     DbTableComponent,
     SourcesComponent,
+    TooltipComponent,
   ],
   exports: [
     DataBrowserRoutingModule,

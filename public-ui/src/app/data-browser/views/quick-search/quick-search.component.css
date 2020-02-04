@@ -80,7 +80,7 @@ app-spinner {
     flex-flow: column;
 }
 
-.search-title {
+.search-title:not(.secondary-display.tooltip, .secondary-display.tooltiptext) {
     white-space: nowrap;
     display: flex;
 }
