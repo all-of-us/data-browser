@@ -503,8 +503,8 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 select 0 as id, 3110 as analysis_id, '43528698' as stratum_1, cast(fmh.observation_source_concept_id as string) as stratum_2, cast(fmh.value_source_concept_id as string) as stratum_3,
 c.concept_name as stratum_4,'2' as stratum_5,count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
-from  \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.family_medical_history_condition_concepts\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
-,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,",")) as concepts on cast(ob.value_source_concept_id as string)=concepts
+from  \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
+,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
 where exists
 (select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
@@ -519,30 +519,30 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0 as id, 3110 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, cast(concepts as string) as stratum_3,
 c.concept_name as stratum_4,'2' as stratum_5, concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
 count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.family_medical_history_condition_concepts\` fmh
-,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,",")) as concepts on cast(ob.value_source_concept_id as string)=concepts
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh
+,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=cast(concepts as int64)
 where exists
 (select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
-group by 4,5,6"
+group by 4,5,6,8"
 
 #Set the survey answer count for fmh questions by condition for each biological sex
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select 0 as id, 3111 as analysis_id, '43528698' as stratum_1, cast(fmh.observation_source_concept_id as string) as stratum_2, cast(fmh.value_source_concept_id as string) as stratum_3,
-c.concept_name as stratum_4,p.gender_concept_id as stratum_5,cast(fmh.observation_source_concept_id  as string) as stratum_6,
+c.concept_name as stratum_4,cast(p.gender_concept_id as string) as stratum_5,cast(fmh.observation_source_concept_id  as string) as stratum_6,
 count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.family_medical_history_condition_concepts\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
-,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,",")) as concepts on cast(ob.value_source_concept_id as string)=concepts
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
+,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on ob.person_id=p.person_id
 where exists
 (select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
-group by 4,5,6,7
+group by 4,5,6,7,8
 order by c.concept_name asc"
 
 # Set the survey answer count of fmh by condition and family member for each biological sex
@@ -550,10 +550,10 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select 0 as id, 3111 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, cast(concepts as string) as stratum_3,
- c.concept_name as stratum_4,p.gender_concept_id as stratum_5,concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
+ c.concept_name as stratum_4,cast(p.gender_concept_id as string) as stratum_5,concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
  count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
- from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.family_medical_history_condition_concepts\` fmh
- ,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,",")) as concepts on cast(ob.value_source_concept_id as string)=concepts
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh
+ ,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
  join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=cast(concepts as int64)
  join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on ob.person_id=p.person_id
  where exists
@@ -583,22 +583,23 @@ with survey_age as
  when age < 18 then '0' end as age_stratum from survey_age
  group by observation_id,age_stratum
  )
- select 0, 3112 as analysis_id,'43528698' as stratum_1,CAST(fmh.observation_source_concept_id as string) as stratum_2,
+ select 0 as id, 3112 as analysis_id,'43528698' as stratum_1,CAST(fmh.observation_source_concept_id as string) as stratum_2,
  CAST(fmh.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
- age_stratum as stratum_5,'2' as que_ref_id,cast(fmh.observation_source_concept_id  as string) as stratum_6,
+ age_stratum as stratum_5,cast(fmh.observation_source_concept_id  as string) as stratum_6,
  COUNT(distinct ob.PERSON_ID) as count_value,0 as source_count_value
- from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.family_medical_history_condition_concepts\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
- ,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,",")) as concepts on cast(ob.value_source_concept_id as string)=concepts
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
+ ,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
  join survey_age_stratum sa on sa.observation_id=ob.observation_id
  join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on ob.person_id=p.person_id
  where exists
  (select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
  where questionnaire_response_id=ob.questionnaire_response_id and
  observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
- group by 4,5,6,7,9
+ group by 4,5,6,7,8
  order by c.concept_name asc"
 
 # Set the survey answer count for fmh question by condition, family member for each age decile
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with survey_age as
@@ -620,8 +621,8 @@ with survey_age as
  select 0 as id, 3112 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, cast(concepts as string) as stratum_3,
  c.concept_name as stratum_4,age_stratum as stratum_5,concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
  COUNT(distinct ob.PERSON_ID) as count_value,0 as source_count_value
- from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.family_medical_history_condition_concepts\` fmh
- ,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,",")) as concepts on cast(ob.value_source_concept_id as string)=concepts
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh
+ ,\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
  join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=cast(concepts as int64)
  join survey_age_stratum sa on sa.observation_id=ob.observation_id
  where exists
@@ -1250,6 +1251,93 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id not in (40766240,43528428,1585389)
 Group by sm.concept_id"
+
+# Survey answer count of family member history questions
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
+select 0 as id, 3110 as analysis_id, '43528698' as stratum_1, cast(fmh.observation_source_concept_id as string) as stratum_2,
+cast(ob.observation_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
+'3' as stratum_5, cast(fmh.observation_source_concept_id as string) as stratum_6,
+count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh,
+\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join UNNEST(SPLIT(concepts_to_count,',')) as concepts
+on ob.observation_source_concept_id=cast(concepts as int64)
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=cast(concepts as int64)
+where exists
+(select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+group by 4,5,6"
+
+# Survey answer count of conditions of each family member
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
+select 0 as id, 3110 as analysis_id, '43528698' as stratum_1, cast(ob.observation_source_concept_id as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3,
+c.concept_name as stratum_4, '6' as stratum_5, concat(fmh.observation_source_concept_id,'.',cast(ob.observation_source_concept_id as string),'.',cast(ob.observation_source_concept_id as string)) as stratum_6,
+count(distinct person_id) as count_value, 0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh,
+\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
+join UNNEST(SPLIT(concepts_to_count,',')) as concepts
+on ob.observation_source_concept_id=cast(concepts as int64)
+where exists
+(select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+group by 4,5,6,7,8"
+
+# Gender breakdown of conditions of each family member
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
+select 0 as id, 3111 as analysis_id, '43528698' as stratum_1, cast(ob.observation_source_concept_id as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3,
+c.concept_name as stratum_4, cast(p.gender_concept_id as string) as stratum_5, concat(fmh.observation_source_concept_id,'.',cast(ob.observation_source_concept_id as string),'.',cast(ob.observation_source_concept_id as string)) as stratum_6,
+count(distinct ob.person_id) as count_value, 0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh,
+\`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
+join  \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=ob.person_id
+join UNNEST(SPLIT(concepts_to_count,',')) as concepts
+on ob.observation_source_concept_id=cast(concepts as int64)
+where exists
+(select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+group by 4,5,6,7,8"
+
+# Age breakdown of conditions of each family member
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
+with survey_age as
+  (
+  select observation_id,
+  ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
+  from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
+  group by observation_id,age
+  ),
+  survey_age_stratum as
+  (
+  select observation_id,
+  case when age >= 18 and age <= 29 then '2'
+  when age > 89 then '9'
+  when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+  when age < 18 then '0' end as age_stratum from survey_age
+  group by observation_id,age_stratum
+  )
+ select 0 as id, 3112 as analysis_id, '43528698' as stratum_1, cast(ob.observation_source_concept_id as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3,
+ c.concept_name as stratum_4, cast(age_stratum as string) as stratum_5, concat(fmh.observation_source_concept_id,'.',cast(ob.observation_source_concept_id as string),'.',cast(ob.observation_source_concept_id as string)) as stratum_6,
+ count(distinct ob.person_id) as count_value, 0 as source_count_value
+ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh,
+ \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
+ join survey_age_stratum sa on sa.observation_id=ob.observation_id
+ join UNNEST(SPLIT(concepts_to_count,',')) as concepts
+ on ob.observation_source_concept_id=cast(concepts as int64)
+ where exists
+ (select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+ where questionnaire_response_id=ob.questionnaire_response_id and
+ observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+ group by 4,5,6,7,8"
 
 # Gender breakdown of people who took each survey (Row for combinations of each survey and gender)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
