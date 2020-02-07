@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ISubscription} from "rxjs/Subscription";
-import {DataBrowserService} from "../../../../publicGenerated";
-import {GraphType} from "../../../utils/enum-defs";
-import {DbConfigService} from "../../../utils/db-config.service";
-import {TooltipService} from "../../../utils/tooltip.service";
+import {ISubscription} from 'rxjs/Subscription';
+import {DataBrowserService} from '../../../../publicGenerated';
+import {DbConfigService} from '../../../utils/db-config.service';
+import {GraphType} from '../../../utils/enum-defs';
+import {TooltipService} from '../../../utils/tooltip.service';
 
 @Component({
   selector: 'app-fmh-view',
@@ -46,7 +46,7 @@ export class FmhViewComponent implements OnInit {
       'view family history by family member below.';
     this.getSurveyResults();
   }
-  
+
   private getSurveyResults() {
     const conditionQuestionConceptIds = ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638'];
     const fmQuestionConceptIds = ['43528764', '43528763', '43528649', '43528651', '43528650', '43528765'];
@@ -73,7 +73,7 @@ export class FmhViewComponent implements OnInit {
       complete: () => { this.fmQuestionFetchComplete = true; }
     }));
   }
-  
+
   public processQuestions(results: any, branching: string) {
     // Add Did not answer to each question
     for (const q of results.items) {
@@ -109,7 +109,7 @@ export class FmhViewComponent implements OnInit {
       });
     }
   }
-  
+
   public toggleAnswer(q: any) {
     this.api.getFMHConditionMainResults(q.conceptId, q)
       .subscribe({
@@ -180,7 +180,7 @@ export class FmhViewComponent implements OnInit {
     percent = parseFloat(percent.toFixed(4));
     return percent * 100;
   }
-  
+
   public addMissingBiologicalSexResults(genderAnalysis: any, results: any, totalCount: number) {
     const uniqueGenderStratums: string[] = [];
     const fullGenderStratums = ['8507', '8532', '0'];
@@ -209,7 +209,7 @@ export class FmhViewComponent implements OnInit {
       }
     }
   }
-  
+
   public addMissingAgeResults(ageAnalysis: any, results: any, totalCount: number) {
     const uniqueAgeStratums: string[] = [];
     const fullAgeStratums = ['2', '3', '4', '5', '6', '7', '8', '9'];
@@ -237,7 +237,7 @@ export class FmhViewComponent implements OnInit {
       }
     }
   }
-  
+
   public prepGenderPercentageAnalysis(question: any, genderCountByQuestionResults: any) {
     this.genderPercentageAnalysis = JSON.parse(JSON.stringify(question.genderAnalysis));
     this.genderPercentageAnalysis.surveyQuestionResults = [];
@@ -262,7 +262,7 @@ export class FmhViewComponent implements OnInit {
     this.genderPercentageAnalysis.analysisId = 3331;
     question.genderPercentageAnalysis = this.genderPercentageAnalysis;
   }
-  
+
   public prepAgePercentageAnalysis(question: any, ageCountByQuestionResults: any) {
     this.agePercentageAnalysis = JSON.parse(JSON.stringify(question.ageAnalysis));
     this.agePercentageAnalysis.surveyQuestionResults = [];
@@ -285,7 +285,7 @@ export class FmhViewComponent implements OnInit {
     this.agePercentageAnalysis.analysisId = 3332;
     question.agePercentageAnalysis = this.agePercentageAnalysis;
   }
-  
+
   public addDidNotAnswerResult(results: any[], participantCount: number) {
     let didNotAnswerCount = participantCount;
     for (const r of results) {
@@ -334,7 +334,7 @@ export class FmhViewComponent implements OnInit {
         ' - ' + 'Sex Assigned at Birth', this.searchText.value, null);
     }
   }
-  
+
   public showGraph(a) {
     a.subQuestionFetchComplete = true;
   }
@@ -398,7 +398,7 @@ export class FmhViewComponent implements OnInit {
         }
       });
   }
-  
+
   public showSubAnswerGraphs(sqa: any, sq: any) {
     sqa.subExpanded = !sqa.subExpanded;
     if (sqa.subExpanded) {
@@ -412,15 +412,15 @@ export class FmhViewComponent implements OnInit {
         ' - ' + 'Sex Assigned at Birth', this.searchText.value, null);
     }
   }
-  
+
   public hoverOnTooltip(q: any, event: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       this.surveyName + ' - Q' + q.actualQuestionNumber + ' - '
       + event, null, 'Survey Page Tooltip');
   }
-  
+
   public isDidNotAnswer(sqa: any) {
-    if(sqa.stratum4.toLowerCase() != 'did not answer') {
+    if(sqa.stratum4.toLowerCase() !== 'did not answer') {
       return false;
     }
     return true;

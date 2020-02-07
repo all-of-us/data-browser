@@ -128,7 +128,7 @@ else
     from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
      left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.source_standard_unit_map\` suc on m.unit_concept_id = suc.source_concept
     where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0
-    and person_id not in (select distinct person_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` where value_source_concept_id=1586141
+    and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141
                               union distinct
                               select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
                               where p.race_source_value like '%AIAN%' or race_source_concept_id in (1585600, 1585601, 1585602, 1585603))"
@@ -146,7 +146,7 @@ else
         "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${view_name}\` AS
         select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m
         where m.${concept_id} > 0 or m.${source_concept_id} > 0
-        and person_id not in (select distinct person_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_observation\` where value_source_concept_id=1586141
+        and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141
                                   union distinct
                                   select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
                                   where p.race_source_value like '%AIAN%' or race_source_concept_id in (1585600, 1585601, 1585602, 1585603))"
