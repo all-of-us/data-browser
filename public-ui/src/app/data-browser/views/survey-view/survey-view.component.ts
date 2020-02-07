@@ -533,10 +533,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public hoverOnTooltip(q: any, event: string) {
-    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
-      + event, null, 'Survey Page Tooltip');
+  public getLabel(q: any, helpText: string) {
+    return this.surveyName + ' - Q' + q.actualQuestionNumber + ' - ' + helpText;
   }
 
   public prepGenderPercentageAnalysis(question: any, genderCountByQuestionResults: any) {
