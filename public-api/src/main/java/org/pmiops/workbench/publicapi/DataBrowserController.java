@@ -800,7 +800,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             response.setSurveyModules(surveyModules.stream()
                     .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
                     .collect(Collectors.toList()));
-
             return ResponseEntity.ok(response);
         } catch(Exception ie) {
             if (ExceptionUtils.isSocketTimeoutException(ie)) {

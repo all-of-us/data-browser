@@ -24,6 +24,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
   styleUrls: [
     '../../../styles/template.css',
     '../../../styles/cards.css',
+    '../../../styles/page.css',
     './ehr-view.component.css'
   ]
 })
@@ -42,6 +43,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   graphButtons: any = [];
   loading: boolean;
   totalParticipants: number;
+  displayConceptErrorMessage = false;
   top10Results: any[] = []; // We graph top10 results
   searchRequest: SearchConceptsRequest;
   private subscriptions: ISubscription[] = [];
@@ -167,10 +169,20 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       }
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
-        .subscribe(results => {
+        .subscribe({
+          next: results => {
             this.searchCallback(results);
+            this.displayConceptErrorMessage = false;
+          },
+          error: err => {
+            const errorBody = JSON.parse(err._body);
+            if (errorBody.statusCode === 500) {
+              this.displayConceptErrorMessage = true;
+            }
+            console.log('Error searching: ', errorBody.message);
+            this.loading = false;
           }
-          );
+        });
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(1500)
@@ -179,9 +191,15 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         .subscribe({
           next: results => {
             this.searchCallback(results);
+            this.displayConceptErrorMessage = false;
           },
           error: err => {
             console.log('Error searching: ', err);
+            const errorBody = JSON.parse(err._body);
+            if (errorBody.statusCode === 500) {
+              this.displayConceptErrorMessage = true;
+            }
+            console.log('Error searching: ', errorBody.message);
             this.loading = false;
             this.toggleTopConcepts();
           }
@@ -285,12 +303,23 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.searchRequest.pageNumber = 0;
       this.searchRequest.measurementTests = localStorage.getItem('measurementTestsChecked') === 'false' ? 0 : 1;
       this.searchRequest.measurementOrders = localStorage.getItem('measurementOrdersChecked') === 'false' ? 0 : 1;
-      this.api.searchConcepts(this.searchRequest).subscribe((res) => {
+      this.api.searchConcepts(this.searchRequest).subscribe({
+        next: res => {
         if (res.items && res.items.length > 0) {
           this.processSearchResults(res);
         } else {
           this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
             'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+        }
+        this.displayConceptErrorMessage = false;
+        },
+        error: err => {
+        const errorBody = JSON.parse(err._body);
+        if (errorBody.statusCode === 500) {
+          this.displayConceptErrorMessage = true;
+        }
+        console.log('Error searching: ', errorBody.message);
+        this.loading = false;
         }
       });
     }

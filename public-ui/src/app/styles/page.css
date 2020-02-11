@@ -11,6 +11,22 @@
   text-align: left;
 }
 
+.alert, .alert-box, .error-message {
+  background-color: #F7981D;
+  border-radius: 5px;
+  border-color: #F7981D;
+  color: white;
+  font-size: 14px;
+}
+
+.alert-icon {
+  color: white;
+}
+
+.alert-text {
+  margin: 1%;
+}
+
 .secondary-display, h2 {
   font-family: Arial, sans-serif;
   font-weight: 200;

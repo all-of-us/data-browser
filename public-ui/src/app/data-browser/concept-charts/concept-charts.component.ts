@@ -43,6 +43,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   genderResults: AchillesResult[] = [];
   displayMeasurementGraphs = false;
   toDisplayMeasurementGenderAnalysis: any;
+  displayGraphErrorMessage = false;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
   subGraphButtons = ['Count', 'Percentage (%)'];
@@ -111,18 +112,28 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     this.conceptName = this.concept.conceptName;
     this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
       this.concept.domainId).subscribe(
-      results => {
-        this.results = results.items;
-        this.analyses = results.items[0];
-        this.selectedSubGraph = 'Count';
-        this.selectedMeasurementType = 'No unit (Text)';
-        this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
-        this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-        this.organizeGenders(this.analyses.genderAnalysis);
-        this.fetchMeasurementGenderResults();
-        // Set this var to make template simpler.
-        // We can just loop through the results and show bins
-        this.loadingStack.pop();
+      {
+        next: results => {
+          this.results = results.items;
+          this.analyses = results.items[0];
+          this.selectedSubGraph = 'Count';
+          this.selectedMeasurementType = 'No unit (Text)';
+          this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
+          this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
+          this.organizeGenders(this.analyses.genderAnalysis);
+          this.fetchMeasurementGenderResults();
+          // Set this var to make template simpler.
+          // We can just loop through the results and show bins
+          this.loadingStack.pop();
+          this.displayGraphErrorMessage = false;
+        },
+        error: err => {
+          const errorBody = JSON.parse(err._body);
+          if (errorBody.statusCode === 500) {
+            this.displayGraphErrorMessage = true;
+          }
+          console.log('Error searching: ', errorBody.message);
+        }
       }));
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(

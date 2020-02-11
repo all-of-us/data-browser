@@ -36,6 +36,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() graphType: any;
   @Input() totalResults: number;
   @Output() exploreConcept: EventEmitter<any> = new EventEmitter();
+  @Input() displayConceptErrorMessage: boolean;
   // Save this till labs is tested completely to see
   // if the pagination breaks because of not having this
   // totalResults = localStorage.getItem('totalResults') ?
@@ -114,10 +115,19 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         }
         const measurementSearchRequestWithFilter =
           this.makeMeasurementSearchRequest(getTests, getOrders);
-        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-          results => {
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe({
+          next: results => {
             this.items = results.items;
-          });
+            this.displayConceptErrorMessage = false;
+          },
+          error: err => {
+            const errorBody = JSON.parse(err._body);
+            if (errorBody.statusCode === 500) {
+              this.displayConceptErrorMessage = true;
+            }
+            console.log('Error searching: ', errorBody.message);
+          }
+        });
         if (this.searchRequest.query && this.searchRequest.query !== null) {
           this.getMeasurementSearchResultTotals(getTests, getOrders);
         } else {
@@ -140,8 +150,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
         }
         const measurementSearchRequestWithFilter =
           this.makeMeasurementSearchRequest(getTests, getOrders);
-        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe(
-          results => {
+        this.api.searchConcepts(measurementSearchRequestWithFilter).subscribe({
+          next: results => {
             this.items = results.items;
             for (const concept of this.items) {
               if (concept.measurementConceptInfo !== null &&
@@ -153,6 +163,15 @@ export class DbTableComponent implements OnChanges, OnDestroy {
               this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
               this.drugBrands[concept.conceptId] = concept.drugBrands;
             }
+            this.displayConceptErrorMessage = false;
+          },
+          error: err => {
+            const errorBody = JSON.parse(err._body);
+            if (errorBody.statusCode === 500) {
+              this.displayConceptErrorMessage = true;
+            }
+            console.log('Error searching: ', errorBody.message);
+          }
           });
         if (this.searchRequest.query && this.searchRequest.query !== null) {
           this.getMeasurementSearchResultTotals(getTests, getOrders);

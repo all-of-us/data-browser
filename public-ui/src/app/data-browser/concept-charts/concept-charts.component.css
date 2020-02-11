@@ -17,3 +17,8 @@
     width: fit-content;
     white-space: nowrap;
 }
+
+.graph-error-message {
+    margin-left: 10%;
+    margin-right: 5%;
+}

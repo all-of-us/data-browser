@@ -45,6 +45,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   totalResults: DomainInfosAndSurveyModulesResponse;
   searchText: FormControl = new FormControl();
   prevSearchText = '';
+  displayDomainTotalsErrorMessage = false;
   totalParticipants;
   loading = true;
   dataType = null;
@@ -121,22 +122,43 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     // Do initial search if we have search text
     if (this.prevSearchText) {
       this.subscriptions.push(
-        this.searchDomains(this.prevSearchText).subscribe(
-          (data: DomainInfosAndSurveyModulesResponse) => {
-            return this.searchCallback(data);
+        this.searchDomains(this.prevSearchText).subscribe({
+            next: data => {
+              this.searchCallback(data);
+              this.displayDomainTotalsErrorMessage = false;
+            },
+            error : err => {
+              const errorBody = JSON.parse(err._body);
+              if (errorBody.statusCode === 500) {
+                this.displayDomainTotalsErrorMessage = true;
+              }
+              console.log('Error searching: ', errorBody.message);
+              this.loading = false;
+              this.resetDomainResults();
+            }
           }));
     }
     // Get domain totals only once so if they erase search we can load them
     this.subscriptions.push(
-      this.api.getDomainTotals(1, 1).subscribe(
-        (data: DomainInfosAndSurveyModulesResponse) => {
-          this.totalResults = data;
-          // Only set results to the totals if we don't have a searchText
-          if (!this.prevSearchText) {
-            this.searchCallback(data);
+      this.api.getDomainTotals(1, 1).subscribe({
+        next: data => {
+            this.totalResults = data;
+            // Only set results to the totals if we don't have a searchText
+            if (!this.prevSearchText) {
+              this.searchCallback(data);
+            }
+            this.displayDomainTotalsErrorMessage = false;
+        },
+        error: err => {
+          const errorBody = JSON.parse(err._body);
+          if (errorBody.statusCode === 500) {
+            this.displayDomainTotalsErrorMessage = true;
           }
-        })
-    );
+          console.log('Error searching: ', errorBody.message);
+          this.loading = false;
+          this.resetDomainResults();
+        }
+      }));
 
     // Search when text value changes
     this.subscriptions.push(
@@ -144,16 +166,22 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         .debounceTime(1500)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomains(query))
-        .subscribe((data: DomainInfosAndSurveyModulesResponse) => {
+        .subscribe({
+        next: data => {
           this.searchCallback(data);
-        })
-    );
-
-    // Set to loading as long as they are typing
-    this.subscriptions.push(this.searchText.valueChanges.subscribe(
-      (query) => this.loading = true));
+          this.displayDomainTotalsErrorMessage = false;
+        },
+          error : err => {
+            const errorBody = JSON.parse(err._body);
+            if (errorBody.statusCode === 500) {
+              this.displayDomainTotalsErrorMessage = true;
+            }
+            console.log('Error searching: ', errorBody.message);
+            this.loading = false;
+            this.resetDomainResults();
+        }
+        }));
   }
-
   ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
@@ -162,6 +190,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public showDataType(showType) {
     return !this.loading && (!this.dataType || this.dataType === showType);
+  }
+
+  public resetDomainResults() {
+    this.domainResults = [];
+    this.surveyResults = [];
+    this.physicalMeasurementsFound = 0;
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {

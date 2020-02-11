@@ -1,9 +1,26 @@
-<div class="db-page-spinner" *ngIf="loading()">
+<div class="db-page-spinner" *ngIf="loading() && !displayGraphErrorMessage">
   <span class="spinner">
     Loading...
   </span>
 </div>
 
+<div *ngIf="displayGraphErrorMessage">
+  <div class="col col-xs-9 graph-error-message">
+    <div class="alert alert-box">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
+          </div>
+          <span class="alert-text">
+            Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
+          </span>
+        </div>
+      </div>
+    </div>
+</div>
+
+<ng-container *ngIf="!displayGraphErrorMessage">
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
     (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
@@ -115,3 +132,4 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
     </ng-template>
   </ng-container>
 </div>
+</ng-container>

@@ -1,14 +1,13 @@
-
-<div class="results-grid" *ngIf="(items && items.length > 0) || (measurementTestsChecked.value === false && measurementOrdersChecked.value === false)">
+<div class="results-grid">
   <div class="domain-info-layout">
-    <span>
+    <span *ngIf="!displayConceptErrorMessage && (items && items.length > 0)">
       <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
         <h5 id="domain-name" class="primary-display">
           Showing top {{totalResults}}
         </h5>
       </ng-container>
       <ng-template #show_pages>
-        <h5 id="domain-name" class="primary-display">
+        <h5 id="domain-name" class="primary-display" *ngIf="!displayConceptErrorMessage">
           Showing top {{((currentPage-1) * searchRequest.maxResults)+1}} -
           {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
         </h5>
@@ -36,10 +35,12 @@
         </h5>
       </ng-template>
     </span>
-    <h6 *ngIf="searchText.value" class="primary-display medline-link">Interested in general
+    <span *ngIf="displayConceptErrorMessage">Showing top 50 concepts for this domain</span>
+    <h6 *ngIf="searchText.value && !displayConceptErrorMessage && (items && items.length > 0)" class="primary-display medline-link">Interested in general
       health information related to "{{getTerm()}}"?
       <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
   </div>
+  <ng-container *ngIf="!displayConceptErrorMessage && (items && items.length > 0)">
   <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
     <div class=" db-alert">
       <clr-alert [clrAlertClosable]="false" [clrAlertType]="info">
@@ -278,6 +279,21 @@
           </app-concept-charts>
         </div>
       </ng-template>
+    </div>
+  </div>
+  </ng-container>
+  <div *ngIf="displayConceptErrorMessage" class="col col-xs-9 alert-container">
+    <div class="alert alert-box">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
+          </div>
+          <span class="alert-text">
+          Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
+        </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
