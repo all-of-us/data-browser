@@ -128,11 +128,14 @@ strong {
 
 .question-result .survey-tbl {
     width: 100%;
+}
+
+.question-result:not(.tooltip, .tooltiptext) .survey-tbl:not(.tooltip, .tooltiptext) {
     overflow-x: scroll;
 }
 
 .see-answers {
-    font-size: .7em;
+    font-size: 14px;
     cursor: pointer;
     color: #216fb4;
 }
@@ -195,10 +198,10 @@ strong {
 }
 
 @media (max-width: 900px) {
-    .results {
+    .results:not(.tooltip, .tooltiptext) {
         overflow-x: scroll;
     }
-    .question-result .survey-tbl {
+    .question-result:not(.tooltip, .tooltiptext) .survey-tbl:not(.tooltip, .tooltiptext) {
         overflow-x: scroll;
     }
 }

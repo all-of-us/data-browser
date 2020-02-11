@@ -128,7 +128,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         .distinctUntilChanged()
         .subscribe((query) => {
           // this.router.navigate(
-            // ['survey/' + this.domainId.toLowerCase() + '/' + query]
+          // ['survey/' + this.domainId.toLowerCase() + '/' + query]
           // );
           this.filterResults();
         }));
@@ -188,11 +188,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       a.countPercent = this.countPercentage(a.countValue, this.survey.participantCount);
       this.addMissingBiologicalSexResults(q.genderAnalysis,
         q.genderAnalysis.surveyQuestionResults.
-        filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+          filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
         this.survey.participantCount);
       this.addMissingAgeResults(q.ageAnalysis,
         q.ageAnalysis.surveyQuestionResults.
-        filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+          filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
         this.survey.participantCount);
       a.subQuestionFetchComplete = false;
     }
@@ -216,16 +216,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
       this.subscriptions.push(this.api.getSurveyQuestions(this.surveyConceptId.toString(),
         this.searchText.value).subscribe({
-        next: x => {
-          this.processSurveyQuestions(x);
-          this.filterResults();
-        },
-        error: err => {
-          console.error('Observer got an error: ' + err);
-          this.loading = false;
-        },
-        complete: () => { this.questionFetchComplete = true; }
-      }));
+          next: x => {
+            this.processSurveyQuestions(x);
+            this.filterResults();
+          },
+          error: err => {
+            console.error('Observer got an error: ' + err);
+            this.loading = false;
+          },
+          complete: () => { this.questionFetchComplete = true; }
+        }));
     }
   }
 
@@ -397,6 +397,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public showAnswerGraphs(a: any, q: any) {
+    if (a.hasSubQuestions === 0) {
+      this.showGraph(a);
+    } else if (a.hasSubQuestions === 1) {
+      this.getSubQuestions(a, 1);
+    }
     a.expanded = !a.expanded;
     if (a.expanded) {
       if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
@@ -527,10 +532,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public hoverOnTooltip(q: any, event: string) {
-    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
-      + event, null, 'Survey Page Tooltip');
+  public getLabel(q: any, helpText: string) {
+    return this.surveyName + ' - Q' + q.actualQuestionNumber + ' - ' + helpText;
   }
 
   public prepGenderPercentageAnalysis(question: any, genderCountByQuestionResults: any) {
@@ -587,63 +590,63 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getSubQuestions(a: any, level: number) {
     this.api.getSurveyQuestionResults(a.stratum1, a.stratum2, a.stratum3, level)
-    .subscribe({
-      next: results => {
-        a.subQuestions = results.items;
-        for (const subQuestion of a.subQuestions) {
-          subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
-          subQuestion.actualQuestionNumber = 0;
-          if (subQuestion.questions && subQuestion.questions.length > 0) {
-            subQuestion.actualQuestionNumber =
-              subQuestion.questions[0]['questionOrderNumber'];
-          }
-          subQuestion.graphToShow = GraphType.BiologicalSex;
-          subQuestion.graphDataToShow = 'Count';
-          subQuestion.countAnalysis.surveyQuestionResults =
-            subQuestion.countAnalysis.surveyQuestionResults.
-            filter(r => r.stratum6.indexOf(a.stratum3) > -1);
-          subQuestion.genderAnalysis.surveyQuestionResults =
-            subQuestion.genderAnalysis.surveyQuestionResults
-              .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
-          subQuestion.ageAnalysis.surveyQuestionResults =
-            subQuestion.ageAnalysis.surveyQuestionResults
-              .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
-          subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
-            if (a1.countValue > a2.countValue) {
-              return -1;
+      .subscribe({
+        next: results => {
+          a.subQuestions = results.items;
+          for (const subQuestion of a.subQuestions) {
+            subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
+            subQuestion.actualQuestionNumber = 0;
+            if (subQuestion.questions && subQuestion.questions.length > 0) {
+              subQuestion.actualQuestionNumber =
+                subQuestion.questions[0]['questionOrderNumber'];
             }
-            if (a1.countValue < a2.countValue) {
-              return 1;
+            subQuestion.graphToShow = GraphType.BiologicalSex;
+            subQuestion.graphDataToShow = 'Count';
+            subQuestion.countAnalysis.surveyQuestionResults =
+              subQuestion.countAnalysis.surveyQuestionResults.
+                filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+            subQuestion.genderAnalysis.surveyQuestionResults =
+              subQuestion.genderAnalysis.surveyQuestionResults
+                .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+            subQuestion.ageAnalysis.surveyQuestionResults =
+              subQuestion.ageAnalysis.surveyQuestionResults
+                .filter(r => r.stratum6.indexOf(a.stratum3) > -1);
+            subQuestion.countAnalysis.surveyQuestionResults.sort((a1, a2) => {
+              if (a1.countValue > a2.countValue) {
+                return -1;
+              }
+              if (a1.countValue < a2.countValue) {
+                return 1;
+              }
+              return 0;
+            });
+            subQuestion.countAnalysis.surveyQuestionResults.push(
+              this.addDidNotAnswerResult(
+                subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
+            );
+            for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
+              filter(r => r.subQuestions === null)) {
+              this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
+                subQuestion.genderAnalysis.surveyQuestionResults.
+                  filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
+                a.countValue);
+              this.addMissingAgeResults(subQuestion.ageAnalysis,
+                subQuestion.ageAnalysis.surveyQuestionResults.
+                  filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
+                a.countValue);
             }
-            return 0;
-          });
-          subQuestion.countAnalysis.surveyQuestionResults.push(
-            this.addDidNotAnswerResult(
-              subQuestion.countAnalysis.surveyQuestionResults, a.countValue)
-          );
-          for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
-          filter(r => r.subQuestions === null)) {
-            this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
-              subQuestion.genderAnalysis.surveyQuestionResults.
-              filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
-              a.countValue);
-            this.addMissingAgeResults(subQuestion.ageAnalysis,
-              subQuestion.ageAnalysis.surveyQuestionResults.
-              filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
-              a.countValue);
+            this.prepGenderPercentageAnalysis(subQuestion,
+              subQuestion.genderCountAnalysis.surveyQuestionResults);
+            this.prepAgePercentageAnalysis(subQuestion,
+              subQuestion.ageCountAnalysis.surveyQuestionResults);
           }
-          this.prepGenderPercentageAnalysis(subQuestion,
-            subQuestion.genderCountAnalysis.surveyQuestionResults);
-          this.prepAgePercentageAnalysis(subQuestion,
-            subQuestion.ageCountAnalysis.surveyQuestionResults);
+          a.subQuestionFetchComplete = true;
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+          this.loading = false;
         }
-        a.subQuestionFetchComplete = true;
-      },
-      error: err => {
-        console.log('Error searching: ', err);
-        this.loading = false;
-      }
-    });
+      });
   }
 
   public showGraph(a) {

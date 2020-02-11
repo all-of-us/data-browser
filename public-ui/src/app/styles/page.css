@@ -271,6 +271,10 @@ a:hover {
   border-radius: 2px 2px 2px 2px;
 }
 
+.sub-graph-choice {
+  font-size: 14px;
+}
+
 .measurement-filter-choice.active {
   text-decoration: underline;
 }
