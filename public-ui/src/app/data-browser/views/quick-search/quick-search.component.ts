@@ -123,7 +123,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     if (this.prevSearchText) {
       this.subscriptions.push(
         this.searchDomains(this.prevSearchText).subscribe({
-            next: data => {
+            next: (data: DomainInfosAndSurveyModulesResponse) => {
               this.searchCallback(data);
               this.displayDomainTotalsErrorMessage = false;
             },
@@ -167,7 +167,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomains(query))
         .subscribe({
-        next: data => {
+        next: (data: DomainInfosAndSurveyModulesResponse) => {
           this.searchCallback(data);
           this.displayDomainTotalsErrorMessage = false;
         },
