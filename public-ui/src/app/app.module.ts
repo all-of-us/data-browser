@@ -33,6 +33,7 @@ function getPublicBasePath() {
 export function getConfiguration(): Configuration {
   return new Configuration({
     basePath: getPublicBasePath(),
+    withCredentials: true,
   });
 }
 
