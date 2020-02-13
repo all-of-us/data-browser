@@ -296,7 +296,7 @@
                 </div>
             </div>
         </div>
-          <app-fmh-view [searchText]="searchText" *ngIf="surveyConceptId === 43528698" [participantCount]="survey.participantCount" [surveyName]="survey.name"></app-fmh-view>
+          <app-fmh-view [searchText]="searchText" *ngIf="surveyConceptId === 43528698 && (envDisplay === 'Prod' || envDisplay.indexOf('Local') >= 0)" [participantCount]="survey.participantCount" [surveyName]="survey.name"></app-fmh-view>
       </div>
     </div>
     </section>

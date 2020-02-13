@@ -971,6 +971,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionConceptIds.add(String.valueOf(q.getConceptId()));
         }
 
+        System.out.println(questionConceptIds);
+        System.out.println(resultConceptId);
+
         List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
 
         List<AchillesResult> subQuestionResults = null;
@@ -1005,6 +1008,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         for(QuestionConcept q: subQuestions) {
             questionConceptIds.add(String.valueOf(q.getConceptId()));
         }
+
+        System.out.println(questionConceptIds);
 
         List<Long> subIds = null;
 
