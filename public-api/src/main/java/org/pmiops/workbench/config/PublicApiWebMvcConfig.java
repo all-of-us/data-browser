@@ -35,5 +35,4 @@ public class PublicApiWebMvcConfig extends WebMvcConfigurerAdapter {
     registry.addInterceptor(clearCdrVersionInterceptor);
     registry.addInterceptor(securityHeadersInterceptor);
   }
-
 }
