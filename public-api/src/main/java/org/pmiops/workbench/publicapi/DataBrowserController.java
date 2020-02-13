@@ -971,9 +971,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionConceptIds.add(String.valueOf(q.getConceptId()));
         }
 
-        System.out.println(questionConceptIds);
-        System.out.println(resultConceptId);
-
         List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
 
         List<AchillesResult> subQuestionResults = null;
@@ -1009,7 +1006,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionConceptIds.add(String.valueOf(q.getConceptId()));
         }
 
-        System.out.println(questionConceptIds);
 
         List<Long> subIds = null;
 
@@ -1846,7 +1842,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         for(org.pmiops.workbench.model.QuestionConcept q: questions) {
-            System.out.println(q.getConceptId());
             AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
             ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
             AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
