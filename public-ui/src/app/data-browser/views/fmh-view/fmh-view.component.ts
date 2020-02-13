@@ -36,7 +36,6 @@ export class FmhViewComponent implements OnInit {
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
               private tooltipText: TooltipService) {
-  
   }
 
   ngOnInit() {
@@ -53,7 +52,7 @@ export class FmhViewComponent implements OnInit {
     this.subscriptions.push(this.api.getFMHGroupedQuestions('43528698',
       this.searchText.value, conditionQuestionConceptIds).subscribe({
       next: x => {
-        this.processQuestions(x, "condition");
+        this.processQuestions(x, 'condition');
       },
       error: err => {
         console.error('Observer got an error: ' + err);
@@ -64,7 +63,7 @@ export class FmhViewComponent implements OnInit {
     this.subscriptions.push(this.api.getFMHGroupedQuestions('43528698',
       this.searchText.value, fmQuestionConceptIds).subscribe({
       next: x => {
-        this.processQuestions(x, "family_member");
+        this.processQuestions(x, 'family_member');
       },
       error: err => {
         console.error('Observer got an error: ' + err);
@@ -86,7 +85,7 @@ export class FmhViewComponent implements OnInit {
       q.actualQuestionNumber = this.questionOrder[q.conceptId];
     }
     if (branching === 'condition') {
-      this.conditionQuestions =results.items;
+      this.conditionQuestions = results.items;
       this.conditionQuestions.sort((a1, a2) => {
         if (a1.actualQuestionNumber < a2.actualQuestionNumber) {
           return -1;
@@ -97,7 +96,7 @@ export class FmhViewComponent implements OnInit {
         return 0;
       });
     } else {
-      this.fmQuestions =results.items;
+      this.fmQuestions = results.items;
       this.fmQuestions.sort((a1, a2) => {
         if (a1.actualQuestionNumber < a2.actualQuestionNumber) {
           return -1;
@@ -420,7 +419,7 @@ export class FmhViewComponent implements OnInit {
   }
 
   public isDidNotAnswer(sqa: any) {
-    if(sqa.stratum4.toLowerCase() !== 'did not answer') {
+    if (sqa.stratum4.toLowerCase() !== 'did not answer') {
       return false;
     }
     return true;
