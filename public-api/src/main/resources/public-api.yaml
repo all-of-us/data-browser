@@ -94,6 +94,36 @@ paths:
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
 
+  /v1/databrowser/fmh-questions:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the list of family medical history questions grouped by condition / family member
+      operationId: "getFMHGroupedQuestions"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: search_word
+          type: string
+          required: false
+          description: search word
+        - in: query
+          name: question-concept-ids
+          type: array
+          items:
+            type: string
+          required: false
+          description: concept id
+      responses:
+        200:
+          description: A collection of questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
   /v1/databrowser/survey-question-results:
     get:
       tags:
@@ -129,11 +159,30 @@ paths:
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
 
+  /v1/databrowser/fmh-survey-question-results:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Get the results & sub questions with results for fmh condition / family member group
+      operationId: "getFMHSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+      responses:
+        200:
+          description: A collection of questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
   /v1/databrowser/main-survey-question-results:
     post:
       tags:
         - dataBrowser
-      description: Gets thw survey question analysis results
+      description: Gets the survey question analysis results
       operationId: "getMainSurveyQuestionResults"
       parameters:
         - in: query
@@ -154,6 +203,29 @@ paths:
       responses:
         200:
           description: A collection of analysis objects
+          schema:
+            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
+
+  /v1/databrowser/fmh-main-condition-results:
+    post:
+      tags:
+        - dataBrowser
+      description: Gets the survey question analysis results of condition in fmh
+      operationId: "getFMHConditionMainResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: body
+          name: question
+          description: question concept
+          schema:
+            $ref: "#/definitions/QuestionConcept"
+      responses:
+        200:
+          description: A collection of anlysis objects
           schema:
             $ref: "#/definitions/SurveyQuestionAnalysisResponse"
 

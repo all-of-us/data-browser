@@ -55,6 +55,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   subGraphButtons = ['Count', 'Percentage (%)'];
   genderPercentageAnalysis: any;
   agePercentageAnalysis: any;
+  envDisplay: string;
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -80,6 +81,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadPage();
+    this.envDisplay = environment.displayTag;
   }
 
   ngOnDestroy() {
@@ -368,6 +370,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
         next: results => {
+          console.log(results);
           q.countAnalysis = results.countAnalysis;
           q.genderAnalysis = results.genderAnalysis;
           q.ageAnalysis = results.ageAnalysis;

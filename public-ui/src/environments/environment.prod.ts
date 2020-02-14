@@ -1,5 +1,5 @@
 export const environment = {
-  displayTag: '',
+  displayTag: 'Prod',
   publicApiUrl: 'https://public.api.researchallofus.org',
   workbenchUrl: 'https://workbench.researchallofus.org',
   researchAllOfUsUrl: 'https://researchallofus.org',
