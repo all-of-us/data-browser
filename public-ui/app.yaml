@@ -9,8 +9,6 @@ handlers:
   secure: always
   # TODO(calbach): Bump max-age to 1y once we've verified this is correct.
   http_headers:
-    Cache-Control: private
-    Access-Control-Allow-Credentials: true
     Access-Control-Allow-Headers: origin, x-requested-with, content-type, accept
     Access-Control-Allow-Methods: GET, POST, OPTIONS
     Strict-Transport-Security: "max-age=86400; includeSubDomains; preload"
@@ -22,8 +20,6 @@ handlers:
   upload: dist/index.html
   secure: always
   http_headers:
-    Cache-Control: private
-    Access-Control-Allow-Credentials: true
     Access-Control-Allow-Headers: origin, x-requested-with, content-type, accept
     Access-Control-Allow-Methods: GET, POST, OPTIONS
     Strict-Transport-Security: "max-age=86400; includeSubDomains; preload"
