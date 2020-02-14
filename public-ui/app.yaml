@@ -18,14 +18,12 @@ handlers:
     X-XSS-Protection: "1"
     X-Frame-Options: "SAMEORIGIN"
     Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org https://www.staging.researchallofus.org;; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com https://ka-p.fontawesome.com;"
-    Access-Control-Allow-Origin: "*"
 - url: /.*
   static_files: dist/index.html
   upload: dist/index.html
   secure: always
   http_headers:
     Cache-Control: private
-    Access-Control-Allow-Origin: "*"
     Access-Control-Allow-Credentials: true
     Access-Control-Allow-Headers: origin, x-requested-with, content-type, accept
     Access-Control-Allow-Methods: GET, POST, OPTIONS
