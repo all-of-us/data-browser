@@ -227,7 +227,12 @@ with a as
 (select person_id,fmh.observation_source_concept_id as question_concept, string_agg(distinct cast(ob.observation_source_concept_id as string), ',') as questions_skipped from
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts on ob.observation_source_concept_id=cast(concepts as int64)
-where value_source_concept_id=903096 group by 1,2)
+where value_source_concept_id=903096
+and exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+group by 1,2)
 select 0 as id, 3110 as analysis_id,'43528698' as stratum_1,
 cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, '2' as stratum_5, count(person_id) as count_value, 0 as source_count_value
 from a where ARRAY_LENGTH(SPLIT(questions_skipped))=6
@@ -241,7 +246,12 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts on ob.observation_source_concept_id=cast(concepts as int64)
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on ob.person_id=p.person_id
-where value_source_concept_id=903096 group by 1,2,3)
+where value_source_concept_id=903096
+and exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+group by 1,2,3)
 select 0 as id, 3111 as analysis_id,'43528698' as stratum_1,
 cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, cast(gender as string) as stratum_5, '2' as stratum_6, count(person_id) as count_value, 0 as source_count_value
 from a where ARRAY_LENGTH(SPLIT(questions_skipped))=6
@@ -255,7 +265,12 @@ with a as
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts on ob.observation_source_concept_id=cast(concepts as int64)
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` p on ob.observation_id=p.observation_id
-where value_source_concept_id=903096 group by 1,2,3)
+where value_source_concept_id=903096
+and exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
+group by 1,2,3)
 select 0 as id, 3112 as analysis_id,'43528698' as stratum_1,
 cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, cast(age as string) as stratum_5, '2' as stratum_6, count(person_id) as count_value, 0 as source_count_value
 from a where ARRAY_LENGTH(SPLIT(questions_skipped))=6

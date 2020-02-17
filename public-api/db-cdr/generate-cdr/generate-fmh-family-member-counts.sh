@@ -243,6 +243,10 @@ on ob.observation_source_concept_id=cast(concepts as int64)
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=fmh.observation_source_concept_id
 where value_source_concept_id in (903096, 903095, 903087, 903079)
 and ob.observation_source_concept_id not in (43529658, 43529656, 43529659, 43529655, 43529660, 43529657)
+and exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where questionnaire_response_id=ob.questionnaire_response_id and
+observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2,3,5)
 select 0 as id, 3110 as analysis_id, '43528698' as stratum_1,
 cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, c.concept_name as stratum_4, '3' as stratum_5,
