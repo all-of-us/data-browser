@@ -554,3 +554,40 @@ count(distinct m.person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` m join m_age_stratum p
 on m.observation_id=p.observation_id
 group by age_stratum"
+
+####################
+# survey counts #
+####################
+# Generate survey counts
+if ./generate-cdr/generate-survey-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+then
+    echo "Survey counts generated"
+else
+    echo "FAILED To generate survey counts for CDR $CDR_VERSION"
+    exit 1
+fi
+
+####################
+# fmh condition counts #
+####################
+# Generate survey counts
+if ./generate-cdr/generate-fmh-condition-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+then
+    echo "FMH condition counts generated"
+else
+    echo "FAILED To generate fmh condition counts for CDR $CDR_VERSION"
+    exit 1
+fi
+
+
+####################
+# fmh family member counts #
+####################
+# Generate survey counts
+if ./generate-cdr/generate-fmh-family-member-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+then
+    echo "FMH family member counts generated"
+else
+    echo "FAILED To generate fmh family member counts for CDR $CDR_VERSION"
+    exit 1
+fi
