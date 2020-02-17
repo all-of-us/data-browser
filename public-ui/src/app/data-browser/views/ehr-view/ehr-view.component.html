@@ -10,12 +10,12 @@
     </div>
   </div>
   <app-spinner [loading]="loading"></app-spinner>
-  <div class="results">
+  <div class="results" *ngIf="items.length > 0 || displayConceptErrorMessage">
     <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
         <div class="db-card">
           <div class="db-card-inner">
-            <section>
+            <section *ngIf="items.length > 0 || displayConceptErrorMessage">
               <!-- Top summary boxes -- only show if have results -->
               <h5 id="domain-summary" class="secondary-display">
                 <div class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending
@@ -27,7 +27,7 @@
               <div *ngIf="showTopConcepts && !displayConceptErrorMessage">
                 <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results"></chart-top-results>
               </div>
-              <div *ngIf="showTopConcepts && displayConceptErrorMessage" class="col col-xs-9">
+              <div *ngIf="showTopConcepts && displayConceptErrorMessage" class="col col-xs-7 error-message">
                   <div class="alert alert-box">
                     <div class="alert-items">
                       <div class="alert-item static">

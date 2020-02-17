@@ -27,7 +27,11 @@
         </h5>
       </ng-template>
     </span>
-    <span *ngIf="displayConceptErrorMessage">Showing top 50 concepts for this domain</span>
+    <span *ngIf="displayConceptErrorMessage">
+    <h5 id="domain-name" class="primary-display">Showing top 50 concepts for this domain</h5>
+    <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1" [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.matchingConceptsHelpText2"
+                 [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
+    </span>
     <h6 *ngIf="searchText.value && !displayConceptErrorMessage && (items && items.length > 0)" class="primary-display medline-link">Interested in general
       health information related to "{{getTerm()}}"?
       <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
@@ -236,7 +240,7 @@
     </div>
   </div>
   </ng-container>
-  <div *ngIf="displayConceptErrorMessage" class="col col-xs-9 alert-container">
+  <div *ngIf="displayConceptErrorMessage" class="col col-xs-7 alert-container error-message">
     <div class="alert alert-box">
       <div class="alert-items">
         <div class="alert-item static">

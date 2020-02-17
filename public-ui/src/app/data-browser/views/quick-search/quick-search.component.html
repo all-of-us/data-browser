@@ -79,7 +79,7 @@
         </div>
       </div>
       <div class="col col-xs-12" *ngIf="(!domainResults || domainResults.length === 0) && !displayDomainTotalsErrorMessage">
-        <h6> No EHR Data Results. Please type in a new search term.</h6>
+        <h6 class="no-results-text"> No EHR Data Results. Please type in a new search term.</h6>
       </div>
       <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
         <div class="alert alert-box">
@@ -131,7 +131,7 @@
       </div>
       <!-- toDO: style noresults -->
       <div class="col-xs-12" *ngIf="(!surveyResults || surveyResults.length === 0) && !displayDomainTotalsErrorMessage">
-        <h6> No Survey Results. Please type in a new search term.</h6>
+        <h6 class="no-results-text"> No Survey Results. Please type in a new search term.</h6>
       </div>
       <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
         <div class="alert alert-box">
@@ -180,7 +180,7 @@
           </div>
       </div>
     </div>
-    <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage"> No Program Physical Measurement Results. Please type in a new search term.</h6>
+    <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage" class="no-results-text"> No Program Physical Measurement Results. Please type in a new search term.</h6>
     <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
       <div class="alert alert-box">
         <div class="alert-items">

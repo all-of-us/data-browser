@@ -5,7 +5,7 @@
 </div>
 
 <div *ngIf="displayGraphErrorMessage">
-  <div class="col col-xs-9 graph-error-message">
+  <div class="graph-error-message">
     <div class="alert alert-box">
       <div class="alert-items">
         <div class="alert-item static">
@@ -13,11 +13,12 @@
             <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
           </div>
           <span class="alert-text">
-            Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
+            Sorry, the chart cannot be displayed. Please try refreshing the page.
           </span>
         </div>
       </div>
     </div>
+</div>
 </div>
 
 <ng-container *ngIf="!displayGraphErrorMessage">
