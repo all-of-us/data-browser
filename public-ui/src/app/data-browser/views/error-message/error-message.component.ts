@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Concept} from "../../../../publicGenerated/model/concept";
 
 @Component({
   selector: 'app-error-message',
@@ -9,11 +8,10 @@ import {Concept} from "../../../../publicGenerated/model/concept";
 })
 export class ErrorMessageComponent implements OnInit {
   
-  @Input() dataType: Concept;
-  
+  @Input() dataType: string;
+
   constructor() { }
 
   ngOnInit() {
   }
-
 }
