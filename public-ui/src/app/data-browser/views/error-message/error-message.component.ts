@@ -7,7 +7,6 @@ import {Component, Input, OnInit} from '@angular/core';
               '../../../styles/page.css']
 })
 export class ErrorMessageComponent implements OnInit {
-  
   @Input() dataType: string;
 
   constructor() { }
