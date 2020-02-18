@@ -27,6 +27,15 @@
   margin: 1%;
 }
 
+.graph-error-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 10vh;
+}
+
 .secondary-display, h2 {
   font-family: Arial, sans-serif;
   font-weight: 200;

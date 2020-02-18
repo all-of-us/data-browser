@@ -3,24 +3,9 @@
     Loading...
   </span>
 </div>
-
-<div *ngIf="displayGraphErrorMessage">
-  <div class="graph-error-message">
-    <div class="alert alert-box">
-      <div class="alert-items">
-        <div class="alert-item static">
-          <div class="alert-icon-wrapper">
-            <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
-          </div>
-          <span class="alert-text">
-            Sorry, the chart cannot be displayed. Please try refreshing the page.
-          </span>
-        </div>
-      </div>
-    </div>
+<div class="graph-error-message" *ngIf="displayGraphErrorMessage">
+  <app-error-message [dataType]="'chart'"></app-error-message>
 </div>
-</div>
-
 <ng-container *ngIf="!displayGraphErrorMessage">
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"

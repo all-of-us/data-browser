@@ -22,7 +22,6 @@ import org.springframework.core.annotation.Order;
 import java.util.stream.Collectors;
 import org.springframework.core.Ordered;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class ExceptionAdvice{
 
@@ -30,7 +29,6 @@ public class ExceptionAdvice{
 
   @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentNotValidException.class})
   public ResponseEntity<?> messageNotReadableError(Exception e) {
-    //log.log(Level.INFO, "failed to parse HTTP request message, returning 400", e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
         DataBrowserException.errorResponse(e.getMessage())
             .statusCode(HttpStatus.BAD_REQUEST.value()));

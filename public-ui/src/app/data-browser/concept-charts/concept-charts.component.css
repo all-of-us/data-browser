@@ -17,12 +17,3 @@
     width: fit-content;
     white-space: nowrap;
 }
-
-.graph-error-message {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 10vh;
-}

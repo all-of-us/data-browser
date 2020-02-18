@@ -114,6 +114,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
       this.concept.domainId).subscribe(
       {
         next: results => {
+          console.log(this.results);
           this.results = results.items;
           this.analyses = results.items[0];
           this.selectedSubGraph = 'Count';
@@ -129,7 +130,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         },
         error: err => {
           const errorBody = JSON.parse(err._body);
-          if (errorBody.statusCode === 500) {
+          if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
             this.displayGraphErrorMessage = true;
           }
           console.log('Error searching: ', errorBody.message);

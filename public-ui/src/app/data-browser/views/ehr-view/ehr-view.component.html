@@ -28,18 +28,7 @@
                 <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results"></chart-top-results>
               </div>
               <div *ngIf="showTopConcepts && displayConceptErrorMessage" class="col col-xs-7 error-message">
-                  <div class="alert alert-box">
-                    <div class="alert-items">
-                      <div class="alert-item static">
-                        <div class="alert-icon-wrapper">
-                          <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
-                        </div>
-                        <span class="alert-text">
-          Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
-        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <app-error-message [dataType]="'data'"></app-error-message>
               </div>
             </section>
             <db-table 

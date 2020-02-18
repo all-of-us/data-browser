@@ -129,7 +129,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             },
             error : err => {
               const errorBody = JSON.parse(err._body);
-              if (errorBody.statusCode === 500) {
+              if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
                 this.displayDomainTotalsErrorMessage = true;
               }
               console.log('Error searching: ', errorBody.message);
@@ -151,7 +151,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         },
         error: err => {
           const errorBody = JSON.parse(err._body);
-          if (errorBody.statusCode === 500) {
+          if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
             this.displayDomainTotalsErrorMessage = true;
           }
           console.log('Error searching: ', errorBody.message);
@@ -173,7 +173,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         },
           error : err => {
             const errorBody = JSON.parse(err._body);
-            if (errorBody.statusCode === 500) {
+            if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
               this.displayDomainTotalsErrorMessage = true;
             }
             console.log('Error searching: ', errorBody.message);

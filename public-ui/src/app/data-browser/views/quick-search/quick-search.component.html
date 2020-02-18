@@ -82,18 +82,7 @@
         <h6 class="no-results-text"> No EHR Data Results. Please type in a new search term.</h6>
       </div>
       <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
-        <div class="alert alert-box">
-          <div class="alert-items">
-            <div class="alert-item static">
-              <div class="alert-icon-wrapper">
-                <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
-              </div>
-              <span class="alert-text">
-                    Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
-              </span>
-            </div>
-          </div>
-        </div>
+        <app-error-message [dataType]="'data'"></app-error-message>
       </div>
     </div>
     <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
@@ -134,18 +123,7 @@
         <h6 class="no-results-text"> No Survey Results. Please type in a new search term.</h6>
       </div>
       <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
-        <div class="alert alert-box">
-          <div class="alert-items">
-            <div class="alert-item static">
-              <div class="alert-icon-wrapper">
-                <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
-              </div>
-              <span class="alert-text">
-                    Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
-              </span>
-            </div>
-          </div>
-        </div>
+        <app-error-message [dataType]="'data'"></app-error-message>
       </div>
     </div>
     <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
@@ -182,17 +160,6 @@
     </div>
     <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage" class="no-results-text"> No Program Physical Measurement Results. Please type in a new search term.</h6>
     <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
-      <div class="alert alert-box">
-        <div class="alert-items">
-          <div class="alert-item static">
-            <div class="alert-icon-wrapper">
-              <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
-            </div>
-            <span class="alert-text">
-                    Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
-              </span>
-          </div>
-        </div>
-      </div>
+      <app-error-message [dataType]="'data'"></app-error-message>
     </div>
   </section>
