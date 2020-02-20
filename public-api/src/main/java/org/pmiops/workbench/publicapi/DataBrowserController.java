@@ -931,7 +931,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
         org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
 
-        Optional.ofNullable(questionConcept).orElseThrow(() -> new DataNotFoundException("Unable to fetch results of this survey question"))
+        Optional.ofNullable(questionConcept).orElseThrow(() -> new DataNotFoundException("Unable to fetch results of this survey question"));
 
         SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
         resp.setCountAnalysis(questionConcept.getCountAnalysis());
