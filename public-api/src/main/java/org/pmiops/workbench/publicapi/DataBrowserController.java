@@ -800,7 +800,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
         CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
         if (cdrVersion == null) {
-            throw new ServerErrorException("No data present in table cdr version");
+            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
         }
         return ResponseEntity.ok(TO_CLIENT_CDR_VERSION.apply(cdrVersion));
     }
