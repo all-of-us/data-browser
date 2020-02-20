@@ -559,7 +559,7 @@ group by age_stratum"
 # survey counts #
 ####################
 # Generate survey counts
-if ./generate-cdr/generate-survey-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+if ./generate-cdr/generate-survey-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
 then
     echo "Survey counts generated"
 else
@@ -571,7 +571,7 @@ fi
 # fmh condition counts #
 ####################
 # Generate survey counts
-if ./generate-cdr/generate-fmh-condition-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+if ./generate-cdr/generate-fmh-condition-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
 then
     echo "FMH condition counts generated"
 else
@@ -584,7 +584,7 @@ fi
 # fmh family member counts #
 ####################
 # Generate survey counts
-if ./generate-cdr/generate-fmh-family-member-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+if ./generate-cdr/generate-fmh-family-member-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
 then
     echo "FMH family member counts generated"
 else
