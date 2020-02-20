@@ -176,9 +176,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           },
           error: err => {
             const errorBody = JSON.parse(err._body);
-            if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
-              this.displayConceptErrorMessage = true;
-            }
+            this.displayConceptErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
             this.loading = false;
           }
@@ -196,9 +194,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           error: err => {
             console.log('Error searching: ', err);
             const errorBody = JSON.parse(err._body);
-            if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
-              this.displayConceptErrorMessage = true;
-            }
+            this.displayConceptErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
             this.loading = false;
             this.toggleTopConcepts();
@@ -315,9 +311,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         },
         error: err => {
         const errorBody = JSON.parse(err._body);
-        if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
-          this.displayConceptErrorMessage = true;
-        }
+        this.displayConceptErrorMessage = true;
         console.log('Error searching: ', errorBody.message);
         this.loading = false;
         }

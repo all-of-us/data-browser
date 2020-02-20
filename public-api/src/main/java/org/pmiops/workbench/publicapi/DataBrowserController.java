@@ -538,7 +538,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
         Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
@@ -567,15 +567,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if (criteriaList.size() >= 1) {
                 criteriaList.remove(parent);
             }
-            if (parent == null) {
-                throw new DataNotFoundException("Cannot find rolled up counts of this concept");
-            }
+            Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
             response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
             Multimap<Long, CBCriteria> parentCriteria = Multimaps
                     .index(criteriaList, CBCriteria::getParentId);
             return ResponseEntity.ok(response);
         } else {
-            throw new DataNotFoundException("Cannot find rolled up counts of this concept");
+            return ResponseEntity.ok(response);
         }
     }
 
@@ -584,13 +582,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         List<CBCriteria> criteriaList = criteriaDao.findCriteriaChildren(parentId);
         CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-        if (criteriaList == null) {
-            throw new DataNotFoundException("Cannot find children of this concept");
-        }
         criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
         return ResponseEntity.ok(criteriaListResponse);
     }
@@ -600,7 +595,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
@@ -660,7 +655,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         Integer maxResults = searchConceptsRequest.getMaxResults();
         if(maxResults == null || maxResults == 0){
@@ -763,7 +758,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         Integer getTests = null;
         Integer getOrders = null;
@@ -804,7 +799,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
         if (cdrVersion == null) {
@@ -818,7 +813,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
         if (genderAnalysis == null) {
@@ -833,7 +828,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
         if (raceAnalysis == null) {
@@ -848,7 +843,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
         if (ethnicityAnalysis == null) {
@@ -863,7 +858,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
@@ -926,7 +921,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         List<String> questionConceptIds = new ArrayList<>();
         questionConceptIds.add(questionConceptId);
@@ -947,9 +942,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
         org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
 
-        if (questionConcept == null) {
-            throw new DataNotFoundException("Unable to fetch results of this survey question");
-        }
+        Optional.ofNullable(questionConcept).orElseThrow(() -> new DataNotFoundException("Unable to fetch results of this survey question"))
 
         SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
         resp.setCountAnalysis(questionConcept.getCountAnalysis());
@@ -1001,7 +994,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
@@ -1071,7 +1064,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3300L);
@@ -1094,7 +1087,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3320L);
@@ -1115,7 +1108,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
@@ -1347,7 +1340,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         Integer count=minCount;
         if(count == null){
@@ -1364,7 +1357,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+            throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesResult result = achillesResultDao.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID);
         if (result == null) {

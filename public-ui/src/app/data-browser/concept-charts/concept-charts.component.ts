@@ -130,9 +130,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         },
         error: err => {
           const errorBody = JSON.parse(err._body);
-          if (errorBody.statusCode === 500 || errorBody.statusCode === 503) {
-            this.displayGraphErrorMessage = true;
-          }
+          this.displayGraphErrorMessage = true;
           console.log('Error searching: ', errorBody.message);
         }
       }));
