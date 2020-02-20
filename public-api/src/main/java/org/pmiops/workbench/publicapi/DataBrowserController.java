@@ -744,11 +744,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
         }
 
-        if (conceptList.size() == 0) {
-            throw new DataNotFoundException("There are no concepts that match these criteria to fetch");
-        }
-
-
         response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
         return ResponseEntity.ok(response);
     }
@@ -816,9 +811,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
-        if (genderAnalysis == null) {
-            throw new DataNotFoundException("Gender Analysis data is not available");
-        }
+        Optional.ofNullable(genderAnalysis).orElseThrow(() -> new DataNotFoundException("Gender Analysis data is not available"));
         addGenderStratum(genderAnalysis,1, "0", null);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
     }
@@ -831,9 +824,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
-        if (raceAnalysis == null) {
-            throw new DataNotFoundException("Race Analysis data is not available");
-        }
+        Optional.ofNullable(raceAnalysis).orElseThrow(() -> new DataNotFoundException("Race Analysis data is not available"));
         addRaceStratum(raceAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
     }
@@ -846,9 +837,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
-        if (ethnicityAnalysis == null) {
-            throw new DataNotFoundException("Ethnicity Analysis data is not available");
-        }
+        Optional.ofNullable(ethnicityAnalysis).orElseThrow(() -> new DataNotFoundException("Ethnicity Analysis data is not available"));
         addEthnicityStratum(ethnicityAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
     }
