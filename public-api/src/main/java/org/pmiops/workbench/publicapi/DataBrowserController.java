@@ -635,11 +635,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
 
-        if (domains == null || surveyModules == null) {
-            throw new DataNotFoundException("A problem occurred while trying to fetch domain result counts.");
-        }
-
-
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domains.stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
@@ -742,8 +737,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if(response.getStandardConcepts() != null) {
                 conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
             }
-        } else {
-            throw new DataNotFoundException("Unable to fetch concepts");
         }
 
         response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
@@ -776,10 +769,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<DomainInfo> domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
         List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
-
-        if (domainInfos == null || surveyModules == null) {
-            throw new DataNotFoundException("No domain metadata available");
-        }
 
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
@@ -1001,10 +990,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
 
-        if (analyses == null) {
-            throw new DataNotFoundException("Unable to fetch results of this survey question");
-        }
-
         List<AchillesResult> subQuestionResults = null;
         List<Long> subIds = null;
 
@@ -1062,10 +1047,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(3301L);
         List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
 
-        if (ehrAnalysesList == null) {
-            throw new DataNotFoundException("Unable to fetch count analysis results of this domain concepts");
-        }
-
         EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
         ehrCountAnalysis.setDomainId(domainId);
         ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
@@ -1084,10 +1065,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(3320L);
         analysisIds.add(3321L);
         List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
-
-        if (surveyQuestionCountList == null) {
-            throw new DataNotFoundException("Unable to fetch count analysis results of this question");
-        }
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
@@ -1153,7 +1130,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             List<AchillesAnalysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,analysisIds);
 
 
-            if (analysisList == null || analysisList.size() == 0) {
+            if (analysisList.size() == 0) {
                 throw new DataNotFoundException("Cannot find analysis data of this concept");
             }
 
