@@ -742,6 +742,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if(response.getStandardConcepts() != null) {
                 conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
             }
+        } else {
+            throw new DataNotFoundException("Unable to fetch concepts");
         }
 
         response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
