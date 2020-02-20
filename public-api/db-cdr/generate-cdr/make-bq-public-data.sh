@@ -315,6 +315,7 @@ select id, 3311 as analysis_id, stratum_1, stratum_2, stratum_3,
 cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4=ar.stratum_2))*100,2) as string) as stratum_4,count_value, source_count_value
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Procedure' ";
 
+# To do delete if not used anymore
 echo "Inserting percentages of survey question answers by biological sex (by module)"
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`

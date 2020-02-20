@@ -296,6 +296,7 @@
                 </div>
             </div>
         </div>
+          <app-fmh-view [searchText]="searchText" *ngIf="surveyConceptId === 43528698 && (envDisplay === 'Prod' || envDisplay.indexOf('Local') >= 0)" [participantCount]="survey.participantCount" [surveyName]="survey.name"></app-fmh-view>
       </div>
     </div>
     </section>
@@ -324,5 +325,5 @@
         <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
       </span>
     </p>
-    <app-db-no-results (newDomain)="changeResults($event)"[searchText]="searchText"></app-db-no-results>
+    <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
   </div>
