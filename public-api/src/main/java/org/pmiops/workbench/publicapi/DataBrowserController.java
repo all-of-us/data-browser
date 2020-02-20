@@ -4,7 +4,11 @@ import java.util.logging.Logger;
 import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
+import org.springframework.http.HttpStatus;
 import com.google.common.collect.ImmutableList;
+import java.net.SocketTimeoutException;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,6 +71,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import org.pmiops.workbench.exceptions.ServerErrorException;
+import org.pmiops.workbench.exceptions.DataNotFoundException;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
@@ -529,7 +535,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
         Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
         CriteriaParentResponse response = new CriteriaParentResponse();
@@ -557,17 +567,23 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if (criteriaList.size() >= 1) {
                 criteriaList.remove(parent);
             }
+            Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
             response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
             Multimap<Long, CBCriteria> parentCriteria = Multimaps
                     .index(criteriaList, CBCriteria::getParentId);
             return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<CriteriaListResponse> getCriteriaChildren(Long parentId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<CBCriteria> criteriaList = criteriaDao.findCriteriaChildren(parentId);
         CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
         criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
@@ -576,7 +592,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
         Long conceptId = 0L;
@@ -614,6 +634,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
+
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domains.stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
@@ -626,7 +647,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         Integer maxResults = searchConceptsRequest.getMaxResults();
         if(maxResults == null || maxResults == 0){
             maxResults = Integer.MAX_VALUE;
@@ -720,52 +745,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        /* Delete this once tested in test
-        List<DomainInfo> domainInfos = new ArrayList<>();
-        domainInfos.addAll(domainInfoDao.findByConceptIdNotOrderByDomainId(21L));
-
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
         }
-
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            DomainInfo domainInfo= domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery);
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        } else if (measurementQuery == -1){
-            DomainInfo domainInfo= domainInfoDao.findByConceptId(21L);
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        } else if (measurementQuery == 2) {
-            DomainInfo domainInfo = domainInfoDao.findMeasurementDomainTotalsWithoutFilter();
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        }
-
-        Collections.sort(domainInfos);
-
-        List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
-
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(ImmutableList.copyOf(domainInfos).stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
-                */
-
         Integer getTests = null;
         Integer getOrders = null;
 
@@ -793,44 +777,69 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setSurveyModules(surveyModules.stream()
                 .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
                 .collect(Collectors.toList()));
-
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.CdrVersion> getCdrVersionUsed() {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
+        if (cdrVersion == null) {
+            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+        }
         return ResponseEntity.ok(TO_CLIENT_CDR_VERSION.apply(cdrVersion));
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
+        Optional.ofNullable(genderAnalysis).orElseThrow(() -> new DataNotFoundException("Gender Analysis data is not available"));
         addGenderStratum(genderAnalysis,1, "0", null);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getRaceAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
+        Optional.ofNullable(raceAnalysis).orElseThrow(() -> new DataNotFoundException("Race Analysis data is not available"));
         addRaceStratum(raceAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getEthnicityAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
+        Optional.ofNullable(ethnicityAnalysis).orElseThrow(() -> new DataNotFoundException("Ethnicity Analysis data is not available"));
         addEthnicityStratum(ethnicityAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
     }
 
     @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyQuestions(String surveyConceptId, String searchWord) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
@@ -889,8 +898,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<SurveyQuestionAnalysisResponse> getMainSurveyQuestionResults(String surveyConceptId, String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<String> questionConceptIds = new ArrayList<>();
         questionConceptIds.add(questionConceptId);
 
@@ -909,6 +921,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
         org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
+
+        Optional.ofNullable(questionConcept).orElseThrow(() -> new DataNotFoundException("Unable to fetch results of this survey question"));
 
         SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
         resp.setCountAnalysis(questionConcept.getCountAnalysis());
@@ -957,8 +971,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyQuestionResults(String surveyConceptId, String questionConceptId, String resultConceptId, Integer level) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
         int levelFlag = level == 1 ? 2 : 4;
@@ -1020,11 +1037,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<EhrCountAnalysis> getEhrCountAnalysis(String domainId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3300L);
         analysisIds.add(3301L);
         List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+
         EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
         ehrCountAnalysis.setDomainId(domainId);
         ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
@@ -1034,11 +1056,16 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<AnalysisListResponse> getSurveyQuestionCounts(String questionConceptId, String questionPath) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3320L);
         analysisIds.add(3321L);
         List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
+
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
         return ResponseEntity.ok(analysisListResponse);
@@ -1046,8 +1073,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
-
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
         List<Long> analysisIds  = new ArrayList<>();
@@ -1098,6 +1128,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             boolean isMeasurement = false;
 
             List<AchillesAnalysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,analysisIds);
+
+
+            if (analysisList.size() == 0) {
+                throw new DataNotFoundException("Cannot find analysis data of this concept");
+            }
 
             HashMap<Long, AchillesAnalysis> analysisHashMap = new HashMap<>();
             for(AchillesAnalysis aa: analysisList){
@@ -1270,7 +1305,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
      */
     @Override
     public ResponseEntity<ConceptListResponse> getSourceConcepts(Long conceptId,Integer minCount) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         Integer count=minCount;
         if(count == null){
             count = 0;
@@ -1283,8 +1322,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.AchillesResult> getParticipantCount() {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesResult result = achillesResultDao.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID);
+        if (result == null) {
+            throw new DataNotFoundException("Participant count could not be fetched. Please check the achilles results table if row with analysis id 1 is present in there.");
+        }
         return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
     }
 
@@ -1842,21 +1888,32 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         for(org.pmiops.workbench.model.QuestionConcept q: questions) {
-            AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
-            ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
-            ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
-            aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis gca = new AchillesAnalysis(genderCountAnalysis);
-            gca.setResults(genderCountAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis aca = new AchillesAnalysis(ageCountAnalysis);
-            aca.setResults(ageCountAnalysisResultsByQuestion.get(q.getConceptId()));
-            q.setCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ca));
-            q.setGenderAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ga));
-            q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
-            q.setGenderCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(gca));
-            q.setAgeCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aca));
+            if (countAnalysis != null) {
+                AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
+                ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ca));
+            }
+            if (genderAnalysis != null) {
+                AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
+                ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setGenderAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ga));
+            }
+            if (ageAnalysis != null) {
+                AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
+                aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
+            }
+            if (genderCountAnalysis != null) {
+                AchillesAnalysis gca = new AchillesAnalysis(genderCountAnalysis);
+                gca.setResults(genderCountAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setGenderCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(gca));
+            }
+            if (ageCountAnalysis != null) {
+                AchillesAnalysis aca = new AchillesAnalysis(ageCountAnalysis);
+                aca.setResults(ageCountAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setAgeCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aca));
+            }
+
         }
 
         return questions;
