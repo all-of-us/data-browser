@@ -7,11 +7,6 @@
     [label]="surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g" [searchTerm]="searchTerm" [action]="'Survey Chart Tooltip'"></app-tooltip>
   </div>
 </div>
-<div class="col-md">
-  <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':question.graphDataToShow === sg}"
-  tabindex="0" (keydown.enter)="selectGraph(sg,question,answer)" (click)="$event.stopPropagation();selectGraph(sg,question,answer)" class="btn btn-link sub-graph-choice">
-    {{sg}}</div>
-</div>
 <ng-container *ngIf="isPercentageAnalysis(question); else CountChart">
   <div class="chart">
     <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"

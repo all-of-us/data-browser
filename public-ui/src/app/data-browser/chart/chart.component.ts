@@ -66,12 +66,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public hcChartOptions(): any {
     const options = this.makeChartOptions();
+    console.log(options.series.length);
     // Override title if they passed one
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    const maxYAxis = Math.max.apply(
-      Math, options.series[0]['data'].map(function(o) { return o.y; }));
+    const maxYAxis = options.series.length > 1 ?
+      Math.max.apply(Math, options.series[1]['data'].map(function(o) { return o.y; })) :
+      Math.max.apply(Math, options.series[0]['data'].map(function(o) { return o.y; }));
     return {
       chart: options.chart,
       lang: this.dbc.lang,
@@ -155,7 +157,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           borderColor: null,
           colorByPoint: true,
           groupPadding: 0,
-          pointPadding: 0,
+          pointPadding: 0.2,
+          borderWidth: 0,
           dataLabels: {
             enabled: false,
           },
@@ -539,6 +542,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
                                 seriesName: string, chartType: string) {
     let data = [];
     let cats = [];
+    let totalData = [];
     let yAxisLabel = null;
     let percentageAnalysis = false;
     // LOOP CREATES DYNAMIC CHART VARS
@@ -578,100 +582,47 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/> Participant Count: ';
         }
       }
-      if (this.surveyAnalysis &&
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
-        percentageAnalysis = true;
-        yAxisLabel = '% of Each Sex that answered with ' + this.selectedResult.stratum4;
-        color = this.dbc.COLUMN_COLOR;
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
-        }
-        if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-            'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Sex that answered' + ': '
-            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
-            '<br/> Participant Count: ';
-        } else {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-            'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Sex that answered' + ': '
-            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
-            '<br/> Participant Count: ';
-        }
-      }
-      if (this.surveyAnalysis &&
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.COLUMN_COLOR;
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
-        }
-        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-          'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
-      }
-      if (this.analysis &&
-        this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.COLUMN_COLOR;
-        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-          'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
-      }
-      if (this.analysis &&
-        this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-        percentageAnalysis = true;
-        yAxisLabel = '% of Each Sex with ' + this.conceptName;
-        color = this.dbc.COLUMN_COLOR;
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
-        }
-        if (a.stratum4 == null) {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
-            ': <b>' + 0 + '% </b>' +
-            '<br/> Participant Count: ' ;
-        } else {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
-            ': <b>' + Math.round((+a.stratum4)) + '% </b>' +
-            '<br/> Participant Count: ';
-        }
-      }
-      if ((this.surveyAnalysis &&
-          this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
-        data.push({
-          name: a.analysisStratumName
-          , y: Math.round(+(a.percentage)), color: color, sliced: true,
-          toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-        });
-        cats.push(a.analysisStratumName);
-      } else if (this.analysis &&
-        this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-        if (a.stratum4 === null) {
-          data.push({
-            name: a.analysisStratumName
-            , y: 0, color: color, sliced: true,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        } else {
-          data.push({
-            name: a.analysisStratumName
-            , y: Math.round(+(a.stratum4)), color: color, sliced: true,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        }
-        cats.push(a.analysisStratumName);
-      } else {
+      if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         data.push({
           name: a.analysisStratumName
           , y: a.countValue, color: color, sliced: true,
+          toolTipHelpText: toolTipHelpText,
+        });
+        const bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
+        filter(x => x.stratum4 === a.stratum2)[0];
+        totalData.push({
+          name: bsResult.analysisStratumName
+          , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true,
+          toolTipHelpText: toolTipHelpText,
+        });
+        cats.push(a.analysisStratumName);
+      } else if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+        data.push({
+          name: a.analysisStratumName
+          , y: a.countValue, color: color, sliced: true,
+          toolTipHelpText: toolTipHelpText,
+        });
+        const bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
+        filter(x => x.stratum4 === a.stratum5)[0];
+        totalData.push({
+          name: bsResult.analysisStratumName
+          , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true,
           toolTipHelpText: toolTipHelpText,
         });
         cats.push(a.analysisStratumName);
       }
     }
     data = data.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      }
+    );
+    totalData = totalData.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
         }
@@ -692,13 +643,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     });
     const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
-    const series = {
-      name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
-    };
+    const series = [
+      {
+        name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
+      },
+      {
+        name: seriesName + " Total EHR Counts", colorByPoint: true, data: totalData, dataOnlyLT20: dataOnlyLT20
+      }];
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
-      series: [series],
+      series: series,
       categories: cats,
       color: this.dbc.COLUMN_COLOR,
       pointWidth: this.pointWidth,

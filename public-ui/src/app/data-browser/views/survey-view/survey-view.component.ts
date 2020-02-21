@@ -52,7 +52,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
-  subGraphButtons = ['Count', 'Percentage (%)'];
   genderPercentageAnalysis: any;
   agePercentageAnalysis: any;
   envDisplay: string;

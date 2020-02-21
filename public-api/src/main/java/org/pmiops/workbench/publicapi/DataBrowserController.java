@@ -1027,8 +1027,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
         EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
         ehrCountAnalysis.setDomainId(domainId);
-        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
-        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
+        AchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
+        AchillesAnalysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
+        addGenderStratum(genderCountAnalysis,4, domainId, null);
+        addAgeStratum(ageCountAnalysis, domainId, null,  4);
+        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
+        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
         return ResponseEntity.ok(ehrCountAnalysis);
     }
 
@@ -1130,12 +1134,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     addGenderIdentityStratum(aa);
                     conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_ANALYSIS_ID){
-                    addAgeStratum(aa, conceptId, null);
+                    addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
                     List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
                     if (ehrAgeCountAnalysis != null && ehrAgeCountAnalysis.size() > 0) {
-                        addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults());
+                        addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults(), 2);
                     }
                     conceptAnalysis.setAgePercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == RACE_ANALYSIS_ID){
@@ -1338,6 +1342,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public void addGenderStratum(AchillesAnalysis aa, int stratum, String conceptId, List<AchillesResult> ehrCountResults){
         Set<String> uniqueGenderStratums = new TreeSet<String>();
+        String domainConceptId = null;
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName =ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
@@ -1350,6 +1355,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else if (stratum == 3) {
                     uniqueGenderStratums.add(ar.getStratum3());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
+                } else if (stratum == 4) {
+                    domainConceptId = ar.getStratum1();
+                    uniqueGenderStratums.add(ar.getStratum4());
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum4()));
                 }
             }
         }
@@ -1367,6 +1376,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     } else {
                         missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, "0", null, null, 20L, 20L);
                     }
+                } else if (aa.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID) {
+                    missingResult = new AchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingGender, null, null, 20L, 20L);
                 } else {
                     if (stratum == 1) {
                         missingResult = new AchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, null, 20L, 20L);
@@ -1392,15 +1403,22 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
     }
 
-    public void addAgeStratum(AchillesAnalysis aa, String conceptId, List<AchillesResult> ehrCountResults){
+    public void addAgeStratum(AchillesAnalysis aa, String conceptId, List<AchillesResult> ehrCountResults, int stratum){
         Set<String> uniqueAgeDeciles = new TreeSet<String>();
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
-            if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
-                uniqueAgeDeciles.add(ar.getStratum2());
-            }
             if (analysisStratumName == null || analysisStratumName.equals("")) {
-                ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
+                if (stratum == 2) {
+                    if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
+                        uniqueAgeDeciles.add(ar.getStratum2());
+                        ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
+                    }
+                } else if (stratum == 4) {
+                    if (ar.getStratum4() != null && !ar.getStratum4().equals("0")) {
+                        uniqueAgeDeciles.add(ar.getStratum4());
+                        ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum4()));
+                    }
+                }
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
@@ -1409,14 +1427,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
                 completeAgeDeciles.removeAll(uniqueAgeDeciles);
                 for(String missingAgeDecile: completeAgeDeciles){
-                    List<AchillesResult> ehrAgeCountResults = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
+                    List<AchillesResult> ehrAgeCountResults = null;
+                    try {
+                       ehrAgeCountResults  = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
+                    } catch(NullPointerException npe) {
+                    }
                     AchillesResult missingResult = null;
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         AchillesResult result = ehrAgeCountResults.get(0);
                         String percentageValue = String.valueOf(Math.round((20/result.getCountValue())*100/2)*2);
-                        missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, percentageValue, null, null, 20L, 20L);
+                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, missingAgeDecile, null, percentageValue, null, null, 20L, 20L);
                     } else {
-                        missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, "0", null, null, 20L, 20L);
+                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, missingAgeDecile, null, "0", null, null, 20L, 20L);
                     }
                     missingResult.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);

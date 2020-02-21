@@ -45,7 +45,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   toDisplayMeasurementGenderAnalysis: any;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
-  subGraphButtons = ['Count', 'Percentage (%)'];
   subUnitValuesFilter = ['No Unit (Text)', 'No Unit (Numeric)'];
   mixtureOfValues = false;
   selectedSubGraph: string;

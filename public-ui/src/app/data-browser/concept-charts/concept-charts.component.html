@@ -15,11 +15,6 @@
 </div>
 
 <div *ngIf="!loading()" class="concept-charts">
-  <div class="col-md" *ngIf="showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
-    <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}" tabindex="0"
-      (keydown.enter)="showSelectedSubGraph(sg)" (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">
-      {{sg}}</div>
-  </div>
   <!-- show measurements binned by gender if we want -->
   <!-- Loop through the genders we have measurement results for  for showing the graph
   <!-- Loop through the genders we have measurement results for  for showing the graph
