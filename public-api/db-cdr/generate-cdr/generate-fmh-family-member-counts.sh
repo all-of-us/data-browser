@@ -249,7 +249,7 @@ where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2,3,5)
 select 0 as id, 3110 as analysis_id, '43528698' as stratum_1,
-cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, c.concept_name as stratum_4, '3' as stratum_5,
+cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, concept_name as stratum_4, '3' as stratum_5,
 cast(concept as string) as stratum_6, count(distinct person_id) as count_value, 0 as source_count_value
 from a
 where ARRAY_LENGTH(SPLIT(questions_skipped))=11
@@ -275,7 +275,7 @@ where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2,3,4,6)
 select 0 as id, 3111 as analysis_id, '43528698' as stratum_1,
-cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, c.concept_name as stratum_4, gender as stratum_5,
+cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, concept_name as stratum_4, cast(gender as string) as stratum_5,
 cast(concept as string) as stratum_6, count(distinct person_id) as count_value, 0 as source_count_value
 from a
 where ARRAY_LENGTH(SPLIT(questions_skipped))=11
@@ -300,7 +300,7 @@ where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2,3,4,6)
 select 0 as id, 3112 as analysis_id, '43528698' as stratum_1,
-cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, c.concept_name as stratum_4, age as stratum_5,
+cast(concept as string) as stratum_2, cast(value_source_concept_id as string) as stratum_3, concept_name as stratum_4, cast(age as string) as stratum_5,
 cast(concept as string) as stratum_6, count(distinct person_id) as count_value, 0 as source_count_value
 from a
 where ARRAY_LENGTH(SPLIT(questions_skipped))=11

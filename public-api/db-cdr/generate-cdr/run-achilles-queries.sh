@@ -563,7 +563,7 @@ if ./generate-cdr/generate-survey-counts.sh --bq-project $BQ_PROJECT --bq-datase
 then
     echo "Survey counts generated"
 else
-    echo "FAILED To generate survey counts for CDR $CDR_VERSION"
+    echo "FAILED To generate survey counts"
     exit 1
 fi
 
@@ -575,7 +575,7 @@ if ./generate-cdr/generate-fmh-condition-counts.sh --bq-project $BQ_PROJECT --bq
 then
     echo "FMH condition counts generated"
 else
-    echo "FAILED To generate fmh condition counts for CDR $CDR_VERSION"
+    echo "FAILED To generate fmh condition counts"
     exit 1
 fi
 
@@ -588,6 +588,6 @@ if ./generate-cdr/generate-fmh-family-member-counts.sh --bq-project $BQ_PROJECT 
 then
     echo "FMH family member counts generated"
 else
-    echo "FAILED To generate fmh family member counts for CDR $CDR_VERSION"
+    echo "FAILED To generate fmh family member counts"
     exit 1
 fi
