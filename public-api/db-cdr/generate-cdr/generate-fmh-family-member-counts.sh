@@ -240,7 +240,7 @@ value_source_concept_id from
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts
 on ob.observation_source_concept_id=cast(concepts as int64)
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=fmh.observation_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
 where value_source_concept_id in (903096, 903095, 903087, 903079)
 and ob.observation_source_concept_id not in (43529658, 43529656, 43529659, 43529655, 43529660, 43529657)
 and exists
@@ -265,7 +265,7 @@ with a as
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts
 on ob.observation_source_concept_id=cast(concepts as int64)
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=fmh.observation_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=ob.person_id
 where value_source_concept_id in (903096, 903095, 903087, 903079)
 and ob.observation_source_concept_id not in (43529658, 43529656, 43529659, 43529655, 43529660, 43529657)
@@ -290,7 +290,7 @@ with  a as
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts
 on ob.observation_source_concept_id=cast(concepts as int64)
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=fmh.observation_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=ob.observation_id
 where value_source_concept_id in (903096, 903095, 903087, 903079)
 and ob.observation_source_concept_id not in (43529658, 43529656, 43529659, 43529655, 43529660, 43529657)
