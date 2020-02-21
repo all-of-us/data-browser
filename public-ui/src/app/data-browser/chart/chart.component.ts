@@ -63,7 +63,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
       : false;
   }
-  
+
   public isGenderAnalysis() {
     console.log('am i here at all');
     return this.analysis ?
@@ -171,7 +171,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           },
           events: {},
           legend: {
-            enabled: this.isGenderAnalysis() ? true: false,
+            enabled: this.isGenderAnalysis() ? true : false,
           },
         },
         bar: {
@@ -550,8 +550,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     let data = [];
     let cats = [];
     let totalData = [];
-    let yAxisLabel = null;
-    let percentageAnalysis = false;
+    const yAxisLabel = null;
+    const percentageAnalysis = false;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -603,7 +603,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText: toolTipHelpText,
         });
         cats.push(a.analysisStratumName);
-      } else if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+      } else if (this.surveyAnalysis &&
+        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         data.push({
           name: a.analysisStratumName
           , y: a.countValue, color: color, sliced: true,
@@ -655,7 +656,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
       },
       {
-        name: seriesName + " Total EHR Counts", colorByPoint: true, data: totalData, dataOnlyLT20: dataOnlyLT20
+        name: seriesName + ' Total EHR Counts', colorByPoint: true,
+        data: totalData, dataOnlyLT20: dataOnlyLT20
       }];
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
