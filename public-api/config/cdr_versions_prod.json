@@ -12,7 +12,6 @@
   },
   {
     "cdrVersionId": 2,
-    "isDefault": true,
     "name": "All of Us Dataset v1",
     "dataAccessLevel": 1,
     "bigqueryProject": "aou-res-curation-prod",
@@ -21,5 +20,17 @@
     "releaseNumber": 1,
     "numParticipants": 243380,
     "publicDbName": "p_2019q1_30"
-  }
+  },
+  {
+    "cdrVersionId": 3,
+    "isDefault": true,
+    "name": "All of Us Dataset v2",
+    "dataAccessLevel": 1,
+    "bigqueryProject": "aou-res-curation-prod",
+    "bigqueryDataset": "combined20191004_dbrowser_1",
+    "creationTime": "2020-02-11 16:27:20Z",
+    "releaseNumber": 2,
+    "numParticipants": 243380,
+    "publicDbName": "p_2019q1_31"
+  },
 ]
