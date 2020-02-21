@@ -63,10 +63,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
       : false;
   }
+  
+  public isGenderAnalysis() {
+    console.log('am i here at all');
+    return this.analysis ?
+      (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
+        this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
+      : false;
+  }
 
   public hcChartOptions(): any {
     const options = this.makeChartOptions();
-    console.log(options.series.length);
     // Override title if they passed one
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
@@ -156,13 +163,16 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           shadow: false,
           borderColor: null,
           colorByPoint: true,
-          groupPadding: 0,
-          pointPadding: 0.2,
+          groupPadding: 0.35,
+          pointPadding: 0,
           borderWidth: 0,
           dataLabels: {
             enabled: false,
           },
           events: {},
+          legend: {
+            enabled: this.isGenderAnalysis() ? true: false,
+          },
         },
         bar: {
           shadow: false,
@@ -284,9 +294,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         tickLength: 0
       },
       zAxis: {},
-      legend: {
-        enabled: false
-      },
       series: options.series,
     };
   }
@@ -656,7 +663,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series: series,
       categories: cats,
       color: this.dbc.COLUMN_COLOR,
-      pointWidth: this.pointWidth,
       xAxisTitle: analysisName,
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       tooltip: {
