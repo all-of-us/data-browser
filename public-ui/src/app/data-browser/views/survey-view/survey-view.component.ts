@@ -378,7 +378,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
         next: results => {
-          console.log(results);
           q.countAnalysis = results.countAnalysis;
           q.genderAnalysis = results.genderAnalysis;
           q.ageAnalysis = results.ageAnalysis;

@@ -20,7 +20,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() subGraphButtons: string[];
   graphToShow = GraphType.BiologicalSex;
-  displayGraphErrorMessage = (this.selectedAnalysis === undefined) ? true : false;
+  displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
@@ -100,6 +100,7 @@ export class SurveyChartComponent implements OnInit {
           break;
       }
     }
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
   }
 
   public showToolTip(g: string) {
