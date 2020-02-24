@@ -1436,9 +1436,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         AchillesResult result = ehrAgeCountResults.get(0);
                         String percentageValue = String.valueOf(Math.round((20/result.getCountValue())*100/2)*2);
-                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, missingAgeDecile, null, percentageValue, null, null, 20L, 20L);
+                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, 20L, 20L);
                     } else {
-                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, missingAgeDecile, null, "0", null, null, 20L, 20L);
+                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, 20L, 20L);
                     }
                     missingResult.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);

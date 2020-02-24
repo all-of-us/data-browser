@@ -64,11 +64,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       : false;
   }
 
-  public isGenderAnalysis() {
-    console.log('am i here at all');
+  public doesNeedLegend() {
     return this.analysis ?
       (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
-        this.analysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)
+        this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID)
       : false;
   }
 
@@ -91,7 +90,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         followPointer: true,
         outside: true,
         formatter: function(tooltip) {
-          if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('% of') === -1) {
+          if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('%') === -1) {
             if (this.point.toolTipHelpText.length >= 100) {
               return '<div style="width: 500px; white-space: normal;">' +
                 this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>' +
@@ -99,24 +98,25 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             } else {
               return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
             }
-          } else if (this.point.toolTipHelpText.indexOf('% of') >= 0) {
-            if (this.point.actualCount <= 20) {
-              if (this.point.toolTipHelpText.length >= 100) {
-                return '<div style="width: 500px; white-space: normal;">' +
-                  this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>' +
-                  '</div>';
-              } else {
-                return this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>';
-              }
-            } else {
-              if (this.point.toolTipHelpText.length >= 100) {
-                return '<div style="width: 500px; white-space: normal;">' +
-                  this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>' +
-                  '</div>';
-              } else {
-                return this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>';
-              }
+          } else if (this.point.toolTipHelpText.indexOf('%') >= 0) {
+            if (this.point.medicalConceptCount === 20) {
+              this.point.toolTipHelpText =
+              this.point.toolTipHelpText.replace('Medical Concept Count: <b>20</b>',
+                'Medical Concept Count: <b>&le; 20</b>');
             }
+            if (this.point.totalEhrCount === 20) {
+              this.point.toolTipHelpText =
+              this.point.toolTipHelpText.replace('Total With EHR Count: <b>20</b>',
+                'Total With EHR Count: <b>&le; 20</b>');
+            }
+            if (this.point.toolTipHelpText.length >= 100) {
+              return '<div style="width: 500px; white-space: normal;">' +
+                this.point.toolTipHelpText +
+                '</div>';
+            } else {
+              return this.point.toolTipHelpText;
+            }
+            
           } else {
             if (this.point.toolTipHelpText.length >= 100) {
               return '<div style="width: 500px; white-space: normal;">' +
@@ -137,7 +137,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           animation: {
             duration: 100,
           },
-          pointWidth: options.pointWidth ? options.pointWidth : null,
+          pointWidth: this.pointWidthExists(options),
           minPointLength: 3,
           events: {
           },
@@ -170,9 +170,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             enabled: false,
           },
           events: {},
-          legend: {
-            enabled: this.isGenderAnalysis() ? true : false,
-          },
         },
         bar: {
           shadow: false,
@@ -294,6 +291,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         tickLength: 0
       },
       zAxis: {},
+      legend: {
+        enabled: this.doesNeedLegend(),
+      },
       series: options.series,
     };
   }
@@ -597,10 +597,24 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         });
         const bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
         filter(x => x.stratum4 === a.stratum2)[0];
+        let totalTooltipHelpText = null;
+        if (bsResult.countValue > 20) {
+          totalTooltipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' + ((a.countValue/bsResult.countValue)*100).toFixed() + '</b> %';
+        } else {
+          const percentage = Number(((a.countValue/bsResult.countValue)*100).toFixed());
+          totalTooltipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
+        }
         totalData.push({
           name: bsResult.analysisStratumName
-          , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true,
-          toolTipHelpText: toolTipHelpText,
+          , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true, medicalConceptCount: a.countValue,
+          totalEhrCount: bsResult.countValue,
+          toolTipHelpText: totalTooltipHelpText,
         });
         cats.push(a.analysisStratumName);
       } else if (this.surveyAnalysis &&
@@ -653,10 +667,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series = [
       {
-        name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
+        color: '#2691D0',
+        legendColor: '#2691D0',
+        name: seriesName + ', Medical Concept', colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
       },
       {
-        name: seriesName + ' Total EHR Counts', colorByPoint: true,
+        color: '#262262',
+        legendColor: '#262262',
+        name: seriesName + ', Total With EHR', colorByPoint: false,
         data: totalData, dataOnlyLT20: dataOnlyLT20
       }];
     return {
@@ -761,6 +779,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     );
     const data = [];
     const cats = [];
+    const totalData = [];
     const color = this.dbc.COLUMN_COLOR;
     let ageHelpText = null;
     for (const a of results) {
@@ -857,17 +876,44 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           y: a.countValue, color: color,
           toolTipHelpText: toolTipHelpText,
         });
+        const ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
+        filter(x => x.stratum4 === a.stratum2)[0];
+        let totalTooltipHelpText = null;
+        if (ageResult.countValue > 20) {
+          totalTooltipHelpText = ageHelpText + ': ' + '<b>' + a.analysisStratumName +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' + ((a.countValue/ageResult.countValue)*100).toFixed() + '</b> %';
+        } else {
+          const percentage = Number(((a.countValue/ageResult.countValue)*100).toFixed());
+          totalTooltipHelpText = ageHelpText + ': '  + '<b>' + a.analysisStratumName + '</b>' +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
+        }
+        totalData.push({
+          name: ageResult.analysisStratumName
+          , y: ageResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true, medicalConceptCount: a.countValue,
+          totalEhrCount: ageResult.countValue,
+          toolTipHelpText: totalTooltipHelpText,
+        });
       }
       cats.push(a.analysisStratumName);
     }
     const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
-    const series = {
-      name: seriesName,
-      colorByPoint: true,
-      data: data,
-      dataOnlyLT20: dataOnlyLT20
-    };
+    const series = [
+      {
+        color: '#2691D0',
+        legendColor: '#2691D0',
+        name: seriesName + ', Medical Concept', colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+      },
+      {
+        color: '#262262',
+        legendColor: '#262262',
+        name: seriesName + ', Total With EHR', colorByPoint: false,
+        data: totalData, dataOnlyLT20: dataOnlyLT20
+      }];
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
       title: {
@@ -875,7 +921,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         style: this.dbc.CHART_TITLE_STYLE
       },
       color: this.dbc.COLUMN_COLOR,
-      series: [series],
+      series: series,
       categories: cats,
       pointWidth: this.pointWidth,
       xAxisTitle: this.domainType === 'physical measurements' ? seriesName : analysisName,
@@ -1155,5 +1201,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return result;
     }
     return '<b>' + answer + '</b>';
+  }
+  
+  public pointWidthExists(options: any) {
+    if ("pointWidth" in options) {
+      return options.pointWidth;
+    }
+    return null;
   }
 }
