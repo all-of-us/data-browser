@@ -100,11 +100,7 @@ export class SurveyChartComponent implements OnInit {
           break;
       }
     }
-    if (q.selectedAnalysis === undefined) {
-      this.displayGraphErrorMessage = true;
-    } else {
-      this.displayGraphErrorMessage = false;
-    }
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
   }
 
   public showToolTip(g: string) {
