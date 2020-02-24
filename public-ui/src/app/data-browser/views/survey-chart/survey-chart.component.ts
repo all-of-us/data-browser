@@ -20,7 +20,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() subGraphButtons: string[];
   graphToShow = GraphType.BiologicalSex;
-  displayGraphErrorMessage = (this.selectedAnalysis === undefined) ? true : false;
+  displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
@@ -99,6 +99,11 @@ export class SurveyChartComponent implements OnInit {
           q.selectedAnalysis = q.ageAnalysis;
           break;
       }
+    }
+    if (q.selectedAnalysis === undefined) {
+      this.displayGraphErrorMessage = true;
+    } else {
+      this.displayGraphErrorMessage = false;
     }
   }
 
