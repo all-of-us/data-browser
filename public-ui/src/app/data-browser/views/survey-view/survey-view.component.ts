@@ -378,7 +378,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
         next: results => {
-          console.log(results);
           q.countAnalysis = results.countAnalysis;
           q.genderAnalysis = results.genderAnalysis;
           q.ageAnalysis = results.ageAnalysis;
@@ -603,7 +602,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.api.getSurveyQuestionResults(a.stratum1, a.stratum2, a.stratum3, level)
       .subscribe({
         next: results => {
-          console.log(results);
           a.subQuestions = results.items;
           for (const subQuestion of a.subQuestions) {
             subQuestion.selectedAnalysis = subQuestion.genderAnalysis;
