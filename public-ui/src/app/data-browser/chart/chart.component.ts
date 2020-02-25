@@ -532,7 +532,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/> % with Medical Concept in EHR: <b>' +
             ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          const percentage = Number(((a.countValue/bsResult.countValue)*100).toFixed());
+          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
           totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
             '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
@@ -565,7 +565,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/> % Answered: <b>' + ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
           const percentage = Number(((a.countValue/bsResult.countValue)*100).toFixed());
-          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b>' + '<br/>' + analysisStratumName +
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + analysisStratumName +
             ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + analysisStratumName +
             ', Took Survey: ' + '<b>' + bsResult.countValue + '</b>' +
             '<br/> % Answered: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
@@ -579,8 +580,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       totalData.push({
         name: bsResult.analysisStratumName
         , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true,
-        toolTipHelpText: totalToolTipHelpText, medicalConceptCount: a.countValue, totalDomainCount: bsResult.countValue,
-        analysisId: analysisId
+        toolTipHelpText: totalToolTipHelpText, medicalConceptCount: a.countValue,
+        totalDomainCount: bsResult.countValue, analysisId: analysisId
       });
       cats.push(a.analysisStratumName);
     }
@@ -645,7 +646,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string, analysisId: number) {
-    let yAxisLabel = null;
+    const yAxisLabel = null;
     let legendText = null;
     let totalLegendText = null;
     // Age results have two stratum-- 1 is concept, 2 is age decile
@@ -1038,7 +1039,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
   
   public pointWidthExists(options: any) {
-    if ("pointWidth" in options) {
+    if ('pointWidth' in options) {
       return options.pointWidth;
     }
     return null;
@@ -1047,11 +1048,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   public setGroupPadding() {
     if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return 0.35;
-    } else if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+    } else if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return 0.40;
-    } else if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
+    } else if (this.analysis &&
+      this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return 0.2;
-    } else if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+    } else if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return 0.25;
     }
   }
