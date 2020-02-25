@@ -284,7 +284,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
     }
-    if (this.analysis && this.analysis.analysisId === this.dbc.COUNT_ANALYSIS_ID) {
+    let analysisId = this.analysis ? this.analysis.analysisId : this.surveyAnalysis.analysisId;
+    if (analysisId === this.dbc.COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions(this.analysis.results, this.analysis.analysisName);
     }
     if (this.surveyAnalysis &&
@@ -292,13 +293,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults,
         this.surveyAnalysis.analysisName);
     }
-    if (this.analysis &&
-      this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+    if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results,
         'Sex Assigned at Birth', 'Sex Assigned at Birth', this.analysis.analysisId);
     }
-    if (this.surveyAnalysis &&
-      (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID)) {
+    if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
@@ -312,22 +311,20 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       this.analysis.analysisId === this.dbc.RACE_ANALYSIS_ID) {
       return this.makePieChartOptions();
     }*/
-    if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
+    if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.analysis.results, 'Age at First Occurrence in Participant Record',
         this.analysis.analysisName,
         'stratum2', this.analysis.analysisId);
     }
-    if (this.surveyAnalysis &&
-      (this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID)) {
+    if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         'Age When Survey Was Taken',
         this.selectedResult.stratum4, 'stratum5', this.surveyAnalysis.analysisId);
     }
-    if (this.analysis &&
-      this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
+    if (analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       if (this.isPregnancyOrWheelChair()) {
         return this.makeStackedChartOptions(this.analysis.analysisName);
       }
@@ -774,7 +771,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       color: this.dbc.COLUMN_COLOR,
       series: series,
       categories: cats,
-      pointWidth: this.pointWidth,
       xAxisTitle: this.domainType === 'physical measurements' ? seriesName : analysisName,
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       tooltip: {
@@ -1052,13 +1048,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public setGroupPadding() {
     if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-      return 0.35;
+      return 0.40;
     } else if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return 0.40;
     } else if (this.analysis &&
       this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
-      return 0.2;
+      return 0.26;
     } else if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return 0.25;
