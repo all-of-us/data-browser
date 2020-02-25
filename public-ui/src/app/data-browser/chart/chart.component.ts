@@ -698,7 +698,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<br/> % with Medical Concept in EHR: <b>' +
             ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          const percentage = Number(((a.countValue/ageResult.countValue)*100).toFixed());
+          const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
           totalToolTipHelpText = ageHelpText + ': '  + '<b>' + a.analysisStratumName + '</b>' +
             '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
             '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
@@ -722,12 +722,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.
         filter(x => x.stratum2 === a.stratum5)[0];
         if (ageResult.countValue > 20) {
-          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b>' + '<br/>' + a.analysisStratumName +
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + a.analysisStratumName +
             ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + a.analysisStratumName +
             ', Took Survey: ' + '<b>' + ageResult.countValue + '</b>' +
-            '<br/> % Answered: <b>' + ((a.countValue/ageResult.countValue)*100).toFixed() + '</b> %';
+            '<br/> % Answered: <b>' + ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          const percentage = Number(((a.countValue/ageResult.countValue)*100).toFixed());
+          const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b>' + '<br/>' + a.analysisStratumName +
             ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + a.analysisStratumName +
             ', Took Survey: ' + '<b>' + ageResult.countValue + '</b>' +
