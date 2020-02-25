@@ -59,14 +59,15 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public doesNeedLegend() {
-    return this.isGenderOrAgeAnalysis() ? true: false;
+    return this.isGenderOrAgeAnalysis() ? true : false;
   }
-  
+
   public isGenderOrAgeAnalysis() {
     return ((this.analysis &&
       (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
         this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID)) ||
-      (this.surveyAnalysis && (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
+      (this.surveyAnalysis &&
+        (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
         this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID)));
   }
 
@@ -127,7 +128,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             } else {
               return this.point.toolTipHelpText;
             }
-            
           } else {
             if (this.point.toolTipHelpText.length >= 100) {
               return '<div style="width: 500px; white-space: normal;">' +
@@ -302,7 +302,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeGenderChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, this.surveyAnalysis.analysisId);
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4,
+        this.surveyAnalysis.analysisId);
     }
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
@@ -528,7 +529,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
             '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
             '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
-            '<br/> % with Medical Concept in EHR: <b>' + ((a.countValue/bsResult.countValue)*100).toFixed() + '</b> %';
+            '<br/> % with Medical Concept in EHR: <b>' +
+            ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
           const percentage = Number(((a.countValue/bsResult.countValue)*100).toFixed());
           totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
@@ -556,10 +558,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
         filter(x => x.stratum2 === a.stratum5)[0];
         if (bsResult.countValue > 20) {
-          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b>' + '<br/>' + analysisStratumName +
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + analysisStratumName +
             ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + analysisStratumName +
             ', Took Survey: ' + '<b>' + bsResult.countValue + '</b>' +
-            '<br/> % Answered: <b>' + ((a.countValue/bsResult.countValue)*100).toFixed() + '</b> %';
+            '<br/> % Answered: <b>' + ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
           const percentage = Number(((a.countValue/bsResult.countValue)*100).toFixed());
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b>' + '<br/>' + analysisStratumName +
