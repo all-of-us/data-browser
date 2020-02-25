@@ -147,22 +147,23 @@ definitions:
     type: object
     properties:
       message:
-        description: General error message for the response.
+        description: Error message
         type: string
       statusCode:
+        description: Http error status code
         type: integer
-        description: HTTP status code
       errorClassName:
         type: string
       errorCode:
         description: Short description of the type of error
         $ref: "#/definitions/ErrorCode"
-      # TODO: add list of field-level error messages with field names.
+      errorUniqueId:
+        type: string
+        description: Unique ID for this error response, for correlation with backend logs
 
   ErrorCode:
     type: string
     description: Short parsable error descriptions
     enum: [
-      PARSE_ERROR,
-      USER_DISABLED
-    ]
+      PARSE_ERROR
+        ]

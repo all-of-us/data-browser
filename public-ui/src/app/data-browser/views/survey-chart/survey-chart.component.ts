@@ -8,7 +8,7 @@ import {TooltipService} from '../../../utils/tooltip.service';
 @Component({
   selector: 'app-survey-chart',
   templateUrl: './survey-chart.component.html',
-  styleUrls: ['./survey-chart.component.css', '../../../styles/template.css']
+  styleUrls: ['./survey-chart.component.css', '../../../styles/template.css', '../../../styles/page.css']
 })
 export class SurveyChartComponent implements OnInit {
   @Input() graphButtons: string[];
@@ -20,6 +20,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() surveyCountAnalysis: any;
   graphToShow = GraphType.BiologicalSex;
+  displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
@@ -99,6 +100,7 @@ export class SurveyChartComponent implements OnInit {
           break;
       }
     }
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
   }
 
   public showToolTip(g: string) {

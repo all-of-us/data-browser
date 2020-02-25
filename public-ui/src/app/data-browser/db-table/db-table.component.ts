@@ -36,6 +36,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() graphType: any;
   @Input() totalResults: number;
   @Output() exploreConcept: EventEmitter<any> = new EventEmitter();
+  @Input() displayConceptErrorMessage: boolean;
   // Save this till labs is tested completely to see
   // if the pagination breaks because of not having this
   // totalResults = localStorage.getItem('totalResults') ?

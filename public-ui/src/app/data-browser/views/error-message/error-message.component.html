@@ -1,0 +1,17 @@
+<div class="alert alert-box">
+  <div class="alert-items">
+    <div class="alert-item static">
+      <div class="alert-icon-wrapper">
+        <clr-icon class="alert-icon" shape="exclamation-triangle" size="26"></clr-icon>
+      </div>
+      <span class="alert-text" *ngIf="dataType === 'data'; else chart_alert">
+        Sorry, the data are currently unavailable. Please try refreshing the page or returning home <a [routerLink]="['']">here.</a>
+      </span>
+      <ng-template #chart_alert>
+        <span class="alert-text">
+          Sorry, the chart cannot be displayed. Please try refreshing the page.
+        </span>
+      </ng-template>
+    </div>
+  </div>
+</div>

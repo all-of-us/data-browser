@@ -105,6 +105,7 @@ dependencies {
   compile 'io.swagger:swagger-annotations:1.5.16'
   compile 'com.google.code.gson:gson:2.8.5'
   compile 'org.hibernate:hibernate-core:5.2.10.Final'
+  compile 'com.google.api-client:google-api-client:1.30.5'
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-core:1.10.19'

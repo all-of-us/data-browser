@@ -78,8 +78,11 @@
             View Results </a>
         </div>
       </div>
-      <div class="col col-xs-12" *ngIf="! domainResults || domainResults.length === 0">
-        <h6> No EHR Data Results.</h6>
+      <div class="col col-xs-12" *ngIf="(!domainResults || domainResults.length === 0) && !displayDomainTotalsErrorMessage">
+        <h6 class="no-results-text"> No EHR Data Results. Please type in a new search term.</h6>
+      </div>
+      <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
+        <app-error-message [dataType]="'data'"></app-error-message>
       </div>
     </div>
     <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
@@ -116,8 +119,11 @@
           </div>
       </div>
       <!-- toDO: style noresults -->
-      <div class="col-xs-12" *ngIf="! surveyResults || surveyResults.length === 0">
-        <h6> No Survey Results.</h6>
+      <div class="col-xs-12" *ngIf="(!surveyResults || surveyResults.length === 0) && !displayDomainTotalsErrorMessage">
+        <h6 class="no-results-text"> No Survey Results. Please type in a new search term.</h6>
+      </div>
+      <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
+        <app-error-message [dataType]="'data'"></app-error-message>
       </div>
     </div>
     <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
@@ -152,5 +158,8 @@
           </div>
       </div>
     </div>
-    <h6 *ngIf="physicalMeasurementsFound === 0 && !loading"> No Program Physical Measurement Results.</h6>
+    <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage" class="no-results-text"> No Program Physical Measurement Results. Please type in a new search term.</h6>
+    <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
+      <app-error-message [dataType]="'data'"></app-error-message>
+    </div>
   </section>

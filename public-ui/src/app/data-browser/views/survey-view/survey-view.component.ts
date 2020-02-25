@@ -191,14 +191,18 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     q.graphDataToShow = 'Count';
     for (const a of q.countAnalysis.surveyQuestionResults) {
       a.countPercent = this.countPercentage(a.countValue, this.survey.participantCount);
-      this.addMissingBiologicalSexResults(q.genderAnalysis,
-        q.genderAnalysis.surveyQuestionResults.
+      if (q.genderAnalysis) {
+        this.addMissingBiologicalSexResults(q.genderAnalysis,
+          q.genderAnalysis.surveyQuestionResults.
           filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
-        this.survey.participantCount);
-      this.addMissingAgeResults(q.ageAnalysis,
-        q.ageAnalysis.surveyQuestionResults.
+          this.survey.participantCount);
+      }
+      if (q.ageAnalysis) {
+        this.addMissingAgeResults(q.ageAnalysis,
+          q.ageAnalysis.surveyQuestionResults.
           filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
-        this.survey.participantCount);
+          this.survey.participantCount);
+      }
       a.subQuestionFetchComplete = false;
     }
     q.countAnalysis.surveyQuestionResults.push(
@@ -371,7 +375,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
         next: results => {
-          console.log(results);
           q.countAnalysis = results.countAnalysis;
           q.genderAnalysis = results.genderAnalysis;
           q.ageAnalysis = results.ageAnalysis;

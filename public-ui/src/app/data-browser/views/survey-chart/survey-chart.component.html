@@ -7,7 +7,12 @@
     [label]="surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g" [searchTerm]="searchTerm" [action]="'Survey Chart Tooltip'"></app-tooltip>
   </div>
 </div>
-<div class="chart">
+<div *ngIf="displayGraphErrorMessage">
+  <div class="graph-error-message">
+    <app-error-message [dataType]="'chart'"></app-error-message>
+  </div>
+</div>
+<div class="chart" *ngIf="!displayGraphErrorMessage">
   <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
              [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
 </div>

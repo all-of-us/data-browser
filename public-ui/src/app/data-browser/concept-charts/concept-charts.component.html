@@ -1,9 +1,12 @@
-<div class="db-page-spinner" *ngIf="loading()">
+<div class="db-page-spinner" *ngIf="loading() && !displayGraphErrorMessage">
   <span class="spinner">
     Loading...
   </span>
 </div>
-
+<div class="graph-error-message" *ngIf="displayGraphErrorMessage">
+  <app-error-message [dataType]="'chart'"></app-error-message>
+</div>
+<ng-container *ngIf="!displayGraphErrorMessage">
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
     (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
@@ -94,3 +97,4 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
     </ng-template>
   </ng-container>
 </div>
+</ng-container>

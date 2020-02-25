@@ -52,6 +52,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.pmiops.workbench.exceptions.DataNotFoundException;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -473,9 +474,12 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptSearchStandardConcept() throws Exception{
-        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("002")
-                .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
-        assertThat(response.getBody().getItems()).isEmpty();
+        try {
+            ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("002")
+                    .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
+            assertThat(response.getBody().getItems()).isEmpty();
+        } catch(DataNotFoundException dnf) {
+        }
     }
 
     @Test
@@ -504,9 +508,12 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptSearchNonStandardConcepts() throws Exception{
-        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("7891")
-                .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS));
-      assertThat(response.getBody().getItems()).isEmpty();
+        try {
+            ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("7891")
+                    .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS));
+            assertThat(response.getBody().getItems()).isEmpty();
+        } catch(DataNotFoundException dnf) {
+        }
     }
 
 
@@ -544,9 +551,13 @@ public class DataBrowserControllerTest {
     public void testGetMeasurementAnalysisNoMatch() throws Exception{
         ArrayList<String> queryConceptIds = new ArrayList<String>();
         queryConceptIds.add("137990");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
-        List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
-        assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
+        try {
+            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
+            List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
+            assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
+        } catch(DataNotFoundException dnf) {
+            // No need to do anything
+        }
     }
 
     @Test
@@ -566,19 +577,25 @@ public class DataBrowserControllerTest {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1586134");
         conceptsIds.add("1585855");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
-        List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-        assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
-        assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
+        try {
+            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
+            List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
+            assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
+            assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
+        } catch(DataNotFoundException dnf) {
+        }
     }
 
     @Test
     public void testGetSurveyDemographicAnalysesNoMatch() throws Exception {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1585855");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
-        List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
-        assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
+        try {
+            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
+            List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
+            assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
+        } catch(DataNotFoundException dnf) {
+        }
     }
 
   static org.pmiops.workbench.cdr.model.Concept makeConcept(Concept concept) {

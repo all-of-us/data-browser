@@ -69,6 +69,8 @@ paths:
           description: Default cdr version
           schema:
             "$ref": "#/definitions/CdrVersion"
+        500:
+          description: Internal Server Error
 
   /v1/databrowser/survey-questions:
     get:
@@ -1307,3 +1309,4 @@ definitions:
         type: integer
         default: 1
         description: By default all the measurement orders are returned
+

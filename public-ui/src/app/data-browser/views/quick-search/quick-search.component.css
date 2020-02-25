@@ -17,6 +17,10 @@ strong {
     margin-left: 0;
 }
 
+.no-results-text {
+    color: #F7981D;
+}
+
 .clear-icon {
     float: right;
     margin-top: 3.25%;
