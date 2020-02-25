@@ -132,7 +132,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         }
         this.loadingStack.pop();
       }));
-    this.subscriptions.push(this.api.getEhrCountAnalysis(this.concept.domainId).subscribe(
+    this.subscriptions.push(this.api.getCountAnalysis(this.concept.domainId, 'ehr').subscribe(
       results => {
         this.domainCountAnalysis = results;
       }
@@ -248,32 +248,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     } else {
       return gender.countValue;
     }
-  }
-
-  public showSelectedSubGraph(sg: string) {
-    this.selectedSubGraph = sg;
-    if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
-      this.dbc.triggerEvent('percentageTabClick', '% Tab',
-        'Click',
-        this.concept.domainId + ' - ' + this.showGraph + ' - ' +
-        this.conceptName, this.searchTerm, null);
-      this.toDisplayGenderAnalysis = this.analyses.genderPercentageAnalysis;
-      this.toDisplayAgeAnalysis = this.analyses.agePercentageAnalysis;
-    } else {
-      this.dbc.triggerEvent('countTabClick', 'Count Tab',
-        'Click',
-         this.concept.domainId + ' - ' + this.showGraph + ' - ' +
-        this.conceptName, this.searchTerm, null);
-      this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
-      this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-    }
-  }
-
-  public isPercentageGraphSelected() {
-    if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
-      return true;
-    }
-    return false;
   }
 
   public showSpecificMeasurementTypeValues(su) {

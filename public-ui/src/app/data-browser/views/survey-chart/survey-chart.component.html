@@ -9,13 +9,13 @@
 </div>
 <ng-container *ngIf="isPercentageAnalysis(question); else CountChart">
   <div class="chart">
-    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
+    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
                [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
   </div>
 </ng-container>
 <ng-template #CountChart>
   <div class="chart">
-    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
+    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
                [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
   </div>
 </ng-template>

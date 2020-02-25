@@ -18,6 +18,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() selectedResult: any;
   @Input() surveyName: string;
   @Input() searchTerm: string;
+  @Input() surveyCountAnalysis: any;
   graphToShow = GraphType.BiologicalSex;
   graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
