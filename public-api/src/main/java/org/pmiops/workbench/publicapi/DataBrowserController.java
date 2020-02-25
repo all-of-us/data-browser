@@ -110,10 +110,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3200;
     public static final long SURVEY_AGE_COUNT_ANALYSIIS_ID = 3201;
     public static final long GENDER_ANALYSIS_ID = 3101;
-    public static final long GENDER_PERCENTAGE_ANALYSIS_ID = 3310;
-    public static final long AGE_PERCENTAGE_ANALYSIS_ID = 3311;
-    public static final long SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
-    public static final long SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
@@ -370,10 +366,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .conceptId(ca.getConceptId())
                             .countAnalysis(ca.getCountAnalysis())
                             .genderAnalysis(ca.getGenderAnalysis())
-                            .genderPercentageAnalysis(ca.getGenderPercentageAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
                             .ageAnalysis(ca.getAgeAnalysis())
-                            .agePercentageAnalysis(ca.getAgePercentageAnalysis())
                             .raceAnalysis(ca.getRaceAnalysis())
                             .ethnicityAnalysis(ca.getEthnicityAnalysis())
                             .measurementValueGenderAnalysis(ca.getMeasurementValueGenderAnalysis())
@@ -1086,8 +1080,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         analysisIds.add(GENDER_ANALYSIS_ID);
         analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
         analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
-        analysisIds.add(GENDER_PERCENTAGE_ANALYSIS_ID);
-        analysisIds.add(AGE_PERCENTAGE_ANALYSIS_ID);
         analysisIds.add(AGE_ANALYSIS_ID);
         analysisIds.add(RACE_ANALYSIS_ID);
         analysisIds.add(COUNT_ANALYSIS_ID);
@@ -1157,24 +1149,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa,2, conceptId, null);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if (analysisId == GENDER_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrGenderCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList());
-                    if (ehrGenderCountAnalysis != null && ehrGenderCountAnalysis.size() > 0) {
-                        addGenderStratum(aa, 2, conceptId,  ehrGenderCountAnalysis.get(0).getResults());
-                        conceptAnalysis.setGenderPercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                    }
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
                     conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_ANALYSIS_ID){
                     addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
-                    if (ehrAgeCountAnalysis != null && ehrAgeCountAnalysis.size() > 0) {
-                        addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults(), 2);
-                    }
-                    conceptAnalysis.setAgePercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == RACE_ANALYSIS_ID){
                     addRaceStratum(aa);
                     conceptAnalysis.setRaceAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -1411,16 +1391,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             completeGenderStratumList.removeAll(uniqueGenderStratums);
             for(String missingGender: completeGenderStratumList){
                 AchillesResult missingResult = null;
-                if (aa.getAnalysisId() == GENDER_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesResult> ehrGenderCountResults = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingGender)).collect(Collectors.toList());
-                    if (ehrGenderCountResults != null && ehrGenderCountResults.size() > 0) {
-                        AchillesResult result = ehrGenderCountResults.get(0);
-                        String percentageValue = String.valueOf(Math.round(((double)20/result.getCountValue())*100/2)*2);
-                        missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, percentageValue, null, null, 20L, 20L);
-                    } else {
-                        missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, "0", null, null, 20L, 20L);
-                    }
-                } else if (aa.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID) {
+                if (aa.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID) {
                     missingResult = new AchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingGender, null, null, 20L, 20L);
                 } else {
                     if (stratum == 1) {

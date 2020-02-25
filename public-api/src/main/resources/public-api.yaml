@@ -1177,14 +1177,6 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Analysis"
-      genderPercentageAnalysis:
-        description: gender percentage analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      agePercentageAnalysis:
-        description: age percentage analysis
-        type: object
-        $ref: "#/definitions/Analysis"
       ehrCountAnalysis:
         description: count analysis
         type: object
@@ -1221,14 +1213,6 @@ definitions:
         $ref: "#/definitions/SurveyQuestionAnalysis"
       ageAnalysis:
         description: age analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderCountAnalysis:
-        description: gender percentage analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageCountAnalysis:
-        description: age percentage analysis
         type: object
         $ref: "#/definitions/SurveyQuestionAnalysis"
 
