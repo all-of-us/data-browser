@@ -1043,10 +1043,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   
   public setGroupPadding() {
     if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
-      return 0.40;
+      return 0.35;
     } else if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
-      return 0.42;
+      return 0.40;
+    } else if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
+      return 0.2;
+    } else if (this.surveyAnalysis && this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+      return 0.25;
     }
-    return 0.30;
   }
 }
