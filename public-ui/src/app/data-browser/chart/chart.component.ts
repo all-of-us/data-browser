@@ -724,9 +724,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (ageResult.countValue > 20) {
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
             '</b>' + '<br/>' + a.analysisStratumName +
-            ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + a.analysisStratumName +
-            ', Took Survey: ' + '<b>' + ageResult.countValue + '</b>' +
-            '<br/> % Answered: <b>' + ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
+            ', Selected Answer: ' + '<b>' + a.countValue + '</b>' +
+            '<br/>' + a.analysisStratumName + ', Took Survey: ' +
+            '<b>' + ageResult.countValue + '</b>' + '<br/> % Answered: <b>' +
+            ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
           const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b>' + '<br/>' + a.analysisStratumName +
