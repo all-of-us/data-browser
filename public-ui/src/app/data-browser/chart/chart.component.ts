@@ -744,7 +744,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       });
       totalData.push({
         name: ageResult.analysisStratumName
-        , y: ageResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true, medicalConceptCount: a.countValue,
+        , y: ageResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR,
+        sliced: true, medicalConceptCount: a.countValue,
         totalDomainCount: ageResult.countValue,
         toolTipHelpText: totalToolTipHelpText, analysisId: analysisId
       });
