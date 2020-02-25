@@ -1,11 +1,5 @@
 <app-beta-bar></app-beta-bar>
 <div class="cta-bar">
-  <aside>
-    <p>Learn more about becoming a participant at <a href="https://joinallofus.org" target="_blank"
-        rel="noopener">JoinAllofUs.org</a></p>
-    <p>Learn about the program at <a href="https://allofus.nih.gov" target="_blank" rel="noopener">AllofUs.nih.gov</a>
-    </p>
-  </aside>
   <a href="https://workbench.researchallofus.org/login" *ngIf="workBenchIsBeta" class="login-btn"> RESEARCHER LOGIN</a>
 </div>
 <div id="masthead" class="site-header">
@@ -63,8 +57,8 @@
                 </li>
               </ul>
             </li>
-            <li href="https://www.researchallofus.org/apply/" *ngIf="workBenchIsBeta" class="nav_apply">
-              <a>APPLY</a>
+            <li *ngIf="workBenchIsBeta" class="nav_apply">
+              <a href="https://www.researchallofus.org/apply/">APPLY</a>
             </li>
           </ul>
           <!-- ** Mobile Menu **-->
