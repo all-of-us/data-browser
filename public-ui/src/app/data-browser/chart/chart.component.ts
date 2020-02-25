@@ -284,7 +284,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
     }
-    let analysisId = this.analysis ? this.analysis.analysisId : this.surveyAnalysis.analysisId;
+    const analysisId = this.analysis ? this.analysis.analysisId : this.surveyAnalysis.analysisId;
     if (analysisId === this.dbc.COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions(this.analysis.results, this.analysis.analysisName);
     }
