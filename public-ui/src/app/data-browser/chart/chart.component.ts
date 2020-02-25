@@ -564,7 +564,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             ', Took Survey: ' + '<b>' + bsResult.countValue + '</b>' +
             '<br/> % Answered: <b>' + ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          const percentage = Number(((a.countValue/bsResult.countValue)*100).toFixed());
+          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
             '</b>' + '<br/>' + analysisStratumName +
             ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + analysisStratumName +
@@ -695,7 +695,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           totalToolTipHelpText = ageHelpText + ': ' + '<b>' + a.analysisStratumName +
             '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
             '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
-            '<br/> % with Medical Concept in EHR: <b>' + ((a.countValue/ageResult.countValue)*100).toFixed() + '</b> %';
+            '<br/> % with Medical Concept in EHR: <b>' +
+            ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
           const percentage = Number(((a.countValue/ageResult.countValue)*100).toFixed());
           totalToolTipHelpText = ageHelpText + ': '  + '<b>' + a.analysisStratumName + '</b>' +
