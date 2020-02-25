@@ -104,7 +104,6 @@ export class SurveyChartComponent implements OnInit {
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
       return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.surveyBSPercentageChartHelpText + '\n' +
         this.tooltipText.surveyBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {
