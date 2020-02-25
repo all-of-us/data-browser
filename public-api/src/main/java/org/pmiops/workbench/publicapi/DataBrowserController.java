@@ -1874,15 +1874,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         for(org.pmiops.workbench.model.QuestionConcept q: questions) {
-            AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
-            ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
-            ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
-            aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
-            q.setCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ca));
-            q.setGenderAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ga));
-            q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
             if (countAnalysis != null) {
                 AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
                 ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
@@ -1899,7 +1890,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
             }
         }
-
         return questions;
     }
 }
