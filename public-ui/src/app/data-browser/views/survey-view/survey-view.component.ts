@@ -36,7 +36,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   resultsComplete = false;
   questionFetchComplete = false;
   resultFetchComplete = false;
-  surveyCountAnalysis : any;
+  surveyCountAnalysis: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
