@@ -18,7 +18,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() selectedResult: any;
   @Input() surveyName: string;
   @Input() searchTerm: string;
-  @Input() subGraphButtons: string[];
+  @Input() surveyCountAnalysis: any;
   graphToShow = GraphType.BiologicalSex;
   displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
@@ -106,7 +106,6 @@ export class SurveyChartComponent implements OnInit {
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
       return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.surveyBSPercentageChartHelpText + '\n' +
         this.tooltipText.surveyBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {

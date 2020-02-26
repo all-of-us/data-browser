@@ -231,23 +231,28 @@ paths:
           schema:
             $ref: "#/definitions/SurveyQuestionAnalysisResponse"
 
-  /v1/databrowser/ehr-count-analysis:
+  /v1/databrowser/count-analysis:
     get:
       tags:
         - dataBrowser
       description: Gets EHR biological sex and age count analysis
-      operationId: "getEhrCountAnalysis"
+      operationId: "getCountAnalysis"
       parameters:
         - in: query
           name: domain-id
           type: string
           required: true
           description: domain id
+        - in: query
+          name: domain-desc
+          type: string
+          required: true
+          description: domain desc
       responses:
         200:
-          description: A collection of ehr count analysis for biological sex and age
+          description: A collection of count analysis for biological sex and age
           schema:
-            $ref: "#/definitions/EhrCountAnalysis"
+            $ref: "#/definitions/CountAnalysis"
 
   /v1/databrowser/survey-question-counts:
     get:
@@ -754,13 +759,6 @@ definitions:
       genderIdentityAnalysis:
         description: gender identity analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderCountAnalysis:
-        description: gender count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageCountAnalysis:
-        description: age count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-
 
   QuestionConceptListResponse:
     type: object
@@ -1179,14 +1177,6 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Analysis"
-      genderPercentageAnalysis:
-        description: gender percentage analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      agePercentageAnalysis:
-        description: age percentage analysis
-        type: object
-        $ref: "#/definitions/Analysis"
       ehrCountAnalysis:
         description: count analysis
         type: object
@@ -1225,16 +1215,8 @@ definitions:
         description: age analysis
         type: object
         $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderCountAnalysis:
-        description: gender percentage analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageCountAnalysis:
-        description: age percentage analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
 
-  EhrCountAnalysis:
+  CountAnalysis:
     type: object
     required:
       - domainId

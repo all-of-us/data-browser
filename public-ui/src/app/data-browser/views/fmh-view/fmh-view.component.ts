@@ -20,7 +20,6 @@ export class FmhViewComponent implements OnInit {
   conditionQuestionFetchComplete = false;
   fmQuestionFetchComplete = false;
   graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
-  subGraphButtons = ['Count', 'Percentage (%)'];
   conditionQuestions = [];
   fmQuestions = [];
   genderPercentageAnalysis: any;

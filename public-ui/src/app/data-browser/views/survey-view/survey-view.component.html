@@ -133,8 +133,8 @@
               </div>
 
               <div class="survey-row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
-                <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
-                                  [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
+                <app-survey-chart [graphButtons]="graphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
+                                  [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
               </div>
               <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.hasSubQuestions">
                 <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
@@ -215,7 +215,7 @@
                                     </div>
                                 </div>
                                 <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.hasSubQuestions && sqa.subQuestionFetchComplete">
-                                    <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
+                                    <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
                                                       [surveyName]="survey.name"
                                                       [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
                                 </div>
@@ -281,7 +281,7 @@
                                                 </div>
                                             </div>
                                             <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.hasSubQuestions">
-                                                <app-survey-chart [graphButtons]="graphButtons" [subGraphButtons]="subGraphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
+                                                <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
                                                                   [surveyName]="survey.name"
                                                                   [searchTerm]="prevSearchText"
                                                                   [answer]="sqa2"></app-survey-chart>

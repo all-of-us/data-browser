@@ -299,7 +299,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
       return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.ehrBSPercentageChartHelpText + '\n' +
         this.tooltipText.ehrBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {
@@ -311,7 +310,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (g === 'Age') {
 
       return this.tooltipText.ehrAgeChartHelpText + '\n' +
-        this.tooltipText.ehrAgePercentageChartHelpText + '\n' +
         this.tooltipText.ehrAgeCountChartHelpText + '\n';
     }
     if (g === 'Sources') {
