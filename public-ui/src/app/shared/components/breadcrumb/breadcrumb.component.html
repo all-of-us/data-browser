@@ -2,9 +2,6 @@
   <div class="breadcrumb">
     <a href="{{allOfUs}}/" class="breadcrumb-link">Home</a>
   </div>
-  <div class="breadcrumb" *ngIf="!workBenchIsBeta">
-    <a href="{{allOfUs}}/data/" class="breadcrumb-link">Data</a>
-  </div>
 
   <div *ngFor="let breadcrumb of breadcrumbs; let last = last"
     [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}">
