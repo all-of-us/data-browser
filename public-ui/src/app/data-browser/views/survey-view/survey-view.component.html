@@ -216,7 +216,7 @@
                                 </div>
                                 <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.hasSubQuestions && sqa.subQuestionFetchComplete">
                                     <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
-                                                      [surveyName]="survey.name"
+                                                      [surveyName]="survey.name" [surveyCountAnalysis]="surveyCountAnalysis"
                                                       [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
                                 </div>
                                 <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.hasSubQuestions">
@@ -282,7 +282,7 @@
                                             </div>
                                             <div class="row-expansion" *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.hasSubQuestions">
                                                 <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
-                                                                  [surveyName]="survey.name"
+                                                                  [surveyName]="survey.name" [surveyCountAnalysis]="surveyCountAnalysis"
                                                                   [searchTerm]="prevSearchText"
                                                                   [answer]="sqa2"></app-survey-chart>
                                             </div>
