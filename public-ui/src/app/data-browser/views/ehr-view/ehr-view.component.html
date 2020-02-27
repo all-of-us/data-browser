@@ -10,12 +10,12 @@
     </div>
   </div>
   <app-spinner [loading]="loading"></app-spinner>
-  <div *ngIf="items.length > 0" class="results">
-    <a class="btn btn-link btn-sm" [routerLink]="['']">
+  <div class="results" *ngIf="items.length > 0 || displayConceptErrorMessage">
+    <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
       < Back to main search </a> <div class="result-list">
         <div class="db-card">
           <div class="db-card-inner">
-            <section *ngIf="items.length > 0">
+            <section *ngIf="items.length > 0 || displayConceptErrorMessage">
               <!-- Top summary boxes -- only show if have results -->
               <h5 id="domain-summary" class="secondary-display">
                 <div class="toggle-link" (click)="toggleTopConcepts()">Top {{getTopResultsSize()}} by Descending
@@ -24,8 +24,11 @@
                   <clr-icon size="20" *ngIf="showTopConcepts" shape="caret" dir="down"></clr-icon>
                 </div>
               </h5>
-              <div *ngIf="showTopConcepts">
+              <div *ngIf="showTopConcepts && !displayConceptErrorMessage">
                 <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results"></chart-top-results>
+              </div>
+              <div *ngIf="showTopConcepts && displayConceptErrorMessage" class="col col-xs-7 error-message">
+                  <app-error-message [dataType]="'data'"></app-error-message>
               </div>
             </section>
             <db-table 
@@ -48,16 +51,19 @@
             [totalResults]="totalResults" 
             [currentPage]="currentPage"
             [items]="items"
+            [displayConceptErrorMessage]="displayConceptErrorMessage"
             (exploreConcept)=exploreConcept($event)></db-table>
           </div>
+          <ng-container *ngIf="!displayConceptErrorMessage">
           <pagination-controls (pageChange)="currentPage = $event; 
           getNextPage($event)" directionLinks="true" autoHide="true" previousLabel="Previous" nextLabel="Next"
             screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
             screenReaderCurrentLabel="You're on page"></pagination-controls>
+          </ng-container>
         </div>
   </div>
 </div>
-<div *ngIf="!loading && items.length === 0 && searchText.value">
+<div *ngIf="!loading && items.length === 0 && searchText.value && !displayConceptErrorMessage">
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>

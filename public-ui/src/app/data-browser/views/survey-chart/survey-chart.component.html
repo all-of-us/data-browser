@@ -3,28 +3,16 @@
        [ngClass]="{'active':question.graphToShow === g}" tabindex="0" (keydown.enter)="selectGraphType(g,question,answer)"  (click)="$event.stopPropagation();selectGraphType(g,question,answer)"
        class="survey-chart-choice">
     <span>{{g}}</span>
-    <clr-tooltip (mouseenter)="hoverOnTooltip(question, answer , g, 'Graph Help Text')">
-      <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-      <clr-tooltip-content clrPosition={{toolTipPos(g)}} clrSize="lg" *clrIfOpen>
-        <div class="tooltip-label">{{showToolTip(g)}}</div>
-      </clr-tooltip-content>
-    </clr-tooltip>
+    <app-tooltip [toolTipText1]="showToolTip(g)"
+    [label]="surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g" [searchTerm]="searchTerm" [action]="'Survey Chart Tooltip'"></app-tooltip>
   </div>
 </div>
-<div class="col-md">
-  <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':question.graphDataToShow === sg}"
-  tabindex="0" (keydown.enter)="selectGraph(sg,question,answer)" (click)="$event.stopPropagation();selectGraph(sg,question,answer)" class="btn btn-link sub-graph-choice">
-    {{sg}}</div>
+<div *ngIf="displayGraphErrorMessage">
+  <div class="graph-error-message">
+    <app-error-message [dataType]="'chart'"></app-error-message>
+  </div>
 </div>
-<ng-container *ngIf="isPercentageAnalysis(question); else CountChart">
-  <div class="chart">
-    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
-               [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
-  </div>
-</ng-container>
-<ng-template #CountChart>
-  <div class="chart">
-    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult"
-               [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
-  </div>
-</ng-template>
+<div class="chart" *ngIf="!displayGraphErrorMessage">
+  <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
+             [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
+</div>

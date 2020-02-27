@@ -8,7 +8,7 @@ import {TooltipService} from '../../../utils/tooltip.service';
 @Component({
   selector: 'app-survey-chart',
   templateUrl: './survey-chart.component.html',
-  styleUrls: ['./survey-chart.component.css', '../../../styles/template.css']
+  styleUrls: ['./survey-chart.component.css', '../../../styles/template.css', '../../../styles/page.css']
 })
 export class SurveyChartComponent implements OnInit {
   @Input() graphButtons: string[];
@@ -18,8 +18,9 @@ export class SurveyChartComponent implements OnInit {
   @Input() selectedResult: any;
   @Input() surveyName: string;
   @Input() searchTerm: string;
-  @Input() subGraphButtons: string[];
+  @Input() surveyCountAnalysis: any;
   graphToShow = GraphType.BiologicalSex;
+  displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
@@ -99,12 +100,12 @@ export class SurveyChartComponent implements OnInit {
           break;
       }
     }
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
   }
 
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
       return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.surveyBSPercentageChartHelpText + '\n' +
         this.tooltipText.surveyBSCountChartHelpText + '\n';
     }
     if (g === 'Gender Identity') {

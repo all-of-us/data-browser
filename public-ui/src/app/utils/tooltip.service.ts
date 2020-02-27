@@ -4,21 +4,12 @@ import { Injectable } from '@angular/core';
 export class TooltipService {
   biologicalSexChartHelpText = `The sex assigned to a child at birth, most often based on
   the child’s external anatomy.`;
-  ehrBSPercentageChartHelpText = `Percentages are calculated based on total number of participants
-  of each sex assigned that have this
-  medical concept out of total number of participants of each sex assigned that have EHR records in this domain.`;
-  ehrAgePercentageChartHelpText = `Percentages are calculated based on total number of participants
-  of each age group that have this
-  medical concept out of total number of participants of each age group that have EHR records in this domain.`;
   ehrBSCountChartHelpText = ` Counts are the total sum of participants with the medical
   concept mentioned in their
   electronic health record (EHR).`;
   ehrAgeCountChartHelpText = ` Counts are the total sum of participants with the medical
   concept mentioned in their
   electronic health record (EHR).`;
-  surveyBSPercentageChartHelpText = `Percentages are calculated based on how many
-  participants of the sex assigned selected this
-  answer  out of rounded participant count of each sex assigned that answered this question (excluding skip codes).`;
   surveyBSCountChartHelpText = `Counts are the total sum of participants of the
   sex assigned who selected this answer.`;
   genderIdentityChartHelpText = 'Gender identity refers to one’s internal \n' +
@@ -30,9 +21,7 @@ export class TooltipService {
    a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
    the participant is included once in the bar chart at the age of first occurrence, age 25.`;
   surveyAgeChartHelpText = 'The age bar chart displays a binned distribution of the ' +
-    'ages at which the participants took the indicated survey. \n' +
-    'The percentages below are calculated based on how many participants of the age group ' +
-    'responded with this survey answer out of rounded participant count of each age group that answered this question (excluding skip codes).';
+    'ages at which the participants took the indicated survey.';
   pmAgeChartHelpText = 'The age bar chart displays a binned distribution of the ages at ' +
     'which the participants had the physical measurement taken.';
   raceEthnicityChartHelpText = `“Race” refers to physical differences that groups and cultures
@@ -96,7 +85,7 @@ export class TooltipService {
     'lifestyle': this.lifestyleSurvey,
     'personal medical history': this.personalMedicalHistory,
     'family medical history': this.familyHistory,
-    'healthcare access & utilization': this.healthcareAccess
+    'health care access & utilization': this.healthcareAccess
   };
   conceptCodeHelpText1 = 'The concept code is an additional piece of information that\n' +
     'can be utilized to find medical concepts in the ';
@@ -159,8 +148,7 @@ export class TooltipService {
   genderIdentityQuestionHelpText1 = `Through “The Basics” survey, participants who have completed the initial steps of the program self-report gender
   identity information to the `;
   genderIdentityQuestionHelpText2 = `Research Program. Because participants can select more than one option,
-  counts and percentages may not add up to 100%`;
-  genderIdentityQuestionHelpText3 = `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
+  counts and percentages may not add up to 100%. To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
   q2RolledCategoriesHelpText = `“Other” includes the following categories: Middle Eastern or North African,
   Native Hawaiian or other Pacific Islander, and None of these describe me.`;
   constructor() { }

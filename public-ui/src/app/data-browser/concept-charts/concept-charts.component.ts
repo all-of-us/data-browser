@@ -43,9 +43,9 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   genderResults: AchillesResult[] = [];
   displayMeasurementGraphs = false;
   toDisplayMeasurementGenderAnalysis: any;
+  displayGraphErrorMessage = false;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
-  subGraphButtons = ['Count', 'Percentage (%)'];
   subUnitValuesFilter = ['No Unit (Text)', 'No Unit (Numeric)'];
   mixtureOfValues = false;
   selectedSubGraph: string;
@@ -111,18 +111,27 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     this.conceptName = this.concept.conceptName;
     this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
       this.concept.domainId).subscribe(
-      results => {
-        this.results = results.items;
-        this.analyses = results.items[0];
-        this.selectedSubGraph = 'Count';
-        this.selectedMeasurementType = 'No unit (Text)';
-        this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
-        this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-        this.organizeGenders(this.analyses.genderAnalysis);
-        this.fetchMeasurementGenderResults();
-        // Set this var to make template simpler.
-        // We can just loop through the results and show bins
-        this.loadingStack.pop();
+      {
+        next: results => {
+          console.log(this.results);
+          this.results = results.items;
+          this.analyses = results.items[0];
+          this.selectedSubGraph = 'Count';
+          this.selectedMeasurementType = 'No unit (Text)';
+          this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
+          this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
+          this.organizeGenders(this.analyses.genderAnalysis);
+          this.fetchMeasurementGenderResults();
+          // Set this var to make template simpler.
+          // We can just loop through the results and show bins
+          this.loadingStack.pop();
+          this.displayGraphErrorMessage = false;
+        },
+        error: err => {
+          const errorBody = JSON.parse(err._body);
+          this.displayGraphErrorMessage = true;
+          console.log('Error searching: ', errorBody.message);
+        }
       }));
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
@@ -133,7 +142,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         }
         this.loadingStack.pop();
       }));
-    this.subscriptions.push(this.api.getEhrCountAnalysis(this.concept.domainId).subscribe(
+    this.subscriptions.push(this.api.getCountAnalysis(this.concept.domainId, 'ehr').subscribe(
       results => {
         this.domainCountAnalysis = results;
       }
@@ -249,32 +258,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     } else {
       return gender.countValue;
     }
-  }
-
-  public showSelectedSubGraph(sg: string) {
-    this.selectedSubGraph = sg;
-    if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
-      this.dbc.triggerEvent('percentageTabClick', '% Tab',
-        'Click',
-        this.concept.domainId + ' - ' + this.showGraph + ' - ' +
-        this.conceptName, this.searchTerm, null);
-      this.toDisplayGenderAnalysis = this.analyses.genderPercentageAnalysis;
-      this.toDisplayAgeAnalysis = this.analyses.agePercentageAnalysis;
-    } else {
-      this.dbc.triggerEvent('countTabClick', 'Count Tab',
-        'Click',
-         this.concept.domainId + ' - ' + this.showGraph + ' - ' +
-        this.conceptName, this.searchTerm, null);
-      this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
-      this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-    }
-  }
-
-  public isPercentageGraphSelected() {
-    if (this.selectedSubGraph.toLowerCase().indexOf('percentage') >= 0) {
-      return true;
-    }
-    return false;
   }
 
   public showSpecificMeasurementTypeValues(su) {

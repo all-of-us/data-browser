@@ -10,18 +10,27 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import java.util.*;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.http.HttpStatus;
+import org.springframework.core.annotation.Order;
+import java.util.stream.Collectors;
+import org.springframework.core.Ordered;
 
 @ControllerAdvice
-public class ExceptionAdvice {
+public class ExceptionAdvice{
 
   private static final Logger log = Logger.getLogger(ExceptionAdvice.class.getName());
 
-  @ExceptionHandler({HttpMessageNotReadableException.class})
+  @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentNotValidException.class})
   public ResponseEntity<?> messageNotReadableError(Exception e) {
-    log.log(Level.INFO, "failed to parse HTTP request message, returning 400", e);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-        WorkbenchException.errorResponse("failed to parse valid JSON request message")
+        DataBrowserException.errorResponse(e.getMessage())
             .statusCode(HttpStatus.BAD_REQUEST.value()));
   }
 
@@ -41,14 +50,14 @@ public class ExceptionAdvice {
     if (relevantError.getClass().getAnnotation(ResponseStatus.class) != null) {
       statusCode = relevantError.getClass().getAnnotation(ResponseStatus.class).value().value();
     }
-    if (relevantError instanceof WorkbenchException) {
+    if (relevantError instanceof DataBrowserException) {
       // Only include Exception details on Workbench errors.
       errorResponse.setMessage(relevantError.getMessage());
       errorResponse.setErrorClassName(relevantError.getClass().getName());
-      WorkbenchException workbenchException = (WorkbenchException) relevantError;
-      if (workbenchException.getErrorResponse() != null
-          && workbenchException.getErrorResponse().getErrorCode() != null) {
-        errorResponse.setErrorCode(workbenchException.getErrorResponse().getErrorCode());
+      DataBrowserException dataBrowserException = (DataBrowserException) relevantError;
+      if (dataBrowserException.getErrorResponse() != null
+          && dataBrowserException.getErrorResponse().getErrorCode() != null) {
+        errorResponse.setErrorCode(dataBrowserException.getErrorResponse().getErrorCode());
       }
     }
 

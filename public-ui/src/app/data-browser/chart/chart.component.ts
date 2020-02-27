@@ -30,6 +30,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() participantCount = 0;
   @Output() resultClicked = new EventEmitter<any>();
   @Input() domainCountAnalysis: any;
+  @Input() surveyCountAnalysis: any;
   @Input() conceptName: string;
   @Input() test: string;
   chartOptions: any = null;
@@ -57,11 +58,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }, 1);
   }
 
-  public isGenderIdentityAnalysis() {
-    return this.analysis ?
-      (this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID ||
-        this.analysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID)
-      : false;
+  public doesNeedLegend() {
+    return this.isGenderOrAgeAnalysis() ? true : false;
+  }
+
+  public isGenderOrAgeAnalysis() {
+    return ((this.analysis &&
+      (this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID ||
+        this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID)) ||
+      (this.surveyAnalysis &&
+        (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
+        this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID)));
   }
 
   public hcChartOptions(): any {
@@ -70,8 +77,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
     }
-    const maxYAxis = Math.max.apply(
-      Math, options.series[0]['data'].map(function(o) { return o.y; }));
+    const maxYAxis = options.series.length > 1 ?
+      Math.max.apply(Math, options.series[1]['data'].map(function(o) { return o.y; })) :
+      Math.max.apply(Math, options.series[0]['data'].map(function(o) { return o.y; }));
     return {
       chart: options.chart,
       lang: this.dbc.lang,
@@ -82,7 +90,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         followPointer: true,
         outside: true,
         formatter: function(tooltip) {
-          if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('% of') === -1) {
+          if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('%') === -1) {
             if (this.point.toolTipHelpText.length >= 100) {
               return '<div style="width: 500px; white-space: normal;">' +
                 this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>' +
@@ -90,23 +98,35 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             } else {
               return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
             }
-          } else if (this.point.toolTipHelpText.indexOf('% of') >= 0) {
-            if (this.point.actualCount <= 20) {
-              if (this.point.toolTipHelpText.length >= 100) {
-                return '<div style="width: 500px; white-space: normal;">' +
-                  this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>' +
-                  '</div>';
+          } else if (this.point.toolTipHelpText.indexOf('%') >= 0) {
+            if (this.point.medicalConceptCount === 20) {
+              if (this.point.analysisId === 3102 || this.point.analysisId === 3101) {
+                this.point.toolTipHelpText =
+                  this.point.toolTipHelpText.replace('Medical Concept Count: <b>20</b>',
+                    'Medical Concept Count: <b>&le; 20</b>');
               } else {
-                return this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>';
+                this.point.toolTipHelpText =
+                  this.point.toolTipHelpText.replace('Selected Answer: <b>20</b>',
+                    'Selected Answer: <b>&le; 20</b>');
               }
+            }
+            if (this.point.totalDomainCount === 20) {
+              if (this.point.analysisId === 3102 || this.point.analysisId === 3101) {
+                this.point.toolTipHelpText =
+                  this.point.toolTipHelpText.replace('Total With EHR Count: <b>20</b>',
+                    'Total With EHR Count: <b>&le; 20</b>');
+              } else {
+                this.point.toolTipHelpText =
+                  this.point.toolTipHelpText.replace(' Took Survey: <b>20</b>',
+                    ' Took Survey: <b>&le; 20</b>');
+              }
+            }
+            if (this.point.toolTipHelpText.length >= 100) {
+              return '<div style="width: 500px; white-space: normal;">' +
+                this.point.toolTipHelpText +
+                '</div>';
             } else {
-              if (this.point.toolTipHelpText.length >= 100) {
-                return '<div style="width: 500px; white-space: normal;">' +
-                  this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>' +
-                  '</div>';
-              } else {
-                return this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>';
-              }
+              return this.point.toolTipHelpText;
             }
           } else {
             if (this.point.toolTipHelpText.length >= 100) {
@@ -128,7 +148,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           animation: {
             duration: 100,
           },
-          pointWidth: options.pointWidth ? options.pointWidth : null,
+          pointWidth: this.pointWidthExists(options),
           minPointLength: 3,
           events: {
           },
@@ -139,9 +159,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           size: '100%',
           dataLabels: {
             enabled: true,
-            style: this.isGenderIdentityAnalysis()
-              ? this.dbc.GI_DATA_LABEL_STYLE : this.dbc.DATA_LABEL_STYLE,
-            distance: this.isGenderIdentityAnalysis() ? 3 : -50,
+            style: this.dbc.DATA_LABEL_STYLE,
+            distance: -50,
             formatter: function () {
               if (this.percentage < 1) {
                 return this.point.name + ' ' + Number(this.percentage).toFixed(1) + '%';
@@ -154,8 +173,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           shadow: false,
           borderColor: null,
           colorByPoint: true,
-          groupPadding: 0,
+          groupPadding: this.setGroupPadding(),
           pointPadding: 0,
+          borderWidth: 0,
           dataLabels: {
             enabled: false,
           },
@@ -180,44 +200,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             fontWeight: 'bold',
             textTransform: 'capitalize',
             whiteSpace: 'wrap',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            fontSize: '14px'
           }
         },
-        min: options.yAxisMin != null ? options.yAxisMin :
-          ((this.analysis &&
-          (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
-        this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
-          (this.surveyAnalysis &&
-            (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
-          this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? 0 : 20,
-        max: ((this.analysis &&
-          (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
-            this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
-          (this.surveyAnalysis &&
-            (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
-              this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID)))
-          ? 100 : maxYAxis,
-        labels: ((this.analysis &&
-          (this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID ||
-          this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID)) ||
-          (this.surveyAnalysis &&
-            (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID ||
-            this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID))) ? {
-          style: {
-            fontSize: '12px',
-            whiteSpace: 'wrap',
-            textOverflow: 'ellipsis'
-          },
-          formatter: function () {
-            const label = this.axis.defaultLabelFormatter.call(this);
-            return label;
-          },
-          useHTML: true,
-        } : ('dataOnlyLT20' in options.series[0] && options.series[0].dataOnlyLT20 != null
+        min: options.yAxisMin != null ? options.yAxisMin : 20,
+        max: maxYAxis,
+        labels: ('dataOnlyLT20' in options.series[0] && options.series[0].dataOnlyLT20 != null
           && options.series[0].dataOnlyLT20) ?
          {
           style: {
-            fontSize: '12px',
+            fontSize: '14px',
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis'
           },
@@ -252,6 +245,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           style: {
             fontWeight: 'bold',
             textTransform: 'capitalize',
+            fontSize: '14px'
           },
         },
         categories: options.categories,
@@ -262,6 +256,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis',
             width: '80px',
+            fontSize: '14px'
           },
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -279,7 +274,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       zAxis: {},
       legend: {
-        enabled: false
+        enabled: this.doesNeedLegend(),
       },
       series: options.series,
     };
@@ -289,7 +284,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     if (this.concepts.length > 0) {
       return this.makeConceptChartOptions();
     }
-    if (this.analysis && this.analysis.analysisId === this.dbc.COUNT_ANALYSIS_ID) {
+    const analysisId = this.analysis ? this.analysis.analysisId : this.surveyAnalysis.analysisId;
+    if (analysisId === this.dbc.COUNT_ANALYSIS_ID) {
       return this.makeCountChartOptions(this.analysis.results, this.analysis.analysisName);
     }
     if (this.surveyAnalysis &&
@@ -297,42 +293,16 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults,
         this.surveyAnalysis.analysisName);
     }
-    if (this.analysis &&
-      this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+    if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(this.analysis.results,
-        'Sex Assigned at Birth', 'Sex Assigned at Birth', 'column');
+        'Sex Assigned at Birth', 'Sex Assigned at Birth', this.analysis.analysisId);
     }
-    if (this.surveyAnalysis &&
-      (this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID ||
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
+    if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'column');
-    }
-    if (this.analysis &&
-      this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(this.analysis.results,
-        this.analysis.analysisName, this.analysis.analysisName, 'bar');
-    }
-    if (this.surveyAnalysis &&
-      this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(
-          r => r.stratum4 === this.selectedResult.stratum4),
-        this.surveyAnalysis.analysisName, this.selectedResult.stratum4, 'bar');
-    }
-    if (this.analysis && this.analysis.analysisId === this.dbc.RACE_ETHNICITY_ANALYSIS_ID) {
-      return this.makeRaceEthnicityChartOptions(this.analysis.results,
-        this.analysis.analysisName, this.analysis.analysisName);
-    }
-    if (this.surveyAnalysis &&
-      this.surveyAnalysis.analysisId === this.dbc.SURVEY_RACE_ETHNICITY_ANALYSIS_ID) {
-      return this.makeRaceEthnicityChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(
-          r => r.stratum4 === this.selectedResult.stratum4),
-        this.selectedResult.stratum4,
-        this.surveyAnalysis.analysisName);
+        this.surveyAnalysis.analysisName, this.selectedResult.stratum4,
+        this.surveyAnalysis.analysisId);
     }
     /* Todo make charts for ethniticy and race
      * maybe cleanup / generalize pie chart
@@ -341,38 +311,24 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       this.analysis.analysisId === this.dbc.RACE_ANALYSIS_ID) {
       return this.makePieChartOptions();
     }*/
-    if (this.analysis && this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
+    if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.analysis.results, 'Age at First Occurrence in Participant Record',
         this.analysis.analysisName,
         'stratum2', this.analysis.analysisId);
     }
-    if (this.surveyAnalysis &&
-      (this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID ||
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID)) {
+    if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
         this.surveyAnalysis.surveyQuestionResults.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         'Age When Survey Was Taken',
         this.selectedResult.stratum4, 'stratum5', this.surveyAnalysis.analysisId);
     }
-    if (this.analysis &&
-      this.analysis.analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
+    if (analysisId === this.dbc.MEASUREMENT_VALUE_ANALYSIS_ID) {
       if (this.isPregnancyOrWheelChair()) {
         return this.makeStackedChartOptions(this.analysis.analysisName);
       }
       return this.makeMeasurementChartOptions();
-    }
-    if (this.analysis &&
-    this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-      return this.makeGenderChartOptions(this.analysis.results,
-        'Sex Assigned at Birth', 'Sex Assigned at Birth', 'column');
-    }
-    if (this.analysis && this.analysis.analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
-      return this.makeAgeChartOptions(
-        this.analysis.results, 'Age at First Occurrence in Participant Record',
-        this.analysis.analysisName,
-        'stratum2', this.analysis.analysisId);
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
   }
@@ -433,7 +389,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       xAxis: {
         labels: {
           style: {
-            align: 'right'
+            align: 'right',
+            fontSize: '14px'
           }
         }
       },
@@ -532,19 +489,25 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
 
   public makeGenderChartOptions(results: any, analysisName: string,
-                                seriesName: string, chartType: string) {
+                                seriesName: string, analysisId: number) {
     let data = [];
     let cats = [];
-    let yAxisLabel = null;
-    let percentageAnalysis = false;
+    let totalData = [];
+    let legendText = null;
+    let totalLegendText = null;
+    const yAxisLabel = null;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let analysisStratumName = null;
       let toolTipHelpText = null;
+      let totalToolTipHelpText = null;
+      let bsResult = null;
       let color = null;
-      if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+      if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
+        legendText = seriesName + ', Medical Concept';
+        totalLegendText = seriesName + ', Total With EHR';
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
@@ -556,169 +519,66 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
         }
-      }
-      if (this.surveyAnalysis &&
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+        bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
+        filter(x => x.stratum4 === a.stratum2)[0];
+        totalToolTipHelpText = null;
+        if (bsResult.countValue > 20) {
+          totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' +
+            ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
+        } else {
+          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
+          totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
+        }
+      } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
+        legendText = 'Sex Assigned At Birth' + ', Selected Answered Count';
+        totalLegendText = 'Sex Assigned At Birth' + ', Took Survey Count';
         if (a.countValue > 20) {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
+          toolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b> <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
         } else {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
+          toolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b> <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ';
         }
-      }
-      if (this.surveyAnalysis &&
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID) {
-        percentageAnalysis = true;
-        yAxisLabel = '% of Each Sex that answered with ' + this.selectedResult.stratum4;
-        color = this.dbc.COLUMN_COLOR;
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
-        }
-        if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-            'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Sex that answered' + ': '
-            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
-            '<br/> Participant Count: ';
+        bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
+        filter(x => x.stratum2 === a.stratum5)[0];
+        if (bsResult.countValue > 20) {
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + analysisStratumName +
+            ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + analysisStratumName +
+            ', Took Survey: ' + '<b>' + bsResult.countValue + '</b>' +
+            '<br/> % Answered: <b>' + ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-            'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> % of Each Sex that answered' + ': '
-            + '<b>' + Math.round(+(a.percentage)) + '% </b>' +
-            '<br/> Participant Count: ';
+          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + analysisStratumName +
+            ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + analysisStratumName +
+            ', Took Survey: ' + '<b>' + bsResult.countValue + '</b>' +
+            '<br/> % Answered: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
         }
       }
-      if (this.surveyAnalysis &&
-        this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.COLUMN_COLOR;
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
-        }
-        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-          'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
-      }
-      if (this.analysis &&
-        this.analysis.analysisId === this.dbc.GENDER_IDENTITY_ANALYSIS_ID) {
-        color = this.dbc.COLUMN_COLOR;
-        toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) + ' <br/> ' +
-          'Gender Identity: ' + '<b>' + analysisStratumName + '</b>';
-      }
-      if (this.analysis &&
-        this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-        percentageAnalysis = true;
-        yAxisLabel = '% of Each Sex with ' + this.conceptName;
-        color = this.dbc.COLUMN_COLOR;
-        analysisStratumName = a.analysisStratumName;
-        if (analysisStratumName === null) {
-          analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
-        }
-        if (a.stratum4 == null) {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
-            ': <b>' + 0 + '% </b>' +
-            '<br/> Participant Count: ' ;
-        } else {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> % of Each Sex with ' + this.conceptName +
-            ': <b>' + Math.round((+a.stratum4)) + '% </b>' +
-            '<br/> Participant Count: ';
-        }
-      }
-      if ((this.surveyAnalysis &&
-          this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID)) {
-        data.push({
-          name: a.analysisStratumName
-          , y: Math.round(+(a.percentage)), color: color, sliced: true,
-          toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-        });
-        cats.push(a.analysisStratumName);
-      } else if (this.analysis &&
-        this.analysis.analysisId === this.dbc.GENDER_PERCENTAGE_ANALYSIS_ID) {
-        if (a.stratum4 === null) {
-          data.push({
-            name: a.analysisStratumName
-            , y: 0, color: color, sliced: true,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        } else {
-          data.push({
-            name: a.analysisStratumName
-            , y: Math.round(+(a.stratum4)), color: color, sliced: true,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        }
-        cats.push(a.analysisStratumName);
-      } else {
-        data.push({
-          name: a.analysisStratumName
-          , y: a.countValue, color: color, sliced: true,
-          toolTipHelpText: toolTipHelpText,
-        });
-        cats.push(a.analysisStratumName);
-      }
-    }
-    data = data.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
-      }
-    );
-    cats = cats.sort((a, b) => {
-      if (a > b) {
-        return 1;
-      }
-      if (a < b) {
-        return -1;
-      }
-      return 0;
-    });
-    const temp = data.filter(x => x.y > 20);
-    const dataOnlyLT20 = temp.length > 0 ? false : true;
-    const series = {
-      name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
-    };
-    return {
-      chart: { type: 'column', backgroundColor: 'transparent' },
-      title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
-      series: [series],
-      categories: cats,
-      color: this.dbc.COLUMN_COLOR,
-      pointWidth: this.pointWidth,
-      xAxisTitle: analysisName,
-      yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
-      tooltip: {
-        headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name}</span>',
-      },
-      yAxisMin: percentageAnalysis ? 0 :
-        (temp.length > 0 ? 0 : 20)
-    };
-  }
-
-  public makeRaceEthnicityChartOptions(
-    results: any, seriesName: string, analysisName: string) {
-    let data = [];
-    let cats = [];
-    // LOOP CREATES DYNAMIC CHART VARS
-    for (const a of results) {
       data.push({
         name: a.analysisStratumName
-        , y: a.countValue, sliced: true, color: this.dbc.COLUMN_COLOR,
-        toolTipHelpText: '<b>' + a.analysisStratumName + '</b>',
+        , y: a.countValue, color: color, sliced: true,
+        toolTipHelpText: toolTipHelpText,
+      });
+      totalData.push({
+        name: bsResult.analysisStratumName
+        , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true,
+        toolTipHelpText: totalToolTipHelpText, medicalConceptCount: a.countValue,
+        totalDomainCount: bsResult.countValue, analysisId: analysisId
       });
       cats.push(a.analysisStratumName);
     }
@@ -732,6 +592,16 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         return 0;
       }
     );
+    totalData = totalData.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      }
+    );
     cats = cats.sort((a, b) => {
       if (a > b) {
         return 1;
@@ -743,36 +613,39 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     });
     const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
-    const series = {
-      name: seriesName, colorByPoint: true, data: data, dataOnlyLT20: dataOnlyLT20
-    };
-    return {
-      chart: {
-        type: 'column',
-        backgroundColor: 'transparent',
-        style: {
-          fontFamily: 'GothamBook, Arial, sans-serif',
-        },
+    const series = [
+      {
+        color: '#2691D0',
+        legendColor: '#2691D0',
+        name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
       },
+      {
+        color: '#262262',
+        legendColor: '#262262',
+        name: totalLegendText, colorByPoint: false,
+        data: totalData, dataOnlyLT20: dataOnlyLT20
+      }];
+    return {
+      chart: { type: 'column', backgroundColor: 'transparent' },
       title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
-      color: this.dbc.COLUMN_COLOR,
-      series: [series],
+      series: series,
       categories: cats,
-      pointWidth: this.pointWidth,
-      xAxisTitle: null,
-      yAxisTitle: null,
+      color: this.dbc.COLUMN_COLOR,
+      xAxisTitle: analysisName,
+      yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       tooltip: {
         headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name} </span>'
+        pointFormat: '{point.y} {point.name}</span>',
       },
-      yAxisMin: temp.length > 0 ? 0 : 20,
+      yAxisMin: temp.length > 0 ? 0 : 20
     };
   }
 
   public makeAgeChartOptions(results: any, analysisName: string,
                              seriesName: string, ageDecileStratum: string, analysisId: number) {
-    let percentageAnalysis = false;
-    let yAxisLabel = null;
+    const yAxisLabel = null;
+    let legendText = null;
+    let totalLegendText = null;
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -794,12 +667,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     );
     const data = [];
     const cats = [];
+    const totalData = [];
     const color = this.dbc.COLUMN_COLOR;
     let ageHelpText = null;
     for (const a of results) {
       let toolTipHelpText = null;
+      let ageResult = null;
+      let totalToolTipHelpText = null;
       if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
         ageHelpText = seriesName;
+        legendText = seriesName + ', Medical Concept';
+        totalLegendText = seriesName + ', Total With EHR';
         if (a.countValue > 20 ) {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ' +
@@ -808,99 +686,82 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = ageHelpText + ' : ' +
             '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ';
         }
-      } else if (analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
-        percentageAnalysis = true;
-        yAxisLabel = '% of Each Age with ' + this.conceptName;
-        ageHelpText = seriesName;
-        if (a.stratum4 === null || a.stratum4 === '0') {
-          toolTipHelpText = ageHelpText + ' : ' +
-            '<b>' +  a.analysisStratumName + '</b>' +
-            '<br/>' + '% of Each Age with ' + this.conceptName + ': <b>' +
-            '0' + '% </b>' +
-            '<br/> Participant Count: ';
+        ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
+        filter(x => x.stratum4 === a.stratum2)[0];
+        if (ageResult.countValue > 20) {
+          totalToolTipHelpText = ageHelpText + ': ' + '<b>' + a.analysisStratumName +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' +
+            ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          toolTipHelpText = ageHelpText + ' : ' +
-            '<b>' +  a.analysisStratumName + '</b>' +
-            '<br/>' + '% of Each Age with ' + this.conceptName +
-            ': <b>' + Math.round(+(a.stratum4)) + '% </b>' +
-            '<br/> Participant Count: ';
+          const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
+          totalToolTipHelpText = ageHelpText + ': '  + '<b>' + a.analysisStratumName + '</b>' +
+            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
+            '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
+            '<br/> % with Medical Concept in EHR: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
+        legendText = ageHelpText + ', Selected Answered Count';
+        totalLegendText = ageHelpText + ', Took Survey Count';
         if (a.countValue > 20 ) {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
-            '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b> <br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + 'Participant Count: ' + '<b>' +  a.countValue + '</b>';
         } else {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
-            '<br/> ' + ageHelpText + ' : ' +
+          toolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b> <br/> ' + ageHelpText + ' : ' +
             '<b> ' +  a.analysisStratumName + ' </b>' +
             '<br/>' + 'Participant Count: ';
         }
-      } else if (analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
-        percentageAnalysis = true;
-        yAxisLabel = '% of Each Age that answered with ' + this.selectedResult.stratum4;
-        ageHelpText = 'Age When Survey Was Taken';
-        if (a.percentage === null || a.percentage === 0) {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
-            '<br/> ' + ageHelpText + ' : ' +
-            '<b> ' +  a.analysisStratumName + ' </b>' +
-            '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  0 + '% </b>' +
-            '<br/> Participant Count: ';
+        ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.
+        filter(x => x.stratum2 === a.stratum5)[0];
+        if (ageResult.countValue > 20) {
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + a.analysisStratumName +
+            ', Selected Answer: ' + '<b>' + a.countValue + '</b>' +
+            '<br/>' + a.analysisStratumName + ', Took Survey: ' +
+            '<b>' + ageResult.countValue + '</b>' + '<br/> % Answered: <b>' +
+            ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          toolTipHelpText = '<b>Answer: </b>' + this.getSurveyAnswerText(a.stratum4) +
-            '<br/> ' + ageHelpText + ' : ' +
-            '<b> ' +  a.analysisStratumName + ' </b>' +
-            '<br/>' + '% of Each Age that answered' + ': ' + '<b>' +  Math.round(+(a.percentage)) + '% </b>' +
-            '<br/> Participant Count: ';
+          const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
+          totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
+            '</b>' + '<br/>' + a.analysisStratumName + ', Selected Answer: ' +
+            '<b>' + a.countValue + '</b>' + '<br/>' + a.analysisStratumName +
+            ', Took Survey: ' + '<b>' + ageResult.countValue + '</b>' +
+            '<br/> % Answered: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
         }
       }
-      if (analysisId === this.dbc.AGE_PERCENTAGE_ANALYSIS_ID) {
-        if (a.stratum4 === null) {
-          data.push({
-            name: a.analysisStratumName,
-            y: 0, color: color,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        } else {
-          data.push({
-            name: a.analysisStratumName,
-            y: Math.round(+(a.stratum4)), color: color,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        }
-      } else if (analysisId === this.dbc.SURVEY_AGE_PERCENTAGE_ANALYSIS_ID) {
-        if (a.percentage === null || a.percentage === 0) {
-          data.push({
-            name: a.analysisStratumName,
-            y: 0, color: color,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        } else {
-          data.push({
-            name: a.analysisStratumName,
-            y: Math.round(+(a.percentage)), color: color,
-            toolTipHelpText: toolTipHelpText, actualCount: a.countValue,
-          });
-        }
-      } else {
-        data.push({
-          name: a.analysisStratumName,
-          y: a.countValue, color: color,
-          toolTipHelpText: toolTipHelpText,
-        });
-      }
+      data.push({
+        name: a.analysisStratumName,
+        y: a.countValue, color: color,
+        toolTipHelpText: toolTipHelpText,
+      });
+      totalData.push({
+        name: ageResult.analysisStratumName
+        , y: ageResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR,
+        sliced: true, medicalConceptCount: a.countValue,
+        totalDomainCount: ageResult.countValue,
+        toolTipHelpText: totalToolTipHelpText, analysisId: analysisId
+      });
       cats.push(a.analysisStratumName);
     }
     const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
-    const series = {
-      name: seriesName,
-      colorByPoint: true,
-      data: data,
-      dataOnlyLT20: dataOnlyLT20
-    };
+    const series = [
+      {
+        color: '#2691D0',
+        legendColor: '#2691D0',
+        name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+      },
+      {
+        color: '#262262',
+        legendColor: '#262262',
+        name: totalLegendText, colorByPoint: false,
+        data: totalData, dataOnlyLT20: dataOnlyLT20
+      }];
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
       title: {
@@ -908,17 +769,15 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         style: this.dbc.CHART_TITLE_STYLE
       },
       color: this.dbc.COLUMN_COLOR,
-      series: [series],
+      series: series,
       categories: cats,
-      pointWidth: this.pointWidth,
       xAxisTitle: this.domainType === 'physical measurements' ? seriesName : analysisName,
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       tooltip: {
         headerFormat: '<span> ',
         pointFormat: '{point.name}<br/ > {point.y}</span>'
       },
-      yAxisMin: percentageAnalysis ? 0 :
-        (temp.length > 0 ? 0 : 20)
+      yAxisMin: temp.length > 0 ? 0 : 20
     };
   }
 
@@ -1167,16 +1026,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     return 0;
   }
 
-  public getGenderMissingPercentageEhr(stratumFilter: string) {
-    const genderCountResults = this.domainCountAnalysis.genderCountAnalysis.results;
-    genderCountResults.filter(r => r.stratum4 === stratumFilter);
-    if (genderCountResults.length > 0 && genderCountResults[0].countValue > 0) {
-      return ((20 / genderCountResults[0].countValue) * 100).toFixed(2);
-    } else {
-      return 0;
-    }
-  }
-
   public getSurveyAnswerText(answer: string) {
     if (answer.includes(':')) {
       const answer_split = answer.split(':');
@@ -1188,5 +1037,27 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return result;
     }
     return '<b>' + answer + '</b>';
+  }
+
+  public pointWidthExists(options: any) {
+    if ('pointWidth' in options) {
+      return options.pointWidth;
+    }
+    return null;
+  }
+
+  public setGroupPadding() {
+    if (this.analysis && this.analysis.analysisId === this.dbc.GENDER_ANALYSIS_ID) {
+      return 0.40;
+    } else if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
+      return 0.40;
+    } else if (this.analysis &&
+      this.analysis.analysisId === this.dbc.AGE_ANALYSIS_ID) {
+      return 0.26;
+    } else if (this.surveyAnalysis &&
+      this.surveyAnalysis.analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+      return 0.25;
+    }
   }
 }

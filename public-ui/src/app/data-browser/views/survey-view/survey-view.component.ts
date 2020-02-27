@@ -36,6 +36,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   resultsComplete = false;
   questionFetchComplete = false;
   resultFetchComplete = false;
+  surveyCountAnalysis: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
@@ -52,9 +53,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
-  subGraphButtons = ['Count', 'Percentage (%)'];
-  genderPercentageAnalysis: any;
-  agePercentageAnalysis: any;
+  envDisplay: string;
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -80,6 +79,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadPage();
+    this.envDisplay = environment.displayTag;
   }
 
   ngOnDestroy() {
@@ -150,6 +150,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       }));
+    this.subscriptions.push(this.api.getCountAnalysis(this.surveyConceptId, 'survey').subscribe(
+      results => {
+        this.surveyCountAnalysis = results;
+      }
+    ));
   }
 
   public processSurveyQuestions(results: any) {
@@ -186,18 +191,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     q.graphDataToShow = 'Count';
     for (const a of q.countAnalysis.surveyQuestionResults) {
       a.countPercent = this.countPercentage(a.countValue, this.survey.participantCount);
-      this.addMissingBiologicalSexResults(q.genderAnalysis,
-        q.genderAnalysis.surveyQuestionResults.
+      if (q.genderAnalysis) {
+        this.addMissingBiologicalSexResults(q.genderAnalysis,
+          q.genderAnalysis.surveyQuestionResults.
           filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
-        this.survey.participantCount);
-      this.addMissingAgeResults(q.ageAnalysis,
-        q.ageAnalysis.surveyQuestionResults.
+          this.survey.participantCount);
+      }
+      if (q.ageAnalysis) {
+        this.addMissingAgeResults(q.ageAnalysis,
+          q.ageAnalysis.surveyQuestionResults.
           filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
-        this.survey.participantCount);
+          this.survey.participantCount);
+      }
       a.subQuestionFetchComplete = false;
     }
-    this.prepGenderPercentageAnalysis(q, q.genderCountAnalysis.surveyQuestionResults);
-    this.prepAgePercentageAnalysis(q, q.ageCountAnalysis.surveyQuestionResults);
     q.countAnalysis.surveyQuestionResults.push(
       this.addDidNotAnswerResult(
         q.countAnalysis.surveyQuestionResults, this.survey.participantCount));
@@ -532,58 +539,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public hoverOnTooltip(q: any, event: string) {
-    this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
-      this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
-      + event, null, 'Survey Page Tooltip');
-  }
-
-  public prepGenderPercentageAnalysis(question: any, genderCountByQuestionResults: any) {
-    this.genderPercentageAnalysis = JSON.parse(JSON.stringify(question.genderAnalysis));
-    this.genderPercentageAnalysis.surveyQuestionResults = [];
-    const surveyQuestionResultsWithPercentage1 = [];
-    for (const ar of question.genderAnalysis.surveyQuestionResults) {
-      if (genderCountByQuestionResults) {
-        const countResult = genderCountByQuestionResults
-          .filter(gc => gc.stratum2 === ar.stratum2 &&
-            gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
-        const arWithPercentage = JSON.parse(JSON.stringify(ar));
-        if (countResult && countResult.length > 0) {
-          arWithPercentage.percentage =
-            ((ar.countValue / countResult[0].countValue) * 100).toFixed(2);
-        } else {
-          arWithPercentage.percentage = 0;
-        }
-        surveyQuestionResultsWithPercentage1.push(arWithPercentage);
-      }
-    }
-    this.genderPercentageAnalysis.surveyQuestionResults =
-      surveyQuestionResultsWithPercentage1;
-    this.genderPercentageAnalysis.analysisId = 3331;
-    question.genderPercentageAnalysis = this.genderPercentageAnalysis;
-  }
-
-  public prepAgePercentageAnalysis(question: any, ageCountByQuestionResults: any) {
-    this.agePercentageAnalysis = JSON.parse(JSON.stringify(question.ageAnalysis));
-    this.agePercentageAnalysis.surveyQuestionResults = [];
-    const surveyQuestionResultsWithPercentage2 = [];
-    for (const ar of question.ageAnalysis.surveyQuestionResults) {
-      if (ageCountByQuestionResults) {
-        const countResult = ageCountByQuestionResults.filter(gc => gc.stratum2 === ar.stratum2 &&
-          gc.stratum5 === ar.stratum5 && gc.stratum6 === ar.stratum6);
-        const arWithPercentage = JSON.parse(JSON.stringify(ar));
-        if (countResult && countResult.length > 0) {
-          arWithPercentage.percentage =
-            ((ar.countValue / countResult[0].countValue) * 100).toFixed(2);
-        } else {
-          arWithPercentage.percentage = 0;
-        }
-        surveyQuestionResultsWithPercentage2.push(arWithPercentage);
-      }
-    }
-    this.agePercentageAnalysis.surveyQuestionResults = surveyQuestionResultsWithPercentage2;
-    this.agePercentageAnalysis.analysisId = 3332;
-    question.agePercentageAnalysis = this.agePercentageAnalysis;
+  public getLabel(q: any, helpText: string) {
+    return this.surveyName + ' - Q' + q.actualQuestionNumber + ' - ' + helpText;
   }
 
   public clearSearch() {
@@ -637,10 +594,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),
                 a.countValue);
             }
-            this.prepGenderPercentageAnalysis(subQuestion,
-              subQuestion.genderCountAnalysis.surveyQuestionResults);
-            this.prepAgePercentageAnalysis(subQuestion,
-              subQuestion.ageCountAnalysis.surveyQuestionResults);
           }
           a.subQuestionFetchComplete = true;
         },

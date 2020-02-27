@@ -69,6 +69,8 @@ paths:
           description: Default cdr version
           schema:
             "$ref": "#/definitions/CdrVersion"
+        500:
+          description: Internal Server Error
 
   /v1/databrowser/survey-questions:
     get:
@@ -91,6 +93,36 @@ paths:
       responses:
         200:
           description: A collection of survey questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/fmh-questions:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the list of family medical history questions grouped by condition / family member
+      operationId: "getFMHGroupedQuestions"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: search_word
+          type: string
+          required: false
+          description: search word
+        - in: query
+          name: question-concept-ids
+          type: array
+          items:
+            type: string
+          required: false
+          description: concept id
+      responses:
+        200:
+          description: A collection of questions
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
 
@@ -129,11 +161,30 @@ paths:
           schema:
             $ref: "#/definitions/QuestionConceptListResponse"
 
+  /v1/databrowser/fmh-survey-question-results:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Get the results & sub questions with results for fmh condition / family member group
+      operationId: "getFMHSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+      responses:
+        200:
+          description: A collection of questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
   /v1/databrowser/main-survey-question-results:
     post:
       tags:
         - dataBrowser
-      description: Gets thw survey question analysis results
+      description: Gets the survey question analysis results
       operationId: "getMainSurveyQuestionResults"
       parameters:
         - in: query
@@ -157,23 +208,51 @@ paths:
           schema:
             $ref: "#/definitions/SurveyQuestionAnalysisResponse"
 
-  /v1/databrowser/ehr-count-analysis:
+  /v1/databrowser/fmh-main-condition-results:
+    post:
+      tags:
+        - dataBrowser
+      description: Gets the survey question analysis results of condition in fmh
+      operationId: "getFMHConditionMainResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: body
+          name: question
+          description: question concept
+          schema:
+            $ref: "#/definitions/QuestionConcept"
+      responses:
+        200:
+          description: A collection of anlysis objects
+          schema:
+            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
+
+  /v1/databrowser/count-analysis:
     get:
       tags:
         - dataBrowser
       description: Gets EHR biological sex and age count analysis
-      operationId: "getEhrCountAnalysis"
+      operationId: "getCountAnalysis"
       parameters:
         - in: query
           name: domain-id
           type: string
           required: true
           description: domain id
+        - in: query
+          name: domain-desc
+          type: string
+          required: true
+          description: domain desc
       responses:
         200:
-          description: A collection of ehr count analysis for biological sex and age
+          description: A collection of count analysis for biological sex and age
           schema:
-            $ref: "#/definitions/EhrCountAnalysis"
+            $ref: "#/definitions/CountAnalysis"
 
   /v1/databrowser/survey-question-counts:
     get:
@@ -680,13 +759,6 @@ definitions:
       genderIdentityAnalysis:
         description: gender identity analysis
         $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderCountAnalysis:
-        description: gender count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageCountAnalysis:
-        description: age count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-
 
   QuestionConceptListResponse:
     type: object
@@ -1105,14 +1177,6 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Analysis"
-      genderPercentageAnalysis:
-        description: gender percentage analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      agePercentageAnalysis:
-        description: age percentage analysis
-        type: object
-        $ref: "#/definitions/Analysis"
       ehrCountAnalysis:
         description: count analysis
         type: object
@@ -1151,16 +1215,8 @@ definitions:
         description: age analysis
         type: object
         $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderCountAnalysis:
-        description: gender percentage analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageCountAnalysis:
-        description: age percentage analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
 
-  EhrCountAnalysis:
+  CountAnalysis:
     type: object
     required:
       - domainId
@@ -1237,3 +1293,4 @@ definitions:
         type: integer
         default: 1
         description: By default all the measurement orders are returned
+

@@ -1,18 +1,16 @@
-<div class="db-page-spinner" *ngIf="loading()">
+<div class="db-page-spinner" *ngIf="loading() && !displayGraphErrorMessage">
   <span class="spinner">
     Loading...
   </span>
 </div>
-
+<div class="graph-error-message" *ngIf="displayGraphErrorMessage">
+  <app-error-message [dataType]="'chart'"></app-error-message>
+</div>
+<ng-container *ngIf="!displayGraphErrorMessage">
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
     (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
-  <clr-tooltip>
-    <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-    <clr-tooltip-content clrPosition=top-right clrSize="lg" *clrIfOpen>
-      <div class="tooltip-label">Toggle here to view unit specific histograms</div>
-    </clr-tooltip-content>
-  </clr-tooltip>
+  <app-tooltip [toolTipText1]="'Toggle here to view unit specific histograms'"></app-tooltip>
   <div *ngIf="mixtureOfValues">
     <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"
          (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link measurement-filter-choice">{{su}}</div>
@@ -20,11 +18,6 @@
 </div>
 
 <div *ngIf="!loading()" class="concept-charts">
-  <div class="col-md" *ngIf="showGraph === graphType.BiologicalSex || showGraph === graphType.Age">
-    <div *ngFor="let sg of subGraphButtons" [ngClass]="{'active':selectedSubGraph === sg}" tabindex="0"
-      (keydown.enter)="showSelectedSubGraph(sg)" (click)="showSelectedSubGraph(sg)" class="btn btn-link sub-graph-choice">
-      {{sg}}</div>
-  </div>
   <!-- show measurements binned by gender if we want -->
   <!-- Loop through the genders we have measurement results for  for showing the graph
   <!-- Loop through the genders we have measurement results for  for showing the graph
@@ -59,18 +52,11 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- show gender totals  if we want -->
   <!-- BIOLOGICAL P CHART -->
   <ng-container *ngIf="showGraph === graphType.BiologicalSex && analyses.genderAnalysis">
-    <div class="chart" *ngIf="isPercentageGraphSelected(); else BSCountChart">
+    <div class="chart">
       <app-chart [analysis]="toDisplayGenderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
         [chartTitle]="'Sex Assigned at Birth'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName">
       </app-chart>
     </div>
-    <ng-template #BSCountChart>
-      <div class="chart">
-        <app-chart [analysis]="toDisplayGenderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
-          [chartTitle]="'Sex Assigned at Birth'" [domainCountAnalysis]="domainCountAnalysis"
-          [conceptName]="conceptName"> </app-chart>
-      </div>
-    </ng-template>
   </ng-container>
   <!-- IDENTITY COLUMN CHART -->
   <ng-container *ngIf="showGraph === graphType.GenderIdentity">
@@ -90,14 +76,10 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- show age totals  if we want -->
   <!-- AGE COLUMN CHART -->
   <ng-container *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">
-    <div class="chart" *ngIf="isPercentageGraphSelected(); else AgeCountChart">
+    <div class="chart">
       <app-chart [analysis]="toDisplayAgeAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
         [domainType]="'ehr'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName"> </app-chart>
     </div>
-    <ng-template #AgeCountChart>
-      <app-chart [analysis]="toDisplayAgeAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
-        [domainType]="'ehr'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName"> </app-chart>
-    </ng-template>
   </ng-container>
 
   <!-- show sources totals  if we want -->
@@ -115,3 +97,4 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
     </ng-template>
   </ng-container>
 </div>
+</ng-container>

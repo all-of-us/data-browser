@@ -4,7 +4,11 @@ import java.util.logging.Logger;
 import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
+import org.springframework.http.HttpStatus;
 import com.google.common.collect.ImmutableList;
+import java.net.SocketTimeoutException;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,7 +59,7 @@ import org.pmiops.workbench.model.QuestionConceptListResponse;
 import org.pmiops.workbench.model.SurveyQuestionAnalysisResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
-import org.pmiops.workbench.model.EhrCountAnalysis;
+import org.pmiops.workbench.model.CountAnalysis;
 import org.pmiops.workbench.model.CriteriaParentResponse;
 import org.pmiops.workbench.model.CriteriaListResponse;
 import org.pmiops.workbench.model.StandardConceptFilter;
@@ -67,6 +71,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import org.pmiops.workbench.exceptions.ServerErrorException;
+import org.pmiops.workbench.exceptions.DataNotFoundException;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
@@ -101,13 +107,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
     public static final long COUNT_ANALYSIS_ID = 3000;
-    public static final long GENDER_COUNT_ANALYSIIS_ID = 3200;
-    public static final long AGE_COUNT_ANALYSIIS_ID = 3201;
+    public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3200;
+    public static final long SURVEY_AGE_COUNT_ANALYSIIS_ID = 3201;
     public static final long GENDER_ANALYSIS_ID = 3101;
-    public static final long GENDER_PERCENTAGE_ANALYSIS_ID = 3310;
-    public static final long AGE_PERCENTAGE_ANALYSIS_ID = 3311;
-    public static final long SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
-    public static final long SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
@@ -116,8 +118,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
     public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
 
-    public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3320;
-    public static final long SURVEY_AGE_COUNT_ANALYSIS_ID = 3321;
+    public static final long SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID = 3320;
+    public static final long SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID = 3321;
 
     public static final long EHR_GENDER_COUNT_ANALYSIS_ID = 3300;
     public static final long EHR_AGE_COUNT_ANALYSIS_ID = 3301;
@@ -230,8 +232,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     SurveyQuestionAnalysis genderAnalysis=null;
                     SurveyQuestionAnalysis ageAnalysis=null;
                     SurveyQuestionAnalysis genderIdentityAnalysis=null;
-                    SurveyQuestionAnalysis genderCountAnalysis = null;
-                    SurveyQuestionAnalysis ageCountAnalysis = null;
                     if(concept.getCountAnalysis() != null){
                         countAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getCountAnalysis());
                     }
@@ -243,12 +243,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                     if(concept.getGenderIdentityAnalysis() != null){
                         genderIdentityAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderIdentityAnalysis());
-                    }
-                    if(concept.getGenderCountAnalysis() != null) {
-                        genderCountAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getGenderCountAnalysis());
-                    }
-                    if (concept.getAgeCountAnalysis() != null) {
-                        ageCountAnalysis = TO_CLIENT_SURVEY_ANALYSIS.apply(concept.getAgeCountAnalysis());
                     }
 
                     return new org.pmiops.workbench.model.QuestionConcept()
@@ -262,9 +256,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .countAnalysis(countAnalysis)
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis)
-                            .genderIdentityAnalysis(genderIdentityAnalysis)
-                            .genderCountAnalysis(genderCountAnalysis)
-                            .ageCountAnalysis(ageCountAnalysis);
+                            .genderIdentityAnalysis(genderIdentityAnalysis);
                 }
             };
 
@@ -374,10 +366,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .conceptId(ca.getConceptId())
                             .countAnalysis(ca.getCountAnalysis())
                             .genderAnalysis(ca.getGenderAnalysis())
-                            .genderPercentageAnalysis(ca.getGenderPercentageAnalysis())
                             .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
                             .ageAnalysis(ca.getAgeAnalysis())
-                            .agePercentageAnalysis(ca.getAgePercentageAnalysis())
                             .raceAnalysis(ca.getRaceAnalysis())
                             .ethnicityAnalysis(ca.getEthnicityAnalysis())
                             .measurementValueGenderAnalysis(ca.getMeasurementValueGenderAnalysis())
@@ -529,7 +519,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
         Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
         CriteriaParentResponse response = new CriteriaParentResponse();
@@ -557,17 +551,23 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             if (criteriaList.size() >= 1) {
                 criteriaList.remove(parent);
             }
+            Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
             response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
             Multimap<Long, CBCriteria> parentCriteria = Multimaps
                     .index(criteriaList, CBCriteria::getParentId);
             return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<CriteriaListResponse> getCriteriaChildren(Long parentId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<CBCriteria> criteriaList = criteriaDao.findCriteriaChildren(parentId);
         CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
         criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
@@ -576,7 +576,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
         Long conceptId = 0L;
@@ -614,6 +618,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword);
+
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domains.stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
@@ -626,7 +631,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         Integer maxResults = searchConceptsRequest.getMaxResults();
         if(maxResults == null || maxResults == 0){
             maxResults = Integer.MAX_VALUE;
@@ -720,52 +729,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        /* Delete this once tested in test
-        List<DomainInfo> domainInfos = new ArrayList<>();
-        domainInfos.addAll(domainInfoDao.findByConceptIdNotOrderByDomainId(21L));
-
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
         }
-
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            DomainInfo domainInfo= domainInfoDao.findMeasurementDomainTotalsWithFilter(measurementQuery);
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        } else if (measurementQuery == -1){
-            DomainInfo domainInfo= domainInfoDao.findByConceptId(21L);
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        } else if (measurementQuery == 2) {
-            DomainInfo domainInfo = domainInfoDao.findMeasurementDomainTotalsWithoutFilter();
-            if (domainInfo != null) {
-                domainInfos.add(domainInfo);
-            }
-        }
-
-        Collections.sort(domainInfos);
-
-        List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
-
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(ImmutableList.copyOf(domainInfos).stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
-                */
-
         Integer getTests = null;
         Integer getOrders = null;
 
@@ -793,44 +761,69 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setSurveyModules(surveyModules.stream()
                 .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
                 .collect(Collectors.toList()));
-
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.CdrVersion> getCdrVersionUsed() {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
+        if (cdrVersion == null) {
+            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
+        }
         return ResponseEntity.ok(TO_CLIENT_CDR_VERSION.apply(cdrVersion));
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesAnalysis genderAnalysis = achillesAnalysisDao.findAnalysisById(GENDER_ANALYSIS);
+        Optional.ofNullable(genderAnalysis).orElseThrow(() -> new DataNotFoundException("Gender Analysis data is not available"));
         addGenderStratum(genderAnalysis,1, "0", null);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getRaceAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesAnalysis raceAnalysis = achillesAnalysisDao.findAnalysisById(RACE_ANALYSIS);
+        Optional.ofNullable(raceAnalysis).orElseThrow(() -> new DataNotFoundException("Race Analysis data is not available"));
         addRaceStratum(raceAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(raceAnalysis));
     }
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.Analysis> getEthnicityAnalysis(){
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesAnalysis ethnicityAnalysis = achillesAnalysisDao.findAnalysisById(ETHNICITY_ANALYSIS);
+        Optional.ofNullable(ethnicityAnalysis).orElseThrow(() -> new DataNotFoundException("Ethnicity Analysis data is not available"));
         addEthnicityStratum(ethnicityAnalysis);
         return ResponseEntity.ok(TO_CLIENT_ANALYSIS.apply(ethnicityAnalysis));
     }
 
     @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyQuestions(String surveyConceptId, String searchWord) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
@@ -857,9 +850,43 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionAnalysisResponse> getMainSurveyQuestionResults(String surveyConceptId, String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
+    public ResponseEntity<QuestionConceptListResponse> getFMHGroupedQuestions(String surveyConceptId, String searchWord, List<String> questionConceptIds) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        long longSurveyConceptId = Long.parseLong(surveyConceptId);
 
+        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+
+        SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
+
+        resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+
+        String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
+
+        List<QuestionConcept> questions = new ArrayList<>();
+
+        // Hardcoding question concepts ids for now.
+        // TO-DO Figure out a way to automate fetching these
+
+        if (searchWord == null || searchWord.isEmpty()) {
+            //Get all the questions
+            questions = questionConceptDao.getFMHQuestions(questionConceptIds);
+        } else {
+            // Get only the matching questions
+            questions = questionConceptDao.getMatchingFMHQuestions(new ArrayList<Long>(questionConceptIds.stream().map(Long::parseLong).collect(Collectors.toList())), surveyKeyword);
+        }
+
+        List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
+        resp.setItems(convertedQuestions);
+        return ResponseEntity.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<SurveyQuestionAnalysisResponse> getMainSurveyQuestionResults(String surveyConceptId, String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<String> questionConceptIds = new ArrayList<>();
         questionConceptIds.add(questionConceptId);
 
@@ -879,20 +906,56 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
         org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
 
+        Optional.ofNullable(questionConcept).orElseThrow(() -> new DataNotFoundException("Unable to fetch results of this survey question"));
+
         SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
         resp.setCountAnalysis(questionConcept.getCountAnalysis());
         resp.setGenderAnalysis(questionConcept.getGenderAnalysis());
         resp.setAgeAnalysis(questionConcept.getAgeAnalysis());
-        resp.setGenderCountAnalysis(questionConcept.getGenderCountAnalysis());
-        resp.setAgeCountAnalysis(questionConcept.getAgeCountAnalysis());
+
+        return ResponseEntity.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<SurveyQuestionAnalysisResponse> getFMHConditionMainResults(String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+
+        List<String> questionConceptIds = new ArrayList<>();
+        questionConceptIds.add(questionConceptId);
+
+        String surveyConceptId = "43528698";
+
+        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, questionConceptIds);
+
+        List<AchillesResult> subQuestionResults = achillesResultDao.findFMHCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds);
+
+        List<Long> subIds = new ArrayList<>();
+
+        for(AchillesResult sqr: subQuestionResults) {
+            subIds.add(sqr.getId());
+        }
+
+        List<org.pmiops.workbench.model.QuestionConcept> questions = new ArrayList<>();
+        questions.add(question);
+
+        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
+        org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
+
+        SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
+        resp.setCountAnalysis(questionConcept.getCountAnalysis());
+        resp.setGenderAnalysis(questionConcept.getGenderAnalysis());
+        resp.setAgeAnalysis(questionConcept.getAgeAnalysis());
 
         return ResponseEntity.ok(resp);
     }
 
     @Override
     public ResponseEntity<QuestionConceptListResponse> getSurveyQuestionResults(String surveyConceptId, String questionConceptId, String resultConceptId, Integer level) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
         int levelFlag = level == 1 ? 2 : 4;
@@ -927,26 +990,78 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<EhrCountAnalysis> getEhrCountAnalysis(String domainId) {
+    public ResponseEntity<QuestionConceptListResponse> getFMHSurveyQuestionResults(String questionConceptId) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        List<Long> analysisIds = new ArrayList<>();
-        analysisIds.add(3300L);
-        analysisIds.add(3301L);
-        List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
-        EhrCountAnalysis ehrCountAnalysis = new EhrCountAnalysis();
-        ehrCountAnalysis.setDomainId(domainId);
-        ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0)));
-        ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0)));
-        return ResponseEntity.ok(ehrCountAnalysis);
+
+        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+
+        List<QuestionConcept> subQuestions = subQuestions = questionConceptDao.findFMHConditionSubQuestions("43528698", questionConceptId);
+
+        List<String> questionConceptIds = new ArrayList<>();
+
+        for(QuestionConcept q: subQuestions) {
+            questionConceptIds.add(String.valueOf(q.getConceptId()));
+        }
+
+
+        List<Long> subIds = null;
+
+        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults("43528698", questionConceptIds);
+
+        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
+
+        resp.setItems(mappedQuestions);
+
+        return ResponseEntity.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<CountAnalysis> getCountAnalysis(String domainId, String domainDesc) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+
+        if (domainDesc.equals("ehr")) {
+            List<Long> analysisIds = new ArrayList<>();
+            analysisIds.add(3300L);
+            analysisIds.add(3301L);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+            CountAnalysis ehrCountAnalysis = new CountAnalysis();
+            ehrCountAnalysis.setDomainId(domainId);
+            AchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
+            AchillesAnalysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
+            addGenderStratum(genderCountAnalysis,4, domainId, null);
+            addAgeStratum(ageCountAnalysis, domainId, null,  4);
+            ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
+            ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
+            return ResponseEntity.ok(ehrCountAnalysis);
+        } else {
+            List<Long> analysisIds = new ArrayList<>();
+            analysisIds.add(SURVEY_GENDER_COUNT_ANALYSIS_ID);
+            analysisIds.add(SURVEY_AGE_COUNT_ANALYSIIS_ID);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findSurveyAnalysisByIds(analysisIds, domainId);
+            CountAnalysis surveyCountAnalysis = new CountAnalysis();
+            surveyCountAnalysis.setDomainId(domainId);
+            AchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == SURVEY_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList()).get(0);
+            AchillesAnalysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == SURVEY_AGE_COUNT_ANALYSIIS_ID).collect(Collectors.toList()).get(0);
+            addGenderStratum(genderCountAnalysis,2, domainId, null);
+            addAgeStratum(ageCountAnalysis, domainId, null,  2);
+            surveyCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
+            surveyCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
+            return ResponseEntity.ok(surveyCountAnalysis);
+        }
     }
 
     @Override
     public ResponseEntity<AnalysisListResponse> getSurveyQuestionCounts(String questionConceptId, String questionPath) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3320L);
         analysisIds.add(3321L);
         List<AchillesAnalysis> surveyQuestionCountList = achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath);
+
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyQuestionCountList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
         return ResponseEntity.ok(analysisListResponse);
@@ -954,16 +1069,17 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<ConceptAnalysisListResponse> getConceptAnalysisResults(List<String> conceptIds, String domainId){
-
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
         List<Long> analysisIds  = new ArrayList<>();
         analysisIds.add(GENDER_ANALYSIS_ID);
         analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
         analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
-        analysisIds.add(GENDER_PERCENTAGE_ANALYSIS_ID);
-        analysisIds.add(AGE_PERCENTAGE_ANALYSIS_ID);
         analysisIds.add(AGE_ANALYSIS_ID);
         analysisIds.add(RACE_ANALYSIS_ID);
         analysisIds.add(COUNT_ANALYSIS_ID);
@@ -1007,6 +1123,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             List<AchillesAnalysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,analysisIds);
 
+
+            if (analysisList.size() == 0) {
+                throw new DataNotFoundException("Cannot find analysis data of this concept");
+            }
+
             HashMap<Long, AchillesAnalysis> analysisHashMap = new HashMap<>();
             for(AchillesAnalysis aa: analysisList){
                 this.entityManager.detach(aa);
@@ -1028,24 +1149,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa,2, conceptId, null);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if (analysisId == GENDER_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrGenderCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID).collect(Collectors.toList());
-                    if (ehrGenderCountAnalysis != null && ehrGenderCountAnalysis.size() > 0) {
-                        addGenderStratum(aa, 2, conceptId,  ehrGenderCountAnalysis.get(0).getResults());
-                        conceptAnalysis.setGenderPercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                    }
                 }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
                     addGenderIdentityStratum(aa);
                     conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_ANALYSIS_ID){
-                    addAgeStratum(aa, conceptId, null);
+                    addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == AGE_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesAnalysis> ehrAgeCountAnalysis = ehrAnalysesList.stream().filter(a -> a.getAnalysisId() == EHR_AGE_COUNT_ANALYSIS_ID).collect(Collectors.toList());
-                    if (ehrAgeCountAnalysis != null && ehrAgeCountAnalysis.size() > 0) {
-                        addAgeStratum(aa, conceptId, ehrAgeCountAnalysis.get(0).getResults());
-                    }
-                    conceptAnalysis.setAgePercentageAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == RACE_ANALYSIS_ID){
                     addRaceStratum(aa);
                     conceptAnalysis.setRaceAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
@@ -1178,7 +1287,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
      */
     @Override
     public ResponseEntity<ConceptListResponse> getSourceConcepts(Long conceptId,Integer minCount) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         Integer count=minCount;
         if(count == null){
             count = 0;
@@ -1191,8 +1304,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Override
     public ResponseEntity<org.pmiops.workbench.model.AchillesResult> getParticipantCount() {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
         AchillesResult result = achillesResultDao.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID);
+        if (result == null) {
+            throw new DataNotFoundException("Participant count could not be fetched. Please check the achilles results table if row with analysis id 1 is present in there.");
+        }
         return ResponseEntity.ok(TO_CLIENT_ACHILLES_RESULT.apply(result));
     }
 
@@ -1246,6 +1366,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public void addGenderStratum(AchillesAnalysis aa, int stratum, String conceptId, List<AchillesResult> ehrCountResults){
         Set<String> uniqueGenderStratums = new TreeSet<String>();
+        String domainConceptId = null;
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName =ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
@@ -1258,6 +1379,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 } else if (stratum == 3) {
                     uniqueGenderStratums.add(ar.getStratum3());
                     ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum3()));
+                } else if (stratum == 4) {
+                    domainConceptId = ar.getStratum1();
+                    uniqueGenderStratums.add(ar.getStratum4());
+                    ar.setAnalysisStratumName(QuestionConcept.genderStratumNameMap.get(ar.getStratum4()));
                 }
             }
         }
@@ -1266,15 +1391,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             completeGenderStratumList.removeAll(uniqueGenderStratums);
             for(String missingGender: completeGenderStratumList){
                 AchillesResult missingResult = null;
-                if (aa.getAnalysisId() == GENDER_PERCENTAGE_ANALYSIS_ID) {
-                    List<AchillesResult> ehrGenderCountResults = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingGender)).collect(Collectors.toList());
-                    if (ehrGenderCountResults != null && ehrGenderCountResults.size() > 0) {
-                        AchillesResult result = ehrGenderCountResults.get(0);
-                        String percentageValue = String.valueOf(Math.round(((double)20/result.getCountValue())*100/2)*2);
-                        missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, percentageValue, null, null, 20L, 20L);
-                    } else {
-                        missingResult = new AchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, "0", null, null, 20L, 20L);
-                    }
+                if (aa.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID) {
+                    missingResult = new AchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingGender, null, null, 20L, 20L);
                 } else {
                     if (stratum == 1) {
                         missingResult = new AchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, null, 20L, 20L);
@@ -1300,15 +1418,22 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
     }
 
-    public void addAgeStratum(AchillesAnalysis aa, String conceptId, List<AchillesResult> ehrCountResults){
+    public void addAgeStratum(AchillesAnalysis aa, String conceptId, List<AchillesResult> ehrCountResults, int stratum){
         Set<String> uniqueAgeDeciles = new TreeSet<String>();
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
-            if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
-                uniqueAgeDeciles.add(ar.getStratum2());
-            }
             if (analysisStratumName == null || analysisStratumName.equals("")) {
-                ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
+                if (stratum == 2) {
+                    if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
+                        uniqueAgeDeciles.add(ar.getStratum2());
+                        ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum2()));
+                    }
+                } else if (stratum == 4) {
+                    if (ar.getStratum4() != null && !ar.getStratum4().equals("0")) {
+                        uniqueAgeDeciles.add(ar.getStratum4());
+                        ar.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(ar.getStratum4()));
+                    }
+                }
             }
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
@@ -1317,14 +1442,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
                 completeAgeDeciles.removeAll(uniqueAgeDeciles);
                 for(String missingAgeDecile: completeAgeDeciles){
-                    List<AchillesResult> ehrAgeCountResults = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
+                    List<AchillesResult> ehrAgeCountResults = null;
+                    try {
+                       ehrAgeCountResults  = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
+                    } catch(NullPointerException npe) {
+                    }
                     AchillesResult missingResult = null;
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         AchillesResult result = ehrAgeCountResults.get(0);
                         String percentageValue = String.valueOf(Math.round((20/result.getCountValue())*100/2)*2);
-                        missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, percentageValue, null, null, 20L, 20L);
+                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, 20L, 20L);
                     } else {
-                        missingResult = new AchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, "0", null, null, 20L, 20L);
+                        missingResult = new AchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, 20L, 20L);
                     }
                     missingResult.setAnalysisStratumName(QuestionConcept.ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);
@@ -1651,14 +1780,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> genderCountAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> ageCountAnalysisResultsByQuestion = new HashMap<>();
 
         AchillesAnalysis countAnalysis = null;
         AchillesAnalysis genderAnalysis = null;
         AchillesAnalysis ageAnalysis = null;
-        AchillesAnalysis genderCountAnalysis = null;
-        AchillesAnalysis ageCountAnalysis = null;
 
         for (AchillesAnalysis aa: analyses) {
             if (aa.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
@@ -1716,57 +1841,26 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == SURVEY_GENDER_COUNT_ANALYSIS_ID) {
-                genderCountAnalysis = aa;
-                for (AchillesResult ar : aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (genderCountAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = genderCountAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        genderCountAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId() == SURVEY_AGE_COUNT_ANALYSIS_ID) {
-                ageCountAnalysis = aa;
-                for (AchillesResult ar : aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (ageCountAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = ageCountAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        ageCountAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
 
         }
 
         for(org.pmiops.workbench.model.QuestionConcept q: questions) {
-            AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
-            ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
-            ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
-            aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis gca = new AchillesAnalysis(genderCountAnalysis);
-            gca.setResults(genderCountAnalysisResultsByQuestion.get(q.getConceptId()));
-            AchillesAnalysis aca = new AchillesAnalysis(ageCountAnalysis);
-            aca.setResults(ageCountAnalysisResultsByQuestion.get(q.getConceptId()));
-            q.setCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ca));
-            q.setGenderAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ga));
-            q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
-            q.setGenderCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(gca));
-            q.setAgeCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aca));
+            if (countAnalysis != null) {
+                AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
+                ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ca));
+            }
+            if (genderAnalysis != null) {
+                AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
+                ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setGenderAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ga));
+            }
+            if (ageAnalysis != null) {
+                AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
+                aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
+            }
         }
-
         return questions;
     }
 }
