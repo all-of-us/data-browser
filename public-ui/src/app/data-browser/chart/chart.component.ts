@@ -90,51 +90,23 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         followPointer: true,
         outside: true,
         formatter: function(tooltip) {
-          if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('%') === -1) {
-            if (this.point.toolTipHelpText.length >= 100) {
-              return '<div style="width: 500px; white-space: normal;">' +
-                this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>' +
-                '</div>';
-            } else {
-              return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
+          if (this.point.y <= 20) {
+            if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
+              this.point.toolTipHelpText =
+                this.point.toolTipHelpText.replace('Medical Concept, Count:</b> 20',
+                  'Medical Concept, Count:</b> &le; 20');
             }
-          } else if (this.point.toolTipHelpText.indexOf('%') >= 0) {
-            if (this.point.medicalConceptCount === 20) {
-              if (this.point.analysisId === 3102 || this.point.analysisId === 3101) {
-                this.point.toolTipHelpText =
-                  this.point.toolTipHelpText.replace('Medical Concept Count: <b>20</b>',
-                    'Medical Concept Count: <b>&le; 20</b>');
-              } else {
-                this.point.toolTipHelpText =
-                  this.point.toolTipHelpText.replace('Selected Answer: <b>20</b>',
-                    'Selected Answer: <b>&le; 20</b>');
-              }
-            }
-            if (this.point.totalDomainCount === 20) {
-              if (this.point.analysisId === 3102 || this.point.analysisId === 3101) {
-                this.point.toolTipHelpText =
-                  this.point.toolTipHelpText.replace('Total With EHR Count: <b>20</b>',
-                    'Total With EHR Count: <b>&le; 20</b>');
-              } else {
-                this.point.toolTipHelpText =
-                  this.point.toolTipHelpText.replace(' Took Survey: <b>20</b>',
-                    ' Took Survey: <b>&le; 20</b>');
-              }
-            }
-            if (this.point.toolTipHelpText.length >= 100) {
-              return '<div style="width: 500px; white-space: normal;">' +
-                this.point.toolTipHelpText +
-                '</div>';
-            } else {
-              return this.point.toolTipHelpText;
-            }
+          }
+          if (this.point.totalDomainCount && this.point.totalDomainCount <= 20) {
+            this.point.toolTipHelpText =
+              this.point.toolTipHelpText.replace('EHR Mention, Count:</b> 20',
+                'EHR Mention, Count:</b> &le; 20');
+          }
+          if (this.point.toolTipHelpText.length >= 100) {
+            return '<div style="width: 500px; white-space: normal;">' +
+              this.point.toolTipHelpText + '</div>';
           } else {
-            if (this.point.toolTipHelpText.length >= 100) {
-              return '<div style="width: 500px; white-space: normal;">' +
-                this.point.toolTipHelpText + '</div>';
-            } else {
-              return this.point.toolTipHelpText;
-            }
+            return this.point.toolTipHelpText;
           }
         },
         useHTML: true,
@@ -504,6 +476,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let totalToolTipHelpText = null;
       let bsResult = null;
       let color = null;
+      let percentage = null;
       if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         legendText = seriesName + ', Medical Concept';
@@ -512,29 +485,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
-        if (a.countValue <= 20) {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> Participant Count: ';
-        } else {
-          toolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '<br/> Participant Count: ' + '<b>' + a.countValue + '</b>';
-        }
         bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
         filter(x => x.stratum4 === a.stratum2)[0];
+        percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
+        toolTipHelpText = '<b>' + analysisStratumName + ' Sex Assigned at Birth with Medical Concept, Count:</b> '
+          + a.countValue + '<br/>' +
+          '<b>% of ' + analysisStratumName + ' Sex Assigned at Birth with Medical Concept:</b> ' +
+          percentage + '%';
         totalToolTipHelpText = null;
-        if (bsResult.countValue > 20) {
-          totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName +
-            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
-            '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
-            '<br/> % with Medical Concept in EHR: <b>' +
-            ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
-        } else {
-          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-          totalToolTipHelpText = 'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
-            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
-            '<br/> Total With EHR Count: ' + '<b>' + bsResult.countValue + '</b>' +
-            '<br/> % with Medical Concept in EHR: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
-        }
+        totalToolTipHelpText = '<b>% of ' + analysisStratumName +
+          ' Sex Assigned at Birth with any EHR Mention, Count:</b> ' +
+          bsResult.countValue;
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -543,6 +504,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
         legendText = 'Sex Assigned At Birth' + ', Selected Answered Count';
         totalLegendText = 'Sex Assigned At Birth' + ', Took Survey Count';
+        bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
+        filter(x => x.stratum2 === a.stratum5)[0];
+        percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
         if (a.countValue > 20) {
           toolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) + '</b> <br/> ' +
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
@@ -552,8 +516,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             'Sex Assigned at Birth: ' + '<b>' + analysisStratumName + '</b>' +
             '<br/> Participant Count: ';
         }
-        bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
-        filter(x => x.stratum2 === a.stratum5)[0];
         if (bsResult.countValue > 20) {
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
             '</b>' + '<br/>' + analysisStratumName +
@@ -561,7 +523,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             ', Took Survey: ' + '<b>' + bsResult.countValue + '</b>' +
             '<br/> % Answered: <b>' + ((a.countValue / bsResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
             '</b>' + '<br/>' + analysisStratumName +
             ', Selected Answer: ' + '<b>' + a.countValue + '</b>' + '<br/>' + analysisStratumName +
@@ -572,7 +533,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: a.analysisStratumName
         , y: a.countValue, color: color, sliced: true,
-        toolTipHelpText: toolTipHelpText,
+        toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage, analysisId: analysisId
       });
       totalData.push({
         name: bsResult.analysisStratumName
@@ -669,6 +630,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const cats = [];
     const totalData = [];
     const color = this.dbc.COLUMN_COLOR;
+    let percentage = null;
     let ageHelpText = null;
     for (const a of results) {
       let toolTipHelpText = null;
@@ -678,29 +640,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageHelpText = seriesName;
         legendText = seriesName + ', Medical Concept';
         totalLegendText = seriesName + ', Total With EHR';
-        if (a.countValue > 20 ) {
-          toolTipHelpText = ageHelpText + ' : ' +
-            '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ' +
-            '<b>' + a.countValue + '</b>';
-        } else {
-          toolTipHelpText = ageHelpText + ' : ' +
-            '<b>' +  a.analysisStratumName + '</b>' + '<br/> Participant Count: ';
-        }
         ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
         filter(x => x.stratum4 === a.stratum2)[0];
-        if (ageResult.countValue > 20) {
-          totalToolTipHelpText = ageHelpText + ': ' + '<b>' + a.analysisStratumName +
-            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
-            '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
-            '<br/> % with Medical Concept in EHR: <b>' +
-            ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
-        } else {
-          const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-          totalToolTipHelpText = ageHelpText + ': '  + '<b>' + a.analysisStratumName + '</b>' +
-            '</b>' + '<br/> Medical Concept Count: ' + '<b>' + a.countValue + '</b>' +
-            '<br/> Total With EHR Count: ' + '<b>' + ageResult.countValue + '</b>' +
-            '<br/> % with Medical Concept in EHR: <b>' + ((percentage >= 0) ? percentage : 100) + '</b> %';
-        }
+        percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
+        toolTipHelpText = '<b>' + a.analysisStratumName + ' Age at First Occurrence in Participant Record with Medical Concept, Count:</b> ' +
+          a.countValue + '<br/>' + '<b>' + a.analysisStratumName + ' Age at First Occurrence in Participant Record with Medical Concept:</b> ' +
+          percentage + '%';
+        totalToolTipHelpText = '<b>' + a.analysisStratumName + ' Age at First Occurrence in Participant Record with Any EHR Mention, Count:</b> ' +
+          ageResult.countValue;
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         legendText = ageHelpText + ', Selected Answered Count';
@@ -737,7 +684,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: a.analysisStratumName,
         y: a.countValue, color: color,
-        toolTipHelpText: toolTipHelpText,
+        toolTipHelpText: toolTipHelpText, analysisId: analysisId
       });
       totalData.push({
         name: ageResult.analysisStratumName
