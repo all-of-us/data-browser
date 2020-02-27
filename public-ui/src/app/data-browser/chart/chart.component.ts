@@ -533,7 +533,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: a.analysisStratumName
         , y: a.countValue, color: color, sliced: true,
-        toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage, analysisId: analysisId
+        toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage,
+        analysisId: analysisId
       });
       totalData.push({
         name: bsResult.analysisStratumName
@@ -673,7 +674,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             '<b>' + ageResult.countValue + '</b>' + '<br/> % Answered: <b>' +
             ((a.countValue / ageResult.countValue) * 100).toFixed() + '</b> %';
         } else {
-          const percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
           totalToolTipHelpText = '<b>' + this.getSurveyAnswerText(a.stratum4) +
             '</b>' + '<br/>' + a.analysisStratumName + ', Selected Answer: ' +
             '<b>' + a.countValue + '</b>' + '<br/>' + a.analysisStratumName +
