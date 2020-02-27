@@ -3,11 +3,10 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class HeaderFooterService {
-  
   menu: any;
   workBenchIsBeta: boolean;
   allOfUsUrl: any;
-  
+
   constructor() {
     this.workBenchIsBeta = environment.workBenchIsBeta;
     this.allOfUsUrl = environment.researchAllOfUsUrl;
