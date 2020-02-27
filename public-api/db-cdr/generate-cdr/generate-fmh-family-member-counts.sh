@@ -72,7 +72,8 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh,
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id=ob.value_source_concept_id
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts
 on ob.observation_source_concept_id=cast(concepts as int64)
-where exists
+where c.domain_id != 'Condition' and
+exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
@@ -110,7 +111,7 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_fm_metadata\` fmh,
 join  \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=ob.person_id
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts
 on ob.observation_source_concept_id=cast(concepts as int64)
-where exists
+where c.domain_id != 'Condition' and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
@@ -148,7 +149,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=ob.observation_id
  join UNNEST(SPLIT(concepts_to_count,',')) as concepts
  on ob.observation_source_concept_id=cast(concepts as int64)
- where exists
+ where c.domain_id != 'Condition' and exists
  (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
  where questionnaire_response_id=ob.questionnaire_response_id and
  observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
