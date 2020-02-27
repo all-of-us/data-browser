@@ -153,6 +153,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.api.getCountAnalysis(this.surveyConceptId, 'survey').subscribe(
       results => {
         this.surveyCountAnalysis = results;
+        if (this.surveyCountAnalysis) {
+          localStorage.setItem('surveyCountAnalysis', JSON.stringify(results));
+        }
       }
     ));
   }
