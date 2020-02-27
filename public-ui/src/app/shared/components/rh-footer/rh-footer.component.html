@@ -32,10 +32,13 @@
                 </li>
               </ul>
             </li>
+            <li *ngFor="let sub2 of menu.sub1" class="sub-menu">
+              <a tabindex="0" href="{{sub2.url}}">{{sub2.title}}</a>
+            </li>
+            <li *ngFor="let sub2 of menu.sub2" class="sub-menu">
+              <a tabindex="0" href="{{sub2.url}}">{{sub2.title}}</a>
+            </li>
           </ul>
-        </li>
-        <li class="main-menu-item ">
-          <a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a>
         </li>
         <!-- <li class="icon_search main-menu-item menu-item-has-children">
           <a><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none"
@@ -52,6 +55,7 @@
           </ul>
         </li> -->
       </ul>
+      <!-- Remove workbenchisbeta flag once workbench is in beta -->
       <ul *ngIf="workBenchIsBeta" class="footer-menu">
         <li class="foot-apply">
           <a href="https://www.researchallofus.org/apply/">APPLY</a>

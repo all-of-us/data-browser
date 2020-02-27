@@ -115,6 +115,11 @@ footer {
     color: #262262;
 }
 
+.sub-menu {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
 @media only screen and (max-width:1168px) {
     .footer-layout {
         flex-direction: column;
