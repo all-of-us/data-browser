@@ -55,7 +55,8 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
         toolTipHelpText: this.toolTip(concept),
         name: concept.conceptName + ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ',
         y: concept.countValue,
-        concept: concept
+        concept: concept,
+        analysisId: 'topConcepts'
       });
       this.categoryArr.push(concept.conceptName);
     }
@@ -63,17 +64,9 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
 
   public toolTip(concept: Concept) {
     let toolTipText;
-    if (concept.countValue > 20) {
-      let tempConceptNameText = '';
-      tempConceptNameText = concept.conceptName;
-      toolTipText = tempConceptNameText +
-        ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-        '<br/>' + '<b> Participant Count: ' + '</b>' + concept.countValue;
-    } else {
-      toolTipText = concept.conceptName +
-        ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-        '<br/>' + '<b> Participant Count: </b>';
-    }
+    toolTipText = concept.conceptName +
+      ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
+      '<br/>' + 'Participant Count: ' + '<b>' + concept.countValue + '</b>';
     return toolTipText;
   }
 }
