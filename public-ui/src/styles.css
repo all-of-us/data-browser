@@ -557,6 +557,20 @@ a a:link a:visited {
   overflow:visible !important;
 }
 
+.chart-tooltip {
+  display: block;
+  width: 500px;
+  word-wrap: break-word;
+  white-space: normal;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  padding: 5px;
+  font-family: GothamBook, Arial, sans-serif;
+  border: 1px solid #262262;
+  z-index: 3;
+}
+
 .highcharts-container svg {
   overflow: visible !important;
 }

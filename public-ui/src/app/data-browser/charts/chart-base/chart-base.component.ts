@@ -46,12 +46,7 @@ export class ChartBaseComponent {
                   'Participant Count: <b>&le; 20 </b>');
             }
           }
-          if (this.point.toolTipHelpText.length >= 100) {
-            return '<div style="height: auto; width: 500px; max-width: 500px; overflow: auto; white-space: normal;">' +
-              this.point.toolTipHelpText + '</div>';
-          } else {
-            return this.point.toolTipHelpText;
-          }
+          return '<div class="chart-tooltip">' + this.point.toolTipHelpText + '</div>'
         },
         positioner: function(width, height, point) {
           const columnWidth = this.chart.series[0].options.pointWidth;
@@ -61,13 +56,12 @@ export class ChartBaseComponent {
           };
         },
         useHTML: true,
-        backgroundColor: '#FFFFFF',
-        borderColor: '#262262',
-        shadow: '0 4px 6px 0 rgba(0, 0, 0, 0.15)',
         enabled: true,
+        borderColor: '#262262',
+        borderRadius: '1px',
+        backgroundColor: '#FFFFFF',
+        className: 'chart-tooltip',
         style: {
-          fontSize: '14px',
-          fontFamily: 'GothamBook, Arial, sans-serif',
           color: '#302C71',
         }
       },
