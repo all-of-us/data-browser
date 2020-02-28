@@ -522,11 +522,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
         filter(x => x.stratum2 === a.stratum5)[0];
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-        toolTipHelpText = analysisStratumName + ' Sex Assigned at Birth with Survey Answer, Count: ' +
+        toolTipHelpText = analysisStratumName +
+          ' Sex Assigned at Birth with Survey Answer, Count: ' +
           '<b>' + a.countValue + '</b>' + '<br/>' +
-            '% of ' + analysisStratumName +  ' Sex Assigned at Birth With Survey Answer: ' +
+            '% of ' + analysisStratumName +
+          ' Sex Assigned at Birth With Survey Answer: ' +
           '<b>' + percentage + '% </b>';
-        totalToolTipHelpText = analysisStratumName + ' Sex Assigned at Birth Who Took Survey, Count: ' +
+        totalToolTipHelpText = analysisStratumName +
+          ' Sex Assigned at Birth Who Took Survey, Count: ' +
           '<b>' + bsResult.countValue + '</b>';
       }
       data.push({

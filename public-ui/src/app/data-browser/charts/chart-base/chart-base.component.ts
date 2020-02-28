@@ -54,7 +54,7 @@ export class ChartBaseComponent {
           }
         },
         positioner: function(width, height, point) {
-          var columnWidth = this.chart.series[0].options.pointWidth;
+          const columnWidth = this.chart.series[0].options.pointWidth;
           return {
             x: point.plotX + this.chart.plotLeft,
             y: point.plotY - columnWidth / 2 + this.chart.plotTop - height
