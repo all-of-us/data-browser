@@ -366,10 +366,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .conceptId(ca.getConceptId())
                             .countAnalysis(ca.getCountAnalysis())
                             .genderAnalysis(ca.getGenderAnalysis())
-                            .genderIdentityAnalysis(ca.getGenderIdentityAnalysis())
                             .ageAnalysis(ca.getAgeAnalysis())
-                            .raceAnalysis(ca.getRaceAnalysis())
-                            .ethnicityAnalysis(ca.getEthnicityAnalysis())
                             .measurementValueGenderAnalysis(ca.getMeasurementValueGenderAnalysis())
                             .measurementValueAgeAnalysis(ca.getMeasurementValueAgeAnalysis())
                             .measurementDistributionAnalysis(ca.getMeasurementDistributionAnalysis())
@@ -1074,16 +1071,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
         List<Long> analysisIds  = new ArrayList<>();
         analysisIds.add(GENDER_ANALYSIS_ID);
-        analysisIds.add(GENDER_IDENTITY_ANALYSIS_ID);
-        analysisIds.add(RACE_ETHNICITY_ANALYSIS_ID);
         analysisIds.add(AGE_ANALYSIS_ID);
-        analysisIds.add(RACE_ANALYSIS_ID);
         analysisIds.add(COUNT_ANALYSIS_ID);
-        analysisIds.add(ETHNICITY_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_GENDER_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_DIST_ANALYSIS_ID);
         analysisIds.add(MEASUREMENT_GENDER_UNIT_ANALYSIS_ID);
@@ -1149,18 +1143,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == GENDER_ANALYSIS_ID){
                     addGenderStratum(aa,2, conceptId, null);
                     conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == GENDER_IDENTITY_ANALYSIS_ID){
-                    addGenderIdentityStratum(aa);
-                    conceptAnalysis.setGenderIdentityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == AGE_ANALYSIS_ID){
                     addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == RACE_ANALYSIS_ID){
-                    addRaceStratum(aa);
-                    conceptAnalysis.setRaceAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-                }else if(analysisId == ETHNICITY_ANALYSIS_ID){
-                    addEthnicityStratum(aa);
-                    conceptAnalysis.setEthnicityAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
                 }else if(analysisId == MEASUREMENT_GENDER_ANALYSIS_ID){
                     Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
                     List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
@@ -1189,31 +1174,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                                 result.setMeasurementValueType("text");
                                                 textValues.add(result);
                                             }
-                                            /*
-                                            String result_value = result.getStratum4();
-                                            String numericResult = null;
-                                            if (result_value != null && result_value.contains(" - ")) {
-                                                String[] result_value_split = result_value.split(" - ");
-                                                if(result_value_split.length > 0) {
-                                                    numericResult = result_value_split[1];
-                                                }
-                                            } else if (result_value != null && result_value.contains(">= ")) {
-                                                numericResult = result_value.replaceAll(">= ","");
-                                            } else if (result_value != null && result_value.contains("< ")) {
-                                                numericResult = result_value.replaceAll("< ","");
-                                            } else {
-                                                if (result_value != null &&  !result_value.matches(".*\\d.*")) {
-                                                    textValues.add(result);
-                                                }
-                                            }
-                                            if (numericResult != null) {
-                                                if (NumberUtils.isNumber(numericResult)) {
-                                                    numericValues.add(result);
-                                                } else {
-                                                    textValues.add(result);
-                                                }
-                                            }
-                                            */
                                         }
 
                                         if (textValues.size() > 0) {
@@ -1222,16 +1182,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                         if (numericValues.size() > 0) {
                                             processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
                                         }
-/*
-                                        if (textValues.size() > 0 && numericValues.size() > 0) {
-                                            List<AchillesResult> filteredNumericResults = unitGenderAnalysis.getResults().stream().filter(ele -> textValues.stream()
-                                                    .anyMatch(element -> element.getId()==ele.getId())).collect(Collectors.toList());
-                                            unitGenderAnalysis.setResults(filteredNumericResults);
-                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "text");
-                                        } else if (numericValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
-                                        }
-                                        */
                                         unitGenderAnalysis.setResults(results.get(unit));
                                         unitGenderAnalysis.setUnitName(unit);
 

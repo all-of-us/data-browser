@@ -28,49 +28,48 @@ export class ChartBaseComponent {
   getChartOptions() {
     return {
       chart: this.chartObj,
+      style: {
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontSize: '14px',
+      },
       tooltip: {
         followPointer: true,
         formatter: function () {
-          if (this.point.y <= 20 && this.point.toolTipHelpText.indexOf('% of') === -1) {
-            if (this.point.toolTipHelpText.length >= 100) {
-              return '<div style="width: 500px; white-space: normal;">' +
-                this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>' +
-                '</div>';
-            } else {
-              return this.point.toolTipHelpText + '<b> &le; ' + this.point.y + '</b>';
-            }
-          } else if (this.point.toolTipHelpText.indexOf('% of') >= 0) {
-            if (this.point.actualCount <= 20) {
-              if (this.point.toolTipHelpText.length >= 100) {
-                return '<div style="width: 500px; white-space: normal;">' +
-                  this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>' +
-                  '</div>';
-              } else {
-                return this.point.toolTipHelpText + '<b> &le; ' + this.point.actualCount + '</b>';
-              }
-            } else {
-              if (this.point.toolTipHelpText.length >= 100) {
-                return '<div style="width: 500px; white-space: normal;">' +
-                  this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>' +
-                  '</div>';
-              } else {
-                return this.point.toolTipHelpText + '<b>' + this.point.actualCount + '</b>';
-              }
-            }
-          } else {
-            if (this.point.toolTipHelpText.length >= 100) {
-              return '<div style="width: 500px; white-space: normal;">' +
-                this.point.toolTipHelpText + '</div>';
-            } else {
-              return this.point.toolTipHelpText;
+          if (this.point.y <= 20) {
+            if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
+              this.point.toolTipHelpText =
+                this.point.toolTipHelpText.replace('Medical Concept, Count:</b> 20',
+                  'Medical Concept, Count:</b> &le; 20');
+            } else if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
+              this.point.toolTipHelpText =
+                this.point.toolTipHelpText.replace('Participant Count: <b>20',
+                  'Participant Count: <b>&le; 20 </b>');
             }
           }
+          if (this.point.toolTipHelpText.length >= 100) {
+            return '<div style="height: auto; width: 500px; max-width: 500px; overflow: auto; white-space: normal;">' +
+              this.point.toolTipHelpText + '</div>';
+          } else {
+            return this.point.toolTipHelpText;
+          }
+        },
+        positioner: function(width, height, point) {
+          const columnWidth = this.chart.series[0].options.pointWidth;
+          return {
+            x: point.plotX + this.chart.plotLeft,
+            y: point.plotY - columnWidth / 2 + this.chart.plotTop - height
+          };
         },
         useHTML: true,
-        backgroundColor: '#f0f2f3',
-        borderWidth: 0,
-        shadow: false,
+        backgroundColor: '#FFFFFF',
+        borderColor: '#262262',
+        shadow: '0 4px 6px 0 rgba(0, 0, 0, 0.15)',
         enabled: true,
+        style: {
+          fontSize: '14px',
+          fontFamily: 'GothamBook, Arial, sans-serif',
+          color: '#302C71',
+        }
       },
       colors: [this.chartService.barColor],
       title: this.chartService.mainTitle,
