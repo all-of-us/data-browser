@@ -225,7 +225,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 with a as
 (select person_id,fmh.observation_source_concept_id as question_concept, string_agg(distinct cast(ob.observation_source_concept_id as string), ',') as questions_skipped from
-\`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` ob
+\`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join UNNEST(SPLIT(concepts_to_count,',')) as concepts on ob.observation_source_concept_id=cast(concepts as int64)
 where value_source_concept_id=903096
 and exists
