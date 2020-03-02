@@ -96,8 +96,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
               this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('Medical Concept, Count:</b> 20',
-                  'Medical Concept, Count:</b> &le; 20');
+                this.point.toolTipHelpText.replace('Medical Concept, Count: <b>20',
+                  'Medical Concept, Count: <b> &le; 20');
             } else if (this.point.analysisId === 3111 || this.point.analysisId === 3112) {
               this.point.toolTipHelpText =
                 this.point.toolTipHelpText.replace('Survey Answer, Count: <b>20',
@@ -114,23 +114,21 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           }
           if (this.point.totalDomainCount && this.point.totalDomainCount <= 20) {
             this.point.toolTipHelpText =
-              this.point.toolTipHelpText.replace('EHR Mention, Count:</b> 20',
-                'EHR Mention, Count:</b> &le; 20');
+              this.point.toolTipHelpText.replace('EHR Mention, Count: <b>20',
+                'EHR Mention, Count: <b> &le; 20');
             this.point.toolTipHelpText =
               this.point.toolTipHelpText.replace('Took Survey, Count: <b>20',
                 'Took Survey, Count: <b>&le; 20');
           }
-          return '<div style="height: auto; width: 500px; max-width: 500px; overflow: auto; white-space: normal;">' +
-            this.point.toolTipHelpText + '</div>';
+          return '<div class="chart-tooltip">' + this.point.toolTipHelpText + '</div>';
         },
         useHTML: true,
-        backgroundColor: '#FFFFFF',
-        borderColor: '#262262',
-        shadow: '0 4px 6px 0 rgba(0, 0, 0, 0.15)',
         enabled: true,
+        borderColor: '#262262',
+        borderRadius: '1px',
+        backgroundColor: '#FFFFFF',
+        className: 'chart-tooltip',
         style: {
-          fontSize: '14px',
-          fontFamily: 'GothamBook, Arial, sans-serif',
           color: '#302C71',
         }
       },
@@ -503,14 +501,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
         filter(x => x.stratum4 === a.stratum2)[0];
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-        toolTipHelpText = '<b>' + analysisStratumName + ' Sex Assigned at Birth with Medical Concept, Count:</b> '
-          + a.countValue + '<br/>' +
-          '<b>% of ' + analysisStratumName + ' Sex Assigned at Birth with Medical Concept:</b> ' +
-          percentage + '%';
+        toolTipHelpText = analysisStratumName + ' Sex Assigned at Birth with Medical Concept, Count: <b>'
+          + a.countValue + '</b><br/>' +
+          '% of ' + analysisStratumName + ' Sex Assigned at Birth with Medical Concept: <b>' +
+          percentage + '%</b>';
         totalToolTipHelpText = null;
-        totalToolTipHelpText = '<b>' + analysisStratumName +
-          ' Sex Assigned at Birth with any EHR Mention, Count:</b> ' +
-          bsResult.countValue;
+        totalToolTipHelpText = analysisStratumName +
+          ' Sex Assigned at Birth with any EHR Mention, Count: <b>' +
+          bsResult.countValue + '</b>';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -649,11 +647,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
         filter(x => x.stratum4 === a.stratum2)[0];
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-        toolTipHelpText = '<b>' + a.analysisStratumName + ' Age at First Occurrence with Medical Concept, Count:</b> ' +
-          a.countValue + '<br/>' + '<b>' + a.analysisStratumName + ' Age at First Occurrence with Medical Concept:</b> ' +
-          percentage + '%';
-        totalToolTipHelpText = '<b>' + a.analysisStratumName + ' Age at First Occurrence with Any EHR Mention, Count:</b> ' +
-          ageResult.countValue;
+        toolTipHelpText =  a.analysisStratumName + ' Age at First Occurrence with Medical Concept, Count: <b>' +
+          a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName + ' Age at First Occurrence with Medical Concept: <b>' +
+          percentage + '%</b>';
+        totalToolTipHelpText = a.analysisStratumName + ' Age at First Occurrence with Any EHR Mention, Count: <b>' +
+          ageResult.countValue + '</b>';
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         legendText = ageHelpText + ', Selected Answered Count';
