@@ -36,12 +36,20 @@
         </div>
         <div class="stat-container">
           <h2 class="secondary-display">
-            <span>{{ surveyResult.items.length }} </span>
+            <span>{{ survey.questionCount }} </span>
           </h2>
           <p class="info-text">
-            Questions displayed
+            Questions Available
           </p>
         </div>
+      <div class="stat-container" *ngIf="searchText.value">
+          <h2 class="secondary-display">
+              <span>{{ surveyResult.items.length }} </span>
+          </h2>
+          <p class="info-text">
+              Questions Matched
+          </p>
+      </div>
         <div class="pdf-link" (click)="downloadPdf()">
           <a href="{{surveyPdfUrl}}" download>
             <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF

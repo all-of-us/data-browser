@@ -74,7 +74,7 @@ strong {
     line-height: 0.97em;
 }
 
-.stat-container:first-of-type {
+.stat-container {
     padding-right: 45px;
 }
 
