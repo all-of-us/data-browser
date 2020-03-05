@@ -481,7 +481,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     let legendText = null;
     let totalLegendText = null;
     const yAxisLabel = null;
-    console.log(results);
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
