@@ -481,6 +481,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     let legendText = null;
     let totalLegendText = null;
     const yAxisLabel = null;
+    console.log(results);
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -896,11 +897,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const a of this.analysis.results) {
       let toolTipText = '';
       toolTipText =  'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
-        '<br/>' + 'Participant Count: ' + '<b>' + a.countValue + '</b>';
+        '<br/>' + 'Participant Count: ' +
+        '<b>' + a.countValue + '</b>';
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,
         toolTipHelpText: toolTipText,
+        analysisId: this.analysis.analysisId
       });
       cats.push(a.analysisStratumName);
     }
