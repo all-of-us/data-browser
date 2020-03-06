@@ -69,8 +69,36 @@ export class FmhViewComponent implements OnInit {
       },
       complete: () => { this.fmQuestionFetchComplete = true; }
     }));
+    this.subscriptions.push(this.searchText.valueChanges
+      .debounceTime(1500)
+      .distinctUntilChanged()
+      .switchMap((query) => this.api.getFMHGroupedQuestions('43528698',
+        query, conditionQuestionConceptIds))
+      .subscribe({
+        next: results => {
+          this.processQuestions(results, 'condition');
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+          this.loading = false;
+        }
+      }));
+    this.subscriptions.push(this.searchText.valueChanges
+      .debounceTime(1500)
+      .distinctUntilChanged()
+      .switchMap((query) => this.api.getFMHGroupedQuestions('43528698',
+        this.searchText.value, fmQuestionConceptIds))
+      .subscribe({
+        next: results => {
+          this.processQuestions(results, 'family_member');
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+          this.loading = false;
+        }
+      }));
   }
-
+  
   public processQuestions(results: any, branching: string) {
     // Add Did not answer to each question
     for (const q of results.items) {

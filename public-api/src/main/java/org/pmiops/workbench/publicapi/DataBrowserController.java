@@ -992,7 +992,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
-        List<QuestionConcept> subQuestions = subQuestions = questionConceptDao.findFMHConditionSubQuestions("43528698", questionConceptId);
+        List<QuestionConcept> subQuestions = questionConceptDao.findFMHConditionSubQuestions("43528698", questionConceptId);
 
         List<String> questionConceptIds = new ArrayList<>();
 

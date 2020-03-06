@@ -39,14 +39,18 @@ public interface QuestionConceptDao extends CrudRepository<QuestionConcept, Long
             "concept c where concept_id in (?1)")
     List<QuestionConcept> getFMHQuestions(List<String> questionConceptIds);
 
-    @Query(nativeQuery=true, value="select distinct c.* from concept c \n" +
-            "join achilles_results ar on c.concept_id=ar.stratum_2 and ar.analysis_id=3110 and (match(c.concept_name) against (?2 in boolean mode) > 0 or match(ar.stratum_4) against(?2 in boolean mode) > 0) \n" +
-            "where concept_id in (?1)\n" +
+    @Query(nativeQuery=true, value="select distinct c.* from concept c where concept_id in (?1) and match(concept_name) against(?2 in boolean mode) > 0\n" +
             "union distinct\n" +
-            "select distinct c2.* from achilles_results ar1 join achilles_results ar2 on ar1.stratum_2 = ar2.stratum_3 and ar1.stratum_1=ar2.stratum_1 and ar1.stratum_1='43528698'\n" +
-            "join concept c1 on c1.concept_id=ar1.stratum_3 join concept c2 on c2.concept_id=ar2.stratum_2 \n" +
-            "and ar2.stratum_2 in (?1)\n" +
-            "where (match(c1.concept_name) against(?2 in boolean mode) > 0 or match(c2.concept_name) against(?2 in boolean mode) > 0);")
+            "select * from concept c where concept_id in\n" +
+            "(select distinct stratum_2 from achilles_results ar \n" +
+            "where ar.stratum_1='43528698' and ar.stratum_2 in (?1) and ar.analysis_id=3110\n" +
+            "and match(stratum_4) against(?2 in boolean mode) > 0)\n" +
+            "union distinct\n" +
+            "select distinct c.* from concept c join \n" +
+            "achilles_results ar1 on c.concept_id=ar1.stratum_2\n" +
+            "join achilles_results ar2 on ar1.stratum_3=ar2.stratum_2\n" +
+            "where ar1.stratum_2 in (?1) and ar1.analysis_id=3110 \n" +
+            "and match(ar2.stratum_4) against(?2 in boolean mode) > 0;")
     List<QuestionConcept> getMatchingFMHQuestions(List<Long> questionConceptIds, String search_word);
 
 
