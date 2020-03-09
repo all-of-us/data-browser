@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ISubscription} from 'rxjs/Subscription';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
@@ -25,6 +25,7 @@ export class FmhViewComponent implements OnInit {
   fmQuestions = [];
   @Input() participantCount: number;
   @Input() surveyName: number;
+  @Output() onQuestionFetchChange: EventEmitter<any> = new EventEmitter<any>();
   questionOrder = {43528515: 1, 1384639: 2, 43528634: 3, 43528761: 4,
                    43529158: 5, 43529767: 6, 43529272: 7, 43529217: 8,
                    702786: 9, 43529966: 10, 43529638: 11};
@@ -133,6 +134,7 @@ export class FmhViewComponent implements OnInit {
         return 0;
       });
     }
+    this.onQuestionFetchChange.emit((this.conditionQuestions.length+this.fmQuestions.length));
   }
 
   public toggleAnswer(q: any) {

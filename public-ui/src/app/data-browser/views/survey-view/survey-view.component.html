@@ -22,7 +22,7 @@
       </div>
     </div>
     <app-spinner [loading]="loading"></app-spinner>
-    <section *ngIf="questions.length > 0 && !loading" class="results">
+    <section *ngIf="!loading" class="results">
       <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
         < Back to main search </a> <div class="db-card">
       <div class="survey-head">
@@ -44,7 +44,7 @@
         </div>
       <div class="stat-container" *ngIf="searchText.value">
           <h2 class="secondary-display">
-              <span>{{ surveyResult.items.length }} </span>
+              <span>{{ getSurveyResultCount() }}</span>
           </h2>
           <p class="info-text">
               Questions Matched
@@ -305,12 +305,12 @@
             </div>
         </div>
           <app-fmh-view [searchText]="searchText" *ngIf="surveyConceptId === 43528698 && (envDisplay === 'Prod' || envDisplay.indexOf('Local') >= 0)" [participantCount]="survey.participantCount" [surveyName]="survey.name"
-          [surveyCountAnalysis]="surveyCountAnalysis"></app-fmh-view>
+          [surveyCountAnalysis]="surveyCountAnalysis" (onQuestionFetchChange)="changeMatchingQuestionCount($event)"></app-fmh-view>
       </div>
     </div>
     </section>
   </div>
-  <div class="no-results" *ngIf="questions.length === 0 && !loading && searchText.value">
+  <div class="no-results" *ngIf="hasResults() && !loading && searchText.value">
     <p class="results-heading no-results">
       <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
           {{searchText.value}}</strong>.
