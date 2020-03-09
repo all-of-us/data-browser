@@ -29,15 +29,16 @@
               <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                   <div class="info-text survey-tbl-d display-body">
                       Concept Code
-                      <clr-tooltip (mouseenter)="hoverOnTooltip(q, 'Concept Code')">
-                          <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                          <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                              <div class="tooltip-label">{{tooltipText.conceptCodeHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i> {{tooltipText.conceptCodeHelpText2}} <i>{{tooltipText.allOfUsHelpText}}</i> {{tooltipText.conceptCodeHelpText3}}</div>
-                          </clr-tooltip-content>
-                      </clr-tooltip>
+                      <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1" [toolTipText2]="tooltipText.conceptCodeHelpText2"
+                                   [toolTipText3]="tooltipText.allOfUsHelpText" [toolTipText4]="tooltipText.conceptCodeHelpText3"
+                                   [label]="'FMH Concept Code Hover'" [searchTerm]="searchText.value" [action]="'Hover on FMH Concept Code Tooltip'">
+                      </app-tooltip>
                   </div>
                   <div class=" info-text survey-tbl-d display-body">
                       Participant Count
+                      <app-tooltip [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                                   [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
+
                   </div>
                   <div class=" info-text survey-tbl-d display-body">
                       % Answered
@@ -53,12 +54,9 @@
                       <div>
                           <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                           </app-highlight-search>
-                          <clr-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'" (mouseenter)="hoverOnTooltip(q, 'Other category Help Text')">
-                              <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                              <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
-                                  <div class="tooltip-label">{{tooltipText.q2RolledCategoriesHelpText}}</div>
-                              </clr-tooltip-content>
-                          </clr-tooltip>
+                          <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
+                                  [toolTipText1]="tooltipText.q2RolledCategoriesHelpText" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
+                          </app-tooltip>
                       </div>
                   </div>
                   <div class="survey-tbl-r-group">
@@ -177,15 +175,16 @@
                 <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                     <div class="info-text survey-tbl-d display-body">
                         Concept Code
-                        <clr-tooltip (mouseenter)="hoverOnTooltip(q, 'Concept Code')">
-                            <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                            <clr-tooltip-content clrPosition=bottom-left clrSize="lg" *clrIfOpen>
-                                <div class="tooltip-label">{{tooltipText.conceptCodeHelpText1}} <i>{{tooltipText.allOfUsHelpText}}</i> {{tooltipText.conceptCodeHelpText2}} <i>{{tooltipText.allOfUsHelpText}}</i> {{tooltipText.conceptCodeHelpText3}}</div>
-                            </clr-tooltip-content>
-                        </clr-tooltip>
+                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1" [toolTipText2]="tooltipText.allOfUsHelpText"
+                                     [toolTipText3]="tooltipText.conceptCodeHelpText2" [toolTipText4]="tooltipText.allOfUsHelpText"
+                                     [toolTipText5]="tooltipText.conceptCodeHelpText3"
+                                     [label]="'FMH Concept Code'" [searchTerm]="searchText.value" [action]="'FMH Concept Code'">
+                        </app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         Participant Count
+                        <app-tooltip [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                                     [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         % Answered
@@ -201,12 +200,9 @@
                         <div>
                             <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                             </app-highlight-search>
-                            <clr-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'" (mouseenter)="hoverOnTooltip(q, 'Other category Help Text')">
-                                <clr-icon clrTooltipTrigger shape="info-standard" class="is-solid info-icon"></clr-icon>
-                                <clr-tooltip-content clrPosition=bottom-right clrSize="lg" *clrIfOpen>
-                                    <div class="tooltip-label">{{tooltipText.q2RolledCategoriesHelpText}}</div>
-                                </clr-tooltip-content>
-                            </clr-tooltip>
+                            <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
+                                    [toolTipText1]="tooltipText.q2RolledCategoriesHelpText" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
+                            </app-tooltip>
                         </div>
                     </div>
                     <div class="survey-tbl-r-group">

@@ -368,4 +368,8 @@ export class FmhViewComponent implements OnInit {
     }
     return true;
   }
+
+  public getLabel(q: any, helpText: string) {
+    return 'Family Medical History' + ' - Q' + q.actualQuestionNumber + ' - ' + helpText;
+  }
 }
