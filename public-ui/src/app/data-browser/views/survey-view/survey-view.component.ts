@@ -625,7 +625,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public changeMatchingQuestionCount(questionCount: number) {
     this.fmhResultCount = questionCount;
   }
-  
+
   public hasResults() {
     if (this.surveyConceptId === 43528698) {
       return (this.questions.length === 0 && this.fmhResultCount === 0);

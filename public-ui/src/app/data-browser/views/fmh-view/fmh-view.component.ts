@@ -99,7 +99,7 @@ export class FmhViewComponent implements OnInit {
         }
       }));
   }
-  
+
   public processQuestions(results: any, branching: string) {
     // Add Did not answer to each question
     for (const q of results.items) {
@@ -134,7 +134,7 @@ export class FmhViewComponent implements OnInit {
         return 0;
       });
     }
-    this.onQuestionFetchChange.emit((this.conditionQuestions.length+this.fmQuestions.length));
+    this.onQuestionFetchChange.emit((this.conditionQuestions.length + this.fmQuestions.length));
   }
 
   public toggleAnswer(q: any) {
