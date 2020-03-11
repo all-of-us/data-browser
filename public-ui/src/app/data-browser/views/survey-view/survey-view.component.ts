@@ -57,6 +57,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
+  fmhResultCount: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -609,5 +610,26 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public showGraph(a) {
     a.subQuestionFetchComplete = true;
+  }
+
+  public getSurveyResultCount() {
+    if (this.surveyConceptId === 43528698) {
+      if (!Number.isNaN(this.fmhResultCount)) {
+        return (this.surveyResult.items.length + this.fmhResultCount);
+      }
+      return this.surveyResult.items.length;
+    }
+    return this.surveyResult.items.length;
+  }
+
+  public changeMatchingQuestionCount(questionCount: number) {
+    this.fmhResultCount = questionCount;
+  }
+
+  public hasResults() {
+    if (this.surveyConceptId === 43528698) {
+      return (this.questions.length === 0 && this.fmhResultCount === 0);
+    }
+    return this.questions.length === 0;
   }
 }

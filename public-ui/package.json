@@ -57,7 +57,7 @@
   "devDependencies": {
     "@angular-devkit/core": "0.4.7",
     "@angular-devkit/schematics": "0.4.7",
-    "@angular/cli": "^1.6.6",
+    "@angular/cli": "^1.7.4",
     "@angular/compiler-cli": "^5.2.2",
     "@angular/language-service": "^5.2.2",
     "@types/google.analytics": "0.0.36",
