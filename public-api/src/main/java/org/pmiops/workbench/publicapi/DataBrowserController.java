@@ -1033,7 +1033,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
             ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
             return ResponseEntity.ok(ehrCountAnalysis);
-        } else {
+        } else if (domainDesc.equals("survey")){
             List<Long> analysisIds = new ArrayList<>();
             analysisIds.add(SURVEY_GENDER_COUNT_ANALYSIS_ID);
             analysisIds.add(SURVEY_AGE_COUNT_ANALYSIIS_ID);
@@ -1047,6 +1047,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             surveyCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
             surveyCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
             return ResponseEntity.ok(surveyCountAnalysis);
+        } else {
+            List<Long> analysisIds = new ArrayList<>();
+            analysisIds.add(3300L);
+            analysisIds.add(3301L);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+            CountAnalysis ehrCountAnalysis = new CountAnalysis();
+            ehrCountAnalysis.setDomainId(domainId);
+            AchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
+            AchillesAnalysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
+            addGenderStratum(genderCountAnalysis,4, domainId, null);
+            addAgeStratum(ageCountAnalysis, domainId, null,  4);
+            ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
+            ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
+            return ResponseEntity.ok(ehrCountAnalysis);
         }
     }
 

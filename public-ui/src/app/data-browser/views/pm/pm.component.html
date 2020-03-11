@@ -42,7 +42,8 @@
                          [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
                          [chartType]="selectedConcept.chartType"
                          [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
-                         [conceptId]="selectedConcept.conceptId">
+                         [conceptId]="selectedConcept.conceptId"
+                         [domainCountAnalysis]="domainCountAnalysis">
               </app-chart>
             </div>
           </ng-container>
@@ -50,7 +51,8 @@
             <div class="chart-item stacked-chart-item">
               <app-chart *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [conceptId]="selectedConcept.conceptId"
                          [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
-              [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue">
+              [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue"
+              [domainCountAnalysis]="domainCountAnalysis">
               </app-chart>
             </div>
           </ng-template>
@@ -61,7 +63,7 @@
               [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText" [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>
             </div>
             <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
-              [backgroundColor]="backgroundColor" [domainType]="domainType">
+              [backgroundColor]="backgroundColor" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis">
             </app-chart>
           </div>
 
