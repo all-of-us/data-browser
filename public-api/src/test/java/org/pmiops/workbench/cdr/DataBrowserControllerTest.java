@@ -441,7 +441,7 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testGetDomainTotals() throws Exception {
-        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals(1, 1);
+        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals("", 1, 1);
         assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
         assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2);
     }
