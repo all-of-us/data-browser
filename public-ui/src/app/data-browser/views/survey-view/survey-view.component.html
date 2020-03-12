@@ -34,7 +34,7 @@
             Participants completed this survey
           </p>
         </div>
-        <div class="stat-container">
+        <div class="stat-container" *ngIf="!searchText.value">
           <h2 class="secondary-display">
             <span>{{ survey.questionCount }} </span>
           </h2>
@@ -47,7 +47,7 @@
               <span>{{ getSurveyResultCount() }}</span>
           </h2>
           <p class="info-text">
-              Questions Matched
+              matching of <span class="highlight">{{survey.questionCount}}</span> questions available
           </p>
       </div>
         <div class="pdf-link" (click)="downloadPdf()">
