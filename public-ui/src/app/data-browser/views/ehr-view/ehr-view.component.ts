@@ -183,7 +183,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         });
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
-        .debounceTime(1500)
+        .debounceTime(1000)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomain(query))
         .subscribe({
@@ -227,7 +227,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   // get the current ehr domain by its route
   public getThisDomain() {
     this.subscriptions.push(
-      this.api.getDomainTotals(1, 1).subscribe(
+      this.api.getDomainTotals(this.searchText.value,1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
             const thisDomain = Domain[domain.domain];
@@ -263,7 +263,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (query && query != null) {
-      this.subscriptions.push(this.api.getDomainSearchResults(query, testFilter, orderFilter)
+      this.subscriptions.push(this.api.getDomainTotals(query, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -275,7 +275,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
     } else {
-      this.subscriptions.push(this.api.getDomainTotals(testFilter, orderFilter)
+      this.subscriptions.push(this.api.getDomainTotals(this.searchText.value, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(

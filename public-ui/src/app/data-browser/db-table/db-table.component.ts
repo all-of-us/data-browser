@@ -72,7 +72,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (this.searchText.value && this.searchText.value != null) {
-      this.initSubscription = this.api.getDomainSearchResults
+      this.initSubscription = this.api.getDomainTotals
         (this.searchText.value, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
@@ -84,7 +84,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
           }
         });
     } else {
-      this.initSubscription = this.api.getDomainTotals(testFilter, orderFilter)
+      this.initSubscription = this.api.getDomainTotals(this.searchText.value,testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
@@ -376,7 +376,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   }
 
   public getMeasurementDomainTotals(testFilter: number, orderFilter: number) {
-    this.api.getDomainTotals(testFilter, orderFilter).subscribe(
+    this.api.getDomainTotals(this.searchText.value, testFilter, orderFilter).subscribe(
       results => {
         const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
         this.totalResults = domainResults[0].standardConceptCount;
@@ -385,7 +385,7 @@ export class DbTableComponent implements OnChanges, OnDestroy {
   }
 
   public getMeasurementSearchResultTotals(testFilter: number, orderFilter: number) {
-    this.api.getDomainSearchResults(this.searchRequest.query, testFilter, orderFilter)
+    this.api.getDomainTotals(this.searchRequest.query, testFilter, orderFilter)
       .subscribe(
         results => {
           const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);

@@ -138,7 +138,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
     // Get domain totals only once so if they erase search we can load them
     this.subscriptions.push(
-      this.api.getDomainTotals(1, 1).subscribe({
+      this.api.getDomainTotals(this.searchText.value,1, 1).subscribe({
         next: data => {
             this.totalResults = data;
             // Only set results to the totals if we don't have a searchText
@@ -159,7 +159,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     // Search when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges
-        .debounceTime(1500)
+        .debounceTime(1000)
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomains(query))
         .subscribe({
@@ -229,7 +229,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
       return resultsObservable;
     }
-    return this.api.getDomainSearchResults(query, 1, 1);
+    return this.api.getDomainTotals(query, 1, 1);
   }
 
   public viewSurvey(r, search: string) {

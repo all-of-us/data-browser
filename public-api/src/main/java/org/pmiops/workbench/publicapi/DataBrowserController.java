@@ -1,5 +1,8 @@
 package org.pmiops.workbench.publicapi;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Logger;
 import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -575,61 +578,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainSearchResults(String query, Integer testFilter, Integer orderFilter){
-        try {
-            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-        String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
-        String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
-        Long conceptId = 0L;
-        try {
-            conceptId = Long.parseLong(query);
-        } catch (NumberFormatException e) {
-            // expected
-        }
-        // TODO: consider parallelizing these lookups
-        List<Long> toMatchConceptIds = new ArrayList<>();
-        toMatchConceptIds.add(conceptId);
-        List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
-        if (drugMatchedConceptIds.size() > 0) {
-            toMatchConceptIds.addAll(drugMatchedConceptIds);
-        }
-
-        int measurementQuery = 0;
-        if (testFilter == 1 && orderFilter == 0) {
-            measurementQuery = 1;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            measurementQuery = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            measurementQuery = -1;
-        } else if (testFilter == 1 && orderFilter == 1) {
-            measurementQuery = 2;
-        }
-
-        List<DomainInfo> domains = null;
-        if (measurementQuery == 1 || measurementQuery == 0) {
-            domains = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds, measurementQuery);
-        } else if (measurementQuery == -1){
-            domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(domainKeyword, query, toMatchConceptIds);
-        } else if (measurementQuery == 2) {
-            domains = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
-        }
-
-        List<SurveyModule> surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
-
-        DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(domains.stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
-        return ResponseEntity.ok(response);
-    }
-
-    @Override
     public ResponseEntity<ConceptListResponse> searchConcepts(SearchConceptsRequest searchConceptsRequest){
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
@@ -728,31 +676,75 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(Integer testFilter, Integer orderFilter){
+    public ResponseEntity<DomainInfosAndSurveyModulesResponse> getDomainTotals(String query, Integer testFilter, Integer orderFilter){
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        Integer getTests = null;
-        Integer getOrders = null;
 
-        if (testFilter == 1 && orderFilter == 1) {
-            getTests = 1;
-            getOrders = 0;
-        } else if (testFilter == 1 && orderFilter == 0) {
-            getTests = 1;
-            getOrders = 2;
-        } else if (testFilter == 0 && orderFilter == 1) {
-            getTests = 2;
-            getOrders = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
-            getTests = 2;
-            getOrders = 2;
+        List<DomainInfo> domainInfos =  null;
+        List<SurveyModule> surveyModules = null;
+
+        if (query != null && !query.isEmpty() && query.length() > 0) {
+            String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
+            String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
+
+            Long conceptId = 0L;
+            try {
+                conceptId = Long.parseLong(query);
+            } catch (NumberFormatException e) {
+                // expected
+            }
+            // TODO: consider parallelizing these lookups
+            List<Long> toMatchConceptIds = new ArrayList<>();
+            toMatchConceptIds.add(conceptId);
+            List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
+            if (drugMatchedConceptIds.size() > 0) {
+                toMatchConceptIds.addAll(drugMatchedConceptIds);
+            }
+
+            int measurementQuery = 0;
+            if (testFilter == 1 && orderFilter == 0) {
+                measurementQuery = 1;
+            } else if (testFilter == 0 && orderFilter == 1) {
+                measurementQuery = 0;
+            } else if (testFilter == 0 && orderFilter == 0) {
+                measurementQuery = -1;
+            } else if (testFilter == 1 && orderFilter == 1) {
+                measurementQuery = 2;
+            }
+
+            if (measurementQuery == 1 || measurementQuery == 0) {
+                domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds, measurementQuery);
+            } else if (measurementQuery == -1){
+                domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(domainKeyword, query, toMatchConceptIds);
+            } else if (measurementQuery == 2) {
+                domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
+            }
+
+            surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
+        } else {
+            Integer getTests = null;
+            Integer getOrders = null;
+
+            if (testFilter == 1 && orderFilter == 1) {
+                getTests = 1;
+                getOrders = 0;
+            } else if (testFilter == 1 && orderFilter == 0) {
+                getTests = 1;
+                getOrders = 2;
+            } else if (testFilter == 0 && orderFilter == 1) {
+                getTests = 2;
+                getOrders = 0;
+            } else if (testFilter == 0 && orderFilter == 0) {
+                getTests = 2;
+                getOrders = 2;
+            }
+
+            domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
+            surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
         }
-
-        List<DomainInfo> domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
-        List<SurveyModule> surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
 
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
