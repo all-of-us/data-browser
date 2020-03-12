@@ -295,7 +295,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   // get the current survey  by its route
   public getThisSurvey() {
     this.subscriptions.push(
-      this.api.getDomainTotals(this.searchText.value,1, 1).subscribe(
+      this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.surveyModules.forEach(survey => {
             const surveyRoute = survey.name.replace(' ', '-').toLowerCase();
