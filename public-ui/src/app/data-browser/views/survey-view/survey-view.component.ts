@@ -134,10 +134,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // );
           this.filterResults();
         }));
-    this.subscriptions.push(this.api.getDomainTotals(this.searchText.value,1,1).subscribe({
+    this.subscriptions.push(this.api.getDomainTotals(
+      this.searchText.value, 1,1).subscribe({
       next: results => {
-        if (results.surveyModules.filter(x => x.conceptId == this.surveyConceptId).length > 0) {
-          this.surveyResultCount = results.surveyModules.filter(x => x.conceptId == this.surveyConceptId)[0].questionCount;
+        if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+          this.surveyResultCount = results.surveyModules.filter(
+            x => x.conceptId === this.surveyConceptId)[0].questionCount;
         } else {
           if (!this.searchText.value) {
             this.surveyResultCount = this.survey.questionCount;
@@ -156,8 +158,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       .switchMap((query) => this.api.getDomainTotals(query, 1, 1))
       .subscribe({
         next: results => {
-          if (results.surveyModules.filter(x => x.conceptId == this.surveyConceptId).length > 0) {
-            this.surveyResultCount = results.surveyModules.filter(x => x.conceptId == this.surveyConceptId)[0].questionCount;
+          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = results.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
           } else {
             if (this.searchText.value) {
               this.surveyResultCount = 0;
@@ -301,8 +304,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               this.setSurvey();
             }
           });
-          if (data.surveyModules.filter(x => x.conceptId == this.surveyConceptId).length > 0) {
-            this.surveyResultCount = data.surveyModules.filter(x => x.conceptId == this.surveyConceptId)[0].questionCount;
+          if (data.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = data.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
           } else {
             this.surveyResultCount = 0;
           }

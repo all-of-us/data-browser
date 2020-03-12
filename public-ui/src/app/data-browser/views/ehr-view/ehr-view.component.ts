@@ -227,7 +227,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   // get the current ehr domain by its route
   public getThisDomain() {
     this.subscriptions.push(
-      this.api.getDomainTotals(this.searchText.value,1, 1).subscribe(
+      this.api.getDomainTotals(
+        this.searchText.value,1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
             const thisDomain = Domain[domain.domain];
@@ -275,7 +276,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
           }
         }));
     } else {
-      this.subscriptions.push(this.api.getDomainTotals(this.searchText.value, testFilter, orderFilter)
+      this.subscriptions.push(this.api.getDomainTotals(
+        this.searchText.value, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(

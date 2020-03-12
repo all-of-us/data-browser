@@ -84,7 +84,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
           }
         });
     } else {
-      this.initSubscription = this.api.getDomainTotals(this.searchText.value,testFilter, orderFilter)
+      this.initSubscription = this.api.getDomainTotals(
+        this.searchText.value, testFilter, orderFilter)
         .subscribe(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
