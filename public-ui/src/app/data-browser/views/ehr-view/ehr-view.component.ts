@@ -228,7 +228,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public getThisDomain() {
     this.subscriptions.push(
       this.api.getDomainTotals(
-        this.searchText.value,1, 1).subscribe(
+        this.searchText.value, 1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.domainInfos.forEach(domain => {
             const thisDomain = Domain[domain.domain];

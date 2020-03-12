@@ -135,7 +135,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.filterResults();
         }));
     this.subscriptions.push(this.api.getDomainTotals(
-      this.searchText.value, 1,1).subscribe({
+      this.searchText.value, 1, 1).subscribe({
       next: results => {
         if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
           this.surveyResultCount = results.surveyModules.filter(
