@@ -647,11 +647,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
         filter(x => x.stratum4 === a.stratum2)[0];
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-        toolTipHelpText =  a.analysisStratumName + ' Age at First Occurrence with Medical Concept, Count: <b>' +
-          a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName + ' Age at First Occurrence with Medical Concept: <b>' +
-          percentage + '%</b>';
-        totalToolTipHelpText = a.analysisStratumName + ' Age at First Occurrence with Any EHR Mention, Count: <b>' +
-          ageResult.countValue + '</b>';
+        if (this.domainType === 'physical measurements') {
+          toolTipHelpText =  a.analysisStratumName + ' Age When Physical Measurement Was Taken With Medical Concept, Count: <b>' +
+            a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName + ' Age When Physical Measurement Was Taken With Medical Concept: <b>' +
+            percentage + '%</b>';
+          totalToolTipHelpText = a.analysisStratumName + ' Age When Physical Measurement Was Taken with Any EHR Mention, Count: <b>' +
+            ageResult.countValue + '</b>';
+        } else {
+          toolTipHelpText =  a.analysisStratumName + ' Age at First Occurrence with Medical Concept, Count: <b>' +
+            a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName + ' Age at First Occurrence with Medical Concept: <b>' +
+            percentage + '%</b>';
+          totalToolTipHelpText = a.analysisStratumName + ' Age at First Occurrence with Any EHR Mention, Count: <b>' +
+            ageResult.countValue + '</b>';
+        }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         legendText = ageHelpText + ', Selected Answered Count';

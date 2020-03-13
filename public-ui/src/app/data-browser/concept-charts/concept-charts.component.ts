@@ -141,6 +141,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         }
         this.loadingStack.pop();
       }));
+
     this.subscriptions.push(this.api.getCountAnalysis(this.concept.domainId, 'ehr').subscribe(
       results => {
         this.domainCountAnalysis = results;

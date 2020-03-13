@@ -20,6 +20,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   loadingStack: any = [];
   ageChartTitle = 'Age When Physical Measurement Was Taken';
   bsChartTitle = 'Sex Assigned At Birth Chart';
+  domainCountAnalysis: any;
 
   // Todo put constants in a class for use in other views
   chartType = 'bar';
@@ -80,6 +81,11 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
             console.log('Error: ', err);
           }
       }));
+    this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm').subscribe(
+      results => {
+        this.domainCountAnalysis = results;
+      }
+    ));
 
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getEthnicityAnalysis()

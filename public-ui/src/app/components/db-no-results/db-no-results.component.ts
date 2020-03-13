@@ -82,7 +82,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    this.subscriptions.push(this.api.getDomainSearchResults(query, 1, 1)
+    this.subscriptions.push(this.api.getDomainTotals(query, 1, 1)
       .subscribe(results => {
         this.results = results;
         this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');

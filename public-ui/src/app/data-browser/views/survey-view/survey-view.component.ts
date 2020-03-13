@@ -50,6 +50,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   searchMethod = 'or';
   /* Show answers toggle */
   showAnswer = {};
+  surveyResultCount: any;
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
@@ -57,7 +58,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
-  fmhResultCount: number;
+  fmhResultCount = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -125,7 +126,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges
-        .debounceTime(1500)
+        .debounceTime(1000)
         .distinctUntilChanged()
         .subscribe((query) => {
           // this.router.navigate(
@@ -133,12 +134,48 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // );
           this.filterResults();
         }));
-
+    this.subscriptions.push(this.api.getDomainTotals(
+      this.searchText.value, 1, 1).subscribe({
+      next: results => {
+        if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+          this.surveyResultCount = results.surveyModules.filter(
+            x => x.conceptId === this.surveyConceptId)[0].questionCount;
+        } else {
+          if (!this.searchText.value) {
+            this.surveyResultCount = this.survey.questionCount;
+          } else {
+            this.surveyResultCount = 0;
+          }
+        }
+      }
+    }));
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
       (query) => localStorage.setItem('searchText', query)));
     this.subscriptions.push(this.searchText.valueChanges
-      .debounceTime(1500)
+      .debounceTime(1000)
+      .distinctUntilChanged()
+      .switchMap((query) => this.api.getDomainTotals(query, 1, 1))
+      .subscribe({
+        next: results => {
+          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = results.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
+          } else {
+            if (this.searchText.value) {
+              this.surveyResultCount = 0;
+            } else {
+              this.surveyResultCount = this.survey.questionCount;
+            }
+          }
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+          this.loading = false;
+        }
+      }));
+    this.subscriptions.push(this.searchText.valueChanges
+      .debounceTime(1000)
       .distinctUntilChanged()
       .switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query))
       .subscribe({
@@ -258,7 +295,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   // get the current survey  by its route
   public getThisSurvey() {
     this.subscriptions.push(
-      this.api.getDomainTotals(1, 1).subscribe(
+      this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.surveyModules.forEach(survey => {
             const surveyRoute = survey.name.replace(' ', '-').toLowerCase();
@@ -267,6 +304,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               this.setSurvey();
             }
           });
+          if (data.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = data.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
+          } else {
+            this.surveyResultCount = 0;
+          }
         })
     );
   }
@@ -612,24 +655,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     a.subQuestionFetchComplete = true;
   }
 
-  public getSurveyResultCount() {
-    if (this.surveyConceptId === 43528698) {
-      if (!Number.isNaN(this.fmhResultCount)) {
-        return (this.surveyResult.items.length + this.fmhResultCount);
-      }
-      return this.surveyResult.items.length;
-    }
-    return this.surveyResult.items.length;
-  }
-
-  public changeMatchingQuestionCount(questionCount: number) {
-    this.fmhResultCount = questionCount;
-  }
-
   public hasResults() {
     if (this.surveyConceptId === 43528698) {
-      return (this.questions.length === 0 && this.fmhResultCount === 0);
+      return (this.questions.length === 0 && this.surveyResultCount === 0);
     }
     return this.questions.length === 0;
+  }
+
+  public getMatchingQuestionCount() {
+    return this.surveyResultCount;
   }
 }

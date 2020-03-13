@@ -78,6 +78,12 @@ strong {
     padding-right: 45px;
 }
 
+.highlight {
+    font-family: GothamBold,Arial,san-serif;
+    font-weight: 700;
+    padding: 3px;
+}
+
 .stat-desc {
     font-size: .75em;
 }

@@ -401,34 +401,6 @@ paths:
           schema:
             $ref: "#/definitions/CriteriaListResponse"
 
-  /v1/databrowser/domain-search:
-    get:
-      tags:
-        - dataBrowser
-      description: Gets the domain filters and survey modules with the count of matched concepts
-      operationId: "getDomainSearchResults"
-      parameters:
-        - in: query
-          name: searchWord
-          type: string
-          required: true
-          description: search key word
-        - in: query
-          name: testFilter
-          type: integer
-          format: int32
-          description: measurement filter
-        - in: query
-          name: orderFilter
-          type: integer
-          format: int32
-          description: measurement filter
-      responses:
-        200:
-          description: A collection of domains and survey modules
-          schema:
-            $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
-
   /v1/databrowser/domain-totals:
     get:
       tags:
@@ -436,6 +408,10 @@ paths:
       description: Gets the domain filters and survey modules with the count of all concepts and questions
       operationId: "getDomainTotals"
       parameters:
+        - in: query
+          name: searchWord
+          type: string
+          description: search key word
         - in: query
           name: testFilter
           type: integer
