@@ -585,8 +585,15 @@ input#s {
     top: 38px;
     width: 300px;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search>.sub-menu:focus-within {
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search>.sub-menu {
     right: 0;
+  }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search a {
+    background:white;
+
+  }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search a svg {
+    stroke: #262262!important;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
     padding-left: 14px;
