@@ -603,6 +603,9 @@ input#s {
     top: 38px;
     width: 300px;
   }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search>.sub-menu:focus-within {
+    right:0;
+  }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
     padding-left: 14px;
   }
