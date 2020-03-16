@@ -254,7 +254,8 @@ li.flip::before, li.flip::before {
 .site-nav-container nav.main-navigation .menu-primary-container>ul.main-menu>li>ul.sub-menu {
   list-style: none;
   padding-left: 1rem;
-  display: none;
+  top:-10000px;
+  position: absolute;
 }
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
@@ -310,6 +311,12 @@ input#s {
 .icon_search ul.sub-menu li form img {
   height: 25px;
   vertical-align: middle;
+}
+
+.menu-item-has-children:focus-within > a {
+  background: #262262;
+  height:100%;
+  color:white!important;
 }
 
 
