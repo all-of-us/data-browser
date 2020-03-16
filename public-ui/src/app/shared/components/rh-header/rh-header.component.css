@@ -310,7 +310,6 @@ input#s {
 
 .menu-item-has-children:focus-within>a {
   background: #262262;
-  height: 100%;
   color: white!important;
 }
 .menu-item-has-children:focus-within>a>svg {
