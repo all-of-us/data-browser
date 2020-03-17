@@ -1,4 +1,5 @@
 /* default is when the screen is the smallest */
+
 li>ul {
   margin-left: 0;
   font-weight: normal;
@@ -138,7 +139,7 @@ li.flip::before, li.flip::before {
 
 .cta-bar .login-btn {
   display: none;
-  margin-top:1rem;
+  margin-top: 1rem;
 }
 
 .headwrap {
@@ -148,7 +149,6 @@ li.flip::before, li.flip::before {
   border-bottom: #2b266d 1px solid;
   align-items: flex-end;
   justify-content: space-between;
-
 }
 
 .headwrap.no-border {
@@ -193,7 +193,6 @@ li.flip::before, li.flip::before {
   text-decoration: none;
 }
 
-
 #site-navigation {
   font-family: 'Gotham A', 'Gotham B', 'Helvetica', sans-serif;
   font-weight: bold;
@@ -203,7 +202,6 @@ li.flip::before, li.flip::before {
 .site-nav-container {
   width: fit-content;
   z-index: 1099;
-  
 }
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
@@ -243,18 +241,17 @@ li.flip::before, li.flip::before {
   font-family: 'GothamBook', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: initial;
   text-transform: capitalize!important;
-} 
+}
 
-
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu,
-.sub-menu li ul {
+.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu, .sub-menu li ul {
   list-style: none;
 }
 
 .site-nav-container nav.main-navigation .menu-primary-container>ul.main-menu>li>ul.sub-menu {
   list-style: none;
   padding-left: 1rem;
-  display: none;
+  top: -10000px;
+  position: absolute;
 }
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
@@ -282,7 +279,6 @@ li.flip::before, li.flip::before {
 }
 
 /* search in nav */
-
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg {
   stroke: #262262;
@@ -312,6 +308,13 @@ input#s {
   vertical-align: middle;
 }
 
+.menu-item-has-children:focus-within>a {
+  background: #262262;
+  color: white!important;
+}
+.menu-item-has-children:focus-within>a>svg {
+  stroke: white!important;
+}
 
 #menu-primary {
   display: none;
@@ -471,8 +474,6 @@ input#s {
   margin-top: -8px;
 }
 
-
-
 /* large screens */
 
 @media only screen and (min-width:1168px) {
@@ -498,9 +499,9 @@ input#s {
     display: none;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
-    display:none;
+    display: none;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus+ul.sub-menu {
     display: flex;
     position: absolute;
     right: 0;
@@ -520,11 +521,9 @@ input#s {
   }
 }
 
-
-
 /* when medium */
 
-@media only screen and (min-width: 969px)  {
+@media only screen and (min-width: 969px) {
   .cta-bar {
     padding-top: 14px;
     flex-wrap: nowrap;
@@ -534,13 +533,12 @@ input#s {
   .cta-bar aside p {
     white-space: nowrap;
   }
- .mobile-nav {
+  .mobile-nav {
     display: none;
   }
   .cta-bar .login-btn {
     display: block;
   }
-
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
     display: flex;
     flex-direction: row;
@@ -572,29 +570,30 @@ input#s {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
     display: inherit;
   }
-
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus+ul.sub-menu {
     display: flex;
     position: absolute;
     right: 0px;
-    top:38px;
+    top: 38px;
   }
-
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a:focus+ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>ul.sub-menu.open,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, 
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, 
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus+ul.sub-menu,                      
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>.sub-menu:focus-within
-  {
-    display:block;
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a:focus+ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>ul.sub-menu.open, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus+ul.sub-menu, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>.sub-menu:focus-within {
+    display: block;
     position: absolute;
     padding-left: 0;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, .1);
     background: #fff;
     top: 38px;
     width: 300px;
+  }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search>.sub-menu {
+    right: 0;
+  }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search a {
+    background:white;
+
+  }
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>.icon_search a svg {
+    stroke: #262262!important;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
     padding-left: 14px;
@@ -611,14 +610,12 @@ input#s {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover a svg, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover>a svg, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus a svg, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus>a svg {
     stroke: #ffffff;
   }
-
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:hover>ul.sub-menu li a:hover, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li:focus>ul.sub-menu li a:focus {
     background: transparent;
     color: #262262;
     padding-bottom: 5px;
     border-bottom: 3px solid #262262;
   }
-                      
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li.menu-item-has-children:hover>a:before, .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.menu-item-has-children:focus a:before {
     border-style: solid;
     content: " ";
