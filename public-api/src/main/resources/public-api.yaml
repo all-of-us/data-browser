@@ -591,9 +591,6 @@ definitions:
       projectId:
         type: string
         description: The cloud project in which this app is running.
-      requireSignIn:
-        type: boolean
-        description: Whether workbench sign in is required to use the data browser.
       dataBrowserIsSafe:      
         type: boolean
         description: Whether the data is safe to show. An emergency page will show if set to false. 

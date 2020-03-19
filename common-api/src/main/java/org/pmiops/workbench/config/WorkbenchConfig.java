@@ -11,7 +11,6 @@ public class WorkbenchConfig {
 
   public static class AuthConfig {
     public Boolean enforceRegistered;
-    public Boolean requireSignIn;
     public String gsuiteDomain;
   }
 
