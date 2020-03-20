@@ -582,7 +582,6 @@ definitions:
 
   ConfigResponse:
     type: object
-    required:
     properties:
       projectId:
         type: string
