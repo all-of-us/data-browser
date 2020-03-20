@@ -1,10 +1,5 @@
 // Configuration for the local development environment.
 {
-  "auth": {
-    "gsuiteDomain": "fake-research-aou.org",
-    "requireSignIn": false,
-    "enforceRegistered": false
-  },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-workbench-test.appspot.com",
     "publicApiKeyForErrorReports": "",
