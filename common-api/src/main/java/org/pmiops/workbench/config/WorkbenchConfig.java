@@ -5,14 +5,7 @@ package org.pmiops.workbench.config;
  * See {@link CacheSpringConfiguration}. This should be kept in sync with files in the config/ directory.
  */
 public class WorkbenchConfig {
-
-  public AuthConfig auth;
   public ServerConfig server;
-
-  public static class AuthConfig {
-    public Boolean enforceRegistered;
-    public String gsuiteDomain;
-  }
 
   public static class ServerConfig {
     public Boolean debugEndpoints;
