@@ -23,10 +23,7 @@ public class ConfigController implements ConfigApiDelegate {
     WorkbenchConfig config = configProvider.get();
     return ResponseEntity.ok(
         new ConfigResponse()
-            .gsuiteDomain(config.auth.gsuiteDomain)
             .projectId(config.server.projectId)
-            .enforceRegistered(config.auth.enforceRegistered)
-            .requireSignIn(config.auth.requireSignIn)
             .dataBrowserIsSafe(true) // change to false for emergency shutdown of frontend
             .publicApiKeyForErrorReports(config.server.publicApiKeyForErrorReports));
   }
