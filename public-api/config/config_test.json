@@ -1,9 +1,5 @@
 // Configuration for the aou-db-test.
 {
-  "auth": {
-    "gsuiteDomain": "fake-research-aou.org",
-    "enforceRegistered": false
-  },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-workbench-test.appspot.com",
     "publicApiKeyForErrorReports": "AIzaSyDPoX4Eg7-_FVKi7JFzEKaJpZ4IMRLaER4",

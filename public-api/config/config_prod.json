@@ -1,9 +1,5 @@
 // Configuration for the aou-db-prod.
 {
-  "auth": {
-    "gsuiteDomain": "researchallofus.org",
-    "enforceRegistered": false
-  },
   "server": {
     "workbenchApiBaseUrl": "https:\/\/api.workbench.researchallofus.org",
     "publicApiKeyForErrorReports": "AIzaSyAtXrWsPSJDOaOrdwYcpDKNDXeiTuTi_88",

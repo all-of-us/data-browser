@@ -583,7 +583,6 @@ definitions:
   ConfigResponse:
     type: object
     required:
-    - gsuiteDomain
     properties:
       projectId:
         type: string
