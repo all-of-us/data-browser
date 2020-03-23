@@ -372,6 +372,9 @@ export class FmhViewComponent implements OnInit {
 
   public showSubAnswerGraphs(sqa: any, sq: any) {
     sqa.subExpanded = !sqa.subExpanded;
+    if (!sqa.subQuestions) {
+      this.showGraph(sqa);
+    }
     if (sqa.subExpanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.surveyName + ' - Q'
