@@ -6,7 +6,7 @@ import java.util.*;
 
 
 @Entity
-@Table(name = "concept")
+@Table(name = "question_concept")
 public class QuestionConcept {
 
     private long conceptId;
@@ -291,7 +291,6 @@ public class QuestionConcept {
         this.questions = questions;
         return this;
     }
-
     public void addQuestion(SurveyQuestionMap question) {
         this.questions.add(question);
     }

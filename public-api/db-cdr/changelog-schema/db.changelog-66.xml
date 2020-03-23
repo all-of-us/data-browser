@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="srushtigangireddy" id="changelog-66">
+        <validCheckSum>ANY</validCheckSum>
+        <createTable tableName="question_concept">
+            <column name="concept_id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="concept_name" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="concept_code" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="domain_id" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synonyms" type="clob">
+                <constraints nullable="true"/>
+            </column>
+            <column name="count_value" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prevalence" defaultValue="0" type="decimal(3,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="match_Type" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
