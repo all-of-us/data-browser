@@ -477,6 +477,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public showSubAnswerGraphs(sqa: any, sq: any) {
     sqa.subExpanded = !sqa.subExpanded;
+    if (!sqa.subQuestions) {
+      this.showGraph(sqa);
+    }
     if (sqa.subExpanded) {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
