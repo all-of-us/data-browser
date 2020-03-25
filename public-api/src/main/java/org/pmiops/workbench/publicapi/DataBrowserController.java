@@ -51,7 +51,6 @@ import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptListResponse;
-import org.pmiops.workbench.model.MatchingConceptIdListResponse;
 import org.pmiops.workbench.model.AchillesResultListResponse;
 import org.pmiops.workbench.model.SurveyQuestionResultResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
