@@ -54,7 +54,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
-  envDisplay: string
+  envDisplay: string;
   pathsToHighlight: string[];
   pathsMatched: string[] = [];
   questionsMatched: string[] = [];
@@ -234,7 +234,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return 0;
     });
   }
-  
+
   public findResultMatch(q: any) {
     this.api.getResultWithMatchedSubQuestion(q.conceptId, this.searchText.value, 1).subscribe({
       next: x => {
@@ -244,18 +244,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             const matchResults = x.items.filter(ar => ar.stratum3 === a.stratum3)[0];
             let match = 0;
             if (matchResults) {
-              match = matchResults.stratum5 == "1" ? 1 : 0;
+              match = matchResults.stratum5 === '1' ? 1 : 0;
             }
             if (a.hasSubQuestions === 1) {
               this.getSubQuestions(a, 1);
             }
             a.expanded = true;
-            if (match == 1) {
-              this.api.getResultWithMatchedSubQuestion(a.stratum3, this.searchText.value, 2).subscribe({
+            if (match === 1) {
+              this.api.getResultWithMatchedSubQuestion(a.stratum3, this.searchText.value, 2)
+                .subscribe({
                 next: y => {
-                  this.pathsToHighlight = y.items.map(a => a.stratum6);
+                  this.pathsToHighlight = y.items.map(ar => ar.stratum6);
                   for (const path of this.pathsToHighlight) {
-                    let pathSplit = path.split('.');
+                    const pathSplit = path.split('.');
                     this.questionsMatched.push(pathSplit[2]);
                     this.pathsMatched.push(pathSplit[3]);
                   }
@@ -274,7 +275,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       complete: () => {  }
     });
   }
-  
+
   public processSurveyQuestionResults(q) {
     q.graphToShow = GraphType.BiologicalSex;
     q.selectedAnalysis = q.genderAnalysis;
@@ -483,7 +484,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         + q.conceptName, this.prevSearchText, null);
     }
   }
-  
+
   public getMainQuestionResults(q: any) {
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
@@ -688,7 +689,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             );
             for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
               filter(r => r.subQuestions === null)) {
-              if (this.pathsMatched.indexOf(subResult.stratum3) > -1 && this.questionsMatched.indexOf(String(subQuestion.conceptId)) > -1) {
+              if (this.pathsMatched.indexOf(subResult.stratum3) > -1 &&
+                this.questionsMatched.indexOf(String(subQuestion.conceptId)) > -1) {
                 this.showSubAnswerGraphs(subResult, subQuestion);
                 this.showGraph(subResult);
               }
