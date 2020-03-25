@@ -276,6 +276,33 @@ paths:
           schema:
             $ref: "#/definitions/AnalysisListResponse"
 
+  /v1/databrowser/get-matching-result-ids:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Gets matching concept ids that has sub questions with search text for auto opening of survey main questions
+      operationId: "getResultWithMatchedSubQuestion"
+      parameters:
+        - in: query
+          name: conceptId
+          type: string
+          required: true
+        - in: query
+          name: searchWord
+          type: string
+          required: true
+        - in: query
+          name: level
+          type: integer
+          format: int32
+          required: true
+      responses:
+        200:
+          description: Answer Concept Ids with matching sub questions
+          schema:
+            $ref: "#/definitions/AchillesResultListResponse"
+
   /v1/databrowser/concept-analysis-results:
     get:
       tags:
@@ -705,6 +732,10 @@ definitions:
         description: prevalence among participants percent count divided num participants
         type: number
         format: float
+      matchType:
+        description: boolean 1 / 0 that tells if matched on main question / sub question
+        type: integer
+        format: int32
       questions:
         description: survey question map list
         type: array
@@ -1256,4 +1287,3 @@ definitions:
         type: integer
         default: 1
         description: By default all the measurement orders are returned
-

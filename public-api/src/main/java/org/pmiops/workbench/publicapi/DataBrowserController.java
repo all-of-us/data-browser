@@ -51,6 +51,8 @@ import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptListResponse;
+import org.pmiops.workbench.model.MatchingConceptIdListResponse;
+import org.pmiops.workbench.model.AchillesResultListResponse;
 import org.pmiops.workbench.model.SurveyQuestionResultResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.Domain;
@@ -255,6 +257,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .domainId(concept.getDomainId())
                             .countValue(concept.getCountValue())
                             .prevalence(concept.getPrevalence())
+                            .matchType(concept.getMatchType())
                             .questions(concept.getQuestions().stream().map(TO_CLIENT_SURVEY_QUESTION_MAP).collect(Collectors.toList()))
                             .countAnalysis(countAnalysis)
                             .genderAnalysis(genderAnalysis)
@@ -835,6 +838,25 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
         resp.setItems(convertedQuestions);
+        return ResponseEntity.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<AchillesResultListResponse> getResultWithMatchedSubQuestion(String conceptId, String searchWord, Integer sub) {
+        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        AchillesResultListResponse resp = new AchillesResultListResponse();
+        List<AchillesResult> matchingResultConceptIds = null;
+
+        if (sub == 1) {
+            matchingResultConceptIds = achillesResultDao.getMatchingResultIds(conceptId, searchWord);
+        } else if (sub == 2) {
+            List<String> matchingConcepts = questionConceptDao.getMatchingSubResultIds(conceptId, searchWord);
+            matchingResultConceptIds = new ArrayList<>();
+            for(String mc: matchingConcepts) {
+                matchingResultConceptIds.add(new AchillesResult(3110L, null, null, null, null, null, mc, 20L, 20L));
+            }
+        }
+        resp.setItems(matchingResultConceptIds.stream().map(TO_CLIENT_ACHILLES_RESULT).collect(Collectors.toList()));
         return ResponseEntity.ok(resp);
     }
 

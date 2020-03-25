@@ -54,7 +54,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   prevSearchText = '';
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
-  envDisplay: string;
+  envDisplay: string
+  pathsToHighlight: string[];
+  pathsMatched: string[] = [];
+  questionsMatched: string[] = [];
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -213,6 +216,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       if (q.questions && q.questions.length > 0) {
         q.actualQuestionNumber = q.questions[0]['questionOrderNumber'];
       }
+      if (this.searchText.value && q.matchType === 0) {
+        this.getMainQuestionResults(q);
+        this.findResultMatch(q);
+      }
     }
     this.questions = this.surveyResult.items;
     this.questions.sort((a1, a2) => {
@@ -225,7 +232,47 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return 0;
     });
   }
-
+  
+  public findResultMatch(q: any) {
+    this.api.getResultWithMatchedSubQuestion(q.conceptId, this.searchText.value, 1).subscribe({
+      next: x => {
+        const conceptIds = x.items.map(a => a.stratum3);
+        for (const a of q.countAnalysis.surveyQuestionResults) {
+          if (conceptIds.indexOf(a.stratum3) > -1) {
+            const matchResults = x.items.filter(ar => ar.stratum3 === a.stratum3)[0];
+            let match = 0;
+            if (matchResults) {
+              match = matchResults.stratum5 == "1" ? 1 : 0;
+            }
+            if (a.hasSubQuestions === 1) {
+              this.getSubQuestions(a, 1);
+            }
+            a.expanded = true;
+            if (match == 1) {
+              this.api.getResultWithMatchedSubQuestion(a.stratum3, this.searchText.value, 2).subscribe({
+                next: y => {
+                  this.pathsToHighlight = y.items.map(a => a.stratum6);
+                  for (const path of this.pathsToHighlight) {
+                    let pathSplit = path.split('.');
+                    this.questionsMatched.push(pathSplit[2]);
+                    this.pathsMatched.push(pathSplit[3]);
+                  }
+                }
+              });
+            }
+          }
+        }
+        q.expanded = true;
+        this.showAnswer[q.conceptId] = true;
+      },
+      error: err => {
+        console.error('Observer got an error: ' + err);
+        this.loading = false;
+      },
+      complete: () => {  }
+    });
+  }
+  
   public processSurveyQuestionResults(q) {
     q.graphToShow = GraphType.BiologicalSex;
     q.selectedAnalysis = q.genderAnalysis;
@@ -419,6 +466,23 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public toggleAnswer(q: any) {
+    this.getMainQuestionResults(q);
+    if (!this.showAnswer[q.conceptId]) {
+      this.showAnswer[q.conceptId] = true;
+      q.expanded = true;
+    } else {
+      this.showAnswer[q.conceptId] = false;
+      q.expanded = false;
+    }
+    if (this.showAnswer[q.conceptId]) {
+      this.dbc.triggerEvent('conceptClick', 'Survey Question',
+        'Expand to see answers',
+        this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
+        + q.conceptName, this.prevSearchText, null);
+    }
+  }
+  
+  public getMainQuestionResults(q: any) {
     this.api.getMainSurveyQuestionResults(this.surveyConceptId, q.conceptId, q)
       .subscribe({
         next: results => {
@@ -435,19 +499,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-    if (!this.showAnswer[q.conceptId]) {
-      this.showAnswer[q.conceptId] = true;
-      q.expanded = true;
-    } else {
-      this.showAnswer[q.conceptId] = false;
-      q.expanded = false;
-    }
-    if (this.showAnswer[q.conceptId]) {
-      this.dbc.triggerEvent('conceptClick', 'Survey Question',
-        'Expand to see answers',
-        this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
-        + q.conceptName, this.prevSearchText, null);
-    }
   }
 
   public showAnswerGraphs(a: any, q: any) {
@@ -478,6 +529,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public showSubAnswerGraphs(sqa: any, sq: any) {
     sqa.subExpanded = !sqa.subExpanded;
     if (sqa.subExpanded) {
+      if (sqa.hasSubQuestions === 1 && !sqa.subQuestions) {
+        this.getSubQuestions(sqa, 2);
+      }
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
         + sq.actualQuestionNumber + ' - ' + sq.conceptName + ' - ' + sqa.stratum4 +
@@ -632,6 +686,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             );
             for (const subResult of subQuestion.countAnalysis.surveyQuestionResults.
               filter(r => r.subQuestions === null)) {
+              if (this.pathsMatched.indexOf(subResult.stratum3) > -1 && this.questionsMatched.indexOf(String(subQuestion.conceptId)) > -1) {
+                this.showSubAnswerGraphs(subResult, subQuestion);
+                this.showGraph(subResult);
+              }
               this.addMissingBiologicalSexResults(subQuestion.genderAnalysis,
                 subQuestion.genderAnalysis.surveyQuestionResults.
                   filter(r => r.stratum3 !== null && r.stratum3 === subResult.stratum3),

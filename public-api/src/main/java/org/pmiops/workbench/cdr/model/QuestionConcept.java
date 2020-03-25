@@ -15,6 +15,7 @@ public class QuestionConcept {
     private String domainId;
     private long countValue;
     private float prevalence;
+    private int matchType;
     private AchillesAnalysis countAnalysis;
     private AchillesAnalysis genderAnalysis;
     private AchillesAnalysis ageAnalysis;
@@ -276,6 +277,18 @@ public class QuestionConcept {
 
     public QuestionConcept prevalence(float prevalence) {
         this.prevalence = prevalence;
+        return this;
+    }
+
+    @Column(name = "match_type")
+    public int getMatchType() {
+        return matchType;
+    }
+    public void setMatchType(int matchType) {
+        this.matchType = matchType;
+    }
+    public QuestionConcept matchType(int matchType) {
+        this.matchType = matchType;
         return this;
     }
 
