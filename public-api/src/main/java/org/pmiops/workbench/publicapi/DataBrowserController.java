@@ -834,6 +834,19 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } else {
             // Get only the matching questions
             questions = questionConceptDao.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword);
+            HashMap<Long, QuestionConcept> questionMap = new HashMap<>();
+            for(QuestionConcept question: questions) {
+                Long questionConceptId = question.getConceptId();
+                if (questionMap.containsKey(questionConceptId)) {
+                    QuestionConcept prev = questionMap.get(questionConceptId);
+                    if (prev.getMatchType() == 0 && question.getMatchType() == 1) {
+                        questionMap.put(questionConceptId, question);
+                    }
+                } else {
+                    questionMap.put(questionConceptId, question);
+                }
+            }
+            questions = questionMap.values().stream().collect(Collectors.toList());
         }
 
         List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());

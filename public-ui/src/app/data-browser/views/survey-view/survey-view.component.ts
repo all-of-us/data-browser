@@ -183,6 +183,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       .switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query))
       .subscribe({
         next: results => {
+          console.log('here');
+          console.log(results);
           this.processSurveyQuestions(results);
           this.filterResults();
         },
