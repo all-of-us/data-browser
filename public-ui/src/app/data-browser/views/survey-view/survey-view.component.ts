@@ -183,8 +183,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       .switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query))
       .subscribe({
         next: results => {
-          console.log('here');
-          console.log(results);
           this.processSurveyQuestions(results);
           this.filterResults();
         },
@@ -221,6 +219,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       if (this.searchText.value && q.matchType === 0) {
         this.getMainQuestionResults(q);
         this.findResultMatch(q);
+      } else {
+        if (this.searchText.value && q.matchType === 1) {
+          if (!(q.conceptName.toLowerCase().indexOf(this.searchText.value.toLowerCase()) > -1)) {
+            this.getMainQuestionResults(q);
+            this.showAnswer[q.conceptId] = true;
+            q.expanded = true;
+          }
+        }
       }
     }
     this.questions = this.surveyResult.items;
@@ -469,7 +475,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public toggleAnswer(q: any) {
-    this.getMainQuestionResults(q);
+    this.getMainQuestionResults(q,);
     if (!this.showAnswer[q.conceptId]) {
       this.showAnswer[q.conceptId] = true;
       q.expanded = true;
