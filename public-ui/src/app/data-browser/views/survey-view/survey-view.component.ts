@@ -475,7 +475,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public toggleAnswer(q: any) {
-    this.getMainQuestionResults(q,);
+    this.getMainQuestionResults(q);
     if (!this.showAnswer[q.conceptId]) {
       this.showAnswer[q.conceptId] = true;
       q.expanded = true;
