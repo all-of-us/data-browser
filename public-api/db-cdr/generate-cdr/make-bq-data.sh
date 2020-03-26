@@ -463,9 +463,10 @@ where d.concept_id=r.ing_concept"
 
 #Update question concept
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` qc
-(select c.concept_id, c.concept_name, c.concept_code, c.domain_id, c.synonyms, c.count_value, c.prevalence from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c where c.concept_id in
-(select distinct cast(ar.stratum_2 as int64) from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar where ar.analysis_id=3110))"
+"insert into \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\`
+(concept_id, concept_name, concept_code, domain_id, synonyms, count_value, prevalence)
+select c.concept_id, c.concept_name, c.concept_code, c.domain_id, c.synonyms, c.count_value, c.prevalence from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c where c.concept_id in
+(select distinct cast(ar.stratum_2 as int64) from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar where ar.analysis_id=3110)"
 
 
 #######################
