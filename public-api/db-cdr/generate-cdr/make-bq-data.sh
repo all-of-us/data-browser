@@ -409,7 +409,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set c.concept_name=sqm.question_text
 from  (select distinct question_concept_id , question_text
-from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_question_map\`) as sqm
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_question_map\` group by 1,2) as sqm
 where c.concept_id = sqm.question_concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
