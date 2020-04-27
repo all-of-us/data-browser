@@ -513,7 +513,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         toolTipHelpText = '<b> ' + a.countValue +
           '</b> participants who had  ' + analysisStratumName +
           ' sex assigned   at birth  with the medical concept mentioned in their Electronic Health Record (EHR) and is <b> ' +
-          percentage + '% </b> of the total count of ' + analysisStratumName + ' sex assigned at birth participants with EHR data <b>' +
+          percentage + '% </b> of the total count of ' + analysisStratumName + ' sex assigned at birth participants with EHR data: <b>' +
           bsResult.countValue + '.</b>';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
