@@ -477,36 +477,32 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     };
   }
 
-/*
-                            ..######...########.##....##.########..########.########....
-                            .##....##..##.......###...##.##.....##.##.......##.....##...
-                            .##........##.......####..##.##.....##.##.......##.....##...
-                            .##...####.######...##.##.##.##.....##.######...########....
-                            .##....##..##.......##..####.##.....##.##.......##...##.....
-                            .##....##..##.......##...###.##.....##.##.......##....##....
-                            ..######...########.##....##.########..########.##.....##...
-  */
+  /*
+                              ..######...########.##....##.########..########.########....
+                              .##....##..##.......###...##.##.....##.##.......##.....##...
+                              .##........##.......####..##.##.....##.##.......##.....##...
+                              .##...####.######...##.##.##.##.....##.######...########....
+                              .##....##..##.......##..####.##.....##.##.......##...##.....
+                              .##....##..##.......##...###.##.....##.##.......##....##....
+                              ..######...########.##....##.########..########.##.....##...
+    */
   public makeGenderChartOptions(results: any, analysisName: string,
     seriesName: string, analysisId: number) {
     let data = [];
     let cats = [];
-    let totalData = [];
     let legendText = null;
-    let totalLegendText = null;
     const yAxisLabel = null;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let analysisStratumName = null;
       let toolTipHelpText = null;
-      let totalToolTipHelpText = null;
       let bsResult = null;
       let color = null;
       let percentage = null;
       if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         legendText = seriesName + ', Medical Concept';
-        totalLegendText = seriesName + ', Total With EHR';
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
@@ -519,10 +515,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           ' sex assigned   at birth  with the medical concept mentioned in their Electronic Health Record (EHR) and is <b> ' +
           percentage + '% </b> of the total count of ' + analysisStratumName + ' sex assigned at birth participants with EHR data <b>' +
           bsResult.countValue + '.</b>';
-        totalToolTipHelpText = null;
-        totalToolTipHelpText = analysisStratumName +
-          ' Sex Assigned at Birth with any EHR Mention, Count: <b>' +
-          bsResult.countValue + '</b>';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -530,7 +522,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         legendText = 'Sex Assigned At Birth' + ', Selected Answered Count';
-        totalLegendText = 'Sex Assigned At Birth' + ', Took Survey Count';
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
@@ -540,9 +531,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           '% of ' + analysisStratumName +
           ' Sex Assigned at Birth With Survey Answer: ' +
           '<b>' + percentage + '% </b>';
-        totalToolTipHelpText = analysisStratumName +
-          ' Sex Assigned at Birth Who Took Survey, Count: ' +
-          '<b>' + bsResult.countValue + '</b>';
       }
       data.push({
         name: a.analysisStratumName
@@ -550,25 +538,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage,
         analysisId: analysisId
       });
-      totalData.push({
-        name: bsResult.analysisStratumName
-        , y: bsResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR, sliced: true,
-        toolTipHelpText: totalToolTipHelpText, medicalConceptCount: a.countValue,
-        totalDomainCount: bsResult.countValue, analysisId: analysisId
-      });
       cats.push(a.analysisStratumName);
     }
     data = data.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    }
-    );
-    totalData = totalData.sort((a, b) => {
       if (a.name > b.name) {
         return 1;
       }
@@ -613,17 +585,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
-/*
-                        ....###.....######...########
-                        ...##.##...##....##..##......
-                        ..##...##..##........##......
-                        .##.....##.##...####.######..
-                        .#########.##....##..##......
-                        .##.....##.##....##..##......
-                        .##.....##..######...########
-  */
+  /*
+                          ....###.....######...########
+                          ...##.##...##....##..##......
+                          ..##...##..##........##......
+                          .##.....##.##...####.######..
+                          .#########.##....##..##......
+                          .##.....##.##....##..##......
+                          .##.....##..######...########
+    */
 
-  
+
   public makeAgeChartOptions(results: any, analysisName: string,
     seriesName: string, ageDecileStratum: string, analysisId: number) {
     const yAxisLabel = null;
