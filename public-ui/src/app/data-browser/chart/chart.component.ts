@@ -575,10 +575,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       color: this.dbc.COLUMN_COLOR,
       xAxisTitle: analysisName,
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
-      tooltip: {
-        headerFormat: '<span> ',
-        pointFormat: '{point.y} {point.name}</span>',
-      },
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
         fontFamily: 'GothamBook, Arial, sans-serif'
