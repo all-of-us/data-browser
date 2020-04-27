@@ -632,9 +632,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           filter(x => x.stratum4 === a.stratum2)[0];
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
         if (this.domainType === 'physical measurements') {
-          toolTipHelpText = a.analysisStratumName + ' Age When Physical Measurement Was Taken With Medical Concept, Count: <b>' +
-            a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName + ' Age When Physical Measurement Was Taken With Medical Concept: <b>' +
-            percentage + '%</b>';
+          toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
+          a.analysisStratumName + ' when physical measurement was taken with this medical concept is <b>' +
+          percentage + '</b>' + '% of the total count of all participants with the same' ;
           totalToolTipHelpText = a.analysisStratumName + ' Age When Physical Measurement Was Taken with Any EHR Mention, Count: <b>' +
             ageResult.countValue + '</b>';
         } else {
@@ -682,10 +682,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       categories: cats,
       xAxisTitle: this.domainType === 'physical measurements' ? seriesName : analysisName,
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
-      tooltip: {
-        headerFormat: '<span> ',
-        pointFormat: '{point.name}<br/ > {point.y}</span>'
-      },
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
         fontFamily: 'GothamBook, Arial, sans-serif'
