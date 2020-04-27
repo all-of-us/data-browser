@@ -396,6 +396,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     };
   }
 
+
+
   public makeConceptChartOptions() {
     const data = [];
     const cats = [];
@@ -475,6 +477,15 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     };
   }
 
+/*
+                            ..######...########.##....##.########..########.########....
+                            .##....##..##.......###...##.##.....##.##.......##.....##...
+                            .##........##.......####..##.##.....##.##.......##.....##...
+                            .##...####.######...##.##.##.##.....##.######...########....
+                            .##....##..##.......##..####.##.....##.##.......##...##.....
+                            .##....##..##.......##...###.##.....##.##.......##....##....
+                            ..######...########.##....##.########..########.##.....##...
+  */
   public makeGenderChartOptions(results: any, analysisName: string,
     seriesName: string, analysisId: number) {
     let data = [];
@@ -602,7 +613,17 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
+/*
+                        ....###.....######...########
+                        ...##.##...##....##..##......
+                        ..##...##..##........##......
+                        .##.....##.##...####.######..
+                        .#########.##....##..##......
+                        .##.....##.##....##..##......
+                        .##.....##..######...########
+  */
 
+  
   public makeAgeChartOptions(results: any, analysisName: string,
     seriesName: string, ageDecileStratum: string, analysisId: number) {
     const yAxisLabel = null;
