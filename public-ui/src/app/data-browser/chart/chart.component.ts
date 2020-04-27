@@ -596,7 +596,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     seriesName: string, ageDecileStratum: string, analysisId: number) {
     const yAxisLabel = null;
     let legendText = null;
-    let totalLegendText = null;
     // Age results have two stratum-- 1 is concept, 2 is age decile
     // Sort by age decile (stratum2 or stratum5)
     if (this.domainType === 'physical measurements') {
@@ -618,7 +617,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     );
     const data = [];
     const cats = [];
-    const totalData = [];
     const color = this.dbc.COLUMN_COLOR;
     let percentage = null;
     let ageHelpText = null;
@@ -629,7 +627,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
         ageHelpText = seriesName;
         legendText = seriesName + ', Medical Concept';
-        totalLegendText = seriesName + ', Total With EHR';
+
         ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum4 === a.stratum2)[0];
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
@@ -649,7 +647,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         legendText = ageHelpText + ', Selected Answered Count';
-        totalLegendText = ageHelpText + ', Took Survey Count';
         ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
@@ -663,13 +660,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         name: a.analysisStratumName,
         y: a.countValue, color: color,
         toolTipHelpText: toolTipHelpText, analysisId: analysisId
-      });
-      totalData.push({
-        name: ageResult.analysisStratumName
-        , y: ageResult.countValue, color: this.dbc.TOTAL_COLUMN_COLOR,
-        sliced: true, medicalConceptCount: a.countValue,
-        totalDomainCount: ageResult.countValue,
-        toolTipHelpText: totalToolTipHelpText, analysisId: analysisId
       });
       cats.push(a.analysisStratumName);
     }
