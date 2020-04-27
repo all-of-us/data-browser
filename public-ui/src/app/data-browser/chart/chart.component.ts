@@ -96,12 +96,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
               this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('Medical Concept, Count: <b>20',
-                  'Medical Concept, Count: <b> &le; 20');
+                this.point.toolTipHelpText.replace('data: <b>20',
+                  'data: <b> &le; 20');
             } else if (this.point.analysisId === 3111 || this.point.analysisId === 3112) {
               this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('Survey Answer, Count: <b>20',
-                  'Survey Answer, Count: <b>&le; 20');
+                this.point.toolTipHelpText.replace('survey answer: <b>20',
+                  'survey answer: <b>&le; 20');
             } else if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
               this.point.toolTipHelpText =
                 this.point.toolTipHelpText.replace('Participant Count: <b>20',
@@ -488,10 +488,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     */
   public makeGenderChartOptions(results: any, analysisName: string,
     seriesName: string, analysisId: number) {
+    const yAxisLabel = null;
     let data = [];
     let cats = [];
     let legendText = null;
-    const yAxisLabel = null;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -512,7 +512,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
         toolTipHelpText = '<b> ' + a.countValue +
           '</b> participants who had  ' + analysisStratumName +
-          ' sex assigned   at birth  with the medical concept mentioned in their Electronic Health Record (EHR) and is <b> ' +
+          ' sex assigned at birth with the medical concept mentioned in their Electronic Health Record (EHR) and is <b> ' +
           percentage + '% </b> of the total count of ' + analysisStratumName + ' sex assigned at birth participants with EHR data: <b>' +
           bsResult.countValue + '.</b>';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
@@ -521,16 +521,16 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
-        legendText = 'Sex Assigned At Birth' + ', Selected Answered Count';
+        legendText = 'Sex Assigned At Birth, Selected Answered Count';
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-        toolTipHelpText = analysisStratumName +
-          ' Sex Assigned at Birth with Survey Answer, Count: ' +
-          '<b>' + a.countValue + '</b>' + '<br/>' +
-          '% of ' + analysisStratumName +
-          ' Sex Assigned at Birth With Survey Answer: ' +
-          '<b>' + percentage + '% </b>';
+        toolTipHelpText = '<b> ' + a.countValue +
+          '</b> participants who had  ' + analysisStratumName +
+          ' sex assigned at birth ' +
+          'with this survey answer and is ' + '<b>' + percentage +
+          '% </b>' + 'of the total count of ' + analysisStratumName +
+          ' sex assigned at birth with this survey answer: <b>' + bsResult.countValue + '</b>';
       }
       data.push({
         name: a.analysisStratumName
