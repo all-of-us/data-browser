@@ -55,7 +55,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (this.chartOptions) {
         this.chartOptions = this.hcChartOptions();
       }
-    }, 1);
+    }, 10);
   }
   public doesNeedLegend() {
     return this.isGenderOrAgeAnalysis() ? true : false;
@@ -93,15 +93,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         outside: true,
         formatter: function (tooltip) {
           if (this.point.y <= 20) {
-            if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
-              this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('data: <b>20',
-                  'data: <b> &le; 20');
-            } else if (this.point.analysisId === 3111 || this.point.analysisId === 3112) {
-              this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('survey answer: <b>20',
-                  'survey answer: <b>&le; 20');
-            } else if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
+            if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
               this.point.toolTipHelpText =
                 this.point.toolTipHelpText.replace('Participant Count: <b>20',
                   'Participant Count: <b>&le; 20');
@@ -507,19 +499,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           filter(x => x.stratum4 === a.stratum2)[0];
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
         // swap int for symbol
-        totalCount = (bsResult.countValue <= 20) ? '&le;20' : bsResult.countValue;
+        totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
         color = this.dbc.COLUMN_COLOR;
         legendText = seriesName + ', Medical Concept';
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
         analysisStratumName = a.analysisStratumName;
-        toolTipHelpText = 
-        '<b> ' + count + '</b> participants had ' + analysisStratumName +
-        ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<b>' + percentage +
-        '% </b>' + 'of the total count of ' + analysisStratumName +
-        ' as sex assigned at birth that have this medical concept mentioned in their EHR (total count = <b>'
-        + totalCount + '</b>)';
+        toolTipHelpText =
+          '<b> ' + count + '</b> participants had ' + analysisStratumName +
+          ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<b>' + percentage +
+          '% </b>' + 'of the total count of ' + analysisStratumName +
+          ' as sex assigned at birth that have this medical concept mentioned in their EHR (total count = <b> '
+          + totalCount + '</b>)';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -529,12 +521,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         legendText = 'Sex Assigned At Birth, Selected Answered Count';
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
+        totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
         percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
         toolTipHelpText =
           '<b> ' + count + '</b> participants had ' + analysisStratumName +
           ' as sex assigned at birth with this survey answer and that is ' + '<b>' + percentage +
           '% </b>' + 'of the total count of ' + analysisStratumName +
-          ' as sex assigned at birth that answered this survey question (total count = <b>'
+          ' as sex assigned at birth that answered this survey question (total count = <b> '
           + totalCount + '</b>)';
       }
       data.push({
@@ -628,34 +621,38 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const a of results) {
       let toolTipHelpText = null;
       let ageResult = null;
+      let count;
+      let totalCount;
+      count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
       if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
         ageHelpText = seriesName;
         legendText = seriesName + ', Medical Concept';
-
         ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum4 === a.stratum2)[0];
+        totalCount = (ageResult <= 20) ? '&le; 20' : ageResult.countValue;
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
+
+        toolTipHelpText =
+          '<b>' + a.countValue + '</b>' + ' participants were ages within range' +
+          a.analysisStratumName + ' when this medical concept first occurred and that is <b>' +
+          percentage + '</b>' + '% of all participants with the same criteria. (total count = '
+          + totalCount + '</b>)';
+        // add pm string for context
         if (this.domainType === 'physical measurements') {
-          toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
-            a.analysisStratumName + ' when physical measurement was taken with this medical concept and is <b>' +
-            percentage + '</b>' + '% of all participants within the same criteria.';
-        } else {
-          toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
-            a.analysisStratumName + ' when physical measurement with this medical concept first occurred  and is <b>' +
-            percentage + '</b>' + '% of all participants with the same criteria.';
+          toolTipHelpText = toolTipHelpText.replace('when', 'when physical measurement with');
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
         legendText = ageHelpText + ', Selected Answered Count';
         ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
+        totalCount = (ageResult.countValue <= 20) ? '&le; 20' : ageResult.countValue;
+        console.log(ageResult, 'rere?');
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-        toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
-          a.analysisStratumName + ' when survey was taken with survey answer and is <b>' +
-          percentage + '</b>' + '% of all participants with the same criteria.';
-        // a.analysisStratumName + ' Age When Survey Was Taken With Survey Answer, Count: ' +
-        //   '<b>' + a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName +
-        //   ' Age When Survey Was Taken With Survey Answer: ' + '<b>' + percentage + '%</b>';
+        toolTipHelpText = '<b>' + a.countValue + '</b> participants were ages within range of ' +
+          a.analysisStratumName + ' when survey was taken with this answer and is <b>'
+          + percentage + '</b>' + '% of all participants with the same criteria. (total count = '
+          + totalCount + '</b>)';
       }
       data.push({
         name: a.analysisStratumName,
