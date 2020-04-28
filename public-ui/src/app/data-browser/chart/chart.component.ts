@@ -93,11 +93,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         outside: true,
         formatter: function (tooltip) {
           if (this.point.y <= 20) {
-            if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
-              this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('data: <b>20',
-                  'data: <b> &le; 20');
-            } else if (this.point.analysisId === 3111 || this.point.analysisId === 3112) {
+             if (this.point.analysisId === 3111 || this.point.analysisId === 3112) {
               this.point.toolTipHelpText =
                 this.point.toolTipHelpText.replace('survey answer: <b>20',
                   'survey answer: <b>&le; 20');
@@ -496,9 +492,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
       let analysisStratumName = null;
       let toolTipHelpText = null;
-      let bsResult = null;
       let color = null;
-      let percentage = null;
+      const bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
+      filter(x => x.stratum4 === a.stratum2)[0];
+      const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
+      const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+      const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
       if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         legendText = seriesName + ', Medical Concept';
@@ -506,14 +505,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
-        bsResult = this.domainCountAnalysis.genderCountAnalysis.results.
-          filter(x => x.stratum4 === a.stratum2)[0];
-        percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-        toolTipHelpText = '<b> ' + a.countValue +
+
+        toolTipHelpText = '<b> ' + count +
           '</b> participants who had  ' + analysisStratumName +
           ' sex assigned at birth with the medical concept mentioned in their Electronic Health Record (EHR) and is <b> ' +
           percentage + '% </b> of the total count of ' + analysisStratumName + ' sex assigned at birth participants with EHR data: <b>' +
-          bsResult.countValue + '.</b>';
+          totalCount + '.</b>';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
