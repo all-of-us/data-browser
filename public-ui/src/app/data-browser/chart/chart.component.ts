@@ -57,7 +57,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     }, 1);
   }
-
   public doesNeedLegend() {
     return this.isGenderOrAgeAnalysis() ? true : false;
   }
@@ -632,12 +631,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
         if (this.domainType === 'physical measurements') {
           toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
-          a.analysisStratumName + ' when physical measurement was taken with this medical concept and is <b>' +
-          percentage + '</b>' + '% of all participants within the same age rage' ;
+            a.analysisStratumName + ' when physical measurement was taken with this medical concept and is <b>' +
+            percentage + '</b>' + '% of all participants within the same criteria.';
         } else {
-          toolTipHelpText = a.analysisStratumName + ' Age at First Occurrence with Medical Concept, Count: <b>' +
-            a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName + ' Age at First Occurrence with Medical Concept: <b>' +
-            percentage + '%</b>';
+          toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
+            a.analysisStratumName + ' when physical measurement with this medical concept first occurred  and is <b>' +
+            percentage + '</b>' + '% of all participants with the same criteria.';
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
         ageHelpText = 'Age When Survey Was Taken';
@@ -645,9 +644,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-        toolTipHelpText = a.analysisStratumName + ' Age When Survey Was Taken With Survey Answer, Count: ' +
-          '<b>' + a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName +
-          ' Age When Survey Was Taken With Survey Answer: ' + '<b>' + percentage + '%</b>';
+        toolTipHelpText = '<b>' + a.countValue + '</b>' + ' participants whos ages ranged ' +
+          a.analysisStratumName + ' when survey was taken with survey answer and is <b>' +
+          percentage + '</b>' + '% of all participants with the same criteria.';
+        // a.analysisStratumName + ' Age When Survey Was Taken With Survey Answer, Count: ' +
+        //   '<b>' + a.countValue + '</b><br/>' + '% of ' + a.analysisStratumName +
+        //   ' Age When Survey Was Taken With Survey Answer: ' + '<b>' + percentage + '%</b>';
       }
       data.push({
         name: a.analysisStratumName,
