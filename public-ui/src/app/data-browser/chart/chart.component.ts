@@ -1,7 +1,5 @@
-import { capitalize } from '@angular-devkit/core/src/utils/strings';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import * as highcharts from 'highcharts';
-
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
@@ -32,7 +30,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() domainCountAnalysis: any;
   @Input() surveyCountAnalysis: any;
   @Input() conceptName: string;
-  @Input() test: string;
   chartOptions: any = null;
   constructor(private dbc: DbConfigService) {
     highcharts.setOptions({
@@ -92,25 +89,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         followPointer: true,
         outside: true,
         formatter: function (tooltip) {
-          if (this.point.y <= 20) {
-            if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
-              this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('Participant Count: <b>20',
-                  'Participant Count: <b>&le; 20');
-            } else if (this.point.analysisId === 1900) {
-              this.point.toolTipHelpText =
-                this.point.toolTipHelpText.replace('Participant Count: <b>20',
-                  'Participant Count: <b>&le; 20');
-            }
-          }
-          if (this.point.totalDomainCount && this.point.totalDomainCount <= 20) {
-            this.point.toolTipHelpText =
-              this.point.toolTipHelpText.replace('EHR Mention, Count: <b>20',
-                'EHR Mention, Count: <b> &le; 20');
-            this.point.toolTipHelpText =
-              this.point.toolTipHelpText.replace('Took Survey, Count: <b>20',
-                'Took Survey, Count: <b>&le; 20');
-          }
           return '<div class="chart-tooltip">' + this.point.toolTipHelpText + '</div>';
         },
         useHTML: true,
@@ -415,9 +393,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     );
     for (const a of this.concepts) {
       let toolTipText = '';
+      let count;
       if (!this.sources) {
+        count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
         toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-          '<br/>' + 'Participant Count: ' + '<b>' + a.countValue + '</b>';
+          '<br/>' + 'Participant Count: ' + '<b>' + count + '</b>';
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.countValue, analysisId: 'topConcepts',
@@ -426,8 +406,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         });
         cats.push(a.conceptName);
       } else {
+        count = (a.sourceCountValue <= 20) ? '&le; 20' : a.sourceCountValue;
         toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-          '<br/>' + 'Participant Count: ' + '<b>' + a.sourceCountValue + '</b>';
+          '<br/>' + 'Participant Count: ' + '<b>' + count + '</b>';
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.sourceCountValue, analysisId: 'sources',
@@ -633,7 +614,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
 
         toolTipHelpText =
-          '<b>' + a.countValue + '</b>' + ' participants were ages within range' +
+          '<b>' + count + '</b>' + ' participants were ages within range' +
           a.analysisStratumName + ' when this medical concept first occurred and that is <b>' +
           percentage + '</b>' + '% of all participants with the same criteria. (total count = '
           + totalCount + '</b>)';
