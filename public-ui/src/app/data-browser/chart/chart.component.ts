@@ -491,7 +491,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           '<b> ' + count + '</b> participants had ' + analysisStratumName +
           ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<b>' + percentage +
           '% </b>' + 'of the total count of ' + analysisStratumName +
-          ' as sex assigned at birth that have this medical concept mentioned in their EHR (total count = <b> '
+          ' as sex assigned at birth that have EHR data (total count = <b> '
           + totalCount + '</b>)';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
