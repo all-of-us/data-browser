@@ -26,9 +26,8 @@
         <div *ngIf="searchText.value"  class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
       </div>
       <span class="result-body-item cdr-info" *ngIf="creationTime">
-        Data based on Curated Data Repository (CDR) dated
-        {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}} with
-        {{numParticipants | number}} total participants.
+        Data includes {{numParticipants | number}} participants and is current as of
+        {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}}.
       </span>
     </div><!-- .search -->
     <div class="iconlinks">
