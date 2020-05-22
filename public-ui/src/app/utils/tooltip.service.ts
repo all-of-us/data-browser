@@ -64,7 +64,7 @@ export class TooltipService {
   participants' immediate biological family members`;
   physicalMeasurements = `Measurements taken at the time of participant enrollment,
  including blood pressure, heart rate, height, weight, waist and hip circumference,
-  pregnancy status and wheelchair use.`;
+  pregnancy status, and wheelchair use.`;
   domainHelpText = {
     'condition': 'Medical concepts that describe the ' +
       'health status of an individual, ' +
@@ -108,7 +108,7 @@ export class TooltipService {
     'Domains are types of medical information.\n' +
     'There are numerous domains of data in EHR records, ' +
     'but some of the most common domains include conditions, drug exposures,' +
-    ' measurements and procedures.';
+    ' measurements, and procedures.';
   valueChartHelpText = 'Values provide the numeric result of an ' +
     'examination or test done on a participant. ' +
     'For example, a participant’s measurement of their body ' +
