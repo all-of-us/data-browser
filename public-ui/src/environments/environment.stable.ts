@@ -9,5 +9,5 @@ export const environment = {
   gtmId: 'GTM-NQ9XDTW',
   gtmAuth: '87R8_4UCXpVCroAA7bGkAg',
   gtmPreview: 'env-27',
-  workBenchIsBeta: false
+  workBenchIsBeta: true
 };
