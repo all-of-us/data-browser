@@ -206,6 +206,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       }
     }
     this.surveyResults = results.surveyModules;
+    this.surveyResults.forEach(result => {
+      if(result.name === 'Lifestyle') {
+        result.description = result.description.replace('alcohol and', 'alcohol, and');
+      }
+    });
     this.loading = false;
   }
 
