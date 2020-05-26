@@ -1,18 +1,18 @@
-  <div class="rh-header">
-    <div>
+
       <h1 id='db-title' class="primary-display ">Data Browser</h1>
       <p id="db-desc" class="body-default">
         The Data Browser provides interactive views of the publicly available <span class="allofus-italics">All of Us</span> Research Program participant data.
         Currently, participant provided information, including surveys and physical measurements taken at the time of
-        participant enrollment, as well as electronic health record data are available.
+        participant enrollment, as well as electronic health record data (EHR) are available. EHR data are reported by health care providers and are not participant reported.
         The <span class="allofus-italics">All of Us</span> Research Program data will include more data types over time.
         <br><br>
-        In order to protect participant privacy, the data is limited to aggregate counts and summary
-        demographic information.
+        In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of 20, and summary demographic information. 
         For more information, please visit our <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs">FAQ page.</a>
+        <br><br>
+        Please read the public data use statement available below for additional information about our unique dataset and how to acknowledge the <span class="allofus-italics">All of Us Research Program</span> in any presentations or publications.
+        <br><br><button class="disclaimer-btn">public data use statment</button>
       </p>
-    </div>
-  </div>
+
   <div class="search-icon-container">
     <div class="search">
       <div class="search-title">
@@ -163,3 +163,6 @@
       <app-error-message [dataType]="'data'"></app-error-message>
     </div>
   </section>
+  <div class="data-statment">
+    .data-statment_
+  </div>
