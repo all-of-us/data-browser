@@ -228,3 +228,24 @@ app-spinner {
         margin-right: 0;
     }
 }
+
+.data-statment {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 1000;
+    top:0;
+    left:0;
+    background: rgba(0, 0, 0, 1);
+  }
+  
+  .data-statment > .card {
+    width:50%;
+    margin:25% auto;
+  }
+  .data-statment > .card > .disclaimer-btn {
+    background: #262262;
+  }
+  .data-statment > .card > .disclaimer-btn:hover {
+    background: #816492;
+  }
