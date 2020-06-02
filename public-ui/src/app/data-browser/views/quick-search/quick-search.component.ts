@@ -57,6 +57,13 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
+  publicDataStatement = `All of Us Research Program data are not representative of the population of the United States.
+  If you present, publish, or distribute All of Us data, please include the following disclaimer:<br>
+  “The All of Us Research Program includes a demographically, geographically, and medically diverse group of participants,
+  however, it is not a representative sample of the population of the United States.
+  Enrollment in the All of Us Research program is open to all who choose to participate,
+  and the program is committed to engaging with and encouraging participation of minority groups that are
+  historically underrepresented in biomedical research".`;
 
   private subscriptions: ISubscription[] = [];
 

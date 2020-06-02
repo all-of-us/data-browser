@@ -201,7 +201,7 @@ li.flip::before, li.flip::before {
 
 .site-nav-container {
   width: fit-content;
-  z-index: 1099;
+  z-index: 9;
 }
 
 .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
@@ -624,7 +624,7 @@ input#s {
     border-width: 10px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10999;
+    z-index: 9;
     position: absolute;
     top: 36px;
   }

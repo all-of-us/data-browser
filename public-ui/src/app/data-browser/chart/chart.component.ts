@@ -610,11 +610,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         legendText = seriesName + ', Medical Concept';
         ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum4 === a.stratum2)[0];
-        totalCount = (ageResult <= 20) ? '&le; 20' : ageResult.countValue;
+        totalCount = (ageResult.countValue <= 20) ? '&le; 20' : ageResult.countValue;
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-
         toolTipHelpText =
-          '<b>' + count + '</b>' + ' participants were ages within range' +
+          '<b>' + count + '</b>' + ' participants were ages within range ' +
           a.analysisStratumName + ' when this medical concept first occurred and that is <b>' +
           percentage + '</b>' + '% of all participants with the same criteria. (total count = '
           + totalCount + '</b>)';
