@@ -68,6 +68,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   selectedConcept: Concept;
   testFilter = 0;
   orderFilter = 0;
+  showStatement: boolean;
   dataStatement = `The All of Us Research Program includes a demographically, geographically, and
   medically diverse group of participants, however, it is not a representative sample of the
   population of the United States. Enrollment in the All of Us Research program is open to all who
