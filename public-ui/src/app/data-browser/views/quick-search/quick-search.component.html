@@ -15,7 +15,7 @@
   Please read the public data use statement available below for additional information about our unique dataset and how
   to acknowledge the <span class="allofus-italics">All of Us Research Program</span> in any presentations or
   publications.
-  <br><br><button (click)="showStatment = true" class="disclaimer-btn">public data use statment</button>
+  <br><br><button (click)="showStatement = true" class="disclaimer-btn">public data use statment</button>
 </p>
 
 <div class="search-icon-container">
@@ -184,13 +184,4 @@
     <app-error-message [dataType]="'data'"></app-error-message>
   </div>
 </section>
-<div *ngIf="showStatment" class="data-statment">
-  <div class="card">
-    <div (click)="showStatment = false" class="close">x</div>
-    <h2 class="card-title">PUBLIC DATA USE STATEMENT</h2>
-    <div [innerHtml]="publicDataStatement" class="card-body"></div>
-    <div class="btn-container">
-    <button (click)="showStatment = false" class="disclaimer-btn">OK</button>
-  </div>
-  </div>
-</div>
+<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATMENT'" [statement]="statement" *ngIf="showStatement" ></app-pop-up>

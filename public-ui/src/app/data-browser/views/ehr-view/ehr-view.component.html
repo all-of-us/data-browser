@@ -15,6 +15,7 @@
       < Back to main search </a> <div class="result-list">
         <div class="db-card">
           <div class="db-card-inner">
+            <button (click)="showStatement = true" class="disclaimer-btn">data disclaimer</button>
             <section *ngIf="items.length > 0 || displayConceptErrorMessage">
               <!-- Top summary boxes -- only show if have results -->
               <h5 id="domain-summary" class="secondary-display">
@@ -67,3 +68,4 @@
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
+<app-pop-up [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (closed)="showStatement = false" *ngIf="showStatement"></app-pop-up>

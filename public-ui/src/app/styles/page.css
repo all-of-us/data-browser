@@ -433,14 +433,14 @@ p {
 }
 
 .disclaimer-btn {
-  background: #816492;
   padding: 1rem 2rem;
   color: #f9f9fa;
   text-transform: uppercase;
   border-radius: 0.3rem;
+  background: #262262;
 }
 .disclaimer-btn:hover {
-  background: #262262;
+  background: #816492;
 }
 
 

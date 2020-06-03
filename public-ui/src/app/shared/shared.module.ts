@@ -15,6 +15,7 @@ import { RhFooterComponent } from './components/rh-footer/rh-footer.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderFooterService } from './services/header-footer.service';
+import { PopUpComponent } from './components/pop-up/pop-up.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { HeaderFooterService } from './services/header-footer.service';
     RhHeaderComponent,
     BetaBarComponent,
     SpinnerComponent,
-    RhFooterComponent
+    RhFooterComponent,
+    PopUpComponent
   ],
   exports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { HeaderFooterService } from './services/header-footer.service';
     BetaBarComponent,
     SpinnerComponent,
     RhFooterComponent,
-    LocalStorageModule
+    LocalStorageModule,
+    PopUpComponent
   ],
   providers: [
     HeaderFooterService
