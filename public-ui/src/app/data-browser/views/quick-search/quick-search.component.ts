@@ -57,6 +57,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
+  showStatement: boolean;
+  statement = `All of Us Research Program data are not representative of the population of the United States.
+  If you present, publish, or distribute All of Us data, please include the following disclaimer:<br>
+  “The All of Us Research Program includes a demographically, geographically, and medically diverse group of participants,
+  however, it is not a representative sample of the population of the United States.
+  Enrollment in the All of Us Research program is open to all who choose to participate,
+  and the program is committed to engaging with and encouraging participation of minority groups that are
+  historically underrepresented in biomedical research".`;
 
   private subscriptions: ISubscription[] = [];
 
@@ -123,29 +131,29 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     if (this.prevSearchText) {
       this.subscriptions.push(
         this.searchDomains(this.prevSearchText).subscribe({
-            next: (data: DomainInfosAndSurveyModulesResponse) => {
-              this.searchCallback(data);
-              this.displayDomainTotalsErrorMessage = false;
-            },
-            error : err => {
-              const errorBody = JSON.parse(err._body);
-              this.displayDomainTotalsErrorMessage = true;
-              console.log('Error searching: ', errorBody.message);
-              this.loading = false;
-              this.resetDomainResults();
-            }
-          }));
+          next: (data: DomainInfosAndSurveyModulesResponse) => {
+            this.searchCallback(data);
+            this.displayDomainTotalsErrorMessage = false;
+          },
+          error: err => {
+            const errorBody = JSON.parse(err._body);
+            this.displayDomainTotalsErrorMessage = true;
+            console.log('Error searching: ', errorBody.message);
+            this.loading = false;
+            this.resetDomainResults();
+          }
+        }));
     }
     // Get domain totals only once so if they erase search we can load them
     this.subscriptions.push(
       this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe({
         next: data => {
-            this.totalResults = data;
-            // Only set results to the totals if we don't have a searchText
-            if (!this.prevSearchText) {
-              this.searchCallback(data);
-            }
-            this.displayDomainTotalsErrorMessage = false;
+          this.totalResults = data;
+          // Only set results to the totals if we don't have a searchText
+          if (!this.prevSearchText) {
+            this.searchCallback(data);
+          }
+          this.displayDomainTotalsErrorMessage = false;
         },
         error: err => {
           const errorBody = JSON.parse(err._body);
@@ -163,17 +171,17 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         .distinctUntilChanged()
         .switchMap((query) => this.searchDomains(query))
         .subscribe({
-        next: (data: DomainInfosAndSurveyModulesResponse) => {
-          this.searchCallback(data);
-          this.displayDomainTotalsErrorMessage = false;
-        },
-          error : err => {
+          next: (data: DomainInfosAndSurveyModulesResponse) => {
+            this.searchCallback(data);
+            this.displayDomainTotalsErrorMessage = false;
+          },
+          error: err => {
             const errorBody = JSON.parse(err._body);
             this.displayDomainTotalsErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
             this.loading = false;
             this.resetDomainResults();
-        }
+          }
         }));
   }
   ngOnDestroy() {

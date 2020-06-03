@@ -1,165 +1,187 @@
-  <div class="rh-header">
-    <div>
-      <h1 id='db-title' class="primary-display ">Data Browser</h1>
-      <p id="db-desc" class="body-default">
-        The Data Browser provides interactive views of the publicly available <span class="allofus-italics">All of Us</span> Research Program participant data.
-        Currently, participant provided information, including surveys and physical measurements taken at the time of
-        participant enrollment, as well as electronic health record data are available.
-        The <span class="allofus-italics">All of Us</span> Research Program data will include more data types over time.
-        <br><br>
-        In order to protect participant privacy, the data is limited to aggregate counts and summary
-        demographic information.
-        For more information, please visit our <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs">FAQ page.</a>
+<h1 id='db-title' class="primary-display ">Data Browser</h1>
+<p id="db-desc" class="body-default">
+  The Data Browser provides interactive views of the publicly available <span class="allofus-italics">All of Us</span>
+  Research Program participant data.
+  Currently, participant provided information, including surveys and physical measurements taken at the time of
+  participant enrollment, as well as electronic health record data (EHR) are available. EHR data are reported by health
+  care providers and are not participant reported.
+  The <span class="allofus-italics">All of Us</span> Research Program data will include more data types over time.
+  <br><br>
+  In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts
+  of 20, and summary demographic information.
+  For more information, please visit our <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs">FAQ
+    page.</a>
+  <br><br>
+  Please read the public data use statement available below for additional information about our unique dataset and how
+  to acknowledge the <span class="allofus-italics">All of Us Research Program</span> in any presentations or
+  publications.
+  <br><br><button (click)="showStatement = true" class="disclaimer-btn">public data use statment</button>
+</p>
+
+<div class="search-icon-container">
+  <div class="search">
+    <div class="search-title">
+      <span class="secondary-display">{{title}} <app-tooltip [toolTipText1]="subTitle1" [toolTipText2]="'All of Us'"
+          [toolTipText3]="subTitle2" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+          [action]="'Tooltip Homepage search across data'"></app-tooltip></span>
+    </div>
+    <div id="db-search-bar">
+      <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+      <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search" [formControl]="searchText"
+        style="height:auto">
+      <div *ngIf="searchText.value" class="clear-icon" (click)="clearSearch()"><i
+          class="far fa-times fa-1x clear-search-icon"></i></div>
+    </div>
+    <span class="result-body-item cdr-info" *ngIf="creationTime">
+      Data includes {{numParticipants | number}} participants and is current as of
+      {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}}.
+    </span>
+  </div><!-- .search -->
+  <div class="iconlinks">
+    <div class="icons" (click)="iconClickEvent('FAQ')">
+      <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs" alt="FAQs"><img alt="FAQs"
+          src="/assets/icons/icons_faqs.png" /><span class="icon-link">FAQs</span></a>
+    </div>
+    <div class="icons" (click)="iconClickEvent('Intro-Videos')">
+      <a [routerLink]="['introductory-videos']" alt="Introductory Videos"><img alt="Introductory Videos"
+          src="/assets/icons/icons_introductoryvideo.png" /><span class="icon-link">Introductory Videos</span></a>
+    </div>
+    <div class="icons" (click)="iconClickEvent('User-Guide')">
+      <a href="../../../assets/pdf/Databrowser_Tutorial_4_26_2019.pdf" target="_blank" alt="User Guide"><img
+          alt="User Guide" src="/assets/icons/icons_userguide.png" rel="noopener noreferrer" /><span
+          class="icon-link">User Guide</span></a>
+    </div>
+  </div><!-- .iconlinks -->
+</div><!-- .search-icon-container -->
+<app-spinner [loading]="loading"></app-spinner>
+<section class="results">
+  <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
+    <app-tooltip [toolTipText1]="tooltipText.ehrDomainHelpText" [label]="'Homepage Tooltip Hover'"
+      [searchTerm]="searchText.value" [action]="'Tooltip Home Page EHR Domains'"></app-tooltip>
+  </h5>
+  <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
+    <div [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}"
+      (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
+      <p class="result-box-title">
+        {{r.name}}
+        <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.domain.toLowerCase()]"
+          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+          [action]="'Hover on ' + r.name + 'tile tooltip'"></app-tooltip>
       </p>
-    </div>
-  </div>
-  <div class="search-icon-container">
-    <div class="search">
-      <div class="search-title">
-        <span class="secondary-display">{{title}} <app-tooltip [toolTipText1]="subTitle1" [toolTipText2]="'All of Us'" [toolTipText3]="subTitle2" [label]="'Homepage Tooltip Hover'"
-        [searchTerm]="searchText.value" [action]="'Tooltip Homepage search across data'"></app-tooltip></span>
-      </div>
-      <div id="db-search-bar">
-        <clr-icon shape="search" class="is-info search-icon"></clr-icon>
-        <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search"
-          [formControl]="searchText" style="height:auto">
-        <div *ngIf="searchText.value"  class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
-      </div>
-      <span class="result-body-item cdr-info" *ngIf="creationTime">
-        Data includes {{numParticipants | number}} participants and is current as of
-        {{creationTime.getMonth()+1}}/{{creationTime.getDate()}}/{{creationTime.getFullYear()}}.
-      </span>
-    </div><!-- .search -->
-    <div class="iconlinks">
-      <div class="icons" (click)="iconClickEvent('FAQ')">
-        <a href="{{allOfUsUrl}}/frequently-asked-questions/#data-browser-faqs" alt="FAQs"><img alt="FAQs"
-            src="/assets/icons/icons_faqs.png" /><span class="icon-link">FAQs</span></a>
-      </div>
-      <div class="icons" (click)="iconClickEvent('Intro-Videos')">
-        <a [routerLink]="['introductory-videos']" alt="Introductory Videos"><img alt="Introductory Videos"
-            src="/assets/icons/icons_introductoryvideo.png" /><span class="icon-link">Introductory Videos</span></a>
-      </div>
-      <div class="icons" (click)="iconClickEvent('User-Guide')">
-        <a href="../../../assets/pdf/Databrowser_Tutorial_4_26_2019.pdf" target="_blank" alt="User Guide"><img
-            alt="User Guide" src="/assets/icons/icons_userguide.png" rel="noopener noreferrer"/><span class="icon-link">User Guide</span></a>
-      </div>
-    </div><!-- .iconlinks -->
-  </div><!-- .search-icon-container -->
-  <app-spinner [loading]="loading"></app-spinner>
-  <section class="results">
-    <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
-      <app-tooltip [toolTipText1]="tooltipText.ehrDomainHelpText" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Tooltip Home Page EHR Domains'"></app-tooltip>
-    </h5>
-    <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
-      <div [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
-        <p class="result-box-title">
-          {{r.name}}
-          <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.domain.toLowerCase()]" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on ' + r.name + 'tile tooltip'"></app-tooltip>
-        </p>
-        <div class="result-body">
-          <span class="result-body-item">
-            <div class="result-stat">
-              {{r.standardConceptCount | number}}
-            </div>
-            <span *ngIf="searchText.value">matching medical concepts</span>
-            <span *ngIf="!searchText.value">medical concepts</span>
+      <div class="result-body">
+        <span class="result-body-item">
+          <div class="result-stat">
+            {{r.standardConceptCount | number}}
+          </div>
+          <span *ngIf="searchText.value">matching medical concepts</span>
+          <span *ngIf="!searchText.value">medical concepts</span>
+        </span>
+        <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
+          <span><strong> {{r.participantCount | number}}</strong> participants in this domain
           </span>
-          <span class="result-body-item result-body-stat" *ngIf="r.participantCount">
-            <span><strong> {{r.participantCount | number}}</strong> participants in this domain
-            </span>
-          </span>
-        </div>
-        <div class="result-box-link">
-          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="!searchText.value" class="result-bottom-link"
-            (click)="viewEhrDomain(r, null)">
-            View Top {{r.name}} </a>
-          <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="searchText.value" class="result-bottom-link" (click)="viewEhrDomain(r, searchText.value)">
-            View Results </a>
-        </div>
+        </span>
       </div>
-      <div class="col col-xs-12" *ngIf="(!domainResults || domainResults.length === 0) && !displayDomainTotalsErrorMessage">
-        <h6 class="no-results-text"> No EHR Data Results. Please type in a new search term.</h6>
-      </div>
-      <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
-        <app-error-message [dataType]="'data'"></app-error-message>
+      <div class="result-box-link">
+        <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="!searchText.value"
+          class="result-bottom-link" (click)="viewEhrDomain(r, null)">
+          View Top {{r.name}} </a>
+        <a [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}" *ngIf="searchText.value"
+          class="result-bottom-link" (click)="viewEhrDomain(r, searchText.value)">
+          View Results </a>
       </div>
     </div>
-    <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
-    <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
-      <div tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)" class="result-box" *ngFor="let r of surveyResults">
-        <p class="result-box-title">
-          {{r.name}}
-          <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.name.toLowerCase()]" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
-        </p>
-        <div class="result-body">
-          <div class="result-body-item">
-            <div class="result-stat">
-              {{r.questionCount | number}}
-            </div>
-            <span *ngIf="searchText.value">matching survey questions</span>
-            <span *ngIf="!searchText.value">questions available</span>
-          </div>
-          <span class="result-body-item result-body-stat" *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
-            <span><strong> {{r.participantCount | number}}</strong> participants in this domain
-            </span>
-          </span>
-          <ng-template #noParticipants>
-            <span><strong> 0 </strong>participants in this domain
-            </span>
-          </ng-template>
-          <div class="result-body-item">
-            <span>{{r.description}}</span>
-          </div>
-        </div>
-          <div class="result-box-link">
-            <a *ngIf="!searchText.value" class="result-bottom-link"  tabindex="0" (keydown.enter)="viewSurvey(r, null)" (click)="viewSurvey(r, null)">
-              View Complete Survey</a>
-            <a *ngIf="searchText.value" class="result-bottom-link" tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
-          </div>
-      </div>
-      <!-- toDO: style noresults -->
-      <div class="col-xs-12" *ngIf="(!surveyResults || surveyResults.length === 0) && !displayDomainTotalsErrorMessage">
-        <h6 class="no-results-text"> No Survey Results. Please type in a new search term.</h6>
-      </div>
-      <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
-        <app-error-message [dataType]="'data'"></app-error-message>
-      </div>
+    <div class="col col-xs-12"
+      *ngIf="(!domainResults || domainResults.length === 0) && !displayDomainTotalsErrorMessage">
+      <h6 class="no-results-text"> No EHR Data Results. Please type in a new search term.</h6>
     </div>
-    <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
-      Physical Measurements: </h5>
-    <div class="result-boxes"
-      *ngIf="physicalMeasurementsFound > 0 && !loading">
-      <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
-        <p class="result-box-title">
-          Physical Measurements
-          <app-tooltip [toolTipText1]="tooltipText.physicalMeasurements" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'">
-          </app-tooltip>
-        </p>
-        <div class="result-body">
-          <span class="result-body-item">
-            <ng-container *ngIf="searchText.value; else noSearchPm;">
-              <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
-            </ng-container>
-            <ng-template #noSearchPm>
-              <div class="result-stat">{{physicalMeasurementsFound}}</div> physical measurements
-            </ng-template>
-          </span>
-          <span class="result-body-item result-body-stat" *ngIf="pmParticipantCount > 0">
-              <span><strong> {{pmParticipantCount | number}}</strong> participants in this domain
-              </span>
-            </span>
-          <span class="result-body-item">
-            Participants have the option to provide a standard set of physical measurements as part
-              of the enrollment process (“program physical measurements”).
-          </span>
-        </div>
-          <div class="result-box-link">
-            <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
-          </div>
-      </div>
-    </div>
-    <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage" class="no-results-text"> No Program Physical Measurement Results. Please type in a new search term.</h6>
     <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
       <app-error-message [dataType]="'data'"></app-error-message>
     </div>
-  </section>
+  </div>
+  <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
+  <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
+    <div tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"
+      class="result-box" *ngFor="let r of surveyResults">
+      <p class="result-box-title">
+        {{r.name}}
+        <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.name.toLowerCase()]"
+          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+          [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
+      </p>
+      <div class="result-body">
+        <div class="result-body-item">
+          <div class="result-stat">
+            {{r.questionCount | number}}
+          </div>
+          <span *ngIf="searchText.value">matching survey questions</span>
+          <span *ngIf="!searchText.value">questions available</span>
+        </div>
+        <span class="result-body-item result-body-stat"
+          *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
+          <span><strong> {{r.participantCount | number}}</strong> participants in this domain
+          </span>
+        </span>
+        <ng-template #noParticipants>
+          <span><strong> 0 </strong>participants in this domain
+          </span>
+        </ng-template>
+        <div class="result-body-item">
+          <span>{{r.description}}</span>
+        </div>
+      </div>
+      <div class="result-box-link">
+        <a *ngIf="!searchText.value" class="result-bottom-link" tabindex="0" (keydown.enter)="viewSurvey(r, null)"
+          (click)="viewSurvey(r, null)">
+          View Complete Survey</a>
+        <a *ngIf="searchText.value" class="result-bottom-link" tabindex="0"
+          (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
+      </div>
+    </div>
+    <!-- toDO: style noresults -->
+    <div class="col-xs-12" *ngIf="(!surveyResults || surveyResults.length === 0) && !displayDomainTotalsErrorMessage">
+      <h6 class="no-results-text"> No Survey Results. Please type in a new search term.</h6>
+    </div>
+    <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
+      <app-error-message [dataType]="'data'"></app-error-message>
+    </div>
+  </div>
+  <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
+    Physical Measurements: </h5>
+  <div class="result-boxes" *ngIf="physicalMeasurementsFound > 0 && !loading">
+    <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
+      <p class="result-box-title">
+        Physical Measurements
+        <app-tooltip [toolTipText1]="tooltipText.physicalMeasurements" [label]="'Homepage Tooltip Hover'"
+          [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'">
+        </app-tooltip>
+      </p>
+      <div class="result-body">
+        <span class="result-body-item">
+          <ng-container *ngIf="searchText.value; else noSearchPm;">
+            <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
+          </ng-container>
+          <ng-template #noSearchPm>
+            <div class="result-stat">{{physicalMeasurementsFound}}</div> physical measurements
+          </ng-template>
+        </span>
+        <span class="result-body-item result-body-stat" *ngIf="pmParticipantCount > 0">
+          <span><strong> {{pmParticipantCount | number}}</strong> participants in this domain
+          </span>
+        </span>
+        <span class="result-body-item">
+          Participants have the option to provide a standard set of physical measurements as part
+          of the enrollment process (“program physical measurements”).
+        </span>
+      </div>
+      <div class="result-box-link">
+        <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+      </div>
+    </div>
+  </div>
+  <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage" class="no-results-text">
+    No Program Physical Measurement Results. Please type in a new search term.</h6>
+  <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
+    <app-error-message [dataType]="'data'"></app-error-message>
+  </div>
+</section>
+<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATMENT'" [statement]="statement" *ngIf="showStatement" ></app-pop-up>
