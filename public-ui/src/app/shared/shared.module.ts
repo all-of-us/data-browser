@@ -11,11 +11,11 @@ import { EmergencyComponent } from '../views/emergency/emergency.component';
 import { PageTemplateSignedOutComponent } from '../views/page-template-signed-out/page-template-signed-out.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
+import { PopUpComponent } from './components/pop-up/pop-up.component';
 import { RhFooterComponent } from './components/rh-footer/rh-footer.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderFooterService } from './services/header-footer.service';
-import { PopUpComponent } from './components/pop-up/pop-up.component';
 
 @NgModule({
   imports: [

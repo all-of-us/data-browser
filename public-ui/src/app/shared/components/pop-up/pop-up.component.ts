@@ -17,3 +17,4 @@ export class PopUpComponent {
     this.showStatement = false;
     this.closed.emit();
   }
+}
