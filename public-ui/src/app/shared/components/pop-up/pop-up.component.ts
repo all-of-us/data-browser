@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-pop-up',
@@ -10,6 +10,9 @@ export class PopUpComponent {
   @Input() title: string;
   @Output() closed: EventEmitter<any> = new EventEmitter;
 
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    this.close();
+}
 
   close() {
     this.closed.emit(true);
