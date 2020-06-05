@@ -3,6 +3,9 @@
     height: 100%;
     z-index: 10;
     position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -15,9 +18,9 @@
 }
 
 .data-statement > .card {
-    width: 50%;
-    margin: 25% auto;
-    transform: translateY(-50%);
+    width: contain;
+    height: contain;
+    margin: 15%;
     padding: 1rem;
 }
 
@@ -31,9 +34,21 @@
     width: 100%;
     position: relative;
     padding: 1rem;
+    margin-top:1.5rem;
 }
 .data-statement > .card > .btn-container > .disclaimer-btn {
     position: absolute;
     right:0;
 }
 
+@media (max-width: 900px){
+    .data-statement > .card {
+        margin:10%;
+    }
+}
+
+@media (min-width: 1400px){
+    .data-statement > .card {
+        margin:25%;
+    }
+}
