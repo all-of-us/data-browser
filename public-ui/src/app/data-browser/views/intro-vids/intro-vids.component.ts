@@ -11,6 +11,7 @@ export class IntroVidsComponent {
     title: 'Participant Intro',
     downloadUrl: '',
     poster: '/assets/videos/participant_video_poster.png',
+    subtitles:'/assets/videos/participant_sub_en.vtt',
     src: [{
       url: '/assets/videos/participant_intro.mp4',
       type: 'video/mp4'

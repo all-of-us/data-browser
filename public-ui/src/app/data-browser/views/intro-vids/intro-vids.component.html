@@ -8,6 +8,7 @@
         <ng-container *ngFor='let src of video.src'>
           <source src="{{src.url}}" type="{{src.type}}" />
         </ng-container>
+        <track default label="English" kind="captions" srclang="en" src="{{video.subtitles}}" >
           Sorry, your browser doesn't support embedded videos,
           but don't worry, you can <a href="{{video.downloadUrl}}">download it</a>
           and watch it with your favorite video player!
