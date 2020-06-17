@@ -3,7 +3,7 @@ api_version: 1
 threadsafe: true
 default_expiration: "2m"
 handlers:
-- url: /(.*\.(css|eot|gz|html|ico|jpg|jpeg|js|map|png|svg|ttf|woff|woff2|pdf|mp4|webm|ogv))
+- url: /(.*\.(css|eot|gz|html|ico|jpg|jpeg|js|map|png|svg|ttf|woff|woff2|pdf|mp4|webm|ogv|vtt))
   static_files: dist/\1
   upload: dist/(.*)
   secure: always
