@@ -11,7 +11,7 @@ export class IntroVidsComponent {
     title: 'Participant Intro',
     downloadUrl: '',
     poster: '/assets/videos/participant_video_poster.png',
-    subtitles:'/assets/videos/participant_en.vtt',
+    subtitles: '/assets/videos/participant_en.vtt',
     src: [{
       url: '/assets/videos/participant_intro.mp4',
       type: 'video/mp4'
@@ -29,6 +29,7 @@ export class IntroVidsComponent {
     title: 'Researcher Intro',
     downloadUrl: '',
     poster: '/assets/videos/researcher_video_poster.png',
+    subtitles: '/assets/videos/researcher_en.vtt',
     src: [{
       url: '/assets/videos/researcher_intro.mp4',
       type: 'video/mp4'
@@ -46,6 +47,7 @@ export class IntroVidsComponent {
     title: 'Surveys Intro',
     downloadUrl: '',
     poster: '/assets/videos/surveys_video_poster.png',
+    subtitles: '/assets/videos/surveys_en.vtt',
     src: [{
       url: '/assets/videos/surveys_intro.mp4',
       type: 'video/mp4'
@@ -63,6 +65,7 @@ export class IntroVidsComponent {
     title: 'Physical Measurements Intro',
     downloadUrl: '',
     poster: '/assets/videos/physical_measurements_video_poster.png',
+    subtitles: '/assets/videos/physical_measurements_en.vtt',
     src: [{
       url: '/assets/videos/physical_measurements_intro.mp4',
       type: 'video/mp4'
