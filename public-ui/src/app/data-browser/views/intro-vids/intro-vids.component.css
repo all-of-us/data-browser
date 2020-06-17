@@ -13,7 +13,3 @@
     height:auto;
     outline: none;
 }
-/* removes gradient overlay from chrome */
-.vid-container video::-webkit-media-controls-panel {
-    background-image: none !important;
- }
