@@ -69,7 +69,18 @@ export class IntroVidsComponent {
     title: 'Surveys Intro',
     downloadUrl: '',
     poster: '/assets/videos/surveys_video_poster.png',
-    subtitles: '/assets/videos/surveys_en.vtt',
+    subtitles: [{
+      url: '/assets/videos/surveys_en.vtt',
+      lang: 'en',
+      label: 'English',
+      default: true
+    },
+    {
+      url: '/assets/videos/surveys_es.vtt',
+      lang: 'es',
+      label: 'Spanish',
+      default: false
+    }],
     src: [{
       url: '/assets/videos/surveys_intro.mp4',
       type: 'video/mp4'
