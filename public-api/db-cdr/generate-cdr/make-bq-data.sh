@@ -462,6 +462,13 @@ set d.drug_brand_names = r.drug_brand_names from
 where d.concept_id=r.ing_concept"
 
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` set concept_name = case concept_id when 1384639 then 'Diagnosed Health Condition: Heart and Blood Condition'
+ when 43528761 then 'Diagnosed Health Condition: Hormone/Endocrine Condition' when 43529638 then 'Diagnosed Health Condition: Other Conditions'
+ when 43529170 then 'Other Conditions: Liver Condition' else concept_name end;"
+
+
+
 #######################
 # Drop views created #
 #######################
