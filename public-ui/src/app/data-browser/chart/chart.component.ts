@@ -627,7 +627,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.
           filter(x => x.stratum2 === a.stratum5)[0];
         totalCount = (ageResult.countValue <= 20) ? '&le; 20' : ageResult.countValue;
-        console.log(ageResult, 'rere?');
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
         toolTipHelpText = '<b>' + a.countValue + '</b> participants were ages within range of ' +
           a.analysisStratumName + ' when survey was taken with this answer and is <b>'
