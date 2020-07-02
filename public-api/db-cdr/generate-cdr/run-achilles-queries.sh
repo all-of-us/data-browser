@@ -484,7 +484,6 @@ group by p.gender_concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 with m_age as
 (select measurement_id,
 ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
@@ -501,38 +500,37 @@ when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
 when age < 18 then '0' end as age_stratum from m_age
 group by measurement_id,age_stratum
-)
-select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
-count(distinct m.person_id) as count_value, 0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join m_age_stratum p
-on m.measurement_id=p.measurement_id
-group by age_stratum"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
-with m_age as
+),
+ob_age as
 (select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 where observation_concept_id in (903120)
 or observation_source_concept_id in (903120)
 group by observation_id,age
 ),
-m_age_stratum as
+ob_age_stratum as
 (
 select observation_id,
 case when age >= 18 and age <= 29 then '2'
 when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-when age < 18 then '0' end as age_stratum from m_age
+when age < 18 then '0' end as age_stratum from ob_age
 group by observation_id,age_stratum
 )
+select 0, analysis_id, '0', 'Physical Measurements', stratum_4, sum(count_value), sum(source_count_value) from
+(select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
+count(distinct m.person_id) as count_value, 0 as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join m_age_stratum p
+on m.measurement_id=p.measurement_id
+group by age_stratum
+union all
 select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
 count(distinct m.person_id) as count_value, 0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` m join m_age_stratum p
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_observation\` m join ob_age_stratum p
 on m.observation_id=p.observation_id
-group by age_stratum"
+group by age_stratum)
+group by 2,5;"
 
 ####################
 # survey counts #
