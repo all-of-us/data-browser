@@ -461,6 +461,10 @@ set d.drug_brand_names = r.drug_brand_names from
 \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\` r
 where d.concept_id=r.ing_concept"
 
+# This fixes basics survey answer typo
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar
+set ar.stratum_4='Highest Grade: College One to Three' where ar.stratum_3='1585946' "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` set concept_name = case concept_id when 1384639 then 'Diagnosed Health Condition: Heart and Blood Condition'
