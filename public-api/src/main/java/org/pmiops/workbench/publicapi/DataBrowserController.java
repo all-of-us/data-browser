@@ -686,8 +686,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
             String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
 
-            System.out.println(domainKeyword);
-
             Long conceptId = 0L;
             try {
                 conceptId = Long.parseLong(query);

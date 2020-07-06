@@ -21,7 +21,9 @@ export class HighlightSearchComponent implements OnChanges, OnDestroy {
     } else {
       let searchWords = this.searchTerm.split(new RegExp(',| '));
       searchWords = searchWords.filter(w => w.length > 0 );
-      searchWords = searchWords.map(word => word.replace(/[&!^\/\\#,+()$~%.'":*?<>{}]/g, ''));
+      //searchWords = searchWords.map(word => word.replace(/[&!^\/\\#,+()$~%.'":*?<>{}]/g, ''));
+      // Replace all the special characters in search word
+      searchWords = searchWords.map(word => word.replace(/[^a-zA-Z0-9-. ]/g, ''));
       this.matchString = new RegExp(searchWords.join('|'));
       const matches = this.text.match(new RegExp(this.matchString, 'gi'));
       const splits = this.text.split(new RegExp(this.matchString, 'i'));
