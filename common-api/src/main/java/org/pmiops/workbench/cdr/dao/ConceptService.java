@@ -94,7 +94,6 @@ public class ConceptService {
                     } else if (tempKey.contains("*") && tempKey.length() > 1) {
                         temp.add(toAdd);
                     } else if (tempKey.contains("(") && !tempKey.contains("\"")) {
-                        System.out.println("Am i here");
                         temp.add("\"" + tempKey + "\"");
                     } else {
                         if (key.length() < 3) {
