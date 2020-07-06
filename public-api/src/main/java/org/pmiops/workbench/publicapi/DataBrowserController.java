@@ -585,7 +585,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if(maxResults == null || maxResults == 0){
             maxResults = Integer.MAX_VALUE;
         }
-
         List<Long> drugConcepts = new ArrayList<>();
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
@@ -686,6 +685,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if (query != null && !query.isEmpty() && query.length() > 0) {
             String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
             String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
+
+            System.out.println(domainKeyword);
 
             Long conceptId = 0L;
             try {
