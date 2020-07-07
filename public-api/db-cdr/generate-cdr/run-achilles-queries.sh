@@ -144,6 +144,33 @@ select p.* from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 where p.person_id not in
 (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
+#Create temp table to store converted physical measurement values
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.converted_pm\`
+(
+  id STRING,
+  measurement_id INT64,
+  person_id INT64,
+  measurement_concept_id INT64,
+  measurement_date DATE,
+  measurement_datetime TIMESTAMP,
+  measurement_type_concept_id INT64,
+  operator_concept_id INT64,
+  value_as_number FLOAT64,
+  value_as_concept_id INT64,
+  unit_concept_id INT64,
+  range_low FLOAT64,
+  range_high FLOAT64,
+  provider_id INT64,
+  visit_occurrence_id INT64,
+  measurement_source_value STRING,
+  measurement_source_concept_id INT64,
+  unit_source_value STRING,
+  value_source_value STRING
+);
+"
+
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` AS
 select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` m
@@ -169,6 +196,18 @@ when age < 18 then '0' end as age_stratum from survey_age
 group by observation_id,age_stratum
 )
 select * from survey_age_stratum_temp"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into converted_pm
+(id, measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
+value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
+value_source_value)
+select CONCAT(measurement_id, "_", person_id) as id, m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
+(m.value_as_number*0.393701), m.value_as_concept_id, 8533 as unit_concept_id, m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id,
+"Inches" as unit_source_value, concat(m.value_as_number*0.393701," cm") as value_source_value
+from `aou-res-curation-prod.combined20191004_dbrowser_2.measurement` m where (measurement_concept_id = 903133 or measurement_source_concept_id = 903133)
+and (unit_concept_id = 8582 or unit_source_value = 'cm')"
 
 # Next Populate achilles_results
 echo "Running achilles queries..."
