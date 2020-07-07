@@ -46,7 +46,7 @@ then
 fi
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project=$BQ_PROJECT ls --max_results=125)
+datasets=$(bq --project=$BQ_PROJECT ls --max_results=225)
 if [ -z "$datasets" ]
 then
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
@@ -435,7 +435,7 @@ where stratum_4 like '%Sex At Birth: Sex At Birth%' "
 #Create temp table to store drug brand names
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
+CREATE TABLE IF NOT EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
 (
   ing_concept INT64,
   drug_brand_names STRING
@@ -469,9 +469,7 @@ set ar.stratum_4='Highest Grade: College One to Three' where ar.stratum_3='15859
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` set concept_name = case concept_id when 1384639 then 'Diagnosed Health Condition: Heart and Blood Condition'
  when 43528761 then 'Diagnosed Health Condition: Hormone/Endocrine Condition' when 43529638 then 'Diagnosed Health Condition: Other Conditions'
- when 43529170 then 'Other Conditions: Liver Condition' else concept_name end;"
-
-
+ when 43529170 then 'Other Conditions: Liver Condition' else concept_name end where concept_id in (1384639, 43528761, 43529170, 43529638);"
 
 #######################
 # Drop views created #
