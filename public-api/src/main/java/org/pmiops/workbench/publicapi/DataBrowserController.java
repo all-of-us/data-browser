@@ -585,7 +585,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if(maxResults == null || maxResults == 0){
             maxResults = Integer.MAX_VALUE;
         }
-
         List<Long> drugConcepts = new ArrayList<>();
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {

@@ -93,6 +93,8 @@ public class ConceptService {
                         temp.add(tempKey);
                     } else if (tempKey.contains("*") && tempKey.length() > 1) {
                         temp.add(toAdd);
+                    } else if (tempKey.contains("(") && !tempKey.contains("\"")) {
+                        temp.add("\"" + tempKey + "\"");
                     } else {
                         if (key.length() < 3) {
                             temp.add(key);
@@ -147,6 +149,8 @@ public class ConceptService {
                     }
                 } else if (key.contains(".") && !key.contains("\"")) {
                     modifiedWords.add(new String("\"" + key + "\""));
+                } else if (key.contains("(") && !key.contains("\"")) {
+                    modifiedWords.add("+" + new String("\"" + key + "\""));
                 } else if (key.contains("-")) {
                     modifiedWords.add(key);
                 } else if (key.contains("*") && key.length() > 1) {
@@ -186,6 +190,8 @@ public class ConceptService {
                             (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
                     final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
+
+                    System.out.println(keyword);
 
                     Expression<Double> matchExp = null;
 
