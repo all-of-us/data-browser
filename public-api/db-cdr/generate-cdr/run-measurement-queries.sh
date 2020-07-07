@@ -277,7 +277,12 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
-     and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))),
+     and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0)))
+     union all
+     select measurement_concept_id, cast(um.unit_concept_id as string) as unit,p.gender_concept_id as gender,
+     cast(value_as_number as float64) as count_value
+     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
+     where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
      overallstats as
      (select subject_id as stratum1_id, unit as stratum2_id, gender as stratum3_id, cast(avg(1.0 * count_value) as float64) as avg_value,
      cast(stddev(count_value) as float64) as stdev_value, min(count_value) as min_value, max(count_value) as max_value,
