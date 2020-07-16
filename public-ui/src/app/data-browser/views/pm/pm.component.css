@@ -77,6 +77,12 @@
     flex-grow: 1;
 }
 
+.bs-chart-item {
+    width: calc((33.3%) - 18px);
+    height: auto;
+    flex-grow: 1;
+}
+
 .age-chart {
     padding: 1em;
     padding-left: 1.5em;

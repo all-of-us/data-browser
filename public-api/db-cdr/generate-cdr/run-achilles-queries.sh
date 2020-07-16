@@ -59,6 +59,32 @@ view_table_names=(condition_occurrence drug_exposure procedure_occurrence observ
 view_mapping_table_names=(_mapping_condition_occurrence _mapping_drug_exposure _mapping_procedure_occurrence _mapping_observation)
 view_domain_names=(condition drug procedure observation)
 
+#Create temp table to store converted physical measurement values
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"CREATE TABLE IF NOT EXISTS \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+(
+  id STRING,
+  measurement_id INT64,
+  person_id INT64,
+  measurement_concept_id INT64,
+  measurement_date DATE,
+  measurement_datetime TIMESTAMP,
+  measurement_type_concept_id INT64,
+  operator_concept_id INT64,
+  value_as_number FLOAT64,
+  value_as_concept_id INT64,
+  unit_concept_id INT64,
+  range_low FLOAT64,
+  range_high FLOAT64,
+  provider_id INT64,
+  visit_occurrence_id INT64,
+  measurement_source_value STRING,
+  measurement_source_concept_id INT64,
+  unit_source_value STRING,
+  value_source_value STRING
+);
+"
+
 ################################################
 # CREATE VIEWS
 ################################################
@@ -91,6 +117,17 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     where (m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) or m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))
     and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+    (id, measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
+    value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
+    value_source_value)
+    select CONCAT(measurement_id, '_', person_id) as id, m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
+    (m.value_as_number*0.393701), m.value_as_concept_id, 8533 as unit_concept_id, m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id,
+    'Inches' as unit_source_value, concat(m.value_as_number*0.393701,' cm') as value_source_value
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m where (measurement_concept_id = 903133 or measurement_source_concept_id = 903133)
+    and (unit_concept_id = 8582 or unit_source_value = 'cm')"
+
     for index in "${!view_names[@]}"; do
         view_table_name="${view_table_names[$index]}";
         view_name="${view_names[$index]}";
@@ -121,6 +158,17 @@ else
     where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0
     and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
+    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+    (id, measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
+    value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
+    value_source_value)
+    select CONCAT(measurement_id, '_', person_id) as id, m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
+    (m.value_as_number*0.393701), m.value_as_concept_id, 8533 as unit_concept_id, m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id,
+    'Inches' as unit_source_value, concat(m.value_as_number*0.393701,' cm') as value_source_value
+    from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m where (measurement_concept_id = 903133 or measurement_source_concept_id = 903133)
+    and (unit_concept_id = 8582 or unit_source_value = 'cm')"
+
     for index in "${!view_names[@]}"; do
         view_table_name="${view_table_names[$index]}";
         view_name="${view_names[$index]}";
@@ -143,33 +191,6 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select p.* from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 where p.person_id not in
 (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
-
-#Create temp table to store converted physical measurement values
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"
-CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.converted_pm\`
-(
-  id STRING,
-  measurement_id INT64,
-  person_id INT64,
-  measurement_concept_id INT64,
-  measurement_date DATE,
-  measurement_datetime TIMESTAMP,
-  measurement_type_concept_id INT64,
-  operator_concept_id INT64,
-  value_as_number FLOAT64,
-  value_as_concept_id INT64,
-  unit_concept_id INT64,
-  range_low FLOAT64,
-  range_high FLOAT64,
-  provider_id INT64,
-  visit_occurrence_id INT64,
-  measurement_source_value STRING,
-  measurement_source_concept_id INT64,
-  unit_source_value STRING,
-  value_source_value STRING
-);
-"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` AS
@@ -196,18 +217,6 @@ when age < 18 then '0' end as age_stratum from survey_age
 group by observation_id,age_stratum
 )
 select * from survey_age_stratum_temp"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"
-insert into converted_pm
-(id, measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
-value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
-value_source_value)
-select CONCAT(measurement_id, "_", person_id) as id, m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
-(m.value_as_number*0.393701), m.value_as_concept_id, 8533 as unit_concept_id, m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id,
-"Inches" as unit_source_value, concat(m.value_as_number*0.393701," cm") as value_source_value
-from `aou-res-curation-prod.combined20191004_dbrowser_2.measurement` m where (measurement_concept_id = 903133 or measurement_source_concept_id = 903133)
-and (unit_concept_id = 8582 or unit_source_value = 'cm')"
 
 # Next Populate achilles_results
 echo "Running achilles queries..."
@@ -523,6 +532,7 @@ group by p.gender_concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 with m_age as
 (select measurement_id,
 ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
@@ -543,7 +553,7 @@ group by measurement_id,age_stratum
 ob_age as
 (select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 where observation_concept_id in (903120)
 or observation_source_concept_id in (903120)
 group by observation_id,age
@@ -566,7 +576,7 @@ group by age_stratum
 union all
 select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
 count(distinct m.person_id) as count_value, 0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_observation\` m join ob_age_stratum p
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` m join ob_age_stratum p
 on m.observation_id=p.observation_id
 group by age_stratum)
 group by 2,5;"

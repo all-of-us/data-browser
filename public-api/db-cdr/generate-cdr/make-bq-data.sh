@@ -469,7 +469,8 @@ set ar.stratum_4='Highest Grade: College One to Three' where ar.stratum_3='15859
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` set concept_name = case concept_id when 1384639 then 'Diagnosed Health Condition: Heart and Blood Condition'
  when 43528761 then 'Diagnosed Health Condition: Hormone/Endocrine Condition' when 43529638 then 'Diagnosed Health Condition: Other Conditions'
- when 43529170 then 'Other Conditions: Liver Condition' else concept_name end;"
+ when 43529170 then 'Other Conditions: Liver Condition' else concept_name end
+ where concept_id in (1384639, 43528761, 43529638, 43529170);"
 
 
 
