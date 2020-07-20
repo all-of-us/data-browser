@@ -119,11 +119,14 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     if (this.unitNames) {
         this.selectedConceptUnit = this.unitNames[0];
     }
-    if (this.selectedConcept.analyses && this.selectedConcept.analyses.measurementValueGenderAnalysis) {
+    if (this.selectedConcept.analyses &&
+    this.selectedConcept.analyses.measurementValueGenderAnalysis) {
         if (!this.selectedConceptUnit) {
-            this.selectedConceptValueAnalysis = this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
+            this.selectedConceptValueAnalysis =
+            this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
         } else {
-            var temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+            const temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
+            a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
             this.selectedConceptValueAnalysis = temp[0];
         }
     }
@@ -133,7 +136,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   setUnit(unit) {
     this.selectedConceptUnit = unit;
-    var temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+    const temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
+    a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
     this.selectedConceptValueAnalysis = temp[0];
   }
   public hoverOnTooltip(label: string, action: string) {
