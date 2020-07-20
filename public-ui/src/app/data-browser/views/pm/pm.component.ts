@@ -19,7 +19,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
   ageChartTitle = 'Age When Physical Measurement Was Taken';
-  bsChartTitle = 'Sex Assigned At Birth Chart';
+  bsChartTitle = 'Sex Assigned At Birth';
   domainCountAnalysis: any;
 
   // Todo put constants in a class for use in other views
@@ -30,11 +30,16 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   raceAnalysis: Analysis = null;
   ethnicityAnalysis: Analysis = null;
 
+  selectedConceptUnit: string;
+
+  unitNames = [];
+
   // Get the physical measurement groups array we display here
   conceptGroups: ConceptGroup[];
   // Initialize to first group and concept, adjust order in groups array above
   selectedGroup: ConceptGroup;
   selectedConcept: ConceptWithAnalysis;
+  selectedConceptValueAnalysis: Analysis;
   domainType = DomainType.PHYSICAL_MEASUREMENTS;
   searchText: string = null;
 
@@ -110,11 +115,36 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
     this.selectedConcept = concept;
+    this.unitNames = this.dbc.UNIT_ORDER[this.selectedConcept.conceptId];
+    if (this.unitNames) {
+        this.selectedConceptUnit = this.unitNames[0];
+    }
+    if (this.selectedConcept.analyses && this.selectedConcept.analyses.measurementValueGenderAnalysis) {
+        if (!this.selectedConceptUnit) {
+            this.selectedConceptValueAnalysis = this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
+        } else {
+            var temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+            this.selectedConceptValueAnalysis = temp[0];
+        }
+    }
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
+  }
+
+  setUnit(unit) {
+    this.selectedConceptUnit = unit;
+    var temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+    this.selectedConceptValueAnalysis = temp[0];
   }
   public hoverOnTooltip(label: string, action: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       label, null, action);
+  }
+
+  getValueAnalysis() {
+    if (!this.selectedConceptValueAnalysis) {
+        return this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
+    }
+    return this.selectedConceptValueAnalysis;
   }
 }
