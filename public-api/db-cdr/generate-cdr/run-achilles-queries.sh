@@ -46,7 +46,7 @@ fi
 #Get the list of tables in the dataset
 tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
 
-declare -a domain_names domain_table_names
+declare -a domain_names domain_table_names measurement_table_name
 domain_names=(condition drug procedure observation measurement)
 domain_stratum_names=(Condition Drug Procedure Observation Measurement)
 domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation v_ehr_measurement)
@@ -84,6 +84,13 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   value_source_value STRING
 );
 "
+
+if [[ "$tables" == *"_mapping_"* ]]; then
+  measurement_table_name="v_full_measurement"
+else
+  measurement_table_name="v_ehr_measurement"
+fi
+
 
 ################################################
 # CREATE VIEWS
@@ -536,7 +543,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with m_age as
 (select measurement_id,
 ceil(TIMESTAMP_DIFF(measurement_datetime, birth_datetime, DAY)/365.25) as age
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${measurement_table_name}\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 group by measurement_id,age
@@ -570,7 +577,7 @@ group by observation_id,age_stratum
 select 0 as id, analysis_id, '0', 'Physical Measurements', stratum_4, sum(count_value) as count_value, sum(source_count_value) as source_count_value from
 (select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as stratum_3, age_stratum as stratum_4,
 count(distinct m.person_id) as count_value, 0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join m_age_stratum p
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${measurement_table_name}\` m join m_age_stratum p
 on m.measurement_id=p.measurement_id
 group by age_stratum
 union all
