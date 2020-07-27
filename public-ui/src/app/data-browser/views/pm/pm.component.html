@@ -12,11 +12,20 @@
       <div class="db-card-inner">
         <div class="db-card-header">
           <div class="group-name">{{selectedGroup.groupName}}</div>
+          <div class="bs-title" *ngIf="this.selectedConcept.analyses.measurementValueGenderAnalysis">{{bsChartTitle}}
+            <app-tooltip [toolTipText1]="tooltipText.pmValueChartHelpText"
+                         [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText" [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip>
+          </div>
           <div class="group-option" *ngIf="selectedGroup.concepts.length > 1">
             <button *ngFor="let c of selectedGroup.concepts" [ngClass]="{active:selectedConcept === c}"
               (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
           </div>
         </div>
+        <ng-container *ngIf="unitNames && unitNames.length > 1">
+          <div class="group-unit">
+            <button *ngFor="let u of unitNames" [ngClass]="{active:selectedConceptUnit === u}" (click)="setUnit(u)" class="btn btn-link unit-button">{{u}}</button>
+          </div>
+        </ng-container>
         <div *ngIf="selectedConcept && (selectedConcept.conceptId === '903111' || selectedConcept.conceptId === '903120')" class="participant-count">
           <ng-container *ngIf="selectedConcept.analyses.countAnalysis.results[0].countValue > 20;then pmGE20;else pmLE20">
           </ng-container>
@@ -31,7 +40,7 @@
           *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
           <!-- Loop through the genders we have results for showing the graph -->
           <ng-container *ngIf="['903120','903111'].indexOf(selectedConcept.conceptId) === -1; else stackedChart">
-            <div class="chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
+            <div class="bs-chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
               <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
               selectedConcept.analyses.measurementValueGenderAnalysis" class="chart-title">
                 <span class="chart-title" *ngIf="gender.countValue > 20; else PmChartTitleLE20">
@@ -41,7 +50,7 @@
               <app-chart [genderId]="gender.stratum2"
                          [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
                          [chartType]="selectedConcept.chartType"
-                         [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
+                         [analysis]="getValueAnalysis()"
                          [conceptId]="selectedConcept.conceptId"
                          [domainCountAnalysis]="domainCountAnalysis">
               </app-chart>
