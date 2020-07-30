@@ -279,7 +279,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
      union all
-     select measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
+     select case when measurement_concept_id=0 then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
@@ -423,7 +423,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
-     with measurement_quartile_data as
+     with measurement_data as
+         (
+         select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` union all
+         select measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
+         value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
+         value_source_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+          ),
+     measurement_quartile_data as
           (
           select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,
           cast(stratum_6 as float64) as bin_width,
@@ -605,7 +612,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                     cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else bin_width end) as string) as stratum_6,
           count(distinct p1.person_id) as count_value,
           count(distinct p1.person_id) as source_count_value
-          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+          from measurement_data m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
           join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=concept
           join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
           join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um
@@ -772,7 +779,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                else  CONCAT(cast(round(iqr_min,2) as string), ' - ', cast(round(iqr_max,2) as string)) end as stratum_4,
                     cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else bin_width end) as string) as stratum_6,
           COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
-          from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+          from measurement_data m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
           join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
           join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
           case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then m1.unit_concept_id = um.unit_concept_id
@@ -781,7 +788,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
                        else m1.unit_concept_id = um.unit_concept_id end
           join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
           where m1.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-          and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
+          and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from measurement_data)
           and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
           group by stratum_1, stratum_2, stratum_3, stratum_4,stratum_6"
 
@@ -1003,7 +1010,7 @@ where m.value_as_number is not null and m.measurement_source_concept_id > 0
 and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
 and ((m.unit_concept_id <= 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
 union all
-select measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
+select case when measurement_concept_id=0 then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
 cast(value_as_number as float64) as count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
 where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
@@ -1212,7 +1219,14 @@ echo "Getting measurements binned gender value counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
-with measurement_quartile_data as
+with measurement_data as
+(
+select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` union all
+select measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
+    value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
+    value_source_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+),
+measurement_quartile_data as
 (
 select cast(stratum_1 as int64) as concept,stratum_2 as unit,cast(stratum_3 as int64)as gender,cast(stratum_4 as float64) as iqr_min,cast(stratum_5 as float64) as iqr_max,
 cast(stratum_6 as float64) as bin_width,
@@ -1394,7 +1408,7 @@ else
         cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else bin_width end) as string) as stratum_6,
 count(distinct p1.person_id) as count_value,
 count(distinct p1.person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+from measurement_data m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
 join measurement_quartile_bucket_decimal_data_calc on m1.measurement_concept_id=concept
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_concept_id=c1.concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
@@ -1561,7 +1575,7 @@ end)
 else  CONCAT(cast(round(iqr_min,2) as string), ' - ', cast(round(iqr_max,2) as string)) end as stratum_4,
 cast((case when iqr_min != iqr_max then bin_width when p10_value != p90_value then  ((p90_value-p10_value)/11) else bin_width end) as string) as stratum_6,
 COUNT(distinct p1.PERSON_ID) as count_value, COUNT(distinct p1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
+from measurement_data m1 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 on p1.person_id = m1.person_id
 join measurement_quartile_bucket_decimal_data_calc on m1.measurement_source_concept_id=concept
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.unit_map\` um on
 case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1.unit_source_value)=0)) then m1.unit_concept_id = um.unit_concept_id
@@ -1570,7 +1584,7 @@ case when (m1.unit_concept_id > 0 and (m1.unit_source_value is null or length(m1
              else m1.unit_concept_id = um.unit_concept_id end
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c1 on m1.measurement_source_concept_id=c1.concept_id
 where m1.measurement_source_concept_id > 0
-and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
+and m1.measurement_source_concept_id not in (select distinct measurement_concept_id from measurement_data)
 and m1.value_as_number is not null and p1.gender_concept_id=gender and cast(um.unit_concept_id as string)=unit
 group by stratum_1, stratum_2, stratum_3, stratum_4,stratum_6"
 

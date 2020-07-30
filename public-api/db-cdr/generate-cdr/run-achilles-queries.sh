@@ -129,7 +129,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     (id, measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
     value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
     value_source_value)
-    select CONCAT(measurement_id, '_', person_id) as id, m.measurement_id, m.person_id, case when m.measurement_concept_id = 0 then m.measurement_source_concept_id else m.measurement_concept_id end as measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
+    select CONCAT(measurement_id, '_', person_id) as id, m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
     (m.value_as_number*0.393701), m.value_as_concept_id, 8533 as unit_concept_id, m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id,
     'Inches' as unit_source_value, concat(m.value_as_number*0.393701,' cm') as value_source_value
     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m where (measurement_concept_id = 903133 or measurement_source_concept_id = 903133)
@@ -170,7 +170,7 @@ else
     (id, measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
     value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
     value_source_value)
-    select CONCAT(measurement_id, '_', person_id) as id, m.measurement_id, m.person_id, case when m.measurement_concept_id = 0 then m.measurement_source_concept_id else m.measurement_concept_id end as measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
+    select CONCAT(measurement_id, '_', person_id) as id, m.measurement_id, m.person_id,  m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id, m.operator_concept_id,
     (m.value_as_number*0.393701), m.value_as_concept_id, 8533 as unit_concept_id, m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id,
     'Inches' as unit_source_value, concat(m.value_as_number*0.393701,' cm') as value_source_value
     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m where (measurement_concept_id = 903133 or measurement_source_concept_id = 903133)
