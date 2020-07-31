@@ -120,7 +120,7 @@ else
 fi
 
 echo "Moving aggregated counts data"
-if ./generate-cdr/move-aggregated-counts.sh --prod-bucket $BUCKET --public-bucket aou-db-public-cloudsql --cdr-version $CDR_VERSION
+if ./generate-cdr/move-aggregated-counts.sh --prod-bucket $BUCKET --test-bucket aou-db-public-cloudsql --cdr-version $CDR_VERSION
 then
     echo "Moved aggregated count data to public bucket"
 else
