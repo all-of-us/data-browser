@@ -181,8 +181,8 @@ Description of arguments these scripts take are as follows.
 #### Generate public count data for use by databrowser in BigQuery from a non de-identified cdr release
 `./project.rb generate-public-cdr-counts --bq-project aou-res-curation-prod --bq-dataset conbined20191004_dbrowser_2 --public-project aou-db-prod --cdr-version p_2020q2_1 --bin-size 20 --bucket aou-db-prod-public-cloudsql`
 ##### Result is
-1. Public BigQuery dataset:  aou-db-prod:p_2020q2_1
-2. CSV dumps of tables in bucket aou-db-prod-public-cloudsql:p_2020q2_1/*.csv.gz 
+1. Public BigQuery dataset:  aou-db-test:p_2020q2_1
+2. CSV dumps of tables in bucket aou-db-public-cloudsql:p_2020q2_1/*.csv.gz 
 3. Browse csvs in browser like here :https://console.cloud.google.com/storage/browser?project=aou-db-test&organizationId=394551486437
 3. Note cdr-version can be '' to make dataset named public
 
