@@ -119,6 +119,15 @@ else
     exit 1
 fi
 
+echo "Moving aggregated counts data"
+if ./generate-cdr/move-aggregated-counts.sh --prod-bucket $BUCKET --public-bucket aou-db-public-cloudsql --cdr-version $CDR_VERSION
+then
+    echo "Moved aggregated count data to public bucket"
+else
+    echo "FAILED to move aggregated count data"
+    exit 1
+fi
+
 stopDate=$(date)
 echo "Start $startDate Stop: $stopDate"
 echo $(date) " Finished generate-public-cdr-counts "
