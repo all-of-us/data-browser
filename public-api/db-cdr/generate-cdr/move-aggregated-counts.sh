@@ -6,19 +6,19 @@
 # 0) .csv of prod tables in a bucket
 
 # Example usage, you need to provide a bunch of args
-# ./project.rb move-aggregated-counts --prod-project aou-db-prod --public-project aou-db-test \
+# ./project.rb move-aggregated-counts --prod-project aou-db-prod --test-project aou-db-test \
 # --prod-bucket aou-db-prod-public-cloudsql --test-bucket aou-db-public-cloudsql --cdr-version p_2020q2_1
 
 set -xeuo pipefail
 IFS=$'\n\t'
 
 
-USAGE="./generate-cdr/move-aggregated-counts --prod-project <PROD_PROJECT> --public-project <PUBLIC_PROJECT> --prod-bucket <PROD_BUCKET> --test-bucket <TEST_BUCKET>"
+USAGE="./generate-cdr/move-aggregated-counts --prod-project <PROD_PROJECT> --test-project <TEST_PROJECT> --prod-bucket <PROD_BUCKET> --test-bucket <TEST_BUCKET>"
 USAGE="$USAGE --cdr-version=<CDR_VERSION>"
 USAGE="$USAGE \n Aggregated Count generated csv data is moved to test bucket to be imported to cloudsql."
 
 PROD_PROJECT="";
-PUBLIC_PROJECT="";
+TEST_PROJECT="";
 PROD_BUCKET="";
 TEST_BUCKET="";
 CDR_VERSION="";
