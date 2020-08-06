@@ -1,5 +1,5 @@
 dispatch:
-  - url: "*/v1/*"
+  - url: "aou-db-test.appspot.com/v1/*"
     service: api
   - url: "*/favicon.ico"
     service: default
