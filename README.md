@@ -179,7 +179,7 @@ Description of arguments these scripts take are as follows.
 * instance: Cloud Sql Instance
 
 #### Generate public count data for use by databrowser in BigQuery from a non de-identified cdr release
-`./project.rb generate-public-cdr-counts --bq-project aou-res-curation-prod --bq-dataset conbined20191004_dbrowser_2 --public-project aou-db-prod --cdr-version p_2020q2_1 --bin-size 20 --bucket aou-db-prod-public-cloudsql`
+`./project.rb generate-public-cdr-counts --bq-project aou-res-curation-prod --bq-dataset combined20191004_dbrowser_2 --public-project aou-db-prod --cdr-version p_2020q2_1 --bin-size 20 --bucket aou-db-prod-public-cloudsql`
 ##### Result is
 1. Public BigQuery dataset:  aou-db-test:p_2020q2_1
 2. CSV dumps of tables in bucket aou-db-public-cloudsql:p_2020q2_1/*.csv.gz 
