@@ -1,0 +1,7 @@
+dispatch:
+  - url: "aou-db-test.appspot.com/v1/*"
+    service: api
+  - url: "*/favicon.ico"
+    service: default
+  - url: "aou-db-test.appspot.com/"
+    service: default
