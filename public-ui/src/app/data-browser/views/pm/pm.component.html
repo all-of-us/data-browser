@@ -12,7 +12,7 @@
       <div class="db-card-inner">
         <div class="db-card-header">
           <div class="group-name">{{selectedGroup.groupName}}</div>
-          <div class="bs-title" *ngIf="this.selectedConcept.analyses.measurementValueGenderAnalysis">{{bsChartTitle}}
+          <div class="bs-title">{{bsChartTitle}}
             <app-tooltip [toolTipText1]="tooltipText.pmValueChartHelpText"
                          [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText" [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip>
           </div>
@@ -74,6 +74,7 @@
             <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
               [backgroundColor]="backgroundColor" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis">
             </app-chart>
+            <chart-age [chartTitle]="ageChartTitle" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis" [analysis]="selectedConcept.analyses.ageAnalysis"></chart-age>
           </div>
 
           <!-- Todo wait on design for further dev -->

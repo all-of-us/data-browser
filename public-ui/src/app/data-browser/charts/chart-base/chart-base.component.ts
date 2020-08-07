@@ -8,6 +8,7 @@ import { ChartService } from '../chart.service';
   styleUrls: ['./chart-base.component.css']
 })
 export class ChartBaseComponent {
+  @Input() concepts: Concept[];
   protected chartService: ChartService;
   categoryArr: any[] = [];
   pointData: any[] = [];
@@ -17,14 +18,12 @@ export class ChartBaseComponent {
     shadow: false,
     borderColor: null,
   };
-  @Input() concepts: Concept[];
-
-
+  
+  
   constructor(injector: Injector) {
     this.chartService = injector.get(ChartService);
 
   }
-
   getChartOptions() {
     return {
       chart: this.chartObj,
