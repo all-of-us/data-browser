@@ -282,11 +282,11 @@ go get github.com/google/oauth2l
 go install github.com/google/oauth2l
 ```
 
-The following shows how to make an authenticated backend request as the shared workbench test service account against databrowser dev (assumes you have run dev-up at least once):
+The following shows how to make an authenticated backend request against databrowser dev (assumes you have run dev-up at least once):
 
 ```
 # From the "public-api" directory.
-curl -X GET -H "$(~/go/bin/oauth2l header --json sa-key.json userinfo.email userinfo.profile)" -H "Content-Type: application/json" https://public-api-dot-all-of-us-workbench-test.appspot.com/v1/databrowser/domain-totals
+curl -X GET -H "$(~/go/bin/oauth2l header --json sa-key.json userinfo.email userinfo.profile)" -H "Content-Type: application/json" https://aou-db-test.appspot.com/v1/databrowser/participant-count
 # If you get 401 errors, you may need to clear your token cache.
 oauth2l reset
 ```
