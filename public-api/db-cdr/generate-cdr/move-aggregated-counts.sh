@@ -58,4 +58,4 @@ fi
 startDate=$(date)
 echo $(date) "Moving aggregated count data $startDate"
 
-gsutil mv gs://${PROD_BUCKET}/${CDR_VERSION}/* gs://${TEST_BUCKET}/${CDR_VERSION}
+gsutil cp gs://${PROD_BUCKET}/${CDR_VERSION}/* gs://${TEST_BUCKET}/${CDR_VERSION}
