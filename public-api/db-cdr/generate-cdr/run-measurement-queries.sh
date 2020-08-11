@@ -279,7 +279,8 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
      union all
-     select case when measurement_concept_id=0 then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
+     select case when measurement_concept_id=0 or measurement_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+     then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
      cast(value_as_number as float64) as count_value
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
@@ -1010,7 +1011,7 @@ where m.value_as_number is not null and m.measurement_source_concept_id > 0
 and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
 and ((m.unit_concept_id <= 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
 union all
-select case when measurement_concept_id=0 then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
+select case when measurement_concept_id=0 or measurement_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
 cast(value_as_number as float64) as count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
 where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
