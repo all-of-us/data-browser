@@ -188,9 +188,13 @@ Description of arguments these scripts take are as follows.
 
 #### Generate cloudsql databases from a bucket without downloading the data
 ##### * NOTE The cloudsql instance is set in code for each environment in /public-api/libproject/devstart.rb. Thus each cdr release will be on the same cloudsql instance for an environment.  
-`# Once for public cdr.`
+`# To generate test cdr.`
 
 `./project.rb generate-cloudsql-db --project aou-db-test --instance databrowsermaindb --database p_2020q2_1 --bucket aou-db-public-cloudsql/p_2020q2_1`
+
+`# To generate prod cdr.`
+
+`./project.rb generate-cloudsql-db --project aou-db-prod --instance databrowsermaindb --database p_2020q2_1 --bucket aou-db-prod-public-cloudsql/p_2020q2_1`
 
 ##### * NOTE If the import to cloudsql stops at any point because of any other operation happening on the same cloudsql instance, run cloudsql-import on rest of the files.
 ##### Result is
