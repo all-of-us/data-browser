@@ -80,13 +80,20 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship question_concept)
 
 for t in "${create_tables[@]}"
 do
     bq --project=$OUTPUT_PROJECT rm -f $OUTPUT_DATASET.$t
     bq --quiet --project=$OUTPUT_PROJECT mk --schema=$schema_path/$t.json $OUTPUT_DATASET.$t
 done
+
+#Update question concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\`
+(concept_id, concept_name, concept_code, domain_id, synonyms, count_value, prevalence)
+select c.concept_id, c.concept_name, c.concept_code, c.domain_id, c.synonyms, c.count_value, c.prevalence from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c where c.concept_id in
+(select distinct cast(ar.stratum_2 as int64) from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar where ar.analysis_id=3110)"
 
 # Populate some tables from cdr data
 
