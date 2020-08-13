@@ -1,4 +1,4 @@
-import { Component,Injector, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
@@ -22,11 +22,12 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
 
 
   ngOnChanges() {
-    console.log(this.analysis,'sup analysis');
-    console.log(this.chartTitle,'sup chartTitle');
-    console.log(this.domainType,'sup domainType');
-    console.log(this.domainCountAnalysis,'sup domainCountAnalysis');
-    
+    console.log(this.analysis, 'sup analysis');
+    console.log(this.chartTitle, 'sup chartTitle');
+    console.log(this.domainType, 'sup domainType');
+    console.log(this.domainCountAnalysis, 'sup domainCountAnalysis');
+    this.analysis.results.sort((a, b) => (a.analysisStratumName > b.analysisStratumName) ? 1 : -1);
+
     this.buildChart();
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 30;
@@ -53,26 +54,28 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
   }
 
   public conceptDist() {
-    for (const concept of this.analysis.results) {
-      const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
-      const ageResult = this.domainCountAnalysis.ageCountAnalysis.results;
-      const percentage = Number(((concept.countValue / ageResult.countValue) * 100).toFixed());
+    for (const result of this.analysis.results) {
+      const count = (result.countValue <= 20) ? '&le; 20' : result.countValue;
+      const ageResult = this.domainCountAnalysis.ageCountAnalysis.results.
+        filter(x => x.stratum4 === result.stratum2)[0];
+      const percentage = Number(((result.countValue / ageResult.countValue) * 100).toFixed());
       const totalCount = (ageResult.countValue <= 20) ? '&le; 20' : ageResult.countValue;
-      // console.log(count,ageResult,percentage,totalCount);
-      
+      console.log(count, ageResult, percentage, totalCount);
+
       this.pointData.push({
         toolTipHelpText:
-        '<b>' + count + '</b>' + ' participants were ages within range ' +
-        concept.analysisStratumName + ' when this medical concept first occurred and that is <b>' +
-        percentage + '</b>' + '% of all participants with the same criteria. (total count = '
-        + totalCount + '</b>)',
-        name: concept.analysisStratumName,
-        y: concept.countValue,
-        concept: concept,
+          '<b>' + count + '</b>' + ' participants were ages within range ' +
+          result.analysisStratumName + ' when this medical concept first occurred and that is <b>' +
+          percentage + '</b>' + '% of all participants with the same criteria. (total count = '
+          + totalCount + '</b>)',
+        name: result.analysisStratumName,
+        y: result.countValue,
+        concept: result,
         analysisId: 'Age'
       });
-      this.categoryArr.push([concept.analysisStratumName]);
+      this.categoryArr.push([result.analysisStratumName]);
     }
+
   }
 
 }
