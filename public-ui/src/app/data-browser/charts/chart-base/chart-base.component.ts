@@ -18,8 +18,8 @@ export class ChartBaseComponent {
     shadow: false,
     borderColor: null,
   };
-  
-  
+
+
   constructor(injector: Injector) {
     this.chartService = injector.get(ChartService);
 
@@ -47,7 +47,7 @@ export class ChartBaseComponent {
           }
           return '<div class="chart-tooltip">' + this.point.toolTipHelpText + '</div>';
         },
-        positioner: function(width, height, point) {
+        positioner: function (width, height, point) {
           const columnWidth = this.chart.series[0].options.pointWidth;
           return {
             x: point.plotX + this.chart.plotLeft,

@@ -9,6 +9,7 @@ import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
+import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
 import { ChartService } from './charts/chart.service';
@@ -28,7 +29,6 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
