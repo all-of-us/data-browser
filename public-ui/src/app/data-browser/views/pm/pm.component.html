@@ -64,16 +64,13 @@
               [domainCountAnalysis]="domainCountAnalysis">
               </app-chart>
             </div>
-          </ng-template>
+          <!-- </ng-templat -->
           <!-- show Age totals -->
           <div class="chart-item age-chart" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
             <div>{{ageChartTitle}}
               <app-tooltip [toolTipText1]="tooltipText.pmAgeChartHelpText"
               [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText" [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>
             </div>
-            <!-- <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
-              [backgroundColor]="backgroundColor" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis">
-            </app-chart> -->
             <chart-age [chartTitle]="ageChartTitle" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis" [analysis]="selectedConcept.analyses.ageAnalysis"></chart-age>
           </div>
 

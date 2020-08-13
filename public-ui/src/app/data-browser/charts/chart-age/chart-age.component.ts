@@ -1,5 +1,4 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { Concept } from '../../../../publicGenerated/model/concept';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -22,17 +21,12 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
 
 
   ngOnChanges() {
-    console.log(this.analysis, 'sup analysis');
-    console.log(this.chartTitle, 'sup chartTitle');
-    console.log(this.domainType, 'sup domainType');
-    console.log(this.domainCountAnalysis, 'sup domainCountAnalysis');
     this.analysis.results.sort((a, b) => (a.analysisStratumName > b.analysisStratumName) ? 1 : -1);
-
     this.buildChart();
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 30;
     this.chartOptions.yAxis.title.text = 'Participant Count';
-    this.chartOptions.xAxis.title.text = 'Top Concepts';
+    this.chartOptions.xAxis.title.text = 'Age When Physical Measurement was taken';
     this.chartOptions.yAxis.title.style.fontSize = '14px';
     this.chartOptions.xAxis.title.style.fontSize = '14px';
   }
