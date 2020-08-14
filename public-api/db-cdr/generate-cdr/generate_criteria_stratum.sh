@@ -49,7 +49,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 select distinct c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'biological_sex' as stratum_2, 'Procedure', ar.count_value, 3101 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
-and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4') and cr.synonyms like '%rank1%' and ar.stratum_3='Procedure' and cr.domain_id='PROCEDURE'
+and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM') and cr.synonyms like '%rank1%' and ar.stratum_3='Procedure' and cr.domain_id='PROCEDURE'
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
 echo "Inserting biological sex rolled up counts for procedure parent concepts"
@@ -64,7 +64,7 @@ from
   where ancestor_concept_id in
     (select distinct concept_id
     from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4')
+    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
     and domain_id = 'PROCEDURE'
     and is_group = 1 and synonyms like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
@@ -78,7 +78,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 select distinct c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'age' as stratum_2, 'Procedure', ar.count_value, 3102 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
-and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4') and cr.domain_id='PROCEDURE' and cr.synonyms like '%procedure_rank1%' and ar.stratum_3='Procedure'
+and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM') and cr.domain_id='PROCEDURE' and cr.synonyms like '%procedure_rank1%' and ar.stratum_3='Procedure'
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
 echo "Inserting age stratum counts for parent pcs concepts"
@@ -93,7 +93,7 @@ from
   where ancestor_concept_id in
     (select distinct concept_id
     from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4')
+    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
     and domain_id = 'PROCEDURE'
     and is_group = 1 and synonyms like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
@@ -115,7 +115,7 @@ from
   where ancestor_concept_id in
     (select distinct concept_id
     from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4')
+    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
     and domain_id = 'PROCEDURE'
     and is_group = 1 and synonyms like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
@@ -137,7 +137,7 @@ from
   where ancestor_concept_id in
     (select distinct concept_id
     from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4')
+    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
     and domain_id = 'PROCEDURE'
     and is_group = 1 and synonyms like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id

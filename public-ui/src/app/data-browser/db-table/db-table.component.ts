@@ -266,7 +266,8 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     if (r.graphToShow === GraphType.Sources &&
       ((r.domainId === 'Condition' && (r.vocabularyId === 'SNOMED' || r.vocabularyId === 'ICD9CM'
         || r.vocabularyId === 'ICD10CM')) || (r.domainId === 'Procedure'
-        && r.vocabularyId === 'SNOMED'))) {
+        && (r.vocabularyId === 'SNOMED' || r.vocabularyId === 'CPT4' || r.vocabularyId === 'ICD9CM'
+        || r.vocabularyId === 'ICD10PCS' || r.vocabularyId === 'ICD9Proc')))) {
       this.loadSourceTree(r);
     }
   }
