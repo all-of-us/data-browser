@@ -216,7 +216,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
 
   public scrollTo(id: string) {
     const el = this.elm.nativeElement.querySelector(id);
-    const parentEl = this.elm.nativeElement.querySelector(".tbl-body");
     if (el !== null) {
       el.scrollIntoView(true);
       window.scrollBy(0, -60);
