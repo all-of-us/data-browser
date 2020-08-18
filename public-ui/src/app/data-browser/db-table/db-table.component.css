@@ -129,11 +129,16 @@
     background: #f6f6f8;
     border: 1px solid #CCCCCC;
     border-bottom: none;
-}
-
-.tbl-r.tbl-head {
     padding: .5rem 0;
     border-radius: 3px 3px 0 0;
+    position: sticky;
+    z-index: 10000;
+    top:0px;
+}
+
+.tbl-body {
+    overflow: auto;
+    height: 45rem;
 }
 
 .tbl-r {
@@ -166,7 +171,7 @@
     padding-top: 9px;
     background: #f6f6f8;
     border-top: none;
-    padding-bottom: calc(9px*3);
+    padding-bottom: 27px;
 }
 
 .tbl-r-state {
@@ -184,6 +189,7 @@
     cursor: pointer;
     transition: .2s background ease-out;
     padding: 9px;
+    padding-top:20px;
     min-width: 810px;
 }
 
