@@ -75,17 +75,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
     // Get demographic totals
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getRaceAnalysis()
-      .subscribe({
-          next: result => {
-            this.raceAnalysis = result;
-            this.loadingStack.pop();
-          },
-          error: err =>  {
-            this.loadingStack.pop();
-            console.log('Error: ', err);
-          }
-      }));
     this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm').subscribe(
       results => {
         this.domainCountAnalysis = results;
@@ -93,17 +82,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     ));
 
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getEthnicityAnalysis()
-      .subscribe({
-        next: result => {
-          this.ethnicityAnalysis = result;
-          this.loadingStack.pop();
-        },
-        error: err =>  {
-          this.loadingStack.pop();
-          console.log('Error: ', err);
-        }
-      }));
   }
 
   ngOnDestroy() {

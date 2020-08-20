@@ -14,7 +14,7 @@ import { DomainType } from '../../utils/enum-defs';
 export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() analysis: Analysis;
   @Input() analysis2: Analysis;
-  @Input() surveyAnalysis: SurveyQuestionAnalysis;
+  @Input() surveyAnalysis: any;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
   @Input() selectedResult: any; // For ppi question, this is selected answer.
   @Input() pointWidth = 30;   // Optional width of bar or point or box plot
@@ -40,8 +40,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   ngOnChanges(changes) {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
       (this.concepts && this.concepts.length) ||
-      (this.surveyAnalysis && this.surveyAnalysis.surveyQuestionResults &&
-        this.surveyAnalysis.surveyQuestionResults.length)) {
+      (this.surveyAnalysis && this.surveyAnalysis.results &&
+        this.surveyAnalysis.results.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
     }
@@ -248,7 +248,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
-      return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults,
+      return this.makeCountChartOptions(this.surveyAnalysis.results,
         this.surveyAnalysis.analysisName);
     }
     if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
@@ -257,7 +257,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(
+        this.surveyAnalysis.results.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4,
         this.surveyAnalysis.analysisId);
@@ -277,7 +277,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(
+        this.surveyAnalysis.results.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         'Age When Survey Was Taken',
         this.selectedResult.stratum4, 'stratum5', this.surveyAnalysis.analysisId);

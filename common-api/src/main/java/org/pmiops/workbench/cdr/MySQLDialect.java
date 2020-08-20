@@ -1,6 +1,7 @@
 package org.pmiops.workbench.cdr;
 
 import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.type.StandardBasicTypes;
 
 public class MySQLDialect extends org.hibernate.dialect.MySQL57InnoDBDialect {
@@ -21,6 +22,8 @@ public class MySQLDialect extends org.hibernate.dialect.MySQL57InnoDBDialect {
     // matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0
     registerFunction("matchConcept", new SQLFunctionTemplate(StandardBasicTypes.DOUBLE,
         "match(?1, ?2, ?3, ?4) against (?5 in boolean mode)"));
+
+    registerFunction("substring_index", new StandardSQLFunction("SUBSTRING_INDEX", StandardBasicTypes.STRING));
   }
 
 }

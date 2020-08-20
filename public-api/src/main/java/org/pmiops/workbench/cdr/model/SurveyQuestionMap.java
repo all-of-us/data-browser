@@ -16,7 +16,6 @@ public class SurveyQuestionMap  {
     private int questionOrderNumber;
     private String path;
     private int sub;
-    private QuestionConcept concept;
 
     public SurveyQuestionMap() {}
 
@@ -28,7 +27,6 @@ public class SurveyQuestionMap  {
         this.questionOrderNumber = questionOrderNumber;
         this.path = path;
         this.sub = sub;
-        this.concept = concept;
     }
 
     @Id
@@ -116,19 +114,6 @@ public class SurveyQuestionMap  {
         return this;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="question_concept_id", referencedColumnName="concept_id", insertable=false, updatable=false)
-    public QuestionConcept getConcept() {
-        return concept;
-    }
-    public void setConcept(QuestionConcept concept) {
-        this.concept = concept;
-    }
-    public SurveyQuestionMap concept(QuestionConcept concept) {
-        this.concept = concept;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "SurveyQuestionMap{" +
@@ -153,12 +138,11 @@ public class SurveyQuestionMap  {
                 surveyOrderNumber == that.surveyOrderNumber &&
                 questionOrderNumber == that.questionOrderNumber &&
                 Objects.equals(path, that.path) &&
-                sub == that.sub &&
-                Objects.equals(concept, that.concept);
+                sub == that.sub;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, surveyConceptId, questionConceptId, surveyOrderNumber, questionOrderNumber, path, sub, concept);
+        return Objects.hash(id, surveyConceptId, questionConceptId, surveyOrderNumber, questionOrderNumber, path, sub);
     }
 }

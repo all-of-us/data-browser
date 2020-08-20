@@ -129,13 +129,14 @@ select 0 as id, 3110 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 # Set the survey answer count for basics q2 for all the categories other than american indian, middle eastern, none of these, pacific islander
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count = 1
 order by answers_count desc)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,
+CAST(o.observation_source_concept_id as string) as stratum_6,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
@@ -149,13 +150,14 @@ order by CAST(sq.question_order_number as int64) asc"
 # Set the count of more than one race / ethnicity
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with multiple_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count > 1
 order by answers_count desc)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 'More than one race/ethnicity' as stratum_4,cast(sq.question_order_number as string) stratum_5,
+CAST(o.observation_source_concept_id as string) as stratum_6,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
@@ -168,13 +170,14 @@ order by CAST(sq.question_order_number as int64) asc"
 # Set the rolled survey answer count for basics q2 for the categories american indian, middle eastern, none of these, pacific islander
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count = 1
 order by answers_count desc)
 SELECT 0 as id, 3110 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(903070 as string) as stratum_3,'Other' as stratum_4,cast(sq.question_order_number as string) stratum_5,
+CAST(o.observation_source_concept_id as string) as stratum_6,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\` sq
 On o.observation_source_concept_id=sq.question_concept_id
@@ -279,7 +282,7 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_question_map\`),
 main_questions_count as
 (select 0,3111 as analysis_id,CAST(sm.concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,sq.id as que_ref_id,sq.path as stratum_6,
+CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
 count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o on p.person_id = o.person_id
 join ppi_path sq
@@ -288,7 +291,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=0 and sq.survey_concept_id = 43528698
-group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.id,sq.path
+group by sm.concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc)
 select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count;"
 
