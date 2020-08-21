@@ -217,7 +217,8 @@ export class FmhViewComponent implements OnInit {
             }
         }
 
-        q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results, this.participantCount));
+        q.countAnalysis.results.push(this.addDidNotAnswerResult
+        (q.conceptId, q.countAnalysis.results, this.participantCount));
         q.countAnalysis.results.sort((a1, a2) => {
           if (a1.countValue > a2.countValue) {
             return -1;
@@ -398,12 +399,12 @@ export class FmhViewComponent implements OnInit {
           if (!countAnalysis) {
               countAnalysis = {...a};
           }
-          for(const r of a.results) {
+          for (const r of a.results) {
               r.countPercent = this.countPercentage(r.countValue, this.participantCount);
-              var q = (r.stratum6 && r.stratum6.length > 0 && r.stratum6.trim()) ?
-              questions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0] :
-              questions.filter(a => a.conceptId == r.stratum2)[0];
-              var questionId = q.conceptId + '_' + q.path;
+              let q = (r.stratum6 && r.stratum6.length > 0 && r.stratum6.trim()) ?
+              questions.filter(qu => qu.conceptId == r.stratum2 && qu.path === r.stratum6)[0] :
+              questions.filter(qu => qu.conceptId == r.stratum2)[0];
+              const questionId = q.conceptId + '_' + q.path;
               if (questionId in countAnalysisResults) {
                   countAnalysisResults[questionId].push(r);
               } else {
@@ -415,14 +416,16 @@ export class FmhViewComponent implements OnInit {
           if (!genderAnalysis) {
              genderAnalysis = {...a};
           }
-            for(const r of a.results) {
-                if (r.analysisStratumName === '' || r.analysisStratumName == null || !r.analysisStratumName) {
+            for (const r of a.results) {
+                if (r.analysisStratumName === '' || r.analysisStratumName == null
+                || !r.analysisStratumName) {
                     r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum5];
                 }
-                var q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ? questions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0]
+                var q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ?
+                questions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0]
                 : questions.filter(a => a.conceptId == r.stratum2)[0];
 
-                var questionId = q.conceptId + '_' + q.path;
+                const questionId = q.conceptId + '_' + q.path;
                 if (questionId in genderAnalysisResults) {
                     genderAnalysisResults[questionId].push(r);
                 } else {
@@ -434,14 +437,15 @@ export class FmhViewComponent implements OnInit {
           if (!ageAnalysis) {
              ageAnalysis = {...a};
           }
-          for(const r of a.results) {
+          for (const r of a.results) {
               if (this.dbc.VALID_AGE_DECILES.indexOf(r.stratum5) > -1) {
                   if (r.analysisStratumName === '' || r.analysisStratumName == null || !r.analysisStratumName) {
                       r.analysisStratumName = this.dbc.AGE_STRATUM_MAP[r.stratum5];
                   }
-                  var q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ? questions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0]
+                  var q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ?
+                  questions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0]
                                           : questions.filter(a => a.conceptId == r.stratum2)[0];
-                  var questionId = q.conceptId + '_' + q.path;
+                  const questionId = q.conceptId + '_' + q.path;
                   if (questionId in ageAnalysisResults) {
                       ageAnalysisResults[questionId].push(r);
                   } else {
@@ -552,7 +556,7 @@ export class FmhViewComponent implements OnInit {
                       sq.subExpanded = true;
                       this.showAnswer[sq.conceptId] = true;
                       rs2.expanded = true;
-                      sq2.subExpanded = true
+                      sq2.subExpanded = true;
                       this.showAnswer[sq2.conceptId] = true;
                       searchFlag = true;
                     }
