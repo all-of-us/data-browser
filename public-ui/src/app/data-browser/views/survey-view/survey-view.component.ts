@@ -426,7 +426,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                 }
                 const q = this.allQuestions.filter(que => String(que.conceptId) === r.stratum2
                  && que.path === r.stratum6)[0];
-                var questionId = q.conceptId + '_' + q.path;
+                const questionId = q.conceptId + '_' + q.path;
                 if (questionId in ageAnalysisResults) {
                     ageAnalysisResults[questionId].push(r);
                 } else {
@@ -436,7 +436,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       }
      }
-    for (let q of questions) {
+    for (const q of questions) {
         const tempCountAnalysis = {...countAnalysis};
         tempCountAnalysis.results = countAnalysisResults[q.conceptId + '_' + q.path];
         q.countAnalysis = tempCountAnalysis;
