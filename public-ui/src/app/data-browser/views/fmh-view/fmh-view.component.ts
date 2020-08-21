@@ -403,7 +403,8 @@ export class FmhViewComponent implements OnInit {
               r.countPercent = this.countPercentage(r.countValue, this.participantCount);
               const question = (r.stratum6 && r.stratum6.length > 0 && r.stratum6.trim()) ?
               questions.filter(qu => String(qu.conceptId) === r.stratum2 &&
-              qu.path === r.stratum6)[0] : questions.filter(qu => String(qu.conceptId) === r.stratum2)[0];
+              qu.path === r.stratum6)[0] : questions.filter
+              (qu => String(qu.conceptId) === r.stratum2)[0];
               const questionId = question.conceptId + '_' + question.path;
               if (questionId in countAnalysisResults) {
                   countAnalysisResults[questionId].push(r);
@@ -446,7 +447,7 @@ export class FmhViewComponent implements OnInit {
                   }
                   const q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ?
                   questions.filter(que => String(que.conceptId) === r.stratum2 && que.path === r.stratum6)[0]
-                                          : questions.filter(que => String(que.conceptId) === r.stratum2)[0];
+                  : questions.filter(que => String(que.conceptId) === r.stratum2)[0];
                   const questionId = q.conceptId + '_' + q.path;
                   if (questionId in ageAnalysisResults) {
                       ageAnalysisResults[questionId].push(r);
@@ -458,24 +459,24 @@ export class FmhViewComponent implements OnInit {
         }
        }
       for (const ques of questions) {
-          let tempCountAnalysis = {...countAnalysis};
+          const tempCountAnalysis = {...countAnalysis};
           tempCountAnalysis.results = countAnalysisResults[ques.conceptId + '_' + ques.path];
           ques.countAnalysis = tempCountAnalysis;
 
-          let tempGenderAnalysis = {...genderAnalysis};
+          const tempGenderAnalysis = {...genderAnalysis};
           tempGenderAnalysis.results = genderAnalysisResults[ques.conceptId + '_' + ques.path];
           ques.genderAnalysis = tempGenderAnalysis;
 
-          let tempAgeAnalysis = {...ageAnalysis};
+          const tempAgeAnalysis = {...ageAnalysis};
           tempAgeAnalysis.results = ageAnalysisResults[ques.conceptId + '_' + ques.path];
           ques.ageAnalysis = tempAgeAnalysis;
       }
 
       for (const q of this.conditionSubQuestions.concat(this.fmSubQuestions)) {
-              var path_split = q.path.split(".");
-              var question_id = path_split.length === 3 ? path_split[0] : path_split[2];
-              var result_id = path_split.length === 3 ? path_split[1] : path_split[3];
-              var result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter
+              const path_split = q.path.split(".");
+              const question_id = path_split.length === 3 ? path_split[0] : path_split[2];
+              const result_id = path_split.length === 3 ? path_split[1] : path_split[3];
+              const result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter
               (a => a.stratum3 === result_id && a.stratum2 === question_id);
               if (result_filter && result_filter[0].stratum3 !== '903096') {
                   result_filter[0].hasSubQuestions = 1;
