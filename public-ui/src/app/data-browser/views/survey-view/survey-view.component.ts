@@ -404,9 +404,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               !r.analysisStratumName) {
                   r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum5];
               }
-              const q = this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 &&
+              const question = this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 &&
               x.path === r.stratum6)[0];
-              var questionId = q.conceptId + '_' + q.path;
+              const questionId = question.conceptId + '_' + question.path;
               if (questionId in genderAnalysisResults) {
                   genderAnalysisResults[questionId].push(r);
               } else {
@@ -420,10 +420,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
         for (const r of a.results) {
             if (this.dbc.VALID_AGE_DECILES.indexOf(r.stratum5) > -1) {
-                if (r.analysisStratumName === '' || r.analysisStratumName == null || !r.analysisStratumName) {
+                if (r.analysisStratumName === '' || r.analysisStratumName == null ||
+                !r.analysisStratumName) {
                     r.analysisStratumName = this.dbc.AGE_STRATUM_MAP[r.stratum5];
                 }
-                var q = this.allQuestions.filter(a => String(a.conceptId) === r.stratum2 && a.path === r.stratum6)[0];
+                var q = this.allQuestions.filter(a => String(a.conceptId) === r.stratum2
+                 && a.path === r.stratum6)[0];
                 var questionId = q.conceptId + '_' + q.path;
                 if (questionId in ageAnalysisResults) {
                     ageAnalysisResults[questionId].push(r);
