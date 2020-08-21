@@ -406,11 +406,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               }
               const question = this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 &&
               x.path === r.stratum6)[0];
-              const questionId = question.conceptId + '_' + question.path;
-              if (questionId in genderAnalysisResults) {
-                  genderAnalysisResults[questionId].push(r);
+              const qId = question.conceptId + '_' + question.path;
+              if (qId in genderAnalysisResults) {
+                  genderAnalysisResults[qId].push(r);
               } else {
-                  genderAnalysisResults[questionId] = [r];
+                  genderAnalysisResults[qId] = [r];
              }
           }
       }
@@ -424,8 +424,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                 !r.analysisStratumName) {
                     r.analysisStratumName = this.dbc.AGE_STRATUM_MAP[r.stratum5];
                 }
-                var q = this.allQuestions.filter(a => String(a.conceptId) === r.stratum2
-                 && a.path === r.stratum6)[0];
+                const q = this.allQuestions.filter(que => String(que.conceptId) === r.stratum2
+                 && que.path === r.stratum6)[0];
                 var questionId = q.conceptId + '_' + q.path;
                 if (questionId in ageAnalysisResults) {
                     ageAnalysisResults[questionId].push(r);
