@@ -67,10 +67,13 @@ export class FmhViewComponent implements OnInit {
     this.subscriptions.push(this.api.getFMHQuestionsRe(43528698,
       conditionQuestionConceptIds.concat(fmQuestionConceptIds)).subscribe({
       next: x => {
-        this.conditionQuestions = x.questions.items.filter(x => conditionQuestionConceptIds.includes(String(x.conceptId)));
-        this.conditionSubQuestions = x.questions.items.filter(x => x.sub === 1 && conditionQuestionConceptIds.some(sub=>x.path.includes(sub)));
+        this.conditionQuestions = x.questions.items.filter
+        (x => conditionQuestionConceptIds.includes(String(x.conceptId)));
+        this.conditionSubQuestions = x.questions.items.filter
+        (x => x.sub === 1 && conditionQuestionConceptIds.some(sub=>x.path.includes(sub)));
         this.fmQuestions = x.questions.items.filter(x => fmQuestionConceptIds.includes(String(x.conceptId)));
-        this.fmSubQuestions = x.questions.items.filter(x => x.sub === 1 && fmQuestionConceptIds.some(sub=>x.path.includes(sub)));
+        this.fmSubQuestions = x.questions.items.filter
+        (x => x.sub === 1 && fmQuestionConceptIds.some(sub=>x.path.includes(sub)));
         this.analyses = x.analyses.items;
         this.mapAnalysesToQuestions(x.questions.items, x.analyses.items);
         this.processQuestions(this.conditionQuestions, 'condition');
@@ -97,15 +100,15 @@ export class FmhViewComponent implements OnInit {
           q.graphDataToShow = 'Count';
           q.actualQuestionNumber = this.questionOrder[q.conceptId];
     }
-    for (let q of results) {
+    for (const q of results) {
               this.showAnswer[q.conceptId] = false;
               this.questionResults[q.conceptId] = [];
               q.actualQuestionNumber = q.questionOrderNumber;
               q.graphToShow = GraphType.BiologicalSex;
               q.selectedAnalysis = q.genderAnalysis;
               q.graphDataToShow = 'Count';
-              for (let r of q.countAnalysis.results) {
-                if (r.hasSubQuestions == 1) {
+              for (const r of q.countAnalysis.results) {
+                if (r.hasSubQuestions === 1) {
                     for (let sq1 of r.subQuestions) {
                         this.showAnswer[sq1.conceptId] = false;
                         this.questionResults[sq1.conceptId] = [];
