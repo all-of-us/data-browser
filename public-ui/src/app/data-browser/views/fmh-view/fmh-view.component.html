@@ -164,7 +164,7 @@
             <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
             <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
         </a>
-        <div class="survey-tbl" *ngIf="q.expanded && q.questionResultFetchComplete">
+        <div class="survey-tbl" *ngIf="q.expanded">
             <div class="question-info-text">
                 For participants who selected "A lot" or "Some" in the first question: please indicate if your family member(s) has
                 ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply):

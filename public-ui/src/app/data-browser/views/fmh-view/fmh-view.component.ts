@@ -169,30 +169,72 @@ export class FmhViewComponent implements OnInit {
     q.graphToShow = GraphType.BiologicalSex;
     q.selectedAnalysis = q.genderAnalysis;
     q.graphDataToShow = 'Count';
+
     for (const a of q.countAnalysis.results) {
-      a.countPercent = this.countPercentage(a.countValue, this.participantCount);
-      this.addMissingBiologicalSexResults(q.genderAnalysis,
+            this.addMissingResults(q, a, this.participantCount);
+            if (a.hasSubQuestions === 1) {
+                for (const sq1 of a.subQuestions) {
+                    for (const sqa1 of sq1.countAnalysis.results) {
+                        this.addMissingResults(sq1, sqa1, a.countValue);
+                        if (sqa1.hasSubQuestions === 1) {
+                            for (const sq2 of sqa1.subQuestions) {
+                                for (const sqa2 of sq2.countAnalysis.results) {
+                                    this.addMissingResults(sq2, sqa2, sqa1.countValue);
+                                }
+                                sq2.countAnalysis.results.push(this.addDidNotAnswerResult(sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
+                                sq2.countAnalysis.results.sort((a1, a2) => {
+                                      if (a1.countValue > a2.countValue) {
+                                        return -1;
+                                      }
+                                      if (a1.countValue < a2.countValue) {
+                                        return 1;
+                                      }
+                                      return 0;
+                                    });
+                            }
+                        }
+                    }
+                    sq1.countAnalysis.results.push(this.addDidNotAnswerResult(sq1.conceptId, sq1.countAnalysis.results, a.countValue));
+                    sq1.countAnalysis.results.sort((a1, a2) => {
+                          if (a1.countValue > a2.countValue) {
+                            return -1;
+                          }
+                          if (a1.countValue < a2.countValue) {
+                            return 1;
+                          }
+                          return 0;
+                        });
+                }
+            }
+        }
+
+        q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results, this.participantCount));
+        q.countAnalysis.results.sort((a1, a2) => {
+          if (a1.countValue > a2.countValue) {
+            return -1;
+          }
+          if (a1.countValue < a2.countValue) {
+            return 1;
+          }
+          return 0;
+        });
+  }
+
+  public addMissingResults(q: any, a: any, totalCount) {
+    a.countPercent = this.countPercentage(a.countValue, totalCount);
+    if (q.genderAnalysis) {
+        this.addMissingBiologicalSexResults(q.genderAnalysis,
         q.genderAnalysis.results.
         filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
-        this.participantCount);
-      this.addMissingAgeResults(q.ageAnalysis,
-        q.ageAnalysis.results.
-        filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
-        this.participantCount);
+        totalCount);
     }
-    q.countAnalysis.results.push(
-      this.addDidNotAnswerResult(
-        q.countAnalysis.results, this.participantCount));
-    q.countAnalysis.results.sort((a1, a2) => {
-      if (a1.countValue > a2.countValue) {
-        return -1;
-      }
-      if (a1.countValue < a2.countValue) {
-        return 1;
-      }
-      return 0;
-    });
+    if (q.ageAnalysis) {
+        this.addMissingAgeResults(q.ageAnalysis,
+        q.ageAnalysis.results.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+        totalCount);
+    }
   }
+
 
   public countPercentage(countValue: number, totalCount: number) {
     if (!countValue || countValue <= 0) { return 0; }
@@ -258,7 +300,7 @@ export class FmhViewComponent implements OnInit {
     }
   }
 
-  public addDidNotAnswerResult(results: any[], participantCount: number) {
+  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number) {
     let didNotAnswerCount = participantCount;
     for (const r of results) {
       didNotAnswerCount = didNotAnswerCount - r.countValue;
