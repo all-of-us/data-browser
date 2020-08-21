@@ -70,10 +70,11 @@ export class FmhViewComponent implements OnInit {
         this.conditionQuestions = x.questions.items.filter
         (y => conditionQuestionConceptIds.includes(String(y.conceptId)));
         this.conditionSubQuestions = x.questions.items.filter
-        (y => y.sub === 1 && conditionQuestionConceptIds.some(sub=>y.path.includes(sub)));
-        this.fmQuestions = x.questions.items.filter(y => fmQuestionConceptIds.includes(String(y.conceptId)));
+        (y => y.sub === 1 && conditionQuestionConceptIds.some(sub => y.path.includes(sub)));
+        this.fmQuestions = x.questions.items.filter
+        (y => fmQuestionConceptIds.includes(String(y.conceptId)));
         this.fmSubQuestions = x.questions.items.filter
-        (y => y.sub === 1 && fmQuestionConceptIds.some(sub=>y.path.includes(sub)));
+        (y => y.sub === 1 && fmQuestionConceptIds.some(sub => y.path.includes(sub)));
         this.analyses = x.analyses.items;
         this.mapAnalysesToQuestions(x.questions.items, x.analyses.items);
         this.processQuestions(this.conditionQuestions, 'condition');
@@ -109,7 +110,7 @@ export class FmhViewComponent implements OnInit {
               q.graphDataToShow = 'Count';
               for (const r of q.countAnalysis.results) {
                 if (r.hasSubQuestions === 1) {
-                    for (let sq1 of r.subQuestions) {
+                    for (const sq1 of r.subQuestions) {
                         this.showAnswer[sq1.conceptId] = false;
                         this.questionResults[sq1.conceptId] = [];
                         sq1.actualQuestionNumber = sq1.questionOrderNumber;
@@ -117,7 +118,7 @@ export class FmhViewComponent implements OnInit {
                         sq1.selectedAnalysis = sq1.genderAnalysis;
                         sq1.graphDataToShow = 'Count';
                         for (const r1 of sq1.countAnalysis.results) {
-                                    if (r1.hasSubQuestions == 1) {
+                                    if (r1.hasSubQuestions === 1) {
                                         for (const sq2 of r1.subQuestions) {
                                             this.showAnswer[sq2.conceptId] = false;
                                             this.questionResults[sq2.conceptId] = [];
@@ -187,7 +188,8 @@ export class FmhViewComponent implements OnInit {
                                 for (const sqa2 of sq2.countAnalysis.results) {
                                     this.addMissingResults(sq2, sqa2, sqa1.countValue);
                                 }
-                                sq2.countAnalysis.results.push(this.addDidNotAnswerResult(sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
+                                sq2.countAnalysis.results.push(this.addDidNotAnswerResult
+                                (sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
                                 sq2.countAnalysis.results.sort((a1, a2) => {
                                       if (a1.countValue > a2.countValue) {
                                         return -1;
@@ -200,7 +202,8 @@ export class FmhViewComponent implements OnInit {
                             }
                         }
                     }
-                    sq1.countAnalysis.results.push(this.addDidNotAnswerResult(sq1.conceptId, sq1.countAnalysis.results, a.countValue));
+                    sq1.countAnalysis.results.push(this.addDidNotAnswerResult
+                    (sq1.conceptId, sq1.countAnalysis.results, a.countValue));
                     sq1.countAnalysis.results.sort((a1, a2) => {
                           if (a1.countValue > a2.countValue) {
                             return -1;
@@ -382,9 +385,9 @@ export class FmhViewComponent implements OnInit {
   }
 
   public mapAnalysesToQuestions (questions, analyses) {
-      let countAnalysisResults = {};
-      let genderAnalysisResults = {};
-      let ageAnalysisResults = {};
+      const countAnalysisResults = {};
+      const genderAnalysisResults = {};
+      const ageAnalysisResults = {};
 
       let countAnalysis = null;
       let genderAnalysis = null;
@@ -395,7 +398,7 @@ export class FmhViewComponent implements OnInit {
           if (!countAnalysis) {
               countAnalysis = {...a};
           }
-          for(let r of a.results) {
+          for(const r of a.results) {
               r.countPercent = this.countPercentage(r.countValue, this.participantCount);
               var q = (r.stratum6 && r.stratum6.length > 0 && r.stratum6.trim()) ?
               questions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0] :
