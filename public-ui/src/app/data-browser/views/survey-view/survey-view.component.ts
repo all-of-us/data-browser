@@ -383,10 +383,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
         for (const r of a.results) {
             r.countPercent = this.countPercentage(r.countValue, this.survey.participantCount);
-            const q = (r.stratum6 && r.stratum6.length !== 0 && r.stratum6.trim()) ?
-            this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 && x.path === r.stratum6)[0] :
-            this.allQuestions.filter(x => String(x.conceptId) === r.stratum2)[0];
-            const qId = q.conceptId + '_' + q.path;
+            const question = (r.stratum6 && r.stratum6.length !== 0 && r.stratum6.trim()) ?
+            this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 &&
+            x.path === r.stratum6)[0] : this.allQuestions.filter(x => String(x.conceptId)
+            === r.stratum2)[0];
+            const qId = question.conceptId + '_' + question.path;
             if (qId in countAnalysisResults) {
                 countAnalysisResults[qId].push(r);
             } else {
@@ -399,10 +400,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
            genderAnalysis = {...a};
         }
           for (const r of a.results) {
-              if (r.analysisStratumName === '' || r.analysisStratumName == null || !r.analysisStratumName) {
+              if (r.analysisStratumName === '' || r.analysisStratumName == null ||
+              !r.analysisStratumName) {
                   r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum5];
               }
-              const q = this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 && x.path === r.stratum6)[0];
+              const q = this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 &&
+              x.path === r.stratum6)[0];
               var questionId = q.conceptId + '_' + q.path;
               if (questionId in genderAnalysisResults) {
                   genderAnalysisResults[questionId].push(r);
@@ -432,15 +435,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
      }
     for (let q of questions) {
-        var tempCountAnalysis = {...countAnalysis};
+        const tempCountAnalysis = {...countAnalysis};
         tempCountAnalysis.results = countAnalysisResults[q.conceptId + '_' + q.path];
         q.countAnalysis = tempCountAnalysis;
 
-        var tempGenderAnalysis = {...genderAnalysis};
+        const tempGenderAnalysis = {...genderAnalysis};
         tempGenderAnalysis.results = genderAnalysisResults[q.conceptId + '_' + q.path];
         q.genderAnalysis = tempGenderAnalysis;
 
-        var tempAgeAnalysis = {...ageAnalysis};
+        const tempAgeAnalysis = {...ageAnalysis};
         tempAgeAnalysis.results = ageAnalysisResults[q.conceptId + '_' + q.path];
         q.ageAnalysis = tempAgeAnalysis;
     }
@@ -448,7 +451,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         const path_split = q.path.split('.');
         const question_id = path_split.length === 3 ? path_split[0] : path_split[2];
         const result_id = path_split.length === 3 ? path_split[1] : path_split[3];
-        const result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter(a => a.stratum3 === result_id && a.stratum2 === question_id);
+        const result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter(
+        a => a.stratum3 === result_id && a.stratum2 === question_id);
         if (result_filter) {
             result_filter[0].hasSubQuestions = 1;
             if (result_filter[0].subQuestions) {
