@@ -402,8 +402,8 @@ export class FmhViewComponent implements OnInit {
           for (const r of a.results) {
               r.countPercent = this.countPercentage(r.countValue, this.participantCount);
               const question = (r.stratum6 && r.stratum6.length > 0 && r.stratum6.trim()) ?
-              questions.filter(qu => String(qu.conceptId) === r.stratum2 && qu.path === r.stratum6)[0] :
-              questions.filter(qu => String(qu.conceptId) === r.stratum2)[0];
+              questions.filter(qu => String(qu.conceptId) === r.stratum2 &&
+              qu.path === r.stratum6)[0] : questions.filter(qu => String(qu.conceptId) === r.stratum2)[0];
               const questionId = question.conceptId + '_' + question.path;
               if (questionId in countAnalysisResults) {
                   countAnalysisResults[questionId].push(r);
@@ -422,7 +422,7 @@ export class FmhViewComponent implements OnInit {
                     r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum5];
                 }
                 const q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ?
-                questions.filter(que => String(que.conceptId) == r.stratum2 &&
+                questions.filter(que => String(que.conceptId) === r.stratum2 &&
                 que.path === r.stratum6)[0]
                 : questions.filter(que => String(que.conceptId) === r.stratum2)[0];
 
@@ -475,7 +475,8 @@ export class FmhViewComponent implements OnInit {
               var path_split = q.path.split(".");
               var question_id = path_split.length === 3 ? path_split[0] : path_split[2];
               var result_id = path_split.length === 3 ? path_split[1] : path_split[3];
-              var result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter(a => a.stratum3 === result_id && a.stratum2 === question_id);
+              var result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter
+              (a => a.stratum3 === result_id && a.stratum2 === question_id);
               if (result_filter && result_filter[0].stratum3 !== '903096') {
                   result_filter[0].hasSubQuestions = 1;
                   if (result_filter[0].subQuestions) {
