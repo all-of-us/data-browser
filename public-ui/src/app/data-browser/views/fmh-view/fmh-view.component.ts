@@ -68,12 +68,12 @@ export class FmhViewComponent implements OnInit {
       conditionQuestionConceptIds.concat(fmQuestionConceptIds)).subscribe({
       next: x => {
         this.conditionQuestions = x.questions.items.filter
-        (x => conditionQuestionConceptIds.includes(String(x.conceptId)));
+        (y => conditionQuestionConceptIds.includes(String(y.conceptId)));
         this.conditionSubQuestions = x.questions.items.filter
-        (x => x.sub === 1 && conditionQuestionConceptIds.some(sub=>x.path.includes(sub)));
-        this.fmQuestions = x.questions.items.filter(x => fmQuestionConceptIds.includes(String(x.conceptId)));
+        (y => y.sub === 1 && conditionQuestionConceptIds.some(sub=>y.path.includes(sub)));
+        this.fmQuestions = x.questions.items.filter(y => fmQuestionConceptIds.includes(String(y.conceptId)));
         this.fmSubQuestions = x.questions.items.filter
-        (x => x.sub === 1 && fmQuestionConceptIds.some(sub=>x.path.includes(sub)));
+        (y => y.sub === 1 && fmQuestionConceptIds.some(sub=>y.path.includes(sub)));
         this.analyses = x.analyses.items;
         this.mapAnalysesToQuestions(x.questions.items, x.analyses.items);
         this.processQuestions(this.conditionQuestions, 'condition');
