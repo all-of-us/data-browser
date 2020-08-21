@@ -383,14 +383,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
         for (const r of a.results) {
             r.countPercent = this.countPercentage(r.countValue, this.survey.participantCount);
-            var q = (r.stratum6 && r.stratum6.length !== 0 && r.stratum6.trim()) ?
-            this.allQuestions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0] :
-            this.allQuestions.filter(a => a.conceptId == r.stratum2)[0];
-            const questionId = q.conceptId + '_' + q.path;
-            if (questionId in countAnalysisResults) {
-                countAnalysisResults[questionId].push(r);
+            const q = (r.stratum6 && r.stratum6.length !== 0 && r.stratum6.trim()) ?
+            this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 && x.path === r.stratum6)[0] :
+            this.allQuestions.filter(x => String(x.conceptId) === r.stratum2)[0];
+            const qId = q.conceptId + '_' + q.path;
+            if (qId in countAnalysisResults) {
+                countAnalysisResults[qId].push(r);
             } else {
-                countAnalysisResults[questionId] = [r];
+                countAnalysisResults[qId] = [r];
            }
         }
       }
@@ -402,7 +402,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               if (r.analysisStratumName === '' || r.analysisStratumName == null || !r.analysisStratumName) {
                   r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum5];
               }
-              var q = this.allQuestions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0];
+              const q = this.allQuestions.filter(x => String(x.conceptId) === r.stratum2 && x.path === r.stratum6)[0];
               var questionId = q.conceptId + '_' + q.path;
               if (questionId in genderAnalysisResults) {
                   genderAnalysisResults[questionId].push(r);
@@ -420,7 +420,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                 if (r.analysisStratumName === '' || r.analysisStratumName == null || !r.analysisStratumName) {
                     r.analysisStratumName = this.dbc.AGE_STRATUM_MAP[r.stratum5];
                 }
-                var q = this.allQuestions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0];
+                var q = this.allQuestions.filter(a => String(a.conceptId) === r.stratum2 && a.path === r.stratum6)[0];
                 var questionId = q.conceptId + '_' + q.path;
                 if (questionId in ageAnalysisResults) {
                     ageAnalysisResults[questionId].push(r);
