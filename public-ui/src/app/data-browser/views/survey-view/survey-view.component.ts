@@ -195,21 +195,21 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.surveyName = this.survey.name;
     // Add Did not answer to each question
     this.allQuestions = this.surveyResult.questions.items;
-    this.questions = this.allQuestions.filter(r => r.sub == 0);
-    this.subQuestions = this.allQuestions.filter(r => r.sub == 1);
+    this.questions = this.allQuestions.filter(r => r.sub === 0);
+    this.subQuestions = this.allQuestions.filter(r => r.sub === 1);
     this.analyses = this.surveyResult.analyses.items;
     this.mapAnalysesToQuestions(this.allQuestions, this.analyses);
     // Add Did not answer to each question
-    for (let q of this.questions) {
+    for (const q of this.questions) {
           this.showAnswer[q.conceptId] = false;
           this.questionResults[q.conceptId] = [];
           q.actualQuestionNumber = q.questionOrderNumber;
           q.graphToShow = GraphType.BiologicalSex;
           q.selectedAnalysis = q.genderAnalysis;
           q.graphDataToShow = 'Count';
-          for (let r of q.countAnalysis.results) {
-            if (r.hasSubQuestions == 1) {
-                for (let sq1 of r.subQuestions) {
+          for (const r of q.countAnalysis.results) {
+            if (r.hasSubQuestions === 1) {
+                for (const sq1 of r.subQuestions) {
                     this.showAnswer[sq1.conceptId] = false;
                     this.questionResults[sq1.conceptId] = [];
                     sq1.actualQuestionNumber = sq1.questionOrderNumber;
@@ -256,7 +256,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                             for (const sqa2 of sq2.countAnalysis.results) {
                                 this.addMissingResults(sq2, sqa2, sqa1.countValue);
                             }
-                            sq2.countAnalysis.results.push(this.addDidNotAnswerResult(sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
+                            sq2.countAnalysis.results.push(this.addDidNotAnswerResult
+                            (sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
                             sq2.countAnalysis.results.sort((a1, a2) => {
                                   if (a1.countValue > a2.countValue) {
                                     return -1;
@@ -269,7 +270,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
-                sq1.countAnalysis.results.push(this.addDidNotAnswerResult(sq1.conceptId, sq1.countAnalysis.results, a.countValue));
+                sq1.countAnalysis.results.push(this.addDidNotAnswerResult(
+                sq1.conceptId, sq1.countAnalysis.results, a.countValue));
                 sq1.countAnalysis.results.sort((a1, a2) => {
                       if (a1.countValue > a2.countValue) {
                         return -1;
@@ -364,9 +366,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public mapAnalysesToQuestions (questions, analyses) {
-    let countAnalysisResults = {};
-    let genderAnalysisResults = {};
-    let ageAnalysisResults = {};
+    const countAnalysisResults = {};
+    const genderAnalysisResults = {};
+    const ageAnalysisResults = {};
 
     let countAnalysis = null;
     let genderAnalysis = null;
@@ -377,12 +379,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         if (!countAnalysis) {
             countAnalysis = {...a};
         }
-        for(let r of a.results) {
+        for(const r of a.results) {
             r.countPercent = this.countPercentage(r.countValue, this.survey.participantCount);
             var q = (r.stratum6 && r.stratum6.length !== 0 && r.stratum6.trim()) ?
             this.allQuestions.filter(a => a.conceptId == r.stratum2 && a.path === r.stratum6)[0] :
             this.allQuestions.filter(a => a.conceptId == r.stratum2)[0];
-            var questionId = q.conceptId + '_' + q.path;
+            const questionId = q.conceptId + '_' + q.path;
             if (questionId in countAnalysisResults) {
                 countAnalysisResults[questionId].push(r);
             } else {
@@ -748,20 +750,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public resetExpansion() {
-    for (let q of this.questions) {
+    for (const q of this.questions) {
         q.expanded = false;
 
-        for (let r of q.countAnalysis.results) {
+        for (const r of q.countAnalysis.results) {
             r.expanded = false;
             if (r.hasSubQuestions === 1) {
-                for (let sq of r.subQuestions) {
+                for (const sq of r.subQuestions) {
                     sq.subExpanded = false;
 
-                    for (let sr of sq.countAnalysis.results) {
+                    for (const sr of sq.countAnalysis.results) {
                         sr.expanded = false;
 
                         if (sr.hasSubQuestions === 1) {
-                            for (let sq2 of sr.subQuestions) {
+                            for (const sq2 of sr.subQuestions) {
                                 sq2.subExpanded = false;
                             }
                         }

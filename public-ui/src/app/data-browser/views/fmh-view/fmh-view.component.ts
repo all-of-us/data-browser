@@ -446,7 +446,8 @@ export class FmhViewComponent implements OnInit {
                       r.analysisStratumName = this.dbc.AGE_STRATUM_MAP[r.stratum5];
                   }
                   const q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ?
-                  questions.filter(que => String(que.conceptId) === r.stratum2 && que.path === r.stratum6)[0]
+                  questions.filter(que => String(que.conceptId) === r.stratum2 &&
+                  que.path === r.stratum6)[0]
                   : questions.filter(que => String(que.conceptId) === r.stratum2)[0];
                   const questionId = q.conceptId + '_' + q.path;
                   if (questionId in ageAnalysisResults) {
@@ -473,7 +474,7 @@ export class FmhViewComponent implements OnInit {
       }
 
       for (const q of this.conditionSubQuestions.concat(this.fmSubQuestions)) {
-              const path_split = q.path.split(".");
+              const path_split = q.path.split('.');
               const question_id = path_split.length === 3 ? path_split[0] : path_split[2];
               const result_id = path_split.length === 3 ? path_split[1] : path_split[3];
               const result_filter = analyses.filter(a => a.analysisId === 3110)[0].results.filter
@@ -577,20 +578,20 @@ export class FmhViewComponent implements OnInit {
   }
 
   public resetExpansion() {
-      for (let q of this.conditionQuestions.concat(this.fmQuestions)) {
+      for (const q of this.conditionQuestions.concat(this.fmQuestions)) {
           q.expanded = false;
 
-          for (let r of q.countAnalysis.results) {
+          for (const r of q.countAnalysis.results) {
               r.expanded = false;
               if (r.hasSubQuestions === 1) {
-                  for (let sq of r.subQuestions) {
+                  for (const sq of r.subQuestions) {
                       sq.subExpanded = false;
 
-                      for (let sr of sq.countAnalysis.results) {
+                      for (const sr of sq.countAnalysis.results) {
                           sr.expanded = false;
 
                           if (sr.hasSubQuestions === 1) {
-                              for (let sq2 of sr.subQuestions) {
+                              for (const sq2 of sr.subQuestions) {
                                   sq2.subExpanded = false;
                               }
                           }
