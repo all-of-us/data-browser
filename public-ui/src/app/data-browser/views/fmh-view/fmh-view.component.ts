@@ -422,8 +422,9 @@ export class FmhViewComponent implements OnInit {
                     r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum5];
                 }
                 const q = (r.stratum6 && r.stratum6.trim() && r.stratum6.length > 0) ?
-                questions.filter(que => String(que.conceptId) == r.stratum2 && que.path === r.stratum6)[0]
-                : questions.filter(que => String(que.conceptId) ==== r.stratum2)[0];
+                questions.filter(que => String(que.conceptId) == r.stratum2 &&
+                que.path === r.stratum6)[0]
+                : questions.filter(que => String(que.conceptId) === r.stratum2)[0];
 
                 const questionId = q.conceptId + '_' + q.path;
                 if (questionId in genderAnalysisResults) {
@@ -456,21 +457,21 @@ export class FmhViewComponent implements OnInit {
           }
         }
        }
-      for(const ques of questions) {
-          var tempCountAnalysis = {...countAnalysis};
+      for (const ques of questions) {
+          let tempCountAnalysis = {...countAnalysis};
           tempCountAnalysis.results = countAnalysisResults[ques.conceptId + '_' + ques.path];
           ques.countAnalysis = tempCountAnalysis;
 
-          var tempGenderAnalysis = {...genderAnalysis};
+          let tempGenderAnalysis = {...genderAnalysis};
           tempGenderAnalysis.results = genderAnalysisResults[ques.conceptId + '_' + ques.path];
           ques.genderAnalysis = tempGenderAnalysis;
 
-          var tempAgeAnalysis = {...ageAnalysis};
+          let tempAgeAnalysis = {...ageAnalysis};
           tempAgeAnalysis.results = ageAnalysisResults[ques.conceptId + '_' + ques.path];
           ques.ageAnalysis = tempAgeAnalysis;
       }
 
-      for(const q of this.conditionSubQuestions.concat(this.fmSubQuestions)) {
+      for (const q of this.conditionSubQuestions.concat(this.fmSubQuestions)) {
               var path_split = q.path.split(".");
               var question_id = path_split.length === 3 ? path_split[0] : path_split[2];
               var result_id = path_split.length === 3 ? path_split[1] : path_split[3];
