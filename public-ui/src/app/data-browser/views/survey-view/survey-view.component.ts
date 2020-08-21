@@ -135,6 +135,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // this.router.navigate(
           // ['survey/' + this.domainId.toLowerCase() + '/' + query]
           // );
+          this.resetExpansion();
           this.filterResults();
         }));
     this.subscriptions.push(this.api.getDomainTotals(
@@ -515,9 +516,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         && w.toLowerCase() !== 'or');
       const reString = words.join('|');
 
+      let searchFlag = false;
+
       const re = new RegExp(reString, 'gi');
       if (re.test(q.conceptName)) {
-        return true;
+        searchFlag = true;
       }
 
       const results = q.countAnalysis.results.filter(r => re.test(r.stratum4));
@@ -528,21 +531,41 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         if (rs.subQuestions && rs.subQuestions.length > 0) {
           for (const sq of rs.subQuestions) {
             if (re.test(sq.conceptName)) {
-              return true;
+              q.expanded = true;
+              this.showAnswer[q.conceptId] = true;
+              rs.expanded = true;
+              searchFlag = true;
             }
             if (sq.countAnalysis.results.filter(r => re.test(r.stratum4)).length > 0) {
-              return true;
+              q.expanded = true;
+              this.showAnswer[q.conceptId] = true;
+              rs.expanded = true;
+              searchFlag = true;
             }
             for (const rs2 of sq.countAnalysis.results.filter(
               r => r.subQuestions !== null)) {
               if (rs2.subQuestions && rs2.subQuestions.length > 0) {
                 for (const sq2 of rs2.subQuestions) {
                   if (re.test(sq2.conceptName)) {
-                    return true;
+                    q.expanded = true;
+                    this.showAnswer[q.conceptId] = true;
+                    rs.expanded = true;
+                    sq.subExpanded = true;
+                    this.showAnswer[sq.conceptId] = true;
+                    rs2.expanded = true;
+                    searchFlag = true;
                   }
                   if (sq2.countAnalysis.results.filter(
                     r => re.test(r.stratum4)).length > 0) {
-                    return true;
+                    q.expanded = true;
+                    this.showAnswer[q.conceptId] = true;
+                    rs.expanded = true;
+                    sq.subExpanded = true;
+                    this.showAnswer[sq.conceptId] = true;
+                    rs2.expanded = true;
+                    sq2.subExpanded = true
+                    this.showAnswer[sq2.conceptId] = true;
+                    searchFlag = true;
                   }
                 }
               }
@@ -550,7 +573,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           }
         }
       }
-      if (results.length > 0) {
+      if (results.length > 0 || searchFlag === true) {
         return true;
       }
       return false ;
@@ -722,5 +745,30 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getMatchingQuestionCount() {
     return this.surveyResultCount;
+  }
+
+  public resetExpansion() {
+    for (let q of this.questions) {
+        q.expanded = false;
+
+        for (let r of q.countAnalysis.results) {
+            r.expanded = false;
+            if (r.hasSubQuestions === 1) {
+                for (let sq of r.subQuestions) {
+                    sq.subExpanded = false;
+
+                    for (let sr of sq.countAnalysis.results) {
+                        sr.expanded = false;
+
+                        if (sr.hasSubQuestions === 1) {
+                            for (let sq2 of sr.subQuestions) {
+                                sq2.subExpanded = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
   }
 }
