@@ -129,7 +129,7 @@
                   </div>
 
                   <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                    <button class="icon-btn" *ngIf="!a.hasSubQuestions && a.stratum4 != 'Did not answer'" (click)="showGraph(a)">
+                    <button class="icon-btn" *ngIf="!a.hasSubQuestions && a.stratum4 != 'Did not answer'">
                       <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1.5rem; width: 1.5rem;color: #2691D0;"></clr-icon>
                     </button>
                     <button class="icon-btn" *ngIf="a.hasSubQuestions">
@@ -212,7 +212,7 @@
                                         </div>
 
                                         <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                                            <button class="icon-btn" *ngIf="sqa.hasSubQuestions != 1 && sqa.stratum4 != 'Did not answer'" (click)="showGraph(sqa)">
+                                            <button class="icon-btn" *ngIf="sqa.hasSubQuestions != 1 && sqa.stratum4 != 'Did not answer'">
                                                 <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                             </button>
                                             <button class="icon-btn" *ngIf="sqa.hasSubQuestions == 1">
@@ -270,7 +270,14 @@
                                                         <label class="concept-code">{{sqa2.stratum3}}</label>
                                                     </div>
                                                     <div class="info-text survey-tbl-d display-body info-text">
-                                                        <label class="participant-count">{{sqa2.countValue | number}} </label>
+                                                        <label class="participant-count" *ngIf="sqa2.countValue <= 20; else Non20Counts;">
+                                                            &le; {{sqa2.countValue | number}}
+                                                        </label>
+                                                        <ng-template #Non20Counts>
+                                                            <label class="body-lead info-text survey-tbl-d">
+                                                                {{sqa2.countValue | number}}
+                                                            </label>
+                                                        </ng-template>
                                                     </div>
 
                                                     <div class=" info-text survey-tbl-d display-body info-text">
@@ -278,7 +285,7 @@
                                                     </div>
 
                                                     <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                                                        <button class="icon-btn" *ngIf="!sqa2.hasSubQuestions && sqa2.stratum4 != 'Did not answer'" (click)="showGraph(sqa2)">
+                                                        <button class="icon-btn" *ngIf="!sqa2.hasSubQuestions && sqa2.stratum4 != 'Did not answer'">
                                                             <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                                         </button>
                                                         <button class="icon-btn" *ngIf="sqa2.hasSubQuestions">
