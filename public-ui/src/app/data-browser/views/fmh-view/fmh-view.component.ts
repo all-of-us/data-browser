@@ -64,7 +64,7 @@ export class FmhViewComponent implements OnInit {
   private getSurveyResults() {
     const conditionQuestionConceptIds = ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638'];
     const fmQuestionConceptIds = ['43528764', '43528763', '43528649', '43528651', '43528650', '43528765'];
-    this.subscriptions.push(this.api.getFMHQuestionsRe(43528698,
+    this.subscriptions.push(this.api.getFMHQuestions(43528698,
       conditionQuestionConceptIds.concat(fmQuestionConceptIds)).subscribe({
       next: x => {
         this.conditionQuestions = x.questions.items.filter

@@ -172,7 +172,7 @@ Description of arguments these scripts take are as follows.
 * bq-dataset : BigQuery Dataset for the cdr release that you want to generate data from. This must exist
 * workbench-project:  Project where private count dataset (cdr) is generated. This must exist.
 * public-project: Project where public count dataset (public) is generated. This must exist.
-* cdr-version: Version of form YYYYMMDD or empty string '' . It is used to name resulting datasets, csv folders, and databases.
+* cdr-version: Version of form p_YYYY_qX_Y or empty string '' . It is used to name resulting datasets, csv folders, and databases.
 * bucket: A GCS Bucket where csv data dumps are of the generated data. This must exist.
 * db-name: Name of database
 * database: Name of database

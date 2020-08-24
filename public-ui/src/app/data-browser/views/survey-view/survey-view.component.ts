@@ -316,7 +316,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   private getSurveyResults() {
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
-      this.subscriptions.push(this.api.getSurveyQuestionsRe(
+      this.subscriptions.push(this.api.getSurveyQuestions(
       this.surveyConceptId.toString()).subscribe({
           next: x => {
             this.processSurveyQuestions(x);
