@@ -3,7 +3,7 @@ p {
 }
 
 aside {
-    width: 30%;
+    width: 40%;
 }
 
 .source-layout {
@@ -48,7 +48,7 @@ aside {
 .tree-view {
     font-size: 14px;
     text-align: left;
-    width: 70%;
+    width: 60%;
     text-align: right;
     padding: 1rem;
     padding-top: 0;
