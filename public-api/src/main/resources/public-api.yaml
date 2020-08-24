@@ -72,141 +72,6 @@ paths:
         500:
           description: Internal Server Error
 
-  /v1/databrowser/fmh-questions:
-    get:
-      tags:
-        - dataBrowser
-      description: Gets the list of family medical history questions grouped by condition / family member
-      operationId: "getFMHGroupedQuestions"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: string
-          required: true
-          description: survey concept id
-        - in: query
-          name: search_word
-          type: string
-          required: false
-          description: search word
-        - in: query
-          name: question-concept-ids
-          type: array
-          items:
-            type: string
-          required: false
-          description: concept id
-      responses:
-        200:
-          description: A collection of questions
-          schema:
-            $ref: "#/definitions/QuestionConceptListResponse"
-
-  /v1/databrowser/survey-question-results:
-    get:
-      tags:
-        - dataBrowser
-
-      description: Get the results & sub questions with results for survey question
-      operationId: "getSurveyQuestionResults"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: string
-          required: true
-          description: survey concept id
-        - in: query
-          name: question_concept_id
-          type: string
-          required: true
-          description: question concept id
-        - in: query
-          name: result_concept_id
-          type: string
-          required: false
-          description: result concept id
-        - in: query
-          name: level
-          type: integer
-          format: int32
-          required: false
-          description: level of sub question
-      responses:
-        200:
-          description: A collection of analysis objects
-          schema:
-            $ref: "#/definitions/QuestionConceptListResponse"
-
-  /v1/databrowser/fmh-survey-question-results:
-    get:
-      tags:
-        - dataBrowser
-
-      description: Get the results & sub questions with results for fmh condition / family member group
-      operationId: "getFMHSurveyQuestionResults"
-      parameters:
-        - in: query
-          name: question_concept_id
-          type: string
-          required: true
-          description: question concept id
-      responses:
-        200:
-          description: A collection of questions
-          schema:
-            $ref: "#/definitions/QuestionConceptListResponse"
-
-  /v1/databrowser/main-survey-question-results:
-    post:
-      tags:
-        - dataBrowser
-      description: Gets the survey question analysis results
-      operationId: "getMainSurveyQuestionResults"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: string
-          required: true
-          description: survey concept id
-        - in: query
-          name: question_concept_id
-          type: string
-          required: true
-          description: question concept id
-        - in: body
-          name: question
-          description: question concept
-          schema:
-            $ref: "#/definitions/QuestionConcept"
-      responses:
-        200:
-          description: A collection of analysis objects
-          schema:
-            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
-
-  /v1/databrowser/fmh-main-condition-results:
-    post:
-      tags:
-        - dataBrowser
-      description: Gets the survey question analysis results of condition in fmh
-      operationId: "getFMHConditionMainResults"
-      parameters:
-        - in: query
-          name: question_concept_id
-          type: string
-          required: true
-          description: question concept id
-        - in: body
-          name: question
-          description: question concept
-          schema:
-            $ref: "#/definitions/QuestionConcept"
-      responses:
-        200:
-          description: A collection of anlysis objects
-          schema:
-            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
-
   /v1/databrowser/count-analysis:
     get:
       tags:
@@ -421,12 +286,12 @@ paths:
           schema:
             $ref: "#/definitions/ConceptListResponse"
 
-  /v1/databrowser/survey-questions-re:
+  /v1/databrowser/survey-questions:
     get:
       tags:
         - dataBrowser
       description: Get survey questions
-      operationId: "getSurveyQuestionsRe"
+      operationId: "getSurveyQuestions"
       parameters:
         - in: query
           name: survey_concept_id
@@ -439,12 +304,12 @@ paths:
           description: survey question fetch
           schema:
             $ref: "#/definitions/SurveyQuestionFetchResponse"
-  /v1/databrowser/fmh-questions-re:
+  /v1/databrowser/fmh-questions:
     get:
       tags:
         - dataBrowser
       description: Get survey questions
-      operationId: "getFMHQuestionsRe"
+      operationId: "getFMHQuestions"
       parameters:
         - in: query
           name: survey_concept_id

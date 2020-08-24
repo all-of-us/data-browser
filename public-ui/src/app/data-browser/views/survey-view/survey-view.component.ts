@@ -216,6 +216,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     sq1.graphToShow = GraphType.BiologicalSex;
                     sq1.selectedAnalysis = sq1.genderAnalysis;
                     sq1.graphDataToShow = 'Count';
+                    console.log(sq1);
                     for (const r1 of sq1.countAnalysis.results) {
                                 if (r1.hasSubQuestions === 1) {
                                     for (const sq2 of r1.subQuestions) {

@@ -798,7 +798,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestionsRe(Long surveyConceptId) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
@@ -812,7 +812,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<QuestionConcept> questions = new ArrayList<>();
 
-        questions = questionConceptDao.getSurveyQuestionsRe(surveyConceptId);
+        questions = questionConceptDao.getSurveyQuestions(surveyConceptId);
         // TODO
         // Change and filter on search word
 
@@ -825,7 +825,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionIds.add(String.valueOf(qc.getQuestionConceptId().getConceptId()));
         }
 
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResultsRe(String.valueOf(surveyConceptId), questionIds);
+        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(String.valueOf(surveyConceptId), questionIds);
 
         SurveyQuestionAnalysisListResponse analysisResp = new SurveyQuestionAnalysisListResponse();
         analysisResp.setItems(analyses.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
@@ -836,7 +836,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getFMHQuestionsRe(Long surveyConceptId, List<String> questionConceptIds) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getFMHQuestions(Long surveyConceptId, List<String> questionConceptIds) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
@@ -850,7 +850,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<QuestionConcept> questions = new ArrayList<>();
 
-        questions = questionConceptDao.getFMHQuestionsRe(questionConceptIds);
+        questions = questionConceptDao.getFMHQuestions(questionConceptIds);
 
         QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
         questionResp.setItems(questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
@@ -870,176 +870,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setAnalyses(analysisResp);
         return ResponseEntity.ok(response);
 
-    }
-
-    @Override
-    public ResponseEntity<QuestionConceptListResponse> getFMHGroupedQuestions(String surveyConceptId, String searchWord, List<String> questionConceptIds) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        long longSurveyConceptId = Long.parseLong(surveyConceptId);
-
-        QuestionConceptListResponse resp = new QuestionConceptListResponse();
-/*
-        SurveyModule surveyModule = surveyModuleDao.findByConceptId(longSurveyConceptId);
-
-        resp.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
- */
-
-        String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
-
-        List<QuestionConcept> questions = new ArrayList<>();
-
-        // Hardcoding question concepts ids for now.
-        // TO-DO Figure out a way to automate fetching these
-
-        if (searchWord == null || searchWord.isEmpty()) {
-            //Get all the questions
-            questions = questionConceptDao.getFMHQuestions(questionConceptIds);
-        } else {
-            // Get only the matching questions
-            questions = questionConceptDao.getMatchingFMHQuestions(new ArrayList<Long>(questionConceptIds.stream().map(Long::parseLong).collect(Collectors.toList())), surveyKeyword);
-        }
-
-        List<org.pmiops.workbench.model.QuestionConcept> convertedQuestions = questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList());
-        resp.setItems(convertedQuestions);
-        return ResponseEntity.ok(resp);
-    }
-
-    @Override
-    public ResponseEntity<SurveyQuestionAnalysisResponse> getMainSurveyQuestionResults(String surveyConceptId, String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
-        try {
-            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-        List<String> questionConceptIds = new ArrayList<>();
-        questionConceptIds.add(questionConceptId);
-
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, questionConceptIds);
-
-        List<AchillesResult> subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 3);
-
-        List<Long> subIds = new ArrayList<>();
-
-        for(AchillesResult sqr: subQuestionResults) {
-            subIds.add(sqr.getId());
-        }
-
-        List<org.pmiops.workbench.model.QuestionConcept> questions = new ArrayList<>();
-        questions.add(question);
-
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
-        org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
-
-        Optional.ofNullable(questionConcept).orElseThrow(() -> new DataNotFoundException("Unable to fetch results of this survey question"));
-
-        SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
-        /*
-        resp.setCountAnalysis(questionConcept.getCountAnalysis());
-        resp.setGenderAnalysis(questionConcept.getGenderAnalysis());
-        resp.setAgeAnalysis(questionConcept.getAgeAnalysis());
-        */
-
-        return ResponseEntity.ok(resp);
-    }
-
-    @Override
-    public ResponseEntity<SurveyQuestionAnalysisResponse> getFMHConditionMainResults(String questionConceptId, org.pmiops.workbench.model.QuestionConcept question) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-
-        List<String> questionConceptIds = new ArrayList<>();
-        questionConceptIds.add(questionConceptId);
-
-        String surveyConceptId = "43528698";
-
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(surveyConceptId, questionConceptIds);
-
-        List<AchillesResult> subQuestionResults = achillesResultDao.findFMHCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds);
-
-        List<Long> subIds = new ArrayList<>();
-
-        for(AchillesResult sqr: subQuestionResults) {
-            subIds.add(sqr.getId());
-        }
-
-        List<org.pmiops.workbench.model.QuestionConcept> questions = new ArrayList<>();
-        questions.add(question);
-
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, questions);
-        org.pmiops.workbench.model.QuestionConcept questionConcept = mappedQuestions.get(0);
-
-        SurveyQuestionAnalysisResponse resp = new SurveyQuestionAnalysisResponse();
-        /*
-        resp.setCountAnalysis(questionConcept.getCountAnalysis());
-        resp.setGenderAnalysis(questionConcept.getGenderAnalysis());
-        resp.setAgeAnalysis(questionConcept.getAgeAnalysis());
-         */
-
-        return ResponseEntity.ok(resp);
-    }
-
-    @Override
-    public ResponseEntity<QuestionConceptListResponse> getSurveyQuestionResults(String surveyConceptId, String questionConceptId, String resultConceptId, Integer level) {
-        try {
-            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-        QuestionConceptListResponse resp = new QuestionConceptListResponse();
-
-        int levelFlag = level == 1 ? 2 : 4;
-
-        List<QuestionConcept> subQuestions = questionConceptDao.findSubSurveyQuestions(new String(questionConceptId+"."+resultConceptId), levelFlag);
-
-        List<String> questionConceptIds = new ArrayList<>();
-
-        for(QuestionConcept q: subQuestions) {
-            questionConceptIds.add(String.valueOf(q.getQuestionConceptId().getConceptId()));
-        }
-
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSubSurveyAnalysisResults(surveyConceptId, questionConceptIds, new String("%"+resultConceptId+"%"));
-
-        List<AchillesResult> subQuestionResults = null;
-        List<Long> subIds = null;
-
-        if (level == 1) {
-            subQuestionResults = achillesResultDao.findCountAnalysisResultsWithSubQuestions(surveyConceptId, questionConceptIds, 5);
-
-            subIds = new ArrayList<>();
-
-            for(AchillesResult sqr: subQuestionResults) {
-                subIds.add(sqr.getId());
-            }
-        }
-
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
-
-        resp.setItems(mappedQuestions);
-        return ResponseEntity.ok(resp);
-    }
-
-    @Override
-    public ResponseEntity<QuestionConceptListResponse> getFMHSurveyQuestionResults(String questionConceptId) {
-        CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
-
-        QuestionConceptListResponse resp = new QuestionConceptListResponse();
-
-        List<QuestionConcept> subQuestions = questionConceptDao.findFMHConditionSubQuestions("43528698", questionConceptId);
-
-        List<String> questionConceptIds = new ArrayList<>();
-
-        for(QuestionConcept q: subQuestions) {
-            questionConceptIds.add(String.valueOf(q.getQuestionConceptId().getConceptId()));
-        }
-
-        List<Long> subIds = null;
-
-        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults("43528698", questionConceptIds);
-
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subIds, subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
-
-        resp.setItems(mappedQuestions);
-
-        return ResponseEntity.ok(resp);
     }
 
     @Override
