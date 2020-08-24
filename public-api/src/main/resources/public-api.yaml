@@ -602,67 +602,6 @@ definitions:
         items:
           $ref: "#/definitions/QuestionConcept"
 
-  SurveyQuestionAnalysisResponse:
-    type: object
-    required:
-      - countAnalysis
-    properties:
-      countAnalysis:
-        description: count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderAnalysis:
-        description: gender analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageAnalysis:
-        description: age analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderIdentityAnalysis:
-        description: gender identity analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderCountAnalysis:
-        description: gender count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageCountAnalysis:
-        description: age count analysis
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-
-  SurveyQuestionMap:
-    type: object
-    required:
-      - questionConceptId
-    properties:
-      id:
-        description: pk id for jpa code to work
-        type: integer
-        format: int32
-      surveyConceptId:
-        description: survey concept id
-        type: integer
-        format: int64
-      questionConceptId:
-        description: question concept id
-        type: integer
-        format: int64
-      surveyOrderNumber:
-        description: survey order number
-        type: integer
-        format: int32
-      questionOrderNumber:
-        description: question order number
-        type: integer
-        format: int32
-      path:
-        description: concept branching path
-        type: string
-      sub:
-        description: flag to check if question is sub
-        type: integer
-        format: int32
-      isParentQuestion:
-        description: flag to check if this is parent question
-        type: integer
-        format: int32
-
   AchillesResult:
     type: object
     required:
@@ -719,60 +658,6 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/AchillesResult"
-
-  SurveyQuestionResult:
-      type: object
-      required:
-        - analysisId
-
-      properties:
-        id:
-          description: pk id for jpa code to work
-          type: integer
-          format: int64
-        analysisId:
-          description: id analysis
-          type: integer
-          format: int64
-        stratum1:
-          description: stratum 1
-          type: string
-        stratum2:
-          description: stratum 2
-          type: string
-        stratum3:
-          description: stratum 3
-          type: string
-        stratum4:
-          description: stratum 4
-          type: string
-        stratum5:
-          description: stratum 5
-          type: string
-        stratum6:
-          description: stratum6
-          type: string
-        analysisStratumName:
-          description: stratum 5 Name
-          type: string
-        countValue:
-          description: count
-          type: integer
-          format: int64
-        sourceCountValue:
-          description: source count
-          type: integer
-          format: int64
-        subQuestions:
-          description: survey branching sub question
-          type: array
-          items:
-            $ref: "#/definitions/QuestionConcept"
-        hasSubQuestions:
-          description: flag if this results has sub question
-          type: integer
-          format: int32
-
 
   AchillesResultDist:
     type: object
@@ -904,45 +789,6 @@ definitions:
         items:
           $ref: "#/definitions/Analysis"
 
-  SurveyQuestionAnalysis:
-    type: object
-    required:
-      - analysisId
-    properties:
-      analysisId:
-        description: id analysis
-        type: integer
-        format: int64
-      analysisName:
-        description:  analysis name
-        type: string
-      stratum1Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum2Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum3Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum4Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum5Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      chartType:
-        description:  chart type to display for this analysis column pie box
-        type: string
-      dataType:
-        description:  data type of this analysis count or distribution
-        type: string
-      surveyQuestionResults:
-        description: survey question results
-        type: array
-        items:
-          $ref: "#/definitions/SurveyQuestionResult"
-
   SurveyQuestionAnalysisListResponse:
     type: object
     required:
@@ -1034,30 +880,6 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/ConceptAnalysis"
-
-  SurveyQuestionResultResponse:
-    type: object
-    required:
-      - surveyConceptId
-    properties:
-      surveyConceptId:
-        description: survey concept id
-        type: string
-      questionConceptId:
-        description: question concept id
-        type: string
-      countAnalysis:
-        description: count analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      genderAnalysis:
-        description: gender analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
-      ageAnalysis:
-        description: age analysis
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   CountAnalysis:
     type: object
