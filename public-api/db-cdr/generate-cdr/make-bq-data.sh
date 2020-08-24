@@ -80,7 +80,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map survey_question_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship question_concept)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship question_concept)
 
 for t in "${create_tables[@]}"
 do
@@ -91,7 +91,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map survey_question_map filter_conditions source_standard_unit_map survey_concept_relationship fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_concept_relationship fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -331,7 +331,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 set sm.question_count=num_questions from
 (select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
-\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_question_map\` sq
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.question_concept_id = qc.concept_id
 where is_parent_question=1
@@ -416,7 +416,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set c.concept_name=sqm.question_text
 from  (select distinct question_concept_id , question_text
-from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_question_map\` group by 1,2) as sqm
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.question_concept\` group by 1,2) as sqm
 where c.concept_id = sqm.question_concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \

@@ -16,6 +16,9 @@
       ALTER TABLE question_concept
       ADD FULLTEXT INDEX concept_name_index
       (concept_name);
+      ALTER TABLE question_concept
+      ADD INDEX concept_id_index
+      (concept_id);
     </sql>
   </changeSet>
 
