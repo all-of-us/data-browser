@@ -2,7 +2,6 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from
 import * as highcharts from 'highcharts';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
-import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
 import { DbConfigService } from '../../utils/db-config.service';
 import { DomainType } from '../../utils/enum-defs';
 

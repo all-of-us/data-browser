@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import {AchillesResult, DataBrowserService, SurveyQuestionAnalysis} from '../../../../publicGenerated';
+import {AchillesResult, DataBrowserService} from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
 import {TooltipService} from '../../../utils/tooltip.service';
