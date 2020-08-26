@@ -706,6 +706,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+
         SurveyQuestionFetchResponse response = new SurveyQuestionFetchResponse();
 
         SurveyModule surveyModule = surveyModuleDao.findByConceptId(surveyConceptId);
@@ -731,6 +732,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         SurveyQuestionAnalysisListResponse analysisResp = new SurveyQuestionAnalysisListResponse();
         analysisResp.setItems(analyses.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+
+        System.out.println("Test weqwwdw");
+        System.out.println("Another test");
+        System.out.println("Test 5677");
+        System.out.println("Test 123");
+        System.out.println("Test 654");
 
         response.setQuestions(questionResp);
         response.setAnalyses(analysisResp);
@@ -1473,95 +1480,5 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         return binWidth;
-    }
-
-    public List<org.pmiops.workbench.model.QuestionConcept> mapAnalysesToQuestions(List<AchillesAnalysis> analyses, List<Long> subIds, List<org.pmiops.workbench.model.QuestionConcept> questions) {
-        Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
-
-        AchillesAnalysis countAnalysis = null;
-        AchillesAnalysis genderAnalysis = null;
-        AchillesAnalysis ageAnalysis = null;
-
-        for (AchillesAnalysis aa: analyses) {
-            if (aa.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
-                countAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (subIds != null) {
-                        if (subIds.contains(ar.getId())) {
-                            ar.setHasSubQuestions(1);
-                        } else {
-                            ar.setHasSubQuestions(0);
-                        }
-                    }
-
-                    if (countAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = countAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        countAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
-                genderAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (genderAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = genderAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        genderAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID) {
-                ageAnalysis = aa;
-                for (AchillesResult ar : aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (validAgeDeciles.contains(ar.getStratum5())) {
-                        if (ageAnalysisResultsByQuestion.containsKey(questionId)) {
-                            List<AchillesResult> tempResults = ageAnalysisResultsByQuestion.get(questionId);
-                            tempResults.add(ar);
-                        } else {
-                            List<AchillesResult> tempResults = new ArrayList<>();
-                            tempResults.add(ar);
-                            ageAnalysisResultsByQuestion.put(questionId, tempResults);
-                        }
-                    }
-                }
-            }
-
-        }
-/*
-        for(org.pmiops.workbench.model.QuestionConcept q: questions) {
-            if (countAnalysis != null) {
-                AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
-                ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setCountAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ca));
-            }
-            if (genderAnalysis != null) {
-                AchillesAnalysis ga = new AchillesAnalysis(genderAnalysis);
-                ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setGenderAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(ga));
-            }
-            if (ageAnalysis != null) {
-                AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
-                aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setAgeAnalysis(TO_CLIENT_SURVEY_ANALYSIS.apply(aa));
-            }
-        }
-
- */
-        return questions;
     }
 }

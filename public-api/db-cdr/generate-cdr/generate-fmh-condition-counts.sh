@@ -61,7 +61,7 @@ where exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
-group by 4,5,6
+group by 4,5,6,8
 order by c.concept_name asc"
 
 # Set the survey answer count of fmh question by condition and family member

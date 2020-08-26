@@ -91,7 +91,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_concept_relationship fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_concept_relationship fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata question_concept)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -191,13 +191,6 @@ else
     echo "FAILED To run measurement achilles queries for CDR $CDR_VERSION"
     exit 1
 fi
-
-#Update question concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\`
-(concept_id, concept_name, concept_code, domain_id, synonyms, count_value, prevalence)
-select c.concept_id, c.concept_name, c.concept_code, c.domain_id, c.synonyms, c.count_value, c.prevalence from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c where c.concept_id in
-(select distinct cast(ar.stratum_2 as int64) from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar where ar.analysis_id=3110)"
 
 ###########################
 # concept with count cols #
@@ -333,7 +326,7 @@ set sm.question_count=num_questions from
 (select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
-on sq.question_concept_id = qc.concept_id
+on sq.concept_id = qc.concept_id
 where is_parent_question=1
 group by survey_concept_id)
 where sm.concept_id = survey_concept_id
@@ -414,10 +407,10 @@ where concept_id != 0"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
-set c.concept_name=sqm.question_text
-from  (select distinct question_concept_id , question_text
+set c.concept_name=sqm.concept_name
+from  (select distinct concept_id , concept_name
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.question_concept\` group by 1,2) as sqm
-where c.concept_id = sqm.question_concept_id"
+where c.concept_id = sqm.concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
