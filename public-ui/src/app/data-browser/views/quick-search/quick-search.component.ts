@@ -136,11 +136,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.displayDomainTotalsErrorMessage = false;
           },
           error: err => {
-            let errorBody = {};
+            let errorBody = {'message' = ''};
             try {
                 errorBody = JSON.parse(err._body);
             } catch (e) {
-                errorBody['message'] = 'Error fetching error';
             }
             this.displayDomainTotalsErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
@@ -161,11 +160,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
           this.displayDomainTotalsErrorMessage = false;
         },
         error: err => {
-          let errorBody = {};
+          let errorBody = {'message' = ''};
           try {
               errorBody = JSON.parse(err._body);
           } catch (e) {
-              errorBody['message'] = 'Error fetching error';
           }
           this.displayDomainTotalsErrorMessage = true;
           console.log('Error searching: ', errorBody.message);
@@ -186,11 +184,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.displayDomainTotalsErrorMessage = false;
           },
           error: err => {
-            let errorBody = {};
+            let errorBody = {'message' = ''};
             try {
                 errorBody = JSON.parse(err._body);
             } catch (e) {
-                errorBody['message'] = 'Error fetching error';
             }
             this.displayDomainTotalsErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
