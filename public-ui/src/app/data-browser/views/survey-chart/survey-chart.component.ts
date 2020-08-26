@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import {AchillesResult, DataBrowserService} from '../../../../publicGenerated';
+import {AchillesResult, DataBrowserService, SurveyQuestionAnalysis} from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
 import {TooltipService} from '../../../utils/tooltip.service';
@@ -27,8 +27,7 @@ export class SurveyChartComponent implements OnInit {
 
   constructor(private tooltipText: TooltipService,
               public dbc: DbConfigService,
-              private api: DataBrowserService) {
-              }
+              private api: DataBrowserService) { }
 
   ngOnInit() {
   }
@@ -56,8 +55,14 @@ export class SurveyChartComponent implements OnInit {
       q.graphDataToShow = 'Count';
     }
     switch (g) {
+      case GraphType.GenderIdentity:
+        q.selectedAnalysis = q.genderIdentityAnalysis;
+        break;
       case GraphType.AgeWhenSurveyWasTaken:
         q.selectedAnalysis = q.ageAnalysis;
+        break;
+      case GraphType.RaceEthnicity:
+        q.selectedAnalysis = q.raceEthnicityAnalysis;
         break;
       default:
         q.selectedAnalysis = q.genderAnalysis;
@@ -68,7 +73,21 @@ export class SurveyChartComponent implements OnInit {
 
   public selectGraph(sg: any, q: any, answer: any) {
     q.graphDataToShow = sg;
-    this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
+    if (q.graphDataToShow === 'Percentage (%)') {
+      this.dbc.triggerEvent('percentageTabClick', '% Tab',
+        'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
+        + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
+        ' - ' + this.graphToShow, this.searchTerm, null);
+      switch (q.graphToShow) {
+        case GraphType.BiologicalSex:
+          q.selectedAnalysis = q.genderPercentageAnalysis;
+          break;
+        case GraphType.AgeWhenSurveyWasTaken:
+          q.selectedAnalysis = q.agePercentageAnalysis;
+          break;
+      }
+    } else {
+      this.dbc.triggerEvent('countTabClick', 'Count Tab',
         'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
         + q.actualQuestionNumber + ' - ' +  q.conceptName + ' - ' + answer.stratum4 +
         ' - ' + this.graphToShow, this.searchTerm, null);
@@ -80,6 +99,7 @@ export class SurveyChartComponent implements OnInit {
           q.selectedAnalysis = q.ageAnalysis;
           break;
       }
+    }
     this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
   }
 

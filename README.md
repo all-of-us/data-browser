@@ -172,7 +172,7 @@ Description of arguments these scripts take are as follows.
 * bq-dataset : BigQuery Dataset for the cdr release that you want to generate data from. This must exist
 * workbench-project:  Project where private count dataset (cdr) is generated. This must exist.
 * public-project: Project where public count dataset (public) is generated. This must exist.
-* cdr-version: Version of form p_YYYY_qX_Y or empty string '' . It is used to name resulting datasets, csv folders, and databases.
+* cdr-version: Version of form YYYYMMDD or empty string '' . It is used to name resulting datasets, csv folders, and databases.
 * bucket: A GCS Bucket where csv data dumps are of the generated data. This must exist.
 * db-name: Name of database
 * database: Name of database
@@ -188,13 +188,9 @@ Description of arguments these scripts take are as follows.
 
 #### Generate cloudsql databases from a bucket without downloading the data
 ##### * NOTE The cloudsql instance is set in code for each environment in /public-api/libproject/devstart.rb. Thus each cdr release will be on the same cloudsql instance for an environment.  
-`# To generate test cdr.`
+`# Once for public cdr.`
 
 `./project.rb generate-cloudsql-db --project aou-db-test --instance databrowsermaindb --database p_2020q2_1 --bucket aou-db-public-cloudsql/p_2020q2_1`
-
-`# To generate prod cdr.`
-
-`./project.rb generate-cloudsql-db --project aou-db-prod --instance databrowsermaindb --database p_2020q2_1 --bucket aou-db-prod-public-cloudsql/p_2020q2_1`
 
 ##### * NOTE If the import to cloudsql stops at any point because of any other operation happening on the same cloudsql instance, run cloudsql-import on rest of the files.
 ##### Result is

@@ -72,6 +72,165 @@ paths:
         500:
           description: Internal Server Error
 
+  /v1/databrowser/survey-questions:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Gets the list of survey questions for a survey
+      operationId: "getSurveyQuestions"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: search_word
+          type: string
+          required: false
+          description: search word
+      responses:
+        200:
+          description: A collection of survey questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/fmh-questions:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets the list of family medical history questions grouped by condition / family member
+      operationId: "getFMHGroupedQuestions"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: search_word
+          type: string
+          required: false
+          description: search word
+        - in: query
+          name: question-concept-ids
+          type: array
+          items:
+            type: string
+          required: false
+          description: concept id
+      responses:
+        200:
+          description: A collection of questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/survey-question-results:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Get the results & sub questions with results for survey question
+      operationId: "getSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: query
+          name: result_concept_id
+          type: string
+          required: false
+          description: result concept id
+        - in: query
+          name: level
+          type: integer
+          format: int32
+          required: false
+          description: level of sub question
+      responses:
+        200:
+          description: A collection of analysis objects
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/fmh-survey-question-results:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Get the results & sub questions with results for fmh condition / family member group
+      operationId: "getFMHSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+      responses:
+        200:
+          description: A collection of questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
+
+  /v1/databrowser/main-survey-question-results:
+    post:
+      tags:
+        - dataBrowser
+      description: Gets the survey question analysis results
+      operationId: "getMainSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: survey_concept_id
+          type: string
+          required: true
+          description: survey concept id
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: body
+          name: question
+          description: question concept
+          schema:
+            $ref: "#/definitions/QuestionConcept"
+      responses:
+        200:
+          description: A collection of analysis objects
+          schema:
+            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
+
+  /v1/databrowser/fmh-main-condition-results:
+    post:
+      tags:
+        - dataBrowser
+      description: Gets the survey question analysis results of condition in fmh
+      operationId: "getFMHConditionMainResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+        - in: body
+          name: question
+          description: question concept
+          schema:
+            $ref: "#/definitions/QuestionConcept"
+      responses:
+        200:
+          description: A collection of anlysis objects
+          schema:
+            $ref: "#/definitions/SurveyQuestionAnalysisResponse"
+
   /v1/databrowser/count-analysis:
     get:
       tags:
@@ -168,6 +327,34 @@ paths:
       responses:
         200:
           description: Gender analysis along with results
+          schema:
+            $ref: "#/definitions/Analysis"
+
+  /v1/databrowser/race-count:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Gets results for an analysis id
+      operationId: "getRaceAnalysis"
+      parameters: []
+      responses:
+        200:
+          description: Race analysis along with results
+          schema:
+            $ref: "#/definitions/Analysis"
+
+  /v1/databrowser/ethnicity-count:
+    get:
+      tags:
+        - dataBrowser
+
+      description: Gets results for an analysis id
+      operationId: "getEthnicityAnalysis"
+      parameters: []
+      responses:
+        200:
+          description: Ethnicity analysis along with results
           schema:
             $ref: "#/definitions/Analysis"
 
@@ -286,50 +473,6 @@ paths:
           schema:
             $ref: "#/definitions/ConceptListResponse"
 
-  /v1/databrowser/survey-questions:
-    get:
-      tags:
-        - dataBrowser
-      description: Get survey questions
-      operationId: "getSurveyQuestions"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: integer
-          format: int64
-          required: true
-          description: survey concept id
-      responses:
-        200:
-          description: survey question fetch
-          schema:
-            $ref: "#/definitions/SurveyQuestionFetchResponse"
-  /v1/databrowser/fmh-questions:
-    get:
-      tags:
-        - dataBrowser
-      description: Get survey questions
-      operationId: "getFMHQuestions"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: integer
-          format: int64
-          required: true
-          description: survey concept id
-        - in: query
-          name: question-concept-ids
-          type: array
-          items:
-            type: string
-          required: false
-          description: concept id
-      responses:
-        200:
-          description: survey question fetch
-          schema:
-            $ref: "#/definitions/SurveyQuestionFetchResponse"
-
 ##########################################################################################
 ## DEFINITIONS
 ##########################################################################################
@@ -426,22 +569,6 @@ definitions:
         description: concept for which standard concepts are fetched
         type: integer
         format: int64
-
-  SurveyQuestionFetchResponse:
-    type: object
-    required:
-      - items
-    properties:
-      questions:
-        description: survey questions
-        type: object
-        $ref: "#/definitions/QuestionConceptListResponse"
-      analyses:
-        description: analysis objects
-        type: object
-        $ref: "#/definitions/SurveyQuestionAnalysisListResponse"
-      survey:
-        $ref: "#/definitions/SurveyModule"
 
   MeasurementConceptInfo:
     type: object
@@ -552,7 +679,9 @@ definitions:
     required:
       - conceptId
       - conceptName
-      - surveyName
+      - domainId
+      - conceptCode
+      - standardConcept
 
     properties:
       conceptId:
@@ -562,8 +691,8 @@ definitions:
       conceptName:
         description: name of concept
         type: string
-      surveyName:
-        description: survey name
+      domainId:
+        description: domain of concept
         type: string
       conceptCode:
         description: original vocab code of concept
@@ -572,35 +701,97 @@ definitions:
         description: est count in the cdr
         type: integer
         format: int64
-      surveyConceptId:
-        description: survey concept id
-        type: integer
-        format: int64
-      sub:
-        description: flag to indicate if a question is a sub question
-        type: integer
-        format: int32
-      path:
-        description: question path
-        type: string
-      is_parent_question:
-        description: flag to indicate if the question is parent question
-        type: integer
-        format: int32
-      questionOrderNumber:
-        description: question order number
-        type: integer
-        format: int32
+      prevalence:
+        description: prevalence among participants percent count divided num participants
+        type: number
+        format: float
+      questions:
+        description: survey question map list
+        type: array
+        items:
+          $ref: "#/definitions/SurveyQuestionMap"
+      countAnalysis:
+        description: count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderAnalysis:
+        description: gender analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageAnalysis:
+        description: age analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderIdentityAnalysis:
+        description: gender identity analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   QuestionConceptListResponse:
     type: object
     required:
       - items
     properties:
+      survey:
+        $ref: "#/definitions/SurveyModule"
       items:
         type: array
         items:
           $ref: "#/definitions/QuestionConcept"
+
+  SurveyQuestionAnalysisResponse:
+    type: object
+    required:
+      - countAnalysis
+    properties:
+      countAnalysis:
+        description: count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderAnalysis:
+        description: gender analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageAnalysis:
+        description: age analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderIdentityAnalysis:
+        description: gender identity analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderCountAnalysis:
+        description: gender count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageCountAnalysis:
+        description: age count analysis
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+
+  SurveyQuestionMap:
+    type: object
+    required:
+      - questionConceptId
+    properties:
+      id:
+        description: pk id for jpa code to work
+        type: integer
+        format: int32
+      surveyConceptId:
+        description: survey concept id
+        type: integer
+        format: int64
+      questionConceptId:
+        description: question concept id
+        type: integer
+        format: int64
+      surveyOrderNumber:
+        description: survey order number
+        type: integer
+        format: int32
+      questionOrderNumber:
+        description: question order number
+        type: integer
+        format: int32
+      path:
+        description: concept branching path
+        type: string
+      sub:
+        description: flag to check if question is sub
+        type: integer
+        format: int32
+
 
   AchillesResult:
     type: object
@@ -658,6 +849,60 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/AchillesResult"
+
+  SurveyQuestionResult:
+      type: object
+      required:
+        - analysisId
+
+      properties:
+        id:
+          description: pk id for jpa code to work
+          type: integer
+          format: int64
+        analysisId:
+          description: id analysis
+          type: integer
+          format: int64
+        stratum1:
+          description: stratum 1
+          type: string
+        stratum2:
+          description: stratum 2
+          type: string
+        stratum3:
+          description: stratum 3
+          type: string
+        stratum4:
+          description: stratum 4
+          type: string
+        stratum5:
+          description: stratum 5
+          type: string
+        stratum6:
+          description: stratum6
+          type: string
+        analysisStratumName:
+          description: stratum 5 Name
+          type: string
+        countValue:
+          description: count
+          type: integer
+          format: int64
+        sourceCountValue:
+          description: source count
+          type: integer
+          format: int64
+        subQuestions:
+          description: survey branching sub question
+          type: array
+          items:
+            $ref: "#/definitions/QuestionConcept"
+        hasSubQuestions:
+          description: flag if this results has sub question
+          type: integer
+          format: int32
+
 
   AchillesResultDist:
     type: object
@@ -789,15 +1034,44 @@ definitions:
         items:
           $ref: "#/definitions/Analysis"
 
-  SurveyQuestionAnalysisListResponse:
+  SurveyQuestionAnalysis:
     type: object
     required:
-      - items
+      - analysisId
     properties:
-      items:
-        type: "array"
+      analysisId:
+        description: id analysis
+        type: integer
+        format: int64
+      analysisName:
+        description:  analysis name
+        type: string
+      stratum1Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum2Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum3Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum4Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum5Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      chartType:
+        description:  chart type to display for this analysis column pie box
+        type: string
+      dataType:
+        description:  data type of this analysis count or distribution
+        type: string
+      surveyQuestionResults:
+        description: survey question results
+        type: array
         items:
-          $ref: "#/definitions/Analysis"
+          $ref: "#/definitions/SurveyQuestionResult"
 
   DomainInfosAndSurveyModulesResponse:
     type: object
@@ -880,6 +1154,30 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/ConceptAnalysis"
+
+  SurveyQuestionResultResponse:
+    type: object
+    required:
+      - surveyConceptId
+    properties:
+      surveyConceptId:
+        description: survey concept id
+        type: string
+      questionConceptId:
+        description: question concept id
+        type: string
+      countAnalysis:
+        description: count analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      genderAnalysis:
+        description: gender analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
+      ageAnalysis:
+        description: age analysis
+        type: object
+        $ref: "#/definitions/SurveyQuestionAnalysis"
 
   CountAnalysis:
     type: object
