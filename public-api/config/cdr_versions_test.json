@@ -21,19 +21,7 @@
     "creationTime": "2020-02-11 16:27:20Z",
     "releaseNumber": 2,
     "numParticipants": 225140,
-    "cdrDbName": "p_2020q2_5",
-    "publicDbName": "p_2020q2_5"
-  },
-  {
-    "cdrVersionId": 2,
-    "isDefault": true,
-    "name": "All of Us Dataset v2",
-    "dataAccessLevel": 1,
-    "bigqueryProject": "aou-res-curation-prod",
-    "bigqueryDataset": "combined20191004_dbrowser_2",
-    "creationTime": "2020-02-11 16:27:20Z",
-    "releaseNumber": 2,
-    "numParticipants": 225140,
+    "cdrDbName": "p_2020q2_7",
     "publicDbName": "p_2020q2_7"
   }
 ]
