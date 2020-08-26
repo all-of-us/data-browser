@@ -2828,9 +2828,9 @@ highcharts@^5.0.7:
   version "5.0.15"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-5.0.15.tgz#a9af11538a85b85f300e66f7a0e048a7ef8ab381"
 
-highcharts@^6.0.4:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.2.0.tgz#2a6d04652eb43c66f462ca7e2d2808f1f2782b61"
+highcharts@^7.2.2:
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-7.2.2.tgz#94d6bae545d7f0fbf49615b28640f5fdbf99d11e"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
