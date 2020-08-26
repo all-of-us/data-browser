@@ -7,9 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PublicApiApplication {
 
   public static void main(String[] args) {
-    System.out.println("Hot reload test");
-    System.out.println("Hot reload test2");
-    System.out.println("Hot reload test 3");
     SpringApplication.run(PublicApiApplication.class, args);
   }
 }

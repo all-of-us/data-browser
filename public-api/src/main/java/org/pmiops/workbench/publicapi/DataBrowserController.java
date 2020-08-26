@@ -733,12 +733,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         SurveyQuestionAnalysisListResponse analysisResp = new SurveyQuestionAnalysisListResponse();
         analysisResp.setItems(analyses.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
 
-        System.out.println("Test weqwwdw");
-        System.out.println("Another test");
-        System.out.println("Test 5677");
-        System.out.println("Test 123");
-        System.out.println("Test 654");
-
         response.setQuestions(questionResp);
         response.setAnalyses(analysisResp);
         return ResponseEntity.ok(response);
