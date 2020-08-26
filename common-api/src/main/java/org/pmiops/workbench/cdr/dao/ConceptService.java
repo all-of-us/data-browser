@@ -69,61 +69,6 @@ public class ConceptService {
         this.conceptDao = conceptDao;
     }
 
-    public static String prevModifyMultipleMatchKeyword(String query, SearchType searchType) {
-        // This function modifies the keyword to match all the words if multiple words are present(by adding + before each word to indicate match that matching each word is essential)
-        if (query == null || query.trim().isEmpty()) {
-            return null;
-        }
-        String[] keywords = query.split("[,+\\s+]");
-        List<String> temp = new ArrayList<>();
-        for (String key : keywords) {
-            String tempKey;
-            // This is to exact match concept codes like 100.0, 507.01. Without this mysql was matching 100*, 507*.
-            if (key.startsWith("\"") && key.endsWith("\"")) {
-                temp.add(key);
-            } else {
-                if (key.contains(".")) {
-                    tempKey = "\"" + key + "\"";
-                } else {
-                    tempKey = key;
-                }
-                if (!tempKey.isEmpty()) {
-                    String toAdd = new String("+" + tempKey);
-                    if (tempKey.contains("-") && !temp.contains(tempKey)) {
-                        temp.add(tempKey);
-                    } else if (tempKey.contains("*") && tempKey.length() > 1) {
-                        temp.add(toAdd);
-                    } else if (tempKey.contains("(") && !tempKey.contains("\"")) {
-                        temp.add("\"" + tempKey + "\"");
-                    } else {
-                        if (key.length() < 3) {
-                            temp.add(key);
-                        } else {
-                            // Only in the case of calling this method from getDomainSearchResults to fetch survey counts add wildcard* search.
-                            // The survey view angular code fetches all the results of each survey module and then checks if the search text is present in the concept name / stratum4 of achilles results using regex test.
-                            // Without this the number of results for search smoke would be 6 while also the actual results would be 12 as smoking, smoked (smoke*) are considered.
-                            // Changing this would address the search count discrepancy for survey results. If * wildcard is added to all search types, source vocabulary code match on 507 fetches all the results matching 507*. (which is not desired to show the source / standard code mapping)
-                            // So added different search type for each purpose
-                            if (searchType == SearchType.SURVEY_COUNTS) {
-                                temp.add(new String("+" + key + "*"));
-                            } else {
-                                temp.add(toAdd);
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-
-        StringBuilder query2 = new StringBuilder();
-        for (String key : temp) {
-            query2.append(key);
-        }
-
-        return query2.toString();
-    }
-
     public static String modifyMultipleMatchKeyword(String query, SearchType searchType) {
         // This function modifies the keyword to match all the words if multiple words are present(by adding + before each word to indicate match that matching each word is essential)
         if (query == null || query.trim().isEmpty()) {
@@ -190,8 +135,6 @@ public class ConceptService {
                             (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
                     final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
-
-                    System.out.println(keyword);
 
                     Expression<Double> matchExp = null;
 

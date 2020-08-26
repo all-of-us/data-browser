@@ -5,17 +5,20 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-59">
+  <changeSet id="db.changelog-66" author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN">
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
       <not>
-        <indexExists tableName="survey_question_map" indexName="question_concept_id_idx"/>
+        <indexExists tableName="question_concept" indexName="concept_name_index"></indexExists>
       </not>
     </preConditions>
     <sql dbms="mysql">
-      ALTER TABLE survey_question_map
-      ADD INDEX question_concept_id_idx
-      (question_concept_id);
+      ALTER TABLE question_concept
+      ADD FULLTEXT INDEX concept_name_index
+      (concept_name);
+      ALTER TABLE question_concept
+      ADD INDEX concept_id_index
+      (concept_id);
     </sql>
   </changeSet>
 

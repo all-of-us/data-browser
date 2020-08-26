@@ -18,8 +18,7 @@
   <include file="changelog-data/db.changelog-15.xml"/>
   <include file="changelog-data/db.changelog-21.xml"/>
   <include file="changelog-data/db.changelog-22.xml"/>
-  <include file="changelog-data/db.changelog-25.xml"/>
   <include file="changelog-data/db.changelog-26.xml"/>
   <include file="changelog-data/db.changelog-27.xml"/>
-  <include file="changelog-data/db.changelog-28.xml"/>
+  <include file="changelog-data/db.changelog-29.xml"/>
 </databaseChangeLog>

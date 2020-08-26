@@ -5,20 +5,22 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" id="changelog-25" runAlways="true" context="local or cloud">
+  <changeSet author="srushtigangireddy" id="changelog-29" runAlways="true" context="local or cloud">
 
     <validCheckSum>ANY</validCheckSum>
 
-    <delete tableName="survey_question_map"/>
-
-    <loadData tableName="survey_question_map" file="csv/survey_question_map.csv" encoding="UTF-8" quotchar='"'>
-      <column name="id" type="NUMERIC"/>
+    <loadData tableName="question_concept" file="csv/question_concept.csv" encoding="UTF-8" quotchar='"'>
+      <column name="concept_id" type="NUMERIC"/>
+      <column name="concept_name" type="STRING"/>
+      <column name="concept_code" type="STRING"/>
+      <column name="survey_name" type="STRING"/>
       <column name="survey_concept_id" type="NUMERIC"/>
-      <column name="question_concept_id" type="NUMERIC"/>
-      <column name="survey_order_number" type="NUMERIC"/>
-      <column name="question_order_number" type="NUMERIC"/>
-      <column name="path" type="STRING"/>
+      <column name="count_value" type="NUMERIC"/>
       <column name="sub" type="NUMERIC"/>
+      <column name="path" type="STRING"/>
+      <column name="is_parent_question" type="NUMERIC" />
+      <column name="generate_counts" type="NUMERIC" />
+      <column name="question_order_number" type="NUMERIC" />
     </loadData>
 
   </changeSet>

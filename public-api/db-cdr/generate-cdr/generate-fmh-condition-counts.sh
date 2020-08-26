@@ -51,16 +51,17 @@ fi
 #Set the survey answer count for fmh question by condition
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select 0 as id, 3110 as analysis_id, '43528698' as stratum_1, cast(fmh.observation_source_concept_id as string) as stratum_2, cast(fmh.value_source_concept_id as string) as stratum_3,
-c.concept_name as stratum_4,'2' as stratum_5,count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
+c.concept_name as stratum_4,'2' as stratum_5,cast(fmh.observation_source_concept_id as string) as stratum_6,
+count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
 from  \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on fmh.value_source_concept_id=c.concept_id
 ,\`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
 where exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
 where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
-group by 4,5,6
+group by 4,5,6,8
 order by c.concept_name asc"
 
 # Set the survey answer count of fmh question by condition and family member
@@ -189,7 +190,8 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
  (id,analysis_id,stratum_1,stratum_2,stratum_5,stratum_6,count_value,source_count_value)
- select 0 as id, 3320 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, cast(p.gender_concept_id as string) as stratum_5, concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
+ select 0 as id, 3320 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, cast(p.gender_concept_id as string) as stratum_5,
+concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
  count(distinct ob.person_id) as count_value,count(distinct ob.person_id) as source_count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh
  ,\`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
@@ -205,7 +207,8 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_5,stratum_6,count_value,source_count_value)
-select 0 as id, 3321 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, age_stratum as stratum_5,concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
+select 0 as id, 3321 as analysis_id, '43528698' as stratum_1, cast(fmh.value_source_concept_id as string) as stratum_2, age_stratum as stratum_5,
+concat(fmh.observation_source_concept_id,'.',fmh.value_source_concept_id,'.',fmh.value_source_concept_id) as stratum_6,
 COUNT(distinct ob.PERSON_ID) as count_value,0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_metadata\` fmh
 ,\`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob JOIN UNNEST(SPLIT(fmh_concepts_to_count,',')) as concepts on cast(ob.value_source_concept_id as string)=concepts
@@ -222,7 +225,7 @@ group by 4,5,6"
 # This is not straightforward pull from the table so, these queries calculate it.
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with a as
 (select person_id,fmh.observation_source_concept_id as question_concept, string_agg(distinct cast(ob.observation_source_concept_id as string), ',') as questions_skipped from
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.fmh_conditions_member_metadata\` fmh, \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
@@ -234,7 +237,8 @@ where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2)
 select 0 as id, 3110 as analysis_id,'43528698' as stratum_1,
-cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, '2' as stratum_5, count(person_id) as count_value, 0 as source_count_value
+cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, '2' as stratum_5,
+cast(question_concept as string) as stratum_6, count(person_id) as count_value, 0 as source_count_value
 from a where ARRAY_LENGTH(SPLIT(questions_skipped))=6
 group by 4"
 
@@ -253,7 +257,7 @@ where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2,3)
 select 0 as id, 3111 as analysis_id,'43528698' as stratum_1,
-cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, cast(gender as string) as stratum_5, '2' as stratum_6, count(person_id) as count_value, 0 as source_count_value
+cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, cast(gender as string) as stratum_5, cast(question_concept as string) as stratum_6, count(person_id) as count_value, 0 as source_count_value
 from a where ARRAY_LENGTH(SPLIT(questions_skipped))=6
 group by 4,7"
 
@@ -272,6 +276,6 @@ where questionnaire_response_id=ob.questionnaire_response_id and
 observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
 group by 1,2,3)
 select 0 as id, 3112 as analysis_id,'43528698' as stratum_1,
-cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, cast(age as string) as stratum_5, '2' as stratum_6, count(person_id) as count_value, 0 as source_count_value
+cast(question_concept as string) as stratum_2, '903096' as stratum_3,'Skip' as stratum_4, cast(age as string) as stratum_5, cast(question_concept as string) as stratum_6, count(person_id) as count_value, 0 as source_count_value
 from a where ARRAY_LENGTH(SPLIT(questions_skipped))=6
 group by 4,7"

@@ -2,7 +2,6 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from
 import * as highcharts from 'highcharts';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
-import { SurveyQuestionAnalysis } from '../../../publicGenerated/model/surveyQuestionAnalysis';
 import { DbConfigService } from '../../utils/db-config.service';
 import { DomainType } from '../../utils/enum-defs';
 
@@ -14,7 +13,7 @@ import { DomainType } from '../../utils/enum-defs';
 export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() analysis: Analysis;
   @Input() analysis2: Analysis;
-  @Input() surveyAnalysis: SurveyQuestionAnalysis;
+  @Input() surveyAnalysis: any;
   @Input() concepts: Concept[] = []; // Can put in analysis or concepts to chart. Don't put both
   @Input() selectedResult: any; // For ppi question, this is selected answer.
   @Input() pointWidth = 30;   // Optional width of bar or point or box plot
@@ -40,8 +39,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   ngOnChanges(changes) {
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
       (this.concepts && this.concepts.length) ||
-      (this.surveyAnalysis && this.surveyAnalysis.surveyQuestionResults &&
-        this.surveyAnalysis.surveyQuestionResults.length)) {
+      (this.surveyAnalysis && this.surveyAnalysis.results &&
+        this.surveyAnalysis.results.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
     }
@@ -248,7 +247,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (this.surveyAnalysis &&
       this.surveyAnalysis.analysisId === this.dbc.SURVEY_COUNT_ANALYSIS_ID) {
-      return this.makeCountChartOptions(this.surveyAnalysis.surveyQuestionResults,
+      return this.makeCountChartOptions(this.surveyAnalysis.results,
         this.surveyAnalysis.analysisName);
     }
     if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
@@ -257,7 +256,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
       return this.makeGenderChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(
+        this.surveyAnalysis.results.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         this.surveyAnalysis.analysisName, this.selectedResult.stratum4,
         this.surveyAnalysis.analysisId);
@@ -277,7 +276,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     }
     if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
       return this.makeAgeChartOptions(
-        this.surveyAnalysis.surveyQuestionResults.filter(
+        this.surveyAnalysis.results.filter(
           r => r.stratum4 === this.selectedResult.stratum4),
         'Age When Survey Was Taken',
         this.selectedResult.stratum4, 'stratum5', this.surveyAnalysis.analysisId);
@@ -628,7 +627,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           filter(x => x.stratum2 === a.stratum5)[0];
         totalCount = (ageResult.countValue <= 20) ? '&le; 20' : ageResult.countValue;
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-        toolTipHelpText = '<b>' + a.countValue + '</b> participants were ages within range of ' +
+        toolTipHelpText = '<b>' + count + '</b> participants were ages within range of ' +
           a.analysisStratumName + ' when survey was taken with this answer and is <b>'
           + percentage + '</b>' + '% of all participants with the same criteria. (total count = '
           + totalCount + '</b>)';

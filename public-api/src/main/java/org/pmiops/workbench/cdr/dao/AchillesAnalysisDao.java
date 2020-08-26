@@ -9,15 +9,14 @@ public interface AchillesAnalysisDao extends CrudRepository<AchillesAnalysis, Lo
     List<AchillesAnalysis> findAll();
 
     @Query(value = "select distinct a from AchillesAnalysis a left join FETCH a.results as r " +
-            "where r.stratum1 = ?1 and r.stratum2 in (?2) and a.analysisId in (3110,3111,3112,3320,3321) order by a.analysisId"
+            "where r.stratum1 = ?1 and r.stratum2 in (?2)and a.analysisId in (3110,3111,3112,3320,3321) order by a.analysisId"
     )
     List<AchillesAnalysis> findSurveyAnalysisResults(String survey_concept_id, List<String> question_concept_ids);
 
     @Query(value = "select distinct a from AchillesAnalysis a left join FETCH a.results as r " +
-            "where r.stratum1 = ?1 and r.stratum2 in (?2) and r.stratum6 LIKE ?3 and a.analysisId in (3110,3111,3112,3320,3321) order by a.analysisId"
+            "where r.stratum1 = ?1 and (r.stratum2 in (?2) or SUBSTRING_INDEX(r.stratum6, '.', 1) in (?2)) and a.analysisId in (3110,3111,3112,3320,3321) order by a.analysisId"
     )
-    List<AchillesAnalysis> findSubSurveyAnalysisResults(String survey_concept_id, List<String> question_concept_ids, String result_concept_id);
-
+    List<AchillesAnalysis> findFMHResults(String survey_concept_id, List<String> question_concept_ids);
 
     @Query(value = "select distinct a from AchillesAnalysis a left join FETCH a.results r " +
             "where r.stratum1=?1 and a.analysisId in (?2)"
