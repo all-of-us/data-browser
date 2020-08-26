@@ -136,7 +136,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.displayDomainTotalsErrorMessage = false;
           },
           error: err => {
-            let errorBody = {'message' = ''};
+            let errorBody = {'message': ''};
             try {
                 errorBody = JSON.parse(err._body);
             } catch (e) {
@@ -160,7 +160,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
           this.displayDomainTotalsErrorMessage = false;
         },
         error: err => {
-          let errorBody = {'message' = ''};
+          let errorBody = {'message': ''};
           try {
               errorBody = JSON.parse(err._body);
           } catch (e) {
@@ -184,7 +184,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.displayDomainTotalsErrorMessage = false;
           },
           error: err => {
-            let errorBody = {'message' = ''};
+            let errorBody = {'message': ''};
             try {
                 errorBody = JSON.parse(err._body);
             } catch (e) {
