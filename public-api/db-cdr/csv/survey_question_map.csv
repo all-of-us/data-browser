@@ -1,0 +1,754 @@
+"id","survey_concept_id","question_concept_id","survey_order_number","question_order_Number","path","sub","question_text","is_parent_question","generate_counts"
+1,1586134,1586135,1,1,1586135,0,"In what country were you born?",1,1
+2,1586134,1586140,1,2,1586140,0,"Which categories describe you? Select all that apply. Note, you may select more than one group.",1,1
+3,1586134,1586151,1,2,"1586140.1586142.1586151",1,"Asian (For example: Asian Indian, Chinese, Filipino, Japanese, Korean, Vietnamese, etc.)",0,1
+4,1586134,1586152,1,2,"1586140.1586143.1586152",1,"Black, African American, or African (For example: African American, Ethiopian, Haitian, Jamaican, Nigerian, Somali, etc.)",0,1
+5,1586134,1586156,1,2,"1586140.1586147.1586156",1,"Hispanic, Latino, or Spanish (For example: Colombian, Cuban, Dominican, Mexican or Mexican American, Puerto Rican, Salvadoran, etc.)",0,1
+6,1586134,1586155,1,2,"1586140.1586146.1586155",1,"White (For example: English, European, French, German, Irish, Italian, Polish, etc.)",0,1
+7,1586134,1585845,1,3,1585845,0,"What was your biological sex assigned at birth?",1,1
+8,1586134,1585838,1,4,1585838,0,"What terms best express how you describe your gender identity? (Check all that apply)",1,1
+9,1586134,1585348,1,4,"1585838.1585841.1585348",1,"Are any of these a closer description to your gender identity?",0,1
+10,1586134,1585348,1,4,"1585838.1585842.1585348",1,"Are any of these a closer description to your gender identity?",0,1
+11,1586134,1585348,1,4,"1585838.1585843.1585348",1,"Are any of these a closer description to your gender identity?",0,1
+12,1586134,1585899,1,5,1585899,0,"Which of the following best represents how you think of yourself.",1,1
+13,1586134,1585357,1,5,"1585899.1585904.1585357",1,"Are any of these a closer description of how you think of yourself?",0,1
+14,1586134,1585940,1,6,1585940,0,"What is the highest grade or year of school you completed?",1,1
+15,1586134,1585852,1,7,1585852,0,"Have you ever served on active duty in the United States Armed forces, either in the regular military or in a National Guard or military reserve unit?",1,1
+16,1586134,1585892,1,8,1585892,0,"What is your current marital status?",1,1
+17,1586134,1585386,1,9,1585386,0,"Are you covered by health insurance or some other kind of health care plan?",1,1
+18,1586134,43528428,1,9,"1585386.1585387.43528428",1,"Are you currently covered by any of the following types of health insurance or health coverage plans? Select all that apply from one group.",1,1
+19,1586134,1585952,1,10,1585952,0,"What is your current employment status? Please select 1 or more of these categories.",1,1
+20,1586134,1585375,1,11,1585375,0,"What is your annual household income from all sources?",1,1
+21,1586134,1585370,1,12,1585370,0,"Do you own or rent the place where you live?",1,1
+22,1586134,1585402,1,12,"1585370.1585373.1585402",1,"Where are you currently living?",1,1
+23,1586134,1585879,1,13,1585879,0,"How many years have you lived at your current address?",1,1
+24,1586134,1585886,1,14,1585886,0,"In the past 6 months, have you been worried or concerned about NOT having a place to live?",1,1
+25,1585710,1585766,2,1,1585766,0,"How confident are you filling out medical forms by yourself?",1,1
+26,1585710,1585772,2,2,1585772,0,"How often do you have someone help you read health-related materials?",1,1
+27,1585710,1585778,2,3,1585778,0,"How often do you have problems learning about your medical condition because of difficulty understanding written information?",1,1
+28,1585710,1585711,2,4,1585711,0,"In general, would you say your health is:",1,1
+29,1585710,1585717,2,5,1585717,0,"In general, would you say your quality of life is:",1,1
+30,1585710,1585723,2,6,1585723,0,"In general, how would you rate your physical health?",1,1
+31,1585710,1585729,2,7,1585729,0,"In general, how would you rate your mental health, including your mood and your ability to think?",1,1
+32,1585710,1585735,2,8,1585735,0,"In general, how would you rate your satisfaction with your social activities and relationships?",1,1
+33,1585710,1585741,2,9,1585741,0,"To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair?",1,1
+34,1585710,1585747,2,10,1585747,0,"In the past 7 days, how would you rate your pain on average?",1,1
+35,1585710,1585748,2,11,1585748,0,"In the past 7 days, how would you rate your fatigue?",1,1
+36,1585710,1585754,2,12,1585754,0,"In general, please rate how well you carry out your usual social roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)",1,1
+37,1585710,1585760,2,13,1585760,0,"In the past 7 days, how often have you been bothered by emotional problems such as feeling anxious, depressed or irritable?",1,1
+38,1585710,1585784,2,14,1585784,0,"Have your menstrual periods stopped permanently?",1,1
+39,1585710,1585811,2,14,"1585784.1585785.1585811",1,"Are you currently pregnant?",1,1
+40,1585710,1585811,2,14,"1585784.1585788.1585811",1,"Are you currently pregnant?",1,1
+41,1585710,1585789,2,14,"1585784.1585786.1585789",1,"Why did your periods stop?",1,1
+42,1585710,1585789,2,14,"1585784.1585787.1585789",1,"Why did your periods stop?",1,1
+43,1585710,1585791,2,14,"1585784.1585786.1585791",1,"Have you ever had a hysterectomy (that is, surgery to remove your uterus or womb)?",1,1
+44,1585710,1585796,2,14,"1585784.1585786.1585791.1585792.1585796",1,"Have you ever had an ovary removed?",1,1
+45,1585710,1585796,2,14,"1585784.1585786.1585791.1585794.1585796",1,"Have you ever had an ovary removed?",1,1
+46,1585710,1585796,2,14,"1585784.1585786.1585791.903079.1585796",1,"Have you ever had an ovary removed?",1,1
+47,1585710,1585803,2,15,1585803,0,"Have you had a transplant of any type?",1,1
+48,1585710,1585806,2,15,"1585803.1585804.1585806",1,"If yes, please check all that apply",1,1
+49,1585710,1585815,2,16,1585815,0,"Have you traveled outside of the country within the past 6 months?",1,1
+50,1585855,1585857,3,1,1585857,0,"Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?",1,1
+51,1585855,1585860,3,1,"1585857.1585858.1585860",1,"Do you now smoke cigarettes every day, some days, or not at all?",1,1
+52,1585855,1585867,3,1,"1585857.1585858.1585867",1,"In the past, have you ever made a serious attempt to quit smoking? That is, have you stopped smoking for at least one day or longer because you were trying to quit?",1,1
+53,1585855,1586166,3,2,1586166,0,"Have you ever used an electronic nicotine product, even one or two times? (Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, epipes, and e-hookahs.)",1,1
+54,1585855,1586169,3,2,"1586166.1586167.1586169",1,"Do you now use electronic nicotine products…",1,1
+55,1585855,1586174,3,3,1586174,0,"Have you ever smoked a traditional cigar, cigarillo, or filtered cigar, even one of two puffs?",1,1
+56,1585855,1586177,3,3,"1586174.1586175.1586177",1,"Do you now smoke a traditional cigar, cigarillo, or filtered cigar…",1,1
+57,1585855,1586182,3,4,1586182,0,"Have you ever smoked tobacco in a hookah, even one or two puffs",1,1
+58,1585855,1586185,3,4,"1586182.1586183.1586185",1,"Do you smoke hookah…",1,1
+59,1585855,1586190,3,5,1586190,0,"Have you ever used smokeless tobacco products, even one or two times? (Smokeless tobacco products include snus pouches, Skoal Bandits, loose snus, moist snuff, dip, spit, and chewing tobacco.)",1,1
+60,1585855,1586193,3,5,"1586190.1586191.1586193",1,"Do you now use smokeless tobacco products…",1,1
+61,1585855,1586198,3,6,1586198,0,"In your entire life, have you had at least 1 drink of any kind of alcohol, not counting small tastes or sips? (By a “drink,” we mean a can or bottle of beer, a glass of wine or a wine cooler, a shot of liquor, or a mixed drink with liquor in it.)",1,1
+62,1585855,1586201,3,6,"1586198.1586199.1586201",1,"How often did you have a drink containing alcohol in the past year?",1,1
+63,1585855,1586207,3,6,"1586198.1586199.1586201.1586203.1586207",1,"On a typical day when you drink, how many drinks do you have?",1,1
+64,1585855,1586207,3,6,"1586198.1586199.1586201.1586204.1586207",1,"On a typical day when you drink, how many drinks do you have?",1,1
+65,1585855,1586207,3,6,"1586198.1586199.1586201.1586205.1586207",1,"On a typical day when you drink, how many drinks do you have?",1,1
+66,1585855,1586207,3,6,"1586198.1586199.1586201.1586206.1586207",1,"On a typical day when you drink, how many drinks do you have?",1,1
+67,1585855,1586213,3,6,"1586198.1586199.1586201.1586203.1586213",1,"How often did you have six or more drinks on one occasion in the past year?",1,1
+68,1585855,1586213,3,6,"1586198.1586199.1586201.1586204.1586213",1,"How often did you have six or more drinks on one occasion in the past year?",1,1
+69,1585855,1586213,3,6,"1586198.1586199.1586201.1586205.1586213",1,"How often did you have six or more drinks on one occasion in the past year?",1,1
+70,1585855,1586213,3,6,"1586198.1586199.1586201.1586206.1586213",1,"How often did you have six or more drinks on one occasion in the past year?",1,1
+71,1585855,1585636,3,7,1585636,0,"In your LIFETIME, which of the following substances have you ever used?",1,1
+72,1585855,1585650,3,7,"1585636.1585637.1585650",1,"In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?",1,1
+73,1585855,1585656,3,7,"1585636.1585638.1585656",1,"In the PAST THREE MONTHS, how often have you used cocaine (coke, crack, etc.)?",1,1
+74,1585855,1585662,3,7,"1585636.1585639.1585662",1,"In the PAST THREE MONTHS, how often have you used prescription stimulants for non-medical reasons (Vyvanse, Ritalin, Concerta, Dexedrine, Adderall, diet pills, etc.)",1,1
+75,1585855,1585668,3,7,"1585636.1585640.1585668",1,"In the PAST THREE MONTHS, how often have you used other stimulants (methamphetamine, speed, crystal meth, ice, k2/spice, bath salts, etc.)",1,1
+76,1585855,1585674,3,7,"1585636.1585641.1585674",1,"In the PAST THREE MONTHS, how often have you used inhalants (nitrous oxide, glue, gas, paint thinner, etc.)?",1,1
+77,1585855,1585680,3,7,"1585636.1585642.1585656",1,"In the PAST THREE MONTHS, how often have you used sedatives or sleeping pills for non-medical reasons (Valium, Serepax, Ativan, Xanax, Librium, Rohypnol, GHB, etc.)?",1,1
+78,1585855,1585686,3,7,"1585636.1585643.1585656",1,"In the PAST THREE MONTHS, how often have you used hallucinogens (LSD, acid, mushrooms, PCP, Special K, ecstasy, etc.)?",1,1
+79,1585855,1585692,3,7,"1585636.1585644.1585656",1,"In the PAST THREE MONTHS, how often have you used street opioids (heroin, opium, etc.)?",1,1
+80,1585855,1585698,3,7,"1585636.1585645.1585656",1,"In the PAST THREE MONTHS, how often have you used prescription opioids for non-medical reasons (obana, fentanyl, oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine [Supoxone], etc.",1,1
+81,1585855,1585704,3,7,"1585636.1585646.1585656",1,"In the PAST THREE MONTHS, how often have you used other drugs?",1,1
+82,43529712,1384522,4,1,1384522,0,"Has a doctor or health care provider ever told you that you have or had any of the following circulatory conditions? (select all that apply)",1,1
+83,43529712,43530302,4,1,"1384522.43528401.43530302",1,"Are you still seeing a doctor or health care provider for Anemia?",1,1
+84,43529712,43530461,4,1,"1384522.43528401.43530461",1,"About how old were you when you were first told you had Anemia?",1,1
+85,43529712,43528786,4,1,"1384522.43528401.43528786",1,"Are you currently prescribed medications and/or receiving treatment for Anemia?",1,1
+86,43529712,43530303,4,1,"1384522.43528442.43530303",1,"Are you still seeing a doctor or health care provider for Atrial fibrillation (Afib) or Atrial flutter?",1,1
+87,43529712,43530414,4,1,"1384522.43528442.43530414",1,"About how old were you when you were first told you had Atrial fibrillation (Afib) or Atrial flutter?",1,1
+88,43529712,43528787,4,1,"1384522.43528442.43528787",1,"Are you currently prescribed medications and/or receiving treatment for Atrial fibrillation (Afib) or Atrial flutter?",1,1
+89,43529712,43530304,4,1,"1384522.1384512.43530304",1,"Are you still seeing a doctor or health care provider for Bleeding disorder?",1,1
+90,43529712,43530462,4,1,"1384522.1384512.43530462",1,"About how old were you when you were first told you had Bleeding disorder?",1,1
+91,43529712,43528788,4,1,"1384522.1384512.43528788",1,"Are you currently prescribed medications and/or receiving treatment for Bleeding disorder?",1,1
+92,43529712,43530305,4,1,"1384522.43528580.43530305",1,"Are you still seeing a doctor or health care provider for Congestive heart failure?",1,1
+93,43529712,43530463,4,1,"1384522.43528580.43530463",1,"About how old were you when you were first told you had Congestive heart failure?",1,1
+94,43529712,43528789,4,1,"1384522.43528580.43528789",1,"Are you currently prescribed medications and/or receiving treatment for Congestive heart failure?",1,1
+95,43529712,43530306,4,1,"1384522.1384497.43530306",1,"Are you still seeing a doctor or health care provider for Coronary artery/coronary heart disease?",1,1
+96,43529712,43530464,4,1,"1384522.1384497.43530464",1,"About how old were you when you were first told you had Coronary artery/coronary heart disease?",1,1
+97,43529712,43528790,4,1,"1384522.1384497.43528790",1,"Are you currently prescribed medications and/or receiving treatment for Coronary artery/coronary heart disease?",1,1
+98,43529712,43530307,4,1,"1384522.43528910.43530307",1,"Are you still seeing a doctor or health care provider for Heart attack?",1,1
+99,43529712,43530465,4,1,"1384522.43528910.43530465",1,"About how old were you when you were first told you had Heart attack?",1,1
+100,43529712,43528791,4,1,"1384522.43528910.43528791",1,"Are you currently prescribed medications and/or receiving treatment for Heart attack?",1,1
+101,43529712,43530308,4,1,"1384522.43528918.43530308",1,"Are you still seeing a doctor or health care provider for Heart valve disease?",1,1
+102,43529712,43530466,4,1,"1384522.43528918.43530466",1,"About how old were you when you were first told you had Heart valve disease?",1,1
+103,43529712,43528792,4,1,"1384522.43528918.43528792",1,"Are you currently prescribed medications and/or receiving treatment for Heart valve disease?",1,1
+104,43529712,43530309,4,1,"1384522.43528936.43530309",1,"Are you still seeing a doctor or health care provider for High cholesterol?",1,1
+105,43529712,43530467,4,1,"1384522.43528936.43530467",1,"About how old were you when you were first told you had High cholesterol?",1,1
+106,43529712,43528793,4,1,"1384522.43528936.43528793",1,"Are you currently prescribed medications and/or receiving treatment for High cholesterol?",1,1
+107,43529712,43530310,4,1,"1384522.43529063.43530310",1,"Are you still seeing a doctor or health care provider for Hypertension (high blood pressure)?",1,1
+108,43529712,43530468,4,1,"1384522.43529063.43530468",1,"About how old were you when you were first told you had Hypertension (high blood pressure)?",1,1
+109,43529712,1384437,4,1,"1384522.43529063.1384437",1,"Are you currently prescribed medications and/or receiving treatment for Hypertension (high blood pressure)?",1,1
+110,43529712,43530311,4,1,"1384522.1384469.43530311",1,"Are you still seeing a doctor or health care provider for Peripheral vascular disease?",1,1
+111,43529712,1384448,4,1,"1384522.1384469.43530311",1,"About how old were you when you were first told you had Peripheral vascular disease?",1,1
+112,43529712,43528795,4,1,"1384522.1384469.43530311",1,"Are you currently prescribed medications and/or receiving treatment for Peripheral vascular disease?",1,1
+113,43529712,43530312,4,1,"1384522.43529748.43530312",1,"Are you still seeing a doctor or health care provider for Pulmonary embolism or deep vein thrombosis?",1,1
+114,43529712,43530469,4,1,"1384522.43529748.43530469",1,"About how old were you when you were first told you had Pulmonary embolism or deep vein thrombosis?",1,1
+115,43529712,43528796,4,1,"1384522.43529748.43528796",1,"Are you currently prescribed medications and/or receiving treatment for Pulmonary embolism or deep vein thrombosis?",1,1
+116,43529712,43530313,4,1,"1384522.1384467.43530313",1,"Are you still seeing a doctor or health care provider for Sickle cell disease?",1,1
+117,43529712,43530470,4,1,"1384522.1384467.43530470",1,"About how old were you when you were first told you had Sickle cell disease?",1,1
+118,43529712,43528797,4,1,"1384522.1384467.43528797",1,"Are you currently prescribed medications and/or receiving treatment for Sickle cell disease?",1,1
+119,43529712,43530314,4,1,"1384522.43529874.43530314",1,"Are you still seeing a doctor or health care provider for Stroke?",1,1
+120,43529712,43530471,4,1,"1384522.43529874.43530471",1,"About how old were you when you were first told you had Stroke?",1,1
+121,43529712,43528798,4,1,"1384522.43529874.43528798",1,"Are you currently prescribed medications and/or receiving treatment for Stroke?",1,1
+122,43529712,43530315,4,1,"1384522.43529918.43530315",1,"Are you still seeing a doctor or health care provider for Transient ischemic attacks (TIAs or mini-strokes)?",1,1
+123,43529712,43530472,4,1,"1384522.43529918.43530472",1,"About how old were you when you were first told you had Transient ischemic attacks (TIAs or mini-strokes)?",1,1
+124,43529712,43528799,4,1,"1384522.43529918.43528799",1,"Are you currently prescribed medications and/or receiving treatment for Transient ischemic attacks (TIAs or mini-strokes)?",1,1
+125,43529712,1384423,4,1,"1384522.1384638.1384423",1,"Are you still seeing a doctor or health care provider for Other Heart or Blood Condition?",1,1
+126,43529712,1384462,4,1,"1384522.1384638.1384462",1,"About how old were you when you were first told you had Other Heart or Blood Condition?",1,1
+127,43529712,1384420,4,1,"1384522.1384638.1384420",1,"Are you currently prescribed medications and/or receiving treatment for Other Heart or Blood Condition?",1,1
+128,43529712,1384592,4,2,1384592,0,"Has a doctor or health care provider ever told you that you have or had any of the following respiratory conditions? (select all that apply)",1,1
+129,43529712,43530388,4,2,"1384592.43528439.43530388",1,"Are you still seeing a doctor or health care provider for Asthma?",1,1
+130,43529712,43530546,4,2,"1384592.43528439.43530546",1,"About how old were you when you were first told you had Asthma?",1,1
+131,43529712,43528873,4,2,"1384592.43528439.43528873",1,"Are you currently prescribed medications and/or receiving treatment for Asthma?",1,1
+132,43529712,1384608,4,2,"1384592.1384567.1384608",1,"Are you still seeing a doctor or health care provider for Chronic Lung Disease?",1,1
+133,43529712,1384393,4,2,"1384592.1384567.1384393",1,"About how old were you when you were first told you had Chronic Lung Disease?",1,1
+134,43529712,1384587,4,2,"1384592.1384567.1384587",1,"Are you currently prescribed medications and/or receiving treatment for Chronic Lung Disease?",1,1
+135,43529712,43530390,4,2,"1384592.43529837.43530390",1,"Are you still seeing a doctor or health care provider for Sleep Apnea?",1,1
+136,43529712,43530548,4,2,"1384592.43529837.43530548",1,"About how old were you when you were first told you had Sleep Apnea?",1,1
+137,43529712,43528875,4,2,"1384592.43529837.43528875",1,"Are you currently prescribed medications and/or receiving treatment for Sleep Apnea?",1,1
+138,43529712,1384651,4,2,"1384592.1384564.1384651",1,"Are you still seeing a doctor or health care provider for Other lung condition?",1,1
+139,43529712,1384635,4,2,"1384592.1384564.1384635",1,"About how old were you when you were first told you had Other lung condition?",1,1
+140,43529712,1384476,4,2,"1384592.1384564.1384476",1,"Are you currently prescribed medications and/or receiving treatment for Other lung condition?",1,1
+141,43529712,43528760,4,3,43528760,0,"Has a doctor or health care provider ever told you that you have or had any of the following cancers? (select all that apply)",1,1
+142,43529712,43530282,4,3,"43528760.43528472.43530282",1,"Are you still seeing a doctor or health care provider for Bladder cancer?",1,1
+143,43529712,43530440,4,3,"43528760.43528472.43530440",1,"About how old were you when you were first told you had Bladder cancer?",1,1
+144,43529712,43528766,4,3,"43528760.43528472.43528766",1,"Are you currently prescribed medications and/or receiving treatment for Bladder cancer?",1,1
+145,43529712,43530283,4,3,"43528760.1384404.43530283",1,"Are you still seeing a doctor or health care provider for Blood or soft tissue cancer?",1,1
+146,43529712,43530441,4,3,"43528760.1384404.43530441",1,"About how old were you when you were first told you had Blood or soft tissue cancer?",1,1
+147,43529712,43528767,4,3,"43528760.1384404.43528767",1,"Are you currently prescribed medications and/or receiving treatment for Blood or soft tissue cancer?",1,1
+148,43529712,43530284,4,3,"43528760.43528480.43530284",1,"Are you still seeing a doctor or health care provider for Bone cancer?",1,1
+149,43529712,43530442,4,3,"43528760.43528480.43530442",1,"About how old were you when you were first told you had Bone cancer?",1,1
+150,43529712,43528768,4,3,"43528760.43528480.43528768",1,"Are you currently prescribed medications and/or receiving treatment for Bone cancer?",1,1
+151,43529712,43530285,4,3,"43528760.43528492.43530285",1,"Are you still seeing a doctor or health care provider for Brain cancer?",1,1
+152,43529712,43530443,4,3,"43528760.43528492.43530285",1,"About how old were you when you were first told you had Brain cancer?",1,1
+153,43529712,43528769,4,3,"43528760.43528492.43530285",1,"Are you currently prescribed medications and/or receiving treatment for Brain cancer?",1,1
+154,43529712,43530286,4,3,"43528760.43528500.43530286",1,"Are you still seeing a doctor or health care provider for Breast cancer?",1,1
+155,43529712,43530444,4,3,"43528760.43528500.43530444",1,"About how old were you when you were first told you had Breast cancer?",1,1
+156,43529712,43528770,4,3,"43528760.43528500.43528770",1,"Are you currently prescribed medications and/or receiving treatment for Breast cancer?",1,1
+157,43529712,43530287,4,3,"43528760.43528539.43530287",1,"Are you still seeing a doctor or health care provider for Cervical cancer?",1,1
+158,43529712,43530445,4,3,"43528760.43528539.43530445",1,"About how old were you when you were first told you had Cervical cancer?",1,1
+159,43529712,43528771,4,3,"43528760.43528539.43528771",1,"Are you currently prescribed medications and/or receiving treatment for Cervical cancer?",1,1
+160,43529712,43530288,4,3,"43528760.43528565.43530288",1,"Are you still seeing a doctor or health care provider for Colon cancer/Rectal cancer?",1,1
+161,43529712,43530446,4,3,"43528760.43528565.43530446",1,"About how old were you when you were first told you had Colon cancer/Rectal cancer?",1,1
+162,43529712,43528772,4,3,"43528760.43528565.43528772",1,"Are you currently prescribed medications and/or receiving treatment for Colon cancer/Rectal cancer?",1,1
+163,43529712,43530289,4,3,"43528760.43528668.43530289",1,"Are you still seeing a doctor or health care provider for Endocrine cancer?",1,1
+164,43529712,43530447,4,3,"43528760.43528668.43530447",1,"About how old were you when you were first told you had Endocrine cancer?",1,1
+165,43529712,43528773,4,3,"43528760.43528668.43528773",1,"Are you currently prescribed medications and/or receiving treatment for Endocrine cancer?",1,1
+166,43529712,43530290,4,3,"43528760.43528679.43530290",1,"Are you still seeing a doctor or health care provider for Endometrial cancer?",1,1
+167,43529712,43530448,4,3,"43528760.43528679.43530448",1,"About how old were you when you were first told you had Endometrial cancer?",1,1
+168,43529712,43528774,4,3,"43528760.43528679.43528774",1,"Are you currently prescribed medications and/or receiving treatment for Endometrial cancer?",1,1
+169,43529712,43530291,4,3,"43528760.43528693.43530291",1,"Are you still seeing a doctor or health care provider for Esophageal cancer?",1,1
+170,43529712,43530449,4,3,"43528760.43528693.43530449",1,"About how old were you when you were first told you had Esophageal cancer?",1,1
+171,43529712,43528775,4,3,"43528760.43528693.43528775",1,"Are you currently prescribed medications and/or receiving treatment for Esophageal cancer?",1,1
+172,43529712,43530292,4,3,"43528760.43528695.43530292",1,"Are you still seeing a doctor or health care provider for Eye cancer?",1,1
+173,43529712,43530450,4,3,"43528760.43528695.43530450",1,"About how old were you when you were first told you had Eye cancer?",1,1
+174,43529712,43528776,4,3,"43528760.43528695.43528776",1,"Are you currently prescribed medications and/or receiving treatment for Eye cancer?",1,1
+175,43529712,43530293,4,3,"43528760.43528886.43530293",1,"Are you still seeing a doctor or health care provider for Head and Neck cancer?",1,1
+176,43529712,43530451,4,3,"43528760.43528886.43530451",1,"About how old were you when you were first told you had Head and Neck cancer?",1,1
+177,43529712,43528777,4,3,"43528760.43528886.43528777",1,"Are you currently prescribed medications and/or receiving treatment for Head and Neck cancer?",1,1
+178,43529712,43530294,4,3,"43528760.43529136.43530294",1,"Are you still seeing a doctor or health care provider for Kidney cancer?",1,1
+179,43529712,43530452,4,3,"43528760.43529136.43530452",1,"About how old were you when you were first told you had Kidney cancer?",1,1
+180,43529712,43528778,4,3,"43528760.43529136.43528778",1,"Are you currently prescribed medications and/or receiving treatment for Kidney cancer?",1,1
+181,43529712,43530295,4,3,"43528760.43529184.43530295",1,"Are you still seeing a doctor or health care provider for Lung cancer?",1,1
+182,43529712,43530453,4,3,"43528760.43529184.43530453",1,"About how old were you when you were first told you had Lung cancer?",1,1
+183,43529712,43528779,4,3,"43528760.43529184.43528779",1,"Are you currently prescribed medications and/or receiving treatment for Lung cancer?",1,1
+184,43529712,1384483,4,3,"43528760.1384488.1384483",1,"Are you still seeing a doctor or health care provider for Ovarian cancer?",1,1
+185,43529712,1384466,4,3,"43528760.1384488.1384466",1,"About how old were you when you were first told you had Ovarian cancer?",1,1
+186,43529712,1384529,4,3,"43528760.1384488.1384529",1,"Are you currently prescribed medications and/or receiving treatment for Ovarian cancer?",1,1
+187,43529712,43530297,4,3,"43528760.43529684.43530297",1,"Are you still seeing a doctor or health care provider for Pancreatic cancer?",1,1
+188,43529712,43530455,4,3,"43528760.43529684.43530455",1,"About how old were you when you were first told you had Pancreatic cancer?",1,1
+189,43529712,43528781,4,3,"43528760.43529684.43528781",1,"Are you currently prescribed medications and/or receiving treatment for Pancreatic cancer?",1,1
+190,43529712,43530298,4,3,"43528760.43529733.43530298",1,"Are you still seeing a doctor or health care provider for Prostate cancer?",1,1
+191,43529712,43530456,4,3,"43528760.43529733.43530456",1,"About how old were you when you were first told you had Prostate cancer?",1,1
+192,43529712,43528782,4,3,"43528760.43529733.43528782",1,"Are you currently prescribed medications and/or receiving treatment for Prostate cancer?",1,1
+193,43529712,43530299,4,3,"43528760.43529817.43530299",1,"Are you still seeing a doctor or health care provider for Skin cancer?",1,1
+194,43529712,43530457,4,3,"43528760.43529817.43530457",1,"About how old were you when you were first told you had Skin cancer?",1,1
+195,43529712,43528783,4,3,"43528760.43529817.43528783",1,"Are you currently prescribed medications and/or receiving treatment for Skin cancer?",1,1
+196,43529712,43530300,4,3,"43528760.43529866.43530300",1,"Are you still seeing a doctor or health care provider for Stomach cancer?",1,1
+197,43529712,43530458,4,3,"43528760.43529866.43530458",1,"About how old were you when you were first told you had Stomach cancer?",1,1
+198,43529712,43528784,4,3,"43528760.43529866.43528784",1,"Are you currently prescribed medications and/or receiving treatment for Stomach cancer?",1,1
+199,43529712,43530301,4,3,"43528760.43529909.43530301",1,"Are you still seeing a doctor or health care provider for Thyroid cancer?",1,1
+200,43529712,43530459,4,3,"43528760.43529909.43530459",1,"About how old were you when you were first told you had Thyroid cancer?",1,1
+201,43529712,43528785,4,3,"43528760.43529909.43528785",1,"Are you currently prescribed medications and/or receiving treatment for Thyroid cancer?",1,1
+202,43529712,43530296,4,3,"43528760.43529624.43530296",1,"Are you still seeing a doctor or health care provider for Other cancer?",1,1
+203,43529712,43530454,4,3,"43528760.43529624.43530454",1,"About how old were you when you were first told you had Other cancer?",1,1
+204,43529712,43528780,4,3,"43528760.43529624.43528780",1,"Are you currently prescribed medications and/or receiving treatment for Other cancer?",1,1
+205,43529712,1384390,4,4,1384390,0," Has a doctor or health care provider ever told you that you have or had any of the following digestive conditions? (select all that apply)",1,1
+206,43529712,43530316,4,4,"1384390.1384603.43530316",1,"Are you still seeing a doctor or health care provider for Acid reflux?",1,1
+207,43529712,43530473,4,4,"1384390.1384603.43530473",1,"About how old were you when you were first told you had Acid reflux?",1,1
+208,43529712,43528800,4,4,"1384390.1384603.43528800",1,"Are you currently prescribed medications and/or receiving treatment for Acid reflux?",1,1
+209,43529712,43530317,4,4,"1384390.1384417.43530317",1,"Are you still seeing a doctor or health care provider for Bowel obstruction?",1,1
+210,43529712,43530474,4,4,"1384390.1384417.43530474",1,"About how old were you when you were first told you had Bowel obstruction?",1,1
+211,43529712,43528801,4,4,"1384390.1384417.43528801",1,"Are you currently prescribed medications and/or receiving treatment for Bowel obstruction?",1,1
+212,43529712,1384660,4,4,"1384390.1384519.1384660",1,"Are you still seeing a doctor or health care provider for Celiac disease?",1,1
+213,43529712,1384494,4,4,"1384390.1384519.1384494",1,"About how old were you when you were first told you had Celiac disease?",1,1
+214,43529712,1384609,4,4,"1384390.1384519.1384609",1,"Are you currently prescribed medications and/or receiving treatment for Celiac disease?",1,1
+215,43529712,43530318,4,4,"1384390.1384445.43530318",1,"Are you still seeing a doctor or health care provider for Colon polyps?",1,1
+216,43529712,43530475,4,4,"1384390.1384445.43530475",1,"About how old were you when you were first told you had Colon polyps?",1,1
+217,43529712,43528802,4,4,"1384390.1384445.43528802",1,"Are you currently prescribed medications and/or receiving treatment for Colon polyps?",1,1
+218,43529712,43530319,4,4,"1384390.1384472.43530319",1,"Are you still seeing a doctor or health care provider for Crohn's disease?",1,1
+219,43529712,43530476,4,4,"1384390.1384472.43530476",1,"About how old were you when you were first told you had Crohn's disease?",1,1
+220,43529712,43528804,4,4,"1384390.1384472.43528804",1,"Are you currently prescribed medications and/or receiving treatment for Crohn's disease?",1,1
+221,43529712,43530320,4,4,"1384390.1384411.43530320",1,"Are you still seeing a doctor or health care provider for Diverticulosis/diverticulitis?",1,1
+222,43529712,43530477,4,4,"1384390.1384411.43530477",1,"About how old were you when you were first told you had Diverticulosis/diverticulitis?",1,1
+223,43529712,43528805,4,4,"1384390.1384411.43528805",1,"Are you currently prescribed medications and/or receiving treatment for Diverticulosis/diverticulitis?",1,1
+224,43529712,43530321,4,4,"1384390.1384439.43530321",1,"Are you still seeing a doctor or health care provider for Gall stones?",1,1
+225,43529712,43530478,4,4,"1384390.1384439.43530478",1,"About how old were you when you were first told you had Gall stones?",1,1
+226,43529712,43528806,4,4,"1384390.1384439.43528806",1,"Are you currently prescribed medications and/or receiving treatment for Gall stones?",1,1
+227,43529712,43530322,4,4,"1384390.1384491.43530322",1,"Are you still seeing a doctor or health care provider for Hemorrhoids?",1,1
+228,43529712,43530479,4,4,"1384390.1384491.43530479",1,"About how old were you when you were first told you had Hemorrhoids?",1,1
+229,43529712,43528807,4,4,"1384390.1384491.43528807",1,"Are you currently prescribed medications and/or receiving treatment for Hemorrhoids?",1,1
+230,43529712,43530323,4,4,"1384390.1384440.43530323",1,"Are you still seeing a doctor or health care provider for Hernia?",1,1
+231,43529712,43530480,4,4,"1384390.1384440.43530480",1,"About how old were you when you were first told you had Hernia?",1,1
+232,43529712,43528808,4,4,"1384390.1384440.43528808",1,"Are you currently prescribed medications and/or receiving treatment for Hernia?",1,1
+233,43529712,43530324,4,4,"1384390.1384548.43530324",1,"Are you still seeing a doctor or health care provider for Irritable bowel syndrome (IBS)?",1,1
+234,43529712,43530481,4,4,"1384390.1384548.43530481",1,"About how old were you when you were first told you had Irritable bowel syndrome (IBS)?",1,1
+235,43529712,43528809,4,4,"1384390.1384548.43528809",1,"Are you currently prescribed medications and/or receiving treatment for Irritable bowel syndrome (IBS)?",1,1
+236,43529712,43530325,4,4,"1384390.1384583.43530325",1,"Are you still seeing a doctor or health care provider for Liver condition?",1,1
+237,43529712,43530482,4,4,"1384390.1384583.43530482",1,"About how old were you when you were first told you had Liver condition?",1,1
+238,43529712,43528810,4,4,"1384390.1384583.43528810",1,"Are you currently prescribed medications and/or receiving treatment for Liver condition?",1,1
+239,43529712,43530326,4,4,"1384390.1384565.43530326",1,"Are you still seeing a doctor or health care provider for Pancreatitis?",1,1
+240,43529712,43530483,4,4,"1384390.1384565.43530483",1,"About how old were you when you were first told you had Pancreatitis?",1,1
+241,43529712,43528811,4,4,"1384390.1384565.43528811",1,"Are you currently prescribed medications and/or receiving treatment for Pancreatitis?",1,1
+242,43529712,43530327,4,4,"1384390.1384405.43530327",1,"Are you still seeing a doctor or health care provider for Peptic ulcers?",1,1
+243,43529712,43530484,4,4,"1384390.1384405.43530484",1,"About how old were you when you were first told you had Peptic ulcers?",1,1
+244,43529712,43528812,4,4,"1384390.1384405.43528812",1,"Are you currently prescribed medications and/or receiving treatment for Peptic ulcers?",1,1
+245,43529712,43530328,4,4,"1384390.1384604.43530328",1,"Are you still seeing a doctor or health care provider for Ulcerative colitis?",1,1
+246,43529712,43530485,4,4,"1384390.1384604.43530485",1,"About how old were you when you were first told you had Ulcerative colitis?",1,1
+247,43529712,43528813,4,4,"1384390.1384604.43528813",1,"Are you currently prescribed medications and/or receiving treatment for Ulcerative colitis?",1,1
+248,43529712,1384460,4,4,"1384390.1384594.1384460",1,"Are you still seeing a doctor or health care provider for Other digestive condition?",1,1
+249,43529712,1384649,4,4,"1384390.1384594.1384649",1,"About how old were you when you were first told you had Other digestive condition?",1,1
+250,43529712,1384468,4,4,"1384390.1384594.1384468",1,"Are you currently prescribed medications and/or receiving treatment for Other digestive condition?",1,1
+251,43529712,43528758,4,5,43528758,0," Has a doctor or health care provider ever told you that you have or had any of the following hormone/endocrine conditions (select all that apply)",1,1
+252,43529712,43530329,4,5,"43528758.43529066.43530329",1,"Are you still seeing a doctor or health care provider for Hyperthyroidism?",1,1
+253,43529712,43530486,4,5,"43528758.43529066.43530486",1,"About how old were you when you were first told you had Hyperthyroidism?",1,1
+254,43529712,43528814,4,5,"43528758.43529066.43528814",1,"Are you currently prescribed medications and/or receiving treatment for Hyperthyroidism?",1,1
+255,43529712,43530330,4,5,"43528758.43529075.43530330",1,"Are you still seeing a doctor or health care provider for Hypothyroidism?",1,1
+256,43529712,43530487,4,5,"43528758.43529075.43530487",1,"About how old were you when you were first told you had Hypothyroidism?",1,1
+257,43529712,43528815,4,5,"43528758.43529075.43528815",1,"Are you currently prescribed medications and/or receiving treatment for Hypothyroidism?",1,1
+258,43529712,1384532,4,5,"43528758.43529727.1384532",1,"Are you still seeing a doctor or health care provider for Prediabetes?",1,1
+259,43529712,1384543,4,5,"43528758.43529727.1384543",1,"About how old were you when you were first told you had Prediabetes?",1,1
+260,43529712,1384566,4,5,"43528758.43529727.1384566",1,"Are you currently prescribed medications and/or receiving treatment for Prediabetes?",1,1
+261,43529712,43530334,4,5,"43528758.43529923.43530334",1,"Are you still seeing a doctor or health care provider for Type 1 Diabetes?",1,1
+262,43529712,43530491,4,5,"43528758.43529923.43530491",1,"About how old were you when you were first told you had Type 1 Diabetes?",1,1
+263,43529712,43528819,4,5,"43528758.43529923.43528819",1,"Are you currently prescribed medications and/or receiving treatment for Type 1 Diabetes?",1,1
+264,43529712,43530335,4,5,"43528758.43529932.43530335",1,"Are you still seeing a doctor or health care provider for Type 2 Diabetes?",1,1
+265,43529712,43530492,4,5,"43528758.43529932.43530492",1,"About how old were you when you were first told you had Type 2 Diabetes?",1,1
+266,43529712,43528820,4,5,"43528758.43529932.43528820",1,"Are you currently prescribed medications and/or receiving treatment for Type 2 Diabetes?",1,1
+267,43529712,43530331,4,5,"43528758.43529668.43530331",1,"Are you still seeing a doctor or health care provider for Other/unknown diabetes?",1,1
+268,43529712,43530488,4,5,"43528758.43529668.43530488",1,"About how old were you when you were first told you had Other/unknown diabetes?",1,1
+269,43529712,43528816,4,5,"43528758.43529668.43528816",1,"Are you currently prescribed medications and/or receiving treatment for Other/unknown diabetes?",1,1
+270,43529712,43530332,4,5,"43528758.43529676.43530332",1,"Are you still seeing a doctor or health care provider for Other/unknown thyroid condition?",1,1
+271,43529712,43530489,4,5,"43528758.43529676.43530489",1,"About how old were you when you were first told you had Other/unknown thyroid condition?",1,1
+272,43529712,43528817,4,5,"43528758.43529676.43528817",1,"Are you currently prescribed medications and/or receiving treatment for Other/unknown thyroid condition?",1,1
+273,43529712,1384538,4,5,"43528758.1384666.1384538",1,"Are you still seeing a doctor or health care provider for Other hormone/endocrine condition?",1,1
+274,43529712,1384672,4,5,"43528758.1384666.1384672",1,"About how old were you when you were first told you had Other hormone/endocrine condition?",1,1
+275,43529712,1384641,4,5,"43528758.1384666.1384641",1,"Are you currently prescribed medications and/or receiving treatment for Other hormone/endocrine condition?",1,1
+276,43529712,1384487,4,6,1384487,0,"Has a doctor or health care provider ever told you that you have or had any of the following Kidney conditions?  (select all that apply)",1,1
+277,43529712,43530350,4,6,"1384487.1384395.43530350",1,"Are you still seeing a doctor or health care provider for Acute kidney disease with no current dialysis?",1,1
+278,43529712,43530508,4,6,"1384487.1384395.43530508",1,"About how old were you when you were first told you had Acute kidney disease with no current dialysis?",1,1
+279,43529712,43528835,4,6,"1384487.1384395.43528835",1,"Are you currently prescribed medications and/or receiving treatment for Acute kidney disease with no current dialysis?",1,1
+280,43529712,43530352,4,6,"1384487.1384563.43530352",1,"Are you still seeing a doctor or health care provider for Kidney disease with dialysis?",1,1
+281,43529712,43530510,4,6,"1384487.1384563.43530510",1,"About how old were you when you were first told you had Kidney disease with dialysis?",1,1
+282,43529712,43528837,4,6,"1384487.1384563.43528837",1,"Are you currently prescribed medications and/or receiving treatment for Kidney disease with dialysis?",1,1
+283,43529712,43530353,4,6,"1384487.1384414.43530353",1,"Are you still seeing a doctor or health care provider for Kidney disease without dialysis?",1,1
+284,43529712,43530511,4,6,"1384487.1384414.43530511",1,"About how old were you when you were first told you had Kidney disease without dialysis?",1,1
+285,43529712,43528838,4,6,"1384487.1384414.43528838",1,"Are you currently prescribed medications and/or receiving treatment for Kidney disease without dialysis?",1,1
+286,43529712,43530351,4,6,"1384487.1384515.43530351",1,"Are you still seeing a doctor or health care provider for Kidney stones?",1,1
+287,43529712,43530509,4,6,"1384487.1384515.43530509",1,"About how old were you when you were first told you had Kidney stones?",1,1
+288,43529712,43528836,4,6,"1384487.1384515.43528836",1,"Are you currently prescribed medications and/or receiving treatment for Kidney stones?",1,1
+289,43529712,1384493,4,6,"1384487.1384646.1384493",1,"Are you still seeing a doctor or health care provider for Other kidney condition?",1,1
+290,43529712,1384661,4,6,"1384487.1384646.1384661",1,"About how old were you when you were first told you had Other kidney condition?",1,1
+291,43529712,1384612,4,6,"1384487.1384646.1384612",1,"Are you currently prescribed medications and/or receiving treatment for Other kidney condition?",1,1
+292,43529712,43528757,4,7,43528757,0,"Has a doctor or health care provider ever told you that you have or had any of the following Bone, joint and muscle conditions?  (select all that apply)",1,1
+293,43529712,43530392,4,7,"43528757.43528524.43530392",1,"Are you still seeing a doctor or health care provider for Carpal tunnel syndrome?",1,1
+294,43529712,43530550,4,7,"43528757.43528524.43530550",1,"About how old were you when you were first told you had Carpal tunnel syndrome?",1,1
+295,43529712,43528877,4,7,"43528757.43528524.43528877",1,"Are you currently prescribed medications and/or receiving treatment for Carpal tunnel syndrome?",1,1
+296,43529712,43530393,4,7,"43528757.43528713.43530393",1,"Are you still seeing a doctor or health care provider for Fibromyalgia?",1,1
+297,43529712,43530551,4,7,"43528757.43528713.43530551",1,"About how old were you when you were first told you had Fibromyalgia?",1,1
+298,43529712,43528878,4,7,"43528757.43528713.43528878",1,"Are you currently prescribed medications and/or receiving treatment for Fibromyalgia?",1,1
+299,43529712,43530394,4,7,"43528757.1384657.43530394",1,"Are you still seeing a doctor or health care provider for Fractured/broken any bones in the last 5 years?",1,1
+300,43529712,43530552,4,7,"43528757.1384657.43530552",1,"About how old were you when you were first told you had Fractured/broken any bones in the last 5 years?",1,1
+301,43529712,43528879,4,7,"43528757.1384657.43528879",1,"Are you currently prescribed medications and/or receiving treatment for Fractured/broken any bones in the last 5 years?",1,1
+302,43529712,43530395,4,7,"43528757.43528742.43530395",1,"Are you still seeing a doctor or health care provider for Gout?",1,1
+303,43529712,43530553,4,7,"43528757.43528742.43530553",1,"About how old were you when you were first told you had Gout?",1,1
+304,43529712,43528880,4,7,"43528757.43528742.43528880",1,"Are you currently prescribed medications and/or receiving treatment for Gout?",1,1
+305,43529712,1384617,4,7,"43528757.1384547.1384617",1,"Are you still seeing a doctor or health care provider for Osteoarthritis?",1,1
+306,43529712,1384611,4,7,"43528757.1384547.1384611",1,"About how old were you when you were first told you had Osteoarthritis?",1,1
+307,43529712,1384433,4,7,"43528757.1384547.1384433",1,"Are you currently prescribed medications and/or receiving treatment for Osteoarthritis?",1,1
+308,43529712,43530397,4,7,"43528757.43529616.43530397",1,"Are you still seeing a doctor or health care provider for Osteoporosis?",1,1
+309,43529712,43530555,4,7,"43528757.43529616.43530555",1,"About how old were you when you were first told you had Osteoporosis?",1,1
+310,43529712,43528882,4,7,"43528757.43529616.43528882",1,"Are you currently prescribed medications and/or receiving treatment for Osteoporosis?",1,1
+311,43529712,1384645,4,7,"43528757.1384422.1384645",1,"Are you still seeing a doctor or health care provider for Pseudogout?",1,1
+312,43529712,1384513,4,7,"43528757.1384422.1384513",1,"About how old were you when you were first told you had Pseudogout?",1,1
+313,43529712,1384626,4,7,"43528757.1384422.1384626",1,"Are you currently prescribed medications and/or receiving treatment for Pseudogout?",1,1
+314,43529712,1384593,4,7,"43528757.1384653.1384593",1,"Are you still seeing a doctor or health care provider for Rheumatoid arthritis?",1,1
+315,43529712,1384479,4,7,"43528757.1384653.1384479",1,"About how old were you when you were first told you had Rheumatoid arthritis?",1,1
+316,43529712,1384540,4,7,"43528757.1384653.1384540",1,"Are you currently prescribed medications and/or receiving treatment for Rheumatoid arthritis?",1,1
+317,43529712,43530398,4,7,"43528757.1384534.43530398",1,"Are you still seeing a doctor or health care provider for Spine, muscle, or bone disorders (non-cancer)?",1,1
+318,43529712,43530556,4,7,"43528757.1384534.43530556",1,"About how old were you when you were first told you had Spine, muscle, or bone disorders (non-cancer)?",1,1
+319,43529712,43528883,4,7,"43528757.1384534.43528883",1,"Are you currently prescribed medications and/or receiving treatment for Spine, muscle, or bone disorders (non-cancer)?",1,1
+320,43529712,43530396,4,7,"43528757.1384389.43530396",1,"Are you still seeing a doctor or health care provider for Systemic lupus?",1,1
+321,43529712,43530554,4,7,"43528757.1384389.43530554",1,"About how old were you when you were first told you had Systemic lupus?",1,1
+322,43529712,43528881,4,7,"43528757.1384389.43528881",1,"Are you currently prescribed medications and/or receiving treatment for Systemic lupus?",1,1
+323,43529712,1384576,4,7,"43528757.1384452.1384576",1,"Are you still seeing a doctor or health care provider for Other arthritis?",1,1
+324,43529712,1384470,4,7,"43528757.1384452.1384470",1,"About how old were you when you were first told you had Other arthritis?",1,1
+325,43529712,1384478,4,7,"43528757.1384452.1384478",1,"Are you currently prescribed medications and/or receiving treatment for Other arthritis?",1,1
+326,43529712,1384410,4,7,"43528757.1384471.1384410",1,"Are you still seeing a doctor or health care provider for Other bone, joint or muscle condition?",1,1
+327,43529712,1384399,4,7,"43528757.1384471.1384399",1,"About how old were you when you were first told you had Other bone, joint or muscle condition?",1,1
+328,43529712,1384671,4,7,"43528757.1384471.1384671",1,"Are you currently prescribed medications and/or receiving treatment for Other bone, joint or muscle condition?",1,1
+329,43529712,43528759,4,8,43528759,0,"Has a doctor or health care provider ever told you that you have or had any of the following hearing or vision problems? (select all that apply)",1,1
+330,43529712,43530336,4,8,"43528759.43528474.43530336",1,"Are you still seeing a doctor or health care provider for Blindness?",1,1
+331,43529712,43530493,4,8,"43528759.43528474.43530493",1,"About how old were you when you were first told you had Blindness?",1,1
+332,43529712,43528821,4,8,"43528759.43528474.43528821",1,"Are you currently prescribed medications and/or receiving treatment for Blindness?",1,1
+333,43529712,43530337,4,8,"43528759.43528528.43530337",1,"Are you still seeing a doctor or health care provider for Cataracts?",1,1
+334,43529712,43530494,4,8,"43528759.43528528.43530494",1,"About how old were you when you were first told you had Cataracts?",1,1
+335,43529712,43528822,4,8,"43528759.43528528.43528822",1,"Are you currently prescribed medications and/or receiving treatment for Cataracts?",1,1
+336,43529712,43530338,4,8,"43528759.43528659.43530338",1,"Are you still seeing a doctor or health care provider for Dry eyes?",1,1
+337,43529712,43530495,4,8,"43528759.43528659.43530495",1,"About how old were you when you were first told you had Dry eyes?",1,1
+338,43529712,43528823,4,8,"43528759.43528659.43528823",1,"Are you currently prescribed medications and/or receiving treatment for Dry eyes?",1,1
+339,43529712,43530339,4,8,"43528759.43528699.43530339",1,"Are you still seeing a doctor or health care provider for Farsighted?",1,1
+340,43529712,43530496,4,8,"43528759.43528699.43530496",1,"About how old were you when you were first told you had Farsighted?",1,1
+341,43529712,43528824,4,8,"43528759.43528699.43528824",1,"Are you currently prescribed medications and/or receiving treatment for Farsighted?",1,1
+342,43529712,43530343,4,8,"43528759.43529265.43530343",1,"Are you still seeing a doctor or health care provider for Nearsighted?",1,1
+343,43529712,43530500,4,8,"43528759.43529265.43530500",1,"About how old were you when you were first told you had Nearsighted?",1,1
+344,43529712,43528828,4,8,"43528759.43529265.43528828",1,"Are you currently prescribed medications and/or receiving treatment for Nearsighted?",1,1
+345,43529712,1384570,4,8,"43528759.1384648.1384570",1,"Are you still seeing a doctor or health care provider for Astigmatism?",1,1
+346,43529712,1384554,4,8,"43528759.1384648.1384554",1,"About how old were you when you were first told you had Astigmatism?",1,1
+347,43529712,1384388,4,8,"43528759.1384648.1384388",1,"Are you currently prescribed medications and/or receiving treatment for Astigmatism?",1,1
+348,43529712,43530340,4,8,"43528759.43528731.43530340",1,"Are you still seeing a doctor or health care provider for Glaucoma?",1,1
+349,43529712,43530497,4,8,"43528759.43528731.43530497",1,"About how old were you when you were first told you had Glaucoma?",1,1
+350,43529712,43528825,4,8,"43528759.43528731.43528825",1,"Are you currently prescribed medications and/or receiving treatment for Glaucoma?",1,1
+351,43529712,43530342,4,8,"43528759.43529196.43530342",1,"Are you still seeing a doctor or health care provider for Macular degeneration?",1,1
+352,43529712,43530499,4,8,"43528759.43529196.43530499",1,"About how old were you when you were first told you had Macular degeneration?",1,1
+353,43529712,43528827,4,8,"43528759.43529196.43528827",1,"Are you currently prescribed medications and/or receiving treatment for Macular degeneration?",1,1
+354,43529712,43530344,4,8,"43528759.43529917.43530344",1,"Are you still seeing a doctor or health care provider for Tinnitus?",1,1
+355,43529712,43530501,4,8,"43528759.43529917.43530501",1,"About how old were you when you were first told you had Tinnitus?",1,1
+356,43529712,43528829,4,8,"43528759.43529917.43528829",1,"Are you currently prescribed medications and/or receiving treatment for Tinnitus?",1,1
+357,43529712,43530341,4,8,"43528759.1384396.43530341",1,"Are you still seeing a doctor or health care provider for Severe hearing loss or partial deafness in one or both ears?",1,1
+358,43529712,43530498,4,8,"43528759.1384396.43530498",1,"About how old were you when you were first told you had Severe hearing loss or partial deafness in one or both ears?",1,1
+359,43529712,43528826,4,8,"43528759.1384396.43528826",1,"Are you currently prescribed medications and/or receiving treatment for Severe hearing loss or partial deafness in one or both ears?",1,1
+360,43529712,1384556,4,8,"43528759.1384428.1384556",1,"Are you still seeing a doctor or health care provider for Other hearing or eye condition?",1,1
+361,43529712,1384667,4,8,"43528759.1384428.1384667",1,"About how old were you when you were first told you had Other hearing or eye condition?",1,1
+362,43529712,1384663,4,8,"43528759.1384428.1384663",1,"Are you currently prescribed medications and/or receiving treatment for Other hearing or eye condition?",1,1
+363,43529712,1384662,4,9,1384662,0,"Has a doctor or health care provider ever told you that you have or had any of the following Infectious diseases?",1,1
+364,43529712,1384553,4,9,"1384662.1384578.1384553",1,"Are you still seeing a doctor or health care provider for Chickenpox?",1,1
+365,43529712,1384637,4,9,"1384662.1384578.1384637",1,"About how old were you when you were first told you had Chickenpox?",1,1
+366,43529712,1384442,4,9,"1384662.1384578.1384442",1,"Are you currently prescribed medications and/or receiving treatment for Chickenpox?",1,1
+367,43529712,43530345,4,9,"1384662.1384659.43530345",1,"Are you still seeing a doctor or health care provider for Chronic sinus infections?",1,1
+368,43529712,43530502,4,9,"1384662.1384659.43530502",1,"About how old were you when you were first told you had Chronic sinus infections?",1,1
+369,43529712,43528830,4,9,"1384662.1384659.43528830",1,"Are you currently prescribed medications and/or receiving treatment for Chronic sinus infections?",1,1
+370,43529712,1384418,4,9,"1384662.1384454.1384418",1,"Are you still seeing a doctor or health care provider for Dengue fever?",1,1
+371,43529712,1384552,4,9,"1384662.1384454.1384552",1,"About how old were you when you were first told you had Dengue fever?",1,1
+372,43529712,1384627,4,9,"1384662.1384454.1384627",1,"Are you currently prescribed medications and/or receiving treatment for Dengue fever?",1,1
+373,43529712,1384401,4,9,"1384662.1384581.1384401",1,"Are you still seeing a doctor or health care provider for Hepatitis A?",1,1
+374,43529712,1384619,4,9,"1384662.1384581.1384619",1,"About how old were you when you were first told you had Hepatitis A?",1,1
+375,43529712,1384535,4,9,"1384662.1384581.1384535",1,"Are you currently prescribed medications and/or receiving treatment for Hepatitis A?",1,1
+376,43529712,1384506,4,9,"1384662.1384429.1384506",1,"Are you still seeing a doctor or health care provider for Hepatitis B?",1,1
+377,43529712,1384620,4,9,"1384662.1384429.1384620",1,"About how old were you when you were first told you had Hepatitis B?",1,1
+378,43529712,1384447,4,9,"1384662.1384429.1384447",1,"Are you currently prescribed medications and/or receiving treatment for Hepatitis B?",1,1
+379,43529712,43530346,4,9,"1384662.1384588.43530346",1,"Are you still seeing a doctor or health care provider for Hepatitis C?",1,1
+380,43529712,43530503,4,9,"1384662.1384588.43530503",1,"About how old were you when you were first told you had Hepatitis C?",1,1
+381,43529712,43528831,4,9,"1384662.1384588.43528831",1,"Are you currently prescribed medications and/or receiving treatment for Hepatitis C?",1,1
+382,43529712,43530347,4,9,"1384662.1384391.43530347",1,"Are you still seeing a doctor or health care provider for HIV/AIDS?",1,1
+383,43529712,43530505,4,9,"1384662.1384391.43530505",1,"About how old were you when you were first told you had HIV/AIDS?",1,1
+384,43529712,43528832,4,9,"1384662.1384391.43528832",1,"Are you currently prescribed medications and/or receiving treatment for HIV/AIDS?",1,1
+385,43529712,1384431,4,9,"1384662.1384449.1384431",1,"Are you still seeing a doctor or health care provider for Lyme disease?",1,1
+386,43529712,1384432,4,9,"1384662.1384449.1384432",1,"About how old were you when you were first told you had Lyme disease?",1,1
+387,43529712,1384628,4,9,"1384662.1384449.1384628",1,"Are you currently prescribed medications and/or receiving treatment for Lyme disease?",1,1
+388,43529712,43530349,4,9,"1384662.1384614.43530349",1,"Are you still seeing a doctor or health care provider for Recurrent urinary tract infections (uti)/bladder infections?",1,1
+389,43529712,43530507,4,9,"1384662.1384614.43530507",1,"About how old were you when you were first told you had Recurrent urinary tract infections (uti)/bladder infections?",1,1
+390,43529712,43528834,4,9,"1384662.1384614.43528834",1,"Are you currently prescribed medications and/or receiving treatment for Recurrent urinary tract infections (uti)/bladder infections?",1,1
+391,43529712,1384465,4,9,"1384662.1384520.1384465",1,"Are you still seeing a doctor or health care provider for Reoccurring yeast infection?",1,1
+392,43529712,1384621,4,9,"1384662.1384520.1384621",1,"About how old were you when you were first told you had Reoccurring yeast infection?",1,1
+393,43529712,1384398,4,9,"1384662.1384520.1384398",1,"Are you currently prescribed medications and/or receiving treatment for Reoccurring yeast infection?",1,1
+394,43529712,1384537,4,9,"1384662.1384406.1384537",1,"Are you still seeing a doctor or health care provider for Severe acute respiratory syndrome (SARS)?",1,1
+395,43529712,1384438,4,9,"1384662.1384406.1384438",1,"About how old were you when you were first told you had Severe acute respiratory syndrome (SARS)?",1,1
+396,43529712,1384642,4,9,"1384662.1384406.1384642",1,"Are you currently prescribed medications and/or receiving treatment for Severe acute respiratory syndrome (SARS)?",1,1
+397,43529712,1384463,4,9,"1384662.1384453.1384463",1,"Are you still seeing a doctor or health care provider for Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?",1,1
+398,43529712,1384573,4,9,"1384662.1384453.1384573",1,"About how old were you when you were first told you had Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?",1,1
+399,43529712,1384664,4,9,"1384662.1384453.1384664",1,"Are you currently prescribed medications and/or receiving treatment for Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?",1,1
+400,43529712,1384511,4,9,"1384662.1384610.1384511",1,"Are you still seeing a doctor or health care provider for Shingles?",1,1
+401,43529712,1384416,4,9,"1384662.1384610.1384416",1,"About how old were you when you were first told you had Shingles?",1,1
+402,43529712,1384505,4,9,"1384662.1384610.1384505",1,"Are you currently prescribed medications and/or receiving treatment for Shingles?",1,1
+403,43529712,43530348,4,9,"1384662.1384555.43530348",1,"Are you still seeing a doctor or health care provider for Tuberculosis?",1,1
+404,43529712,43530506,4,9,"1384662.1384555.43530506",1,"About how old were you when you were first told you had Tuberculosis?",1,1
+405,43529712,43528833,4,9,"1384662.1384555.43528833",1,"Are you currently prescribed medications and/or receiving treatment for Tuberculosis?",1,1
+406,43529712,1384596,4,9,"1384662.1384408.1384596",1,"Are you still seeing a doctor or health care provider for West Nile virus?",1,1
+407,43529712,1384652,4,9,"1384662.1384408.1384652",1,"About how old were you when you were first told you had West Nile virus?",1,1
+408,43529712,1384602,4,9,"1384662.1384408.1384602",1,"Are you currently prescribed medications and/or receiving treatment for West Nile virus?",1,1
+409,43529712,1384459,4,9,"1384662.1384527.1384459",1,"Are you still seeing a doctor or health care provider for Zika virus?",1,1
+410,43529712,1384492,4,9,"1384662.1384527.1384492",1,"About how old were you when you were first told you had Zika virus?",1,1
+411,43529712,1384424,4,9,"1384662.1384527.1384424",1,"Are you currently prescribed medications and/or receiving treatment for Zika virus?",1,1
+412,43529712,1384489,4,9,"1384662.1384484.1384489",1,"Are you still seeing a doctor or health care provider for Other infectious disease?",1,1
+413,43529712,1384647,4,9,"1384662.1384484.1384647",1,"About how old were you when you were first told you had Other infectious disease?",1,1
+414,43529712,1384517,4,9,"1384662.1384484.1384517",1,"Are you currently prescribed medications and/or receiving treatment for Other infectious disease?",1,1
+415,43529712,1384526,4,10,1384526,0," Has a doctor or health care provider ever told you that you have or had any of the following Brain and nervous system conditions?",1,1
+416,43529712,1384597,4,10,"1384526.1384415.1384597",1,"Are you still seeing a doctor or health care provider for Cerebral palsy?",1,1
+417,43529712,1384426,4,10,"1384526.1384415.1384426",1,"About how old were you when you were first told you had Cerebral palsy?",1,1
+418,43529712,1384482,4,10,"1384526.1384415.1384482",1,"Are you currently prescribed medications and/or receiving treatment for Cerebral palsy?",1,1
+419,43529712,43530365,4,10,"1384526.1384585.43530365",1,"Are you still seeing a doctor or health care provider for Chronic fatigue?",1,1
+420,43529712,43530523,4,10,"1384526.1384585.43530523",1,"About how old were you when you were first told you had Chronic fatigue?",1,1
+421,43529712,43528850,4,10,"1384526.1384585.43528850",1,"Are you currently prescribed medications and/or receiving treatment for Chronic fatigue?",1,1
+422,43529712,43530366,4,10,"1384526.1384402.43530366",1,"Are you still seeing a doctor or health care provider for Concussion or loss of consciousness?",1,1
+423,43529712,43530524,4,10,"1384526.1384402.43530524",1,"About how old were you when you were first told you had Concussion or loss of consciousness?",1,1
+424,43529712,43528851,4,10,"1384526.1384402.43528851",1,"Are you currently prescribed medications and/or receiving treatment for Concussion or loss of consciousness?",1,1
+425,43529712,43530367,4,10,"1384526.1384435.43530367",1,"Are you still seeing a doctor or health care provider for Dementia?",1,1
+426,43529712,43530525,4,10,"1384526.1384435.43530525",1,"About how old were you when you were first told you had Dementia?",1,1
+427,43529712,43528852,4,10,"1384526.1384435.43528852",1,"Are you currently prescribed medications and/or receiving treatment for Dementia?",1,1
+428,43529712,43530368,4,10,"1384526.1384524.43530368",1,"Are you still seeing a doctor or health care provider for Epilepsy or seizure?",1,1
+429,43529712,43530526,4,10,"1384526.1384524.43530526",1,"About how old were you when you were first told you had Epilepsy or seizure?",1,1
+430,43529712,43528853,4,10,"1384526.1384524.43528853",1,"Are you currently prescribed medications and/or receiving treatment for Epilepsy or seizure?",1,1
+431,43529712,43530369,4,10,"1384526.1384444.43530369",1,"Are you still seeing a doctor or health care provider for Insomnia?",1,1
+432,43529712,43530527,4,10,"1384526.1384444.43530527",1,"About how old were you when you were first told you had Insomnia?",1,1
+433,43529712,43528854,4,10,"1384526.1384444.43528854",1,"Are you currently prescribed medications and/or receiving treatment for Insomnia?",1,1
+434,43529712,1384633,4,10,"1384526.1384607.1384633",1,"Are you still seeing a doctor or health care provider for Lou Gehrig’s Disease (Amyotrophic Lateral Sclerosis or ALS)?",1,1
+435,43529712,1384670,4,10,"1384526.1384607.1384670",1,"About how old were you when you were first told you had Lou Gehrig’s Disease (Amyotrophic Lateral Sclerosis or ALS)?",1,1
+436,43529712,1384451,4,10,"1384526.1384607.1384451",1,"Are you currently prescribed medications and/or receiving treatment for Lou Gehrig’s Disease (Amyotrophic Lateral Sclerosis or ALS)?",1,1
+437,43529712,43530370,4,10,"1384526.1384531.43530370",1,"Are you still seeing a doctor or health care provider for Memory loss or impairment?",1,1
+438,43529712,43530528,4,10,"1384526.1384531.43530528",1,"About how old were you when you were first told you had Memory loss or impairment?",1,1
+439,43529712,43528855,4,10,"1384526.1384531.43528855",1,"Are you currently prescribed medications and/or receiving treatment for Memory loss or impairment?",1,1
+440,43529712,43530371,4,10,"1384526.1384427.43530371",1,"Are you still seeing a doctor or health care provider for Migraine headaches?",1,1
+441,43529712,43530529,4,10,"1384526.1384427.43530529",1,"About how old were you when you were first told you had Migraine headaches?",1,1
+442,43529712,43528856,4,10,"1384526.1384427.43528856",1,"Are you currently prescribed medications and/or receiving treatment for Migraine headaches?",1,1
+443,43529712,43530372,4,10,"1384526.1384591.43530372",1,"Are you still seeing a doctor or health care provider for Multiple sclerosis?",1,1
+444,43529712,43530530,4,10,"1384526.1384591.43530530",1,"About how old were you when you were first told you had Multiple sclerosis?",1,1
+445,43529712,43528857,4,10,"1384526.1384591.43528857",1,"Are you currently prescribed medications and/or receiving treatment for Multiple sclerosis?",1,1
+446,43529712,43530373,4,10,"1384526.1384503.43530373",1,"Are you still seeing a doctor or health care provider for Muscular dystrophy (MD)?",1,1
+447,43529712,43530531,4,10,"1384526.1384503.43530531",1,"About how old were you when you were first told you had Muscular dystrophy (MD)?",1,1
+448,43529712,43528858,4,10,"1384526.1384503.43528858",1,"Are you currently prescribed medications and/or receiving treatment for Muscular dystrophy (MD)?",1,1
+449,43529712,43530374,4,10,"1384526.1384650.43530374",1,"Are you still seeing a doctor or health care provider for Narcolepsy?",1,1
+450,43529712,43530532,4,10,"1384526.1384650.43530532",1,"About how old were you when you were first told you had Narcolepsy?",1,1
+451,43529712,43528859,4,10,"1384526.1384650.43528859",1,"Are you currently prescribed medications and/or receiving treatment for Narcolepsy?",1,1
+452,43529712,43530375,4,10,"1384526.1384599.43530375",1,"Are you still seeing a doctor or health care provider for Neuropathy?",1,1
+453,43529712,43530533,4,10,"1384526.1384599.43530533",1,"About how old were you when you were first told you had Neuropathy?",1,1
+454,43529712,43528860,4,10,"1384526.1384599.43528860",1,"Are you currently prescribed medications and/or receiving treatment for Neuropathy?",1,1
+455,43529712,43530377,4,10,"1384526.1384568.43530377",1,"Are you still seeing a doctor or health care provider for Parkinson's disease?",1,1
+456,43529712,43530536,4,10,"1384526.1384568.43530536",1,"About how old were you when you were first told you had Parkinson's disease?",1,1
+457,43529712,43528862,4,10,"1384526.1384568.43528862",1,"Are you currently prescribed medications and/or receiving treatment for Parkinson's disease?",1,1
+458,43529712,43530378,4,10,"1384526.1384616.43530378",1,"Are you still seeing a doctor or health care provider for Restless leg syndrome?",1,1
+459,43529712,43530537,4,10,"1384526.1384616.43530537",1,"About how old were you when you were first told you had Restless leg syndrome?",1,1
+460,43529712,43528863,4,10,"1384526.1384616.43528863",1,"Are you currently prescribed medications and/or receiving treatment for Restless leg syndrome?",1,1
+461,43529712,43530379,4,10,"1384526.1384577.43530379",1,"Are you still seeing a doctor or health care provider for Spinal cord injury or impairment?",1,1
+462,43529712,1384655,4,10,"1384526.1384577.1384655",1,"About how old were you when you were first told you had Spinal cord injury or impairment?",1,1
+463,43529712,43528864,4,10,"1384526.1384577.43528864",1,"Are you currently prescribed medications and/or receiving treatment for Spinal cord injury or impairment?",1,1
+464,43529712,43530380,4,10,"1384526.1384496.43530380",1,"Are you still seeing a doctor or health care provider for Traumatic brain injury (TBI)?",1,1
+465,43529712,43530538,4,10,"1384526.1384496.43530538",1,"About how old were you when you were first told you had Traumatic brain injury (TBI)?",1,1
+466,43529712,43528865,4,10,"1384526.1384496.43528865",1,"Are you currently prescribed medications and/or receiving treatment for Traumatic brain injury (TBI)?",1,1
+467,43529712,1384560,4,10,"1384526.1384582.1384560",1,"Are you still seeing a doctor or health care provider for Other brain or nervous system condition?",1,1
+468,43529712,1384456,4,10,"1384526.1384582.1384456",1,"About how old were you when you were first told you had Other brain or nervous system condition?",1,1
+469,43529712,1384528,4,10,"1384526.1384582.1384528",1,"Are you currently prescribed medications and/or receiving treatment for Other brain or nervous system condition?",1,1
+470,43529712,1384495,4,11,1384495,0,"Has a doctor or health care provider ever told you that you have or had any of the following Mental health and substance use conditions? (select all that apply)",1,1
+471,43529712,1384490,4,11,"1384495.1384600.1384490",1,"Are you still seeing a doctor or health care provider for Alcohol use disorder?",1,1
+472,43529712,1384625,4,11,"1384495.1384600.1384625",1,"About how old were you when you were first told you had Alcohol use disorder?",1,1
+473,43529712,1384518,4,11,"1384495.1384600.1384625",1,"Are you currently prescribed medications and/or receiving treatment for Alcohol use disorder?",1,1
+474,43529712,43530356,4,11,"1384495.1384475.43530356",1,"Are you still seeing a doctor or health care provider for Anxiety reaction/panic disorder?",1,1
+475,43529712,43530514,4,11,"1384495.1384475.43530514",1,"About how old were you when you were first told you had Anxiety reaction/panic disorder?",1,1
+476,43529712,43528841,4,11,"1384495.1384475.43528841",1,"Are you currently prescribed medications and/or receiving treatment for Anxiety reaction/panic disorder?",1,1
+477,43529712,43530354,4,11,"1384495.1384510.43530354",1,"Are you still seeing a doctor or health care provider for Attention-deficit/hyperactivity disorder (ADHD)?",1,1
+478,43529712,43530512,4,11,"1384495.1384510.43530512",1,"About how old were you when you were first told you had Attention-deficit/hyperactivity disorder (ADHD)?",1,1
+479,43529712,43528839,4,11,"1384495.1384510.43528839",1,"Are you currently prescribed medications and/or receiving treatment for Attention-deficit/hyperactivity disorder (ADHD)?",1,1
+480,43529712,1384630,4,11,"1384495.1384458.1384630",1,"Are you still seeing a doctor or health care provider for Autism spectrum disorder?",1,1
+481,43529712,1384574,4,11,"1384495.1384458.1384574",1,"About how old were you when you were first told you had Autism spectrum disorder?",1,1
+482,43529712,1384486,4,11,"1384495.1384458.1384486",1,"Are you currently prescribed medications and/or receiving treatment for Autism spectrum disorder?",1,1
+483,43529712,43530357,4,11,"1384495.1384669.43530357",1,"Are you still seeing a doctor or health care provider for Bipolar disorder?",1,1
+484,43529712,43530515,4,11,"1384495.1384669.43530515",1,"About how old were you when you were first told you had Bipolar disorder?",1,1
+485,43529712,43528842,4,11,"1384495.1384669.43528842",1,"Are you currently prescribed medications and/or receiving treatment for Bipolar disorder?",1,1
+486,43529712,43530358,4,11,"1384495.1384656.43530358",1,"Are you still seeing a doctor or health care provider for Depression?",1,1
+487,43529712,43530516,4,11,"1384495.1384656.43530516",1,"About how old were you when you were first told you had Depression?",1,1
+488,43529712,43528843,4,11,"1384495.1384656.43528843",1,"Are you currently prescribed medications and/or receiving treatment for Depression?",1,1
+489,43529712,1384480,4,11,"1384495.1384413.1384480",1,"Are you still seeing a doctor or health care provider for Drug use disorder?",1,1
+490,43529712,1384514,4,11,"1384495.1384413.1384514",1,"About how old were you when you were first told you had Drug use disorder?",1,1
+491,43529712,1384601,4,11,"1384495.1384413.1384601",1,"Are you currently prescribed medications and/or receiving treatment for Drug use disorder?",1,1
+492,43529712,43530359,4,11,"1384495.1384558.43530359",1,"Are you still seeing a doctor or health care provider for Eating disorder?",1,1
+493,43529712,43530517,4,11,"1384495.1384558.43530517",1,"About how old were you when you were first told you had Eating disorder?",1,1
+494,43529712,43528844,4,11,"1384495.1384558.43528844",1,"Are you currently prescribed medications and/or receiving treatment for Eating disorder?",1,1
+495,43529712,43530360,4,11,"1384495.1384622.43530360",1,"Are you still seeing a doctor or health care provider for Personality disorder?",1,1
+496,43529712,43530518,4,11,"1384495.1384622.43530518",1,"About how old were you when you were first told you had Personality disorder?",1,1
+497,43529712,43528845,4,11,"1384495.1384622.43528845",1,"Are you currently prescribed medications and/or receiving treatment for Personality disorder?",1,1
+498,43529712,43530361,4,11,"1384495.1384443.43530361",1,"Are you still seeing a doctor or health care provider for Post-traumatic stress disorder (PTSD)?",1,1
+499,43529712,43530519,4,11,"1384495.1384443.43530519",1,"About how old were you when you were first told you had Post-traumatic stress disorder (PTSD)?",1,1
+500,43529712,43528846,4,11,"1384495.1384443.43528846",1,"Are you currently prescribed medications and/or receiving treatment for Post-traumatic stress disorder (PTSD)?",1,1
+501,43529712,43530362,4,11,"1384495.1384557.43530362",1,"Are you still seeing a doctor or health care provider for Schizophrenia?",1,1
+502,43529712,43530520,4,11,"1384495.1384557.43530520",1,"About how old were you when you were first told you had Schizophrenia?",1,1
+503,43529712,43528847,4,11,"1384495.1384557.43528847",1,"Are you currently prescribed medications and/or receiving treatment for Schizophrenia?",1,1
+504,43529712,43530363,4,11,"1384495.1384464.43530363",1,"Are you still seeing a doctor or health care provider for Social phobia?",1,1
+505,43529712,43530521,4,11,"1384495.1384464.43530521",1,"About how old were you when you were first told you had Social phobia?",1,1
+506,43529712,43528848,4,11,"1384495.1384464.43528848",1,"Are you currently prescribed medications and/or receiving treatment for Social phobia?",1,1
+507,43529712,1384539,4,11,"1384495.1384549.1384539",1,"Are you still seeing a doctor or health care provider for Other mental health or substance use condition?",1,1
+508,43529712,1384425,4,11,"1384495.1384549.1384425",1,"About how old were you when you were first told you had Other mental health or substance use condition?",1,1
+509,43529712,1384584,4,11,"1384495.1384549.1384584",1,"Are you currently prescribed medications and/or receiving treatment for Other mental health or substance use condition?",1,1
+510,43529712,1384430,4,12,1384430,0,"Has a doctor or health care provider ever told you that you have…? (select all that apply)",1,1
+511,43529712,43530381,4,12,"1384430.43528355.43530381",1,"Are you still seeing a doctor or health care provider for Acne?",1,1
+512,43529712,43530539,4,12,"1384430.43528355.43530539",1,"About how old were you when you were first told you had Acne?",1,1
+513,43529712,43528866,4,12,"1384430.43528355.43528866",1,"Are you currently prescribed medications and/or receiving treatment for Acne?",1,1
+514,43529712,43530382,4,12,"1384430.43528377.43530382",1,"Are you still seeing a doctor or health care provider for Allergies?",1,1
+515,43529712,43530540,4,12,"1384430.43528377.43530540",1,"About how old were you when you were first told you had Allergies?",1,1
+516,43529712,43528867,4,12,"1384430.43528377.43528867",1,"Are you currently prescribed medications and/or receiving treatment for Allergies?",1,1
+517,43529712,1384474,4,12,"1384430.1385329.1384474",1,"Are you still seeing a doctor or health care provider for Endometriosis?",1,1
+518,43529712,1384636,4,12,"1384430.1385329.1384636",1,"About how old were you when you were first told you had Endometriosis?",1,1
+519,43529712,1384624,4,12,"1384430.1385329.1384624",1,"Are you currently prescribed medications and/or receiving treatment for Endometriosis?",1,1
+520,43529712,43530383,4,12,"1384430.43528684.43530383",1,"Are you still seeing a doctor or health care provider for Enlarged prostate?",1,1
+521,43529712,43530541,4,12,"1384430.43528684.43530541",1,"About how old were you when you were first told you had Enlarged prostate?",1,1
+522,43529712,43528868,4,12,"1384430.43528684.43528868",1,"Are you currently prescribed medications and/or receiving treatment for Enlarged prostate?",1,1
+523,43529712,1384605,4,12,"1384430.1384407.1384605",1,"Are you still seeing a doctor or health care provider for Fibroids?",1,1
+524,43529712,1384542,4,12,"1384430.1384407.1384542",1,"About how old were you when you were first told you had Fibroids?",1,1
+525,43529712,1384668,4,12,"1384430.1384407.1384668",1,"Are you currently prescribed medications and/or receiving treatment for Fibroids?",1,1
+526,43529712,43530384,4,12,"1384430.43529594.43530384",1,"Are you still seeing a doctor or health care provider for Obesity?",1,1
+527,43529712,43530542,4,12,"1384430.43529594.43530542",1,"About how old were you when you were first told you had Obesity?",1,1
+528,43529712,43528869,4,12,"1384430.43529594.43528869",1,"Are you currently prescribed medications and/or receiving treatment for Obesity?",1,1
+529,43529712,1384501,4,12,"1384430.1384618.1384501",1,"Are you still seeing a doctor or health care provider for PCOS (polycystic ovarian syndrome)?",1,1
+530,43529712,1384509,4,12,"1384430.1384618.1384509",1,"About how old were you when you were first told you had PCOS (polycystic ovarian syndrome)?",1,1
+531,43529712,1384507,4,12,"1384430.1384618.1384507",1,"Are you currently prescribed medications and/or receiving treatment for PCOS (polycystic ovarian syndrome)?",1,1
+532,43529712,1384530,4,12,"1384430.1384392.1384530",1,"Are you still seeing a doctor or health care provider for Reactions to anesthesia (such as hyperthermia)?",1,1
+533,43529712,1384569,4,12,"1384430.1384392.1384569",1,"About how old were you when you were first told you had Reactions to anesthesia (such as hyperthermia)?",1,1
+534,43529712,1384572,4,12,"1384430.1384392.1384572",1,"Are you currently prescribed medications and/or receiving treatment for Reactions to anesthesia (such as hyperthermia)?",1,1
+535,43529712,43530385,4,12,"1384430.43529831.43530385",1,"Are you still seeing a doctor or health care provider for Skin condition (e.g. Eczema, Psoriasis)?",1,1
+536,43529712,43530543,4,12,"1384430.43529831.43530543",1,"About how old were you when you were first told you had Skin condition (e.g. Eczema, Psoriasis)?",1,1
+537,43529712,43528870,4,12,"1384430.43529831.43528870",1,"Are you currently prescribed medications and/or receiving treatment for Skin condition (e.g. Eczema, Psoriasis)?",1,1
+538,43529712,43530386,4,12,"1384430.43529967.43530386",1,"Are you still seeing a doctor or health care provider for Vitamin B deficiency?",1,1
+539,43529712,43530544,4,12,"1384430.43529967.43530544",1,"About how old were you when you were first told you had Vitamin B deficiency?",1,1
+540,43529712,43528871,4,12,"1384430.43529967.43528871",1,"Are you currently prescribed medications and/or receiving treatment for Vitamin B deficiency?",1,1
+541,43529712,43530387,4,12,"1384430.43529968.43530387",1,"Are you still seeing a doctor or health care provider for Vitamin D deficiency?",1,1
+542,43529712,43530545,4,12,"1384430.43529968.43530545",1,"About how old were you when you were first told you had Vitamin D deficiency?",1,1
+543,43529712,43528872,4,12,"1384430.43529968.43528872",1,"Are you currently prescribed medications and/or receiving treatment for Vitamin D deficiency?",1,1
+544,43529712,1384409,4,12,"1384430.1384631.1384409",1,"Are you still seeing a doctor or health care provider for any other diagnosis?",1,1
+545,43529712,1384394,4,12,"1384430.1384631.1384394",1,"About how old were you when you were first told you had any other diagnosis?",1,1
+546,43529712,1384589,4,12,"1384430.1384631.1384589",1,"Are you currently prescribed medications and/or receiving treatment for any other diagnosis?",1,1
+547,43528895,43530418,5,1,43530418,0,"DURING THE PAST 12 MONTHS, were you told by a health care provider or doctor’s office that they did not accept your health care coverage?",1,1
+548,43528895,43530559,5,2,43530559,0,"In regard to your health insurance or health care coverage, how does it compare to a year ago? Is it better, worse, or about the same?",1,1
+549,43528895,43530562,5,3,43530562,0,"Is there a place that you USUALLY go to when you are sick or need advice about your health?",1,1
+550,43528895,43530593,5,4,43530593,0,"What kind of place do you go to most often?",1,1
+551,43528895,43530595,5,5,43530595,0,"About how long has it been since you last saw or talked to a doctor or other health care provider about your own health?",1,1
+552,43528895,43528660,5,6,43528660,0,"DURING THE PAST 12 MONTHS, have you seen or talked to a general doctor who treats a variety of illnesses (a physician in general practice, primary care, family medicine, or internal medicine)?",1,1
+553,43528895,43530588,5,6,"43528660.43530243.43530588",1,"What is the total number of general doctor visits you made in the last 12 months?",1,1
+554,43528895,43530404,5,7,43530404,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A nurse practitioner, physician assistant, or midwife?",1,1
+555,43528895,43529973,5,7,"43530404.43530246.43529973",1,"What is the total number of nurse practitioner, physician assistant, or midwife visits you made in the last 12 months?",1,1
+556,43528895,43530401,5,8,43530401,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A doctor who specializes in women's health (an obstetrician/gynecologist)?",1,1
+557,43528895,43529975,5,8,"43530401.43530247.43529975",1,"What is the total number of visits to a doctor who specializes in women's health that you made in the last 12 months?",1,1
+558,43528895,43530402,5,9,43530402,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A mental health professional such as a psychiatrist, psychologist, psychiatric nurse, or clinical social worker?",1,1
+559,43528895,43529977,5,9,"43530402.43530245.43529977",1,"What is the total number of visits to a mental health professional that you made in the last 12 months?",1,1
+560,43528895,43530403,5,10,43530403,0,"DURING THE PAST 12 MONTHS, have you seen or talked to An optometrist, ophthalmologist, or eye doctor (someone who prescribes eyeglasses)?",1,1
+561,43528895,43530591,5,10,"43530403.43530242.43530591",1,"What is the total number of visits to an eye doctor that you made in the last 12 months?",1,1
+562,43528895,43530406,5,11,43530406,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A podiatrist or foot doctor?",1,1
+563,43528895,43530590,5,11,"43530406.43530249.43530590",1,"What is the total number of visits to a foot doctor that you made in the last 12 months?",1,1
+564,43528895,43530399,5,12,43530399,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A chiropractor?",1,1
+565,43528895,43530589,5,12,"43530399.43530240.43530589",1,"What is the total number of visits to a chiropractor that you made in the last 12 months?",1,1
+566,43528895,43530405,5,13,43530405,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist?",1,1
+567,43528895,43530592,5,13,"43530405.43530248.43530592",1,"What is the total number of visits to a physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist that you made in the last 12 months?",1,1
+568,43528895,43530400,5,14,43530400,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A dentist or orthodontist?",1,1
+569,43528895,43529974,5,14,"43530400.43530241.43529974",1,"What is the total number of visits to a dentist or orthodontist that you made in the last 12 months?",1,1
+570,43528895,43528661,5,15,43528661,0,"DURING THE PAST 12 MONTHS, have you seen or talked to A medical doctor who specializes in a particular medical disease or problem (other than obstetrician/gynecologist, psychiatrist, or ophthalmologist)?",1,1
+571,43528895,43529976,5,15,"43528661.43530244.43529976",1,"What is the total number of visits to a medical doctor who specializes in a particular medical disease or problem that you made in the last 12 months?",1,1
+572,43528895,43530407,5,16,43530407,0,"DURING THE PAST 12 MONTHS, have you seen or talked to Traditional healers such as, Shaman, acupuncturist, or non-western medicine?",1,1
+573,43528895,43529978,5,16,"43530407.43530250.43529978",1,"What is the total number of visits to traditional healers that you made in the last 12 months?",1,1
+574,43528895,43530439,5,17,43530439,0,"How often were you treated with respect by your doctors or health care providers? Would you say…",1,1
+575,43528895,43530437,5,18,43530437,0,"How often did your doctors or health care providers ask for your opinions or beliefs about your medical care or treatment? For example, what kind of tests, procedures, or medications you prefer. Would you say…",1,1
+576,43528895,43530438,5,19,43530438,0,"How often did your doctors or health care providers tell or give you information about your health and health care that was easy to understand? Would you say…",1,1
+577,43528895,43529906,5,20,43529906,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Didn’t have transportation?",1,1
+578,43528895,43530268,5,21,43530268,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You live in a rural area where distance to the health care provider is too far?",1,1
+579,43528895,43530594,5,22,43530594,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You were nervous about seeing a health care provider?",1,1
+580,43528895,43529905,5,23,43529905,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t get time off work.",1,1
+581,43528895,43529903,5,24,43529903,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t get child care.",1,1
+582,43528895,43529904,5,25,43529904,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You provide care to an adult and could not leave him/her.",1,1
+583,43528895,43530583,5,26,43530583,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t afford the copay.",1,1
+584,43528895,43530585,5,27,43530585,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Your deductible was too high/or could not afford the deductible.",1,1
+585,43528895,43530584,5,28,43530584,0,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You had to pay out of pocket for some or all of the procedure.",1,1
+586,43528895,43530411,5,29,43530411,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Prescription medicines",1,1
+587,43528895,43530410,5,30,43530410,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Mental health care or counseling",1,1
+588,43528895,43528663,5,31,43528663,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Emergency care",1,1
+589,43528895,43528662,5,32,43528662,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Dental care (including check ups)",1,1
+590,43528895,43530408,5,33,43530408,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Eyeglasses",1,1
+591,43528895,43528664,5,34,43528664,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a regular doctor or general health provider (in primary care, general practice, internal medicine, family medicine)",1,1
+592,43528895,43530412,5,35,43530412,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a specialist",1,1
+593,43528895,43530409,5,36,43530409,0,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Follow-up care",1,1
+594,43528895,43530557,5,37,43530557,0,"If you get sick or have an accident, how worried are you that you will be able to pay your medical bills? Are you very worried, somewhat worried, or not at all worried?",1,1
+595,43528895,43530416,5,38,43530416,0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You skipped medication doses to save money",1,1
+596,43528895,43530417,5,39,43530417,0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You took less medicine to save money",1,1
+597,43528895,43530415,5,40,43530415,0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You delayed filling a prescription to save money",1,1
+598,43528895,43530413,5,41,43530413,0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You asked your doctor for a lower cost medication to save money",1,1
+599,43528895,43528665,5,42,43528665,0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You bought prescription drugs from another country to save money",1,1
+600,43528895,43528666,5,43,43528666,0,"DURING THE PAST 12 MONTHS, were any of the following true for you: You used alternative therapies to save money",1,1
+601,43528895,43529901,5,44,43529901,0,"How important is it to you that your doctors or health care providers understand or are similar to you in any of these ways? Would you say...",1,1
+602,43528895,43529902,5,45,43529902,0,"How often were you able to see doctors or health care providers who were similar to you in any of these ways? Would you say…",1,1
+603,43528895,43529899,5,46,43529899,0,"How often have you either delayed or not gone to see doctors or health care providers because they were different from you in any of these ways?",1,1
+604,43528698,43528652,6,1,43528652,0,"How much do you know about illnesses or health problems for your parents, grandparents, brothers, sisters, and/or children?",1,1
+608,43528698,43528512,6,2,"43528652.43529842.43528512",1,"Please indicate if your mother has ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+609,43528698,43528512,6,2,"43528652.43528385.43528512",1,"Please indicate if your mother has ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+610,43528698,43528917,6,2,"43528652.43529842.43528917",1,"Please indicate if your mother has ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+611,43528698,43528917,6,2,"43528652.43528385.43528917",1,"Please indicate if your mother has ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+612,43528698,43528631,6,2,"43528652.43529842.43528631",1,"Please indicate if your mother has ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+613,43528698,43528631,6,2,"43528652.43528385.43528631",1,"Please indicate if your mother has ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+614,43528698,43528944,6,2,"43528652.43529842.43528944",1,"Please indicate if your mother has ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+615,43528698,43528944,6,2,"43528652.43528385.43528944",1,"Please indicate if your mother has ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+616,43528698,43529155,6,2,"43528652.43529842.43529155",1,"Please indicate if your mother has ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+617,43528698,43529155,6,2,"43528652.43528385.43529155",1,"Please indicate if your mother has ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+618,43528698,43529191,6,2,"43528652.43529842.43529191",1,"Please indicate if your mother has ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+619,43528698,43529191,6,2,"43528652.43528385.43529191",1,"Please indicate if your mother has ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+620,43528698,43528490,6,2,"43528652.43529842.43528490",1,"Please indicate if your mother has ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+621,43528698,43528490,6,2,"43528652.43528385.43528490",1,"Please indicate if your mother has ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+622,43528698,43530563,6,2,"43528652.43529842.43530563",1,"Please indicate if your mother has ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+623,43528698,43530563,6,2,"43528652.43528385.43530563",1,"Please indicate if your mother has ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+624,43528698,43528487,6,2,"43528652.43529842.43528487",1,"Please indicate if your mother has ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+625,43528698,43528487,6,2,"43528652.43528385.43528487",1,"Please indicate if your mother has ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+626,43528698,43529963,6,2,"43528652.43529842.43529963",1,"Please indicate if your mother has ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+627,43528698,43529963,6,2,"43528652.43528385.43529963",1,"Please indicate if your mother has ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+628,43528698,43529635,6,2,"43528652.43529842.43529635",1,"Please indicate if your mother has ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+629,43528698,43529635,6,2,"43528652.43528385.43529635",1,"Please indicate if your mother has ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+630,43528698,43528510,6,2,"43528652.43529842.43528510",1,"Please indicate if your father has ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+631,43528698,43528510,6,2,"43528652.43528385.43528510",1,"Please indicate if your father has ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+632,43528698,43528559,6,2,"43528652.43529842.43528559",1,"Please indicate if your father has ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+633,43528698,43528559,6,2,"43528652.43528385.43528559",1,"Please indicate if your father has ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+634,43528698,43528629,6,2,"43528652.43529842.43528629",1,"Please indicate if your father has ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+635,43528698,43528629,6,2,"43528652.43528385.43528629",1,"Please indicate if your father has ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+636,43528698,43528675,6,2,"43528652.43529842.43528675",1,"Please indicate if your father has ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+637,43528698,43528675,6,2,"43528652.43528385.43528675",1,"Please indicate if your father has ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+638,43528698,43529153,6,2,"43528652.43529842.43529153",1,"Please indicate if your father has ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+639,43528698,43529153,6,2,"43528652.43528385.43529153",1,"Please indicate if your father has ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+640,43528698,43529763,6,2,"43528652.43529842.43529763",1,"Please indicate if your father has ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+641,43528698,43529763,6,2,"43528652.43528385.43529763",1,"Please indicate if your father has ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+642,43528698,43528489,6,2,"43528652.43529842.43528489",1,"Please indicate if your father has ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+643,43528698,43528489,6,2,"43528652.43528385.43528489",1,"Please indicate if your father has ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+644,43528698,43529218,6,2,"43528652.43529842.43529218",1,"Please indicate if your father has ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+645,43528698,43529218,6,2,"43528652.43528385.43529218",1,"Please indicate if your father has ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+646,43528698,43528486,6,2,"43528652.43529842.43528486",1,"Please indicate if your father has ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+647,43528698,43528486,6,2,"43528652.43528385.43528486",1,"Please indicate if your father has ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+648,43528698,43529961,6,2,"43528652.43529842.43529961",1,"Please indicate if your father has ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+649,43528698,43529961,6,2,"43528652.43528385.43529961",1,"Please indicate if your father has ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+650,43528698,43529633,6,2,"43528652.43529842.43529633",1,"Please indicate if your father has ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+651,43528698,43529633,6,2,"43528652.43528385.43529633",1,"Please indicate if your father has ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+652,43528698,43528513,6,2,"43528652.43529842.43528513",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+653,43528698,43528513,6,2,"43528652.43528385.43528513",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+654,43528698,43528561,6,2,"43528652.43529842.43528561",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+655,43528698,43528561,6,2,"43528652.43528385.43528561",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+656,43528698,702788,6,2,"43528652.43529842.702788",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+657,43528698,702788,6,2,"43528652.43528385.702788",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+658,43528698,702783,6,2,"43528652.43529842.702783",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+659,43528698,702783,6,2,"43528652.43528385.702783",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+660,43528698,43529156,6,2,"43528652.43529842.43529156",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+661,43528698,43529156,6,2,"43528652.43528385.43529156",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+662,43528698,43529765,6,2,"43528652.43529842.43529765",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+663,43528698,43529765,6,2,"43528652.43528385.43529765",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+664,43528698,43529270,6,2,"43528652.43529842.43529270",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+665,43528698,43529270,6,2,"43528652.43528385.43529270",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+666,43528698,43529215,6,2,"43528652.43529842.43529215",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+667,43528698,43529215,6,2,"43528652.43528385.43529215",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+668,43528698,43529813,6,2,"43528652.43529842.43529813",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+669,43528698,43529813,6,2,"43528652.43528385.43529813",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+670,43528698,43529964,6,2,"43528652.43529842.43529964",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+671,43528698,43529964,6,2,"43528652.43528385.43529964",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+672,43528698,43529636,6,2,"43528652.43529842.43529636",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+673,43528698,43529636,6,2,"43528652.43528385.43529636",1,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+674,43528698,43528509,6,2,"43528652.43529842.43528509",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+675,43528698,43528509,6,2,"43528652.43528385.43528509",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+676,43528698,43528558,6,2,"43528652.43529842.43528558",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+677,43528698,43528558,6,2,"43528652.43528385.43528558",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+678,43528698,43528628,6,2,"43528652.43529842.43528628",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+679,43528698,43528628,6,2,"43528652.43528385.43528628",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+680,43528698,43528674,6,2,"43528652.43529842.43528674",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+681,43528698,43528674,6,2,"43528652.43528385.43528674",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+682,43528698,43529152,6,2,"43528652.43529842.43529152",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+683,43528698,43529152,6,2,"43528652.43528385.43529152",1,"Please indicate if your daughter(s) has/have  ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+684,43528698,43529762,6,2,"43528652.43529842.43529762",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+685,43528698,43529762,6,2,"43528652.43528385.43529762",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+686,43528698,43529268,6,2,"43528652.43529842.43529268",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+687,43528698,43529268,6,2,"43528652.43528385.43529268",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+688,43528698,43529213,6,2,"43528652.43529842.43529213",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+689,43528698,43529213,6,2,"43528652.43528385.43529213",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+690,43528698,43529811,6,2,"43528652.43529842.43529811",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+691,43528698,43529811,6,2,"43528652.43528385.43529811",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+692,43528698,43529960,6,2,"43528652.43529842.43529960",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+693,43528698,43529960,6,2,"43528652.43528385.43529960",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+694,43528698,43529632,6,2,"43528652.43529842.43529632",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+695,43528698,43529632,6,2,"43528652.43528385.43529632",1,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+696,43528698,43528514,6,2,"43528652.43529842.43528514",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+697,43528698,43528514,6,2,"43528652.43528385.43528514",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+698,43528698,43528562,6,2,"43528652.43529842.43528562",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+699,43528698,43528562,6,2,"43528652.43528385.43528562",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+700,43528698,43528633,6,2,"43528652.43529842.43528633",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+701,43528698,43528633,6,2,"43528652.43528385.43528633",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+702,43528698,43528677,6,2,"43528652.43529842.43528677",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+703,43528698,43528677,6,2,"43528652.43528385.43528677",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+704,43528698,43529157,6,2,"43528652.43529842.43529157",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+705,43528698,43529157,6,2,"43528652.43528385.43529157",1,"Please indicate if your son(s) has/have  ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+706,43528698,43529766,6,2,"43528652.43529842.43529766",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+707,43528698,43529766,6,2,"43528652.43528385.43529766",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+708,43528698,43529271,6,2,"43528652.43529842.43529271",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+709,43528698,43529271,6,2,"43528652.43528385.43529271",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+710,43528698,43529216,6,2,"43528652.43529842.43529216",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+711,43528698,43529216,6,2,"43528652.43528385.43529216",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+712,43528698,43529814,6,2,"43528652.43529842.43529814",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+713,43528698,43529814,6,2,"43528652.43528385.43529814",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+714,43528698,43529965,6,2,"43528652.43529842.43529965",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+715,43528698,43529965,6,2,"43528652.43528385.43529965",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+716,43528698,43529637,6,2,"43528652.43529842.43529637",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+717,43528698,43529637,6,2,"43528652.43528385.43529637",1,"Please indicate if your son(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+718,43528698,43528511,6,2,"43528652.43529842.43528511",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+719,43528698,43528511,6,2,"43528652.43528385.43528511",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+720,43528698,43528560,6,2,"43528652.43529842.43528560",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+721,43528698,43528560,6,2,"43528652.43528385.43528560",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+722,43528698,43528630,6,2,"43528652.43529842.43528630",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+723,43528698,43528630,6,2,"43528652.43528385.43528630",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+724,43528698,43528676,6,2,"43528652.43529842.43528676",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+725,43528698,43528676,6,2,"43528652.43528385.43528676",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+726,43528698,43529154,6,2,"43528652.43529842.43529154",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+727,43528698,43529154,6,2,"43528652.43528385.43529154",1,"Please indicate if your grandparent(s) has/have  ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+728,43528698,43529764,6,2,"43528652.43529842.43529764",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+729,43528698,43529764,6,2,"43528652.43528385.43529764",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+730,43528698,43529269,6,2,"43528652.43529842.43529269",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+731,43528698,43529269,6,2,"43528652.43528385.43529269",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+732,43528698,43529214,6,2,"43528652.43529842.43529214",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+733,43528698,43529214,6,2,"43528652.43528385.43529214",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+734,43528698,43529812,6,2,"43528652.43529842.43529812",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+735,43528698,43529812,6,2,"43528652.43528385.43529812",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+736,43528698,43529962,6,2,"43528652.43529842.43529962",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+737,43528698,43529962,6,2,"43528652.43528385.43529962",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+738,43528698,43529634,6,2,"43528652.43529842.43529634",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+739,43528698,43529634,6,2,"43528652.43528385.43529634",1,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)",1,0
+740,43528698,43528515,6,2,43528515,0,"Diagnosed Health Condition: Cancer Condition",0,0
+741,43528698,1384639,6,3,1384639,0,"Circulatory: Heartand Blood",0,0
+742,43528698,43528634,6,4,43528634,0,"Diagnosed Health Condition: Digestive Condition",0,0
+743,43528698,43528761,6,5,43528761,0,"Hormone/Endocrine Conditions",0,0
+744,43528698,43529158,6,6,43529158,0,"Diagnosed Health Condition: Kidney Condition",0,0
+745,43528698,43529767,6,7,43529767,0,"Diagnosed Health Condition: Respiratory Condition",0,0
+746,43528698,43529272,6,8,43529272,0,"Diagnosed Health Condition: Nervous Condition",0,0
+747,43528698,43529217,6,9,43529217,0,"Diagnosed Health Condition: Mental Condition",0,0
+748,43528698,702786,6,10,702786,0,"Diagnosed Health Condition: Skeletal Muscular Condition",0,0
+749,43528698,43529966,6,11,43529966,0,"Diagnosed Health Condition: Vision Condition",0,0
+750,43528698,43529638,6,12,43529638,0,"Other Conditions",0,0
+751,43528698,43528764,6,13,43528764,0,"Parent History: Mother Diagnosis History",0,0
+752,43528698,43528763,6,14,43528763,0,"Parent History: Father Diagnosis History",0,0
+753,43528698,43528649,6,15,43528649,0,"Sibling History: Sibling Diagnosis History",0,0
+754,43528698,43528651,6,16,43528651,0,"Child History: Son Diagnosis History",0,0
+755,43528698,43528650,6,17,43528650,0,"Child History: Daughter Diagnosis History",0,0
+756,43528698,43528765,6,18,43528765,0,"Grandparent History: Grandparent Diagnosis History",0,0
