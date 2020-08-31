@@ -7,14 +7,14 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
   <changeSet id="db.changelog-67" author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN">
     <validCheckSum>ANY</validCheckSum>
-    <sql dbms="mysql">
-      ALTER TABLE question_concept
-      ADD question_string varchar(2000);
-      ALTER TABLE question_concept
-      ADD FULLTEXT INDEX question_string_index
-      (question_string);
-      DROP INDEX concept_name_index on question_concept;
-    </sql>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="question_concept" columnName="question_string"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="question_concept">
+      <column name="question_string" type="VARCHAR(2000)" />
+    </addColumn>
   </changeSet>
 
 </databaseChangeLog>
