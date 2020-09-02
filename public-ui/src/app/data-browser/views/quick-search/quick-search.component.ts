@@ -136,7 +136,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.displayDomainTotalsErrorMessage = false;
           },
           error: err => {
-            const errorBody = JSON.parse(err._body);
+            let errorBody = {'message': ''};
+            try {
+                errorBody = JSON.parse(err._body);
+            } catch (e) {
+            }
             this.displayDomainTotalsErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
             this.loading = false;
@@ -148,15 +152,19 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe({
         next: data => {
-          this.totalResults = data;
+          this.searchCallback(data);
           // Only set results to the totals if we don't have a searchText
-          if (!this.prevSearchText) {
-            this.searchCallback(data);
+          if (!this.searchText.value) {
+            this.totalResults = data;
           }
           this.displayDomainTotalsErrorMessage = false;
         },
         error: err => {
-          const errorBody = JSON.parse(err._body);
+          let errorBody = {'message': ''};
+          try {
+              errorBody = JSON.parse(err._body);
+          } catch (e) {
+          }
           this.displayDomainTotalsErrorMessage = true;
           console.log('Error searching: ', errorBody.message);
           this.loading = false;
@@ -176,7 +184,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.displayDomainTotalsErrorMessage = false;
           },
           error: err => {
-            const errorBody = JSON.parse(err._body);
+            let errorBody = {'message': ''};
+            try {
+                errorBody = JSON.parse(err._body);
+            } catch (e) {
+            }
             this.displayDomainTotalsErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
             this.loading = false;
@@ -231,7 +243,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
-    if (query.length === 0) {
+    if (query.length === 0 && this.totalResults) {
       const resultsObservable = new Observable((observer) => {
         const domains: DomainInfosAndSurveyModulesResponse = {
           domainInfos: this.totalResults.domainInfos,
