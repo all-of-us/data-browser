@@ -107,8 +107,8 @@ export class HeaderFooterService {
           submenu: false
         },
         {
-          title: 'Data Available',
-          url: 'https://www.researchallofus.org/data-available/',
+          title: 'Data Access',
+          url: 'https://www.researchallofus.org/data-access/',
           submenu: false
         },
         {
