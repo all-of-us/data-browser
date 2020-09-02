@@ -743,7 +743,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public clearSearch() {
+    this.resetExpansion();
     this.searchText.setValue('');
+    this.prevSearchText = '';
   }
 
   public hasResults() {

@@ -2,8 +2,10 @@
 <ng-container *ngIf="isStandard"><b> Standard concept match: </b> <br></ng-container>
 <ng-container *ngIf="searchTermCheck(searchTerm); else noSearchTerm">
     <span [class.highlight]="matchString.test(word.toLowerCase())" *ngFor="let word of words">{{word}}</span>
+    <span>Highlight search</span>
 </ng-container>
 <ng-template #noSearchTerm>
     <span *ngFor="let word of words">{{word}}</span>
+    <span>Highlight no search</span>
 </ng-template>
 <ng-container *ngIf="conceptId"> -- {{conceptId}}</ng-container>
