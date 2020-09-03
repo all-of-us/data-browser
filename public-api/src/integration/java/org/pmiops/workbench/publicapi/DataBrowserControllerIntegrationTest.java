@@ -38,11 +38,39 @@ public class DataBrowserControllerIntegrationTest {
     @Bean
     DataBrowserApi client() {
       DataBrowserApi api = new DataBrowserApi();
+
+      // Authorization
+      String signedJwt = "";
+
+      try {
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(ResourceUtils.getFile("classpath:test-circle-key.json")));
+        PrivateKey privateKey = credential.getServiceAccountPrivateKey();
+        String privateKeyId = credential.getServiceAccountPrivateKeyId();
+
+        long now = System.currentTimeMillis();
+
+        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
+        Algorithm algorithm = Algorithm.RSA256(null, rsaPrivateKey);
+        signedJwt = JWT.create()
+                .withKeyId(privateKeyId)
+                .withIssuer("circle-deploy-account@aou-db-test.iam.gserviceaccount.com")
+                .withSubject("circle-deploy-account@aou-db-test.iam.gserviceaccount.com")
+                .withAudience("238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com")
+                .withIssuedAt(new Date(now))
+                .withExpiresAt(new Date(now + 3600 * 1000L))
+                .sign(algorithm);
+      } catch(IOException ie) {
+        System.out.println("Credential file not found");
+      }
+
       String basePath = System.getenv(DB_API_BASE_PATH);
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
-      api.setApiClient(new ApiClient().setBasePath(basePath));
+      ApiClient apiClient = new ApiClient();
+      apiClient.setBasePath(basePath);
+      apiClient.setAccessToken(signedJwt);
+      api.setApiClient(apiClient);
       return api;
     }
   }
