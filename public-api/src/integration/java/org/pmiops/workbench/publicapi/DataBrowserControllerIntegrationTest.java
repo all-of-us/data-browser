@@ -23,6 +23,16 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Date;
+import org.springframework.util.ResourceUtils;
+import com.auth0.jwt.algorithms.Algorithm;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.PrivateKey;
+import com.auth0.jwt.JWT;
+
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
  * the Data Browser API. These tests should be relatively unspecific, as they must run across
