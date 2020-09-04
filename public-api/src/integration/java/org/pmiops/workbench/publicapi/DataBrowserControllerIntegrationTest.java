@@ -29,9 +29,20 @@ import java.io.IOException;
 import java.util.Date;
 import org.springframework.util.ResourceUtils;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.PrivateKey;
 import com.auth0.jwt.JWT;
+import com.google.api.client.util.GenericData;
+import com.google.api.client.http.UrlEncodedContent;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.apache.ApacheHttpTransport;
+import com.google.api.client.json.JsonObjectParser;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.http.GenericUrl;
 
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
@@ -49,40 +60,65 @@ public class DataBrowserControllerIntegrationTest {
     DataBrowserApi client() {
       DataBrowserApi api = new DataBrowserApi();
 
-      // Authorization
-      String signedJwt = "";
-
-      try {
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(ResourceUtils.getFile("classpath:test-circle-key.json")));
-        PrivateKey privateKey = credential.getServiceAccountPrivateKey();
-        String privateKeyId = credential.getServiceAccountPrivateKeyId();
-
-        long now = System.currentTimeMillis();
-
-        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
-        Algorithm algorithm = Algorithm.RSA256(null, rsaPrivateKey);
-        signedJwt = JWT.create()
-                .withKeyId(privateKeyId)
-                .withIssuer("circle-deploy-account@aou-db-test.iam.gserviceaccount.com")
-                .withSubject("circle-deploy-account@aou-db-test.iam.gserviceaccount.com")
-                .withAudience("238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com")
-                .withIssuedAt(new Date(now))
-                .withExpiresAt(new Date(now + 3600 * 1000L))
-                .sign(algorithm);
-      } catch(IOException ie) {
-        System.out.println("Credential file not found");
-      }
-
       String basePath = System.getenv(DB_API_BASE_PATH);
+      String signedJwt = getSignedJwt();
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
       ApiClient apiClient = new ApiClient();
       apiClient.setBasePath(basePath);
       apiClient.setAccessToken(signedJwt);
+      apiClient.setDebugging(true);
       api.setApiClient(apiClient);
       return api;
     }
+  }
+
+  public static String getSignedJwt() {
+    String signedJwt = "";
+
+    try {
+      GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(ResourceUtils.getFile("classpath:test-circle-key.json")));
+      PrivateKey privateKey = credential.getServiceAccountPrivateKey();
+      String privateKeyId = credential.getServiceAccountPrivateKeyId();
+
+      long now = System.currentTimeMillis();
+
+      RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
+      Algorithm algorithm = Algorithm.RSA256(null, rsaPrivateKey);
+      signedJwt = JWT.create()
+              .withKeyId(privateKeyId)
+              .withIssuer("circle-deploy-account@aou-db-test.iam.gserviceaccount.com")
+              .withSubject("circle-deploy-account@aou-db-test.iam.gserviceaccount.com")
+              .withAudience("238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com")
+              .withIssuedAt(new Date(now))
+              .withExpiresAt(new Date(now + 3600 * 1000L))
+              .withClaim("target_audience", "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com")
+              .sign(algorithm);
+    } catch(IOException ie) {
+      System.out.println("Credential file not found");
+    }
+
+    return signedJwt;
+  }
+
+  private DecodedJWT getGoogleIdToken() throws IOException {
+    String jwt = getSignedJwt();
+    final GenericData tokenRequest = new GenericData()
+            .set("grant_type", "JWT_BEARER_TOKEN_GRANT_TYPE")
+            .set("assertion", jwt);
+    final UrlEncodedContent content = new UrlEncodedContent(tokenRequest);
+    HttpTransport httpTransport = new ApacheHttpTransport();
+    final HttpRequestFactory requestFactory = httpTransport.createRequestFactory();
+
+    final HttpRequest request = requestFactory
+            .buildPostRequest(new GenericUrl("https://iap.googleapis.com/v1/oauth/clientIds/238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com:handleRedirect"), content)
+            .setParser(new JsonObjectParser(JacksonFactory.getDefaultInstance()));
+
+    HttpResponse response = request.execute();
+    GenericData responseData = response.parseAs(GenericData.class);
+    String idToken = (String) responseData.get("id_token");
+    return JWT.decode(idToken);
   }
 
   @Autowired
