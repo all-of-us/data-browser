@@ -22,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import java.io.IOException;
+
+import org.pmiops.workbench.google.IAPAuthentication;
 
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
@@ -38,11 +41,23 @@ public class DataBrowserControllerIntegrationTest {
     @Bean
     DataBrowserApi client() {
       DataBrowserApi api = new DataBrowserApi();
+      IAPAuthentication iapAuth;
+      String token = "";
+      try {
+        iapAuth = new IAPAuthentication();
+        token = iapAuth.getToken();
+      } catch (IOException ie) {
+
+      }
+
       String basePath = System.getenv(DB_API_BASE_PATH);
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
-      api.setApiClient(new ApiClient().setBasePath(basePath));
+      ApiClient apiClient = new ApiClient();
+      apiClient.setBasePath(basePath);
+      apiClient.setAccessToken(token);
+      api.setApiClient(apiClient);
       return api;
     }
   }
@@ -74,8 +89,8 @@ public class DataBrowserControllerIntegrationTest {
     // These concept IDs are hardcoded by the data browser in all environments, so they must exist.
     List<String> concepts = ImmutableList.of("903118", "903115", "903133");
     List<String> gotConcepts = api.getConceptAnalysisResults(concepts, null).getItems()
-        .stream()
-        .map(ConceptAnalysis::getConceptId).collect(Collectors.toList());
+            .stream()
+            .map(ConceptAnalysis::getConceptId).collect(Collectors.toList());
     assertThat(gotConcepts).containsExactlyElementsIn(concepts);
   }
 
@@ -90,9 +105,9 @@ public class DataBrowserControllerIntegrationTest {
   public void testSearchConcepts() throws Exception {
     int maxResults = 20;
     ConceptListResponse resp = api.searchConcepts(new SearchConceptsRequest()
-        .domain(Domain.MEASUREMENT)
-        .minCount(1)
-        .maxResults(maxResults));
+            .domain(Domain.MEASUREMENT)
+            .minCount(1)
+            .maxResults(maxResults));
     assertThat(resp.getItems()).isNotEmpty();
     assertThat(resp.getItems().size()).isAtMost(maxResults);
     for (Concept c : resp.getItems()) {

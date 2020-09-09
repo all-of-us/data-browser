@@ -159,7 +159,7 @@ task integration(type: Test) {
   testClassesDirs = sourceSets.integration.output.classesDirs
   classpath = sourceSets.integration.runtimeClasspath
   systemProperties = [
-    'DB_API_BASE_PATH': System.getenv('DB_API_BASE_PATH')
+          'DB_API_BASE_PATH': System.getenv('DB_API_BASE_PATH')
   ]
   // Option to control size of stack trace:
   // jvmArgs '-XX:MaxJavaStackTraceDepth=10'
@@ -177,6 +177,7 @@ clean.doFirst {
 
 repositories {   // repositories for Jar's you access in your code
   jcenter()
+  mavenCentral()
 }
 
 dependencies {
@@ -213,6 +214,11 @@ dependencies {
   compile 'org.apache.commons:commons-lang3:3.0'
   compile 'com.google.guava:guava:26.0-jre'
 
+  compile 'com.google.api-client:google-api-client:1.30.10'
+  compile 'com.auth0:java-jwt:3.10.3'
+
+// https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
+  compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.1.0'
 
   // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
   compile 'org.json:json:20160810'
@@ -250,6 +256,7 @@ tasks.withType(Test) {
     exceptionFormat "full"
   }
   def verboseTestLogging=project.properties['verboseTestLogging'] ?: 'no'
+  // To debug def verboseTestLogging='yes'
   if (verboseTestLogging == 'yes') {
     testLogging {
       events "passed", "skipped", "failed", "standardOut", "standardError"

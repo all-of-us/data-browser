@@ -16,6 +16,7 @@ require "ostruct"
 require "tempfile"
 
 TEST_PROJECT = "aou-db-test"
+TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
 INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
@@ -341,6 +342,9 @@ Common.register_command({
 
 def run_integration_tests(cmd_name, *args)
   ensure_docker cmd_name, args
+  filePath = File.expand_path(Dir.pwd+"/src/main/resources/test-circle-key.json")
+  common = Common.new
+  common.run_inline %W{gsutil cp gs://#{TEST_PROJECT}-credentials/test-circle-key.json #{filePath}}
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.env = 'local'
   op.add_option(
@@ -359,6 +363,7 @@ def run_integration_tests(cmd_name, *args)
   common = Common.new
   common.status "Executing integration tests against '#{api_base}'"
   common.run_inline %W{gradle integration} + op.remaining
+  common.run_inline %W{rm #{filePath}}
 end
 
 Common.register_command({
