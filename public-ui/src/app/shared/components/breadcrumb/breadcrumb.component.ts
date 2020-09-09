@@ -23,7 +23,6 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   breadcrumbs: Breadcrumb[];
   allOfUs = environment.researchAllOfUsUrl;
-  workBenchIsBeta = environment.workBenchIsBeta;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,

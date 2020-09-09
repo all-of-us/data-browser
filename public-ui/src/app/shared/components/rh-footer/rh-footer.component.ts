@@ -9,13 +9,11 @@ import { HeaderFooterService } from '../../services/header-footer.service';
 })
 export class RhFooterComponent implements OnInit {
   menuItems: any;
-  workBenchIsBeta: boolean;
   allOfUsUrl: any;
   constructor(public hFService: HeaderFooterService) { }
 
   ngOnInit() {
   this.menuItems = this.hFService.menu;
-  this.workBenchIsBeta = environment.workBenchIsBeta;
   this.allOfUsUrl = environment.researchAllOfUsUrl;
   }
 

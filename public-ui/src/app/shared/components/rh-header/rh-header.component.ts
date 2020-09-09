@@ -16,7 +16,6 @@ export class RhHeaderComponent implements OnInit {
   openDAboutResearch = false;
   openDData = false;
   allOfUsUrl: string;
-  workBenchIsBeta: boolean;
   menuItems: object[];
   subTitle: boolean;
   showSub1: boolean;
@@ -25,7 +24,6 @@ export class RhHeaderComponent implements OnInit {
   ngOnInit() {
     this.menuItems = this.hFService.menu;
     this.allOfUsUrl = environment.researchAllOfUsUrl;
-    this.workBenchIsBeta = environment.workBenchIsBeta;
 
   }
 
