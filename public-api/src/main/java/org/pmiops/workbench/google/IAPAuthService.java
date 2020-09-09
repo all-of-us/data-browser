@@ -21,6 +21,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ResourceLoader;
 
 @Component
 public class IAPAuthService {
@@ -35,6 +36,9 @@ public class IAPAuthService {
     private final ServiceAccountCredentials credentials;
     private DecodedJWT googleJwt;
     private String token;
+
+    @Autowired
+    ResourceLoader resourceLoader;
 
     public IAPAuthService() throws IOException {
         this.clientId = "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com";
@@ -56,9 +60,12 @@ public class IAPAuthService {
     }
 
     private ServiceAccountCredentials getCredentials() throws IOException {
-        File file = ResourceUtils.getFile("classpath:test-circle-key.json");
-        GoogleCredentials credentials =
-                GoogleCredentials.fromStream(new FileInputStream(file));
+        Resource resource = resourceLoader.getResource("classpath:test-circle-key.json");
+        GoogleCredentials credentials = null;
+        if (resource.exists()) {
+            File file = ResourceUtils.getFile("classpath:test-circle-key.json");
+            credentials = GoogleCredentials.fromStream(new FileInputStream(file));
+        }
 
         // Service account credentials are required to sign the jwt token.
         if (credentials == null || !(credentials instanceof ServiceAccountCredentials)) {
