@@ -39,7 +39,7 @@ public class DataBrowserControllerIntegrationTest {
   @TestConfiguration
   static class Configuration {
     @Bean
-    DataBrowserApi client() throws IOException{
+    DataBrowserApi client() throws IOException {
       DataBrowserApi api = new DataBrowserApi();
       IAPAuthService iapAuth;
       String token = "";
