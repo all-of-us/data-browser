@@ -8,5 +8,7 @@ export const environment = {
   gaId: 'UA-116298798-5',
   gtmId: 'GTM-NQ9XDTW',
   gtmAuth: '87R8_4UCXpVCroAA7bGkAg',
-  gtmPreview: 'env-27'
+  gtmPreview: 'env-27',
+  copeFlag: false,
+  preCopeFlag: false
 };
