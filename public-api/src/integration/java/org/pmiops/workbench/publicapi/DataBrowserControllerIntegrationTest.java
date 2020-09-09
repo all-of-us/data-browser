@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 
+import org.pmiops.workbench.google.IAPAuthService;
+
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
  * the Data Browser API. These tests should be relatively unspecific, as they must run across
@@ -37,12 +39,12 @@ public class DataBrowserControllerIntegrationTest {
   @TestConfiguration
   static class Configuration {
     @Bean
-    DataBrowserApi client() {
+    DataBrowserApi client() throws IOException{
       DataBrowserApi api = new DataBrowserApi();
       IAPAuthService iapAuth;
       String token = "";
       try {
-        iapAuth = new IAPAuthentication();
+        iapAuth = new IAPAuthService();
         token = iapAuth.getToken();
       } catch (IOException ie) {
 

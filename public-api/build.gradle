@@ -218,7 +218,7 @@ dependencies {
   compile 'com.auth0:java-jwt:3.10.3'
 
 // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
-  compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.1.0'
+  compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
 
   // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
   compile 'org.json:json:20160810'
@@ -287,6 +287,7 @@ appengine {  // App Engine tasks configuration
     // Give dev_appserver 2 minutes to start up when running appengineStart; by
     // default it will fail after 1 minute. (This is particularly a problem in CircleCI.)
     startSuccessTimeout = 120
+    environment = [GOOGLE_APPLICATION_CREDENTIALS: file("$rootDir/sa-key.json").getAbsolutePath()]
   }
 
   // dmohs: You may see this message [1], but don't implement the suggested fix because it breaks

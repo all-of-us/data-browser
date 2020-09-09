@@ -16,6 +16,7 @@ require "ostruct"
 require "tempfile"
 
 TEST_PROJECT = "aou-db-test"
+GSUITE_ADMIN_KEY_PATH = "src/main/webapp/WEB-INF/gsuite-admin-sa.json"
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
 INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
@@ -148,33 +149,35 @@ end
 
 def dev_up()
   common = Common.new
-
   account = get_auth_login_account()
   if account.nil?
     raise("Please run 'gcloud auth login' before starting the server.")
   end
 
-  at_exit { common.run_inline %W{docker-compose down} }
-  common.status "Starting database..."
-  common.run_inline %W{docker-compose up -d db}
-  common.status "Running database migrations..."
-  common.run_inline %W{docker-compose run db-migration}
-  common.run_inline %W{docker-compose run db-public-migration}
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    get_gsuite_admin_key(TEST_PROJECT)
+    at_exit { common.run_inline %W{docker-compose down} }
+    common.status "Starting database..."
+    common.run_inline %W{docker-compose up -d db}
+    common.status "Running database migrations..."
+    common.run_inline %W{docker-compose run db-migration}
+    common.run_inline %W{docker-compose run db-public-migration}
 
-  common.status "Updating CDR versions..."
-  common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
+    common.status "Updating CDR versions..."
+    common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
 
-  common.status "Updating workbench configuration..."
-  common.run_inline %W{
-    docker-compose run update-config
-    -Pconfig_file=../config/config_local.json
-  }
-  common.status "Updating CDR schema configuration..."
-  common.run_inline %W{
-    docker-compose run update-config
-    -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json
-  }
-  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+    common.status "Updating workbench configuration..."
+    common.run_inline %W{
+        docker-compose run update-config
+        -Pconfig_file=../config/config_local.json
+    }
+    common.status "Updating CDR schema configuration..."
+    common.run_inline %W{
+        docker-compose run update-config
+        -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json
+    }
+    common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+  end
 end
 
 Common.register_command({
@@ -342,9 +345,7 @@ Common.register_command({
 
 def run_integration_tests(cmd_name, *args)
   ensure_docker cmd_name, args
-  filePath = File.expand_path(Dir.pwd+"/src/main/resources/test-circle-key.json")
   common = Common.new
-  common.run_inline %W{gsutil cp gs://#{TEST_PROJECT}-credentials/test-circle-key.json #{filePath}}
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.env = 'local'
   op.add_option(
@@ -362,8 +363,10 @@ def run_integration_tests(cmd_name, *args)
 
   common = Common.new
   common.status "Executing integration tests against '#{api_base}'"
-  common.run_inline %W{gradle integration} + op.remaining
-  common.run_inline %W{rm #{filePath}}
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    get_gsuite_admin_key(TEST_PROJECT)
+    common.run_inline %W{gradle integration} + op.remaining
+  end
 end
 
 Common.register_command({
@@ -371,6 +374,13 @@ Common.register_command({
   :description => "Runs integration tests.",
   :fn => ->(*args) { run_integration_tests("integration", *args) }
 })
+
+def get_gsuite_admin_key(project)
+  unless File.exist? GSUITE_ADMIN_KEY_PATH
+    common = Common.new
+    common.run_inline("gsutil cp gs://#{project}-credentials/gsuite-admin-sa.json #{GSUITE_ADMIN_KEY_PATH}")
+  end
+end
 
 def run_bigquery_tests(cmd_name, *args)
   ensure_docker cmd_name, args
