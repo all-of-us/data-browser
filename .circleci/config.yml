@@ -38,6 +38,20 @@ java_defaults: &java_defaults
     JAVA_TOOL_OPTIONS: -Xmx3g
     TERM: dumb
 
+# -------------------------
+#   COMMANDS
+# Refers to https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+# -------------------------
+commands:
+  activate_service_account_credential:
+    description: "Activiate CircleCI service account credential"
+    steps:
+      - run:
+          name: Activate CircleCI service account credential
+          working_directory: ~/data-browser
+          # Used to call gsutil from the circle environment.
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+
 jobs:
   public-api-local-test:
     docker:
