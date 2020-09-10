@@ -16,7 +16,6 @@ require "ostruct"
 require "tempfile"
 
 TEST_PROJECT = "aou-db-test"
-GSUITE_ADMIN_KEY_PATH = "src/main/webapp/WEB-INF/gsuite-admin-sa.json"
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
 INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
@@ -155,7 +154,6 @@ def dev_up()
   end
 
   ServiceAccountContext.new(TEST_PROJECT).run do
-    get_gsuite_admin_key(TEST_PROJECT)
     at_exit { common.run_inline %W{docker-compose down} }
     common.status "Starting database..."
     common.run_inline %W{docker-compose up -d db}
@@ -364,7 +362,6 @@ def run_integration_tests(cmd_name, *args)
   common = Common.new
   common.status "Executing integration tests against '#{api_base}'"
   ServiceAccountContext.new(TEST_PROJECT).run do
-    get_gsuite_admin_key(TEST_PROJECT)
     common.run_inline %W{gradle integration} + op.remaining
   end
 end
@@ -374,13 +371,6 @@ Common.register_command({
   :description => "Runs integration tests.",
   :fn => ->(*args) { run_integration_tests("integration", *args) }
 })
-
-def get_gsuite_admin_key(project)
-  unless File.exist? GSUITE_ADMIN_KEY_PATH
-    common = Common.new
-    common.run_inline("gsutil cp gs://#{project}-credentials/gsuite-admin-sa.json #{GSUITE_ADMIN_KEY_PATH}")
-  end
-end
 
 def run_bigquery_tests(cmd_name, *args)
   ensure_docker cmd_name, args
