@@ -15,6 +15,46 @@ java_defaults: &java_defaults
     JAVA_TOOL_OPTIONS: -Xmx3g
     TERM: dumb
 
+# -------------------------
+#   COMMANDS
+# Refers to https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+# -------------------------
+commands:
+  activate_service_account_credential:
+    description: "Activiate CircleCI service account credential"
+    steps:
+      - run:
+          name: Activate CircleCI service account credential
+          working_directory: ~/data-browser
+          # Used to call gsutil from the circle environment.
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+
+  checkout_init_git:
+    description: "git checkout and update submodules"
+    steps:
+      - checkout
+      - run:
+          name: Update git submodules
+          command: git submodule update --init --recursive
+
+  start_local_api:
+    description: "Start local API server"
+    steps:
+      - run:
+          # MySQL sometimes refuses connections by the time we attempt to apply
+          # data migrations. Watch the port for 2m for startup.
+          name: Await MySQL startup
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
+      - run:
+          name: Run Local Migrations
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb run-local-migrations
+      - run:
+          name: Launch local API server
+          working_directory: ~/data-browser/public-api
+          # tail -f is important here, it keeps this process running indefinitely
+          command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
+
 jobs:
   public-api-local-test:
     docker:
@@ -30,10 +70,8 @@ jobs:
       TERM: dumb
       MYSQL_ROOT_PASSWORD: ubuntu
     steps:
-      - checkout
-      - run:
-          name: Fetch Submodules
-          command: git submodule update --init --recursive
+      - checkout_init_git
+      - activate_service_account_credential
       - restore_cache:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
@@ -41,17 +79,6 @@ jobs:
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
-      - run:
-          # MySQL sometimes refuses connections by the time we attempt to apply
-          # data migrations. Watch the port for 2m for startup.
-          name: Await MySQL startup
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
-      - run:
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb run-local-migrations
-      - run:
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
       - save_cache:
           paths:
             - ~/.gradle
