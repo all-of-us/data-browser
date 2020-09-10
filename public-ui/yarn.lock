@@ -2828,9 +2828,10 @@ highcharts@^5.0.7:
   version "5.0.15"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-5.0.15.tgz#a9af11538a85b85f300e66f7a0e048a7ef8ab381"
 
-highcharts@^7.2.2:
-  version "7.2.2"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-7.2.2.tgz#94d6bae545d7f0fbf49615b28640f5fdbf99d11e"
+highcharts@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-8.2.0.tgz#3d4893015caf1a7c9ed85284d983911e844649f3"
+  integrity sha512-s3R7UEaMWUDJNxFfdjuiOtI8rnSvhEZUNN4TA7LiDRc9Tw7DUKvTv5WXSTYzxojokLbybwwlf9t3jg/meAUTnQ==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
