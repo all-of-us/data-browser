@@ -52,8 +52,6 @@ public class BuildIapRequest {
         IdTokenCredentials tokenCredential = IdTokenCredentials.newBuilder()
             .setIdTokenProvider(idTokenProvider)
             .setTargetAudience(iapClientId).build();
-
-        IdTokenCredentials credentials = IdTokenCredentials.newBuilder().setIdTokenProvider(idTokenProvider).setTargetAudience(iapClientId).build();
         Map<String, List<String>> requestData = tokenCredential.getRequestMetadata();
         if (requestData.containsKey("Authorization")) {
             TOKEN = requestData.get("Authorization").get(0);
