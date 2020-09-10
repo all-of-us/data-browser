@@ -1,5 +1,28 @@
 version: 2
 
+parameters:
+  build_cdr_indices:
+    type: boolean
+    default: false
+  cdr_source_project:
+    type: string
+    default: ''
+  cdr_source_dataset:
+    type: string
+    default: ''
+  cdr_dest_project:
+    type: string
+    default: ''
+  cdr_sql_bucket:
+    type: string
+    default: ''
+  cdr_version_db_name:
+    type: string
+    default: ''
+  cdr_date:
+    type: string
+    default: ''
+
 defaults: &defaults
   docker:
     - image: allofustest/workbench:buildimage-0.0.14
@@ -219,6 +242,27 @@ jobs:
               --key-file circle-sa-key.json \
               --promote
 
+  cdr-generate-public-counts:
+    <<: *java_defaults
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+      - restore_cache:
+          keys:
+            - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - api-cache-
+      - activate_service_account_credential
+      - run:
+          name: Generate public counts
+          working_directory: ~/data-browser/public-api
+          command: echo "./project.rb generate-public-cdr-counts " \
+          "--bq-project << pipeline.parameters.cdr_source_project >> " \
+          "--bq-dataset << pipeline.parameters.cdr_source_dataset >> " \
+          "--public-project << pipeline.parameters.cdr_dest_project >> " \
+          "--cdr-version << pipeline.parameters.cdr_version_db_name >> " \
+          "--bucket << pipeline.parameters.cdr_sql_bucket >> "
+
 # See https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 filter_master: &filter_master
   filters:
@@ -265,6 +309,12 @@ workflows:
           requires:
             - api-deps-check
             - public-ui-build-test
+
+build-cdr-indices:
+  # This only runs when launched manually via the Pipelines API.
+  when: << pipeline.parameters.build_cdr_indices >>
+  jobs:
+    - cdr-generate-public-counts
 
 experimental:
   notify:
