@@ -256,7 +256,7 @@ jobs:
       - run:
           name: Generate public counts
           working_directory: ~/data-browser/public-api
-          command: |
+          command:
           echo ./project.rb generate-public-cdr-counts
           --bq-project << pipeline.parameters.cdr_source_project >> \
           --bq-dataset << pipeline.parameters.cdr_source_dataset >> \
