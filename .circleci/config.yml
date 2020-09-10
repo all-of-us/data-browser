@@ -291,7 +291,6 @@ filter_releases: &filter_releases
       only: /^v.*/
 
 workflows:
-  version: 2
   build-test-deploy:
     jobs:
       # Always run basic test/lint/compilation (open PRs, master merge).
