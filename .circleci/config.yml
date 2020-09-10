@@ -323,7 +323,6 @@ workflows:
           requires:
             - api-deps-check
             - public-ui-build-test
-
   build-cdr-indices:
     # This only runs when launched manually via the Pipelines API.
     when: << pipeline.parameters.build_cdr_indices >>
