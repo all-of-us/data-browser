@@ -23,8 +23,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
-
-import org.pmiops.workbench.google.IAPAuthService;
+import org.pmiops.workbench.google.BuildIapRequest;
 
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
@@ -35,28 +34,26 @@ import org.pmiops.workbench.google.IAPAuthService;
 public class DataBrowserControllerIntegrationTest {
 
   public static String DB_API_BASE_PATH = "DB_API_BASE_PATH";
+  public static String CLIENT_ID = "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com";
 
   @TestConfiguration
   static class Configuration {
     @Bean
-    DataBrowserApi client() throws IOException {
+    DataBrowserApi client() {
       DataBrowserApi api = new DataBrowserApi();
-      IAPAuthService iapAuth;
       String token = "";
       try {
-        iapAuth = new IAPAuthService();
-        token = iapAuth.getToken();
+        BuildIapRequest buildRequest = new BuildIapRequest(CLIENT_ID);
+        token = buildRequest.getToken();
       } catch (IOException ie) {
-
       }
-
       String basePath = System.getenv(DB_API_BASE_PATH);
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
       ApiClient apiClient = new ApiClient();
       apiClient.setBasePath(basePath);
-      apiClient.setAccessToken(token);
+      apiClient.setAccessToken(token.replace("Bearer ", ""));
       api.setApiClient(apiClient);
       return api;
     }

@@ -287,7 +287,6 @@ appengine {  // App Engine tasks configuration
     // Give dev_appserver 2 minutes to start up when running appengineStart; by
     // default it will fail after 1 minute. (This is particularly a problem in CircleCI.)
     startSuccessTimeout = 120
-    environment = [GOOGLE_APPLICATION_CREDENTIALS: file("$rootDir/sa-key.json").getAbsolutePath()]
   }
 
   // dmohs: You may see this message [1], but don't implement the suggested fix because it breaks
