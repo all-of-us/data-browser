@@ -137,6 +137,20 @@
           (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
       </div>
     </div>
+    <div *ngIf="preCope" class="result-box cope-preview">
+      <div class="result-box-title">
+        COPE Survey
+      </div>
+      <div class="result-body">
+        <div class="result-item result-body-stat">
+          <h3>Coming Soon!</h3>
+        </div>
+        <!-- waiting for description -->
+        <div class="result-body-item">
+          discription text
+        </div>
+      </div>
+    </div>
     <!-- toDO: style noresults -->
     <div class="col-xs-12" *ngIf="(!surveyResults || surveyResults.length === 0) && !displayDomainTotalsErrorMessage">
       <h6 class="no-results-text"> No Survey Results. Please type in a new search term.</h6>

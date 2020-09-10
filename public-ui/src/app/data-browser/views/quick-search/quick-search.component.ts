@@ -58,6 +58,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   cdrName: any;
   allOfUsUrl: string;
   showStatement: boolean;
+  preCope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
   If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
   “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
@@ -83,6 +84,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
+    this.preCope = environment.preCopeFlag;
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
       this.title = 'Electronic Health Data';
