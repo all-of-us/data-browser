@@ -21,7 +21,7 @@ java_defaults: &java_defaults
 # -------------------------
 commands:
   activate_service_account_credential:
-    description: "Activiate CircleCI service account credential"
+    description: "Activate CircleCI service account credential"
     steps:
       - run:
           name: Activate CircleCI service account credential
@@ -89,9 +89,7 @@ jobs:
   public-api-build-test:
     <<: *java_defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout_init_git
       - run:
           #Circle is bad about setting up your remotes for you, you must use origin/
           command: |
@@ -125,9 +123,8 @@ jobs:
   public-api-deploy-to-test:
     <<: *java_defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout_init_git
+      - activate_service_account_credential
       # Note: most of the time spent here appears to be in Gradle / App Engine
       # deployment. We tried more aggressively caching outputs via Cirlce
       # workspaces, but that seemed to have a negligible effect on speed. It's
@@ -137,9 +134,6 @@ jobs:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
           - api-cache-
-      - run:
-          working_directory: ~/data-browser
-          command: ci/activate_creds.sh public-api/circle-sa-key.json
       - deploy:
           name: Deploy to App Engine
           working_directory: ~/data-browser/public-api
@@ -154,9 +148,7 @@ jobs:
   api-deps-check:
     <<: *java_defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout_init_git
       - run:
           name: Scan dependencies for vulnerabilities
           working_directory: ~/data-browser/public-api
@@ -166,10 +158,7 @@ jobs:
   public-ui-build-test:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          name: Fetch Submodules
-          command: git submodule update --init --recursive
+      - checkout_init_git
       - run:
           working_directory: ~/data-browser
           name: Download Swagger CLI
@@ -202,9 +191,7 @@ jobs:
   public-ui-deploy-to-test:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout_init_git
       # Use the ui-build-test workspace here to avoid redoing the setup.
       - attach_workspace:
           at: .
@@ -226,9 +213,7 @@ jobs:
   deploy-staging:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout_init_git
       - restore_cache:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
