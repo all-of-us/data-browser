@@ -87,7 +87,7 @@ services:
     build:
       context: ./src/dev/server
     user: ${UID}
-    working_dir: /w/db-cdr
+    working_dir: db-cdr
     volumes:
       - gradle-cache:/.gradle
       - .:/w:cached
