@@ -1,4 +1,31 @@
-version: 2
+version: 2.1
+
+# -------------------------
+#   PARAMETERS
+# -------------------------
+parameters:
+  # CDR index generation parameters
+  build_cdr_indices:
+    type: boolean
+    default: false
+  cdr_source_project:
+    type: string
+    default: ''
+  cdr_source_dataset:
+    type: string
+    default: ''
+  cdr_sql_bucket:
+    type: string
+    default: ''
+  cdr_dest_project:
+    type: string
+    default: ''
+  cdr_version_db_name:
+    type: string
+    default: ''
+  cdr_date:
+    type: string
+    default: ''
 
 defaults: &defaults
   docker:
@@ -14,6 +41,29 @@ java_defaults: &java_defaults
     # have room in Circle's 4G to get our work done.
     JAVA_TOOL_OPTIONS: -Xmx3g
     TERM: dumb
+
+# -------------------------
+#   COMMANDS
+# Refers to https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+# -------------------------
+commands:
+  activate_service_account_credential:
+    description: "Activiate CircleCI service account credential"
+    steps:
+      - run:
+          name: Activate CircleCI service account credential
+          working_directory: ~/data-browser
+          # Used to call gsutil from the circle environment.
+          command: ci/activate_creds.sh api/circle-sa-key.json
+
+  checkout_init_git:
+    description: "git checkout and update submodules"
+    steps:
+      - checkout
+      - run:
+          name: Update git submodules
+          command: git submodule update --init --recursive
+
 
 jobs:
   public-api-local-test:
@@ -219,6 +269,28 @@ jobs:
               --key-file circle-sa-key.json \
               --promote
 
+  cdr-generate-public-counts:
+    <<: *java_defaults
+    steps:
+      - checkout_init_git
+      - restore_cache:
+          keys:
+            - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - api-cache-
+      - activate_service_account_credential
+      - run:
+          name: Make CloudSql CDR tables
+          no_output_timeout: 120m
+          working_directory: ~/data-browser/public-api
+          # TODO: un-echo. Will need to discriminate which SA to use.
+          command: |
+            ./project.rb generate-public-cdr-counts \
+              --bq-project << pipeline.parameters.cdr_source_project >> \
+              --bq-dataset << pipeline.parameters.cdr_source_dataset >> \
+              --public-project << pipeline.parameters.cdr_dest_project >> \
+              --cdr-version << pipeline.parameters.cdr_version_db_name >> \
+              --bucket << pipeline.parameters.cdr_sql_bucket >>
+
 # See https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 filter_master: &filter_master
   filters:
@@ -232,7 +304,6 @@ filter_releases: &filter_releases
       only: /^v.*/
 
 workflows:
-  version: 2
   build-test-deploy:
     jobs:
       # Always run basic test/lint/compilation (open PRs, master merge).
@@ -265,6 +336,11 @@ workflows:
           requires:
             - api-deps-check
             - public-ui-build-test
+  build-cdr-indices:
+    # This only runs when launched manually via the Pipelines API.
+    when: << pipeline.parameters.build_cdr_indices >>
+    jobs:
+      - cdr-generate-public-counts
 
 experimental:
   notify:
