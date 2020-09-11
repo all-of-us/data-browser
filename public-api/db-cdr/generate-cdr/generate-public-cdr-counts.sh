@@ -12,34 +12,19 @@
 # --public-project all-of-us-workbench-test --cdr-version 20180130 \
 # --bucket all-of-us-workbench-cloudsql-create
 
-set -xeuo pipefail
-IFS=$'\n\t'
+set -ex
 
 
 USAGE="./generate-cdr/generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT>"
 USAGE="$USAGE --bucket all-of-us-workbench-cloudsql-create --cdr-version=YYYYMMDD --bin-size <BINSIZE>"
 USAGE="$USAGE \n Data is generated from bq-project.bq-dataset and dumped to workbench-project.public<cdr-version>."
 
-BQ_PROJECT="";
-BQ_DATASET="";
-PUBLIC_PROJECT="";
-BUCKET="";
-CDR_VERSION="";
-BIN_SIZE="";
-
-while [ $# -gt 0 ]; do
-  echo "1 is $1"
-  case "$1" in
-    --bq-project) BQ_PROJECT=$2; shift 2;;
-    --bq-dataset) BQ_DATASET=$2; shift 2;;
-    --public-project) PUBLIC_PROJECT=$2; shift 2;;
-    --bucket) BUCKET=$2; shift 2;;
-    --cdr-version) CDR_VERSION=$2; shift 2;;
-    --bin-size) BIN_SIZE=$2; shift 2;;
-    -- ) shift; echo -e "Usage: $USAGE"; break ;;
-    * ) break ;;
-  esac
-done
+export BQ_PROJECT=$1
+export BQ_DATASET=$2
+export PUBLIC_PROJECT=$3
+export CDR_VERSION=$4
+export BUCKET=$5
+export BIN_SIZE=$6
 
 if [ -z "${BQ_PROJECT}" ]
 then

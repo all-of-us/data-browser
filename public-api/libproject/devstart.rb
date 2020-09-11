@@ -530,6 +530,8 @@ Common.register_command({
 })
 
 def generate_public_cdr_counts(cmd_name, *args)
+  ensure_docker cmd_name, args
+
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
     "--bq-project [bq-project]",
@@ -561,13 +563,16 @@ def generate_public_cdr_counts(cmd_name, *args)
       ->(opts, v) { opts.bin_size = v},
       "Please specify bin size."
   )
+  gcc = GcloudContextV2.new(op)
   op.parse.validate
-  ServiceAccountContext.new(op.opts.public_project).run do
+  gcc.validate
+
+  with_cloud_proxy_and_db(gcc) do
       common = Common.new
       Dir.chdir('db-cdr') do
-        common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh --bq-project #{op.opts.bq_project} --bq-dataset #{op.opts.bq_dataset} --public-project #{op.opts.public_project} --bucket #{op.opts.bucket} --cdr-version #{op.opts.cdr_version} --bin-size #{op.opts.bin_size}}
+        common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh --bq-project #{op.opts.bq_project} --bq-dataset #{op.opts.bq_dataset} --public-project #{op.opts.public_project} --cdr-version #{op.opts.cdr_version} --bucket #{op.opts.bucket} --bin-size #{op.opts.bin_size}}
       end
-    end
+  end
 end
 
 Common.register_command({
