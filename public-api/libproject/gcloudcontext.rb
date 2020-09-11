@@ -13,9 +13,9 @@ class GcloudContextV2
     # We do NOT grab the project from gcloud config since that can easily be set to something
     # dangerous, like a production project. Instead, we always require that parameter explicitly.
     @options_parser.add_option(
-      "--project [GOOGLE_PROJECT]",
+      "--public-project [PUBLIC_PROJECT]",
       ->(opts, v) { opts.project = v},
-      "Google project to act on (e.g. all-of-us-workbench-test)"
+      "Google project to act on (e.g. aou-db-test)"
     )
     @options_parser.add_option(
       "--creds-file [PATH]",
