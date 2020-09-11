@@ -257,6 +257,18 @@ jobs:
               --promote
 
   cdr-generate-public-counts:
+    docker:
+      - image: allofustest/workbench:buildimage-0.0.14
+      - image: mysql:5.7
+        environment:
+          - MYSQL_ROOT_PASSWORD=ubuntu
+          - MYSQL_USER=ubuntu
+          - MYSQL_PASSWORD=ubuntu
+    working_directory: ~/data-browser
+    environment:
+      JAVA_TOOL_OPTIONS: -Xmx3g
+      TERM: dumb
+      MYSQL_ROOT_PASSWORD: ubuntu
     <<: *java_defaults
     steps:
       - checkout
