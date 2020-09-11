@@ -14,11 +14,6 @@
 
 set -ex
 
-
-USAGE="./generate-cdr/generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT>"
-USAGE="$USAGE --bucket all-of-us-workbench-cloudsql-create --cdr-version=YYYYMMDD --bin-size <BINSIZE>"
-USAGE="$USAGE \n Data is generated from bq-project.bq-dataset and dumped to workbench-project.public<cdr-version>."
-
 export BQ_PROJECT=$1
 export BQ_DATASET=$2
 export PUBLIC_PROJECT=$3
