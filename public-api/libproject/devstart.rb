@@ -562,9 +562,12 @@ def generate_public_cdr_counts(cmd_name, *args)
       "Please specify bin size."
   )
   op.parse.validate
-
-  common = Common.new
-  common.run_inline %W{docker-compose run db-generate-public-cdr-counts} + args
+  ServiceAccountContext.new(op.opts.public_project).run do
+      common = Common.new
+      Dir.chdir('db-cdr') do
+        common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh --bq-project #{op.opts.bq_project} --bq-dataset #{op.opts.bq_dataset} --public-project #{op.opts.public_project} --bucket #{op.opts.bucket} --cdr-version #{op.opts.cdr_version} --bin-size #{op.opts.bin_size}}
+      end
+    end
 end
 
 Common.register_command({
