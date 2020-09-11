@@ -19,7 +19,7 @@ export BQ_DATASET=$2
 export PUBLIC_PROJECT=$3
 export CDR_VERSION=$4
 export BUCKET=$5
-export BIN_SIZE=$6
+export BIN_SIZE=20
 
 if [ -z "${BQ_PROJECT}" ]
 then
@@ -55,11 +55,6 @@ then
   echo -e "Usage: $USAGE"
   echo -e "Missing cdr version"
   exit 1
-fi
-
-if [ -z "${BIN_SIZE}" ]
-then
-  BIN_SIZE=20
 fi
 
 PUBLIC_DATASET=$CDR_VERSION
