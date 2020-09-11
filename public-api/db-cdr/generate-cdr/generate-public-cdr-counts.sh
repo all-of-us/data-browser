@@ -89,8 +89,7 @@ echo $(date) "Starting generate-public-cdr-counts $startDate"
 
 ## Make public cdr count data
 echo "Intermediary pre-binned count generation"
-if ./generate-cdr/make-bq-data.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --output-project $PUBLIC_PROJECT \
- --output-dataset $PUBLIC_DATASET --cdr-version "$CDR_VERSION"
+if ./generate-cdr/make-bq-data.sh $BQ_PROJECT $BQ_DATASET $PUBLIC_PROJECT $PUBLIC_DATASET $CDR_VERSION
 then
     echo "BigQuery public data generated"
 else

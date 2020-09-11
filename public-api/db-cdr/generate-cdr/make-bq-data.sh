@@ -1,52 +1,17 @@
 #!/bin/bash
 
-# This generates big query count databases cdr that get put in cloudsql for workbench
+# This generates big query count databases cdr that get put in cloudsql for databrowser
 
-set -xeuo pipefail
-IFS=$'\n\t'
+set -ex
 
-# get options
-# --project=all-of-us-workbench-test *required
-
-# --cdr=cdr_version ... *optional
-USAGE="./generate-clousql-cdr/make-bq-data.sh --bq-project <PROJECT> --bq-dataset <DATASET> --output-project <PROJECT> --output-dataset <DATASET>"
-USAGE="$USAGE --cdr-version=YYYYMMDD"
-
-while [ $# -gt 0 ]; do
-  echo "1 is $1"
-
-  case "$1" in
-    --bq-project) BQ_PROJECT=$2; shift 2;;
-    --bq-dataset) BQ_DATASET=$2; shift 2;;
-    --output-project) OUTPUT_PROJECT=$2; shift 2;;
-    --output-dataset) OUTPUT_DATASET=$2; shift 2;;
-    --cdr-version) CDR_VERSION=$2; shift 2;;
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
-done
-
-
-if [ -z "${BQ_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${BQ_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${OUTPUT_PROJECT}" ] || [ -z "${OUTPUT_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
+export BQ_PROJECT=$1  # project
+export BQ_DATASET=$2  # dataset
+export OUTPUT_PROJECT=$3 # output project
+export OUTPUT_DATASET=$4 # output dataset
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project=$BQ_PROJECT ls --max_results=225)
+datasets=$(bq --project_id=$BQ_PROJECT ls --max_results=1000)
+
 if [ -z "$datasets" ]
 then
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
