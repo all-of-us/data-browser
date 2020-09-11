@@ -279,6 +279,8 @@ jobs:
             - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
             - api-cache-
       - activate_service_account_credential
+      - setup_remote_docker:
+            docker_layer_caching: true
       - run:
           name: Generate public counts
           working_directory: ~/data-browser/public-api
