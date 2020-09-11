@@ -2,8 +2,6 @@ package org.pmiops.workbench.google;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.IdTokenCredentials;
@@ -12,15 +10,14 @@ import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ Class that can be used to get OIDC token for a service account.
+ https://cloud.google.com/iap/docs/authentication-howto#iap_make_request-java
+ */
 public class BuildIapRequest {
     private static final String IAM_SCOPE = "https://www.googleapis.com/auth/iam";
 
-    private static final HttpTransport httpTransport = new NetHttpTransport();
-
-    private static String TOKEN = "";
-
-    public BuildIapRequest(String clientId) throws IOException {
-        buildIapRequest(clientId);
+    public BuildIapRequest() throws IOException {
     }
 
     private static IdTokenProvider getIdTokenProvider() throws IOException {
@@ -45,7 +42,7 @@ public class BuildIapRequest {
      * @return Clone of request with Bearer style authorization header with signed jwt token.
      * @throws IOException exception creating signed JWT
      */
-    public static void buildIapRequest(String iapClientId)
+    public static String buildIapRequest(String iapClientId)
             throws IOException {
 
         IdTokenProvider idTokenProvider = getIdTokenProvider();
@@ -53,10 +50,6 @@ public class BuildIapRequest {
             .setIdTokenProvider(idTokenProvider)
             .setTargetAudience(iapClientId).build();
         tokenCredential.refresh();
-        TOKEN = tokenCredential.getIdToken().getTokenValue();
-    }
-
-    public static String getToken() {
-        return TOKEN;
+        return tokenCredential.getIdToken().getTokenValue();
     }
 }

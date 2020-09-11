@@ -34,6 +34,7 @@ import org.pmiops.workbench.google.BuildIapRequest;
 public class DataBrowserControllerIntegrationTest {
 
   public static String DB_API_BASE_PATH = "DB_API_BASE_PATH";
+  // Staging client ID
   public static String CLIENT_ID = "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com";
 
   @TestConfiguration
@@ -41,19 +42,21 @@ public class DataBrowserControllerIntegrationTest {
     @Bean
     DataBrowserApi client() {
       DataBrowserApi api = new DataBrowserApi();
-      String token = "";
-      try {
-        BuildIapRequest buildRequest = new BuildIapRequest(CLIENT_ID);
-        token = buildRequest.getToken();
-      } catch (IOException ie) {
-      }
       String basePath = System.getenv(DB_API_BASE_PATH);
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
       ApiClient apiClient = new ApiClient();
       apiClient.setBasePath(basePath);
-      apiClient.setAccessToken(token.replace("Bearer ", ""));
+      if (basePath.contains("aou-db-staging")) {
+        String token = "";
+        try {
+          BuildIapRequest buildRequest = new BuildIapRequest();
+          token = buildRequest.buildIapRequest(CLIENT_ID);
+        } catch (IOException ie) {
+        }
+        apiClient.setAccessToken(token.replace("Bearer ", ""));
+      }
       api.setApiClient(apiClient);
       return api;
     }

@@ -148,34 +148,33 @@ end
 
 def dev_up()
   common = Common.new
+
   account = get_auth_login_account()
   if account.nil?
     raise("Please run 'gcloud auth login' before starting the server.")
   end
 
-  ServiceAccountContext.new(TEST_PROJECT).run do
-    at_exit { common.run_inline %W{docker-compose down} }
-    common.status "Starting database..."
-    common.run_inline %W{docker-compose up -d db}
-    common.status "Running database migrations..."
-    common.run_inline %W{docker-compose run db-migration}
-    common.run_inline %W{docker-compose run db-public-migration}
+  at_exit { common.run_inline %W{docker-compose down} }
+  common.status "Starting database..."
+  common.run_inline %W{docker-compose up -d db}
+  common.status "Running database migrations..."
+  common.run_inline %W{docker-compose run db-migration}
+  common.run_inline %W{docker-compose run db-public-migration}
 
-    common.status "Updating CDR versions..."
-    common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
+  common.status "Updating CDR versions..."
+  common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
 
-    common.status "Updating workbench configuration..."
-    common.run_inline %W{
-        docker-compose run update-config
-        -Pconfig_file=../config/config_local.json
-    }
-    common.status "Updating CDR schema configuration..."
-    common.run_inline %W{
-        docker-compose run update-config
-        -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json
-    }
-    common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
-  end
+  common.status "Updating workbench configuration..."
+  common.run_inline %W{
+    docker-compose run update-config
+    -Pconfig_file=../config/config_local.json
+  }
+  common.status "Updating CDR schema configuration..."
+  common.run_inline %W{
+    docker-compose run update-config
+    -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json
+  }
+  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
 end
 
 Common.register_command({
