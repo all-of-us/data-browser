@@ -53,7 +53,7 @@ then
   exit 1
 fi
 re=\\b$BQ_DATASET\\b
-if [[ $datasets =~ $re ]]; then
+if [[ $datasets =~ *"$BQ_DATASET"* ]]; then
   echo "$BQ_PROJECT.$BQ_DATASET exists. Good. Carrying on."
 else
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
@@ -63,7 +63,7 @@ fi
 # Make dataset for cdr cloudsql tables
 datasets=$(bq --project=$OUTPUT_PROJECT ls --max_results=100)
 re=\\b$OUTPUT_DATASET\\b
-if [[ $datasets =~ $re ]]; then
+if [[ $datasets =~ *"$OUTPUT_DATASET"* ]]; then
   echo "$OUTPUT_DATASET exists"
 else
   echo "Creating $OUTPUT_DATASET"
