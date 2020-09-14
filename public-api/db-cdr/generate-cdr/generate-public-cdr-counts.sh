@@ -12,70 +12,14 @@
 # --public-project all-of-us-workbench-test --cdr-version 20180130 \
 # --bucket all-of-us-workbench-cloudsql-create
 
-set -xeuo pipefail
-IFS=$'\n\t'
+set -ex
 
+export BQ_PROJECT=$1  # project
+export BQ_DATASET=$2  # dataset
+export PUBLIC_PROJECT=$3 # databrowser project
+export CDR_VERSION=$4 # cdr version
+export BUCKET=$5 # GCS bucket
 
-USAGE="./generate-cdr/generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT>"
-USAGE="$USAGE --bucket all-of-us-workbench-cloudsql-create --cdr-version=YYYYMMDD --bin-size <BINSIZE>"
-USAGE="$USAGE \n Data is generated from bq-project.bq-dataset and dumped to workbench-project.public<cdr-version>."
-
-BQ_PROJECT="";
-BQ_DATASET="";
-PUBLIC_PROJECT="";
-BUCKET="";
-CDR_VERSION="";
-BIN_SIZE="";
-
-while [ $# -gt 0 ]; do
-  echo "1 is $1"
-  case "$1" in
-    --bq-project) BQ_PROJECT=$2; shift 2;;
-    --bq-dataset) BQ_DATASET=$2; shift 2;;
-    --public-project) PUBLIC_PROJECT=$2; shift 2;;
-    --bucket) BUCKET=$2; shift 2;;
-    --cdr-version) CDR_VERSION=$2; shift 2;;
-    --bin-size) BIN_SIZE=$2; shift 2;;
-    -- ) shift; echo -e "Usage: $USAGE"; break ;;
-    * ) break ;;
-  esac
-done
-
-if [ -z "${BQ_PROJECT}" ]
-then
-  echo -e "Usage: $USAGE"
-  echo -e "Missing bq-project name"
-  exit 1
-fi
-
-if [ -z "${BQ_DATASET}" ]
-then
-  echo -e "Usage: $USAGE"
-  echo -e "Missing bq-dataset name"
-  exit 1
-fi
-
-if [ -z "${PUBLIC_PROJECT}" ]
-then
-  echo -e "Usage: $USAGE"
-  echo -e "Missing public project name"
-  exit 1
-fi
-
-if [ -z "${BUCKET}" ]
-then
-  echo -e "Usage: $USAGE"
-  echo -e "Missing bucket name"
-  exit 1
-fi
-
-#Check cdr_version is not empty
-if [ -z "${CDR_VERSION}" ]
-then
-  echo -e "Usage: $USAGE"
-  echo -e "Missing cdr version"
-  exit 1
-fi
 
 if [ -z "${BIN_SIZE}" ]
 then

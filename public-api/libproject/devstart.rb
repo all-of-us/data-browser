@@ -534,8 +534,42 @@ Common.register_command({
 
 def generate_public_cdr_counts(cmd_name, *args)
   op = WbOptionsParser.new(cmd_name, args)
-  common = Common.new
-  common.run_inline %W{docker-compose run db-generate-public-cdr-counts} + args
+  op.add_option(
+      "--bq-project [bq-project]",
+      ->(opts, v) { opts.bq_project = v},
+      "BQ Project required."
+    )
+    op.add_option(
+      "--bq-dataset [bq-dataset]",
+      ->(opts, v) { opts.bq_dataset = v},
+      "BQ dataset required."
+    )
+    op.add_option(
+      "--project [--project]",
+      ->(opts, v) { opts.project = v},
+      "Project required."
+    )
+    op.add_option(
+      "--cdr-version [cdr-version]",
+      ->(opts, v) { opts.cdr_version = v},
+      "CDR version required."
+    )
+    op.add_option(
+      "--bucket [bucket]",
+      ->(opts, v) { opts.bucket = v},
+      "GCS bucket required."
+    )
+    op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
+    gcc = GcloudContextV2.new(op)
+    op.parse.validate
+    gcc.validate()
+
+    with_cloud_proxy_and_db(gcc) do
+        common = Common.new
+        Dir.chdir('db-cdr') do
+          common.run_inline %W{./generate-cdr/generate-private-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
+        end
+    end
 end
 
 Common.register_command({
