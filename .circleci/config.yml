@@ -287,7 +287,7 @@ jobs:
             ./project.rb generate-public-cdr-counts \
               --bq-project << pipeline.parameters.cdr_source_project >> \
               --bq-dataset << pipeline.parameters.cdr_source_dataset >> \
-              --public-project << pipeline.parameters.cdr_dest_project >> \
+              --project << pipeline.parameters.cdr_dest_project >> \
               --cdr-version << pipeline.parameters.cdr_version_db_name >> \
               --bucket << pipeline.parameters.cdr_sql_bucket >>
 
