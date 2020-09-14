@@ -45,6 +45,8 @@ then
   exit 1
 fi
 
+$(gcloud config set project aou-db-test)
+
 # Check that bq_dataset exists and exit if not
 datasets=$(bq --project=$BQ_PROJECT ls --max_results=225)
 if [ -z "$datasets" ]
