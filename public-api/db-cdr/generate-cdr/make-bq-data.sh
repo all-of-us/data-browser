@@ -48,7 +48,7 @@ fi
 $(gcloud config set project aou-db-test)
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project=$BQ_PROJECT ls --max_results=225)
+datasets=$(bq --project_id=$BQ_PROJECT ls --max_results=225)
 if [ -z "$datasets" ]
 then
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
