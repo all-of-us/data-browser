@@ -560,6 +560,7 @@ def generate_public_cdr_counts(cmd_name, *args)
       "GCS bucket required."
     )
     op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
+    gcc = GcloudContextV2.new(op)
     op.parse.validate
     gcc.validate()
 
