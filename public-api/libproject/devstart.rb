@@ -562,11 +562,9 @@ def generate_public_cdr_counts(cmd_name, *args)
     op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
     op.parse.validate
 
-    with_cloud_proxy_and_db(gcc) do
-        common = Common.new
-        Dir.chdir('db-cdr') do
-          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
-        end
+    common = Common.new
+    Dir.chdir('db-cdr') do
+        common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
     end
 end
 
