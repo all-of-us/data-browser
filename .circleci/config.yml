@@ -54,7 +54,7 @@ commands:
           name: Activate CircleCI service account credential
           working_directory: ~/data-browser
           # Used to call gsutil from the circle environment.
-          command: ci/activate_creds.sh api/circle-sa-key.json
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
 
   checkout_init_git:
     description: "git checkout and update submodules"
