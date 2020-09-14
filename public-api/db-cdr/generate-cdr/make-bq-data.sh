@@ -63,17 +63,17 @@ else
 fi
 
 # Make dataset for cdr cloudsql tables
-datasets=$(bq --project=$OUTPUT_PROJECT ls --max_results=100)
+datasets=$(bq --project_id=$OUTPUT_PROJECT ls --max_results=100)
 re=\\b$OUTPUT_DATASET\\b
 if [[ $datasets =~ *"$OUTPUT_DATASET"* ]]; then
   echo "$OUTPUT_DATASET exists"
 else
   echo "Creating $OUTPUT_DATASET"
-  bq --project=$OUTPUT_PROJECT mk $OUTPUT_DATASET
+  bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
 #Check if tables to be copied over exists in bq project dataset
-tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project_id=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
 cb_cri_table_check=\\bcb_criteria\\b
 cb_cri_attr_table_check=\\bcb_criteria_attribute\\b
 cb_cri_rel_table_check=\\bcb_criteria_relationship\\b
@@ -86,8 +86,8 @@ domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_in
 
 for t in "${create_tables[@]}"
 do
-    bq --project=$OUTPUT_PROJECT rm -f $OUTPUT_DATASET.$t
-    bq --quiet --project=$OUTPUT_PROJECT mk --schema=$schema_path/$t.json $OUTPUT_DATASET.$t
+    bq --project_id=$OUTPUT_PROJECT rm -f $OUTPUT_DATASET.$t
+    bq --quiet --project_id=$OUTPUT_PROJECT mk --schema=$schema_path/$t.json $OUTPUT_DATASET.$t
 done
 
 # Populate some tables from cdr data
@@ -97,7 +97,7 @@ load_tables=(domain_info survey_module achilles_analysis achilles_results unit_m
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
-    bq --project=$OUTPUT_PROJECT load --quote='"' --source_format=CSV --skip_leading_rows=1 --max_bad_records=10 $OUTPUT_DATASET.$t $csv_path/$t.csv
+    bq --project_id=$OUTPUT_PROJECT load --quote='"' --source_format=CSV --skip_leading_rows=1 --max_bad_records=10 $OUTPUT_DATASET.$t $csv_path/$t.csv
 done
 
 # Populate some tables from cdr data
@@ -106,7 +106,7 @@ done
 ############
 if [[ $tables =~ $cb_cri_table_check ]]; then
     echo "Inserting criteria"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
      (id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms)
      SELECT id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms
@@ -118,7 +118,7 @@ fi
 ######################
 if [[ $tables =~ $cb_cri_attr_table_check ]]; then
     echo "Inserting cb_criteria_attribute"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_attribute\`
     (id, concept_id, value_as_concept_id, concept_name, type, est_count)
     SELECT id, concept_id, value_as_concept_id, concept_name, type, est_count
@@ -131,7 +131,7 @@ fi
 if [[ $tables =~ $cb_cri_rel_table_check ]]; then
     echo "Inserting criteria_relationship"
     echo "Inserting cb_criteria_relationship"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_relationship\`
     (concept_id_1, concept_id_2)
     SELECT concept_id_1, concept_id_2
@@ -143,7 +143,7 @@ fi
 #########################
 if [[ $tables =~ $cb_cri_anc_table_check ]]; then
     echo "Inserting cb_criteria_ancestor"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_ancestor\`
     (ancestor_id, descendant_id)
     SELECT ancestor_id, descendant_id
