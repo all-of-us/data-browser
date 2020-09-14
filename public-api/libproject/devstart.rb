@@ -532,7 +532,8 @@ Common.register_command({
   :fn => ->() { run_local_data_migrations() }
 })
 
-def generate_public_cdr_counts(*args)
+def generate_public_cdr_counts(cmd_name, *args)
+  op = WbOptionsParser.new(cmd_name, args)
   common = Common.new
   common.run_inline %W{docker-compose run db-generate-public-cdr-counts} + args
 end
@@ -542,7 +543,7 @@ Common.register_command({
   :description => "generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT> \
  --cdr-version=<''|YYYYMMDD> --bucket <BUCKET>
 Generates databases in bigquery with non de-identified data from a cdr that will be imported to mysql/cloudsql to be used by databrowser.",
-  :fn => ->(*args) { generate_public_cdr_counts(*args) }
+  :fn => ->(*args) { generate_public_cdr_counts("generate-public-cdr-counts", *args) }
 })
 
 def generate_cloudsql_db(cmd_name, *args)
