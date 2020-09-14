@@ -304,22 +304,22 @@ filter_releases: &filter_releases
       only: /^v.*/
 
 workflows:
-  build-test-deploy:
-    jobs:
-      # Always run basic test/lint/compilation (open PRs, master merge).
-      # Note: by default tags are not picked up.
-      - public-api-local-test
-      - public-ui-build-test
-      - public-api-build-test
-      # Run deployment to "test" on master merges.
-      - public-api-deploy-to-test:
-          <<: *filter_master
-          requires:
-            - public-api-build-test
-      - public-ui-deploy-to-test:
-          <<: *filter_master
-          requires:
-            - public-ui-build-test
+  #build-test-deploy:
+  #  jobs:
+  #    # Always run basic test/lint/compilation (open PRs, master merge).
+  #    # Note: by default tags are not picked up.
+  #    - public-api-local-test
+  #    - public-ui-build-test
+  #    - public-api-build-test
+  #    # Run deployment to "test" on master merges.
+  #    - public-api-deploy-to-test:
+  #        <<: *filter_master
+  #        requires:
+  #          - public-api-build-test
+  #    - public-ui-deploy-to-test:
+  #        <<: *filter_master
+  #        requires:
+  #          - public-ui-build-test
   deploy-staging:
     jobs:
       - public-ui-build-test:
