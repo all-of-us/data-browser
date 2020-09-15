@@ -63,14 +63,19 @@ else
     exit 1
 fi
 
-echo "Moving aggregated counts data"
-if ./generate-cdr/move-aggregated-counts.sh --prod-bucket $BUCKET --test-bucket aou-db-public-cloudsql --cdr-version $CDR_VERSION
-then
+if [[ $PUBLIC_PROJECT == *"aou-db-prod"* ]]; then
+  echo "Moving aggregated counts data"
+  if ./generate-cdr/move-aggregated-counts.sh --prod-bucket $BUCKET --test-bucket aou-db-public-cloudsql --cdr-version $CDR_VERSION
+  then
     echo "Moved aggregated count data to test bucket"
-else
+  else
     echo "FAILED to move aggregated count data"
     exit 1
+  fi
+else
+  echo "No need to move csvs."
 fi
+
 
 stopDate=$(date)
 echo "Start $startDate Stop: $stopDate"

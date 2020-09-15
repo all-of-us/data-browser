@@ -14,6 +14,9 @@ require "json"
 require "optparse"
 require "ostruct"
 require "tempfile"
+require "net/http"
+require "uri"
+require "shellwords"
 
 TEST_PROJECT = "aou-db-test"
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
@@ -439,6 +442,59 @@ Common.register_command({
     " start from scratch (e.g., the database will be re-created). Includes ALL" \
     " docker images, not just for the API.",
   :fn => ->() { docker_clean() }
+})
+
+def cdr_build(cmd_name, *args)
+    op = WbOptionsParser.new(cmd_name, args)
+    print(args)
+    op.add_option(
+          "--branch [branch]",
+          ->(opts, v) { opts.branch = v},
+          "Branch required."
+    )
+    op.add_option(
+          "--cdr-build-indices [cdr-build-indices]",
+          ->(opts, v) { opts.cdr_build_indices = v},
+          "Flag required."
+    )
+    op.add_option(
+          "--cdr-source-project [cdr-source-project]",
+          ->(opts, v) { opts.cdr_source_project = v},
+          "Cdr source project required."
+    )
+    op.add_option(
+          "--cdr-source-dataset [cdr-source-dataset]",
+          ->(opts, v) { opts.cdr_source_dataset = v},
+          "Cdr source dataset required."
+    )
+    op.add_option(
+          "--cdr-sql-bucket [cdr-sql-bucket]",
+          ->(opts, v) { opts.cdr_sql_bucket = v},
+          "Cdr sql bucket required."
+    )
+    op.add_option(
+          "--cdr-destination-project [cdr-destination-project]",
+          ->(opts, v) { opts.cdr_destination_project = v},
+          "Cdr destination project required."
+    )
+    op.add_option(
+          "--cdr-version-db-name [cdr-version-db-name]",
+          ->(opts, v) { opts.cdr_version_db_name = v},
+          "Cdr version db name."
+    )
+    op.add_validator ->(opts) { raise ArgumentError unless opts.branch and opts.cdr_build_indices and opts.cdr_source_project and opts.cdr_source_dataset and opts.cdr_sql_bucket and opts.cdr_destination_project and opts.cdr_version_db_name}
+    op.parse.validate
+    common = Common.new
+    Dir.chdir('db-cdr') do
+        common.run_inline %W{./generate-cdr/start-cdr-build.sh #{op.opts.branch} #{op.opts.cdr_build_indices} #{op.opts.cdr_source_project} #{op.opts.cdr_source_dataset} #{op.opts.cdr_sql_bucket} #{op.opts.cdr_destination_project} #{op.opts.cdr_version_db_name}}
+    end
+end
+
+Common.register_command({
+  :invocation => "cdr-build",
+  :description => "cdr-build  --branch-name <BRANCH-NAME>
+Generates cdr indexing data",
+  :fn => ->(*args) { cdr_build("cdr-build", *args) }
 })
 
 def rebuild_image()
