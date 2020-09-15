@@ -471,6 +471,15 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  when 43528761 then 'Diagnosed Health Condition: Hormone/Endocrine Condition' when 43529638 then 'Diagnosed Health Condition: Other Conditions'
  when 43529170 then 'Other Conditions: Liver Condition' else concept_name end where concept_id in (1384639, 43528761, 43529170, 43529638);"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` q
+SET q.question_string = q2.question_string
+FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` AS q2 INNER JOIN (
+SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), "|", "") AS qs
+FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
+GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
+where q.concept_id=q2.concept_id and q.path=q2.path;"
+
 #######################
 # Drop views created #
 #######################
