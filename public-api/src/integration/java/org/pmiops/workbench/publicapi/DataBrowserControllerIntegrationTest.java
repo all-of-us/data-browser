@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.io.IOException;
-import org.pmiops.workbench.google.BuildIapRequest;
 
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
@@ -44,7 +42,6 @@ public class DataBrowserControllerIntegrationTest {
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
-      ApiClient apiClient = new ApiClient();
       api.setApiClient(new ApiClient().setBasePath(basePath));
       return api;
     }
