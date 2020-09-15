@@ -342,7 +342,6 @@ Common.register_command({
 
 def run_integration_tests(cmd_name, *args)
   ensure_docker cmd_name, args
-  common = Common.new
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.env = 'local'
   op.add_option(

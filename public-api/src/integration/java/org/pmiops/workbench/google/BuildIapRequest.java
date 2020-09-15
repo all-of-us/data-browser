@@ -17,9 +17,6 @@ import java.util.*;
 public class BuildIapRequest {
     private static final String IAM_SCOPE = "https://www.googleapis.com/auth/iam";
 
-    public BuildIapRequest() throws IOException {
-    }
-
     private static IdTokenProvider getIdTokenProvider() throws IOException {
         GoogleCredentials credentials =
                 GoogleCredentials.getApplicationDefault().createScoped(Collections.singleton(IAM_SCOPE));
