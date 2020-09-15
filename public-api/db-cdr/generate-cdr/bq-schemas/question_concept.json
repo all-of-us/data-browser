@@ -53,5 +53,10 @@
     "mode": "REQUIRED",
     "name": "question_order_number",
     "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "question_string",
+    "type": "STRING"
   }
 ]

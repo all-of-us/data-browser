@@ -21,6 +21,7 @@
       <column name="is_parent_question" type="NUMERIC" />
       <column name="generate_counts" type="NUMERIC" />
       <column name="question_order_number" type="NUMERIC" />
+      <column name="question_string" type="STRING" />
     </loadData>
 
   </changeSet>
