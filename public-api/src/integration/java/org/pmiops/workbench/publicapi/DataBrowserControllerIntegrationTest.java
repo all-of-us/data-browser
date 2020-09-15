@@ -34,8 +34,6 @@ import org.pmiops.workbench.google.BuildIapRequest;
 public class DataBrowserControllerIntegrationTest {
 
   public static String DB_API_BASE_PATH = "DB_API_BASE_PATH";
-  // Staging client ID
-  public static String CLIENT_ID = "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com";
 
   @TestConfiguration
   static class Configuration {
@@ -47,17 +45,7 @@ public class DataBrowserControllerIntegrationTest {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
       ApiClient apiClient = new ApiClient();
-      apiClient.setBasePath(basePath);
-      if (basePath.contains("aou-db-staging")) {
-        String token = "";
-        try {
-          BuildIapRequest buildRequest = new BuildIapRequest();
-          token = buildRequest.buildIapRequest(CLIENT_ID);
-        } catch (IOException ie) {
-        }
-        apiClient.setAccessToken(token.replace("Bearer ", ""));
-      }
-      api.setApiClient(apiClient);
+      api.setApiClient(new ApiClient().setBasePath(basePath));
       return api;
     }
   }
@@ -89,8 +77,8 @@ public class DataBrowserControllerIntegrationTest {
     // These concept IDs are hardcoded by the data browser in all environments, so they must exist.
     List<String> concepts = ImmutableList.of("903118", "903115", "903133");
     List<String> gotConcepts = api.getConceptAnalysisResults(concepts, null).getItems()
-            .stream()
-            .map(ConceptAnalysis::getConceptId).collect(Collectors.toList());
+        .stream()
+        .map(ConceptAnalysis::getConceptId).collect(Collectors.toList());
     assertThat(gotConcepts).containsExactlyElementsIn(concepts);
   }
 
@@ -105,9 +93,9 @@ public class DataBrowserControllerIntegrationTest {
   public void testSearchConcepts() throws Exception {
     int maxResults = 20;
     ConceptListResponse resp = api.searchConcepts(new SearchConceptsRequest()
-            .domain(Domain.MEASUREMENT)
-            .minCount(1)
-            .maxResults(maxResults));
+        .domain(Domain.MEASUREMENT)
+        .minCount(1)
+        .maxResults(maxResults));
     assertThat(resp.getItems()).isNotEmpty();
     assertThat(resp.getItems().size()).isAtMost(maxResults);
     for (Concept c : resp.getItems()) {
