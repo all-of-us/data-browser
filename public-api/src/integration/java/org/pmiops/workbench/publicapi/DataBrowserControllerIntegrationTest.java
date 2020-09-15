@@ -40,7 +40,7 @@ public class DataBrowserControllerIntegrationTest {
   @TestConfiguration
   static class Configuration {
     @Bean
-    DataBrowserApi client() {
+    DataBrowserApi client() throws IOException{
       DataBrowserApi api = new DataBrowserApi();
       String basePath = System.getenv(DB_API_BASE_PATH);
       if (Strings.isNullOrEmpty(basePath)) {
@@ -50,11 +50,8 @@ public class DataBrowserControllerIntegrationTest {
       apiClient.setBasePath(basePath);
       if (basePath.contains("aou-db-staging")) {
         String token = "";
-        try {
-          BuildIapRequest buildRequest = new BuildIapRequest();
-          token = buildRequest.buildIapRequest(CLIENT_ID);
-        } catch (IOException ie) {
-        }
+        BuildIapRequest buildRequest = new BuildIapRequest();
+        token = buildRequest.buildIapRequest(CLIENT_ID);
         apiClient.setAccessToken(token.replace("Bearer ", ""));
       }
       api.setApiClient(apiClient);
