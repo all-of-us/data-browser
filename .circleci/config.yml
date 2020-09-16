@@ -8,6 +8,9 @@ parameters:
   build_cdr_indices:
     type: boolean
     default: false
+  import_cdr_data:
+    type: boolean
+    default: false
   cdr_source_project:
     type: string
     default: ''
@@ -24,6 +27,18 @@ parameters:
     type: string
     default: ''
   cdr_date:
+    type: string
+    default: ''
+  project:
+    type: string
+    default: ''
+  instance:
+    type: string
+    default: ''
+  database:
+    type: string
+    default: ''
+  bucket:
     type: string
     default: ''
 
@@ -291,6 +306,26 @@ jobs:
               --cdr-version << pipeline.parameters.cdr_version_db_name >> \
               --bucket << pipeline.parameters.cdr_sql_bucket >>
 
+  generate-cloudsql-db:
+    <<: *java_defaults
+    steps:
+      - checkout_init_git
+      - restore_cache:
+          keys:
+            - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - api-cache-
+      - activate_service_account_credential
+      - run:
+          name: Import Cdr Data into cloudsql tables
+          no_output_timeout: 10m
+          working_directory: ~/data-browser/public-api
+          command: |
+            ./project.rb generate-cloudsql-db \
+            --project << pipeline.parameters.project >> \
+            --instance << pipeline.parameters.instance >> \
+            --database <<pipeline.parameters.database >> \
+            --bucket <<pipeline.parameters.bucket >>
+
 # See https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 filter_master: &filter_master
   filters:
@@ -341,6 +376,11 @@ workflows:
     when: << pipeline.parameters.build_cdr_indices >>
     jobs:
       - cdr-generate-public-counts
+
+  import-cdr-data:
+    when: << pipeline.parameters.import_cdr_data >>
+    jobs:
+      - generate-cloudsql-db
 
 experimental:
   notify:

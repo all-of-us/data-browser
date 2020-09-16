@@ -497,6 +497,54 @@ Generates cdr indexing data",
   :fn => ->(*args) { cdr_build("cdr-build", *args) }
 })
 
+def cdr_import(cmd_name, *args)
+    op = WbOptionsParser.new(cmd_name, args)
+    op.add_option(
+          "--branch [branch]",
+          ->(opts, v) { opts.branch = v},
+          "Branch required."
+    )
+    op.add_option(
+          "--import-cdr-data [import-cdr-data]",
+          ->(opts, v) { opts.import_cdr_data = v},
+          "Flag required."
+    )
+    op.add_option(
+          "--project [project]",
+          ->(opts, v) { opts.project = v},
+          "Project required."
+    )
+    op.add_option(
+          "--instance [instance]",
+          ->(opts, v) { opts.instance = v},
+          "Database instance name required."
+    )
+    op.add_option(
+          "--database [database]",
+          ->(opts, v) { opts.database = v},
+          "Database name required."
+    )
+    op.add_option(
+          "--bucket [bucket]",
+          ->(opts, v) { opts.bucket = v},
+          "Bucket name required."
+    )
+
+    op.add_validator ->(opts) { raise ArgumentError unless opts.branch and opts.import_cdr_data and opts.project and opts.instance and opts.database and opts.bucket}
+    op.parse.validate
+    common = Common.new
+    Dir.chdir('db-cdr') do
+        common.run_inline %W{./generate-cdr/import-cdr.sh #{op.opts.branch} #{op.opts.import_cdr_data} #{op.opts.project} #{op.opts.instance} #{op.opts.database} #{op.opts.bucket}}
+    end
+end
+
+Common.register_command({
+  :invocation => "cdr-import",
+  :description => "cdr-import  --branch-name <BRANCH-NAME>
+Imports indexed cdr data into cloudsql",
+  :fn => ->(*args) { cdr_import("cdr-import", *args) }
+})
+
 def rebuild_image()
   common = Common.new
 
