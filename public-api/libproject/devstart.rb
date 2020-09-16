@@ -706,15 +706,20 @@ def generate_cloudsql_db(cmd_name, *args)
     ->(opts, v) { opts.bucket = v},
     "Name of the GCS bucket containing the SQL dump"
   )
-  op.parse.validate
 
-  ServiceAccountContext.new(op.opts.project).run do
+  op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.instance and opts.database and opts.bucket }
+  gcc = GcloudContextV2.new(op)
+  op.parse.validate
+  gcc.validate()
+
+  with_cloud_proxy_and_db(gcc) do
     common = Common.new
-    common.run_inline %W{docker-compose run db-generate-cloudsql-db
-          --project #{op.opts.project} --instance #{op.opts.instance} --database #{op.opts.database}
-          --bucket #{op.opts.bucket}}
+    Dir.chdir('db-cdr') do
+        common.run_inline %W{./generate-cdr/generate-cloudsql-db.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
+    end
   end
 end
+
 Common.register_command({
   :invocation => "generate-cloudsql-db",
   :description => "generate-cloudsql-db  --project <PROJECT> --instance <INSTANCE> \
