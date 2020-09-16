@@ -715,7 +715,7 @@ def generate_cloudsql_db(cmd_name, *args)
   with_cloud_proxy_and_db(gcc) do
     common = Common.new
     Dir.chdir('db-cdr') do
-        common.run_inline %W{./generate-cdr/generate-cloudsql-db.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
+        common.run_inline %W{./generate-cdr/generate-cloudsql-db.sh #{op.opts.project} #{op.opts.instance} #{op.opts.database} #{op.opts.bucket}}
     end
   end
 end
