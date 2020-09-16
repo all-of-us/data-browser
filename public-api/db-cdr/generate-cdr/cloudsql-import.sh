@@ -15,9 +15,7 @@ export INSTANCE=$2  # database instance
 export BUCKET=$3 # bucket in which csvs are present
 export DATABASE=$4
 export CREATE_DB_SQL_FILE=$5
-
-CREATE_DB_SQL_FILE=
-FILE=
+export FILE=$6
 
 
 # Function for waiting on import to finish.
