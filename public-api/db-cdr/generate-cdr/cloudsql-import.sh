@@ -125,6 +125,8 @@ else
     csvs=( $(gsutil ls gs://$BUCKET/*.csv* 2> /dev/null || true) )
 fi
 
+printf '%s\n' "${csvs[@]}"
+
 for gs_file in "${sqls[@]}"
 do
     if [ "$gs_file" = "$create_gs_file" ]
