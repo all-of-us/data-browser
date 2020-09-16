@@ -124,8 +124,10 @@ else
     sqls=( $(gsutil ls gs://$BUCKET/*.sql* 2> /dev/null || true) )
     csvs=( $(gsutil ls gs://$BUCKET/*.csv* 2> /dev/null || true) )
 fi
-
+echo "********************************"
+printf '%s\n' "${sqls[@]}"
 printf '%s\n' "${csvs[@]}"
+echo "********************************"
 
 for gs_file in "${sqls[@]}"
 do
