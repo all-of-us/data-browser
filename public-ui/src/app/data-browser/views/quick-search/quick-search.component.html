@@ -140,6 +140,9 @@
     <div *ngIf="preCope" class="result-box cope-preview">
       <div class="result-box-title">
         COPE Survey
+        <app-tooltip [toolTipText1]="'description will go here'"
+          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+          [action]="'Hover on Survey Tile ' + 'cope' + ' tooltip'"></app-tooltip>
       </div>
       <div class="result-body">
         <div class="result-item result-body-stat">
@@ -147,7 +150,7 @@
         </div>
         <!-- waiting for description -->
         <div class="result-body-item">
-          discription text
+         <br> discription text
         </div>
       </div>
     </div>
