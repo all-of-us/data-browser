@@ -4,6 +4,7 @@ import { ClarityModule } from '@clr/angular';
 /* Components */
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { HighchartsChartModule } from 'highcharts-angular';
 import * as highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
@@ -34,6 +35,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     CommonModule,
     ChartModule,
     ClarityModule,
+    HighchartsChartModule,
     SharedModule
   ],
   declarations: [

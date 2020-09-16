@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { NgxPaginationModule } from 'ngx-pagination';
 //  components
 import { BetaBarComponent } from '../components/beta-bar/beta-bar.component';
@@ -22,10 +21,8 @@ import { HeaderFooterService } from './services/header-footer.service';
     RouterModule,
     CommonModule,
     FormsModule,
-    HttpModule,
     ReactiveFormsModule,
     NgxPaginationModule,
-    LocalStorageModule
   ],
   declarations: [
     HighlightSearchComponent,
@@ -42,6 +39,7 @@ import { HeaderFooterService } from './services/header-footer.service';
     CommonModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     ReactiveFormsModule,
     NgxPaginationModule,
     HighlightSearchComponent,

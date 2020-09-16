@@ -233,7 +233,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       legend: {
         enabled: this.doesNeedLegend(),
       },
-      series: options.series,
+      // series: options.series,
     };
   }
 
@@ -333,7 +333,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const series = {
       name: this.analysis.analysisName,
       colorByPoint: true,
-      data: data,
+      // data: data,
       dataOnlyLT20: false,
       colors: [this.dbc.COLUMN_COLOR],
       events: {
@@ -421,7 +421,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     // Override tooltip and colors and such
     const series = {
-      name: this.concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
+      name: this.concepts[0].domainId,
+      colorByPoint: true,
+      // data: data,
+      colors: ['#6CAEE3'],
       dataOnlyLT20: dataOnlyLT20
     };
     return {
@@ -543,7 +546,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       {
         color: '#2691D0',
         legendColor: '#2691D0',
-        name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+        name: legendText,
+        colorByPoint: false,
+        // data: data,
+        dataOnlyLT20: dataOnlyLT20
       }];
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
@@ -645,7 +651,10 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       {
         color: '#2691D0',
         legendColor: '#2691D0',
-        name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+        name: legendText,
+        colorByPoint: false,
+        // data: data,
+        dataOnlyLT20: dataOnlyLT20
       }];
     return {
       chart: { type: 'column', backgroundColor: 'transparent' },
@@ -793,7 +802,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const series: any = {
       name: this.analysis.analysisName,
       colorByPoint: true,
-      data: data,
+      // data: data,
       dataOnlyLT20: dataOnlyLT20,
       colors: [this.dbc.GENDER_PM_COLOR],
     };
@@ -863,7 +872,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const series = {
       name: seriesName,
       colorByPoint: true,
-      data: data,
+      // data: data,
       dataOnlyLT20: dataOnlyLT20
     };
     return {
