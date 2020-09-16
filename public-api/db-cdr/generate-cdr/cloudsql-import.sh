@@ -8,51 +8,17 @@
 # Table names for csvs are determined from the filename.
 # The files can be gzipped or not.
 
-set -xeuo pipefail
-IFS=$'\n\t'
+set -ex
+
+export PROJECT=$1  # project
+export INSTANCE=$2  # database instance
+export BUCKET=$3 # bucket in which csvs are present
+export DATABASE=$4
+export CREATE_DB_SQL_FILE=$5
 
 CREATE_DB_SQL_FILE=
 FILE=
 
-# get options
-USAGE="./generate-clousql-cdr/cloudsql-import.sh --project <PROJECT> --instance <INSTANCE> --database <database> \
---bucket <BUCKET> [--create-db-sql-file <filename.sql>] [--file <just_import_me_filename>]"
-while [ $# -gt 0 ]; do
-  case "$1" in
-    --project) PROJECT=$2; shift 2;;
-    --instance) INSTANCE=$2; shift 2;;
-    --bucket) BUCKET=$2; shift 2;;
-    --database) DATABASE=$2; shift 2;;
-    --create-db-sql-file) CREATE_DB_SQL_FILE=$2; shift 2;;
-    --file) FILE=$2; shift 2;;
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
-done
-
-if [ -z "${PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${INSTANCE}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${BUCKET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${DATABASE}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
 
 # Function for waiting on import to finish.
 # import_wait($file, $seconds_wait_interval)
