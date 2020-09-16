@@ -5,46 +5,12 @@
 # Example usage, you need to provide a bunch of args
 # ./project.rb generate-cloudsql-dbs --cdr-version 20180130 --bucket all-of-us-workbench-private
 
-set -xeuo pipefail
-IFS=$'\n\t'
+set -ex
 
-USAGE="./generate-cdr/generate-cloudsql-db.sh --project <PROJECT> --instance <INSTANCE> --database <cdrYYYYMMDD> \
---bucket <BUCKET>"
-
-while [ $# -gt 0 ]; do
-  case "$1" in
-    --project) PROJECT=$2; shift 2;;
-    --instance) INSTANCE=$2; shift 2;;
-    --database) DATABASE=$2; shift 2;;
-    --bucket) BUCKET=$2; shift;;
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
-done
-
-if [ -z "${PROJECT}" ]
-then
-  echo $USAGE
-  exit 1
-fi
-
-if [ -z "${INSTANCE}" ]
-then
-  echo $USAGE
-  exit 1
-fi
-
-if [ -z "${DATABASE}" ]
-then
-  echo $USAGE
-  exit 1
-fi
-
-if [ -z "${BUCKET}" ]
-then
-  echo $USAGE
-  exit 1
-fi
+export PROJECT=$1  # project
+export INSTANCE=$2  # database instance
+export DATABASE=$3 # cdr version
+export BUCKET=$4 # bucket in which csvs are present
 
 startDate=$(date)
 echo " Starting generate-cloudsql-db $DATABASE from bucket $BUCKET $startDate"
