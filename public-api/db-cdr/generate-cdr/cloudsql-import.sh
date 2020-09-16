@@ -44,6 +44,7 @@ function grant_access_to_files () {
   SERVICE_ACCOUNT="${PROJECT}@appspot.gserviceaccount.com"
 
   gsutil acl ch -u $SERVICE_ACCOUNT:O $bucket_path 2> /dev/null || true # Don't error if there are no files
+  gsutil acl ch -u circle-deploy-account@aou-db-test.iam.gserviceaccount.com:O $bucket_path 2> /dev/null || true
   gcloud auth activate-service-account $SERVICE_ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
   # Grant access to buckets for service account for cloudsql
