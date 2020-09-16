@@ -36,8 +36,7 @@ else
 fi
 
 # Import Sql dump and data in bucket to cloudsql
-if ./generate-cdr/cloudsql-import.sh --project $PROJECT --instance $INSTANCE --bucket $BUCKET \
-    --database $DATABASE --create-db-sql-file $DATABASE.sql
+if ./generate-cdr/cloudsql-import.sh $PROJECT $INSTANCE $BUCKET $DATABASE $DATABASE.sql
 then
   echo "Success"
 else
