@@ -16,6 +16,7 @@ require "ostruct"
 require "tempfile"
 
 TEST_PROJECT = "aou-db-test"
+TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
 INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
@@ -358,7 +359,9 @@ def run_integration_tests(cmd_name, *args)
 
   common = Common.new
   common.status "Executing integration tests against '#{api_base}'"
-  common.run_inline %W{gradle integration} + op.remaining
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    common.run_inline %W{gradle integration} + op.remaining
+  end
 end
 
 Common.register_command({

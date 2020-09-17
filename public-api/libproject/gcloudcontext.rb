@@ -15,7 +15,7 @@ class GcloudContextV2
     @options_parser.add_option(
       "--project [GOOGLE_PROJECT]",
       ->(opts, v) { opts.project = v},
-      "Google project to act on (e.g. all-of-us-workbench-test)"
+      "Google project to act on (e.g. aou-db-test)"
     )
     @options_parser.add_option(
       "--creds-file [PATH]",

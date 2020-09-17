@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import java.io.IOException;
+import org.pmiops.workbench.google.BuildIapRequest;
 
 /**
  * Integration smoke tests for the Data Browser API - intended to run against a live instances of
@@ -32,17 +34,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DataBrowserControllerIntegrationTest {
 
   public static String DB_API_BASE_PATH = "DB_API_BASE_PATH";
+  // Staging client ID
+  public static String CLIENT_ID = "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com";
 
   @TestConfiguration
   static class Configuration {
     @Bean
-    DataBrowserApi client() {
+    DataBrowserApi client() throws IOException{
       DataBrowserApi api = new DataBrowserApi();
       String basePath = System.getenv(DB_API_BASE_PATH);
       if (Strings.isNullOrEmpty(basePath)) {
         throw new RuntimeException("Required env var '" + DB_API_BASE_PATH + "' not defined");
       }
-      api.setApiClient(new ApiClient().setBasePath(basePath));
+      ApiClient apiClient = new ApiClient();
+      apiClient.setBasePath(basePath);
+      if (basePath.contains("aou-db-staging")) {
+        String token = "";
+        BuildIapRequest buildRequest = new BuildIapRequest();
+        token = buildRequest.buildIapRequest(CLIENT_ID);
+        apiClient.setAccessToken(token.replace("Bearer ", ""));
+      }
+      api.setApiClient(apiClient);
       return api;
     }
   }
@@ -74,8 +86,8 @@ public class DataBrowserControllerIntegrationTest {
     // These concept IDs are hardcoded by the data browser in all environments, so they must exist.
     List<String> concepts = ImmutableList.of("903118", "903115", "903133");
     List<String> gotConcepts = api.getConceptAnalysisResults(concepts, null).getItems()
-        .stream()
-        .map(ConceptAnalysis::getConceptId).collect(Collectors.toList());
+            .stream()
+            .map(ConceptAnalysis::getConceptId).collect(Collectors.toList());
     assertThat(gotConcepts).containsExactlyElementsIn(concepts);
   }
 
@@ -90,9 +102,9 @@ public class DataBrowserControllerIntegrationTest {
   public void testSearchConcepts() throws Exception {
     int maxResults = 20;
     ConceptListResponse resp = api.searchConcepts(new SearchConceptsRequest()
-        .domain(Domain.MEASUREMENT)
-        .minCount(1)
-        .maxResults(maxResults));
+            .domain(Domain.MEASUREMENT)
+            .minCount(1)
+            .maxResults(maxResults));
     assertThat(resp.getItems()).isNotEmpty();
     assertThat(resp.getItems().size()).isAtMost(maxResults);
     for (Concept c : resp.getItems()) {
