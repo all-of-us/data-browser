@@ -171,7 +171,7 @@ do
         # between iterations of this loop
         import_wait "any job" 10
 
-        # Don't pass database to sql import . Use use <db> inside sql.
+        # Don't pass database to sql import . Use <db> inside sql.
         gcloud sql import sql $INSTANCE $gs_file --project $PROJECT --account $SERVICE_ACCOUNT --quiet --async
 
         # Wait for this file to import
