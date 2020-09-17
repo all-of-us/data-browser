@@ -10,11 +10,16 @@
     <preConditions onFail="MARK_RAN">
       <not>
         <columnExists tableName="question_concept" columnName="question_string"/>
+        <indexExists tableName="question_concept" indexName="question_string_index"></indexExists>
       </not>
     </preConditions>
-    <addColumn tableName="question_concept">
-      <column name="question_string" type="VARCHAR(2000)" />
-    </addColumn>
+    <sql dbms="mysql">
+      ALTER TABLE question_concept
+      ADD question_string VARCHAR(2000);
+      ALTER TABLE question_concept
+      ADD FULLTEXT INDEX question_string_index
+      (question_string);
+    </sql>
   </changeSet>
 
 </databaseChangeLog>
