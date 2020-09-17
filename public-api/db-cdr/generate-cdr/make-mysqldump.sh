@@ -36,8 +36,7 @@ startDate=$(date)
 echo "Dumping $DB_NAME to $BUCKET"
 
 mysqldump -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} \
-    --add-drop-table --disable-keys --ignore-table=$DB_NAME.DATABASECHANGELOG \
-    --ignore-table=$DB_NAME.DATABASECHANGELOGLOCK --databases \
+    --add-drop-table --disable-keys --databases \
     $DB_NAME  > $dump_path
 
 
