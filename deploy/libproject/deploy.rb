@@ -300,7 +300,7 @@ def deploy(cmd_name, args)
   end
 
   err_str, value = Open3.capture2e(*(%W{../public-api/project.rb integration --env #{op.opts.project}}))
-  maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'}"
+  maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'} **** Test ****"
   unless value.success?
     common.run_inline %W{../public-api/project.rb integration --env #{op.opts.project}}
     common.error(err_str)
