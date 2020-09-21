@@ -231,40 +231,40 @@ def deploy(cmd_name, args)
   jira_client = nil
   create_ticket = false
   from_version = nil
-  maybe_log_jira = ->(msg) { common.status msg }
-  if op.opts.update_jira
-    if not VERSION_RE.match(op.opts.app_version) or
-      op.opts.app_version != op.opts.git_version
-      raise RuntimeError.new "for releases, the --git_version and " +
-                             "--app_version should be equal and should be a " +
-                             "release tag (e.g. v0-1-rc1); you shouldn't " +
-                             "bypass this, but if you need to you can pass " +
-                             "--no-update-jira"
-    end
+  #maybe_log_jira = ->(msg) { common.status msg }
+  #if op.opts.update_jira
+  #  if not VERSION_RE.match(op.opts.app_version) or
+  #    op.opts.app_version != op.opts.git_version
+  #    raise RuntimeError.new "for releases, the --git_version and " +
+  #                           "--app_version should be equal and should be a " +
+  #                           "release tag (e.g. v0-1-rc1); you shouldn't " +
+  #                           "bypass this, but if you need to you can pass " +
+  #                           "--no-update-jira"
+  #  end
 
     # We're either creating a new ticket (staging), or commenting on an existing
     # release ticket (stable, prod).
     jira_client = JiraReleaseClient.from_gcs_creds(op.opts.project)
-    if op.opts.update_jira and op.opts.project == STAGING_PROJECT
-      create_ticket = true
-      from_version = get_live_gae_version(STAGING_PROJECT)
-      unless from_version
-        # Alternatively, we could support a --from_version flag
-        raise RuntimeError "could not determine live staging version, and " +
-                           "therefore could not generate a delta commit log; " +
-                           "please manually deploy staging with the old " +
-                           "version and supply --no-update-jira, then retry"
-      end
-    else
-      maybe_log_jira = lambda { |msg|
-        begin
-          jira_client.comment_ticket(op.opts.app_version, msg)
-        rescue StandardError => e
-          common.error "comment_ticket failed: #{e}"
-        end
-      }
-    end
-  end
+   # if op.opts.update_jira and op.opts.project == STAGING_PROJECT
+   #   create_ticket = true
+   #   from_version = get_live_gae_version(STAGING_PROJECT)
+   #   unless from_version
+   #     # Alternatively, we could support a --from_version flag
+   #     raise RuntimeError "could not determine live staging version, and " +
+   #                        "therefore could not generate a delta commit log; " +
+   #                        "please manually deploy staging with the old " +
+   #                        "version and supply --no-update-jira, then retry"
+   #   end
+   # else
+   #   maybe_log_jira = lambda { |msg|
+   #     begin
+   #       jira_client.comment_ticket(op.opts.app_version, msg)
+   #     rescue StandardError => e
+   #       common.error "comment_ticket failed: #{e}"
+   #     end
+   #   }
+   # end
+  #end
 
   # TODO: Add more granular logging, e.g. call deploy natively and pass an
   # optional log writer. Also rescue and log if deployment fails.
@@ -276,12 +276,12 @@ def deploy(cmd_name, args)
       #{op.opts.promote ? "--promote" : "--no-promote"}
   } + (op.opts.dry_run ? %W{--dry-run} : [])
 
-  maybe_log_jira.call "'#{op.opts.project}': Beginning deploy of public-api " +
-                      "services (including DB updates)"
+  #maybe_log_jira.call "'#{op.opts.project}': Beginning deploy of public-api " +
+  #                    "services (including DB updates)"
   common.run_inline %W{../public-api/project.rb deploy} + api_deploy_flags
 
-  maybe_log_jira.call "'#{op.opts.project}': completed public api service " +
-                      "deployment; beginning deploy of UI service"
+  #maybe_log_jira.call "'#{op.opts.project}': completed public api service " +
+  #                    "deployment; beginning deploy of UI service"
 
   common.run_inline %W{
     ../public-ui/project.rb deploy-ui
@@ -292,7 +292,7 @@ def deploy(cmd_name, args)
       #{op.opts.promote ? "--promote" : "--no-promote"}
       --quiet
   } + (op.opts.dry_run ? %W{--dry-run} : [])
-  maybe_log_jira.call "'#{op.opts.project}': completed Public-UI service deployment"
+  #maybe_log_jira.call "'#{op.opts.project}': completed Public-UI service deployment"
 
   if create_ticket
     jira_client.create_ticket(op.opts.project, from_version,
@@ -300,7 +300,7 @@ def deploy(cmd_name, args)
   end
 
   err_str, value = Open3.capture2e(*(%W{../public-api/project.rb integration --env #{op.opts.project}}))
-  maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'} **** Test ****"
+  # maybe_log_jira.call "'#{op.opts.project}': API integration tests #{value.success? ? 'passed' : 'FAILED'} **** Test ****"
   unless value.success?
     common.run_inline %W{../public-api/project.rb integration --env #{op.opts.project}}
     common.error(err_str)
