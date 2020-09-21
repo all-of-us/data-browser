@@ -211,7 +211,7 @@ jobs:
           command: |
             ../ci/activate_creds.sh circle-sa-key.json
             ./project.rb deploy \
-              --project aou-db-staging \
+              --project aou-db-stable \
               --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
               --git-version FixStagingDeploy \
               --app-version v0-12-rc10 \
