@@ -213,10 +213,11 @@ jobs:
             ./project.rb deploy \
               --project aou-db-staging \
               --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
-              --git-version "${CIRCLE_TAG}" \
-              --app-version "${CIRCLE_TAG}" \
+              --git-version FixStagingDeploy \
+              --app-version v0-12-rc10 \
               --circle-url "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}" \
               --key-file circle-sa-key.json \
+              --dry-run true \
               --promote
 
 # See https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
@@ -248,6 +249,11 @@ workflows:
       - public-ui-deploy-to-test:
           <<: *filter_master
           requires:
+            - public-ui-build-test
+      - api-deps-check
+      - deploy-staging:
+          requires:
+            - api-deps-check
             - public-ui-build-test
   deploy-staging:
     jobs:
