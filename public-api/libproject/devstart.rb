@@ -359,7 +359,9 @@ def run_integration_tests(cmd_name, *args)
 
   common = Common.new
   common.status "Executing integration tests against '#{api_base}'"
-  common.run_inline %W{gradle integration} + op.remaining
+  ServiceAccountContext.new(op.opts.env).run do
+    common.run_inline %W{gradle integration} + op.remaining
+  end
 end
 
 Common.register_command({
