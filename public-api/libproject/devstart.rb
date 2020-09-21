@@ -360,8 +360,9 @@ def run_integration_tests(cmd_name, *args)
   common = Common.new
   common.status "Executing integration tests against '#{api_base}'"
 
+  # We need to run integration tests in against iap staging env with SA context to be able to get past iap.
   if op.opts.env == 'aou-db-staging'
-    ServiceAccountContext.new(TEST_PROJECT).run do
+    ServiceAccountContext.new(op.opts.env, TEST_CIRCLE_ACCOUNT).run do
       common.run_inline %W{gradle integration} + op.remaining
     end
   else
