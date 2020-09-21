@@ -240,6 +240,8 @@ paths:
           description: A collection of domains and survey modules
           schema:
             $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
+        500:
+          description: Internal Server Error
 
   /v1/databrowser/searchConcepts:
     post:
