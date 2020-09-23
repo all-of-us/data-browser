@@ -5,5 +5,7 @@ export const testEnvironmentBase = {
   publicApiUrl: 'https://api-dot-aou-db-test.appspot.com',
   workbenchUrl: 'https://all-of-us-workbench-test.appspot.com',
   researchAllOfUsUrl: 'https://researchallofus.org',
-  gaId: 'UA-116298798-4'
+  gaId: 'UA-116298798-4',
+  copeFlag: false,
+  preCopeFlag: true
 };
