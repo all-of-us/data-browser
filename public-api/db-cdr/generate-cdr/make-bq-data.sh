@@ -46,7 +46,7 @@ then
 fi
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project=$BQ_PROJECT ls --max_results=225)
+datasets=$(bq --project=$BQ_PROJECT ls --max_results=500)
 if [ -z "$datasets" ]
 then
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
@@ -473,9 +473,9 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` q
-SET q.question_string = q2.question_string
+SET q.question_string = t2.qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` AS q2 INNER JOIN (
-SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), "|", "") AS qs
+SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
 GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
 where q.concept_id=q2.concept_id and q.path=q2.path;"

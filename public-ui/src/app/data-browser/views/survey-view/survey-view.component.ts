@@ -327,6 +327,17 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
+     this.subscriptions.push(this.api.getSurveyVersionCounts(
+              this.surveyConceptId.toString()).subscribe({
+                  next: x => {
+                    console.log(x);
+                  },
+                  error: err => {
+                    console.error('Observer got an error: ' + err);
+                    this.loading = false;
+                  },
+                  complete: () => { }
+      }));
     }
   }
 

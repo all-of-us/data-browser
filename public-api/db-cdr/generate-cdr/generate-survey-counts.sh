@@ -43,6 +43,9 @@ then
   exit 1
 fi
 
+COPE_PROJECT='aou-res-curation-prod'
+COPE_DATASET='SR2019q4r3_deid_io'
+
 # Set the survey answer count for all the survey questions
 # (except q2 in the basics survey and questions of family medical history since we deal with them in a different way)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -777,3 +780,32 @@ Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id not in (40766240,43528428,1585389)
 Group by sm.concept_id"
 
+# Versioned participant count of cope survey
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
+SELECT 0 as id, 3400 as analysis_id,CAST(sm.concept_id as string) as stratum_1,
+sv.cope_survey_month as stratum_2, CAST(sv.cope_survey_version_id as string) as stratum_3,
+count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
+FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\`  o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
+On o.observation_source_concept_id=sq.concept_id
+join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
+Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and sq.survey_concept_id = 1333342
+Group by sm.concept_id, cope_survey_month, cope_survey_version_id"
+
+# Versioned question count of cope survey
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
+SELECT 0 as id, 3401 as analysis_id,CAST(sm.concept_id as string) as stratum_1,
+sv.cope_survey_month as stratum_2, CAST(sv.cope_survey_version_id as string) as stratum_3,
+count(distinct sq.concept_id) as count_value, count(distinct sq.concept_id) as source_count_value
+FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
+On o.observation_source_concept_id=sq.concept_id
+join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm on sq.survey_concept_id = sm.concept_id
+Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and sq.survey_concept_id = 1333342
+Group by sm.concept_id, cope_survey_month, cope_survey_version_id"

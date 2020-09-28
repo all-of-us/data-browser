@@ -268,12 +268,29 @@ public class DataBrowserControllerTest {
             .chartType("column")
             .dataType("counts");
 
+    private static final AchillesAnalysis CLIENT_ANALYSIS_7 = new AchillesAnalysis()
+            .analysisId(3400L)
+            .analysisName("Survey Module Counts By Version")
+            .stratum1Name("Survey Concept Id")
+            .stratum2Name("Version Month")
+            .stratum3Name("Version Id");
+
+    private static final AchillesAnalysis CLIENT_ANALYSIS_8 = new AchillesAnalysis()
+            .analysisId(3400L)
+            .analysisName("Survey Question Counts By Version")
+            .stratum1Name("Survey Concept Id")
+            .stratum2Name("Version Month")
+            .stratum3Name("Version Id");
+
+
     private static final AchillesAnalysis ACHILLES_ANALYSIS_1 = makeAchillesAnalysis(CLIENT_ANALYSIS_1);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_2 = makeAchillesAnalysis(CLIENT_ANALYSIS_2);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_3 = makeAchillesAnalysis(CLIENT_ANALYSIS_3);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_4 = makeAchillesAnalysis(CLIENT_ANALYSIS_4);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_5 = makeAchillesAnalysis(CLIENT_ANALYSIS_5);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_6);
+    private static final AchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_7);
+    private static final AchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_8);
 
     private static final AchillesResult CLIENT_RESULT_1 = new AchillesResult()
             .id(1L)

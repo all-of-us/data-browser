@@ -48,13 +48,13 @@ import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptListResponse;
+import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.MatchType;
 import org.pmiops.workbench.model.QuestionConceptListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
-import org.pmiops.workbench.model.SurveyQuestionAnalysisListResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.CountAnalysis;
 import org.pmiops.workbench.model.CriteriaParentResponse;
@@ -730,7 +730,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults(String.valueOf(surveyConceptId), questionIds);
 
-        SurveyQuestionAnalysisListResponse analysisResp = new SurveyQuestionAnalysisListResponse();
+        AnalysisListResponse analysisResp = new AnalysisListResponse();
         analysisResp.setItems(analyses.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
 
         response.setQuestions(questionResp);
@@ -766,13 +766,34 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<AchillesAnalysis> analyses = achillesAnalysisDao.findFMHResults(String.valueOf(surveyConceptId), questionIds);
 
-        SurveyQuestionAnalysisListResponse analysisResp = new SurveyQuestionAnalysisListResponse();
+        AnalysisListResponse analysisResp = new AnalysisListResponse();
         analysisResp.setItems(analyses.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
 
         response.setQuestions(questionResp);
         response.setAnalyses(analysisResp);
         return ResponseEntity.ok(response);
 
+    }
+
+    @Override
+    public ResponseEntity<SurveyVersionCountResponse> getSurveyVersionCounts(Long surveyConceptId) {
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+
+        SurveyVersionCountResponse surveyVersionCountResponse = new SurveyVersionCountResponse();
+
+        List<Long> analysisIds = new ArrayList<>();
+        analysisIds.add(3400L);
+        analysisIds.add(3401L);
+        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findAnalysisByIds(analysisIds);
+        AnalysisListResponse analysisListResponse = new AnalysisListResponse();
+        analysisListResponse.setItems(surveyAnalysisList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
+        surveyVersionCountResponse.setAnalyses(analysisListResponse);
+
+        return ResponseEntity.ok(surveyVersionCountResponse);
     }
 
     @Override
@@ -783,7 +804,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             List<Long> analysisIds = new ArrayList<>();
             analysisIds.add(3300L);
             analysisIds.add(3301L);
-            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(analysisIds, domainId);
             CountAnalysis ehrCountAnalysis = new CountAnalysis();
             ehrCountAnalysis.setDomainId(domainId);
             AchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
@@ -811,7 +832,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             List<Long> analysisIds = new ArrayList<>();
             analysisIds.add(3300L);
             analysisIds.add(3301L);
-            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(analysisIds, domainId);
+            List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(analysisIds, domainId);
             CountAnalysis ehrCountAnalysis = new CountAnalysis();
             ehrCountAnalysis.setDomainId(domainId);
             AchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
@@ -862,7 +883,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Long> countAnalysisIds = new ArrayList<>();
         countAnalysisIds.add(3300L);
         countAnalysisIds.add(3301L);
-        List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIds(countAnalysisIds, domainId);
+        List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(countAnalysisIds, domainId);
 
         List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
 
