@@ -674,9 +674,8 @@ def generate_public_cdr_counts(cmd_name, *args)
     op.parse.validate
     gcc.validate()
 
-    print "*********************************** Test ***********************************"
-
     with_cloud_proxy_and_db(gcc) do
+        print "*********************************** Test ***********************************"
         common = Common.new
         Dir.chdir('db-cdr') do
           common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
