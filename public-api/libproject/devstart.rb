@@ -643,6 +643,7 @@ Common.register_command({
 })
 
 def generate_public_cdr_counts(cmd_name, *args)
+  print "*********************************** Test ***********************************"
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
       "--bq-project [bq-project]",
