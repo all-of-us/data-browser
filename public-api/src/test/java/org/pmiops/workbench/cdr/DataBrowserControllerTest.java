@@ -34,6 +34,8 @@ import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
+import org.pmiops.workbench.model.SurveyVersionCountResponse;
+import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.DomainInfo;
@@ -209,6 +211,15 @@ public class DataBrowserControllerTest {
             .orderNumber(0)
             .canShow(1);
 
+    private static final SurveyModule CLIENT_SURVEY_MODULE_3 = new SurveyModule()
+            .name("Cope")
+            .description("Survey includes information about the impact of COVID-19 on participant mental and physical health.")
+            .conceptId(1333342L)
+            .questionCount(100L)
+            .participantCount(10000L)
+            .orderNumber(0)
+            .canShow(1);
+
     private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
             .analysisId(1900L)
             .analysisName("Measurement Response Gender Distribution")
@@ -268,12 +279,29 @@ public class DataBrowserControllerTest {
             .chartType("column")
             .dataType("counts");
 
+    private static final AchillesAnalysis CLIENT_ANALYSIS_7 = new AchillesAnalysis()
+            .analysisId(3400L)
+            .analysisName("Survey Module Counts By Version")
+            .stratum1Name("Survey Concept Id")
+            .stratum2Name("Version Month")
+            .stratum3Name("Version Id");
+
+    private static final AchillesAnalysis CLIENT_ANALYSIS_8 = new AchillesAnalysis()
+            .analysisId(3401L)
+            .analysisName("Survey Question Counts By Version")
+            .stratum1Name("Survey Concept Id")
+            .stratum2Name("Version Month")
+            .stratum3Name("Version Id");
+
+
     private static final AchillesAnalysis ACHILLES_ANALYSIS_1 = makeAchillesAnalysis(CLIENT_ANALYSIS_1);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_2 = makeAchillesAnalysis(CLIENT_ANALYSIS_2);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_3 = makeAchillesAnalysis(CLIENT_ANALYSIS_3);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_4 = makeAchillesAnalysis(CLIENT_ANALYSIS_4);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_5 = makeAchillesAnalysis(CLIENT_ANALYSIS_5);
     private static final AchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_6);
+    private static final AchillesAnalysis ACHILLES_ANALYSIS_7 = makeAchillesAnalysis(CLIENT_ANALYSIS_7);
+    private static final AchillesAnalysis ACHILLES_ANALYSIS_8 = makeAchillesAnalysis(CLIENT_ANALYSIS_8);
 
     private static final AchillesResult CLIENT_RESULT_1 = new AchillesResult()
             .id(1L)
@@ -361,6 +389,42 @@ public class DataBrowserControllerTest {
             .countValue(93480L)
             .sourceCountValue(93480L);
 
+    private static final AchillesResult CLIENT_RESULT_10 = new AchillesResult()
+            .id(10L)
+            .analysisId(3400L)
+            .stratum1("1333342")
+            .stratum2("May 2020")
+            .stratum3("1")
+            .countValue(1000L)
+            .sourceCountValue(1000L);
+
+    private static final AchillesResult CLIENT_RESULT_11 = new AchillesResult()
+            .id(11L)
+            .analysisId(3400L)
+            .stratum1("1333342")
+            .stratum2("June 2020")
+            .stratum3("2")
+            .countValue(1000L)
+            .sourceCountValue(1000L);
+
+    private static final AchillesResult CLIENT_RESULT_12 = new AchillesResult()
+            .id(12L)
+            .analysisId(3401L)
+            .stratum1("1333342")
+            .stratum2("May 2020")
+            .stratum3("1")
+            .countValue(50L)
+            .sourceCountValue(50L);
+
+    private static final AchillesResult CLIENT_RESULT_13 = new AchillesResult()
+            .id(12L)
+            .analysisId(3401L)
+            .stratum1("1333342")
+            .stratum2("June2 2020")
+            .stratum3("2")
+            .countValue(50L)
+            .sourceCountValue(50L);
+
 
     private static final AchillesResult ACHILLES_RESULT_1 = makeAchillesResult(CLIENT_RESULT_1);
     private static final AchillesResult ACHILLES_RESULT_2 = makeAchillesResult(CLIENT_RESULT_2);
@@ -371,6 +435,10 @@ public class DataBrowserControllerTest {
     private static final AchillesResult ACHILLES_RESULT_7 = makeAchillesResult(CLIENT_RESULT_7);
     private static final AchillesResult ACHILLES_RESULT_8 = makeAchillesResult(CLIENT_RESULT_8);
     private static final AchillesResult ACHILLES_RESULT_9 = makeAchillesResult(CLIENT_RESULT_9);
+    private static final AchillesResult ACHILLES_RESULT_10 = makeAchillesResult(CLIENT_RESULT_10);
+    private static final AchillesResult ACHILLES_RESULT_11 = makeAchillesResult(CLIENT_RESULT_11);
+    private static final AchillesResult ACHILLES_RESULT_12 = makeAchillesResult(CLIENT_RESULT_12);
+    private static final AchillesResult ACHILLES_RESULT_13 = makeAchillesResult(CLIENT_RESULT_13);
 
     private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_1 =
             makeConcept(CLIENT_CONCEPT_1);
@@ -395,6 +463,8 @@ public class DataBrowserControllerTest {
             makeSurveyModule(CLIENT_SURVEY_MODULE_1);
     private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_2 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_2);
+    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_3 =
+            makeSurveyModule(CLIENT_SURVEY_MODULE_3);
 
     @Autowired
     private ConceptDao conceptDao;
@@ -443,7 +513,7 @@ public class DataBrowserControllerTest {
     public void testGetDomainTotals() throws Exception {
         ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals("", 1, 1);
         assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
-        assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2);
+        assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2, CLIENT_SURVEY_MODULE_3);
     }
 
     @Test
@@ -598,6 +668,17 @@ public class DataBrowserControllerTest {
         }
     }
 
+    @Test
+    public void testGetSurveyVersionCounts() throws Exception {
+        try {
+            ResponseEntity<SurveyVersionCountResponse> response = dataBrowserController.getSurveyVersionCounts(1333342L);
+            AnalysisListResponse analysisList = response.getBody().getAnalyses();
+            assertThat(analysisList.getItems().size() == 2);
+        } catch (DataNotFoundException dnf) {
+
+        }
+    }
+
   static org.pmiops.workbench.cdr.model.Concept makeConcept(Concept concept) {
     org.pmiops.workbench.cdr.model.Concept result = new org.pmiops.workbench.cdr.model.Concept();
     result.setConceptId(concept.getConceptId());
@@ -700,6 +781,7 @@ public class DataBrowserControllerTest {
         domainInfoDao.save(DOMAIN_2);
         surveyModuleDao.save(SURVEY_MODULE_1);
         surveyModuleDao.save(SURVEY_MODULE_2);
+        surveyModuleDao.save(SURVEY_MODULE_3);
 
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_2);
@@ -707,6 +789,8 @@ public class DataBrowserControllerTest {
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_4);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_5);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_6);
+        achillesAnalysisDao.save(ACHILLES_ANALYSIS_7);
+        achillesAnalysisDao.save(ACHILLES_ANALYSIS_8);
 
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);
@@ -717,6 +801,10 @@ public class DataBrowserControllerTest {
         achillesResultDao.save(ACHILLES_RESULT_7);
         achillesResultDao.save(ACHILLES_RESULT_8);
         achillesResultDao.save(ACHILLES_RESULT_9);
+        achillesResultDao.save(ACHILLES_RESULT_10);
+        achillesResultDao.save(ACHILLES_RESULT_11);
+        achillesResultDao.save(ACHILLES_RESULT_12);
+        achillesResultDao.save(ACHILLES_RESULT_13);
     }
 
     private CdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
