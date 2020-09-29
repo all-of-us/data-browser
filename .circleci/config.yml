@@ -69,7 +69,7 @@ commands:
           name: Activate CircleCI service account credential
           working_directory: ~/data-browser
           # Used to call gsutil from the circle environment.
-          command: ci/activate_creds.sh --project=aou-db-test --key-file=public-api/circle-sa-key.json
+          command: ci/activate_creds.sh --project aou-db-test --key-file public-api/circle-sa-key.json
 
   checkout_init_git:
     description: "git checkout and update submodules"
@@ -105,7 +105,7 @@ jobs:
           - api-cache-
       - run:
           working_directory: ~/data-browser
-          command: ci/activate_creds.sh --project=aou-db-test --key-file=public-api/circle-sa-key.json
+          command: ci/activate_creds.sh --project aou-db-test --key-file public-api/circle-sa-key.json
       - run:
           # MySQL sometimes refuses connections by the time we attempt to apply
           # data migrations. Watch the port for 2m for startup.
@@ -177,7 +177,7 @@ jobs:
           - api-cache-
       - run:
           working_directory: ~/data-browser
-          command: ci/activate_creds.sh --project=aou-db-test --key-file=public-api/circle-sa-key.json
+          command: ci/activate_creds.sh --project aou-db-test --key-file public-api/circle-sa-key.json
       - deploy:
           name: Deploy to App Engine
           working_directory: ~/data-browser/public-api
@@ -250,7 +250,7 @@ jobs:
           name: Deploy to App Engine
           working_directory: ~/data-browser/public-ui
           command: |
-            ../ci/activate_creds.sh --project=aou-db-test --key-file=circle-sa-key.json
+            ../ci/activate_creds.sh --project aou-db-test --key-file circle-sa-key.json
             ./project.rb deploy-ui \
               --project aou-db-test \
               --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
@@ -274,7 +274,7 @@ jobs:
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
-            ../ci/activate_creds.sh --project=aou-db-test --key-file=circle-sa-key.json
+            ../ci/activate_creds.sh --project aou-db-test --key-file circle-sa-key.json
             ./project.rb deploy \
               --project aou-db-staging \
               --account circle-deploy-account@aou-db-test.iam.gserviceaccount.com \
@@ -299,7 +299,7 @@ jobs:
           working_directory: ~/data-browser/public-api
           # TODO: un-echo. Will need to discriminate which SA to use.
           command: |
-            ../ci/activate_creds.sh --project=<< pipeline.parameters.cdr_dest_project >> --key-file=circle-sa-key.json
+            ../ci/activate_creds.sh --project << pipeline.parameters.cdr_dest_project >> --key-file circle-sa-key.json
             ./project.rb generate-public-cdr-counts \
               --bq-project << pipeline.parameters.cdr_source_project >> \
               --bq-dataset << pipeline.parameters.cdr_source_dataset >> \
