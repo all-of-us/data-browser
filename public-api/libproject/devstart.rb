@@ -643,7 +643,6 @@ Common.register_command({
 })
 
 def generate_public_cdr_counts(cmd_name, *args)
-  print "*********************************** Test ***********************************"
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
       "--bq-project [bq-project]",
@@ -674,6 +673,8 @@ def generate_public_cdr_counts(cmd_name, *args)
     gcc = GcloudContextV2.new(op)
     op.parse.validate
     gcc.validate()
+
+    print "*********************************** Test ***********************************"
 
     with_cloud_proxy_and_db(gcc) do
         common = Common.new
