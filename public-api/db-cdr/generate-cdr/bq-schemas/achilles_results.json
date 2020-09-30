@@ -40,6 +40,11 @@
         "type": "STRING"
       },
       {
+        "mode": "NULLABLE",
+        "name": "stratum_7",
+        "type": "STRING"
+      },
+      {
         "mode": "NULLABLE", 
         "name": "count_value", 
         "type": "INTEGER"
