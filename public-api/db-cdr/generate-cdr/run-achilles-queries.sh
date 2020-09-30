@@ -14,37 +14,13 @@ while [ $# -gt 0 ]; do
     --bq-dataset) BQ_DATASET=$2; shift 2;;
     --workbench-project) WORKBENCH_PROJECT=$2; shift 2;;
     --workbench-dataset) WORKBENCH_DATASET=$2; shift 2;;
+    --cope-project) COPE_PROJECT=$2; shift 2;;
+    --cope-dataset) COPE_DATASET=$2; shift 2;;
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
 
-if [ -z "${BQ_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${BQ_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${WORKBENCH_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${WORKBENCH_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-COPE_PROJECT='aou-res-curation-prod'
-COPE_DATASET='SR2019q4r3_deid_io'
 
 #Get the list of tables in the dataset
 tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
