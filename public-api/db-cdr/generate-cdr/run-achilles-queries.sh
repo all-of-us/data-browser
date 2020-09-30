@@ -43,6 +43,9 @@ then
   exit 1
 fi
 
+COPE_PROJECT='aou-res-curation-prod'
+COPE_DATASET='SR2019q4r3_deid_io'
+
 #Get the list of tables in the dataset
 tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
 
@@ -212,6 +215,26 @@ with survey_age as
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
+group by observation_id,age
+),
+survey_age_stratum_temp as
+(
+select observation_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from survey_age
+group by observation_id,age_stratum
+)
+select * from survey_age_stratum_temp"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` AS
+with survey_age as
+(
+select observation_id,
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
+from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` co join \`${COPE_PROJECT}.${COPE_DATASET}.person\` p on p.person_id=co.person_id
 group by observation_id,age
 ),
 survey_age_stratum_temp as
@@ -592,7 +615,7 @@ group by 2,5;"
 # survey counts #
 ####################
 # Generate survey counts
-if ./generate-cdr/generate-survey-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
+if ./generate-cdr/generate-survey-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET --cope-project $COPE_PROJECT --cope-dataset $COPE_DATASET
 then
     echo "Survey counts generated"
 else

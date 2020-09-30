@@ -85,7 +85,8 @@ export class TooltipService {
     'lifestyle': this.lifestyleSurvey,
     'personal medical history': this.personalMedicalHistory,
     'family medical history': this.familyHistory,
-    'health care access & utilization': this.healthcareAccess
+    'health care access & utilization': this.healthcareAccess,
+    'covid-19 participant experience': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
   };
   conceptCodeHelpText1 = 'The concept code is an additional piece of information that\n' +
     'can be utilized to find medical concepts in the ';

@@ -14,37 +14,12 @@ while [ $# -gt 0 ]; do
     --bq-dataset) BQ_DATASET=$2; shift 2;;
     --workbench-project) WORKBENCH_PROJECT=$2; shift 2;;
     --workbench-dataset) WORKBENCH_DATASET=$2; shift 2;;
+    --cope-project) COPE_PROJECT=$2; shift 2;;
+    --cope-dataset) COPE_DATASET=$2; shift 2;;
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
-
-if [ -z "${BQ_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${BQ_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${WORKBENCH_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-if [ -z "${WORKBENCH_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
-
-COPE_PROJECT='aou-res-curation-prod'
-COPE_DATASET='SR2019q4r3_deid_io'
 
 # Set the survey answer count for all the survey questions
 # (except q2 in the basics survey and questions of family medical history since we deal with them in a different way)
@@ -622,25 +597,48 @@ group by sm.concept_id, stratum_2"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
-select 0 as id, 3200 as analysis_id, cast(cr.concept_id_2 as string) as stratum_1,
+select 0 as id, 3200 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1,
 cast(p.gender_concept_id as string) as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=ob.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_concept_relationship\` cr
-on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
-on cr.concept_id_2=sm.concept_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
+on ob.observation_source_concept_id=cr.concept_id
 group by cr.concept_id_2, p.gender_concept_id"
+
+# Cope Survey Module counts by gender TODO this can be deleted once we have actual cope survey data
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
+select 0 as id, 3200 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1,
+case when p.gender_concept_id = 45880669 then '8507' when p.gender_concept_id = 45878463 then '8532' else '0' end as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` ob join \`${COPE_PROJECT}.${COPE_DATASET}.person\` p on p.person_id=ob.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
+on ob.observation_source_concept_id=cr.concept_id
+where cr.survey_concept_id=1333342
+group by cr.survey_concept_id, p.gender_concept_id"
 
 # Survey Module counts by age decile
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
-select 0 as id, 3201 as analysis_id, cast(cr.concept_id_2 as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+select 0 as id, 3201 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=ob.observation_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_concept_relationship\` cr
-on ob.observation_source_concept_id=cr.concept_id_1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_module\` sm
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
+on ob.observation_source_concept_id=cr.concept_id
 on cr.concept_id_2=sm.concept_id
 group by stratum_1, stratum_2"
+
+# Cope Survey Module counts by age decile TODO delete when cope data is ready
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
+select 0 as id, 3201 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+ from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` ob
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` sa on sa.observation_id=ob.observation_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
+on ob.observation_source_concept_id=cr.concept_id
+where cr.survey_concept_id=1333342
+group by stratum_1, stratum_2;
 
 # To do delete if not used anymore
 # Survey question counts by biological sex
