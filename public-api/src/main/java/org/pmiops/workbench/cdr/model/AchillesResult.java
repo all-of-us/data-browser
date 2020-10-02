@@ -18,6 +18,7 @@ public class AchillesResult  {
     private String stratum4;
     private String stratum5;
     private String stratum6;
+    private String stratum7;
     private Long countValue;
     private Long sourceCountValue;
     private String analysisStratumName;
@@ -147,6 +148,18 @@ public class AchillesResult  {
         return this;
     }
 
+    @Column(name="stratum_7")
+    public String getStratum7() {
+        return stratum7;
+    }
+    public void setStratum7(String stratum7) {
+        this.stratum7 = stratum7;
+    }
+    public AchillesResult stratum7(String val) {
+        this.stratum7 = val;
+        return this;
+    }
+
     @Transient
     public String getAnalysisStratumName() {
         return analysisStratumName;
@@ -219,6 +232,7 @@ public class AchillesResult  {
                 ", stratum4='" + stratum4 + '\'' +
                 ", stratum5='" + stratum5 + '\'' +
                 ", stratum6='" + stratum6 + '\'' +
+                ", stratum7='" + stratum7 + '\'' +
                 ", countValue=" + countValue +
                 ", sourceCountValue=" + sourceCountValue +
                 ", analysisStratumName='" + analysisStratumName + '\'' +
@@ -237,11 +251,12 @@ public class AchillesResult  {
                 Objects.equals(stratum4, that.stratum4) &&
                 Objects.equals(stratum5, that.stratum5) &&
                 Objects.equals(stratum6, that.stratum6) &&
+                Objects.equals(stratum7, that.stratum7) &&
                 Objects.equals(countValue, that.countValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(analysisId, analysis, stratum1, stratum2, stratum3, stratum4, stratum5, stratum6, countValue, sourceCountValue);
+        return Objects.hash(analysisId, analysis, stratum1, stratum2, stratum3, stratum4, stratum5, stratum6, stratum7, countValue, sourceCountValue);
     }
 }

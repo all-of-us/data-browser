@@ -381,6 +381,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum4(o.getStratum4())
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
+                            .stratum7(o.getStratum7())
                             .analysisStratumName(o.getAnalysisStratumName())
                             .measurementValueType(o.getMeasurementValueType())
                             .countValue(o.getCountValue())

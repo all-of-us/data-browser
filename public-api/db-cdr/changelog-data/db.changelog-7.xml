@@ -18,6 +18,8 @@
       <column name="stratum_3_name" type="STRING"/>
       <column name="stratum_4_name" type="STRING"/>
       <column name="stratum_5_name" type="STRING"/>
+      <column name="stratum_6_name" type="STRING"/>
+      <column name="stratum_7_name" type="STRING"/>
       <column name="chart_type" type="STRING"/>
       <column name="data_type" type="STRING"/>
       <column name="has_attribute" type="BOOLEAN"/>

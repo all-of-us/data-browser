@@ -19,6 +19,7 @@
       <column name="stratum_4" type="STRING"/>
       <column name="stratum_5" type="STRING"/>
       <column name="stratum_6" type="STRING"/>
+      <column name="stratum_7" type="STRING"/>
       <column name="count_value" type="NUMERIC"/>
       <column name="source_count_value" type="NUMERIC" />
     </loadData>
@@ -31,6 +32,7 @@
       <column name="stratum_4" type="STRING"/>
       <column name="stratum_5" type="STRING"/>
       <column name="stratum_6" type="STRING"/>
+      <column name="stratum_7" type="STRING"/>
       <column name="count_value" type="NUMERIC"/>
       <column name="source_count_value" type="NUMERIC" />
     </loadData>
@@ -43,6 +45,7 @@
       <column name="stratum_4" type="STRING"/>
       <column name="stratum_5" type="STRING"/>
       <column name="stratum_6" type="STRING"/>
+      <column name="stratum_7" type="STRING"/>
       <column name="count_value" type="NUMERIC"/>
       <column name="source_count_value" type="NUMERIC" />
     </loadData>

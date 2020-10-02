@@ -5,14 +5,18 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-69">
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-73">
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
-        <columnExists tableName="achilles_results" columnName="count_value"/>
-        <columnExists tableName="achilles_results" columnName="source_count_value"/>
+      <not>
+        <columnExists tableName="achilles_analysis" columnName="chart_type"/>
+        <columnExists tableName="achilles_analysis" columnName="data_type"/>
+      </not>
     </preConditions>
-    <dropColumn tableName="achilles_results" columnName="count_value"/>
-    <dropColumn tableName="achilles_results" columnName="source_count_value"/>
+    <addColumn tableName="achilles_analysis">
+      <column name="chart_type" type="VARCHAR(255)" />
+      <column name="data_type" type="VARCHAR(255)" />
+    </addColumn>
   </changeSet>
 
 </databaseChangeLog>

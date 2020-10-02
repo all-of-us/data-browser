@@ -475,7 +475,7 @@ order by CAST(sq.question_order_number as int64) asc"
 # Cope Survey Question Answer Count by age deciles TODO delete this when cope data is in prod
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value)
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value)
 with ppi_path
 as
 (select survey_concept_id,concept_id,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
@@ -781,7 +781,7 @@ cast(p.gender_concept_id as string) as stratum_2, count(distinct ob.person_id) a
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=ob.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
 on ob.observation_source_concept_id=cr.concept_id
-group by cr.concept_id_2, p.gender_concept_id"
+group by cr.survey_concept_id, p.gender_concept_id"
 
 # Cope Survey Module counts by gender TODO this can be deleted once we have actual cope survey data
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -804,7 +804,6 @@ select 0 as id, 3201 as analysis_id, cast(cr.survey_concept_id as string) as str
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=ob.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
 on ob.observation_source_concept_id=cr.concept_id
-on cr.concept_id_2=sq.survey_concept_id
 group by stratum_1, stratum_2"
 
 # Cope Survey Module counts by age decile TODO delete when cope data is ready
@@ -817,7 +816,8 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` sa on
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
 on ob.observation_source_concept_id=cr.concept_id
 where cr.survey_concept_id=1333342
-group by stratum_1, stratum_2;
+group by stratum_1, stratum_2;"
+
 # To do delete if not used anymore
 # Survey question counts by biological sex
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -878,6 +878,7 @@ union all
 select 0 as id, 3320 as analysis_id,stratum_1,stratum_2,stratum_5,stratum_6,count_value,source_count_value from sub_1_questions_count
 union all
 select 0 as id, 3320 as analysis_id,stratum_1,stratum_2,stratum_5,stratum_6,count_value,source_count_value from sub_2_questions_count"
+
 # Survey question counts by age decile
 # To do delete if not used anymore
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -958,6 +959,7 @@ On o.observation_source_concept_id=sq.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id not in (40766240,43528428,1585389) and sq.survey_concept_id = 1333342
 Group by sq.survey_concept_id";
+
 # Versioned participant count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -971,6 +973,7 @@ join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnai
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and sq.survey_concept_id = 1333342
 Group by sq.survey_concept_id, cope_survey_month, cope_survey_version_id"
+
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`

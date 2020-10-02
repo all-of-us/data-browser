@@ -85,7 +85,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship question_concept)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info question_concept)
 
 for t in "${create_tables[@]}"
 do
@@ -96,7 +96,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_concept_relationship fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata question_concept)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata question_concept)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -314,13 +314,11 @@ where c.concept_id=sm.concept_id"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
-(select count(distinct ob.person_id) as count_val,cr.concept_id_2 as survey_concept_id,cr.concept_id_1 as question_id
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_concept_relationship\` cr
-on ob.observation_source_concept_id=cr.concept_id_1 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
-on cr.concept_id_2 = sm.concept_id
-where cr.relationship_id = 'Has Module'
-and cr.concept_id_1 not in (1384403, 43529654, 43528428)
-group by survey_concept_id,cr.concept_id_1)
+(select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
+from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` cr
+on ob.observation_source_concept_id=cr.concept_id
+where cr.concept_id not in (1384403, 43529654, 43528428)
+group by survey_concept_id,cr.concept_id)
 where c1.concept_id=question_id
 "
 
@@ -340,7 +338,7 @@ where sm.concept_id = survey_concept_id"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 set sm.question_count=num_questions from
-select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
+(select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
 join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
@@ -531,6 +529,3 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cope_survey_age_stratum\`"
