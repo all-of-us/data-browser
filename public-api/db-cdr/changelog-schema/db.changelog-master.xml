@@ -65,4 +65,10 @@
   <include file="changelog-schema/db.changelog-65.xml"/>
   <include file="changelog-schema/db.changelog-66.xml"/>
   <include file="changelog-schema/db.changelog-67.xml"/>
+  <include file="changelog-schema/db.changelog-68.xml"/>
+  <include file="changelog-schema/db.changelog-69.xml"/>
+  <include file="changelog-schema/db.changelog-70.xml"/>
+  <include file="changelog-schema/db.changelog-71.xml"/>
+  <include file="changelog-schema/db.changelog-72.xml"/>
+  <include file="changelog-schema/db.changelog-73.xml"/>
 </databaseChangeLog>

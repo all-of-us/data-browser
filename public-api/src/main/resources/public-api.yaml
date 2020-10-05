@@ -665,6 +665,9 @@ definitions:
       stratum6:
         description: stratum6
         type: string
+      stratum7:
+        description: stratum7
+        type: string
       analysisStratumName:
         description: stratum 5 Name
         type: string

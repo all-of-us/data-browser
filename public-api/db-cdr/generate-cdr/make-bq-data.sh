@@ -45,6 +45,11 @@ then
   exit 1
 fi
 
+COPE_PROJECT='aou-res-curation-prod'
+COPE_DATASET='SR2019q4r3_deid_io'
+
+gcloud config set project aou-db-test
+
 # Check that bq_dataset exists and exit if not
 datasets=$(bq --project=$BQ_PROJECT ls --max_results=500)
 if [ -z "$datasets" ]
@@ -53,7 +58,7 @@ then
   exit 1
 fi
 re=\\b$BQ_DATASET\\b
-if [[ $datasets =~ $re ]]; then
+if [[ $datasets == *"$BQ_DATASET"* ]]; then
   echo "$BQ_PROJECT.$BQ_DATASET exists. Good. Carrying on."
 else
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
@@ -61,17 +66,17 @@ else
 fi
 
 # Make dataset for cdr cloudsql tables
-datasets=$(bq --project=$OUTPUT_PROJECT ls --max_results=100)
+datasets=$(bq --project_id=$OUTPUT_PROJECT ls --max_results=100)
 re=\\b$OUTPUT_DATASET\\b
-if [[ $datasets =~ $re ]]; then
+if [[ $datasets == *"$OUTPUT_DATASET"* ]]; then
   echo "$OUTPUT_DATASET exists"
 else
   echo "Creating $OUTPUT_DATASET"
-  bq --project=$OUTPUT_PROJECT mk $OUTPUT_DATASET
+  bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
 #Check if tables to be copied over exists in bq project dataset
-tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project_id=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
 cb_cri_table_check=\\bcb_criteria\\b
 cb_cri_attr_table_check=\\bcb_criteria_attribute\\b
 cb_cri_rel_table_check=\\bcb_criteria_relationship\\b
@@ -80,22 +85,22 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_concept_relationship question_concept)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info question_concept)
 
 for t in "${create_tables[@]}"
 do
-    bq --project=$OUTPUT_PROJECT rm -f $OUTPUT_DATASET.$t
-    bq --quiet --project=$OUTPUT_PROJECT mk --schema=$schema_path/$t.json $OUTPUT_DATASET.$t
+    bq --project_id=$OUTPUT_PROJECT rm -f $OUTPUT_DATASET.$t
+    bq --quiet --project_id=$OUTPUT_PROJECT mk --schema=$schema_path/$t.json $OUTPUT_DATASET.$t
 done
 
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_concept_relationship fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata question_concept)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata question_concept)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
-    bq --project=$OUTPUT_PROJECT load --quote='"' --source_format=CSV --skip_leading_rows=1 --max_bad_records=10 $OUTPUT_DATASET.$t $csv_path/$t.csv
+    bq --project_id=$OUTPUT_PROJECT load --quote='"' --source_format=CSV --skip_leading_rows=1 --max_bad_records=10 $OUTPUT_DATASET.$t $csv_path/$t.csv
 done
 
 # Populate some tables from cdr data
@@ -104,7 +109,7 @@ done
 ############
 if [[ $tables =~ $cb_cri_table_check ]]; then
     echo "Inserting criteria"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
      (id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms)
      SELECT id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms
@@ -116,7 +121,7 @@ fi
 ######################
 if [[ $tables =~ $cb_cri_attr_table_check ]]; then
     echo "Inserting cb_criteria_attribute"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_attribute\`
     (id, concept_id, value_as_concept_id, concept_name, type, est_count)
     SELECT id, concept_id, value_as_concept_id, concept_name, type, est_count
@@ -129,7 +134,7 @@ fi
 if [[ $tables =~ $cb_cri_rel_table_check ]]; then
     echo "Inserting criteria_relationship"
     echo "Inserting cb_criteria_relationship"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_relationship\`
     (concept_id_1, concept_id_2)
     SELECT concept_id_1, concept_id_2
@@ -141,7 +146,7 @@ fi
 #########################
 if [[ $tables =~ $cb_cri_anc_table_check ]]; then
     echo "Inserting cb_criteria_ancestor"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria_ancestor\`
     (ancestor_id, descendant_id)
     SELECT ancestor_id, descendant_id
@@ -172,7 +177,7 @@ FROM \`$BQ_PROJECT.$BQ_DATASET.vocabulary\`"
 # achilles queries #
 ####################
 # Run achilles count queries to fill achilles_results
-if ./generate-cdr/run-achilles-queries.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
+if ./generate-cdr/run-achilles-queries.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET --cope-project $COPE_PROJECT --cope-dataset $COPE_DATASET
 then
     echo "Achilles queries ran"
 else
@@ -309,13 +314,11 @@ where c.concept_id=sm.concept_id"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
-(select count(distinct ob.person_id) as count_val,cr.concept_id_2 as survey_concept_id,cr.concept_id_1 as question_id
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_concept_relationship\` cr
-on ob.observation_source_concept_id=cr.concept_id_1 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
-on cr.concept_id_2 = sm.concept_id
-where cr.relationship_id = 'Has Module'
-and cr.concept_id_1 not in (1384403, 43529654, 43528428)
-group by survey_concept_id,cr.concept_id_1)
+(select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
+from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` cr
+on ob.observation_source_concept_id=cr.concept_id
+where cr.concept_id not in (1384403, 43529654, 43528428)
+group by survey_concept_id,cr.concept_id)
 where c1.concept_id=question_id
 "
 
@@ -329,8 +332,19 @@ join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
 where is_parent_question=1
 group by survey_concept_id)
-where sm.concept_id = survey_concept_id
-"
+where sm.concept_id = survey_concept_id"
+
+# Set cope question count
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
+set sm.question_count=num_questions from
+(select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
+join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` qc
+on sq.concept_id = qc.concept_id
+where is_parent_question=1 and sq.survey_concept_id = 1333342
+group by survey_concept_id)
+where sm.concept_id = survey_concept_id"
 
 ########################
 # concept_relationship #
