@@ -269,10 +269,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
     }
-    console.log("^^^^^^^^^^^^^^");
-    console.log("Am i here at all");
-    console.log(r.name.toLowerCase());
-    console.log("^^^^^^^^^^^^^^");
     localStorage.setItem('surveyModule', JSON.stringify(r));
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
