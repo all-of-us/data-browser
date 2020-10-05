@@ -229,10 +229,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         this.physicalMeasurementsFound = physicalMeasurementDomainInfo[0].allConceptCount;
       }
     }
-    // TODO remove this filter when the feature flag is turned off
+    this.surveyResults = results.surveyModules;
+    // TODO remove this filter when the feature flag is turned off or to debug
     if (!this.cope) {
         this.surveyResults = results.surveyModules.filter(sm => sm.conceptId !== 1333342);
     }
+
     this.surveyResults.forEach(result => {
       if (result.name === 'Lifestyle') {
         result.description = result.description.replace('alcohol and', 'alcohol, and');
