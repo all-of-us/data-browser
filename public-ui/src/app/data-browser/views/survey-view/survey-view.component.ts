@@ -207,30 +207,32 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.graphToShow = GraphType.BiologicalSex;
           q.selectedAnalysis = q.genderAnalysis;
           q.graphDataToShow = 'Count';
-          for (const r of q.countAnalysis.results) {
-            if (r.hasSubQuestions === 1) {
-                for (const sq1 of r.subQuestions) {
-                    this.showAnswer[sq1.conceptId] = false;
-                    this.questionResults[sq1.conceptId] = [];
-                    sq1.actualQuestionNumber = sq1.questionOrderNumber;
-                    sq1.graphToShow = GraphType.BiologicalSex;
-                    sq1.selectedAnalysis = sq1.genderAnalysis;
-                    sq1.graphDataToShow = 'Count';
-                    for (const r1 of sq1.countAnalysis.results) {
-                                if (r1.hasSubQuestions === 1) {
-                                    for (const sq2 of r1.subQuestions) {
-                                        this.showAnswer[sq2.conceptId] = false;
-                                        this.questionResults[sq2.conceptId] = [];
-                                        sq2.actualQuestionNumber = sq2.questionOrderNumber;
-                                        sq2.graphToShow = GraphType.BiologicalSex;
-                                        sq2.selectedAnalysis = sq2.genderAnalysis;
-                                        sq2.graphDataToShow = 'Count';
+          if (q.countAnalysis && q.countAnalysis.results) {
+            for (const r of q.countAnalysis.results) {
+                        if (r.hasSubQuestions === 1) {
+                            for (const sq1 of r.subQuestions) {
+                                this.showAnswer[sq1.conceptId] = false;
+                                this.questionResults[sq1.conceptId] = [];
+                                sq1.actualQuestionNumber = sq1.questionOrderNumber;
+                                sq1.graphToShow = GraphType.BiologicalSex;
+                                sq1.selectedAnalysis = sq1.genderAnalysis;
+                                sq1.graphDataToShow = 'Count';
+                                for (const r1 of sq1.countAnalysis.results) {
+                                            if (r1.hasSubQuestions === 1) {
+                                                for (const sq2 of r1.subQuestions) {
+                                                    this.showAnswer[sq2.conceptId] = false;
+                                                    this.questionResults[sq2.conceptId] = [];
+                                                    sq2.actualQuestionNumber = sq2.questionOrderNumber;
+                                                    sq2.graphToShow = GraphType.BiologicalSex;
+                                                    sq2.selectedAnalysis = sq2.genderAnalysis;
+                                                    sq2.graphDataToShow = 'Count';
 
-                    }}}
-                }
-            }
+                                } }}
+                            }
+                        }
+                      }
+                      this.processResults(q);
           }
-          this.processResults(q);
     }
     this.questions.sort((a1, a2) => {
       if (a1.actualQuestionNumber < a2.actualQuestionNumber) {
