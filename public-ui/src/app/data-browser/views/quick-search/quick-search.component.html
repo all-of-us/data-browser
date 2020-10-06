@@ -137,7 +137,7 @@
           (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
       </div>
     </div>
-    <div *ngIf="preCope" class="result-box cope-preview">
+    <div *ngIf="preCope && !searchText.value" class="result-box cope-preview">
       <div class="result-box-title">
         COPE Survey
         <app-tooltip [toolTipText1]="'Survey includes information about the impact of COVID-19 on participant mental and physical health.'"
