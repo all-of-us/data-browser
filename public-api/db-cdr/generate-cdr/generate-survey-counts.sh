@@ -14,74 +14,69 @@ while [ $# -gt 0 ]; do
     --bq-dataset) BQ_DATASET=$2; shift 2;;
     --workbench-project) WORKBENCH_PROJECT=$2; shift 2;;
     --workbench-dataset) WORKBENCH_DATASET=$2; shift 2;;
-    --cope-project) COPE_PROJECT=$2; shift 2;;
-    --cope-dataset) COPE_DATASET=$2; shift 2;;
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
 
-# Cope survey answer count by version TODO delete when cope data is ready
+# Cope survey response counts by version
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value)
 with ppi_path
 as
 (select survey_concept_id,concept_id,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\`),
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` where survey_concept_id = 1333342),
 main_questions_count as
-(SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+(SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
+CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join ppi_path sq
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
-and sq.sub=0 and sq.survey_concept_id != 43528698
-group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.question_order_number,sq.path,sv.cope_survey_version_id
+and sq.sub=0
+group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.question_order_number,sq.path,9
 order by CAST(sq.question_order_number as int64) asc),
 sub_1_questions_count as
-(SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+(SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
+CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join ppi_path sq
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
-and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
+and sq.sub=1 and sq.level=3
 and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.question_order_number,sq.path,sv.cope_survey_version_id
+group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.question_order_number,sq.path,9
 order by CAST(sq.question_order_number as int64) asc),
 sub_2_questions_count as
-(SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+(SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
+CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join ppi_path sq
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
-and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
+and sq.sub=1 and sq.level=5
 and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
-group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.question_order_number,sq.path,sv.cope_survey_version_id
+group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.question_order_number,sq.path,9
 order by CAST(sq.question_order_number as int64) asc)
-select 0 as id, 3110 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
+select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
 union all
-select 0 as id, 3110 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_1_questions_count
+select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_1_questions_count
 union all
-select 0 as id, 3110 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count"
+select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count"
 
 # Set the survey answer count for all the survey questions
 # (except q2 in the basics survey and questions of family medical history since we deal with them in a different way)
@@ -233,78 +228,6 @@ On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id=0)
 group by o.observation_source_concept_id,o.value_as_number,sq.survey_concept_id,sq.question_order_number
 order by CAST(sq.question_order_number as int64) asc"
-
-# COPE Survey question answers count by gender TODO delete when cope data in prod
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value)
-with ppi_path
-as
-(select survey_concept_id,concept_id,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\`),
-main_questions_count as
-(select 0,3111 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-case when p.gender_concept_id = 45880669 then '8507' when p.gender_concept_id = 45878463 then '8532' else '0' end as stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.person\` p inner join \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o on p.person_id = o.person_id
-join ppi_path sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
-and sq.sub=0 and sq.survey_concept_id != 43528698
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path,sv.cope_survey_version_id
-order by CAST(sq.question_order_number as int64) asc),
-sub_1_questions_count as
-(
-select 0,3111 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-case when p.gender_concept_id = 45880669 then '8507' when p.gender_concept_id = 45878463 then '8532' else '0' end as stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.person\` p inner join \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o on p.person_id = o.person_id
-join ppi_path sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
-and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
-and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path,sv.cope_survey_version_id
-order by CAST(sq.question_order_number as int64) asc
-),
-sub_2_questions_count as
-(
-select 0,3111 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-case when p.gender_concept_id = 45880669 then '8507' when p.gender_concept_id = 45878463 then '8532' else '0' end as stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.person\` p inner join \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o on p.person_id = o.person_id
-join ppi_path sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
-and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
-and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.question_order_number,sq.path,sv.cope_survey_version_id
-order by CAST(sq.question_order_number as int64) asc
-)
-select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
-union all
-select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_1_questions_count
-union all
-select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count;"
 
 # Survey question answers count by gender for all questions except basics q2 and fmh questions
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -471,78 +394,6 @@ On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id = 0)
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.question_order_number,sq.path
 order by CAST(sq.question_order_number as int64) asc"
-
-# Cope Survey Question Answer Count by age deciles TODO delete this when cope data is in prod
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value)
-with ppi_path
-as
-(select survey_concept_id,concept_id,question_order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\`),
-main_questions_count as
-(select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-age_stratum as stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
-COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` sa on sa.observation_id=o.observation_id
-join ppi_path sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and o.observation_source_concept_id != 1586140
-and sq.sub=0 and sq.survey_concept_id != 43528698
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number,sq.path,sv.cope_survey_version_id
-order by CAST(sq.question_order_number as int64) asc),
-sub_1_questions_count as
-(select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-age_stratum as stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
-COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` sa on sa.observation_id=o.observation_id
-join ppi_path sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and o.observation_source_concept_id != 1586140
-and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
-and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number,sq.path,sv.cope_survey_version_id
-order by CAST(sq.question_order_number as int64) asc),
-sub_2_questions_count as
-(select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-age_stratum as stratum_5,sq.path as stratum_6,
-CAST(sv.cope_survey_version_id as string) as stratum_7,
-COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` sa on sa.observation_id=o.observation_id
-join ppi_path sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and o.observation_source_concept_id != 1586140
-and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
-and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-and exists
-(select * from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.question_order_number,sq.path,sv.cope_survey_version_id
-order by CAST(sq.question_order_number as int64) asc)
-select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
-union all
-select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_1_questions_count
-union all
-select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count;"
-
 
 # Survey Question Answer Count by age deciles for all questions except q2
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -783,18 +634,6 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
 on ob.observation_source_concept_id=cr.concept_id
 group by cr.survey_concept_id, p.gender_concept_id"
 
-# Cope Survey Module counts by gender TODO this can be deleted once we have actual cope survey data
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
-select 0 as id, 3200 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1,
-case when p.gender_concept_id = 45880669 then '8507' when p.gender_concept_id = 45878463 then '8532' else '0' end as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
-from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` ob join \`${COPE_PROJECT}.${COPE_DATASET}.person\` p on p.person_id=ob.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
-on ob.observation_source_concept_id=cr.concept_id
-where cr.survey_concept_id=1333342
-group by cr.survey_concept_id, p.gender_concept_id"
-
 # Survey Module counts by age decile
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -805,18 +644,6 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.o
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
 on ob.observation_source_concept_id=cr.concept_id
 group by stratum_1, stratum_2"
-
-# Cope Survey Module counts by age decile TODO delete when cope data is ready
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
-select 0 as id, 3201 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
- from \`${COPE_PROJECT}.${COPE_DATASET}.observation\` ob
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.cope_survey_age_stratum\` sa on sa.observation_id=ob.observation_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` cr
-on ob.observation_source_concept_id=cr.concept_id
-where cr.survey_concept_id=1333342
-group by stratum_1, stratum_2;"
 
 # To do delete if not used anymore
 # Survey question counts by biological sex
@@ -947,43 +774,27 @@ On o.observation_source_concept_id=sq.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id not in (40766240,43528428,1585389)
 Group by sq.survey_concept_id"
-# Cope Unique survey participant count TODO delete when cope data is in prod
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3000 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
-'Survey' as stratum_3,
-count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
-On o.observation_source_concept_id=sq.concept_id
-Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and o.observation_source_concept_id not in (40766240,43528428,1585389) and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id";
 
 # Versioned participant count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
-sv.cope_survey_month as stratum_2, CAST(sv.cope_survey_version_id as string) as stratum_3,
+(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
+SELECT 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_3,
 count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\`  o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`  o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id, cope_survey_month, cope_survey_version_id"
+Group by sq.survey_concept_id, 4"
 
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
-sv.cope_survey_month as stratum_2, CAST(sv.cope_survey_version_id as string) as stratum_3,
+(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
+SELECT 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_3,
 count(distinct sq.concept_id) as count_value, count(distinct sq.concept_id) as source_count_value
-FROM \`${COPE_PROJECT}.${COPE_DATASET}.observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${COPE_PROJECT}.${COPE_DATASET}.cope_survey_version\` sv on o.questionnaire_response_id = sv.questionnaire_response_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id, cope_survey_month, cope_survey_version_id"
+Group by sq.survey_concept_id, 4"

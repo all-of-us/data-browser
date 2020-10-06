@@ -45,9 +45,6 @@ then
   exit 1
 fi
 
-COPE_PROJECT='aou-res-curation-prod'
-COPE_DATASET='SR2019q4r3_deid_io'
-
 gcloud config set project aou-db-test
 
 # Check that bq_dataset exists and exit if not
@@ -177,7 +174,7 @@ FROM \`$BQ_PROJECT.$BQ_DATASET.vocabulary\`"
 # achilles queries #
 ####################
 # Run achilles count queries to fill achilles_results
-if ./generate-cdr/run-achilles-queries.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET --cope-project $COPE_PROJECT --cope-dataset $COPE_DATASET
+if ./generate-cdr/run-achilles-queries.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $OUTPUT_PROJECT --workbench-dataset $OUTPUT_DATASET
 then
     echo "Achilles queries ran"
 else
@@ -331,18 +328,6 @@ set sm.question_count=num_questions from
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
 where is_parent_question=1
-group by survey_concept_id)
-where sm.concept_id = survey_concept_id"
-
-# Set cope question count
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
-set sm.question_count=num_questions from
-(select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
-\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
-join \`${COPE_PROJECT}.${COPE_DATASET}.concept\` qc
-on sq.concept_id = qc.concept_id
-where is_parent_question=1 and sq.survey_concept_id = 1333342
 group by survey_concept_id)
 where sm.concept_id = survey_concept_id"
 
