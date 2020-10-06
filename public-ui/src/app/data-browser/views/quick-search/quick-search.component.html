@@ -101,12 +101,12 @@
   <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
   <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
     <div tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"
-      class="result-box" *ngFor="let r of surveyResults">
+         class="result-box" *ngFor="let r of surveyResults">
       <p class="result-box-title">
         {{r.name}}
         <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.name.toLowerCase()]"
-          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-          [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
+                     [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+                     [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
       </p>
       <div class="result-body">
         <div class="result-body-item">
@@ -117,7 +117,7 @@
           <span *ngIf="!searchText.value">questions available</span>
         </div>
         <span class="result-body-item result-body-stat"
-          *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
+              *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
           <span><strong> {{r.participantCount | number}}</strong> participants in this domain
           </span>
         </span>
@@ -131,18 +131,18 @@
       </div>
       <div class="result-box-link">
         <a *ngIf="!searchText.value" class="result-bottom-link" tabindex="0" (keydown.enter)="viewSurvey(r, null)"
-          (click)="viewSurvey(r, null)">
+           (click)="viewSurvey(r, null)">
           View Complete Survey</a>
         <a *ngIf="searchText.value" class="result-bottom-link" tabindex="0"
-          (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
+           (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
       </div>
     </div>
     <div *ngIf="preCope" class="result-box cope-preview">
       <div class="result-box-title">
         COPE Survey
         <app-tooltip [toolTipText1]="'Survey includes information about the impact of COVID-19 on participant mental and physical health.'"
-          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-          [action]="'Hover on Survey Tile ' + 'cope' + ' tooltip'"></app-tooltip>
+                     [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+                     [action]="'Hover on Survey Tile ' + 'cope' + ' tooltip'"></app-tooltip>
       </div>
       <div class="result-body">
         <div class="result-item result-body-stat">
@@ -150,8 +150,8 @@
         </div>
         <!-- waiting for description -->
         <div class="result-body-item">
-         <br/> 
-         Survey includes information about the impact of COVID-19 on participant mental and physical health.
+          <br/>
+          Survey includes information about the impact of COVID-19 on participant mental and physical health.
         </div>
       </div>
     </div>
