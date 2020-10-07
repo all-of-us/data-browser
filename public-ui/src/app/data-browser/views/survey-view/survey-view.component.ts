@@ -62,6 +62,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
   fmhResultCount = 0;
+  showStatement: boolean;
   copeDisclaimer: string;
   copeFlag: boolean;
 
