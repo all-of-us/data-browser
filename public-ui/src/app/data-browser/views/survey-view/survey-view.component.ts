@@ -62,6 +62,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
   fmhResultCount = 0;
+  copeDisclaimer: string;
+  copeFlag: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -72,6 +74,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
+
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
@@ -80,11 +83,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = '';
       }
     });
+    this.copeDisclaimer = `<div class="cope-statement"><span class='cope-statement-body'>This optional survey was released to participants for completion
+    at multiple time points during the COVID-19 pandemic. As a result, a participant may have
+    multiple data points if they completed more than one survey.</span>
+    <span class='cope-statement-body'>This survey has multiple versions. Even though most of the content is consistent between
+    versions, some questions were modified.</span> <span class='cope-statement-box'><strong>Please Note:</strong> While these aggregate data are available
+    in the Data Browser tool, to protect participant privacy, only select data will be available in the Registered Tier dataset (i.e., data describing COVID
+    positive status will not be made available)</span></div>`;
   }
 
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
+    this.copeFlag = environment.copeFlag;
   }
 
   ngOnDestroy() {

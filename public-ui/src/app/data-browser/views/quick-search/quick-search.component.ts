@@ -217,6 +217,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
+    console.log(results,'sup results');
+    
     this.domainResults = results.domainInfos.filter(
       domain => domain.name.toLowerCase() !== 'physical measurements');
     const physicalMeasurementDomainInfo =
@@ -267,6 +269,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   public viewSurvey(r, search: string) {
+    console.log(r,'this is passed');
+    
     if (!this.prevSearchText) {
       this.dbc.triggerEvent('domainTileClick', 'Domain Tile', 'Click',
         r.name, null, null);
