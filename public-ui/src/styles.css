@@ -574,7 +574,24 @@ a a:link a:visited {
 .highcharts-container svg {
   overflow: visible !important;
 }
-
+/* covid disclaimer */
+.cope-statement{
+  padding:1rem;
+  font-size:.8em;
+}
+.cope-statement-body{
+  padding-bottom: 1rem;
+  display: inline-block;
+}
+.cope-statement-box {
+  display: inline-block;
+  background: #dae6ed;
+  border-radius: 3px;
+  padding:1rem;
+}
+.cope-statement-box strong{
+  font-family: GothamBold;
+}
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   /* IE10+ CSS styles go here */
   .headwrap {
