@@ -5,14 +5,44 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-69">
-    <validCheckSum>ANY</validCheckSum>
-    <preConditions onFail="MARK_RAN">
-        <columnExists tableName="achilles_results" columnName="count_value"/>
-        <columnExists tableName="achilles_results" columnName="source_count_value"/>
-    </preConditions>
-    <dropColumn tableName="achilles_results" columnName="count_value"/>
-    <dropColumn tableName="achilles_results" columnName="source_count_value"/>
-  </changeSet>
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-68">
+      <validCheckSum>ANY</validCheckSum>
+      <dropTable tableName="achilles_results"/>
+      <createTable tableName="achilles_results">
+          <column name="id" type="BIGINT" autoIncrement="true">
+              <constraints primaryKey="true" nullable="true"/>
+          </column>
+          <column name="analysis_id" type="BIGINT">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_1" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_2" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_3" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_4" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_5" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_6" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_7" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="count_value" type="BIGINT">
+              <constraints nullable="true"/>
+          </column>
+          <column name="source_count_value" type="BIGINT">
+              <constraints nullable="true"/>
+          </column>
+      </createTable>
+    </changeSet>
 
 </databaseChangeLog>
