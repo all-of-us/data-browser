@@ -197,6 +197,30 @@ else
     exit 1
 fi
 
+##################################################################
+#Add sub questions flag in stratum_7 in survey response count rows
+##################################################################
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set a.stratum_7='1'
+from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` b
+where a.stratum_2=SPLIT(b.path, '.')[OFFSET(0)]
+and a.stratum_3=SPLIT(b.path, '.')[OFFSET(1)] and a.analysis_id=3110
+and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, \"\\.\")) = 2
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set a.stratum_7='1'
+from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` b
+where a.stratum_2=SPLIT(b.path, '.')[OFFSET(2)]
+and a.stratum_3=SPLIT(b.path, '.')[OFFSET(3)] and a.analysis_id=3110
+and a.stratum_6=CONCAT(SPLIT(b.path, '.')[OFFSET(0)],'.',SPLIT(b.path, '.')[OFFSET(1)],'.',SPLIT(b.path, '.')[OFFSET(2)])
+and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, \"\\.\")) = 4
+"
+
 ###########################
 # concept with count cols #
 ###########################

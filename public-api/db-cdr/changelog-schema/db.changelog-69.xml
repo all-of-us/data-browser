@@ -5,16 +5,44 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-68">
-        <validCheckSum>ANY</validCheckSum>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="achilles_results" columnName="stratum_7"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="achilles_results">
-            <column name="stratum_7" type="VARCHAR(255)" />
-        </addColumn>
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-69">
+      <validCheckSum>ANY</validCheckSum>
+      <dropTable tableName="achilles_analysis"/>
+      <createTable tableName="achilles_analysis">
+          <column name="analysis_id" type="BIGINT">
+              <constraints primaryKey="true" nullable="false"/>
+          </column>
+          <column name="analysis_name" type="varchar(255)">
+              <constraints nullable="false"/>
+          </column>
+          <column name="stratum_1_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_2_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_3_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_4_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_5_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_6_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="stratum_7_name" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="chart_type" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+          <column name="data_type" type="VARCHAR(255)">
+              <constraints nullable="true"/>
+          </column>
+      </createTable>
     </changeSet>
 
 </databaseChangeLog>
