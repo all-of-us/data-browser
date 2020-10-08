@@ -437,10 +437,10 @@ p {
   color: #f9f9fa;
   text-transform: uppercase;
   border-radius: 0.3rem;
-  background: #262262;
+  background: #816492;
 }
 .disclaimer-btn:hover {
-  background: #816492;
+  background: #262262;
 }
 
 

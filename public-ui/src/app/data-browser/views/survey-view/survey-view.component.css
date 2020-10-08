@@ -202,6 +202,10 @@ strong {
     margin-left: 2%;
     width: 98%;
 }
+.disclaimer-btn {
+    padding:.5rem;
+}
+
 
 @media (max-width: 900px) {
     .results:not(.tooltip, .tooltiptext) {

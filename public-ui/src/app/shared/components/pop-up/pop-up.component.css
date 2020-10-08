@@ -10,9 +10,10 @@
     left: 0;
     background: rgba(0, 0, 0, 0.5);
 }
+
 .card-title {
     font-size: 1em;
-    text-align: center;
+    text-align: left;
     padding-bottom: 1em;
     font-weight: bold;
 }
@@ -27,8 +28,8 @@
 .data-statement > .card > .close {
     position: absolute;
     right: 1rem;
-    top: 0;
-    font-size: 2em;
+    top: .5rem;
+    font-size: 1.5em;
 }
 .btn-container {
     width: 100%;
@@ -39,6 +40,7 @@
 .data-statement > .card > .btn-container > .disclaimer-btn {
     position: absolute;
     right:0;
+    background: #262262;
 }
 
 @media (max-width: 900px){
