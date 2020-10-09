@@ -198,25 +198,19 @@ fi
 #Add sub questions flag in stratum_7 in survey response count rows
 ##################################################################
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"
-UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` b
-where a.stratum_2=SPLIT(b.path, '.')[OFFSET(0)]
-and a.stratum_3=SPLIT(b.path, '.')[OFFSET(1)] and a.analysis_id=3110
-and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, \"\\.\")) = 2
-"
+from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(path, '.')[OFFSET(1)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` where ARRAY_LENGTH(SPLIT(path, '.')) = 3) b
+where a.stratum_2=b.qid
+and a.stratum_3=b.aid and a.analysis_id=3110"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"
-UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` b
-where a.stratum_2=SPLIT(b.path, '.')[OFFSET(2)]
-and a.stratum_3=SPLIT(b.path, '.')[OFFSET(3)] and a.analysis_id=3110
-and a.stratum_6=CONCAT(SPLIT(b.path, '.')[OFFSET(0)],'.',SPLIT(b.path, '.')[OFFSET(1)],'.',SPLIT(b.path, '.')[OFFSET(2)])
-and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, \"\\.\")) = 4
-"
+from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid1, SPLIT(path, '.')[OFFSET(1)] aid1, SPLIT(path, '.')[OFFSET(2)] as qid2, SPLIT(path, '.')[OFFSET(3)] as aid2,  from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` where ARRAY_LENGTH(SPLIT(path, '.')) = 5) b
+where a.stratum_2=b.qid2 and a.stratum_3=b.aid2
+and a.stratum_6=CONCAT(qid1, '.', aid1, '.', qid2)
+and a.analysis_id=3110"
 
 ###########################
 # concept with count cols #

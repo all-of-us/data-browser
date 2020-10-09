@@ -27,7 +27,7 @@
 3103,"Race","concept_id","race_concept_id","domain_id",NULL,NULL,NULL,NULL,"column","counts"
 3104,"Ethnicity","concept_id","ethnicity_concept_id","domain_id",NULL,NULL,NULL,NULL,"column","counts"
 3106,"Current Age histogram","concept_id","current_age_decile","domain_id",NULL,NULL,NULL,NULL,"column","counts"
-3110,"Response Distribution","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","question_order","question_path","version_id","column","counts"
+3110,"Response Distribution","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","question_order","question_path","hasSubQuestions","column","counts"
 3111,"Sex Assigned at Birth","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_concept_id","question_path","version_id","column","counts"
 3112,"Age at occurrence","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","question_path","version_id","column","counts"
 3113,"Survey response counts by version","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","question_order","question_path","version_id","column","counts"
