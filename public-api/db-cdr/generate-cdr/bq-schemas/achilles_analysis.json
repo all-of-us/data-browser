@@ -34,6 +34,10 @@
 	"type": "STRING"
 	},
 	{
+		"name": "stratum_7_name",
+		"type": "STRING"
+	},
+	{
 	"name": "chart_type", 
 	"type": "STRING"
 	}, 
