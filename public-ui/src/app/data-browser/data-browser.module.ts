@@ -28,6 +28,7 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -55,6 +56,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     FmhViewComponent,
     TooltipComponent,
     ErrorMessageComponent,
+    SurveyVersionTableComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
