@@ -25,7 +25,7 @@ strong {
     margin: 5px;
 }
 
-.title-container * {
+.title-container  {
     padding-right: 18px;
     margin: 0;
 }
@@ -204,6 +204,7 @@ strong {
 }
 .disclaimer-btn {
     padding:.5rem;
+    margin-top:1rem;
 }
 
 
