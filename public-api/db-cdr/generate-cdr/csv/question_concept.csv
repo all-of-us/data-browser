@@ -90,10 +90,6 @@
 1332867,"In the past 7 days, I had trouble concentrating.","ies_r_6_6","cope",1333342,0,0,1332867,1,1,21,""
 1332868,"In the last month, how often have you felt that you were on top of things?","cpss_8","cope",1333342,0,0,1332868,1,1,72,""
 1332869,"In the last month, how often have you been angered because of things that were outside of your control?","cpss_9","cope",1333342,0,0,1332869,1,1,73,""
-1332870,"How many days per week?","ipaq_1_cope_a_24","cope",1333342,0,0,1332870,1,1,0,1332870
-1332870,"How many days per week?","ipaq_1_cope_a_24","cope",1333342,0,1,"1333286.1332898.1332870",0,1,76,""
-1332871,"How many days per week?","ipaq_3_cope_a_24","cope",1333342,0,1,"1333288.1332898.1332871",0,1,80,""
-1332872,"How many days per week?","ipaq_5_cope_a_24","cope",1333342,0,1,"1333289.1332898.1332872",0,1,84,""
 1332874,"Are you covered by health insurance or some other kind of health care plan?","basics_11","cope",1333342,0,0,1332874,1,1,33,""
 1332876,"In the past month: How often do you have a drink containing alcohol?","audit_c_1","cope",1333342,0,0,1332876,1,1,101,""
 1332878,"In the last month, how often have you been upset because of something that happened unexpectedly?","cpss_1","cope",1333342,0,0,1332878,1,1,65,""
