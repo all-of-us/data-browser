@@ -756,7 +756,7 @@ public class DataBrowserControllerTest {
         ar.setAnalysisId(achillesResult.getAnalysisId());
         ar.setStratum1(achillesResult.getStratum1());
         ar.setStratum2(achillesResult.getStratum2());
-        ar.setStratum4(achillesResult.getStratum3());
+        ar.setStratum3(achillesResult.getStratum3());
         ar.setStratum5(achillesResult.getStratum5());
         ar.setCountValue(achillesResult.getCountValue());
         ar.setSourceCountValue(achillesResult.getSourceCountValue());
