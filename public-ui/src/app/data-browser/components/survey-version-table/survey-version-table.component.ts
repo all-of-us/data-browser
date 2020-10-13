@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-survey-version-table',
   templateUrl: './survey-version-table.component.html',
-  styleUrls: ['./survey-version-table.component.css']
+  styleUrls: ['./survey-version-table.component.css','../../../styles/template.css']
 })
-export class SurveyVersionTableComponent implements OnInit {
-
+export class SurveyVersionTableComponent implements OnChanges {
+  @Input() surveys: any;
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    console.log(this.surveys,'hello surveys in component');
+    
   }
 
 }

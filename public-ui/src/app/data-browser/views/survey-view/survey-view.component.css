@@ -53,12 +53,22 @@ strong {
     margin-bottom: calc( 18px *4);
     flex-wrap: wrap;
 }
+.stat-layout {
+    display: flex;
+    width: 80%;
+}
 
 .stat-container {
     display: flex;
     flex-direction: column;
 }
-
+.cope-stat-layout{
+    display: flex;
+    width:100%;
+}
+.version-table {
+    width:50%;
+}
 @media only screen and (max-width: 767px) {
     .stat-container {
         flex-basis: 100%;

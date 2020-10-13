@@ -1,0 +1,21 @@
+.version-box-container  {
+    width:100%;
+}
+
+.version-box{
+    border:1px solid #7aa6ce;
+    border-radius: 3px;
+}
+
+.version-box-header {
+    display: flex;
+    justify-content: space-around;
+    background: #dae6ed;
+}
+
+.version-box-header-item{
+    font-size: .7em;
+    font-family: GothamBold;
+    font-weight: bold;
+    padding:.25em;
+}
