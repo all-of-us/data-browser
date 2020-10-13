@@ -229,18 +229,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     sq1.graphToShow = GraphType.BiologicalSex;
                     sq1.selectedAnalysis = sq1.genderAnalysis;
                     sq1.graphDataToShow = 'Count';
-                    if (sq1.countAnalysis && sq1.countAnalysis.results && sq1.countAnalysis.results.length > 0) {
+                    if (sq1.countAnalysis && sq1.countAnalysis.results &&
+                    sq1.countAnalysis.results.length > 0) {
                         for (const r1 of sq1.countAnalysis.results) {
-                                                if (r1.hasSubQuestions === 1) {
-                                                    for (const sq2 of r1.subQuestions) {
-                                                        this.showAnswer[sq2.conceptId] = false;
-                                                        this.questionResults[sq2.conceptId] = [];
-                                                        sq2.actualQuestionNumber = sq2.questionOrderNumber;
-                                                        sq2.graphToShow = GraphType.BiologicalSex;
-                                                        sq2.selectedAnalysis = sq2.genderAnalysis;
-                                                        sq2.graphDataToShow = 'Count';
+                                    if (r1.hasSubQuestions === 1) {
+                                        for (const sq2 of r1.subQuestions) {
+                                            this.showAnswer[sq2.conceptId] = false;
+                                            this.questionResults[sq2.conceptId] = [];
+                                            sq2.actualQuestionNumber = sq2.questionOrderNumber;
+                                            sq2.graphToShow = GraphType.BiologicalSex;
+                                            sq2.selectedAnalysis = sq2.genderAnalysis;
+                                            sq2.graphDataToShow = 'Count';
 
-                                            } }}
+                                } }}
                     }
                 }
                 }
@@ -265,7 +266,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.addMissingResults(q, a, this.survey.participantCount);
         if (a.hasSubQuestions === 1) {
             for (const sq1 of a.subQuestions) {
-                if (sq1.countAnalysis && sq1.countAnalysis.results && sq1.countAnalysis.results.length > 0) {
+                if (sq1.countAnalysis && sq1.countAnalysis.results &&
+                sq1.countAnalysis.results.length > 0) {
                     for (const sqa1 of sq1.countAnalysis.results) {
                             this.addMissingResults(sq1, sqa1, a.countValue);
                             if (sqa1.hasSubQuestions === 1) {
