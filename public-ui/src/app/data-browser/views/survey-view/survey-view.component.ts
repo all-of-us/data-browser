@@ -350,7 +350,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               this.surveyConceptId.toString()).subscribe({
                   next: x => {
                     // TODO process survey version counts
-                    console.log(x);
                   },
                   error: err => {
                     console.error('Observer got an error: ' + err);
