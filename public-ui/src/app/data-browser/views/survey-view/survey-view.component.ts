@@ -350,7 +350,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.api.getSurveyVersionCounts(
         this.surveyConceptId.toString()).subscribe({
           next: x => {
-          
             this.surveyVersions = x;
             console.log(x,'counts survey stuff');
           },
