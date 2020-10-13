@@ -42,6 +42,9 @@ public class QuestionConcept {
     private int is_parent_question;
     private int generate_counts;
     private int questionOrderNumber;
+    private AchillesAnalysis countAnalysis;
+    private AchillesAnalysis genderAnalysis;
+    private AchillesAnalysis ageAnalysis;
 
     @Column(name = "concept_name")
     public String getConceptName() {
@@ -148,6 +151,48 @@ public class QuestionConcept {
 
     public QuestionConcept questionOrderNumber(int questionOrderNumber) {
         this.questionOrderNumber = questionOrderNumber;
+        return this;
+    }
+
+    @Transient
+    public AchillesAnalysis getCountAnalysis() {
+        return countAnalysis;
+    }
+
+    public void setCountAnalysis(AchillesAnalysis analysis) {
+        this.countAnalysis = analysis;
+    }
+
+    public QuestionConcept countAnalysis(AchillesAnalysis analysis) {
+        this.countAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
+    public AchillesAnalysis getGenderAnalysis() {
+        return this.genderAnalysis;
+    }
+
+    public void setGenderAnalysis(AchillesAnalysis analysis) {
+        this.genderAnalysis = analysis;
+    }
+
+    public QuestionConcept genderAnalysis(AchillesAnalysis analysis) {
+        this.genderAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
+    public AchillesAnalysis getAgeAnalysis() {
+        return this.ageAnalysis;
+    }
+
+    public void setAgeAnalysis(AchillesAnalysis analysis) {
+        this.ageAnalysis = analysis;
+    }
+
+    public QuestionConcept ageAnalysis(AchillesAnalysis analysis) {
+        this.ageAnalysis = analysis;
         return this;
     }
 }

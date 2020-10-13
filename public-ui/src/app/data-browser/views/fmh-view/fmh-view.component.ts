@@ -75,8 +75,6 @@ export class FmhViewComponent implements OnInit {
         (y => fmQuestionConceptIds.includes(String(y.conceptId)));
         this.fmSubQuestions = x.questions.items.filter
         (y => y.sub === 1 && fmQuestionConceptIds.some(sub => y.path.includes(sub)));
-        this.analyses = x.analyses.items;
-        this.mapAnalysesToQuestions(x.questions.items, x.analyses.items);
         this.processQuestions(this.conditionQuestions, 'condition');
         this.processQuestions(this.fmQuestions, 'family');
         this.resetExpansion();
