@@ -229,17 +229,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     sq1.graphToShow = GraphType.BiologicalSex;
                     sq1.selectedAnalysis = sq1.genderAnalysis;
                     sq1.graphDataToShow = 'Count';
-                    for (const r1 of sq1.countAnalysis.results) {
-                        if (r1.hasSubQuestions === 1) {
-                            for (const sq2 of r1.subQuestions) {
-                                this.showAnswer[sq2.conceptId] = false;
-                                this.questionResults[sq2.conceptId] = [];
-                                sq2.actualQuestionNumber = sq2.questionOrderNumber;
-                                sq2.graphToShow = GraphType.BiologicalSex;
-                                sq2.selectedAnalysis = sq2.genderAnalysis;
-                                sq2.graphDataToShow = 'Count';
+                    if (sq1.countAnalysis && sq1.countAnalysis.results && sq1.countAnalysis.results.length > 0) {
+                        for (const r1 of sq1.countAnalysis.results) {
+                                                if (r1.hasSubQuestions === 1) {
+                                                    for (const sq2 of r1.subQuestions) {
+                                                        this.showAnswer[sq2.conceptId] = false;
+                                                        this.questionResults[sq2.conceptId] = [];
+                                                        sq2.actualQuestionNumber = sq2.questionOrderNumber;
+                                                        sq2.graphToShow = GraphType.BiologicalSex;
+                                                        sq2.selectedAnalysis = sq2.genderAnalysis;
+                                                        sq2.graphDataToShow = 'Count';
 
-                    } }}
+                                            } }}
+                    }
                 }
                 }
               }
@@ -263,38 +265,41 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.addMissingResults(q, a, this.survey.participantCount);
         if (a.hasSubQuestions === 1) {
             for (const sq1 of a.subQuestions) {
-                for (const sqa1 of sq1.countAnalysis.results) {
-                    this.addMissingResults(sq1, sqa1, a.countValue);
-                    if (sqa1.hasSubQuestions === 1) {
-                        for (const sq2 of sqa1.subQuestions) {
-                            for (const sqa2 of sq2.countAnalysis.results) {
-                                this.addMissingResults(sq2, sqa2, sqa1.countValue);
-                            }
-                            sq2.countAnalysis.results.push(this.addDidNotAnswerResult
-                            (sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
-                            sq2.countAnalysis.results.sort((a1, a2) => {
-                                  if (a1.countValue > a2.countValue) {
-                                    return -1;
-                                  }
-                                  if (a1.countValue < a2.countValue) {
-                                    return 1;
-                                  }
-                                  return 0;
-                                });
-                        }
-                    }
+                if (sq1.countAnalysis && sq1.countAnalysis.results && sq1.countAnalysis.results.length > 0) {
+                    for (const sqa1 of sq1.countAnalysis.results) {
+                                        this.addMissingResults(sq1, sqa1, a.countValue);
+                                        if (sqa1.hasSubQuestions === 1) {
+                                            for (const sq2 of sqa1.subQuestions) {
+                                                for (const sqa2 of sq2.countAnalysis.results) {
+                                                    this.addMissingResults(sq2, sqa2, sqa1.countValue);
+                                                }
+                                                sq2.countAnalysis.results.push(this.addDidNotAnswerResult
+                                                (sq2.conceptId, sq2.countAnalysis.results, sqa1.countValue));
+                                                sq2.countAnalysis.results.sort((a1, a2) => {
+                                                      if (a1.countValue > a2.countValue) {
+                                                        return -1;
+                                                      }
+                                                      if (a1.countValue < a2.countValue) {
+                                                        return 1;
+                                                      }
+                                                      return 0;
+                                                    });
+                                            }
+                                        }
+                                    }
+                                    sq1.countAnalysis.results.push(this.addDidNotAnswerResult(
+                                    sq1.conceptId, sq1.countAnalysis.results, a.countValue));
+                                    sq1.countAnalysis.results.sort((a1, a2) => {
+                                          if (a1.countValue > a2.countValue) {
+                                            return -1;
+                                          }
+                                          if (a1.countValue < a2.countValue) {
+                                            return 1;
+                                          }
+                                          return 0;
+                                        });
                 }
-                sq1.countAnalysis.results.push(this.addDidNotAnswerResult(
-                sq1.conceptId, sq1.countAnalysis.results, a.countValue));
-                sq1.countAnalysis.results.sort((a1, a2) => {
-                      if (a1.countValue > a2.countValue) {
-                        return -1;
-                      }
-                      if (a1.countValue < a2.countValue) {
-                        return 1;
-                      }
-                      return 0;
-                    });
+
             }
         }
     }
@@ -345,6 +350,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               this.surveyConceptId.toString()).subscribe({
                   next: x => {
                     // TODO process survey version counts
+                    console.log(x);
                   },
                   error: err => {
                     console.error('Observer got an error: ' + err);
