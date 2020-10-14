@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Items } from '@clr/angular/data/datagrid/providers/items';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -66,7 +67,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeDisclaimer: string;
   copeFlag: boolean;
   isCopeSurvey = false;
-  surveyVersions: any;
+  surveyVersions = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -128,7 +129,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.surveyName = surveyObj.name;
       this.surveyDescription = surveyObj.description;
 
-      this.getSurveyResults();
+      // this.getSurveyResults();
     } else {
       this.getThisSurvey();
     }
@@ -350,8 +351,22 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.api.getSurveyVersionCounts(
         this.surveyConceptId.toString()).subscribe({
           next: x => {
-            this.surveyVersions = x;
-            console.log(x,'counts survey stuff');
+            x.analyses.items.forEach(item => {
+              item.results.forEach((result,i) => {
+                if (item.analysisId === 3400) {
+                  this.surveyVersions.push(
+                    {
+                      month: result.stratum4,
+                      participants: result.sourceCountValue,
+                      numberOfQuestion: ''
+                    });
+                } else if ( item.analysisId === 3401){
+                  this.surveyVersions[i].numberOfQuestion= result.sourceCountValue;
+                }
+              });
+
+            });
+            console.log(x, 'counts survey stuff');
           },
           error: err => {
             console.error('Observer got an error: ' + err);
@@ -403,11 +418,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     const countAnalysisResults = {};
     const genderAnalysisResults = {};
     const ageAnalysisResults = {};
-
     let countAnalysis = null;
     let genderAnalysis = null;
     let ageAnalysis = null;
-
     for (const a of analyses) {
       if (a.analysisId === 3110) {
         if (!countAnalysis) {

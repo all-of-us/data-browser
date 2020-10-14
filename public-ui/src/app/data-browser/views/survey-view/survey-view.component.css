@@ -51,8 +51,12 @@ strong {
     display: flex;
     position: relative;
     margin-bottom: calc( 18px *4);
-    flex-wrap: wrap;
 }
+
+.stat-container:first-of-type > .secondary-display {
+    margin:0;
+}
+
 .stat-layout {
     display: flex;
     width: 80%;
@@ -62,12 +66,14 @@ strong {
     display: flex;
     flex-direction: column;
 }
+
 .cope-stat-layout{
     display: flex;
-    width:100%;
+    flex-direction: column;
+    width:50%;
 }
 .version-table {
-    width:50%;
+    width:70%;
 }
 @media only screen and (max-width: 767px) {
     .stat-container {

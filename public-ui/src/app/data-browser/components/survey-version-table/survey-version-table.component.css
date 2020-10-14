@@ -1,5 +1,6 @@
 .version-box-container  {
     width:100%;
+    font-size: .8em;
 }
 
 .version-box{
@@ -7,15 +8,25 @@
     border-radius: 3px;
 }
 
+.version-box-header,.version-box-row {
+    display: grid;
+    grid-template-columns: 20% 25% 30% 25%;
+    /* justify-content: space-around; */
+    width:100%;
+}
+
 .version-box-header {
-    display: flex;
-    justify-content: space-around;
     background: #dae6ed;
 }
 
-.version-box-header-item{
-    font-size: .7em;
+.version-box-header > .version-box-item {
     font-family: GothamBold;
+}
+.version-box-body{
+    height: 8rem;
+    overflow-y: auto;
+}
+.version-box-item{
     font-weight: bold;
-    padding:.25em;
+    padding:.5em;
 }
