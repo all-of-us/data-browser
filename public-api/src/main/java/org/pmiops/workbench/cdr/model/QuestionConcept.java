@@ -42,6 +42,7 @@ public class QuestionConcept {
     private int is_parent_question;
     private int generate_counts;
     private int questionOrderNumber;
+    private String questionString;
     private AchillesAnalysis countAnalysis;
     private AchillesAnalysis genderAnalysis;
     private AchillesAnalysis ageAnalysis;
@@ -57,6 +58,20 @@ public class QuestionConcept {
 
     public QuestionConcept conceptName(String conceptName) {
         this.conceptName = conceptName;
+        return this;
+    }
+
+    @Column(name = "question_string")
+    public String getQuestionString() {
+        return questionString;
+    }
+
+    public void setQuestionString(String questionString) {
+        this.questionString = questionString;
+    }
+
+    public QuestionConcept questionString(String questionString) {
+        this.questionString = questionString;
         return this;
     }
 

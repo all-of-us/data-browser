@@ -1,4 +1,0 @@
-"id","parent_id","domain_id","is_standard","type","subtype","concept_id","code","name","value","est_count","is_group","is_selectable","has_attribute","has_hierarchy","has_ancestor_data","path","synonyms"
-325342,0,"VISIT",1,"VISIT","",9201,"","Inpatient Visit","",216076,0,1,0,0,0,"","Inpatient Visit|Inpatient Visit|Inpatient Visit|[visit_rank1]"
-325343,0,"VISIT",1,"VISIT","",9202,"","Outpatient Visit","",917700,0,1,0,0,0,"","Outpatient Visit|Outpatient Visit|Outpatient Visit|[visit_rank1]"
-325341,0,"VISIT",1,"VISIT","",9203,"","Emergency Room Visit","",250632,0,1,0,0,0,"","Emergency Room Visit|Emergency Room Visit|Emergency Room Visit|[visit_rank1]"

@@ -219,10 +219,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     // Add Did not answer to each question
     this.questions = this.surveyResult.questions.items;
     // Add Did not answer to each question
-    this.setDefaults(this.questions);
+    this.setDefaults(this.questions, 0);
   }
 
-  public setDefaults(surveyQuestions: any) {
+  public setDefaults(surveyQuestions: any, level: any) {
     for (const q of surveyQuestions) {
           this.showAnswer[q.conceptId] = false;
           this.questionResults[q.conceptId] = [];
@@ -288,6 +288,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.surveyConceptId.toString(), this.searchText.value).subscribe({
           next: x => {
             this.processSurveyQuestions(x);
+            this.filterResults();
           },
           error: err => {
             console.error('Observer got an error: ' + err);
@@ -387,86 +388,29 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         return 0;
       });
     }
-    if (this.searchText.value.length > 0) {
-        // filter the questions and answers
-        this.questions = this.questions.filter(this.searchQuestion, this);
-    }
     this.loading = false;
   }
 
-  public searchQuestion(q: any) {
-      // Todo , match all words maybe instead of any. Or allow some operators such as 'OR' 'AND'
-      const text = this.searchText.value;
-      let words = text.split(new RegExp(',| | and | or '));
-      words = words.filter(w => w.length > 0
-        && w.toLowerCase() !== 'and'
-        && w.toLowerCase() !== 'or');
-      const reString = words.join('|');
+  public getReString() {
+    const text = this.searchText.value;
+    let words = text.split(new RegExp(',| | and | or '));
+    words = words.filter(w => w.length > 0
+            && w.toLowerCase() !== 'and'
+            && w.toLowerCase() !== 'or');
+    const reString = words.join('|');
+    const reExp = new RegExp(reString, 'gi');
+    return reExp;
+  }
 
-      let searchFlag = false;
-
-      const re = new RegExp(reString, 'gi');
-      if (re.test(q.conceptName)) {
-        searchFlag = true;
-      }
-
-      const results = q.countAnalysis.results.filter(r => re.test(r.stratum4));
-      // Check if any of the sub questions in results or
-      // results of sub questions contains the search term
-      for (const rs of q.countAnalysis.results.filter(
-        r => r.subQuestions !== null)) {
-        if (rs.subQuestions && rs.subQuestions.length > 0) {
-          for (const sq of rs.subQuestions) {
-            if (re.test(sq.conceptName)) {
-              q.expanded = true;
-              this.showAnswer[q.conceptId] = true;
-              rs.expanded = true;
-              searchFlag = true;
-            }
-            if (sq.countAnalysis.results.filter(r => re.test(r.stratum4)).length > 0) {
-              q.expanded = true;
-              this.showAnswer[q.conceptId] = true;
-              rs.expanded = true;
-              searchFlag = true;
-            }
-            for (const rs2 of sq.countAnalysis.results.filter(
-              r => r.subQuestions !== null)) {
-              if (rs2.subQuestions && rs2.subQuestions.length > 0) {
-                for (const sq2 of rs2.subQuestions) {
-                  if (re.test(sq2.conceptName)) {
-                    q.expanded = true;
-                    this.showAnswer[q.conceptId] = true;
-                    rs.expanded = true;
-                    sq.subExpanded = true;
-                    this.showAnswer[sq.conceptId] = true;
-                    rs2.expanded = true;
-                    searchFlag = true;
-                  }
-                  if (sq2.countAnalysis.results.filter(
-                    r => re.test(r.stratum4)).length > 0) {
-                    q.expanded = true;
-                    this.showAnswer[q.conceptId] = true;
-                    rs.expanded = true;
-                    sq.subExpanded = true;
-                    this.showAnswer[sq.conceptId] = true;
-                    rs2.expanded = true;
-                    sq2.subExpanded = true;
-                    this.showAnswer[sq2.conceptId] = true;
-                    searchFlag = true;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      if (results.length > 0 || searchFlag === true) {
+  public checkMatch(text: any) {
+      const re = this.getReString();
+      if (re.test(text)) {
         return true;
       }
-      return false ;
-    }
+      return false;
+  }
 
-  public toggleAnswer(q: any) {
+  public toggleAnswer(q: any, source: any, level: any) {
   this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
           .subscribe({
             next: results => {
@@ -496,19 +440,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getSubQuestions(a: any, level: number) {
+  public getSubQuestions(a: any, source: any, level: number) {
     if (!a.subQuestions) {
             a.loading=true;
             a.dots=true;
     }
-    this.api.getSubQuestions(a.stratum3, level)
+    this.api.getSubQuestions(this.surveyConceptId, a.stratum3, level)
               .subscribe({
                 next: results => {
                   a.subQuestions = results.questions.items;
                   for(const q of a.subQuestions) {
                     this.processResults(q, a.countValue);
                   }
-                  this.setDefaults(a.subQuestions);
+                  this.setDefaults(a.subQuestions, level);
                 },
                 error: err => {
                   console.log('Error searching: ', err);
@@ -539,22 +483,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.dbc.triggerEvent('conceptClick', 'View Graphs',
         'Expand to see graphs', this.survey.name + ' - Q'
         + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-        ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
-    }
-  }
-
-  public showSubAnswerGraphs(sqa: any, sq: any) {
-    sq.selectedResult = sqa;
-    sq.selectedAnalysis = sq.genderAnalysis;
-    sqa.subExpanded = !sqa.subExpanded;
-    if (sqa.subExpanded) {
-      this.dbc.triggerEvent('conceptClick', 'View Graphs',
-        'Expand to see graphs', this.survey.name + ' - Q'
-        + sq.actualQuestionNumber + ' - ' + sq.conceptName + ' - ' + sqa.stratum4 +
-        ' - ' + ' Icon', this.prevSearchText, null);
-      this.dbc.triggerEvent('conceptClick', 'View Graphs',
-        'Expand to see graphs', this.survey.name + ' - Q'
-        + sq.actualQuestionNumber + ' - ' + sq.conceptName + ' - ' + sqa.stratum4 +
         ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
     }
   }

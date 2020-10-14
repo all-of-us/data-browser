@@ -318,6 +318,12 @@ paths:
       operationId: "getSubQuestions"
       parameters:
         - in: query
+          name: survey_concept_id
+          type: integer
+          format: int64
+          required: true
+          description: survey concept id
+        - in: query
           name: answer_concept_id
           type: integer
           format: int64
@@ -334,6 +340,24 @@ paths:
           description: survey sub question fetch
           schema:
             $ref: "#/definitions/SurveyQuestionFetchResponse"
+
+  /v1/databrowser/fmh-survey-question-results:
+    get:
+      tags:
+        - dataBrowser
+      description: Get the results & sub questions with results for fmh condition / family member group
+      operationId: "getFMHSurveyQuestionResults"
+      parameters:
+        - in: query
+          name: question_concept_id
+          type: string
+          required: true
+          description: question concept id
+      responses:
+        200:
+          description: A collection of questions
+          schema:
+            $ref: "#/definitions/QuestionConceptListResponse"
 
   /v1/databrowser/survey-question-results:
     get:
@@ -692,6 +716,9 @@ definitions:
         description: question order number
         type: integer
         format: int32
+      questionString:
+        description: question string
+        type: string
       countAnalysis:
         description: count analysis
         $ref: "#/definitions/Analysis"

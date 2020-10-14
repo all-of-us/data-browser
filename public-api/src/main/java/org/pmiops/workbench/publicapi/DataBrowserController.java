@@ -287,6 +287,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .path(concept.getQuestionConceptId().getPath())
                             .isParentQuestion(concept.getIsParentQuestion())
                             .questionOrderNumber(concept.getQuestionOrderNumber())
+                            .questionString(concept.getQuestionString())
                             .countAnalysis(countAnalysis)
                             .genderAnalysis(genderAnalysis)
                             .ageAnalysis(ageAnalysis);
@@ -404,6 +405,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                         }
                     }
 
+                    String stratum7 = o.getStratum7();
+                    if (o.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
+                        if (o.getStratum3().equals("903096")) {
+                            stratum7 = "";
+                        }
+                    }
+
                     return new org.pmiops.workbench.model.AchillesResult()
                             .id(o.getId())
                             .analysisId(o.getAnalysisId())
@@ -413,7 +421,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum4(o.getStratum4())
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
-                            .stratum7(o.getStratum7())
+                            .stratum7(stratum7)
                             .analysisStratumName(o.getAnalysisStratumName())
                             .measurementValueType(o.getMeasurementValueType())
                             .countValue(o.getCountValue())
@@ -766,7 +774,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long answerConceptId, Integer level) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long answerConceptId, Integer level) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
@@ -777,7 +785,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<QuestionConcept> questions = new ArrayList<>();
 
         if (level == 1) {
-            questions = questionConceptDao.getSubQuestionsLevel1(String.valueOf(answerConceptId));
+            questions = questionConceptDao.getSubQuestionsLevel1(String.valueOf(surveyConceptId), String.valueOf(answerConceptId));
         } else if (level == 2) {
             questions = questionConceptDao.getSubQuestionsLevel2(String.valueOf(answerConceptId));
         }
@@ -818,7 +826,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questions = questionConceptDao.getFMHQuestions(questionConceptIds);
         } else {
             // TODO Get only the matching questions
-            questions = questionConceptDao.getFMHQuestions(questionConceptIds);
+            questions = questionConceptDao.getMatchingFMHQuestions(questionConceptIds, searchWord);
         }
 
         QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
@@ -829,6 +837,33 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setQuestions(questionResp);
         return ResponseEntity.ok(response);
 
+    }
+
+    @Override
+    public ResponseEntity<QuestionConceptListResponse> getFMHSurveyQuestionResults(String questionConceptId) {
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+
+        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+
+        List<QuestionConcept> subQuestions = questionConceptDao.getSubQuestionsLevel1("43528698", questionConceptId);
+
+        List<String> questionConceptIds = new ArrayList<>();
+
+        for(QuestionConcept q: subQuestions) {
+            questionConceptIds.add(String.valueOf(q.getQuestionConceptId().getConceptId()));
+        }
+
+        List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults("43528698", questionConceptIds);
+
+        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList()));
+
+        resp.setItems(mappedQuestions);
+
+        return ResponseEntity.ok(resp);
     }
 
     @Override

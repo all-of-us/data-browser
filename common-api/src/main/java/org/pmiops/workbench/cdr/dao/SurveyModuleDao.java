@@ -15,13 +15,13 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
    */
   @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number, m.can_show from \n" +
           "survey_module m join question_concept sqm2 on m.concept_id = sqm2.survey_concept_id join \n" +
-          "(select distinct c.* from question_concept c where (match(c.question_string) against (?1 in boolean mode) > 0) \n" +
+          "(select distinct c.* from question_concept c where (match(c.question_string) against (?1 in boolean mode) > 0 or match(c.concept_name) against ('pregnant' in boolean mode) > 0) \n" +
           "and c.sub=0 and c.generate_counts=1\n" +
           "union distinct \n" +
           "select distinct c.* from question_concept c where concept_id in (select distinct SUBSTRING_INDEX(sqm.path, '.', 1) from question_concept sqm \n" +
-          "where (match(sqm.question_string) against (?1 in boolean mode) > 0) and sqm.sub=1 and sqm.generate_counts=1)\n" +
+          "where (match(sqm.question_string) against (?1 in boolean mode) > 0 or match(sqm.concept_name) against ('pregnant' in boolean mode) > 0) and sqm.sub=1 and sqm.generate_counts=1)\n" +
           "union distinct \n" +
-          "select distinct c.* from question_concept c where concept_id in (?3) and match(question_string) against(?1 in boolean mode) > 0 or match(concept_name) against(?1 in boolean mode) > 0\n" +
+          "select distinct c.* from question_concept c where concept_id in (?3) and (match(question_string) against(?1 in boolean mode) > 0 or match(concept_name) against(?1 in boolean mode) > 0)\n" +
           "union distinct\n" +
           "select distinct c.* from question_concept c join \n" +
           "achilles_results ar1 on c.concept_id=ar1.stratum_2\n" +
@@ -29,7 +29,7 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
           "where ar1.stratum_2 in (?3) and ar1.analysis_id=3110\n" +
           "and match(ar2.stratum_4) against(?1 in boolean mode) > 0\n" +
           "union distinct \n" +
-          "select distinct c.* from question_concept c where concept_id in (?2) and match(concept_name) against(?1 in boolean mode) > 0 or match(concept_name) against(?1 in boolean mode) > 0\n" +
+          "select distinct c.* from question_concept c where concept_id in (?2) and (match(concept_name) against(?1 in boolean mode) > 0 or match(concept_name) against(?1 in boolean mode) > 0)\n" +
           "union distinct\n" +
           "select distinct c.* from question_concept c join \n" +
           "achilles_results ar1 on c.concept_id=ar1.stratum_2\n" +
