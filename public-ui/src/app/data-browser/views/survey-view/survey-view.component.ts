@@ -300,16 +300,29 @@ public processResults(q: any, totalCount: number) {
           complete: () => { this.questionFetchComplete = true; }
         }));
      this.subscriptions.push(this.api.getSurveyVersionCounts(
-              this.surveyConceptId.toString()).subscribe({
-                  next: x => {
-                    // TODO process survey version counts
-                  },
-                  error: err => {
-                    console.error('Observer got an error: ' + err);
-                    this.loading = false;
-                  },
-                  complete: () => { }
-      }));
+             this.surveyConceptId.toString()).subscribe({
+               next: x => {
+                 x.analyses.items.forEach(item => {
+                   item.results.forEach((result, i) => {
+                     if (item.analysisId === 3400) {
+                       this.surveyVersions.push(
+                         {
+                           month: result.stratum4,
+                           participants: result.sourceCountValue,
+                           numberOfQuestion: ''
+                         });
+                     } else if (item.analysisId === 3401) {
+                       this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
+                     }
+                   });
+                 });
+               },
+               error: err => {
+                 console.error('Observer got an error: ' + err);
+                 this.loading = false;
+               },
+               complete: () => { }
+     }));
     }
   }
 
