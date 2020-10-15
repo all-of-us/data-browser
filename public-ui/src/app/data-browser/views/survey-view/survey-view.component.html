@@ -36,7 +36,7 @@
           <div class="survey-head">
             <div [ngClass]="(isCopeSurvey)?'cope-stat-layout':'stat-layout'">
               <div class="stat-container">
-                <h5 *ngIf="isCopeSurvey">Total unique participants</h5>
+                <h5 *ngIf="isCopeSurvey"><strong>Total unique participants</strong></h5>
                 <h2 class="secondary-display">
                   {{survey.participantCount | number }}
                 </h2>
