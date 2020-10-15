@@ -27,8 +27,6 @@ export class SurveyVersionTableComponent implements OnChanges {
     this.surveys.sort((a: any, b: any) => {
       return allMonths.indexOf(a.month.toLowerCase()) - allMonths.indexOf(b.month.toLowerCase());
     });
-    console.log(this.surveys, 'after?');
-
   }
 
 }
