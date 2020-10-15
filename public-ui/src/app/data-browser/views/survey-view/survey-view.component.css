@@ -57,10 +57,6 @@ strong {
     margin-bottom: calc(18px * 4);
 }
 
-.stat-container:first-of-type > .secondary-display {
-    margin: 0;
-}
-
 .stat-layout {
     display: flex;
     width: 80%;
