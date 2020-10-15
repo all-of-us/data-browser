@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Items } from '@clr/angular/data/datagrid/providers/items';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -64,6 +65,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   showStatement: boolean;
   copeDisclaimer: string;
   copeFlag: boolean;
+  isCopeSurvey = false;
+  surveyVersions = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -121,9 +124,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
     if (surveyObj) {
       this.surveyConceptId = surveyObj.conceptId;
+      if (this.surveyConceptId === 1333342) { this.isCopeSurvey = true; }
       this.surveyName = surveyObj.name;
       this.surveyDescription = surveyObj.description;
-      this.getSurveyResults();
+
     } else {
       this.getThisSurvey();
     }
@@ -163,19 +167,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           }));
     this.subscriptions.push(this.api.getDomainTotals(
       this.searchText.value, 1, 1).subscribe({
-      next: results => {
-        if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
-          this.surveyResultCount = results.surveyModules.filter(
-            x => x.conceptId === this.surveyConceptId)[0].questionCount;
-        } else {
-          if (!this.searchText.value) {
-            this.surveyResultCount = this.survey.questionCount;
+        next: results => {
+          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = results.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
           } else {
-            this.surveyResultCount = 0;
+            if (!this.searchText.value) {
+              this.surveyResultCount = this.survey.questionCount;
+            } else {
+              this.surveyResultCount = 0;
+            }
           }
         }
-      }
-    }));
+      }));
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
       (query) => localStorage.setItem('searchText', query)));
@@ -212,7 +216,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     ));
   }
 
-  public processSurveyQuestions(results: any) {
+    public processSurveyQuestions(results: any) {
     this.surveyResult = results;
     this.survey = this.surveyResult.survey;
     this.surveyName = this.survey.name;
@@ -243,7 +247,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  public processResults(q: any, totalCount: number) {
+public processResults(q: any, totalCount: number) {
     q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
@@ -266,17 +270,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return 0;
     });
   }
-
   public addMissingResults(q: any, a: any, totalCount) {
     a.countPercent = this.countPercentage(a.countValue, totalCount);
     if (q.genderAnalysis) {
-        this.addMissingBiologicalSexResults(q.genderAnalysis,
+      this.addMissingBiologicalSexResults(q.genderAnalysis,
         q.genderAnalysis.results.
-        filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
+          filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
         totalCount);
     }
     if (q.ageAnalysis) {
-        this.addMissingAgeResults(q.ageAnalysis,
+      this.addMissingAgeResults(q.ageAnalysis,
         q.ageAnalysis.results.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3),
         totalCount);
     }
@@ -297,16 +300,29 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           complete: () => { this.questionFetchComplete = true; }
         }));
      this.subscriptions.push(this.api.getSurveyVersionCounts(
-              this.surveyConceptId.toString()).subscribe({
-                  next: x => {
-                    // TODO process survey version counts
-                  },
-                  error: err => {
-                    console.error('Observer got an error: ' + err);
-                    this.loading = false;
-                  },
-                  complete: () => { }
-      }));
+             this.surveyConceptId.toString()).subscribe({
+               next: x => {
+                 x.analyses.items.forEach(item => {
+                   item.results.forEach((result, i) => {
+                     if (item.analysisId === 3400) {
+                       this.surveyVersions.push(
+                         {
+                           month: result.stratum4,
+                           participants: result.sourceCountValue,
+                           numberOfQuestion: ''
+                         });
+                     } else if (item.analysisId === 3401) {
+                       this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
+                     }
+                   });
+                 });
+               },
+               error: err => {
+                 console.error('Observer got an error: ' + err);
+                 this.loading = false;
+               },
+               complete: () => { }
+     }));
     }
   }
 

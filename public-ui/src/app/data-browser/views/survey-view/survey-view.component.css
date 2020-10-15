@@ -1,6 +1,6 @@
 strong {
     font-family: GothamBook, Arial, sans-serif;
-    color: #302C71;
+    color: #302c71;
 }
 
 .title-container {
@@ -25,7 +25,7 @@ strong {
     margin: 5px;
 }
 
-.title-container * {
+.title-container {
     padding-right: 18px;
     margin: 0;
 }
@@ -34,7 +34,8 @@ strong {
     line-height: 1em;
 }
 
-.search-bar-container, .results {
+.search-bar-container,
+.results {
     padding: 18px;
 }
 
@@ -43,15 +44,22 @@ strong {
     width: 100%;
 }
 
-.toggle-link, .toggle-link:link, .toggle-link:visited {
+.toggle-link,
+.toggle-link:link,
+.toggle-link:visited {
     color: #216fb4;
 }
 
 .survey-head {
     display: flex;
     position: relative;
-    margin-bottom: calc( 18px *4);
-    flex-wrap: wrap;
+    padding: 0 1rem;
+    margin-bottom: calc(18px * 4);
+}
+
+.stat-layout {
+    display: flex;
+    width: 80%;
 }
 
 .stat-container {
@@ -59,6 +67,14 @@ strong {
     flex-direction: column;
 }
 
+.cope-stat-layout {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+.version-table {
+    width: 70%;
+}
 @media only screen and (max-width: 767px) {
     .stat-container {
         flex-basis: 100%;
@@ -79,13 +95,13 @@ strong {
 }
 
 .highlight {
-    font-family: GothamBold,Arial,san-serif;
+    font-family: GothamBold, Arial, san-serif;
     font-weight: 700;
     padding: 3px;
 }
 
 .stat-desc {
-    font-size: .75em;
+    font-size: 0.75em;
 }
 
 .pdf-link {
@@ -115,12 +131,12 @@ strong {
 }
 
 .question-result {
-    border-top: 1px solid #CCCCCC;
+    border-top: 1px solid #cccccc;
     padding: 9px 0;
 }
 
 .question-result .secondary-display {
-    font-size: .9em;
+    font-size: 0.9em;
 }
 
 .question-result .question-text {
@@ -157,7 +173,7 @@ strong {
 }
 
 #answer-result {
-    width: calc(40%)
+    width: calc(40%);
 }
 
 .active-question {
@@ -180,7 +196,7 @@ strong {
 }
 
 .survey-tbl {
-    padding-bottom: calc( 18px * 3);
+    padding-bottom: calc(18px * 3);
 }
 
 .sub-question-text {
@@ -203,9 +219,9 @@ strong {
     width: 98%;
 }
 .disclaimer-btn {
-    padding:.5rem;
+    padding: 0.5rem;
+    margin-top: 1rem;
 }
-
 
 @media (max-width: 900px) {
     .results:not(.tooltip, .tooltiptext) {

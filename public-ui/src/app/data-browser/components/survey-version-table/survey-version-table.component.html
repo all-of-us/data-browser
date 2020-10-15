@@ -1,0 +1,22 @@
+<div class="version-box-container">
+  <h5><strong> Survey versions</strong></h5>
+  <br>
+  <div class="version-box">
+    <div class="version-box-header">
+      <div class="version-box-item">Month</div>
+      <div class="version-box-item">Participants</div>
+      <div class="version-box-item">Number of Questions</div>
+      <div class="version-box-item">Download PDF</div>
+    </div>
+    <div class="version-box-body">
+      <ng-container *ngFor="let survey of surveys">
+        <div class="version-box-row">
+          <span class="version-box-item">{{survey.month}}</span>
+          <span class="version-box-item">{{survey.participants}}</span>
+          <span class="version-box-item">{{survey.numberOfQuestion}}</span>
+          <span class="version-box-item"><a href=#>PDF LINK</a></span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

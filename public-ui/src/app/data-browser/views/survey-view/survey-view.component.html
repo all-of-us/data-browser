@@ -2,12 +2,13 @@
   <div class="page-header">
     <div class="title-container" *ngIf="surveyConceptId && surveyName && surveyDescription">
       <h1> {{surveyName}} </h1>
+      <button *ngIf="isCopeSurvey" (click)="showStatement = true" class="disclaimer-btn">IMPORTANT CONSIDERATIONS FOR
+        COPE SURVEY - LEARN MORE</button>
       <div class="desc-container">
         <p class="body-default help-text survey-desc">{{surveyDescription}} Survey questions appear in the order in
           which participants took the survey.</p>
       </div>
     </div>
-    <button *ngIf="surveyConceptId == 1333342" (click)="showStatement = true" class="disclaimer-btn">IMPORTANT CONSIDERATIONS FOR COPE SURVEY - LEARN MORE</button>
     <div class="survey-note"> <span class="bold-note-heading">Note</span>: The data on this page are:
       <ul class="survey-note">
         <li>Gathered directly from participants through electronic surveys</li>
@@ -33,31 +34,37 @@
       < Back to main search </a>
         <div class="db-card">
           <div class="survey-head">
-            <div class="stat-container">
-              <h2 class="secondary-display">
-                {{survey.participantCount | number }}
-              </h2>
-              <p class="info-text">
-                Participants completed this survey
-              </p>
+            <div [ngClass]="(isCopeSurvey)?'cope-stat-layout':'stat-layout'">
+              <div class="stat-container">
+                <h5 *ngIf="isCopeSurvey"><strong>Total unique participants</strong></h5>
+                <h2 class="secondary-display">
+                  {{survey.participantCount | number }}
+                </h2>
+                <p class="info-text">
+                  Participants completed this survey
+                </p>
+              </div>
+              <div class="stat-container" *ngIf="!searchText.value">
+                <h2 class="secondary-display">
+                  <span>{{ survey.questionCount }} </span>
+                </h2>
+                <p class="info-text">
+                  Questions Available
+                </p>
+              </div>
+              <div class="stat-container" *ngIf="searchText.value">
+                <h2 class="secondary-display">
+                  <span>{{ getMatchingQuestionCount() }}</span>
+                </h2>
+                <p class="info-text">
+                  matching of <span class="highlight">{{survey.questionCount}}</span> questions available
+                </p>
+              </div>
             </div>
-            <div class="stat-container" *ngIf="!searchText.value">
-              <h2 class="secondary-display">
-                <span>{{ survey.questionCount }} </span>
-              </h2>
-              <p class="info-text">
-                Questions Available
-              </p>
-            </div>
-            <div class="stat-container" *ngIf="searchText.value">
-              <h2 class="secondary-display">
-                <span>{{ getMatchingQuestionCount() }}</span>
-              </h2>
-              <p class="info-text">
-                matching of <span class="highlight">{{survey.questionCount}}</span> questions available
-              </p>
-            </div>
-            <div class="pdf-link" (click)="downloadPdf()" *ngIf="surveyConceptId !== 1333342">
+              <div class="version-table">
+                <app-survey-version-table [surveys]="surveyVersions" *ngIf="isCopeSurvey && surveyVersions"></app-survey-version-table>
+              </div>
+            <div class="pdf-link" (click)="downloadPdf()" *ngIf="!isCopeSurvey">
               <a href="{{surveyPdfUrl}}" download>
                 <clr-icon shape="file" class="has-badge is-solid"></clr-icon> Download Survey as PDF
               </a>
@@ -396,5 +403,5 @@
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
-<app-pop-up [title]="'About The COvid-19 Participant Survey'" [statement]="copeDisclaimer" (closed)="showStatement = false"
-  *ngIf="showStatement"></app-pop-up>
+<app-pop-up [title]="'About The COvid-19 Participant Survey'" [statement]="copeDisclaimer"
+  (closed)="showStatement = false" *ngIf="showStatement"></app-pop-up>

@@ -1,0 +1,39 @@
+strong {
+    font-family: GothamBook, Arial, sans-serif;
+}
+
+.version-box-container  {
+    width:100%;
+    font-size: .8em;
+}
+
+.version-box{
+    border:1px solid #cccccc;
+    border-radius: 3px;
+}
+
+.version-box-header,.version-box-row {
+    display: grid;
+    grid-template-columns: 20% 25% 30% 25%;
+    /* justify-content: space-around; */
+    width:100%;
+}
+.version-box-row {
+    border-top: 1px solid #cccccc;
+}
+
+.version-box-header {
+    background: #dae6ed;
+}
+
+.version-box-header > .version-box-item {
+    font-family: GothamBold;
+}
+.version-box-body{
+    height: 8rem;
+    overflow-y: auto;
+}
+.version-box-item{
+    font-weight: bold;
+    padding:.5em;
+}
