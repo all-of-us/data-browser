@@ -17,7 +17,7 @@
             <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
             <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
         </a>
-        <div class="survey-tbl" *ngIf="q.expanded">
+        <div class="survey-tbl" *ngIf="q.expanded && q.resultFetchComplete">
             <div class="question-info-text">
                 For participants who selected "A lot" or "Some" in the first question: please indicate if your family member(s) has
                 ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply):
@@ -74,24 +74,25 @@
                             </ng-template>
                         </div>
                         <div class=" info-text survey-tbl-d display-body info-text">
-                            <span>{{a.countPercent.toFixed(2)}}%</span>
+                            <span>{{countPercentage(a.countValue, this.participantCount).toFixed(2)}}%</span>
                         </div>
                         <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                            <button class="icon-btn" *ngIf="a.hasSubQuestions != 1 && a.stratum4 != 'Did not answer'">
+                            <button class="icon-btn" *ngIf="!a.stratum7 && a.stratum4 != 'Did not answer'">
                                 <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1.5rem; width: 1.5rem;color: #2691D0;"></clr-icon>
                             </button>
-                            <button class="icon-btn" *ngIf="a.hasSubQuestions == 1">
-                                <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
+                            <button class="icon-btn" *ngIf="a.stratum7 === '1'">
+                                <clr-icon *ngIf="!a.expanded" shape="caret" dir="right" (click)="getSubQuestions(a, 1)"></clr-icon>
+                                <app-spinner [loading]="a.loading" [dots]="a.dots"></app-spinner>
                                 <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="survey-row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
+                <div class="survey-row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'" #chartElement>
                     <app-survey-chart [graphButtons]="graphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="surveyName"
                                       [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
                 </div>
-                <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
+                <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
                         <div class="survey-tbl-exp-r survey-sub-tbl-1"
                              *ngFor="let sqa of subQuestion.countAnalysis.results" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa, subQuestion)">
@@ -123,17 +124,17 @@
                                     </div>
 
                                     <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                                        <button class="icon-btn" *ngIf="sqa.hasSubQuestions != 1 && sqa.stratum4 != 'Did not answer'">
+                                        <button class="icon-btn" *ngIf="sqa.stratum7 != '1' && sqa.stratum4 != 'Did not answer'">
                                             <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                         </button>
-                                        <button class="icon-btn" *ngIf="sqa.hasSubQuestions == 1">
+                                        <button class="icon-btn" *ngIf="sqa.stratum7 === '1'">
                                             <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
                                             <clr-icon *ngIf="sqa.subExpanded" shape="caret" dir="down"></clr-icon>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
+                            <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7">
                                 <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
                                                   [surveyName]="surveyName" [surveyCountAnalysis]="surveyCountAnalysis"
                                                   [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
@@ -164,7 +165,7 @@
             <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
             <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
         </a>
-        <div class="survey-tbl" *ngIf="q.expanded">
+        <div class="survey-tbl" *ngIf="q.expanded && q.resultFetchComplete">
             <div class="question-info-text">
                 For participants who selected "A lot" or "Some" in the first question: please indicate if your family member(s) has
                 ever been diagnosed with the following health conditions and/or health events. Think only of the person you are related to by blood. (select all that apply):
@@ -220,24 +221,25 @@
                             </ng-template>
                         </div>
                         <div class=" info-text survey-tbl-d display-body info-text">
-                            <span>{{a.countPercent.toFixed(2)}}%</span>
+                            <span>{{countPercentage(a.countValue, participantCount).toFixed(2)}}%</span>
                         </div>
                         <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                            <button class="icon-btn" *ngIf="a.hasSubQuestions != 1 && a.stratum4 != 'Did not answer'">
+                            <button class="icon-btn" *ngIf="!a.stratum7 && a.stratum4 != 'Did not answer'">
                                 <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart" style="height: 1.5rem; width: 1.5rem;color: #2691D0;"></clr-icon>
                             </button>
-                            <button class="icon-btn" *ngIf="a.hasSubQuestions == 1">
+                            <button class="icon-btn" *ngIf="a.stratum7 === '1'" (click)="getSubQuestions(a, 1)">
                                 <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
+                                <app-spinner [loading]="a.loading" [dots]="a.dots"></app-spinner>
                                 <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="survey-row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
+                <div class="survey-row-expansion" *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.stratum7" #chartElement>
                     <app-survey-chart [graphButtons]="graphButtons" [question]="q" [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="surveyName"
                                       [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a"></app-survey-chart>
                 </div>
-                <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.subQuestions">
+                <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.stratum7 === '1'">
                         <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
                         <div class="survey-tbl-exp-r survey-sub-tbl-1"
                              *ngFor="let sqa of subQuestion.countAnalysis.results" (click)="$event.stopPropagation();showSubAnswerGraphs(sqa, subQuestion)">
@@ -269,17 +271,18 @@
                                     </div>
 
                                     <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                                        <button class="icon-btn" *ngIf="sqa.hasSubQuestions != 1 && sqa.stratum4 != 'Did not answer'">
+                                        <button class="icon-btn" *ngIf="!sqa.stratum7 && sqa.stratum4 != 'Did not answer'">
                                             <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart" style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                         </button>
-                                        <button class="icon-btn" *ngIf="sqa.hasSubQuestions == 1">
+                                        <button class="icon-btn" *ngIf="sqa.stratum7 === '1'">
                                             <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
+                                            <app-spinner [loading]="sqa.loading" [dots]="sqa.dots"></app-spinner>
                                             <clr-icon *ngIf="sqa.subExpanded" shape="caret" dir="down"></clr-icon>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.subQuestions">
+                            <div class="row-expansion" *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7">
                                 <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
                                                   [surveyName]="surveyName" [surveyCountAnalysis]="surveyCountAnalysis"
                                                   [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>

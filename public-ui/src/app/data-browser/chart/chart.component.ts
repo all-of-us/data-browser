@@ -218,7 +218,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           formatter: function () {
             const label = this.axis.defaultLabelFormatter.call(this);
             // Change <= 20 count to display '<= 20'
-            if (label.indexOf('>=') > -1) {
+            if (label && label.indexOf('>=') > -1) {
               return '&#8805; ' + label.replace('>=', '');
             }
             return label;

@@ -92,12 +92,12 @@
                   </app-highlight-search>
                 </div>
               </div>
-              <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q)" (click)="toggleAnswer(q)">
+              <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)" (click)="toggleAnswer(q, 'display', 0)">
                 See Answers
                 <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </a>
-              <div class="survey-tbl" *ngIf="q.expanded">
+              <div class="survey-tbl" *ngIf="q.expanded && q.resultFetchComplete">
                 <div class="survey-tbl-r survey-tbl-head">
                   <div class="info-text first survey-tbl-d">
                   </div>
@@ -154,16 +154,17 @@
                       </div>
 
                       <div class=" info-text survey-tbl-d display-body info-text">
-                        <span>{{a.countPercent.toFixed(2)}}%</span>
+                        <span>{{countPercentage(a.countValue, survey.participantCount).toFixed(2)}}%</span>
                       </div>
 
                       <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                        <button class="icon-btn" *ngIf="!a.hasSubQuestions && a.stratum4 != 'Did not answer'">
+                        <button class="icon-btn" *ngIf="!a.stratum7 && a.stratum4 != 'Did not answer'">
                           <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart"
                             style="height: 1.5rem; width: 1.5rem;color: #2691D0;"></clr-icon>
                         </button>
-                        <button class="icon-btn" *ngIf="a.hasSubQuestions">
-                          <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
+                        <button class="icon-btn" *ngIf="a.stratum7 === '1'">
+                          <clr-icon *ngIf="!a.expanded" shape="caret" dir="right" (click)="getSubQuestions(a, 'display', 1)"></clr-icon>
+                          <app-spinner [loading]="a.loading" [dots]="a.dots"></app-spinner>
                           <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
                         </button>
                       </div>
@@ -171,13 +172,13 @@
                   </div>
 
                   <div class="survey-row-expansion"
-                    *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && !a.subQuestions" #chartElement>
+                    *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'" #chartElement>
                     <app-survey-chart [graphButtons]="graphButtons" [question]="q"
                       [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
                       [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a">
                     </app-survey-chart>
                   </div>
-                  <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.hasSubQuestions">
+                  <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
                       <h6 class="sub-question-text">
                         <clr-icon shape="child-arrow" size="25"></clr-icon>
@@ -223,10 +224,10 @@
                       </div>
                       <div class="survey-tbl-exp-r survey-sub-tbl-1"
                         *ngFor="let sqa of subQuestion.countAnalysis.results"
-                        (click)="$event.stopPropagation();showSubAnswerGraphs(sqa, subQuestion)">
+                        (click)="$event.stopPropagation();showAnswerGraphs(sqa, subQuestion)">
                         <div class="survey-tbl-r">
                           <div class="survey-tbl-d first display-body info-text sub-1-que survey-answer-level-1"
-                            [ngClass]="{'active':a.expanded && sqa.subExpanded}">
+                            [ngClass]="{'active':a.expanded && sqa.expanded}">
                             <div>
                               <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value">
                               </app-highlight-search>
@@ -255,25 +256,26 @@
                             <div
                               class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
                               <button class="icon-btn"
-                                *ngIf="sqa.hasSubQuestions != 1 && sqa.stratum4 != 'Did not answer'">
-                                <clr-icon [ngClass]="sqa.subExpanded?'is-solid':''" shape="bar-chart"
+                                *ngIf="sqa.stratum7 != '1' && sqa.stratum4 != 'Did not answer'">
+                                <clr-icon [ngClass]="sqa.expanded?'is-solid':''" shape="bar-chart"
                                   style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                               </button>
-                              <button class="icon-btn" *ngIf="sqa.hasSubQuestions == 1">
-                                <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
-                                <clr-icon *ngIf="sqa.subExpanded" shape="caret" dir="down"></clr-icon>
+                              <button class="icon-btn" *ngIf="sqa.stratum7 === '1'">
+                                <clr-icon *ngIf="!sqa.expanded" shape="caret" dir="right" (click)="getSubQuestions(sqa, 'display', 2)"></clr-icon>
+                                <app-spinner [loading]="sqa.loading" [dots]="sqa.dots"></app-spinner>
+                                <clr-icon *ngIf="sqa.expanded" shape="caret" dir="down"></clr-icon>
                               </button>
                             </div>
                           </div>
                         </div>
                         <div class="row-expansion"
-                          *ngIf="sqa.subExpanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.hasSubQuestions">
+                          *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7">
                           <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion"
                             [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
                             [surveyName]="survey.name" [surveyCountAnalysis]="surveyCountAnalysis"
                             [searchTerm]="prevSearchText" [answer]="sqa"></app-survey-chart>
                         </div>
-                        <div class="row-expansion sub-table-2" *ngIf="sqa.subExpanded && sqa.hasSubQuestions">
+                        <div class="row-expansion sub-table-2" *ngIf="sqa.expanded && sqa.stratum7 === '1'">
                           <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
                             <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
                               <clr-icon shape="child-arrow" size="25"></clr-icon>
@@ -309,7 +311,7 @@
                               </div>
                             </div>
                             <div class="survey-tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.results"
-                              (click)="$event.stopPropagation();showSubAnswerGraphs(sqa2, subQuestion2)">
+                              (click)="$event.stopPropagation();showAnswerGraphs(sqa2, subQuestion2)">
                               <div class="survey-tbl-r">
                                 <div class="survey-tbl-d first display-body info-text">
                                   <div>
@@ -339,19 +341,19 @@
                                   <div
                                     class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
                                     <button class="icon-btn"
-                                      *ngIf="!sqa2.hasSubQuestions && sqa2.stratum4 != 'Did not answer'">
-                                      <clr-icon [ngClass]="sqa2.subExpanded?'is-solid':''" shape="bar-chart"
+                                      *ngIf="!sqa2.stratum7 && sqa2.stratum4 != 'Did not answer'">
+                                      <clr-icon [ngClass]="sqa2.expanded?'is-solid':''" shape="bar-chart"
                                         style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                                     </button>
-                                    <button class="icon-btn" *ngIf="sqa2.hasSubQuestions">
-                                      <clr-icon *ngIf="!sqa2.subExpanded" shape="caret" dir="right"></clr-icon>
-                                      <clr-icon *ngIf="sqa2.subExpanded" shape="caret" dir="down"></clr-icon>
+                                    <button class="icon-btn" *ngIf="sqa2.stratum7 && sqa2.stratum7 === '1'">
+                                      <clr-icon *ngIf="!sqa2.expanded" shape="caret" dir="right"></clr-icon>
+                                      <clr-icon *ngIf="sqa2.expanded" shape="caret" dir="down"></clr-icon>
                                     </button>
                                   </div>
                                 </div>
                               </div>
                               <div class="row-expansion"
-                                *ngIf="sqa2.subExpanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.hasSubQuestions">
+                                *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7">
                                 <app-survey-chart [graphButtons]="graphButtons" [question]="subQuestion2"
                                   [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
                                   [surveyName]="survey.name" [surveyCountAnalysis]="surveyCountAnalysis"
