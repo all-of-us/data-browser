@@ -449,7 +449,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
               .subscribe({
                 next: results => {
                   a.subQuestions = results.questions.items;
-                  for(const q of a.subQuestions) {
+                  for (const q of a.subQuestions) {
                     this.processResults(q, a.countValue);
                   }
                   this.setDefaults(a.subQuestions, level);
