@@ -5,6 +5,7 @@ import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
 import org.springframework.http.HttpStatus;
+import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.net.SocketTimeoutException;
 import javax.validation.Valid;
@@ -110,6 +111,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
     public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
     public static final long AGE_ANALYSIS_ID = 3102;
+
+    public static final long SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID = 3400;
+    public static final long SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID = 3401;
 
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
@@ -411,6 +415,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             stratum7 = "";
                         }
                     }
+                  
+                    String stratum4 = o.getStratum4();
+
+                    if (o.getAnalysisId() == SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID || o.getAnalysisId() == SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID) {
+                        stratum4 = Month.of(Integer.parseInt(o.getStratum3())).name().toString();
+                    }
 
                     return new org.pmiops.workbench.model.AchillesResult()
                             .id(o.getId())
@@ -418,7 +428,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum1(o.getStratum1())
                             .stratum2(o.getStratum2())
                             .stratum3(o.getStratum3())
-                            .stratum4(o.getStratum4())
+                            .stratum4(stratum4)
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
                             .stratum7(stratum7)
@@ -891,7 +901,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         SurveyVersionCountResponse surveyVersionCountResponse = new SurveyVersionCountResponse();
 
-        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findAnalysisByIds(ImmutableList.of(3400L, 3401L));
+        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findAnalysisByIds(ImmutableList.of(SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID, SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID));
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyAnalysisList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
         surveyVersionCountResponse.setAnalyses(analysisListResponse);
