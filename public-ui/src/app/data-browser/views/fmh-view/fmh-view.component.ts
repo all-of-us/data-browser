@@ -134,8 +134,8 @@ export class FmhViewComponent implements OnInit {
 
     public getSubQuestions(a: any, level: number) {
       if (!a.subQuestions) {
-              a.loading=true;
-              a.dots=true;
+              a.loading = true;
+              a.dots = true;
       }
       this.api.getFMHSurveyQuestionResults(a.stratum3)
                 .subscribe({
@@ -150,8 +150,8 @@ export class FmhViewComponent implements OnInit {
                   },
                   complete: () => {
                       a.subQuestionFetchComplete = true;
-                      a.loading=false;
-                      a.dots=false;
+                      a.loading = false;
+                      a.dots = false;
                   }
       });
     }

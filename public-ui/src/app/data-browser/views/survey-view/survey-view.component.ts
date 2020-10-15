@@ -146,7 +146,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // this.router.navigate(
           // ['survey/' + this.domainId.toLowerCase() + '/' + query]
           // );
-          //this.resetExpansion();
+          // this.resetExpansion();
         }));
     this.subscriptions.push(this.searchText.valueChanges
           .debounceTime(1000)
@@ -442,8 +442,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getSubQuestions(a: any, source: any, level: number) {
     if (!a.subQuestions) {
-            a.loading=true;
-            a.dots=true;
+            a.loading = true;
+            a.dots = true;
     }
     this.api.getSubQuestions(this.surveyConceptId, a.stratum3, level)
               .subscribe({
@@ -459,8 +459,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                 },
                 complete: () => {
                     a.subQuestionFetchComplete = true;
-                    a.loading=false;
-                    a.dots=false;
+                    a.loading = false;
+                    a.dots = false;
                 }
     });
   }
