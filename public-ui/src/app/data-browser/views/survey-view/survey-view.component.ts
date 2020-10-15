@@ -125,11 +125,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
     if (surveyObj) {
       this.surveyConceptId = surveyObj.conceptId;
-      if (this.surveyConceptId == 1333342) { this.isCopeSurvey = true; }
+      if (this.surveyConceptId === 1333342) { this.isCopeSurvey = true; }
       this.surveyName = surveyObj.name;
       this.surveyDescription = surveyObj.description;
 
-      // this.getSurveyResults();
     } else {
       this.getThisSurvey();
     }
@@ -352,7 +351,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.surveyConceptId.toString()).subscribe({
           next: x => {
             x.analyses.items.forEach(item => {
-              item.results.forEach((result,i) => {
+              item.results.forEach((result, i) => {
                 if (item.analysisId === 3400) {
                   this.surveyVersions.push(
                     {
@@ -360,11 +359,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       participants: result.sourceCountValue,
                       numberOfQuestion: ''
                     });
-                } else if ( item.analysisId === 3401){
-                  this.surveyVersions[i].numberOfQuestion= result.sourceCountValue;
+                } else if (item.analysisId === 3401) {
+                  this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
                 }
               });
-
             });
           },
           error: err => {
