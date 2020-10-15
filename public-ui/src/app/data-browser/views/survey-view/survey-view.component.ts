@@ -312,7 +312,7 @@ public processResults(q: any, totalCount: number) {
       }));
     }
   }
-  
+
   public setSurvey() {
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
@@ -349,7 +349,7 @@ public processResults(q: any, totalCount: number) {
         })
     );
   }
-  
+
   public countPercentage(countValue: number, totalCount: number) {
     if (!countValue || countValue <= 0) { return 0; }
     let percent: number = countValue / totalCount;
@@ -393,7 +393,7 @@ public processResults(q: any, totalCount: number) {
     }
     this.loading = false;
   }
-  
+
   public getReString() {
     const text = this.searchText.value;
     let words = text.split(new RegExp(',| | and | or '));
