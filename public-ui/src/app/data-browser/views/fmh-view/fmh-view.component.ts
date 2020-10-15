@@ -55,7 +55,8 @@ export class FmhViewComponent implements OnInit {
        .debounceTime(1000)
        .distinctUntilChanged()
        .switchMap((query) => this.api.getFMHQuestions(43528698,
-         this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds), this.searchText.value).subscribe({
+         this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds),
+         this.searchText.value).subscribe({
          next: x => {
              this.conditionQuestions = x.questions.items.filter
              (y => this.conditionQuestionConceptIds.includes(String(y.conceptId)));
@@ -64,7 +65,7 @@ export class FmhViewComponent implements OnInit {
              this.processQuestions(this.conditionQuestions);
              this.processQuestions(this.fmQuestions);
              this.sortQuestions();
-             //this.resetExpansion();
+             // this.resetExpansion();
              this.filterResults();
              },
          error: err => {
@@ -76,7 +77,8 @@ export class FmhViewComponent implements OnInit {
 
   private getSurveyResults() {
     this.subscriptions.push(this.api.getFMHQuestions(43528698,
-      this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds), this.searchText.value).subscribe({
+      this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds),
+      this.searchText.value).subscribe({
       next: x => {
         this.conditionQuestions = x.questions.items.filter
         (y => this.conditionQuestionConceptIds.includes(String(y.conceptId)));
@@ -85,7 +87,7 @@ export class FmhViewComponent implements OnInit {
         this.processQuestions(this.conditionQuestions);
         this.processQuestions(this.fmQuestions);
         this.sortQuestions();
-        //this.resetExpansion();
+        // this.resetExpansion();
         this.filterResults();
       },
       error: err => {
@@ -139,7 +141,7 @@ export class FmhViewComponent implements OnInit {
                 .subscribe({
                   next: results => {
                     a.subQuestions = results.items;
-                    for(const q of a.subQuestions) {
+                    for (const q of a.subQuestions) {
                       this.processResults(q, a.countValue);
                     }
                   },
