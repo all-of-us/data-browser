@@ -256,9 +256,6 @@ public processResults(q: any, totalCount: number) {
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
     q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
-    console.log(q.versionAnalysis);
-    console.log(q.genderAnalysis);
-    console.log(q.ageAnalysis);
     for (const a of q.countAnalysis.results) {
         if (a.stratum7 && a.stratum7 === '1') {
             a.subQuestionFetchComplete = false;
@@ -471,7 +468,7 @@ public processResults(q: any, totalCount: number) {
             a.loading = true;
             a.dots = true;
     }
-    this.api.getSubQuestions(this.surveyConceptId, a.stratum3, level)
+    this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
               .subscribe({
                 next: results => {
                   a.subQuestions = results.questions.items;
