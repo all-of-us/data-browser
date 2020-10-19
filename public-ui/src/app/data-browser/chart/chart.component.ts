@@ -288,7 +288,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeMeasurementChartOptions();
     }
     if (analysisId === this.dbc.SURVEY_VERSION_ANALYSIS_ID) {
-        return this.makeSurveyVersionChartOptions(this.surveyAnalysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        return this.makeSurveyVersionChartOptions(this.surveyAnalysis.results.
+        filter(r => r.stratum4 === this.selectedResult.stratum4),
         'Survey Versions', 'Survey Versions', this.surveyAnalysis.analysisId);
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
