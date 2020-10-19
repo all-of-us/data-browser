@@ -59,6 +59,9 @@ export class SurveyChartComponent implements OnInit {
       case GraphType.AgeWhenSurveyWasTaken:
         q.selectedAnalysis = q.ageAnalysis;
         break;
+      case GraphType.SurveyVersion:
+        q.selectedAnalysis = q.versionAnalysis;
+        break;
       default:
         q.selectedAnalysis = q.genderAnalysis;
         break;

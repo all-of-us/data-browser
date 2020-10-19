@@ -25,9 +25,9 @@ public interface QuestionConceptDao extends CrudRepository<QuestionConcept, Long
             "and (match(ar2.concept_name) against(?2 in boolean mode) > 0 or match(ar2.question_string) against(?2 in boolean mode) > 0);")
     List<QuestionConcept> getMatchingFMHQuestions(List<String> questionConceptIds, String search_word);
 
-    @Query(nativeQuery=true, value="select distinct * from question_concept where sub=1 and \n" +
-            "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 2), '.', -1)=?2 and survey_concept_id=?1 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=2")
-    List<QuestionConcept> getSubQuestionsLevel1(String surveyConceptId, String answerConceptId);
+    @Query(nativeQuery=true, value="select distinct * from question_concept where sub=1 and SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 1), '.', -1)=?1 and \n" +
+            "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 2), '.', -1)=?2 and survey_concept_id=?3 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=2")
+    List<QuestionConcept> getSubQuestionsLevel1(String questionConceptId, String answerConceptId, String surveyConceptId);
 
     @Query(nativeQuery=true, value="select distinct * from question_concept where sub=1 and \n" +
             "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 4), '.', -1)=?1 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=4")

@@ -30,7 +30,7 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` where survey
 main_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.path as stratum_6,
-CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_7,
+case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
@@ -42,7 +42,7 @@ order by CAST(sq.question_order_number as int64) asc),
 sub_1_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.path as stratum_6,
-CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_7,
+case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
@@ -57,7 +57,7 @@ order by CAST(sq.question_order_number as int64) asc),
 sub_2_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.question_order_number as string) stratum_5,sq.path as stratum_6,
-CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_7,
+case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
@@ -778,23 +778,26 @@ Group by sq.survey_concept_id"
 # Versioned participant count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_3,
+(id,analysis_id,stratum_1,stratum_3,stratum_4,count_value,source_count_value)
+SELECT 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then '7/8' else cast(EXTRACT(MONTH from o.observation_datetime) as string) end as stratum_3,
+case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_4,
 count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`  o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
 On o.observation_source_concept_id=sq.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id, 4"
+Group by sq.survey_concept_id, 4, 5;"
 
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, CAST(EXTRACT(MONTH from o.observation_datetime) as string) as stratum_3,
+(id,analysis_id,stratum_1,stratum_3,stratum_4,count_value,source_count_value)
+SELECT 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
+case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then '7/8' else cast(EXTRACT(MONTH from o.observation_datetime) as string) end as stratum_3,
+case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_4,
 count(distinct sq.concept_id) as count_value, count(distinct sq.concept_id) as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.question_concept\` sq
 On o.observation_source_concept_id=sq.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id, 4"
+Group by sq.survey_concept_id, 4, 5;"

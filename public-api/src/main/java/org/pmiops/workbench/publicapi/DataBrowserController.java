@@ -118,6 +118,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
     public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
+    public static final long SURVEY_VERSION_ANALYSIS_ID = 3113;
 
     public static final long SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID = 3320;
     public static final long SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID = 3321;
@@ -149,6 +150,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long ETHNICITY_ANALYSIS = 5;
 
     public static Map<String, String> ageStratumNameMap = new HashMap<String, String>();
+    public static Map<String, String> versionStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderStratumNameMap = new HashMap<String, String>();
     public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8", "9"}));
 
@@ -182,7 +184,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ageStratumNameMap.put("7", "70-79");
         ageStratumNameMap.put("8", "80-89");
         ageStratumNameMap.put("9", "89+");
+    }
 
+    public static void setSurveyVersionNameMap() {
+        versionStratumNameMap.put("January", "1");
+        versionStratumNameMap.put("February", "2");
+        versionStratumNameMap.put("March", "3");
+        versionStratumNameMap.put("April", "4");
+        versionStratumNameMap.put("May", "5");
+        versionStratumNameMap.put("June", "6");
+        versionStratumNameMap.put("July/August", "7");
+        versionStratumNameMap.put("September", "9");
+        versionStratumNameMap.put("October", "10");
+        versionStratumNameMap.put("November", "11");
+        versionStratumNameMap.put("December", "12");
     }
 
     public static void setGenderStratumNameMap() {
@@ -200,6 +215,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     static {
         setAgeStratumNameMap();
         setGenderStratumNameMap();
+        setSurveyVersionNameMap();
     }
 
     /**
@@ -269,6 +285,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     org.pmiops.workbench.model.Analysis countAnalysis=null;
                     org.pmiops.workbench.model.Analysis genderAnalysis=null;
                     org.pmiops.workbench.model.Analysis ageAnalysis=null;
+                    org.pmiops.workbench.model.Analysis versionAnalysis=null;
 
                     if(concept.getCountAnalysis() != null){
                         countAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getCountAnalysis());
@@ -278,6 +295,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                     if(concept.getAgeAnalysis() != null){
                         ageAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getAgeAnalysis());
+                    }
+                    if(concept.getVersionAnalysis() != null){
+                        versionAnalysis = TO_CLIENT_ANALYSIS.apply(concept.getVersionAnalysis());
                     }
 
                     return new org.pmiops.workbench.model.QuestionConcept()
@@ -294,7 +314,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .questionString(concept.getQuestionString())
                             .countAnalysis(countAnalysis)
                             .genderAnalysis(genderAnalysis)
-                            .ageAnalysis(ageAnalysis);
+                            .ageAnalysis(ageAnalysis)
+                            .versionAnalysis(versionAnalysis);
                 }
             };
 
@@ -409,17 +430,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                         }
                     }
 
+                    if (o.getAnalysisId() == SURVEY_VERSION_ANALYSIS_ID) {
+                        String rStratum7Name = o.getAnalysisStratumName();
+                        String analysisStratumName = o.getAnalysisStratumName();
+                        if (rStratum7Name == null || rStratum7Name.equals("")) {
+                            o.setAnalysisStratumName(versionStratumNameMap.get(o.getStratum7()));
+                            analysisStratumName = versionStratumNameMap.get(o.getStratum7());
+                        }
+                    }
+
                     String stratum7 = o.getStratum7();
                     if (o.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
                         if (o.getStratum3().equals("903096")) {
                             stratum7 = "";
                         }
-                    }
-                  
-                    String stratum4 = o.getStratum4();
-
-                    if (o.getAnalysisId() == SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID || o.getAnalysisId() == SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID) {
-                        stratum4 = Month.of(Integer.parseInt(o.getStratum3())).name().toString();
                     }
 
                     return new org.pmiops.workbench.model.AchillesResult()
@@ -428,7 +452,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum1(o.getStratum1())
                             .stratum2(o.getStratum2())
                             .stratum3(o.getStratum3())
-                            .stratum4(stratum4)
+                            .stratum4(o.getStratum4())
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
                             .stratum7(stratum7)
@@ -784,7 +808,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long answerConceptId, Integer level) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, Integer level) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
@@ -795,7 +819,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<QuestionConcept> questions = new ArrayList<>();
 
         if (level == 1) {
-            questions = questionConceptDao.getSubQuestionsLevel1(String.valueOf(surveyConceptId), String.valueOf(answerConceptId));
+            questions = questionConceptDao.getSubQuestionsLevel1(String.valueOf(questionConceptId), String.valueOf(answerConceptId), String.valueOf(surveyConceptId));
         } else if (level == 2) {
             questions = questionConceptDao.getSubQuestionsLevel2(String.valueOf(answerConceptId));
         }
@@ -806,7 +830,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionIds.add(String.valueOf(qc.getQuestionConceptId().getConceptId()));
         }
 
-        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L), questionIds);
+        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), questionIds);
 
         QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
         questionResp.setItems(mapAnalysesToQuestions(surveyAnalysisList, questions.stream().map(TO_CLIENT_QUESTION_CONCEPT).collect(Collectors.toList())));
@@ -850,7 +874,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<QuestionConceptListResponse> getFMHSurveyQuestionResults(String questionConceptId) {
+    public ResponseEntity<QuestionConceptListResponse> getFMHSurveyQuestionResults(String questionConceptId, String answerConceptId) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
@@ -859,7 +883,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         QuestionConceptListResponse resp = new QuestionConceptListResponse();
 
-        List<QuestionConcept> subQuestions = questionConceptDao.getSubQuestionsLevel1("43528698", questionConceptId);
+        List<QuestionConcept> subQuestions = questionConceptDao.getSubQuestionsLevel1(questionConceptId, answerConceptId, "43528698");
 
         List<String> questionConceptIds = new ArrayList<>();
 
@@ -885,7 +909,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L), String.valueOf(surveyConceptId), String.valueOf(questionConceptId), questionPath);
+        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), String.valueOf(surveyConceptId), String.valueOf(questionConceptId), questionPath);
         analysisListResponse.setItems(surveyAnalysisList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
 
         return ResponseEntity.ok(analysisListResponse);
@@ -1592,10 +1616,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
+        Map<Long, List<AchillesResult>> versionAnalysisResultsByQuestion = new HashMap<>();
 
         AchillesAnalysis countAnalysis = null;
         AchillesAnalysis genderAnalysis = null;
         AchillesAnalysis ageAnalysis = null;
+        AchillesAnalysis versionAnalysis = null;
 
         for (AchillesAnalysis aa: analyses) {
             if (aa.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
@@ -1645,6 +1671,22 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
+            if (aa.getAnalysisId() == SURVEY_VERSION_ANALYSIS_ID) {
+
+                versionAnalysis = aa;
+                for(AchillesResult ar: aa.getResults()) {
+                    Long questionId = Long.valueOf(ar.getStratum2());
+
+                    if (versionAnalysisResultsByQuestion.containsKey(questionId)) {
+                        List<AchillesResult> tempResults = versionAnalysisResultsByQuestion.get(questionId);
+                        tempResults.add(ar);
+                    } else {
+                        List<AchillesResult> tempResults = new ArrayList<>();
+                        tempResults.add(ar);
+                        versionAnalysisResultsByQuestion.put(questionId, tempResults);
+                    }
+                }
+            }
 
         }
 
@@ -1663,6 +1705,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 AchillesAnalysis aa = new AchillesAnalysis(ageAnalysis);
                 aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
                 q.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+            }
+            if (versionAnalysis != null) {
+                AchillesAnalysis aa = new AchillesAnalysis(versionAnalysis);
+                aa.setResults(versionAnalysisResultsByQuestion.get(q.getConceptId()));
+                q.setVersionAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
             }
         }
 

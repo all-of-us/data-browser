@@ -30,7 +30,6 @@ strong {
     font-family: GothamBold;
 }
 .version-box-body{
-    height: 8rem;
     overflow-y: auto;
 }
 .version-box-item{
