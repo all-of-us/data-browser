@@ -204,7 +204,7 @@ set a.stratum_7='1'
 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` b
 where a.stratum_2=SPLIT(b.path, '.')[OFFSET(0)]
 and a.stratum_3=SPLIT(b.path, '.')[OFFSET(1)] and a.analysis_id=3110 and b.generate_counts=1
-and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, \"\\.\")) = 2
+and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, '.')) = 2
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -215,7 +215,7 @@ from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` b
 where a.stratum_2=SPLIT(b.path, '.')[OFFSET(2)]
 and a.stratum_3=SPLIT(b.path, '.')[OFFSET(3)] and a.analysis_id=3110 and b.generate_counts=1
 and a.stratum_6=CONCAT(SPLIT(b.path, '.')[OFFSET(0)],'.',SPLIT(b.path, '.')[OFFSET(1)],'.',SPLIT(b.path, '.')[OFFSET(2)])
-and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, \"\\.\")) = 4
+and ARRAY_LENGTH(REGEXP_EXTRACT_ALL(b.path, '.')) = 4
 "
 
 ###########################

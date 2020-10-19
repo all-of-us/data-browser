@@ -415,12 +415,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             stratum7 = "";
                         }
                     }
-                  
-                    String stratum4 = o.getStratum4();
-
-                    if (o.getAnalysisId() == SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID || o.getAnalysisId() == SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID) {
-                        stratum4 = Month.of(Integer.parseInt(o.getStratum3())).name().toString();
-                    }
 
                     return new org.pmiops.workbench.model.AchillesResult()
                             .id(o.getId())
@@ -428,7 +422,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .stratum1(o.getStratum1())
                             .stratum2(o.getStratum2())
                             .stratum3(o.getStratum3())
-                            .stratum4(stratum4)
+                            .stratum4(o.getStratum4())
                             .stratum5(o.getStratum5())
                             .stratum6(o.getStratum6())
                             .stratum7(stratum7)
