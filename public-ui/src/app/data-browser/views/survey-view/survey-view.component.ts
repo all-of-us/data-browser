@@ -468,6 +468,10 @@ public processResults(q: any, totalCount: number) {
             a.loading = true;
             a.dots = true;
     }
+    console.log(this.surveyConceptId);
+    console.log(a.stratum2);
+    console.log(a.stratum3);
+    console.log(level);
     this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
               .subscribe({
                 next: results => {
