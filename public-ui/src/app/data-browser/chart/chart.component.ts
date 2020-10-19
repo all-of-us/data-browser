@@ -288,7 +288,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       return this.makeMeasurementChartOptions();
     }
     if (analysisId === this.dbc.SURVEY_VERSION_ANALYSIS_ID) {
-        return this.makeSurveyVersionChartOptions(this.surveyAnalysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4), 'Survey Versions', 'Survey Versions', this.surveyAnalysis.analysisId);
+        return this.makeSurveyVersionChartOptions(this.surveyAnalysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4),
+        'Survey Versions', 'Survey Versions', this.surveyAnalysis.analysisId);
     }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
   }
@@ -582,17 +583,15 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         }
     );
     const yAxisLabel = null;
-    let data = [];
-    let cats = [];
+    const data = [];
+    const cats = [];
     let legendText = null;
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of results) {
       let analysisStratumName = null;
       let toolTipHelpText = null;
       let color = null;
-      let percentage = null;
       let count;
-      let totalCount;
       count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
       color = this.dbc.COLUMN_COLOR;
       analysisStratumName = a.stratum7;
@@ -604,7 +603,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       data.push({
         name: analysisStratumName
         , y: a.countValue, color: color, sliced: true, version: a.analysisStratumName,
-        toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage,
+        toolTipHelpText: toolTipHelpText,
         analysisId: analysisId
       });
       cats.push(analysisStratumName);
