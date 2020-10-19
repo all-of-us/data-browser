@@ -307,7 +307,8 @@ public processResults(q: any, totalCount: number) {
                      if (item.analysisId === 3400) {
                        this.surveyVersions.push(
                          {
-                           month: result.stratum4,
+                           monthName: result.stratum4,
+                           monthNum: result.stratum3.split('/')[0],
                            participants: result.sourceCountValue,
                            numberOfQuestion: ''
                          });
