@@ -118,6 +118,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
     public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
     public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
+    public static final long SURVEY_VERSION_ANALYSIS_ID = 3113;
 
     public static final long SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID = 3320;
     public static final long SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID = 3321;
@@ -149,6 +150,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long ETHNICITY_ANALYSIS = 5;
 
     public static Map<String, String> ageStratumNameMap = new HashMap<String, String>();
+    public static Map<String, String> versionStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderStratumNameMap = new HashMap<String, String>();
     public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8", "9"}));
 
@@ -182,7 +184,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ageStratumNameMap.put("7", "70-79");
         ageStratumNameMap.put("8", "80-89");
         ageStratumNameMap.put("9", "89+");
+    }
 
+    public static void setSurveyVersionNameMap() {
+        versionStratumNameMap.put("January", "1");
+        versionStratumNameMap.put("February", "2");
+        versionStratumNameMap.put("March", "3");
+        versionStratumNameMap.put("April", "4");
+        versionStratumNameMap.put("May", "5");
+        versionStratumNameMap.put("June", "6");
+        versionStratumNameMap.put("July/August", "7");
+        versionStratumNameMap.put("September", "9");
+        versionStratumNameMap.put("October", "10");
+        versionStratumNameMap.put("November", "11");
+        versionStratumNameMap.put("December", "12");
     }
 
     public static void setGenderStratumNameMap() {
@@ -200,6 +215,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     static {
         setAgeStratumNameMap();
         setGenderStratumNameMap();
+        setSurveyVersionNameMap();
     }
 
     /**
@@ -406,6 +422,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                 o.setAnalysisStratumName(genderStratumNameMap.get(o.getStratum5()));
                                 analysisStratumName = genderStratumNameMap.get(o.getStratum5());
                             }
+                        }
+                    }
+
+                    if (o.getAnalysisId() == SURVEY_VERSION_ANALYSIS_ID) {
+                        String rStratum7Name = o.getAnalysisStratumName();
+                        String analysisStratumName = o.getAnalysisStratumName();
+                        if (rStratum7Name == null || rStratum7Name.equals("")) {
+                            o.setAnalysisStratumName(versionStratumNameMap.get(o.getStratum7()));
+                            analysisStratumName = versionStratumNameMap.get(o.getStratum7());
                         }
                     }
 
@@ -879,7 +904,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L), String.valueOf(surveyConceptId), String.valueOf(questionConceptId), questionPath);
+        List<AchillesAnalysis> surveyAnalysisList = achillesAnalysisDao.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), String.valueOf(surveyConceptId), String.valueOf(questionConceptId), questionPath);
         analysisListResponse.setItems(surveyAnalysisList.stream().map(TO_CLIENT_ANALYSIS).collect(Collectors.toList()));
 
         return ResponseEntity.ok(analysisListResponse);

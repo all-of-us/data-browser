@@ -287,6 +287,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
       return this.makeMeasurementChartOptions();
     }
+    if (analysisId === this.dbc.SURVEY_VERSION_ANALYSIS_ID) {
+        return this.makeSurveyVersionChartOptions(this.surveyAnalysis.results.filter(r => r.stratum4 === this.selectedResult.stratum4), 'Survey Versions', 'Survey Versions', this.surveyAnalysis.analysisId);
+    }
     console.log('Error: Can not make chart options for this analysis. :', this.analysis);
   }
   seriesClick(event) {
@@ -559,6 +562,77 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
+
+    /*
+                                #...........#.######..########....########...#..########..#.......#
+                                .#.........#..#.......#.......##..#..........#..#......#..#.#.....#
+                                .#........#...#.......#.......##..#..........#..#......#..#..#....#
+                                ..#......#....######..##########..########...#..#......#..#...#...#
+                                ...#....#.....#.......#.......##.........#...#..#......#..#....#..#
+                                ....#..#......#.......#.......##.........#...#..#......#..#.....#.#
+                                .....#........######..#.......##..########...#..########..#......##
+      */
+  public makeSurveyVersionChartOptions(results: any, analysisName: string,
+                                       seriesName: string, analysisId: number) {
+    // Sort the results in ascending order of months
+    results = results.sort((a, b) => {
+          const anum = Number(a.analysisStratumName);
+          const bnum = Number(b.analysisStratumName);
+          return anum - bnum;
+        }
+    );
+    const yAxisLabel = null;
+    let data = [];
+    let cats = [];
+    let legendText = null;
+    // LOOP CREATES DYNAMIC CHART VARS
+    for (const a of results) {
+      let analysisStratumName = null;
+      let toolTipHelpText = null;
+      let color = null;
+      let percentage = null;
+      let count;
+      let totalCount;
+      count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+      color = this.dbc.COLUMN_COLOR;
+      analysisStratumName = a.stratum7;
+
+      legendText = 'Survey Version Count';
+      toolTipHelpText =
+                '<b> ' + count + '</b> participants had answered this survey question with this answer in ' + analysisStratumName +
+                ' version of COPE survey.';
+      data.push({
+        name: analysisStratumName
+        , y: a.countValue, color: color, sliced: true, version: a.analysisStratumName,
+        toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage,
+        analysisId: analysisId
+      });
+      cats.push(analysisStratumName);
+    }
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
+    const series = [
+      {
+        color: '#2691D0',
+        legendColor: '#2691D0',
+        name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+      }];
+    return {
+      chart: { type: 'column', backgroundColor: 'transparent' },
+      title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      series: series,
+      categories: cats,
+      color: this.dbc.COLUMN_COLOR,
+      pointWidth: this.pointWidth,
+      xAxisTitle: analysisName,
+      yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
+      yAxisMin: temp.length > 0 ? 0 : 20,
+      style: {
+        fontFamily: 'GothamBook, Arial, sans-serif'
+      }
+    };
+  }
+
   /*
                           ....###.....######...########
                           ...##.##...##....##..##......
