@@ -255,7 +255,9 @@ public processResults(q: any, totalCount: number) {
     q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
-    q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
+    if (q.versionAnalysis && q.versionAnalysis.results) {
+        q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
+    }
     for (const a of q.countAnalysis.results) {
         if (a.stratum7 && a.stratum7 === '1') {
             a.subQuestionFetchComplete = false;
