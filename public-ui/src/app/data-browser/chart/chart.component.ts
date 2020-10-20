@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import * as highcharts from 'highcharts';
+import { reduce } from 'rxjs/operators';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { DbConfigService } from '../../utils/db-config.service';
@@ -88,14 +89,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         followPointer: true,
         outside: true,
         formatter: function (tooltip) {
-          return '<div class="chart-tooltip">' + this.point.toolTipHelpText + '</div>';
+          return  this.point.toolTipHelpText;
         },
         useHTML: true,
         enabled: true,
         borderColor: '#262262',
         borderRadius: '1px',
         backgroundColor: '#FFFFFF',
-        className: 'chart-tooltip',
         style: {
           color: '#302C71',
         }
@@ -395,7 +395,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let count;
       if (!this.sources) {
         count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
-        toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+        toolTipText =  a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
           '<br/>' + 'Participant Count: ' + '<b>' + count + '</b>';
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
@@ -406,8 +406,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         cats.push(a.conceptName);
       } else {
         count = (a.sourceCountValue <= 20) ? '&le; 20' : a.sourceCountValue;
-        toolTipText = a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
-          '<br/>' + 'Participant Count: ' + '<b>' + count + '</b>';
+        toolTipText = '<div class="chart-tooltip">' + a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+          '<br/>' + 'Participant Count: ' + '<b>' + count + '</b> </div>';
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.sourceCountValue, analysisId: 'sources',
@@ -486,12 +486,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum2];
         }
         analysisStratumName = a.analysisStratumName;
-        toolTipHelpText =
+        toolTipHelpText = '<div class="chart-tooltip">' +
           '<b> ' + count + '</b> participants had ' + analysisStratumName +
           ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<b>' + percentage +
           '% </b>' + 'of the total count of ' + analysisStratumName +
           ' as sex assigned at birth that have EHR data (total count = <b> '
-          + totalCount + '</b>)';
+          + totalCount + '</b>) </div>';
       } else if (analysisId === this.dbc.SURVEY_GENDER_ANALYSIS_ID) {
         color = this.dbc.COLUMN_COLOR;
         analysisStratumName = a.analysisStratumName;
@@ -559,6 +559,76 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       }
     };
   }
+
+    /*
+                                #...........#.######..########....########...#..########..#.......#
+                                .#.........#..#.......#.......##..#..........#..#......#..#.#.....#
+                                .#........#...#.......#.......##..#..........#..#......#..#..#....#
+                                ..#......#....######..##########..########...#..#......#..#...#...#
+                                ...#....#.....#.......#.......##.........#...#..#......#..#....#..#
+                                ....#..#......#.......#.......##.........#...#..#......#..#.....#.#
+                                .....#........######..#.......##..########...#..########..#......##
+      */
+  public makeSurveyVersionChartOptions(results: any, analysisName: string,
+                                       seriesName: string, analysisId: number) {
+    // Sort the results in ascending order of months
+    results = results.sort((a, b) => {
+          const anum = Number(a.analysisStratumName);
+          const bnum = Number(b.analysisStratumName);
+          return anum - bnum;
+        }
+    );
+    const yAxisLabel = null;
+    const data = [];
+    const cats = [];
+    let legendText = null;
+    // LOOP CREATES DYNAMIC CHART VARS
+    for (const a of results) {
+      let analysisStratumName = null;
+      let toolTipHelpText = null;
+      let color = null;
+      let count;
+      count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+      color = this.dbc.COLUMN_COLOR;
+      analysisStratumName = a.stratum7;
+
+      legendText = 'Survey Version Count';
+      toolTipHelpText = a.stratum4 + '<br/>' + count + ' participants ' ;
+      data.push({
+        name: analysisStratumName
+        , y: a.countValue, color: color, sliced: true, version: a.analysisStratumName,
+        toolTipHelpText: toolTipHelpText,
+        analysisId: analysisId
+      });
+      cats.push(analysisStratumName);
+    }
+    const temp = data.filter(x => x.y > 20);
+    const dataOnlyLT20 = temp.length > 0 ? false : true;
+    const series = [
+      {
+        color: '#2691D0',
+        legendColor: '#2691D0',
+        name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+      }];
+    return {
+      chart: { type: 'column', backgroundColor: 'transparent' },
+      tooltip: {
+        shadow: false
+      }
+      title: { text: analysisName, style: this.dbc.CHART_TITLE_STYLE },
+      series: series,
+      categories: cats,
+      color: this.dbc.COLUMN_COLOR,
+      pointWidth: this.pointWidth,
+      xAxisTitle: analysisName,
+      yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
+      yAxisMin: temp.length > 0 ? 0 : 20,
+      style: {
+        fontFamily: 'GothamBook, Arial, sans-serif'
+      }
+    };
+  }
+
   /*
                           ....###.....######...########
                           ...##.##...##....##..##......
@@ -611,11 +681,11 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           filter(x => x.stratum4 === a.stratum2)[0];
         totalCount = (ageResult.countValue <= 20) ? '&le; 20' : ageResult.countValue;
         percentage = Number(((a.countValue / ageResult.countValue) * 100).toFixed());
-        toolTipHelpText =
+        toolTipHelpText = '<div class="chart-tooltip">' +
           '<b>' + count + '</b>' + ' participants were ages within range ' +
           a.analysisStratumName + ' when this medical concept first occurred and that is <b>' +
           percentage + '</b>' + '% of all participants with the same criteria. (total count = '
-          + totalCount + '</b>)';
+          + totalCount + '</b>) </div>';
         // add pm string for context
         if (this.domainType === 'physical measurements') {
           toolTipHelpText = toolTipHelpText.replace('when', 'when physical measurement with');
