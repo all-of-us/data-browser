@@ -232,7 +232,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.surveyResults = results.surveyModules;
     // TODO remove this filter when the feature flag is turned off or to debug
     if (!this.cope) {
-       // this.surveyResults = results.surveyModules.filter(sm => sm.conceptId !== 1333342);
+      this.surveyResults = results.surveyModules.filter(sm => sm.conceptId !== 1333342);
     }
 
     this.surveyResults.forEach(result => {
