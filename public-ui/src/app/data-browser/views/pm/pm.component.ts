@@ -121,7 +121,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   setAnalysisStratum(countAnalysis: any) {
-    for (let r of countAnalysis.results) {
+    for (const r of countAnalysis.results) {
         if (r.analysisStratumName === null) {
             r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
         }
@@ -134,12 +134,14 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   setAnalysis() {
-    if (['903120','903111'].indexOf(this.selectedConcept.conceptId) === -1) {
+    if (['903120', '903111'].indexOf(this.selectedConcept.conceptId) === -1) {
             let temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
-                                a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+                                a => a.unitName.toLowerCase() ===
+                                this.selectedConceptUnit.toLowerCase());
             this.selectedConceptValueAnalysis = temp[0];
             temp = this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
-                                        a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+                                        a => a.unitName.toLowerCase() ===
+                                        this.selectedConceptUnit.toLowerCase());
             this.selectedConceptValueCountAnalysis = temp[0];
     }
   }
