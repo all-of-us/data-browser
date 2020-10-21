@@ -112,6 +112,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.source_standard_unit_map\` suc on suc.source_concept = m.unit_concept_id
     where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')
     and (m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0)
+    and (m.measurement_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) and m.measurement_source_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))
     and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
     echo "CREATE VIEWS - v_full_measurement_with_grouped_units"
