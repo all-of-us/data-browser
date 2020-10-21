@@ -528,7 +528,4 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_fm_metadata\`"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.converted_pm\`"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"

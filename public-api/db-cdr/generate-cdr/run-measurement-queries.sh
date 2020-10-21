@@ -277,13 +277,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
      where m.value_as_number is not null and m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
      and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
-     and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
-     union all
-     select case when measurement_concept_id=0 or measurement_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-     then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
-     cast(value_as_number as float64) as count_value
-     from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-     where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
+     and ((m.unit_concept_id = 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))),
      overallstats as
      (select subject_id as stratum1_id, unit as stratum2_id, gender as stratum3_id, cast(avg(1.0 * count_value) as float64) as avg_value,
      cast(stddev(count_value) as float64) as stdev_value, min(count_value) as min_value, max(count_value) as max_value,
@@ -426,10 +420,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
      with measurement_data as
          (
-         select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` union all
-         select measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
-         value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
-         value_source_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+         select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`
           ),
      measurement_quartile_data as
           (
@@ -1009,12 +1000,7 @@ cast(value_as_number as float64) as count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
 where m.value_as_number is not null and m.measurement_source_concept_id > 0
 and m.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`)
-and ((m.unit_concept_id <= 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))
-union all
-select case when measurement_concept_id=0 or measurement_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) then measurement_source_concept_id else measurement_concept_id end as measurement_concept_id, cast(m.unit_concept_id as string) as unit,p.gender_concept_id as gender,
-cast(value_as_number as float64) as count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\` m join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=m.person_id
-where m.value_as_number is not null and unit_concept_id != 0 and unit_concept_id is not null),
+and ((m.unit_concept_id <= 0 or m.unit_concept_id is null) and (m.unit_source_value is null or length(m.unit_source_value)=0))),
 overallstats as
 (select subject_id as stratum1_id, unit as stratum2_id, gender as stratum3_id, cast(avg(1.0 * count_value) as float64) as avg_value,
 cast(stddev(count_value) as float64) as stdev_value, min(count_value) as min_value, max(count_value) as max_value,
@@ -1222,10 +1208,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
 with measurement_data as
 (
-select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` union all
-select measurement_id, person_id, measurement_concept_id, measurement_date, measurement_datetime, measurement_type_concept_id, operator_concept_id, value_as_number,
-    value_as_concept_id, unit_concept_id, range_low, range_high, provider_id, visit_occurrence_id, measurement_source_value, measurement_source_concept_id, unit_source_value,
-    value_source_value from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.converted_pm\`
+select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\`
 ),
 measurement_quartile_data as
 (
