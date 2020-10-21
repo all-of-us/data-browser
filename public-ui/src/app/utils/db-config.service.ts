@@ -67,6 +67,16 @@ export class DbConfigService {
     '9': '89+'
   };
 
+  UNIT_ORDER = {
+     '903133': ['Inches', 'Centimeter'],
+     '903118': ['Millimeter Mercury Column'],
+     '903115': ['Millimeter Mercury Column'],
+     '903121': ['Centimeter'],
+     '903135': ['Kilogram'],
+     '903136': ['Centimeter'],
+     '903126': ['Centimeter']
+  };
+
   /* Colors for chart */
 
   GENDER_COLORS = {
