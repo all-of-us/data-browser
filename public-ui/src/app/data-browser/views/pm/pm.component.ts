@@ -40,6 +40,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   selectedGroup: ConceptGroup;
   selectedConcept: ConceptWithAnalysis;
   selectedConceptValueAnalysis: Analysis;
+  selectedConceptValueCountAnalysis: Analysis;
   domainType = DomainType.PHYSICAL_MEASUREMENTS;
   searchText: string = null;
 
@@ -97,14 +98,50 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
     this.selectedConcept = concept;
-    if (this.selectedConcept && this.selectedConcept.analyses && this.selectedConcept.analyses.measurementGenderCountAnalysis) {
+    if (this.selectedConcept && this.selectedConcept.analyses &&
+    this.selectedConcept.analyses.measurementGenderCountAnalysis) {
+        this.unitNames = [];
         for (const r of this.selectedConcept.analyses.measurementGenderCountAnalysis) {
-              console.log(r.results);
-              // console.log(r.results.filter((e, i) => array.findIndex(a => a[propertyName] === e[propertyName]) === i));
+              let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
+              tempUnitNames = tempUnitNames.filter(
+              function(elem, index, self) {
+                return index === self.indexOf(elem);
+              });
+              this.unitNames.push(...tempUnitNames);
+        }
+    }
+    if (this.unitNames) {
+        this.selectedConceptUnit = this.unitNames[0];
+        if (this.selectedConceptUnit) {
+            this.setAnalysis();
         }
     }
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
+  }
+
+  setAnalysisStratum(countAnalysis: any) {
+    for (let r of countAnalysis.results) {
+        if (r.analysisStratumName === null) {
+            r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
+        }
+    }
+  }
+
+  setUnit(unit) {
+      this.selectedConceptUnit = unit;
+      this.setAnalysis();
+  }
+
+  setAnalysis() {
+    if (['903120','903111'].indexOf(this.selectedConcept.conceptId) === -1) {
+            let temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
+                                a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+            this.selectedConceptValueAnalysis = temp[0];
+            temp = this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
+                                        a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
+            this.selectedConceptValueCountAnalysis = temp[0];
+    }
   }
 
   public hoverOnTooltip(label: string, action: string) {
