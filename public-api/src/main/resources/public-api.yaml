@@ -324,6 +324,12 @@ paths:
           required: true
           description: survey concept id
         - in: query
+          name: question_concept_id
+          type: integer
+          format: int64
+          required: true
+          description: question concept id
+        - in: query
           name: answer_concept_id
           type: integer
           format: int64
@@ -353,6 +359,11 @@ paths:
           type: string
           required: true
           description: question concept id
+        - in: query
+          name: answer_concept_id
+          type: string
+          required: true
+          description: answer concept id
       responses:
         200:
           description: A collection of questions
@@ -727,6 +738,9 @@ definitions:
         $ref: "#/definitions/Analysis"
       ageAnalysis:
         description: age analysis
+        $ref: "#/definitions/Analysis"
+      versionAnalysis:
+        description: version analysis
         $ref: "#/definitions/Analysis"
 
   QuestionConceptListResponse:

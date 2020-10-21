@@ -93,12 +93,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     versions, some questions were modified.</span> <span class='cope-statement-box'><strong>Please Note:</strong><br> While these aggregate data are available
     in the Data Browser tool, to protect participant privacy, only select data will be available in the Registered Tier dataset (i.e., data describing COVID
     positive status will not be made available)</span></div>`;
+
   }
 
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
     this.copeFlag = environment.copeFlag;
+        if (this.surveyConceptId === 1333342) {
+            this.graphButtons.unshift('Survey Versions');
+        }
   }
 
   ngOnDestroy() {
@@ -251,6 +255,7 @@ public processResults(q: any, totalCount: number) {
     q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
+    q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     for (const a of q.countAnalysis.results) {
         if (a.stratum7 && a.stratum7 === '1') {
             a.subQuestionFetchComplete = false;
@@ -307,7 +312,8 @@ public processResults(q: any, totalCount: number) {
                      if (item.analysisId === 3400) {
                        this.surveyVersions.push(
                          {
-                           month: result.stratum4,
+                           monthName: result.stratum4,
+                           monthNum: result.stratum3.split('/')[0],
                            participants: result.sourceCountValue,
                            numberOfQuestion: ''
                          });
@@ -433,6 +439,7 @@ public processResults(q: any, totalCount: number) {
               q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
               q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
               q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+              q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
               q.resultFetchComplete = true;
               this.processResults(q, this.survey.participantCount);
             },
@@ -461,7 +468,7 @@ public processResults(q: any, totalCount: number) {
             a.loading = true;
             a.dots = true;
     }
-    this.api.getSubQuestions(this.surveyConceptId, a.stratum3, level)
+    this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
               .subscribe({
                 next: results => {
                   a.subQuestions = results.questions.items;

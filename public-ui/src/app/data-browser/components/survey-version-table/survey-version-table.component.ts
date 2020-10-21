@@ -10,23 +10,15 @@ export class SurveyVersionTableComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    // sort by month order
-    const allMonths = [
-    'january',
-    'febuary',
-    'march',
-    'april',
-    'may',
-    'june',
-    'july',
-    'august',
-    'september',
-    'october',
-    'november',
-    'december'];
-    this.surveys.sort((a: any, b: any) => {
-      return allMonths.indexOf(a.month.toLowerCase()) - allMonths.indexOf(b.month.toLowerCase());
-    });
+    this.surveys.sort((a1, a2) => {
+            if (a1.monthNum.split('/')[0] < a2.monthNum.split('/')[0]) {
+              return -1;
+            }
+            if (a1.monthNum.split('/')[0] > a2.monthNum.split('/')[0]) {
+              return 1;
+            }
+            return 0;
+          });
   }
 
 }

@@ -137,7 +137,7 @@ export class FmhViewComponent implements OnInit {
               a.loading = true;
               a.dots = true;
       }
-      this.api.getFMHSurveyQuestionResults(a.stratum3)
+      this.api.getFMHSurveyQuestionResults(a.stratum2, a.stratum3)
                 .subscribe({
                   next: results => {
                     a.subQuestions = results.items;

@@ -46,6 +46,7 @@ public class QuestionConcept {
     private AchillesAnalysis countAnalysis;
     private AchillesAnalysis genderAnalysis;
     private AchillesAnalysis ageAnalysis;
+    private AchillesAnalysis versionAnalysis;
 
     @Column(name = "concept_name")
     public String getConceptName() {
@@ -208,6 +209,20 @@ public class QuestionConcept {
 
     public QuestionConcept ageAnalysis(AchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
+    public AchillesAnalysis getVersionAnalysis() {
+        return this.versionAnalysis;
+    }
+
+    public void setVersionAnalysis(AchillesAnalysis analysis) {
+        this.versionAnalysis = analysis;
+    }
+
+    public QuestionConcept versionAnalysis(AchillesAnalysis analysis) {
+        this.versionAnalysis = analysis;
         return this;
     }
 }
