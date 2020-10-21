@@ -235,8 +235,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.showAnswer[q.conceptId] = false;
           this.questionResults[q.conceptId] = [];
           q.actualQuestionNumber = q.questionOrderNumber;
-          q.graphToShow = GraphType.BiologicalSex;
-          q.selectedAnalysis = q.genderAnalysis;
+          q.graphToShow = GraphType.SurveyVersion;
+          q.selectedAnalysis = q.versionAnalysis;
           q.graphDataToShow = 'Count';
           q.resultFetchComplete = false;
     }
@@ -490,7 +490,7 @@ public processResults(q: any, totalCount: number) {
 
   public showAnswerGraphs(a: any, q: any) {
     q.selectedResult = a;
-    q.selectedAnalysis = q.genderAnalysis;
+    q.selectedAnalysis = q.versionAnalysis;
     a.expanded = !a.expanded;
     if (a.expanded) {
       if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {

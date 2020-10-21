@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { AchillesResult, DataBrowserService } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -10,7 +10,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
   templateUrl: './survey-chart.component.html',
   styleUrls: ['./survey-chart.component.css', '../../../styles/template.css', '../../../styles/page.css']
 })
-export class SurveyChartComponent implements OnInit {
+export class SurveyChartComponent {
   @Input() graphButtons: string[];
   @Input() question: any;
   @Input() answer: any;
@@ -19,7 +19,7 @@ export class SurveyChartComponent implements OnInit {
   @Input() surveyName: string;
   @Input() searchTerm: string;
   @Input() surveyCountAnalysis: any;
-  graphToShow = GraphType.BiologicalSex;
+  graphToShow = GraphType.SurveyVersion;
   displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   private subscriptions: ISubscription[] = [];
@@ -30,8 +30,6 @@ export class SurveyChartComponent implements OnInit {
     private api: DataBrowserService) {
   }
 
-  ngOnInit() {
-  }
 
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
