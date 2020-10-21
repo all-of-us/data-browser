@@ -75,13 +75,17 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
     // Get demographic totals
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm').subscribe(
-      results => {
-        this.domainCountAnalysis = results;
-      }
-    ));
-
-    this.loadingStack.push(true);
+    this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm')
+          .subscribe({
+            next: result => {
+              this.domainCountAnalysis = result;
+              this.loadingStack.pop();
+            },
+            error: err =>  {
+              this.loadingStack.pop();
+              console.log('Error: ', err);
+            }
+    }));
   }
 
   ngOnDestroy() {
@@ -93,31 +97,10 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
     this.selectedConcept = concept;
-    this.unitNames = this.dbc.UNIT_ORDER[this.selectedConcept.conceptId];
-    if (this.unitNames) {
-        this.selectedConceptUnit = this.unitNames[0];
-    }
-    if (this.selectedConcept.analyses &&
-    this.selectedConcept.analyses.measurementValueGenderAnalysis) {
-        if (!this.selectedConceptUnit) {
-            this.selectedConceptValueAnalysis =
-            this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
-        } else {
-            const temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
-            a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
-            this.selectedConceptValueAnalysis = temp[0];
-        }
-    }
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }
 
-  setUnit(unit) {
-    this.selectedConceptUnit = unit;
-    const temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
-    a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
-    this.selectedConceptValueAnalysis = temp[0];
-  }
   public hoverOnTooltip(label: string, action: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       label, null, action);
