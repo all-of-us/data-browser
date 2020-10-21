@@ -622,7 +622,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       series: series,
       categories: cats,
       color: this.dbc.COLUMN_COLOR,
-      pointWidth: '70',
+      pointWidth: '50',
       xAxisTitle: analysisName,
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : 'Participant Count',
       yAxisMin: temp.length > 0 ? 0 : 20,

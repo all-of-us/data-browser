@@ -37,6 +37,9 @@ export class TooltipService {
     'The sources represent the many different ways that the standard medical concept ' +
     'returned in the search results has been recorded in patient records. \n' +
     'The sources bar chart provides the top 10 source concepts from the All of Us data.';
+  versionChartHelpText = 'Surveys were released to participants for completion at different' + 
+    'time points during the COVID-19 pandemic and has multiple versions. Even though most of' +
+    'the content is consistent between versions, some questions were modified.'
   matchingConceptsHelpText1 = 'Medical concepts are similar to medical terms; ' +
     'they capture medical information\n' +
     'in an individual’s records and may sometimes have values associated with them.\n' +
