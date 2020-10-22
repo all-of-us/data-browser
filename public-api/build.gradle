@@ -255,8 +255,8 @@ tasks.withType(Test) {
     // Causes the correct line to be reported on an exception.
     exceptionFormat "full"
   }
-  def verboseTestLogging=project.properties['verboseTestLogging'] ?: 'no'
-  // To debug def verboseTestLogging='yes'
+  //def verboseTestLogging=project.properties['verboseTestLogging'] ?: 'no'
+  def verboseTestLogging='yes'
   if (verboseTestLogging == 'yes') {
     testLogging {
       events "passed", "skipped", "failed", "standardOut", "standardError"

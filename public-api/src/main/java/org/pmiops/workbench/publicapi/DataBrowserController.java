@@ -737,6 +737,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
         }
 
+        System.out.println("*****************************");
+        System.out.println(domainInfos);
+        System.out.println(surveyModules);
+        System.out.println("*****************************");
+
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
