@@ -70,18 +70,19 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.api.getConceptAnalysisResults(this.dbc.PM_CONCEPTS.map(String))
               .subscribe({
                 next: result => {
-                  let items = result.items;
+                  const items = result.items;
                   this.conceptGroups = this.dbc.pmGroups;
                   for (const g of this.conceptGroups) {
                     for (const c of g.concepts) {
-                        let matchedItem = items.filter(i => i.conceptId === c.conceptId);
+                        const matchedItem = items.filter(i => i.conceptId === c.conceptId);
                         c.analyses = matchedItem.length > 0 ? matchedItem[0] : null;
                         this.arrangeConceptAnalyses(c);
                     }
                   }
                   if (this.searchText) {
                     this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
-                            conceptgroup.groupName.toLowerCase().includes(this.searchText.toLowerCase()))[0];
+                            conceptgroup.groupName.toLowerCase().
+                            includes(this.searchText.toLowerCase()))[0];
                   } else {
                             this.selectedGroup = this.conceptGroups[0];
                   }
