@@ -758,23 +758,26 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum3];
       }
       let tooltipText = '';
+      let participantCountText = '';
+      if (a.countValue <= 20) {
+        participantCountText = 'Participant Count: <strong> &le; 20 </strong>';
+      } else {
+        participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
+      }
       if (a.stratum2 !== 'No unit') {
         tooltipText = '<b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value / Range:';
         if (a.stratum4.indexOf('>=') > -1) {
           tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
-            + '</b> <br/>' + 'Participant Count: ' +
-            '<b>' + a.countValue + '</b>';
+            + '</b> <br/>' + participantCountText;
         } else {
           tooltipText = tooltipText + ' <b>' + a.stratum4
-            + '</b> <br/>' + 'Participant Count: ' +
-            '<b>' + a.countValue + '</b>';
+            + '</b> <br/>' + participantCountText;
         }
       } else {
         tooltipText = '<b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value : <b>' + a.stratum4
-          + '</b> <br/>' + 'Participant Count: ' +
-          '<b>' + a.countValue + '</b>';
+          + '</b> <br/>' + participantCountText;
       }
       data.push({
         name: a.stratum4, y: a.countValue, thisCtrl: this,
@@ -921,9 +924,15 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     });
     for (const a of this.analysis.results) {
       let toolTipText = '';
+      let participantCountText = '';
+      if (a.countValue <= 20) {
+        participantCountText = 'Participant Count: <strong> &le; 20 </strong>';
+      } else {
+        participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
+      }
+
       toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
-        '<br/>' + 'Participant Count: ' +
-        '<b>' + a.countValue + '</b>';
+        '<br/>' + participantCountText;
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,

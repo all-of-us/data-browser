@@ -165,7 +165,7 @@
   </div>
   <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
     Physical Measurements: </h5>
-  <div class="result-boxes" *ngIf="physicalMeasurementsFound > 0 && !loading">
+  <div class="result-boxes" *ngIf="canDisplayPmTile()">
     <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
       <p class="result-box-title">
         Physical Measurements
@@ -179,7 +179,7 @@
             <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
           </ng-container>
           <ng-template #noSearchPm>
-            <div class="result-stat">{{physicalMeasurementsFound}}</div> physical measurements
+            <div class="result-stat">{{pmGroups.length}}</div> physical measurements
           </ng-template>
         </span>
         <span class="result-body-item result-body-stat" *ngIf="pmParticipantCount > 0">

@@ -49,6 +49,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   maleCount = 0;
   otherCount = 0;
 
+  pmGroups: any;
+
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
               private tooltipText: TooltipService) {
 
@@ -61,21 +63,37 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.loadingStack.push(true);
-    this.dbc.getPmGroups().subscribe(results => {
-      this.conceptGroups = results;
-      if (this.searchText) {
-        this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
-          conceptgroup.groupName.toLowerCase().includes(this.searchText.toLowerCase()))[0];
-      } else {
-          this.selectedGroup = this.conceptGroups[0];
-      }
-      // wait 1ms before triggering the graphs.
-      setTimeout(() =>  this.selectedConcept = this.selectedGroup.concepts[0], 1);
-      this.loadingStack.pop();
-    });
+    this.pmGroups = this.dbc.pmGroups;
 
     // Get demographic totals
     this.loadingStack.push(true);
+    this.subscriptions.push(this.api.getConceptAnalysisResults(this.dbc.PM_CONCEPTS.map(String))
+              .subscribe({
+                next: result => {
+                  const items = result.items;
+                  this.conceptGroups = this.dbc.pmGroups;
+                  for (const g of this.conceptGroups) {
+                    for (const c of g.concepts) {
+                        const matchedItem = items.filter(i => i.conceptId === c.conceptId);
+                        c.analyses = matchedItem.length > 0 ? matchedItem[0] : null;
+                        this.arrangeConceptAnalyses(c);
+                    }
+                  }
+                  if (this.searchText) {
+                    this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
+                            conceptgroup.groupName.toLowerCase().
+                            includes(this.searchText.toLowerCase()))[0];
+                  } else {
+                            this.selectedGroup = this.conceptGroups[0];
+                  }
+                  this.selectedConcept = this.selectedGroup.concepts[0];
+                  this.loadingStack.pop();
+                },
+                error: err =>  {
+                  this.loadingStack.pop();
+                  console.log('Error: ', err);
+                }
+        }));
     this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm')
           .subscribe({
             next: result => {
@@ -126,6 +144,40 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
             r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
         }
     }
+  }
+
+  arrangeConceptAnalyses(concept: any) {
+      if (concept.analyses.genderAnalysis) {
+        this.organizeGenders(concept);
+      }
+  }
+
+  organizeGenders(concept: ConceptWithAnalysis) {
+      const analysis: Analysis = concept.analyses.genderAnalysis;
+      let male = null;
+      let female = null;
+      let other = null;
+
+      // No need to do anything if only one gender
+      if (analysis.results.length <= 1) {
+        return;
+      }
+      const results = [];
+      for (const g of analysis.results) {
+        if (g.stratum2 === this.dbc.MALE_GENDER_ID) {
+          male = g;
+        } else if (g.stratum2 === this.dbc.FEMALE_GENDER_ID) {
+          female = g;
+        } else if (g.stratum2 === this.dbc.OTHER_GENDER_ID) {
+          other = g;
+        }
+      }
+
+      // Order genders how we want to display  Male, Female , Others
+      if (male) { results.push(male); }
+      if (female) { results.push(female); }
+      if (other) { results.push(other); }
+      analysis.results = results;
   }
 
   setUnit(unit) {

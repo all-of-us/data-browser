@@ -42,7 +42,7 @@ export class DbConfigService {
   AGE_PERCENTAGE_ANALYSIS_ID = 3311;
   SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
   SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
-  TO_SUPPRESS_PMS = [903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120];
+  PM_CONCEPTS = [903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120];
   VALID_AGE_DECILES = ['2', '3', '4', '5', '6', '7', '8', '9'];
 
   GENDER_STRATUM_MAP = {
@@ -148,6 +148,7 @@ export class DbConfigService {
     { conceptId: 43528698, conceptName: 'Family Medical History'},
     { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience'}
   ];
+
   // chart options
   lang = {
     noData: {
@@ -202,8 +203,41 @@ export class DbConfigService {
 
   constructor(private api: DataBrowserService) {
     window['dataLayer'] = window['dataLayer'] || {};
-    this.getPmGroups().subscribe(results => {
-    });
+    let chartType = 'histogram';
+    let group = new ConceptGroup('blood-pressure', 'Mean Blood Pressure');
+    group.concepts.push(new ConceptWithAnalysis('903118', 'Systolic', chartType));
+    group.concepts.push(new ConceptWithAnalysis('903115', 'Diastolic', chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('height', 'Height');
+    group.concepts.push(new ConceptWithAnalysis('903133', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('weight', 'Weight');
+    group.concepts.push(new ConceptWithAnalysis('903121', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('mean-waist', 'Mean waist circumference');
+    group.concepts.push(new ConceptWithAnalysis('903135', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('mean-hip', 'Mean hip circumference');
+    group.concepts.push(new ConceptWithAnalysis('903136', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('mean-heart-rate', 'Mean heart rate');
+    group.concepts.push(new ConceptWithAnalysis('903126', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    chartType = 'column';
+
+    group = new ConceptGroup('wheel-chair', 'Wheel chair use');
+    group.concepts.push(new ConceptWithAnalysis('903111', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('pregnancy', 'Pregnancy');
+    group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
+    this.pmGroups.push(group);
   }
 
   getGenderAnalysisResults() {
@@ -212,168 +246,6 @@ export class DbConfigService {
     this.api.getGenderAnalysis().subscribe(result => {
       this.genderAnalysis = result;
     });
-  }
-
-  getPmGroups(): Observable<ConceptGroup[]> {
-    /* What we want here is a function that will load the pm groups from the database one time
-     * and save them on the service property for pages to use.
-     * Todo this will have to be refreshed based on cdr version eventually
-     */
-
-    // Get pm data and groups for the app.
-    if (this.pmGroups.length > 0) {
-      return Observable.of(this.pmGroups);
-    }
-
-    // const conceptIds = ['903118', '903115', '903133', '903121', '903135',
-    //  '903136', '903126', '903111', '903120'];
-
-    // Set up the groups
-    let chartType = 'histogram';
-    const pmGroups: ConceptGroup[] = [];
-    let group = new ConceptGroup('blood-pressure', 'Mean Blood Pressure');
-    group.concepts.push(new ConceptWithAnalysis('903118', 'Systolic', chartType));
-    group.concepts.push(new ConceptWithAnalysis('903115', 'Diastolic', chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('height', 'Height');
-    group.concepts.push(new ConceptWithAnalysis('903133', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('weight', 'Weight');
-    group.concepts.push(new ConceptWithAnalysis('903121', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('mean-waist', 'Mean waist circumference');
-    group.concepts.push(new ConceptWithAnalysis('903135', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('mean-hip', 'Mean hip circumference');
-    group.concepts.push(new ConceptWithAnalysis('903136', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('mean-heart-rate', 'Mean heart rate');
-    group.concepts.push(new ConceptWithAnalysis('903126', group.groupName, chartType));
-    pmGroups.push(group);
-
-    chartType = 'column';
-
-    group = new ConceptGroup('wheel-chair', 'Wheel chair use');
-    group.concepts.push(new ConceptWithAnalysis('903111', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('pregnancy', 'Pregnancy');
-    group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
-    pmGroups.push(group);
-
-    // Get all the data for the concepts in the groups and put the analyses on the concepts
-    const conceptIds = [];
-    for (const g of pmGroups) {
-      for (const c of g.concepts) {
-        conceptIds.push(c.conceptId);
-      }
-    }
-
-
-    return this.api.getConceptAnalysisResults(conceptIds).pipe(
-      map(result => {
-        // Put each concept analysis on the concept
-        for (const item of result.items) {
-          for (const g of pmGroups) {
-            for (const c of g.concepts) {
-              if (c.conceptId === item.conceptId) {
-                c.analyses = item;
-                // Arrage arrange the data and genders
-                this.arrangeConceptAnalyses(c);
-              }
-            }
-          }
-        }
-        // Finally have our physical measurement groups
-        this.pmGroups = pmGroups;
-        return this.pmGroups;
-      })
-    );
-  }
-
-  arrangeConceptAnalyses(concept: any) {
-    if (concept.analyses.genderAnalysis) {
-      this.organizeGenders(concept);
-    }
-    /* Todo maybe will use this next version of graphing
-     if (concept.conceptId === this.PREGNANCY_CONCEPT_ID) {
-
-      const pregnantResult  = concept.analyses.measurementValueFemaleAnalysis.results[0];
-      if (pregnantResult) {
-        //console.log("pregnancy concept ", concept.analyses.measurementValueFemaleAnalysis);
-        // Delete any male results so we don't look dumb with dumb data
-        concept.analyses.measurementValueMaleAnalysis = null;
-        concept.analyses.measurementValueOtherGenderAnalysis = null;
-        concept.analyses.genderAnalysis.results =
-          concept.analyses.genderAnalysis.results.filter(result =>
-            result.stratum2 === this.FEMALE_GENDER_ID);
-        // Get the total female gender cout
-        let femaleCount = 0;
-        // Add not pregnant result to the female value results
-        // because this concept is just a one value Yes
-        femaleCount = concept.analyses.genderAnalysis.results[0].countValue;
-        const notPregnantResult: AchillesResult = {
-          analysisId: pregnantResult.analysisId,
-          stratum1: pregnantResult.stratum1,
-          stratum2: pregnantResult.stratum2,
-          stratum3: pregnantResult.stratum3,
-          stratum4: 'Not Pregnant',
-          stratum5: pregnantResult.stratum5,
-          countValue: femaleCount - pregnantResult.countValue
-        };
-
-        // Add Not pregnant to results,
-        concept.analyses.measurementValueFemaleAnalysis.results.push(notPregnantResult);
-      }
-    }
-    if (concept.conceptId === this.WHEEL_CHAIR_CONCEPT_ID) {
-      // Todo What to do about this boolean concept , wait for design
-      // Maybe we just handle thes on the api side
-    }
-    */
-  }
-
-  // Put the gender analysis in the order we want to show them
-  // Sum up the other genders and make a result for that
-  organizeGenders(concept: ConceptWithAnalysis) {
-    const analysis: Analysis = concept.analyses.genderAnalysis;
-    let male = null;
-    let female = null;
-    let intersex = null;
-    let none = null;
-    let other = null;
-
-    // No need to do anything if only one gender
-    if (analysis.results.length <= 1) {
-      return;
-    }
-    const results = [];
-    for (const g of analysis.results) {
-      if (g.stratum2 === this.MALE_GENDER_ID) {
-        male = g;
-      } else if (g.stratum2 === this.FEMALE_GENDER_ID) {
-        female = g;
-      } else if (g.stratum2 === this.INTERSEX_GENDER_ID) {
-        intersex = g;
-      } else if (g.stratum2 === this.NONE_GENDER_ID) {
-        none = g;
-      } else if (g.stratum2 === this.OTHER_GENDER_ID) {
-        other = g;
-      }
-    }
-
-    // Order genders how we want to display  Male, Female , Others
-    if (male) { results.push(male); }
-    if (female) { results.push(female); }
-    if (intersex) { results.push(intersex); }
-    if (none) { results.push(none); }
-    if (other) { results.push(other); }
-    analysis.results = results;
   }
 
   public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
