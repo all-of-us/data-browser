@@ -464,7 +464,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     */
   public makeGenderChartOptions(results: any, analysisName: string,
     seriesName: string, analysisId: number) {
-    console.log('am i here');
     const yAxisLabel = null;
     let data = [];
     let cats = [];

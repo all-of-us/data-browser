@@ -238,8 +238,6 @@ export class DbConfigService {
     group = new ConceptGroup('pregnancy', 'Pregnancy');
     group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
     this.pmGroups.push(group);
-    this.getPmGroups().subscribe(results => {
-    });
   }
 
   getGenderAnalysisResults() {
