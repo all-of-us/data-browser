@@ -41,6 +41,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   searchResults = [];
   domainResults = [];
   surveyResults = [];
+  pmGroups: any;
   pmParticipantCount = 0;
   totalResults: DomainInfosAndSurveyModulesResponse;
   searchText: FormControl = new FormControl();
@@ -87,6 +88,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.preCope = environment.preCopeFlag;
     this.cope = environment.copeFlag;
+    this.pmGroups = this.dbc.pmGroups;
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
       this.title = 'Electronic Health Data';
@@ -223,11 +225,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     if (physicalMeasurementDomainInfo && physicalMeasurementDomainInfo.length > 0) {
       this.pmParticipantCount = physicalMeasurementDomainInfo[0].participantCount;
-      if (this.searchText.value) {
-        this.physicalMeasurementsFound = physicalMeasurementDomainInfo[0].standardConceptCount;
-      } else {
-        this.physicalMeasurementsFound = physicalMeasurementDomainInfo[0].allConceptCount;
-      }
     }
     this.surveyResults = results.surveyModules;
     // TODO remove this filter when the feature flag is turned off or to debug
@@ -312,5 +309,19 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public clearSearch() {
     this.searchText.setValue('');
+  }
+
+  public canDisplayPmTile() {
+    if (!this.loading) {
+        if (!this.searchText.value) {
+            return true;
+        }
+        if (this.searchText.value && this.physicalMeasurementsFound > 0) {
+            return true;
+        }
+        return false;
+    }
+    return false;
+
   }
 }

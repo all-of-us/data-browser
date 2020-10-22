@@ -331,7 +331,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   public processSearchResults(results) {
     this.searchResult = results;
     this.searchResult.items = this.searchResult.items.filter(
-      x => this.dbc.TO_SUPPRESS_PMS.indexOf(x.conceptId) === -1);
+      x => this.dbc.PM_CONCEPTS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
     this.items = this.items.sort((a, b) => {
       if (a.countValue > b.countValue) {

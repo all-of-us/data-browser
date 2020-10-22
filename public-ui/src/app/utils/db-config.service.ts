@@ -42,7 +42,7 @@ export class DbConfigService {
   AGE_PERCENTAGE_ANALYSIS_ID = 3311;
   SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
   SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
-  TO_SUPPRESS_PMS = [903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120];
+  PM_CONCEPTS = [903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120];
   VALID_AGE_DECILES = ['2', '3', '4', '5', '6', '7', '8', '9'];
 
   GENDER_STRATUM_MAP = {
@@ -148,6 +148,7 @@ export class DbConfigService {
     { conceptId: 43528698, conceptName: 'Family Medical History'},
     { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience'}
   ];
+
   // chart options
   lang = {
     noData: {
@@ -202,6 +203,41 @@ export class DbConfigService {
 
   constructor(private api: DataBrowserService) {
     window['dataLayer'] = window['dataLayer'] || {};
+    let chartType = 'histogram';
+    let group = new ConceptGroup('blood-pressure', 'Mean Blood Pressure');
+    group.concepts.push(new ConceptWithAnalysis('903118', 'Systolic', chartType));
+    group.concepts.push(new ConceptWithAnalysis('903115', 'Diastolic', chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('height', 'Height');
+    group.concepts.push(new ConceptWithAnalysis('903133', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('weight', 'Weight');
+    group.concepts.push(new ConceptWithAnalysis('903121', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('mean-waist', 'Mean waist circumference');
+    group.concepts.push(new ConceptWithAnalysis('903135', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('mean-hip', 'Mean hip circumference');
+    group.concepts.push(new ConceptWithAnalysis('903136', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('mean-heart-rate', 'Mean heart rate');
+    group.concepts.push(new ConceptWithAnalysis('903126', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    chartType = 'column';
+
+    group = new ConceptGroup('wheel-chair', 'Wheel chair use');
+    group.concepts.push(new ConceptWithAnalysis('903111', group.groupName, chartType));
+    this.pmGroups.push(group);
+
+    group = new ConceptGroup('pregnancy', 'Pregnancy');
+    group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
+    this.pmGroups.push(group);
     this.getPmGroups().subscribe(results => {
     });
   }
@@ -225,61 +261,18 @@ export class DbConfigService {
       return Observable.of(this.pmGroups);
     }
 
-    // const conceptIds = ['903118', '903115', '903133', '903121', '903135',
-    //  '903136', '903126', '903111', '903120'];
+    const conceptIds = ['903118', '903115', '903133', '903121', '903135',
+      '903136', '903126', '903111', '903120'];
 
     // Set up the groups
-    let chartType = 'histogram';
-    const pmGroups: ConceptGroup[] = [];
-    let group = new ConceptGroup('blood-pressure', 'Mean Blood Pressure');
-    group.concepts.push(new ConceptWithAnalysis('903118', 'Systolic', chartType));
-    group.concepts.push(new ConceptWithAnalysis('903115', 'Diastolic', chartType));
-    pmGroups.push(group);
 
-    group = new ConceptGroup('height', 'Height');
-    group.concepts.push(new ConceptWithAnalysis('903133', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('weight', 'Weight');
-    group.concepts.push(new ConceptWithAnalysis('903121', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('mean-waist', 'Mean waist circumference');
-    group.concepts.push(new ConceptWithAnalysis('903135', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('mean-hip', 'Mean hip circumference');
-    group.concepts.push(new ConceptWithAnalysis('903136', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('mean-heart-rate', 'Mean heart rate');
-    group.concepts.push(new ConceptWithAnalysis('903126', group.groupName, chartType));
-    pmGroups.push(group);
-
-    chartType = 'column';
-
-    group = new ConceptGroup('wheel-chair', 'Wheel chair use');
-    group.concepts.push(new ConceptWithAnalysis('903111', group.groupName, chartType));
-    pmGroups.push(group);
-
-    group = new ConceptGroup('pregnancy', 'Pregnancy');
-    group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
-    pmGroups.push(group);
-
-    // Get all the data for the concepts in the groups and put the analyses on the concepts
-    const conceptIds = [];
-    for (const g of pmGroups) {
-      for (const c of g.concepts) {
-        conceptIds.push(c.conceptId);
-      }
-    }
 
 
     return this.api.getConceptAnalysisResults(conceptIds).pipe(
       map(result => {
         // Put each concept analysis on the concept
         for (const item of result.items) {
-          for (const g of pmGroups) {
+          for (const g of this.pmGroups) {
             for (const c of g.concepts) {
               if (c.conceptId === item.conceptId) {
                 c.analyses = item;
@@ -289,8 +282,6 @@ export class DbConfigService {
             }
           }
         }
-        // Finally have our physical measurement groups
-        this.pmGroups = pmGroups;
         return this.pmGroups;
       })
     );
