@@ -401,7 +401,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (!this.sources) {
         count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
         toolTipText = '<div class="chart-tooltip">' + a.conceptName + ' (' + a.vocabularyId + '-' +
-        a.conceptCode + ') ' +'<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong> </div>' ;
+        a.conceptCode + ') ' + '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong> </div>' ;
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.countValue, analysisId: 'topConcepts',
