@@ -40,6 +40,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   selectedGroup: ConceptGroup;
   selectedConcept: ConceptWithAnalysis;
   selectedConceptValueAnalysis: Analysis;
+  selectedConceptValueCountAnalysis: Analysis;
   domainType = DomainType.PHYSICAL_MEASUREMENTS;
   searchText: string = null;
 
@@ -75,13 +76,17 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
     // Get demographic totals
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm').subscribe(
-      results => {
-        this.domainCountAnalysis = results;
-      }
-    ));
-
-    this.loadingStack.push(true);
+    this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm')
+          .subscribe({
+            next: result => {
+              this.domainCountAnalysis = result;
+              this.loadingStack.pop();
+            },
+            error: err =>  {
+              this.loadingStack.pop();
+              console.log('Error: ', err);
+            }
+    }));
   }
 
   ngOnDestroy() {
@@ -93,31 +98,54 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
     this.selectedConcept = concept;
-    this.unitNames = this.dbc.UNIT_ORDER[this.selectedConcept.conceptId];
+    if (this.selectedConcept && this.selectedConcept.analyses &&
+    this.selectedConcept.analyses.measurementGenderCountAnalysis) {
+        this.unitNames = [];
+        for (const r of this.selectedConcept.analyses.measurementGenderCountAnalysis) {
+              let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
+              tempUnitNames = tempUnitNames.filter(
+              function(elem, index, self) {
+                return index === self.indexOf(elem);
+              });
+              this.unitNames.push(...tempUnitNames);
+        }
+    }
     if (this.unitNames) {
         this.selectedConceptUnit = this.unitNames[0];
-    }
-    if (this.selectedConcept.analyses &&
-    this.selectedConcept.analyses.measurementValueGenderAnalysis) {
-        if (!this.selectedConceptUnit) {
-            this.selectedConceptValueAnalysis =
-            this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
-        } else {
-            const temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
-            a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
-            this.selectedConceptValueAnalysis = temp[0];
+        if (this.selectedConceptUnit) {
+            this.setAnalysis();
         }
     }
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }
 
-  setUnit(unit) {
-    this.selectedConceptUnit = unit;
-    const temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
-    a => a.unitName.toLowerCase() === this.selectedConceptUnit.toLowerCase());
-    this.selectedConceptValueAnalysis = temp[0];
+  setAnalysisStratum(countAnalysis: any) {
+    for (const r of countAnalysis.results) {
+        if (r.analysisStratumName === null) {
+            r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
+        }
+    }
   }
+
+  setUnit(unit) {
+      this.selectedConceptUnit = unit;
+      this.setAnalysis();
+  }
+
+  setAnalysis() {
+    if (['903120', '903111'].indexOf(this.selectedConcept.conceptId) === -1) {
+            let temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
+                                a => a.unitName.toLowerCase() ===
+                                this.selectedConceptUnit.toLowerCase());
+            this.selectedConceptValueAnalysis = temp[0];
+            temp = this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
+                                        a => a.unitName.toLowerCase() ===
+                                        this.selectedConceptUnit.toLowerCase());
+            this.selectedConceptValueCountAnalysis = temp[0];
+    }
+  }
+
   public hoverOnTooltip(label: string, action: string) {
     this.dbc.triggerEvent('tooltipsHover', 'Tooltips', 'Hover',
       label, null, action);
