@@ -100,9 +100,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loadPage();
     this.envDisplay = environment.displayTag;
     this.copeFlag = environment.copeFlag;
-        if (this.surveyConceptId === 1333342) {
-            this.graphButtons.unshift('Survey Versions');
-        }
+    if (this.surveyConceptId === 1333342) {
+      this.graphButtons.unshift('Survey Versions');
+    }
   }
 
   ngOnDestroy() {
@@ -157,18 +157,18 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // this.resetExpansion();
         }));
     this.subscriptions.push(this.searchText.valueChanges
-          .debounceTime(1000)
-          .distinctUntilChanged()
-          .switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query))
-          .subscribe({
-            next: results => {
-              this.processSurveyQuestions(results);
-            },
-            error: err => {
-              console.log('Error searching: ', err);
-              this.loading = false;
-            }
-          }));
+      .debounceTime(1000)
+      .distinctUntilChanged()
+      .switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query))
+      .subscribe({
+        next: results => {
+          this.processSurveyQuestions(results);
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+          this.loading = false;
+        }
+      }));
     this.subscriptions.push(this.api.getDomainTotals(
       this.searchText.value, 1, 1).subscribe({
         next: results => {
@@ -220,7 +220,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     ));
   }
 
-    public processSurveyQuestions(results: any) {
+  public processSurveyQuestions(results: any) {
     this.surveyResult = results;
     this.survey = this.surveyResult.survey;
     this.surveyName = this.survey.name;
@@ -232,13 +232,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public setDefaults(surveyQuestions: any, level: any) {
     for (const q of surveyQuestions) {
-          this.showAnswer[q.conceptId] = false;
-          this.questionResults[q.conceptId] = [];
-          q.actualQuestionNumber = q.questionOrderNumber;
-          q.graphToShow = GraphType.SurveyVersion;
-          q.selectedAnalysis = q.versionAnalysis;
-          q.graphDataToShow = 'Count';
-          q.resultFetchComplete = false;
+      this.showAnswer[q.conceptId] = false;
+      this.questionResults[q.conceptId] = [];
+      q.actualQuestionNumber = q.questionOrderNumber;
+      if (this.isCopeSurvey) {
+        q.graphToShow = GraphType.SurveyVersion;
+        q.selectedAnalysis = q.versionAnalysis;
+      } else {
+        q.graphToShow = GraphType.BiologicalSex;
+        q.selectedAnalysis = q.genderAnalysis;
+
+      }
+      q.graphDataToShow = 'Count';
+      q.resultFetchComplete = false;
     }
     surveyQuestions.sort((a1, a2) => {
       if (a1.actualQuestionNumber < a2.actualQuestionNumber) {
@@ -251,20 +257,20 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     });
   }
 
-public processResults(q: any, totalCount: number) {
+  public processResults(q: any, totalCount: number) {
     q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
     q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     for (const a of q.countAnalysis.results) {
-        if (a.stratum7 && a.stratum7 === '1') {
-            a.subQuestionFetchComplete = false;
-        }
-        this.addMissingResults(q, a, totalCount);
+      if (a.stratum7 && a.stratum7 === '1') {
+        a.subQuestionFetchComplete = false;
+      }
+      this.addMissingResults(q, a, totalCount);
     }
 
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
-    totalCount));
+      totalCount));
     q.countAnalysis.results.sort((a1, a2) => {
       if (a1.countValue > a2.countValue) {
         return -1;
@@ -293,7 +299,7 @@ public processResults(q: any, totalCount: number) {
   private getSurveyResults() {
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
       this.subscriptions.push(this.api.getSurveyQuestions(
-      this.surveyConceptId.toString(), this.searchText.value).subscribe({
+        this.surveyConceptId.toString(), this.searchText.value).subscribe({
           next: x => {
             this.processSurveyQuestions(x);
             this.filterResults();
@@ -304,31 +310,31 @@ public processResults(q: any, totalCount: number) {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
-     this.subscriptions.push(this.api.getSurveyVersionCounts(
-             this.surveyConceptId.toString()).subscribe({
-               next: x => {
-                 x.analyses.items.forEach(item => {
-                   item.results.forEach((result, i) => {
-                     if (item.analysisId === 3400) {
-                       this.surveyVersions.push(
-                         {
-                           monthName: result.stratum4,
-                           monthNum: result.stratum3.split('/')[0],
-                           participants: result.sourceCountValue,
-                           numberOfQuestion: ''
-                         });
-                     } else if (item.analysisId === 3401) {
-                       this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
-                     }
-                   });
-                 });
-               },
-               error: err => {
-                 console.error('Observer got an error: ' + err);
-                 this.loading = false;
-               },
-               complete: () => { }
-     }));
+      this.subscriptions.push(this.api.getSurveyVersionCounts(
+        this.surveyConceptId.toString()).subscribe({
+          next: x => {
+            x.analyses.items.forEach(item => {
+              item.results.forEach((result, i) => {
+                if (item.analysisId === 3400) {
+                  this.surveyVersions.push(
+                    {
+                      monthName: result.stratum4,
+                      monthNum: result.stratum3.split('/')[0],
+                      participants: result.sourceCountValue,
+                      numberOfQuestion: ''
+                    });
+                } else if (item.analysisId === 3401) {
+                  this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
+                }
+              });
+            });
+          },
+          error: err => {
+            console.error('Observer got an error: ' + err);
+            this.loading = false;
+          },
+          complete: () => { }
+        }));
     }
   }
 
@@ -417,37 +423,37 @@ public processResults(q: any, totalCount: number) {
     const text = this.searchText.value;
     let words = text.split(new RegExp(',| | and | or '));
     words = words.filter(w => w.length > 0
-            && w.toLowerCase() !== 'and'
-            && w.toLowerCase() !== 'or');
+      && w.toLowerCase() !== 'and'
+      && w.toLowerCase() !== 'or');
     const reString = words.join('|');
     const reExp = new RegExp(reString, 'gi');
     return reExp;
   }
 
   public checkMatch(text: any) {
-      const re = this.getReString();
-      if (re.test(text)) {
-        return true;
-      }
-      return false;
+    const re = this.getReString();
+    if (re.test(text)) {
+      return true;
+    }
+    return false;
   }
 
   public toggleAnswer(q: any, source: any, level: any) {
-  this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
-          .subscribe({
-            next: results => {
-              q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
-              q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
-              q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
-              q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
-              q.resultFetchComplete = true;
-              this.processResults(q, this.survey.participantCount);
-            },
-            error: err => {
-              console.log('Error searching: ', err);
-              this.loading = false;
-            }
-          });
+    this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
+      .subscribe({
+        next: results => {
+          q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
+          q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
+          q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+          q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
+          q.resultFetchComplete = true;
+          this.processResults(q, this.survey.participantCount);
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+          this.loading = false;
+        }
+      });
     if (!this.showAnswer[q.conceptId]) {
       this.showAnswer[q.conceptId] = true;
       q.expanded = true;
@@ -465,32 +471,36 @@ public processResults(q: any, totalCount: number) {
 
   public getSubQuestions(a: any, source: any, level: number) {
     if (!a.subQuestions) {
-            a.loading = true;
-            a.dots = true;
+      a.loading = true;
+      a.dots = true;
     }
     this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
-              .subscribe({
-                next: results => {
-                  a.subQuestions = results.questions.items;
-                  for (const q of a.subQuestions) {
-                    this.processResults(q, a.countValue);
-                  }
-                  this.setDefaults(a.subQuestions, level);
-                },
-                error: err => {
-                  console.log('Error searching: ', err);
-                },
-                complete: () => {
-                    a.subQuestionFetchComplete = true;
-                    a.loading = false;
-                    a.dots = false;
-                }
-    });
+      .subscribe({
+        next: results => {
+          a.subQuestions = results.questions.items;
+          for (const q of a.subQuestions) {
+            this.processResults(q, a.countValue);
+          }
+          this.setDefaults(a.subQuestions, level);
+        },
+        error: err => {
+          console.log('Error searching: ', err);
+        },
+        complete: () => {
+          a.subQuestionFetchComplete = true;
+          a.loading = false;
+          a.dots = false;
+        }
+      });
   }
 
   public showAnswerGraphs(a: any, q: any) {
     q.selectedResult = a;
-    q.selectedAnalysis = q.versionAnalysis;
+    if (this.isCopeSurvey) {
+      q.selectedAnalysis = q.versionAnalysis;
+    } else {
+      q.selectedAnalysis = q.genderAnalysis;
+    }
     a.expanded = !a.expanded;
     if (a.expanded) {
       if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
@@ -628,26 +638,26 @@ public processResults(q: any, totalCount: number) {
 
   public resetExpansion() {
     for (const q of this.questions) {
-        q.expanded = false;
-        q.resultFetchComplete = false;
-        for (const r of q.countAnalysis.results) {
-            r.expanded = false;
-            if (r.hasSubQuestions === 1) {
-                for (const sq of r.subQuestions) {
-                    sq.subExpanded = false;
+      q.expanded = false;
+      q.resultFetchComplete = false;
+      for (const r of q.countAnalysis.results) {
+        r.expanded = false;
+        if (r.hasSubQuestions === 1) {
+          for (const sq of r.subQuestions) {
+            sq.subExpanded = false;
 
-                    for (const sr of sq.countAnalysis.results) {
-                        sr.expanded = false;
+            for (const sr of sq.countAnalysis.results) {
+              sr.expanded = false;
 
-                        if (sr.hasSubQuestions === 1) {
-                            for (const sq2 of sr.subQuestions) {
-                                sq2.subExpanded = false;
-                            }
-                        }
-                    }
+              if (sr.hasSubQuestions === 1) {
+                for (const sq2 of sr.subQuestions) {
+                  sq2.subExpanded = false;
                 }
+              }
             }
+          }
         }
+      }
     }
   }
 }
