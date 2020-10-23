@@ -557,7 +557,7 @@ a a:link a:visited {
   overflow:visible !important;
 }
 
-.chart-tooltip {
+.chart-tooltip, .version-survey-tooltip {
   display: block;
   width: 500px;
   word-wrap: break-word;
@@ -568,7 +568,17 @@ a a:link a:visited {
   padding: 5px;
   font-family: GothamBook, Arial, sans-serif;
   border: 1px solid #262262;
-  z-index: 3;
+  z-index: 100;
+}
+
+.version-survey-tooltip {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+.version-survey-tooltip span {
+  display: flex;
+  white-space: nowrap;
 }
 
 .highcharts-container svg {
@@ -588,7 +598,7 @@ a a:link a:visited {
   border-radius: 3px;
   padding:1rem;
 }
-.cope-statement-box strong{
+ strong{
   font-family: GothamBold;
 }
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {

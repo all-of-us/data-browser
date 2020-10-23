@@ -14,7 +14,10 @@
           <span class="version-box-item">{{survey.monthName}}</span>
           <span class="version-box-item">{{survey.participants}}</span>
           <span class="version-box-item">{{survey.numberOfQuestion}}</span>
-          <span class="version-box-item"><a href=#>PDF LINK</a></span>
+          <span class="version-box-item"><a href="{{survey.pdfLink}}" download>
+                <clr-icon shape="file" class="is-solid"></clr-icon> Survey as PDF
+              </a>
+          </span>
         </div>
       </ng-container>
     </div>

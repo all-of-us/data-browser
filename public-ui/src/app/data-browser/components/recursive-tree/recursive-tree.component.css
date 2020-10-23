@@ -19,10 +19,6 @@
     align-self: center;
 }
 
-.child {
-    z-index: 1000;
-}
-
 .hasChildren.opened::before {
     transition: .1s transform linear;
     transform: rotate(45deg);
@@ -51,7 +47,6 @@
 
 .handle {
     color:#2991cf;
-    z-index: 1000;
     transform: rotate(90deg);
     transition: .1s transform linear;
     margin-top: 0.1rem;

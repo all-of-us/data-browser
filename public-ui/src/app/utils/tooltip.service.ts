@@ -37,6 +37,9 @@ export class TooltipService {
     'The sources represent the many different ways that the standard medical concept ' +
     'returned in the search results has been recorded in patient records. \n' +
     'The sources bar chart provides the top 10 source concepts from the All of Us data.';
+  versionChartHelpText = 'Surveys were released to participants for completion at different' +
+    'time points during the COVID-19 pandemic and has multiple versions. Even though most of' +
+    'the content is consistent between versions, some questions were modified.';
   matchingConceptsHelpText1 = 'Medical concepts are similar to medical terms; ' +
     'they capture medical information\n' +
     'in an individual’s records and may sometimes have values associated with them.\n' +
@@ -117,11 +120,11 @@ export class TooltipService {
     'Values can also be reported in different units, ' +
     'such as Fahrenheit or Celsius for body temperature.';
   pmValueChartHelpText = 'Values provide the numeric result of the physical ' +
-      'measurements taken at the time of participant enrollment. ' +
-      'For example, a participant’s measurement of their body ' +
-      'temperature might have a value of 96.8 degrees. ' +
-      'Values can also be reported in different units, ' +
-      'such as Fahrenheit or Celsius for body temperature.';
+    'measurements taken at the time of participant enrollment. ' +
+    'For example, a participant’s measurement of their body ' +
+    'temperature might have a value of 96.8 degrees. ' +
+    'Values can also be reported in different units, ' +
+    'such as Fahrenheit or Celsius for body temperature.';
   participantCountHelpText = `The overall participant count listed in the header for this column
    includes all participants that have at least one medical concept from this domain in their
    electronic health record (EHR). Participants may have more than one medical concept from
