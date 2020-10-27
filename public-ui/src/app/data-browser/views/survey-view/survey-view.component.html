@@ -61,9 +61,10 @@
                 </p>
               </div>
             </div>
-              <div class="version-table">
-                <app-survey-version-table [surveys]="surveyVersions" *ngIf="isCopeSurvey && surveyVersions"></app-survey-version-table>
-              </div>
+            <div class="version-table">
+              <app-survey-version-table [surveys]="surveyVersions" *ngIf="isCopeSurvey && surveyVersions">
+              </app-survey-version-table>
+            </div>
             <div class="pdf-link" (click)="downloadPdf()" *ngIf="!isCopeSurvey">
               <a href="{{surveyPdfUrl}}" download>
                 <clr-icon shape="file" class="is-solid"> </clr-icon> Download Survey as PDF
@@ -92,7 +93,8 @@
                   </app-highlight-search>
                 </div>
               </div>
-              <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)" (click)="toggleAnswer(q, 'display', 0)">
+              <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
+                (click)="toggleAnswer(q, 'display', 0)">
                 See Answers
                 <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
@@ -103,21 +105,39 @@
                   </div>
                   <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                     <div class="info-text survey-tbl-d display-body">
-                      Concept Code
-                      <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1"
-                        [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.conceptCodeHelpText2"
-                        [toolTipText4]="tooltipText.allOfUsHelpText" [toolTipText5]="tooltipText.conceptCodeHelpText3"
-                        [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                        [action]="'Survey Page Tooltip'"></app-tooltip>
+                      <ng-container *ngIf="isCopeSurvey; else notCope">
+                      </ng-container>
+                      <ng-template #notCope>
+                        Concept Code
+                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1"
+                          [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.conceptCodeHelpText2"
+                          [toolTipText4]="tooltipText.allOfUsHelpText" [toolTipText5]="tooltipText.conceptCodeHelpText3"
+                          [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
+                          [action]="'Survey Page Tooltip'"></app-tooltip>
+                      </ng-template>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
-                      Participant Count
-                      <app-tooltip [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
-                        [label]="getLabel(q,'Multiple Answers for this survey question help text')"
-                        [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
+                      <ng-container *ngIf="isCopeSurvey; else notCope">
+                      </ng-container>
+                      <ng-template #notCope>
+                        Participant Count
+                        <app-tooltip [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                          [label]="getLabel(q,'Multiple Answers for this survey question help text')"
+                          [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
+                      </ng-template>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
-                      % Answered
+                      <ng-container *ngIf="isCopeSurvey; else notCope">
+                        Concept Code
+                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1"
+                          [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.conceptCodeHelpText2"
+                          [toolTipText4]="tooltipText.allOfUsHelpText" [toolTipText5]="tooltipText.conceptCodeHelpText3"
+                          [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
+                          [action]="'Survey Page Tooltip'"></app-tooltip>
+                      </ng-container>
+                      <ng-template #notCope>
+                        % Answered
+                      </ng-template>
                     </div>
                     <div class="survey-tbl-d display-body"></div>
                   </div>
@@ -139,22 +159,33 @@
                     </div>
                     <div class="survey-tbl-r-group">
                       <div class="info-text survey-tbl-d display-body info-text">
-                        <label class="concept-code">{{a.stratum3}}</label>
+                        <ng-container *ngIf="isCopeSurvey; else notCope"></ng-container>
+                        <ng-template #noCope>
+                          <label class="concept-code">{{a.stratum3}}</label>
+                        </ng-template>
                       </div>
 
                       <div class="info-text survey-tbl-d display-body info-text">
-                        <div class="participant-count" *ngIf="a.countValue <= 20; else Non20Counts;">
-                          &le; {{a.countValue | number}}
-                        </div>
-                        <ng-template #Non20Counts>
-                          <div class="body-lead info-text survey-tbl-d">
-                            {{a.countValue | number}}
+                        <ng-container *ngIf="isCopeSurvey; else notCope"></ng-container>
+                        <ng-template #notCope>
+                          <div class="participant-count" *ngIf="a.countValue <= 20; else Non20Counts;">
+                            &le; {{a.countValue | number}}
                           </div>
+                          <ng-template #Non20Counts>
+                            <div class="body-lead info-text survey-tbl-d">
+                              {{a.countValue | number}}
+                            </div>
+                          </ng-template>
                         </ng-template>
                       </div>
 
                       <div class=" info-text survey-tbl-d display-body info-text">
-                        <span>{{countPercentage(a.countValue, survey.participantCount).toFixed(2)}}%</span>
+                        <ng-container *ngIf="isCopeSurvey; else notCope">
+                          <label class="concept-code">{{a.stratum3}}</label>
+                        </ng-container>
+                        <ng-template #notCope>
+                          <span>{{countPercentage(a.countValue, survey.participantCount).toFixed(2)}}%</span>
+                        </ng-template>
                       </div>
 
                       <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
@@ -163,7 +194,8 @@
                             style="height: 1.5rem; width: 1.5rem;color: #2691D0;"></clr-icon>
                         </button>
                         <button class="icon-btn" *ngIf="a.stratum7 === '1'">
-                          <clr-icon *ngIf="!a.expanded" shape="caret" dir="right" (click)="getSubQuestions(a, 'display', 1)"></clr-icon>
+                          <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"
+                            (click)="getSubQuestions(a, 'display', 1)"></clr-icon>
                           <app-spinner [loading]="a.loading" [dots]="a.dots"></app-spinner>
                           <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
                         </button>
@@ -172,13 +204,15 @@
                   </div>
 
                   <div class="survey-row-expansion"
-                    *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'" #chartElement>
+                    *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'"
+                    #chartElement>
                     <app-survey-chart [graphButtons]="graphButtons" [question]="q"
                       [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
                       [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a">
                     </app-survey-chart>
                   </div>
-                  <div class="survey-row-expansion sub-table-1" *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
+                  <div class="survey-row-expansion sub-table-1"
+                    *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
                     <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
                       <h6 class="sub-question-text">
                         <clr-icon shape="child-arrow" size="25"></clr-icon>
@@ -255,13 +289,13 @@
 
                             <div
                               class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                              <button class="icon-btn"
-                                *ngIf="sqa.stratum7 != '1' && sqa.stratum4 != 'Did not answer'">
+                              <button class="icon-btn" *ngIf="sqa.stratum7 != '1' && sqa.stratum4 != 'Did not answer'">
                                 <clr-icon [ngClass]="sqa.expanded?'is-solid':''" shape="bar-chart"
                                   style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
                               </button>
                               <button class="icon-btn" *ngIf="sqa.stratum7 === '1'">
-                                <clr-icon *ngIf="!sqa.expanded" shape="caret" dir="right" (click)="getSubQuestions(sqa, 'display', 2)"></clr-icon>
+                                <clr-icon *ngIf="!sqa.expanded" shape="caret" dir="right"
+                                  (click)="getSubQuestions(sqa, 'display', 2)"></clr-icon>
                                 <app-spinner [loading]="sqa.loading" [dots]="sqa.dots"></app-spinner>
                                 <clr-icon *ngIf="sqa.expanded" shape="caret" dir="down"></clr-icon>
                               </button>
