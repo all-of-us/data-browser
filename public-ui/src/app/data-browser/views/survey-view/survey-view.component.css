@@ -52,6 +52,8 @@ strong {
 
 .survey-head {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     position: relative;
     padding: 0 1rem;
     margin-bottom: calc(18px * 4);
@@ -70,10 +72,12 @@ strong {
 .cope-stat-layout {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 30%;
+    min-width: 15rem;
 }
 .version-table {
-    width: 70%;
+    width: 50%;
+    min-width: 20rem;
 }
 @media only screen and (max-width: 767px) {
     .stat-container {
