@@ -72,12 +72,11 @@ strong {
 .cope-stat-layout {
     display: flex;
     flex-direction: column;
-    width: 30%;
     min-width: 15rem;
 }
 .version-table {
     width: 50%;
-    min-width: 20rem;
+    min-width: 25rem;
 }
 @media only screen and (max-width: 767px) {
     .stat-container {
