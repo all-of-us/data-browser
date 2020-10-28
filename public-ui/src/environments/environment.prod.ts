@@ -1,7 +1,6 @@
 export const environment = {
   displayTag: 'Prod',
   publicApiUrl: 'https://public.api.researchallofus.org',
-  workbenchUrl: 'https://workbench.researchallofus.org',
   researchAllOfUsUrl: 'https://researchallofus.org',
   clientId: '684273740878-d7i68in5d9hqr6n9mfvrdh53snekp79f.apps.googleusercontent.com',
   debug: false,
@@ -10,5 +9,6 @@ export const environment = {
   gtmAuth: 'ixtwsbMAbR3hx5st_ek2jg',
   gtmPreview: 'env-65',
   copeFlag: false,
-  preCopeFlag: false
+  preCopeFlag: false,
+  fitbit: false
 };
