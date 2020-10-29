@@ -117,6 +117,21 @@ paths:
           schema:
             $ref: "#/definitions/AnalysisListResponse"
 
+  /v1/databrowser/fitbit-analysis-results:
+    get:
+      tags:
+        - dataBrowser
+      description: Gets analysis results of fitbit
+      operationId: "getFitbitAnalysisResults"
+      parameters: []
+      responses:
+        200:
+          description: Analysis objects for each of fitbit measurement
+          schema:
+            $ref: "#/definitions/AnalysisListResponse"
+
+
+
   /v1/databrowser/concept-analysis-results:
     get:
       tags:

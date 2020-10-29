@@ -108,8 +108,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3200;
     public static final long SURVEY_AGE_COUNT_ANALYSIIS_ID = 3201;
     public static final long GENDER_ANALYSIS_ID = 3101;
-    public static final long GENDER_IDENTITY_ANALYSIS_ID = 3107;
-    public static final long RACE_ETHNICITY_ANALYSIS_ID = 3108;
+    public static final long PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID = 3107;
     public static final long AGE_ANALYSIS_ID = 3102;
 
     public static final long SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID = 3400;
@@ -1140,6 +1139,19 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
         resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
         return ResponseEntity.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<AnalysisListResponse> getFitbitAnalysisResults() {
+        try {
+            CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+
+        List<AchillesAnalysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID), "Fitbit");
+
+        return null;
     }
 
     /**

@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { IsSafeGuard } from '../guards/is-safe-guard.service';
 import { EmergencyComponent } from '../views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
+import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
@@ -74,6 +75,16 @@ const routes: Routes = [
             }
           }
         },
+        {
+            path: 'fitbit',
+                  component: FitbitViewComponent,
+                  data: {
+                    title: 'Fitbit Measurements',
+                    breadcrumb: {
+                      value: 'fitbit measurements'
+                    }
+                  }
+         },
         {
           path: 'introductory-videos',
           component: IntroVidsComponent,
