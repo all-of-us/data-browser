@@ -189,28 +189,28 @@ app-spinner {
     color: #262262;
 }
 
-#pm-box {
+.pm-box {
     max-width: 100%;
     padding-top: 9px;
 }
 
 @media only screen and (min-width: 768px) {
-    #pm-box {
+    .pm-box {
         max-width: calc(50%);
     }
 }
 
 @media only screen and (min-width: 1168px) {
-    #pm-box {
+    .pm-box {
         max-width: calc(((100% / 12) * 5));
     }
 }
 
-#pm-box .result-body {
+.pm-box .result-body {
     margin: 0;
 }
 
-#pm-box .result-body {
+.pm-box .result-body {
     margin: 0;
     padding-top: 9px;
 }

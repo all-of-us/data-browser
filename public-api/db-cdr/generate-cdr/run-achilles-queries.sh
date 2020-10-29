@@ -470,6 +470,20 @@ where observation_concept_id in (903120)
 or observation_source_concept_id in (903120))) as count_value,
 0 as source_count_value"
 
+echo "Getting Fitbit participant counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3,
+(select count(distinct person_id) from
+(SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`)) as count_value, 0 as source_count_value;"
+
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -480,6 +494,20 @@ on p.person_id=m.person_id
 where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 group by p.gender_concept_id"
+
+echo "Getting fitbit participant counts by gender"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+select 0 as id, 3300 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3, cast(b.gender_concept_id as string) as stratum_4, count(distinct a.person_id) as count_value, 0 as source_count_value from
+(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+union distinct
+SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
+union distinct
+SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
+union distinct
+SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id
+group by 5;"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -540,6 +568,34 @@ select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Physical Measurements' as
 count(distinct m.person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` m join ob_age_stratum p
 on m.observation_id=p.observation_id
+group by age_stratum)
+group by 2,5;"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
+with fitbit_data_age as
+(select a.person_id, ceil(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), birth_datetime, DAY)/365.25) as age from
+(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+union distinct
+SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
+union distinct
+SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
+union distinct
+SELECT distinct person_id as calc_date FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id),
+fitbit_data_age_stratum as
+(
+select person_id,
+case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as age_stratum from fitbit_data_age
+group by person_id,age_stratum
+)
+select 0 as id, analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3, stratum_4, sum(count_value) as count_value, sum(source_count_value) as source_count_value from
+(select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Fitbit' as stratum_3, age_stratum as stratum_4,
+count(distinct person_id) as count_value, 0 as source_count_value
+from fitbit_data_age_stratum p
 group by age_stratum)
 group by 2,5;"
 

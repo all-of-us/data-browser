@@ -43,6 +43,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   surveyResults = [];
   pmGroups: any;
   pmParticipantCount = 0;
+  fitbitParticipantCount = 0;
   totalResults: DomainInfosAndSurveyModulesResponse;
   searchText: FormControl = new FormControl();
   prevSearchText = '';
@@ -54,6 +55,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   SURVEY_DATATYPE = 'surveys';
   PROGRAM_PHYSICAL_MEASUREMENTS = 'program_physical_measurements';
   physicalMeasurementsFound: number;
+  fitbitMeasurementsFound: number;
   numParticipants: any;
   creationTime: any;
   cdrName: any;
@@ -89,6 +91,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.preCope = environment.preCopeFlag;
     this.cope = environment.copeFlag;
     this.pmGroups = this.dbc.pmGroups;
+    console.log('am i here');
+    console.log(this.pmGroups);
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
       this.title = 'Electronic Health Data';
@@ -216,16 +220,24 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.domainResults = [];
     this.surveyResults = [];
     this.physicalMeasurementsFound = 0;
+    this.fitbitMeasurementsFound = 4;
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
     this.domainResults = results.domainInfos.filter(
-      domain => domain.name.toLowerCase() !== 'physical measurements');
+      domain => domain.name.toLowerCase() !== 'physical measurements' && domain.name.toLowerCase() !== 'fitbit');
     const physicalMeasurementDomainInfo =
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
+    const fitbitDomainInfo =
+      results.domainInfos.filter(domain => domain.name.toLowerCase() === 'fitbit');
     if (physicalMeasurementDomainInfo && physicalMeasurementDomainInfo.length > 0) {
       this.pmParticipantCount = physicalMeasurementDomainInfo[0].participantCount;
     }
+    if (fitbitDomainInfo && fitbitDomainInfo.length > 0) {
+        this.fitbitParticipantCount = fitbitDomainInfo[0].participantCount;
+    }
+    console.log(physicalMeasurementDomainInfo);
+    console.log(fitbitDomainInfo);
     this.surveyResults = results.surveyModules;
     // TODO remove this filter when the feature flag is turned off or to debug
     if (!this.cope) {
@@ -246,6 +258,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         null, query, null);
     }
     this.physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
+    // TODO Change this after adding search on fitbit measurements
+    this.fitbitMeasurementsFound = 4;
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
@@ -311,12 +325,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.searchText.setValue('');
   }
 
-  public canDisplayPmTile() {
+  public canDisplayPmWTile() {
     if (!this.loading) {
         if (!this.searchText.value) {
             return true;
         }
-        if (this.searchText.value && this.physicalMeasurementsFound > 0) {
+        if (this.searchText.value && (this.physicalMeasurementsFound > 0 || this.fitbitMeasurementsFound > 0)) {
             return true;
         }
         return false;
