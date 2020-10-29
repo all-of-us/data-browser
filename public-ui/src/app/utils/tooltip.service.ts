@@ -148,6 +148,7 @@ export class TooltipService {
     medical concept in the hierarchy, but never more than once for the same concept. As a result,
      the sum total of counts for the descendants in the tree may be more than the count
      returned for the top level concept.`;
+  fitbitTileHelpText = `Coming Soon`;
   raceEthnicityQuestionHelpText1 = `Through "The Basics" program survey, participants self-report race and ethnicity information to
   the`;
   allOfUsHelpText = `All of Us`;
