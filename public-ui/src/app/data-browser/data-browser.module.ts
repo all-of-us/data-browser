@@ -29,6 +29,7 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -57,6 +58,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     TooltipComponent,
     ErrorMessageComponent,
     SurveyVersionTableComponent,
+    FitbitViewComponent,
   ],
   exports: [
     DataBrowserRoutingModule,

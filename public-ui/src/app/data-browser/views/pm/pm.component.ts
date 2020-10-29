@@ -62,7 +62,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
-    this.loadingStack.push(true);
     this.pmGroups = this.dbc.pmGroups;
 
     // Get demographic totals
