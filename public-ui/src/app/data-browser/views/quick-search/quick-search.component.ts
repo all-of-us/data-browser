@@ -91,8 +91,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.preCope = environment.preCopeFlag;
     this.cope = environment.copeFlag;
     this.pmGroups = this.dbc.pmGroups;
-    console.log('am i here');
-    console.log(this.pmGroups);
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
       this.title = 'Electronic Health Data';
