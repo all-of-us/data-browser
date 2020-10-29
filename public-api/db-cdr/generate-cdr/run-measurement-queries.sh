@@ -1897,7 +1897,7 @@ ceil(TIMESTAMP_DIFF(cast(datetime as timestamp), birth_datetime, DAY)/365.25) as
 echo "Generating fitbit data counts by age decile"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, count_value, source_count_value)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
 (select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 union all
@@ -1907,12 +1907,12 @@ select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart
 union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 )
-select 0 as id, 3107 as analysis_id, 'Activity (daily summary)' as stratum_1, concat(cast(EXTRACT(YEAR from date) as string), '-', case when EXTRACT(MONTH from date) >= 1 and EXTRACT(MONTH from date) <= 6 then '06-30' else '12-31' end) as stratum_2, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\` group by 4
+select 0 as id, 3107 as analysis_id, 'Activity (daily summary)' as stratum_1, concat(cast(EXTRACT(YEAR from date) as string), '-', case when EXTRACT(MONTH from date) >= 1 and EXTRACT(MONTH from date) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\` group by 4
 union all
-select 0 as id, 3107 as analysis_id, 'Heart Rate (Summary)' as stratum_1, concat(cast(EXTRACT(YEAR from date) as string), '-', case when EXTRACT(MONTH from date) >= 1 and EXTRACT(MONTH from date) <= 6 then '06-30' else '12-31' end) as stratum_2, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\` group by 4
+select 0 as id, 3107 as analysis_id, 'Heart Rate (Summary)' as stratum_1, concat(cast(EXTRACT(YEAR from date) as string), '-', case when EXTRACT(MONTH from date) >= 1 and EXTRACT(MONTH from date) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\` group by 4
 union all
-select 0 as id, 3107 as analysis_id, 'Heart rate (minute-level)' as stratum_1, concat(cast(EXTRACT(YEAR from datetime) as string), '-', case when EXTRACT(MONTH from datetime) >= 1 and EXTRACT(MONTH from datetime) <= 6 then '06-30' else '12-31' end) as stratum_2, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\` group by 4
+select 0 as id, 3107 as analysis_id, 'Heart rate (minute-level)' as stratum_1, concat(cast(EXTRACT(YEAR from datetime) as string), '-', case when EXTRACT(MONTH from datetime) >= 1 and EXTRACT(MONTH from datetime) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\` group by 4
 union all
-select 0 as id, 3107 as analysis_id, 'Activity intraday steps (minute-level)' as stratum_1, concat(cast(EXTRACT(YEAR from datetime) as string), '-', case when EXTRACT(MONTH from datetime) >= 1 and EXTRACT(MONTH from datetime) <= 6 then '06-30' else '12-31' end) as stratum_2, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` group by 4
+select 0 as id, 3107 as analysis_id, 'Activity intraday steps (minute-level)' as stratum_1, concat(cast(EXTRACT(YEAR from datetime) as string), '-', case when EXTRACT(MONTH from datetime) >= 1 and EXTRACT(MONTH from datetime) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` group by 4
 union all
-select 0 as id, 3107 as analysis_id, 'All Fitbit Data' as stratum_1, concat(cast(EXTRACT(YEAR from data_date) as string), '-', case when EXTRACT(MONTH from data_date) >= 1 and EXTRACT(MONTH from data_date) <= 6 then '06-30' else '12-31' end) as stratum_2, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from all_fibit_data group by 4;"
+select 0 as id, 3107 as analysis_id, 'All Fitbit Data' as stratum_1, concat(cast(EXTRACT(YEAR from data_date) as string), '-', case when EXTRACT(MONTH from data_date) >= 1 and EXTRACT(MONTH from data_date) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from all_fibit_data group by 4;"
