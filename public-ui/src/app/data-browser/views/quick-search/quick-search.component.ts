@@ -225,7 +225,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
     this.domainResults = results.domainInfos.filter(
-      domain => domain.name.toLowerCase() !== 'physical measurements' && domain.name.toLowerCase() !== 'fitbit');
+      domain => domain.name.toLowerCase() !== 'physical measurements' &&
+      domain.name.toLowerCase() !== 'fitbit');
     const physicalMeasurementDomainInfo =
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     const fitbitDomainInfo =
@@ -330,7 +331,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         if (!this.searchText.value) {
             return true;
         }
-        if (this.searchText.value && (this.physicalMeasurementsFound > 0 || this.fitbitMeasurementsFound > 0)) {
+        if (this.searchText.value && (this.physicalMeasurementsFound > 0 ||
+        this.fitbitMeasurementsFound > 0)) {
             return true;
         }
         return false;
