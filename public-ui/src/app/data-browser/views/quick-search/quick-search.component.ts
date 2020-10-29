@@ -237,8 +237,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     if (fitbitDomainInfo && fitbitDomainInfo.length > 0) {
         this.fitbitParticipantCount = fitbitDomainInfo[0].participantCount;
     }
-    console.log(physicalMeasurementDomainInfo);
-    console.log(fitbitDomainInfo);
     this.surveyResults = results.surveyModules;
     // TODO remove this filter when the feature flag is turned off or to debug
     if (!this.cope) {
