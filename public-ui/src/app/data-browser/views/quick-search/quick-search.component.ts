@@ -61,6 +61,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   showStatement: boolean;
   preCope: boolean;
   cope: boolean;
+  fitbit: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
   If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
   “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
@@ -88,6 +89,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.allOfUsUrl = environment.researchAllOfUsUrl;
     this.preCope = environment.preCopeFlag;
     this.cope = environment.copeFlag;
+    this.fitbit = environment.fitbit;
     this.pmGroups = this.dbc.pmGroups;
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {

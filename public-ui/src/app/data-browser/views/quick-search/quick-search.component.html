@@ -101,12 +101,12 @@
   <h5 class="result-heading secondary-display" *ngIf="showDataType(SURVEY_DATATYPE)"> Survey Questions: </h5>
   <div id="survey" class="result-boxes" *ngIf="showDataType(SURVEY_DATATYPE)">
     <div tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"
-         class="result-box" *ngFor="let r of surveyResults">
+      class="result-box" *ngFor="let r of surveyResults">
       <p class="result-box-title">
         {{r.name}}
         <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.name.toLowerCase()]"
-                     [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-                     [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
+          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+          [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
       </p>
       <div class="result-body">
         <div class="result-body-item">
@@ -117,7 +117,7 @@
           <span *ngIf="!searchText.value">questions available</span>
         </div>
         <span class="result-body-item result-body-stat"
-              *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
+          *ngIf="r.participantCount && r.participantCount > 0; else noParticipants">
           <span><strong> {{r.participantCount | number}}</strong> participants in this domain
           </span>
         </span>
@@ -131,18 +131,19 @@
       </div>
       <div class="result-box-link">
         <a *ngIf="!searchText.value" class="result-bottom-link" tabindex="0" (keydown.enter)="viewSurvey(r, null)"
-           (click)="viewSurvey(r, null)">
+          (click)="viewSurvey(r, null)">
           View Complete Survey</a>
         <a *ngIf="searchText.value" class="result-bottom-link" tabindex="0"
-           (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
+          (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"> View Results </a>
       </div>
     </div>
     <div *ngIf="preCope && !searchText.value" class="result-box cope-preview">
       <div class="result-box-title">
         COPE Survey
-        <app-tooltip [toolTipText1]="'Survey includes information about the impact of COVID-19 on participant mental and physical health.'"
-                     [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-                     [action]="'Hover on Survey Tile ' + 'cope' + ' tooltip'"></app-tooltip>
+        <app-tooltip
+          [toolTipText1]="'Survey includes information about the impact of COVID-19 on participant mental and physical health.'"
+          [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
+          [action]="'Hover on Survey Tile ' + 'cope' + ' tooltip'"></app-tooltip>
       </div>
       <div class="result-body">
         <div class="result-item result-body-stat">
@@ -150,9 +151,9 @@
         </div>
         <!-- waiting for description -->
         <div class="result-body-item">
-          <br/>
+          <br />
           Survey includes information about the impact of COVID-19 on participant mental and physical health.
-For more information, visit our <a href="https://www.researchallofus.org/cope-survey/">Survey Explorer</a>.
+          For more information, visit our <a href="https://www.researchallofus.org/cope-survey/">Survey Explorer</a>.
         </div>
       </div>
     </div>
@@ -165,7 +166,7 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
     </div>
   </div>
   <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
-    Physical Measurements: </h5>
+    Physical Measurements<span *ngIf="fitbit"> and Wearables</span>: </h5>
   <div class="result-boxes" *ngIf="canDisplayPmTile()">
     <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
       <p class="result-box-title">
@@ -196,11 +197,44 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
         <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
       </div>
     </div>
+    <ng-container *ngIf="fitbit">
+      <div [routerLink]="['fitbit-measurements']" id="pm-box" class="result-box">
+        <p class="result-box-title">
+          Fitbit<span style="font-size: .5em;">®</span>
+          <app-tooltip [toolTipText1]="tooltipText.physicalMeasurements" [label]="'Homepage Tooltip Hover'"
+            [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'">
+          </app-tooltip>
+        </p>
+        <div class="result-body">
+          <span class="result-body-item">
+            <ng-container *ngIf="searchText.value; else noSearchPm;">
+              <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
+            </ng-container>
+            <ng-template #noSearchPm>
+              <div class="result-stat">{{pmGroups.length}}</div> Fitbit® measurements
+            </ng-template>
+          </span>
+          <span class="result-body-item result-body-stat" *ngIf="pmParticipantCount > 0">
+            <span><strong> {{pmParticipantCount | number}}</strong> participants in this domain
+            </span>
+          </span>
+          <span class="result-body-item">
+            Participants have the option of providing Fitbit® data. Fitbit® data includes heart rate and activity summaries.
+            <br><br><br>
+          </span>
+        </div>
+        <div class="result-box-link">
+          <a class="result-bottom-link" [routerLink]="['fitbit-measurements']"> View Fitbit® Measurements
+          </a>
+        </div>
+      </div>
+    </ng-container>
   </div>
   <h6 *ngIf="(physicalMeasurementsFound === 0 && !loading) && !displayDomainTotalsErrorMessage" class="no-results-text">
-    No Program Physical Measurement Results. Please type in a new search term.</h6>
+    No Program Physical Measurement or Wearhable Results. Please type in a new search term.</h6>
   <div class="col col-xs-6 error-message" *ngIf="!loading && displayDomainTotalsErrorMessage">
     <app-error-message [dataType]="'data'"></app-error-message>
   </div>
 </section>
-<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" *ngIf="showStatement" ></app-pop-up>
+<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement"
+  *ngIf="showStatement"></app-pop-up>

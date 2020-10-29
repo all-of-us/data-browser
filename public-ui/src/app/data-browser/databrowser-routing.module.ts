@@ -75,6 +75,16 @@ const routes: Routes = [
           }
         },
         {
+          path: 'fitbit-measurements',
+          component: PhysicalMeasurementsComponent,
+          data: {
+            title: 'Fitbit Measurements from Enrollment',
+            breadcrumb: {
+              value: 'fitbit measurements'
+            }
+          }
+        },
+        {
           path: 'introductory-videos',
           component: IntroVidsComponent,
           data: {
