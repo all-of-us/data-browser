@@ -399,7 +399,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .measurementValueGenderAnalysis(ca.getMeasurementValueGenderAnalysis())
                             .measurementValueAgeAnalysis(ca.getMeasurementValueAgeAnalysis())
                             .measurementDistributionAnalysis(ca.getMeasurementDistributionAnalysis())
-                            .measurementGenderCountAnalysis(ca.getMeasurementGenderCountAnalysis());
+                            .measurementGenderCountAnalysis(ca.getMeasurementGenderCountAnalysis())
+                            .participantCountAnalysis(ca.getParticipantCountAnalysis());
                 }
             };
 
@@ -1177,8 +1178,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             addAgeStratum(aa, concept, null, 2);
 
             aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
-            ga.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
-            pca.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            ga.setResults(ga.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            pca.setResults(pca.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
 
             conceptAnalysis.setConceptId(concept);
             conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(ca));
