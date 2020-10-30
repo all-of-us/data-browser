@@ -164,12 +164,11 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
       <app-error-message [dataType]="'data'"></app-error-message>
     </div>
   </div>
-  <h5 class="result-heading secondary-display" *ngIf="!loading"> Program
-    Physical Measurements: </h5>
-  <div class="result-boxes" *ngIf="canDisplayPmTile()">
-    <div [routerLink]="['physical-measurements']" id="pm-box" class="result-box">
+  <h5 class="result-heading secondary-display" *ngIf="!loading"> Physical Measurements and Wearables: </h5>
+  <div class="result-boxes" *ngIf="canDisplayPmWTile()">
+    <div [routerLink]="['physical-measurements']" class="result-box pm-box">
       <p class="result-box-title">
-        Physical Measurements
+        Program Physical Measurements
         <app-tooltip [toolTipText1]="tooltipText.physicalMeasurements" [label]="'Homepage Tooltip Hover'"
           [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'">
         </app-tooltip>
@@ -194,6 +193,33 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
       </div>
       <div class="result-box-link">
         <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+      </div>
+    </div>
+    <div [routerLink]="['fitbit']" class="result-box pm-box" *ngIf="fitbitFlag">
+      <p class="result-box-title"> Fitbit
+        <app-tooltip [toolTipText1]="tooltipText.fitbitTileHelpText" [label]="'Homepage Tooltip Hover'"
+                     [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'">
+        </app-tooltip>
+      </p>
+      <div class="result-body">
+        <span class="result-body-item">
+          <ng-container *ngIf="searchText.value; else noSearchFM;">
+            <div class="result-stat">{{fitbitMeasurementsFound}}</div> matching Fitbit Measurements
+          </ng-container>
+          <ng-template #noSearchFM>
+            <div class="result-stat">{{fitbitMeasurementsFound}}</div> Fitbit Measurements
+          </ng-template>
+        </span>
+        <span class="result-body-item result-body-stat" *ngIf="fitbitParticipantCount > 0">
+          <span><strong> {{fitbitParticipantCount | number}}</strong> participants in this domain
+          </span>
+        </span>
+        <span class="result-body-item">
+          Fitbit data includes heart rate and activity summaries.
+        </span>
+      </div>
+      <div class="result-box-link">
+        <a class="result-bottom-link" [routerLink]="['fitbit']"> View measurements </a>
       </div>
     </div>
   </div>
