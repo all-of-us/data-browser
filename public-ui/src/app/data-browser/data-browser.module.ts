@@ -23,13 +23,13 @@ import { TreeHighlightService } from './services/tree-highlight.service';
 import { SourcesComponent } from './sources/sources.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
+import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
