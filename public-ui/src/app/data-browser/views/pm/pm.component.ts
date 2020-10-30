@@ -93,6 +93,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
                   console.log('Error: ', err);
                 }
         }));
+    this.loadingStack.push(true);
     this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm')
           .subscribe({
             next: result => {

@@ -71,7 +71,7 @@ const routes: Routes = [
           data: {
             title: 'Physical Measurements from Enrollment',
             breadcrumb: {
-              value: 'physical measurements'
+              value: 'physical measurements and wearables'
             }
           }
         },
@@ -81,7 +81,7 @@ const routes: Routes = [
                   data: {
                     title: 'Fitbit Measurements',
                     breadcrumb: {
-                      value: 'fitbit measurements'
+                      value: 'physical measurements and wearables'
                     }
                   }
          },
