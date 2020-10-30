@@ -41,6 +41,7 @@ export class FitbitViewComponent implements OnInit {
                   .subscribe({
                     next: result => {
                       console.log(result);
+                      // Process fitbit results
                       this.loadingStack.pop();
                     },
                     error: err =>  {
