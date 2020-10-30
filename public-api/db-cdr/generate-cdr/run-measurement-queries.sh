@@ -1888,6 +1888,10 @@ ceil(TIMESTAMP_DIFF(cast(datetime as timestamp), birth_datetime, DAY)/365.25) as
      select co.person_id, p.gender_concept_id as gender
      from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
      )
+     select 0 as id, 3101 as analysis_id, 'All Fitbit Data' as stratum_1, cast(gender as string) as stratum_2, 'Fitbit' as stratum_3,
+     count(distinct ca.person_id) as count_value, count(distinct ca.person_id) as source_count_value
+     from m_gender ca group by 4
+     union all
      select 0 as id, 3102 as analysis_id, 'All Fitbit Data' as stratum_1,
      age_stratum as stratum_2, 'Fitbit' as stratum_3,
      count(distinct ca.person_id) as count_value, count(distinct ca.person_id) as source_count_value
