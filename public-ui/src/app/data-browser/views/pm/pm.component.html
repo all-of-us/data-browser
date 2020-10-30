@@ -16,7 +16,7 @@
             <app-tooltip [toolTipText1]="tooltipText.pmValueChartHelpText"
                          [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText" [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip>
           </div>
-          <div class="group-option" *ngIf="selectedGroup.concepts.length > 1">
+          <div class="group-option" *ngIf="selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1">
             <button *ngFor="let c of selectedGroup.concepts" [ngClass]="{active:selectedConcept === c}"
               (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
           </div>
