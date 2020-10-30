@@ -176,8 +176,9 @@ li.flip::before, li.flip::before {
   display: flex;
 }
 
-.site-branding-container .site-branding .logo .site-logo {
+.site-branding-container .site-branding .logo .site-logo, .site-branding-container .site-branding .logo .nih-logo {
   max-width: 225px;
+  min-width: 9rem;
 }
 
 .site-branding-container .site-branding .logo .divider, .site-branding-container .site-branding .logo .nih-logo {
@@ -556,6 +557,7 @@ input#s {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu>li>a {
     padding: 10px 25px;
     position: relative;
+    white-space: nowrap;
     top: 2px;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a {

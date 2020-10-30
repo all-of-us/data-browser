@@ -45,7 +45,7 @@ export class HeaderFooterService {
         }],
       },
       {
-        title: 'data',
+        title: 'Data & Tools',
         url: 'https://www.researchallofus.org/data-snapshots/',
         submenu: true,
         sub0: [{
@@ -72,13 +72,8 @@ export class HeaderFooterService {
           title: 'Data Use Policies',
           url: 'https://www.researchallofus.org/data-use-policies',
           submenu: false
-        }]
-      },
-      {
-        title: 'tools',
-        url: 'https://www.researchallofus.org/workbench/',
-        submenu: true,
-        sub0: [{
+        },
+        {
           title: 'Survey Explorer',
           url: 'https://www.researchallofus.org/data-sources/survey-explorer/',
           submenu: false
