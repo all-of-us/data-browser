@@ -43,6 +43,7 @@ export class DbConfigService {
   SURVEY_GENDER_PERCENTAGE_ANALYSIS_ID = 3331;
   SURVEY_AGE_PERCENTAGE_ANALYSIS_ID = 3332;
   PM_CONCEPTS = [903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120];
+  FITBIT_MEASUREMENTS = ['All Fitbit Data', 'Heart Rate (Summary)', 'Heart rate (minute-level)', 'Activity (daily summary)', 'Activity intraday steps (minute-level)'];
   VALID_AGE_DECILES = ['2', '3', '4', '5', '6', '7', '8', '9'];
 
   GENDER_STRATUM_MAP = {
