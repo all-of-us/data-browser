@@ -195,7 +195,7 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
         <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
       </div>
     </div>
-    <div [routerLink]="['fitbit']" class="result-box pm-box">
+    <div [routerLink]="['fitbit']" class="result-box pm-box" *ngIf="fitbitFlag">
       <p class="result-box-title"> Fitbit
         <app-tooltip [toolTipText1]="tooltipText.fitbitTileHelpText" [label]="'Homepage Tooltip Hover'"
                      [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'">
