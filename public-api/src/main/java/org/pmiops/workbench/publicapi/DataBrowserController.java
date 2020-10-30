@@ -1142,16 +1142,54 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<AnalysisListResponse> getFitbitAnalysisResults() {
+    public ResponseEntity<ConceptAnalysisListResponse> getFitbitAnalysisResults(List<String> concepts) {
         try {
             CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
+        ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
+        List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
+
         List<AchillesAnalysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID), "Fitbit");
 
-        return null;
+        if (analysisList.size() == 0) {
+            throw new DataNotFoundException("Cannot find analysis data of this concept");
+        }
+
+        HashMap<Long, AchillesAnalysis> analysisHashMap = new HashMap<>();
+        for(AchillesAnalysis aa: analysisList){
+            this.entityManager.detach(aa);
+            analysisHashMap.put(aa.getAnalysisId(), aa);
+        }
+
+        for (String concept: concepts) {
+
+            ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
+
+            AchillesAnalysis ca = (AchillesAnalysis)analysisHashMap.get(COUNT_ANALYSIS_ID);
+            AchillesAnalysis aa = (AchillesAnalysis)analysisHashMap.get(AGE_ANALYSIS_ID);
+            AchillesAnalysis ga = (AchillesAnalysis)analysisHashMap.get(GENDER_ANALYSIS_ID);
+            AchillesAnalysis pca = (AchillesAnalysis)analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID);
+
+            addGenderStratum(ga,2, concept, null);
+            addAgeStratum(aa, concept, null, 2);
+
+            aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            ga.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            pca.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+
+            conceptAnalysis.setConceptId(concept);
+            conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(ca));
+            conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(ga));
+            conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
+            conceptAnalysis.setParticipantCountAnalysis(TO_CLIENT_ANALYSIS.apply(pca));
+            conceptAnalysisList.add(conceptAnalysis);
+        }
+
+        resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
+        return ResponseEntity.ok(resp);
     }
 
     /**
