@@ -9,7 +9,7 @@ footer {
 }
 
 .footer-layout * {
-    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    font-family: "Gotham A", "Gotham B", "Helvetica Neue", sans-serif;
     font-weight: normal;
 }
 
@@ -19,17 +19,24 @@ footer {
 }
 
 .site-branding-container {
-    /* width: calc(100%/6); */
-    min-width: 250px;
+    /* width: calc(100%/1); */
+    padding: 0 2rem;
+}
+.logo {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
 }
 
-.site-logo, .nih-logo {
+.site-logo,
+.nih-logo {
     margin-top: 1rem;
     max-width: 330px;
+    padding-right: 1rem;
 }
 
-.site-logo img, .nih-logo img {
-    width: 100%;
+.site-logo img,
+.nih-logo img {
+    min-width: 10rem;
 }
 
 .main-menu {
@@ -46,7 +53,7 @@ footer {
     padding: 0 1rem;
 }
 
-.main-menu-item>a {
+.main-menu-item > a {
     text-transform: uppercase;
     font-family: GothamBold, Helvetica Neue, sans-serif;
 }
@@ -59,13 +66,16 @@ footer {
 .sub-menu {
     margin-top: 1rem;
     margin-left: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.sub-menu li>a {
-    color: rgba(190, 225, 255, 1)
+.sub-menu li > a {
+    color: rgba(190, 225, 255, 1);
+    padding-right: .5em;
 }
 
-.sub-menu li>a:hover {
+.sub-menu li > a:hover {
     color: white;
 }
 
@@ -76,10 +86,10 @@ footer {
     background: #ffffff;
     font-weight: 900;
     font-size: 19px;
-    padding-top: .2em;
-    padding-bottom: .2em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
     line-height: 1.2;
-    font-family: GothamBold, 'Helvetica Neue', sans-serif;
+    font-family: GothamBold, "Helvetica Neue", sans-serif;
     min-width: max-content;
     border-radius: 0px;
     border: 1px solid #fff;
@@ -102,9 +112,9 @@ footer {
     display: block;
     border: 1px white solid;
     padding: 1em;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     text-align: center;
-    font-size: .7em;
+    font-size: 0.7em;
     color: white;
     line-height: 1;
     width: 100%;
@@ -120,19 +130,27 @@ footer {
     margin-bottom: 10%;
 }
 
-@media only screen and (max-width:1168px) {
+@media only screen and (max-width: 770px) {
     .footer-layout {
         flex-direction: column;
     }
     .main-menu {
         flex-direction: column;
         margin: 0;
-        margin-top: .5rem;
+        margin-top: 0.5rem;
     }
     .main-menu li {
         padding: 0;
     }
     .sub-menu {
+        display: block;
         margin-top: 0;
+    }
+    .site-branding-container {
+        /* width: calc(100%/1); */
+        padding:0;
+    }
+    .logo{
+        display: block;
     }
 }
