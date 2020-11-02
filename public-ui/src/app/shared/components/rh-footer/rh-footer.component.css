@@ -21,17 +21,18 @@ footer {
 .site-branding-container {
     /* width: calc(100%/1); */
     padding: 0 2rem;
+    width: 90%;
 }
 .logo {
     display: grid;
-    grid-template-columns: 20rem 1fr;
+    grid-template-columns: 33% 33% 33%;
 }
 
 .site-logo,
 .nih-logo {
     margin-top: 1rem;
-    max-width: 330px;
-    padding-right: 1rem;
+    max-width: 15rem;
+
 }
 
 .site-logo img,
@@ -40,8 +41,9 @@ footer {
 }
 
 .main-menu {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    /* justify-content: space-between; */
     width: 80%;
     margin: 0 2rem;
     margin-top: 1rem;
