@@ -1180,6 +1180,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
             ga.setResults(ga.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
             pca.setResults(pca.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            pca.getResults().sort((o1, o2) -> o1.getStratum2().compareTo(o2.getStratum2()));
 
             conceptAnalysis.setConceptId(concept);
             conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(ca));
