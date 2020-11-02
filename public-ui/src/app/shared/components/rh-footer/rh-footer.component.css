@@ -20,19 +20,18 @@ footer {
 
 .site-branding-container {
     /* width: calc(100%/1); */
-    padding: 0 2rem;
-    width: 90%;
+    width: 100%;
 }
 .logo {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 25% 25% 25% 25%;
+    width: 90%;
 }
 
 .site-logo,
 .nih-logo {
     margin-top: 1rem;
     max-width: 15rem;
-
 }
 
 .site-logo img,
@@ -42,17 +41,16 @@ footer {
 
 .main-menu {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 25% 25% 25% 25%;
     /* justify-content: space-between; */
-    width: 80%;
-    margin: 0 2rem;
-    margin-top: 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-right: 1rem;
     /* flex-wrap: wrap; */
 }
 
 .main-menu-item {
     width: fit-content;
-    padding: 0 1rem;
 }
 
 .main-menu-item > a {
@@ -74,7 +72,7 @@ footer {
 
 .sub-menu li > a {
     color: rgba(190, 225, 255, 1);
-    padding-right: .5em;
+    padding-right: 0.5em;
 }
 
 .sub-menu li > a:hover {
@@ -150,9 +148,9 @@ footer {
     }
     .site-branding-container {
         /* width: calc(100%/1); */
-        padding:0;
+        padding: 0;
     }
-    .logo{
+    .logo {
         display: block;
     }
 }

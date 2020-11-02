@@ -97,20 +97,11 @@ export class HeaderFooterService {
             submenu: false
           }
         ],
-        sub1: [
-          {
-            title: 'FAQ',
-            url: this.allOfUsUrl + '/frequently-asked-questions/',
-            submenu: false
-          }
-        ],
-        sub2: [
-          {
-            title: `WE'RE IN BETA`,
-            url: '#',
-            submenu: false
-          }
-        ]
+      },
+      {
+        title: 'FAQ',
+        url: this.allOfUsUrl + '/frequently-asked-questions/',
+        submenu: false
       }
     ];
   }
