@@ -50,11 +50,6 @@ export class HeaderFooterService {
           submenu: false
         },
         {
-          title: 'Data Methods',
-          url: 'https://www.researchallofus.org/data-sources/methods/',
-          submenu: false
-        },
-        {
           title: 'Data Access & Use',
           url: 'https://www.researchallofus.org/data-tools/data-access/',
           submenu: false
