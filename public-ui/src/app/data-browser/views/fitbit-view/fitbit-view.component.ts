@@ -24,15 +24,15 @@ export class FitbitViewComponent implements OnInit {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.fitbitConcepts.push({id: 1, displayName: 'All Fitbit Data',
-    conceptName: 'All Fitbit Data'});
+    conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'});
     this.fitbitConcepts.push({id: 2, displayName: 'Heart rate by zone summary',
-    conceptName: 'Heart Rate (Summary)'});
+    conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat'});
     this.fitbitConcepts.push({id: 3, displayName: 'Heart rate (minute-level)',
-    conceptName: 'Heart rate (minute-level)'});
+    conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate'});
     this.fitbitConcepts.push({id: 4, displayName: 'Activity (dialy summary)',
-    conceptName: 'Activity (daily summary)'});
+    conceptName: 'Activity (daily summary)', icon: 'fa-running'});
     this.fitbitConcepts.push({id: 5, displayName: 'Activity intraday steps (minute-level)',
-    conceptName: 'Activity intraday steps (minute-level)'});
+    conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'});
     console.log(this.fitbitConcepts);
     // this.api.getFitbitAnalysis(this.dbc.FITBIT_MEASUREMENTS);
 

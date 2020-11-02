@@ -1,0 +1,31 @@
+.fm-container {
+
+}
+.fm-layout {
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    column-gap: 1rem;
+}
+.fm-menu {
+
+}
+.fm-body {
+    background: white;
+    border-radius: 3px;
+}
+.fm-menu-item {
+    display: flex;
+    align-items: center;
+    /* background-color: khaki; */
+    /* justify-content: space-between; */
+    padding: 1rem;
+    font-size: 0.8em;
+    border-bottom: 1px solid #262262 ;
+}
+.fm-menu-item span {
+    color: #0079b8;
+}
+.fas {
+    padding-right: 0.5em;
+    font-size: 2em;
+}

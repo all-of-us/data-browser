@@ -48,7 +48,6 @@ h5.secondary-display {
     padding: .5em 1em;
 }
 
-
 @media (max-width: 900px) {
     .results {
       padding: 0;

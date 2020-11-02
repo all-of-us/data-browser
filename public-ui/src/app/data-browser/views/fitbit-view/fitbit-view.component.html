@@ -1,3 +1,13 @@
 <div class="fm-container">
   <h1>{{title}}</h1>
+  <div class="fm-layout">
+    <div class="fm-menu">
+      <ng-container *ngFor="let menuItem of fitbitConcepts">
+        <div class="fm-menu-item"> <i class="fas {{menuItem.icon}}"></i> <span>{{menuItem.displayName}}</span></div>
+      </ng-container>
+    </div>
+    <div class="fm-body">
+      
+    </div>
+  </div>
 </div>
