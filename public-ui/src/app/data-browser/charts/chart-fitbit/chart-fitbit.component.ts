@@ -14,12 +14,10 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
   }
 
   ngOnChanges() {
-    console.log(this.concepts,'sup concpets');
     this.buildChart();
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 20;
     this.chartOptions.yAxis.title.text = 'Participant Count';
-    this.chartOptions.xAxis.title.text = 'Top Concepts';
     this.chartOptions.yAxis.title.style.fontSize = '14px';
     this.chartOptions.xAxis.title.style.fontSize = '14px';
   }
