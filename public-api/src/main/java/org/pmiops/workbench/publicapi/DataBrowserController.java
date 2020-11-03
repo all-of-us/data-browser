@@ -1169,23 +1169,25 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
-            AchillesAnalysis ca = (AchillesAnalysis)analysisHashMap.get(COUNT_ANALYSIS_ID);
-            AchillesAnalysis aa = (AchillesAnalysis)analysisHashMap.get(AGE_ANALYSIS_ID);
-            AchillesAnalysis ga = (AchillesAnalysis)analysisHashMap.get(GENDER_ANALYSIS_ID);
-            AchillesAnalysis pca = (AchillesAnalysis)analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID);
+            AchillesAnalysis countAnalysis = new AchillesAnalysis(analysisHashMap.get(COUNT_ANALYSIS_ID));
+            AchillesAnalysis ageAnalysis = new AchillesAnalysis(analysisHashMap.get(AGE_ANALYSIS_ID));
+            AchillesAnalysis genderAnalysis = new AchillesAnalysis(analysisHashMap.get(GENDER_ANALYSIS_ID));
+            AchillesAnalysis participantCountAnalysis = new AchillesAnalysis(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID));
 
-            addGenderStratum(ga,2, concept, null);
-            addAgeStratum(aa, concept, null, 2);
+            countAnalysis.setResults(analysisHashMap.get(COUNT_ANALYSIS_ID).getResults());
+            ageAnalysis.setResults(analysisHashMap.get(AGE_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            genderAnalysis.setResults(analysisHashMap.get(GENDER_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            participantCountAnalysis.setResults(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            participantCountAnalysis.getResults().sort((o1, o2) -> o1.getStratum2().compareTo(o2.getStratum2()));
 
-            aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
-            ga.setResults(ga.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
-            pca.setResults(pca.getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            addGenderStratum(genderAnalysis,2, concept, null);
+            addAgeStratum(ageAnalysis, concept, null, 2);
 
             conceptAnalysis.setConceptId(concept);
-            conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(ca));
-            conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(ga));
-            conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(aa));
-            conceptAnalysis.setParticipantCountAnalysis(TO_CLIENT_ANALYSIS.apply(pca));
+            conceptAnalysis.setCountAnalysis(TO_CLIENT_ANALYSIS.apply(countAnalysis));
+            conceptAnalysis.setGenderAnalysis(TO_CLIENT_ANALYSIS.apply(genderAnalysis));
+            conceptAnalysis.setAgeAnalysis(TO_CLIENT_ANALYSIS.apply(ageAnalysis));
+            conceptAnalysis.setParticipantCountAnalysis(TO_CLIENT_ANALYSIS.apply(participantCountAnalysis));
             conceptAnalysisList.add(conceptAnalysis);
         }
 
