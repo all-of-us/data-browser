@@ -17,7 +17,7 @@ export class ChartBaseComponent {
     shadow: false,
     borderColor: null,
   };
-  @Input() concepts: Concept[];
+  @Input() concepts: any;
 
 
   constructor(injector: Injector) {
