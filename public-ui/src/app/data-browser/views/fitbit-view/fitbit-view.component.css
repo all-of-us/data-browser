@@ -13,11 +13,25 @@
     background: white;
     border-radius: 3px;
 }
+
+.fm-body-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.fm-body-bottom {
+    display: flex;
+    justify-content: center;
+}
+.fm-chart {
+    background: #f9f9fa;
+    /* margin: 1rem; */
+    min-width: 20rem;
+    width: calc(50% - 2rem);
+}
 .fm-menu-item {
     display: flex;
     align-items: center;
-    /* background-color: khaki; */
-    /* justify-content: space-between; */
     padding: 1rem;
     font-size: 0.8em;
     border-bottom: 1px solid #262262 ;

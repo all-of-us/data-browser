@@ -7,7 +7,21 @@
       </ng-container>
     </div>
     <div class="fm-body">
-      
+      <ng-container *ngIf="isLoading">
+        <div class="fm-body-top">
+          <div class="fm-chart">
+            <chart-fitbit [concepts]='fitbitConcepts[0].analyses.participantCountAnalysis'></chart-fitbit>
+          </div>
+          <div class="fm-chart">
+            <chart-fitbit [concepts]='fitbitConcepts[0].analyses.genderAnalysis'></chart-fitbit>
+          </div>
+        </div>
+        <div class="fm-body-bottom">
+          <div class="fm-chart">
+            <chart-fitbit [concepts]='fitbitConcepts[0].analyses.ageAnalysis'></chart-fitbit>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
