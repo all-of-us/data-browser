@@ -1174,6 +1174,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             AchillesAnalysis genderAnalysis = new AchillesAnalysis(analysisHashMap.get(GENDER_ANALYSIS_ID));
             AchillesAnalysis participantCountAnalysis = new AchillesAnalysis(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID));
 
+            countAnalysis.setResults(analysisHashMap.get(COUNT_ANALYSIS_ID).getResults());
             ageAnalysis.setResults(analysisHashMap.get(AGE_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
             genderAnalysis.setResults(analysisHashMap.get(GENDER_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
             participantCountAnalysis.setResults(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
