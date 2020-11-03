@@ -12,6 +12,7 @@
   font-weight: normal;
   font-size: 14px;
   color:white;
+  text-align: center;
 }
 #colophon .widget-column .widget p em {
   font-family: 'FFUnitStdItalic', 'Helvetica', sans-serif;
