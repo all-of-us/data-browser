@@ -37,7 +37,6 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
   }
 
   public conceptDist() {
-    console.log(this.concepts, 'ssdfdsf');
     for (const concept of this.concepts.results) {
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       this.pointData.push({

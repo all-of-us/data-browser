@@ -14,7 +14,6 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
   }
 
   ngOnChanges() {
-    console.log(this.concepts, 'from biosex');
     this.buildChart();
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 50;
