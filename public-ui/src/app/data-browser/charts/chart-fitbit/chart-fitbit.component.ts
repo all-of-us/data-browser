@@ -37,9 +37,13 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
   }
 
   public conceptDist() {
+    console.log(this.concepts,'ssdfdsf');
+    
     for (const concept of this.concepts.results) {
       this.pointData.push({
-        toolTipHelpText: '',
+        toolTipHelpText: '<div class="fitbit-tooltip"><strong>' + concept.countValue +
+        ' </strong> participants had <br>'
+        + concept.stratum1 + '<br> by <strong>' + concept.stratum2 + '</strong> </div>',
         name: '',
         y: concept.countValue,
         concept: '',
