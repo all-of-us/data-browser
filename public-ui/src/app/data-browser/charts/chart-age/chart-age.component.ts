@@ -1,20 +1,19 @@
 import { Component, Injector, OnChanges } from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
+
 @Component({
   // tslint:disable-next-line: component-selector
-  selector: 'chart-biosex',
-  templateUrl: './chart-biosex.component.html',
-  styleUrls: ['./chart-biosex.component.css']
+  selector: 'chart-age',
+  templateUrl: './chart-age.component.html',
+  styleUrls: ['./chart-age.component.css']
 })
-export class ChartBiosexComponent extends ChartBaseComponent implements OnChanges {
-
+export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
   chartOptions: any;
   constructor(injector: Injector) {
     super(injector);
   }
 
   ngOnChanges() {
-    console.log(this.concepts,'from biosex');
     this.buildChart();
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 50;
@@ -22,25 +21,26 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
     this.chartOptions.xAxis.title.text = '';
     this.chartOptions.yAxis.title.style.fontSize = '14px';
     this.chartOptions.xAxis.title.style.fontSize = '14px';
-    this.chartOptions.yAxis.title.style.color = '#262262';
     this.chartOptions.yAxis.gridLineWidth = 1;
     this.chartOptions.yAxis.gridLineColor = '#F0F0F0';
-
+    this.chartOptions.xAxis.gridLineWidth = 1;
+    this.chartOptions.xAxis.gridLineColor = '#F0F0F0';
   }
+
   public buildChart() {
     this.pointData = [];
     this.categoryArr = [];
     this.conceptDist();
     this.chartObj = {
-      type: 'bar',
-      backgroundColor: 'transparent'
+      type: 'column',
+      backgroundColor: 'transparent',
     };
   }
 
   public conceptDist() {
     for (const concept of this.concepts.results) {
       this.pointData.push({
-        toolTipHelpText: concept.analysisStratumName + ' ' + concept.countValue,
+        toolTipHelpText: '',
         name: '',
         y: concept.countValue,
         concept: '',
@@ -49,5 +49,4 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
       this.categoryArr.push(concept.analysisStratumName);
     }
   }
-
 }

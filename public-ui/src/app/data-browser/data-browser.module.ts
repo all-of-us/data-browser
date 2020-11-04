@@ -32,6 +32,7 @@ import { QuickSearchComponent } from './views/quick-search/quick-search.componen
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
+import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -63,6 +64,7 @@ import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.compone
     FitbitViewComponent,
     ChartFitbitComponent,
     ChartBiosexComponent,
+    ChartAgeComponent,
   ],
   exports: [
     DataBrowserRoutingModule,

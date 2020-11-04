@@ -15,7 +15,7 @@ export class ChartService {
   xAxisTitle = {
     text: '',
     style: {
-      color: '#666',
+      color: '#262262',
       fontWeight: 'bold',
       whiteSpace: 'wrap',
       textOverflow: 'ellipsis'
@@ -24,7 +24,7 @@ export class ChartService {
   yAxisTitle = {
     text: '',
     style: {
-      color: '#666',
+      color: '#262262',
       fontSize: '12px',
       whiteSpace: 'wrap',
       textOverflow: 'ellipsis'

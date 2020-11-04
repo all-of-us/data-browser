@@ -3,22 +3,30 @@
   <div class="fm-layout">
     <div class="fm-menu">
       <ng-container *ngFor="let menuItem of fitbitConcepts">
-        <div class="fm-menu-item"> <i class="fas {{menuItem.icon}}"></i> <span>{{menuItem.displayName}}</span></div>
+        <div class="fm-menu-item-container">
+          <div (click)="setGraphs(menuItem)" class="fm-menu-item"
+            [ngClass]="{'active': selectedItem == menuItem.conceptName}"> <i class="fas {{menuItem.icon}}"></i>
+            <span>{{menuItem.displayName}}</span></div>
+        </div>
       </ng-container>
     </div>
     <div class="fm-body">
       <ng-container *ngIf="isLoading">
+        <h2>{{selectedDisplay}}</h2>
         <div class="fm-body-top">
           <div class="fm-chart">
-            <chart-fitbit [concepts]='fitbitConcepts[0].analyses.participantCountAnalysis'></chart-fitbit>
+            <div class="display-body">Count of participants with {{selectedDisplay}} by date</div>
+            <chart-fitbit [concepts]='selectedAnalyses.participantCountAnalysis'></chart-fitbit>
           </div>
           <div class="fm-chart">
-            <chart-biosex [concepts]='fitbitConcepts[0].analyses.genderAnalysis'></chart-biosex>
+            <div class="display-body">Sex assigned at birth</div>
+            <chart-biosex [concepts]='selectedAnalyses.genderAnalysis'></chart-biosex>
           </div>
         </div>
         <div class="fm-body-bottom">
           <div class="fm-chart">
-            <chart-fitbit [concepts]='fitbitConcepts[0].analyses.ageAnalysis'></chart-fitbit>
+            <div class="display-body">Age when physical measurment taken</div>
+            <chart-age [concepts]='selectedAnalyses.ageAnalysis'></chart-age>
           </div>
         </div>
       </ng-container>

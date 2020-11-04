@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { forEach } from '@angular/router/src/utils/collection';
 import { ISubscription } from 'rxjs/Subscription';
-import {DataBrowserService} from '../../../../publicGenerated/api/dataBrowser.service';
-import {DbConfigService} from '../../../utils/db-config.service';
+import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
+import { DbConfigService } from '../../../utils/db-config.service';
 
 @Component({
   selector: 'app-fitbit-view',
@@ -16,6 +15,10 @@ export class FitbitViewComponent implements OnInit {
   fitbitConcepts: any = [];
   searchText: string = null;
   isLoading = false;
+  analyses: any;
+  selectedAnalyses: any;
+  selectedItem = 'All Fitbit Data';
+  selectedDisplay = 'All Fitbit Data'
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
 
@@ -25,38 +28,56 @@ export class FitbitViewComponent implements OnInit {
 
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
-    this.fitbitConcepts.push({id: 1, displayName: 'All Fitbit Data',
-    conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'});
-    this.fitbitConcepts.push({id: 2, displayName: 'Heart rate by zone summary',
-    conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat'});
-    this.fitbitConcepts.push({id: 3, displayName: 'Heart rate (minute-level)',
-    conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate'});
-    this.fitbitConcepts.push({id: 4, displayName: 'Activity (daily summary)',
-    conceptName: 'Activity (daily summary)', icon: 'fa-running'});
-    this.fitbitConcepts.push({id: 5, displayName: 'Activity intraday steps (minute-level)',
-    conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'});
+    this.fitbitConcepts.push({
+      id: 1, displayName: 'All Fitbit Data',
+      conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'
+    });
+    this.fitbitConcepts.push({
+      id: 2, displayName: 'Heart rate by zone summary',
+      conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat'
+    });
+    this.fitbitConcepts.push({
+      id: 3, displayName: 'Heart rate (minute-level)',
+      conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate'
+    });
+    this.fitbitConcepts.push({
+      id: 4, displayName: 'Activity (daily summary)',
+      conceptName: 'Activity (daily summary)', icon: 'fa-running'
+    });
+    this.fitbitConcepts.push({
+      id: 5, displayName: 'Activity intraday steps (minute-level)',
+      conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'
+    });
     console.log(this.fitbitConcepts);
     // this.api.getFitbitAnalysis(this.dbc.FITBIT_MEASUREMENTS);
 
     this.loadingStack.push(true);
-        this.subscriptions.push(this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
-                  .subscribe({
-                    next: result => {
-                      result.items.forEach((concept,i) => {
-                      if (concept.conceptId === this.fitbitConcepts[i].conceptName) {
-                        this.fitbitConcepts[i]['analyses'] = concept;
-                      } 
-                      });
-                      console.log(this.fitbitConcepts,'fitbit with the goods');
-                      this.isLoading = true;
-                      // Process fitbit results
-                      this.loadingStack.pop();
-                    },
-                    error: err =>  {
-                      this.loadingStack.pop();
-                      console.log('Error: ', err);
-                    }
-            }));
+    this.subscriptions.push(this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
+      .subscribe({
+        next: result => {
+          this.analyses = result.items;
+          this.selectedAnalyses = result.items[0];
+          this.isLoading = true;
+          // Process fitbit results
+          this.loadingStack.pop();
+        },
+        error: err => {
+          this.loadingStack.pop();
+          console.log('Error: ', err);
+        }
+      }));
+  }
+
+  setGraphs(conceptObj) {
+    console.log(conceptObj,'ooioioioi');
+    
+     this.analyses.forEach(concept => {
+            if (conceptObj.conceptName === concept.conceptId) {
+              this.selectedAnalyses = concept;
+            }
+          });
+          this.selectedItem = conceptObj.conceptName;
+          this.selectedDisplay = conceptObj.displayName;
   }
 
 }

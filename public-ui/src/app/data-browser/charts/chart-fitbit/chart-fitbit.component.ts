@@ -18,8 +18,13 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 20;
     this.chartOptions.yAxis.title.text = 'Participant Count';
+    this.chartOptions.xAxis.title.text = '';
     this.chartOptions.yAxis.title.style.fontSize = '14px';
     this.chartOptions.xAxis.title.style.fontSize = '14px';
+    this.chartOptions.yAxis.gridLineWidth = 1;
+    this.chartOptions.yAxis.gridLineColor = '#F0F0F0';
+    this.chartOptions.xAxis.gridLineWidth = 1;
+    this.chartOptions.xAxis.gridLineColor = '#F0F0F0';
   }
   public buildChart() {
     this.pointData = [];
