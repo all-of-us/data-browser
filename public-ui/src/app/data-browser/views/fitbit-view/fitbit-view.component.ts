@@ -18,7 +18,7 @@ export class FitbitViewComponent implements OnInit {
   analyses: any;
   selectedAnalyses: any;
   selectedItem = 'All Fitbit Data';
-  selectedDisplay = 'All Fitbit Data'
+  selectedDisplay = 'All Fitbit Data';
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
 
@@ -48,7 +48,6 @@ export class FitbitViewComponent implements OnInit {
       id: 5, displayName: 'Activity intraday steps (minute-level)',
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'
     });
-    console.log(this.fitbitConcepts);
     // this.api.getFitbitAnalysis(this.dbc.FITBIT_MEASUREMENTS);
 
     this.loadingStack.push(true);
@@ -69,15 +68,13 @@ export class FitbitViewComponent implements OnInit {
   }
 
   setGraphs(conceptObj) {
-    console.log(conceptObj,'ooioioioi');
-    
-     this.analyses.forEach(concept => {
-            if (conceptObj.conceptName === concept.conceptId) {
-              this.selectedAnalyses = concept;
-            }
-          });
-          this.selectedItem = conceptObj.conceptName;
-          this.selectedDisplay = conceptObj.displayName;
+    this.analyses.forEach(concept => {
+      if (conceptObj.conceptName === concept.conceptId) {
+        this.selectedAnalyses = concept;
+      }
+    });
+    this.selectedItem = conceptObj.conceptName;
+    this.selectedDisplay = conceptObj.displayName;
   }
 
 }

@@ -14,7 +14,7 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
   }
 
   ngOnChanges() {
-    console.log(this.concepts,'from biosex');
+    console.log(this.concepts, 'from biosex');
     this.buildChart();
     this.chartOptions = this.getChartOptions();
     this.chartOptions.plotOptions.series.pointWidth = 50;
@@ -42,9 +42,9 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       this.pointData.push({
         toolTipHelpText: '<div class="bio-sex-tooltip"><strong>' +
-        count + '</strong>' +
-        ' participants <br> who had <strong>' + concept.analysisStratumName +
-        '</strong> as sex assigned at birth </div>',
+          count + '</strong>' +
+          ' participants <br> who had <strong>' + concept.analysisStratumName +
+          '</strong> as sex assigned at birth </div>',
         name: '',
         y: concept.countValue,
         concept: '',
