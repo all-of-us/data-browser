@@ -39,9 +39,10 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
 
   public conceptDist() {
     for (const concept of this.concepts.results) {
+      const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       this.pointData.push({
         toolTipHelpText: '<div class="bio-sex-tooltip"><strong>' +
-        concept.countValue + '</strong>' +
+        count + '</strong>' +
         ' participants <br> who had <strong>' + concept.analysisStratumName +
         '</strong> as sex assigned at birth </div>',
         name: '',
