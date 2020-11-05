@@ -401,7 +401,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       if (!this.sources) {
         count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
         toolTipText = '<div class="chart-tooltip">' + a.conceptName + ' (' + a.vocabularyId + '-' +
-        a.conceptCode + ') ' + '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong> </div>' ;
+          a.conceptCode + ') ' + '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong> </div>';
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
           y: a.countValue, analysisId: 'topConcepts',
@@ -412,7 +412,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       } else {
         count = (a.sourceCountValue <= 20) ? '&le; 20' : a.sourceCountValue;
         toolTipText = '<div class="chart-tooltip">' + a.conceptName +
-        ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
+          ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
           '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong> </div>';
         data.push({
           name: a.conceptName + ' (' + a.vocabularyId + '-' + a.conceptCode + ') ',
@@ -512,7 +512,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         toolTipHelpText = '<div class="chart-tooltip">' +
           '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
           ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
-           percentage + '% </strong>' + 'of the total count of ' + analysisStratumName +
+          percentage + '% </strong>' + 'of the total count of ' + analysisStratumName +
           ' as sex assigned at birth that answered this survey question (total count = <strong> '
           + totalCount + '</strong>) </div>';
       }
@@ -764,19 +764,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
       }
       if (a.stratum2 !== 'No unit') {
-        tooltipText = '<b>' + analysisStratumName + '</b>' +
+        tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value / Range:';
         if (a.stratum4.indexOf('>=') > -1) {
           tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
-            + '</b> <br/>' + participantCountText;
+            + '</b> <br/>' + participantCountText + '</div>';
         } else {
           tooltipText = tooltipText + ' <b>' + a.stratum4
-            + '</b> <br/>' + participantCountText;
+            + '</b> <br/>' + participantCountText + '</div>';
         }
       } else {
         tooltipText = '<b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value : <b>' + a.stratum4
-          + '</b> <br/>' + participantCountText;
+          + '</b> <br/>' + participantCountText + '</div>';
       }
       data.push({
         name: a.stratum4, y: a.countValue, thisCtrl: this,
@@ -930,8 +930,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
       }
 
-      toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
-        '<br/>' + participantCountText;
+      toolTipText = '<div class="bio-sex-tooltip"> Sex Assigned At Birth: '
+        + '<b>' + a.analysisStratumName + '</b>' +
+        '<br/>' + participantCountText + '</div>';
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,

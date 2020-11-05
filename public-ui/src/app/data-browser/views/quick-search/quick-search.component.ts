@@ -206,6 +206,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.resetDomainResults();
           }
         }));
+        this.fitbitMeasurementsFound = 4;
   }
   ngOnDestroy() {
     for (const s of this.subscriptions) {
