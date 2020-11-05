@@ -272,7 +272,8 @@ export class DbConfigService {
   }
 
   public matchFitbitMeasurements(searchString: string) {
-    return this.FITBIT_MEASUREMENTS.filter(name => name.toLowerCase().includes(searchString.toLowerCase())).length;
+    return this.FITBIT_MEASUREMENTS.filter(name => name.toLowerCase().includes(
+    searchString.toLowerCase())).length;
   }
 
 }
