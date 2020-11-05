@@ -17,7 +17,7 @@ export class ChartBaseComponent {
     shadow: false,
     borderColor: null,
   };
-  @Input() concepts: Concept[];
+  @Input() concepts: any;
 
 
   constructor(injector: Injector) {
@@ -46,7 +46,7 @@ export class ChartBaseComponent {
                   'Participant Count: <b>&le; 20 </b>');
             }
           }
-          return '<div class="chart-tooltip">' + this.point.toolTipHelpText + '</div>';
+          return this.point.toolTipHelpText;
         },
         positioner: function(width, height, point) {
           const columnWidth = this.chart.series[0].options.pointWidth;
@@ -60,7 +60,6 @@ export class ChartBaseComponent {
         borderColor: '#262262',
         borderRadius: '1px',
         backgroundColor: '#FFFFFF',
-        className: 'chart-tooltip',
         style: {
           color: '#302C71',
         }
@@ -73,7 +72,8 @@ export class ChartBaseComponent {
           style: {
             fontSize: '12px',
             whiteSpace: 'wrap',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            color: '#262262'
           },
         },
         title: this.chartService.xAxisTitle,
@@ -87,6 +87,14 @@ export class ChartBaseComponent {
         lineWidth: 1,
         lineColor: '#979797',
         gridLineColor: 'transparent',
+        labels: {
+          style: {
+            fontSize: '12px',
+            whiteSpace: 'wrap',
+            textOverflow: 'ellipsis',
+            color: '#262262'
+          },
+        }
       },
       legend: this.chartService.notEnabled,
       credits: this.chartService.notEnabled,

@@ -64,9 +64,9 @@ export class ChartTopResultsComponent extends ChartBaseComponent implements OnCh
 
   public toolTip(concept: Concept) {
     let toolTipText;
-    toolTipText = concept.conceptName +
+    toolTipText = '<div class="chart-tooltip">' + concept.conceptName +
       ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-      '<br/>' + 'Participant Count: ' + '<b>' + concept.countValue + '</b>';
+      '<br/>' + 'Participant Count: ' + '<strong>' + concept.countValue + '</strong>' + '</div>';
     return toolTipText;
   }
 }

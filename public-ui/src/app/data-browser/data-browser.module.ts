@@ -9,7 +9,10 @@ import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
+import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
+import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
+import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
 import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
@@ -59,6 +62,9 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ErrorMessageComponent,
     SurveyVersionTableComponent,
     FitbitViewComponent,
+    ChartFitbitComponent,
+    ChartBiosexComponent,
+    ChartAgeComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
