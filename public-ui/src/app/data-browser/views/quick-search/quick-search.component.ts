@@ -93,6 +93,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.fitbitFlag = environment.fitbit;
     this.cope = environment.copeFlag;
     this.pmGroups = this.dbc.pmGroups;
+    this.fitbitMeasurementsFound = 4;
     // Set title based on datatype
     if (this.dataType === this.EHR_DATATYPE) {
       this.title = 'Electronic Health Data';
@@ -221,7 +222,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.domainResults = [];
     this.surveyResults = [];
     this.physicalMeasurementsFound = 0;
-    this.fitbitMeasurementsFound = 4;
+    this.fitbitMeasurementsFound = 0;
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
@@ -258,8 +259,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         null, query, null);
     }
     this.physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
-    // TODO Change this after adding search on fitbit measurements
-    this.fitbitMeasurementsFound = 4;
+    this.fitbitMeasurementsFound = this.dbc.matchFitbitMeasurements(query);
+    if (this.fitbitMeasurementsFound === 5) {
+        this.fitbitMeasurementsFound = 4;
+    }
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals

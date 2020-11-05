@@ -271,4 +271,9 @@ export class DbConfigService {
       conceptgroup.groupName.toLowerCase().includes(searchString.toLowerCase())).length;
   }
 
+  public matchFitbitMeasurements(searchString: string) {
+    return this.FITBIT_MEASUREMENTS.filter(name => name.toLowerCase().includes(
+    searchString.toLowerCase())).length;
+  }
+
 }
