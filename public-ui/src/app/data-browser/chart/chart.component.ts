@@ -764,19 +764,19 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
       }
       if (a.stratum2 !== 'No unit') {
-        tooltipText = '<b>' + analysisStratumName + '</b>' +
+        tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value / Range:';
         if (a.stratum4.indexOf('>=') > -1) {
           tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
-            + '</b> <br/>' + participantCountText;
+            + '</b> <br/>' + participantCountText + '</div>';
         } else {
           tooltipText = tooltipText + ' <b>' + a.stratum4
-            + '</b> <br/>' + participantCountText;
+            + '</b> <br/>' + participantCountText + '</div>';
         }
       } else {
         tooltipText = '<b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value : <b>' + a.stratum4
-          + '</b> <br/>' + participantCountText;
+          + '</b> <br/>' + participantCountText + '</div>';
       }
       data.push({
         name: a.stratum4, y: a.countValue, thisCtrl: this,
@@ -930,8 +930,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
       }
 
-      toolTipText = 'Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
-        '<br/>' + participantCountText;
+      toolTipText = '<div class="bio-sex-tooltip"> Sex Assigned At Birth: ' + '<b>' + a.analysisStratumName + '</b>' +
+        '<br/>' + participantCountText + '</div>';
       data.push({
         name: a.stratum4,
         y: a.countValue, color: color,
