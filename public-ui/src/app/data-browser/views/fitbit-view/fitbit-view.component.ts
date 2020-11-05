@@ -48,13 +48,27 @@ export class FitbitViewComponent implements OnInit {
       id: 5, displayName: 'Activity intraday steps (minute-level)',
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'
     });
-    // this.api.getFitbitAnalysis(this.dbc.FITBIT_MEASUREMENTS);
 
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
       .subscribe({
         next: result => {
           this.analyses = result.items;
+          for (const item of result.items) {
+              let fitbitConcept = this.fitbitConcepts.filter(concept => concept.conceptName.toLowerCase().includes(item.conceptId.toLowerCase()))[0];
+              fitbitConcept['ageAnalysis'] = item.ageAnalysis;
+              fitbitConcept['genderAnalysis'] = item.genderAnalysis;
+              fitbitConcept['countAnalysis'] = item.countAnalysis;
+              fitbitConcept['participantCountAnalysis'] = item.participantCountAnalysis;
+          }
+          if (this.searchText) {
+            let matchingConcepts = this.fitbitConcepts.filter(concept => concept.conceptName.toLowerCase().includes(this.searchText.toLowerCase()));
+            if (matchingConcepts && matchingConcepts.length > 0) {
+                this.selectedItem = matchingConcepts[0].conceptName;
+                this.selectedDisplay = matchingConcepts[0].displayName;
+                this.selectedAnalyses = matchingConcepts[0];
+            }
+          }
           this.selectedAnalyses = result.items[0];
           this.isLoading = true;
           // Process fitbit results

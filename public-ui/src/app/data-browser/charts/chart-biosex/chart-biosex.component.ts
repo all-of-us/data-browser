@@ -44,13 +44,32 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
           count + '</strong>' +
           ' participants <br> who had <strong>' + concept.analysisStratumName +
           '</strong> as sex assigned at birth </div>',
-        name: '',
+        name: concept.analysisStratumName,
         y: concept.countValue,
         concept: '',
         analysisId: ''
       });
       this.categoryArr.push(concept.analysisStratumName);
     }
+    this.pointData = this.pointData.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    }
+    );
+    this.categoryArr = this.categoryArr.sort((a, b) => {
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
 }
