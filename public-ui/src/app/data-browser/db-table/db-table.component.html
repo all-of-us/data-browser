@@ -146,11 +146,13 @@
           <div class="body-lead tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
             <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder"
               class="vial-span">
+              <i class="fas fa-vial fa-rotate-45"></i>
               <app-tooltip
                 [toolTipText1]="'This code contains values. Search the medical concept keyword to see related Labs & Measurements results'">
               </app-tooltip>
             </span>
             <ng-template #labOrder><span class="order-span">
+                <i class="far fa-file-signature"></i>
                 <app-tooltip
                   [toolTipText1]="'This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.'">
                 </app-tooltip>
