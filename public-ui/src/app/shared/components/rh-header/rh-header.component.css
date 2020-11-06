@@ -321,6 +321,26 @@ input#s {
   display: none;
 }
 
+li.active-menu:before {
+  content: '';
+  position: absolute;
+  bottom:-10px;
+  left:0;
+  background: red;
+  height: 4px;
+  width: 100%;
+  border-bottom: 4px #2b266d solid;
+  padding-bottom: 0;
+  
+}
+
+.sub-menu .active-menu {
+  background: transparent;
+  color: #262262;
+  padding-bottom: 5px;
+  border-bottom: 3px solid #262262;
+}
+
 /* mobile menu */
 
 .cta-bar .login-btn:hover, #menu-mobile li .login-btn:hover {

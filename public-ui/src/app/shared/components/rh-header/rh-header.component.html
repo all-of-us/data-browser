@@ -26,11 +26,11 @@
       <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
         <div class="menu-primary-container">
           <ul class="main-menu">
-            <li *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
+            <li class={{menu.class}} *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
               <a tabindex="0" href="{{menu.url}}"> {{menu.title}}</a>
               <ul  *ngIf="menu.submenu" class="sub-menu">
-                <li (click)="toggleSub(sub.title);" [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1 && subTitle == sub.title}" *ngFor="let sub of menu.sub0">
-                  <a tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
+                <li  (click)="toggleSub(sub.title);" [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1 && subTitle == sub.title}" *ngFor="let sub of menu.sub0">
+                  <a class={{sub.class}} tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
                     <ul *ngIf="showSub1">
                       <li *ngFor="let sub1 of sub.sub1">
                         <a href="{{sub1.url}}">{{sub1.title}}</a>

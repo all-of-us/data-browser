@@ -6,9 +6,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  font-family: FFUnitStdMedium,Arial, Helvetica, sans-serif;
   font-size: 18px;
   padding: 18px;
+  padding-left: 0;
 }
 
 .breadcrumb {
@@ -21,7 +21,7 @@
   text-decoration: none;
   color: #0079b8;
   font-size: 19px;
-  font-weight: bolder;
+  /* font-weight: bolder; */
 }
 
 .breadcrumb a:hover {
@@ -41,5 +41,4 @@
   font-size: 19px;
   text-decoration: none;
   text-transform: capitalize;
-  font-family: FFUnitStdBold,Arial, Helvetica, sans-serif;
 }
