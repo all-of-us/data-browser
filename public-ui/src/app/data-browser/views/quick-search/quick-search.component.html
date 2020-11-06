@@ -178,7 +178,7 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
           <ng-container *ngIf="searchText.value; else noSearchPm;">
             <div class="result-stat">{{physicalMeasurementsFound}}</div> matching physical measurements
           </ng-container>
-          <ng-template #noSearchPm>physicalMeasurementsFound
+          <ng-template #noSearchPm>
             <div class="result-stat">{{pmGroups.length}}</div> physical measurements
           </ng-template>
         </span>
