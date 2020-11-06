@@ -38,11 +38,13 @@ export class HeaderFooterService {
         title: 'Data & Tools',
         url: 'https://www.researchallofus.org/data-snapshots/',
         submenu: true,
+        class: 'active-menu',
         sub0: [
           {
             title: 'Data Browser',
             url: 'https://databrowser.researchallofus.org/',
-            submenu: false
+            submenu: false,
+            class: 'active-menu'
           },
           {
           title: 'Data Snapshots',
