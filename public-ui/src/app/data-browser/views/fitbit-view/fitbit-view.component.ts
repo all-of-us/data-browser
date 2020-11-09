@@ -17,10 +17,13 @@ export class FitbitViewComponent implements OnInit {
   isLoading = false;
   analyses: any;
   selectedAnalyses: any;
-  selectedItem = 'All Fitbit Data';
-  selectedDisplay = 'All Fitbit Data';
+  selectedItem: string;
+  selectedDisplay: string;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
+  constructor(private api: DataBrowserService, public dbc: DbConfigService) { 
+    this.selectedItem = 'All Fitbit Data';
+    this.selectedDisplay = 'All Fitbit® Data';
+  }
 
   loading() {
     return this.loadingStack.length > 0;
@@ -29,7 +32,7 @@ export class FitbitViewComponent implements OnInit {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.fitbitConcepts.push({
-      id: 1, displayName: 'All Fitbit Data',
+      id: 1, displayName: 'All Fitbit® Data',
       conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'
     });
     this.fitbitConcepts.push({

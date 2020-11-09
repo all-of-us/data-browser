@@ -14,6 +14,11 @@
 .fm-body h2 {
     padding-bottom: 1rem;
 }
+.rr {
+    font-size: .7em;
+    position: relative;
+    bottom: .5em;
+}
 .fm-body-top {
     display: flex;
     flex-wrap: wrap;
@@ -66,6 +71,7 @@
     padding-right: 0.5em;
     font-size: 2em;
 }
+
 @media (max-width: 900px) { 
     .fm-body-top .fm-chart {
         width: 100%;
