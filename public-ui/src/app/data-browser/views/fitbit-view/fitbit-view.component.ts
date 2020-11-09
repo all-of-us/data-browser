@@ -19,7 +19,7 @@ export class FitbitViewComponent implements OnInit {
   selectedItem: string;
   selectedDisplay: string;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService) { 
+  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
     this.selectedItem = 'all Fitbit data';
     this.selectedDisplay = 'all Fitbit® data';
   }
@@ -57,20 +57,20 @@ export class FitbitViewComponent implements OnInit {
         next: result => {
           this.analyses = result.items;
           for (const item of result.items) {
-              const fitbitConcept = this.fitbitConcepts.filter(concept =>
+            const fitbitConcept = this.fitbitConcepts.filter(concept =>
               concept.conceptName.toLowerCase().includes(item.conceptId.toLowerCase()))[0];
-              fitbitConcept['ageAnalysis'] = item.ageAnalysis;
-              fitbitConcept['genderAnalysis'] = item.genderAnalysis;
-              fitbitConcept['countAnalysis'] = item.countAnalysis;
-              fitbitConcept['participantCountAnalysis'] = item.participantCountAnalysis;
+            fitbitConcept['ageAnalysis'] = item.ageAnalysis;
+            fitbitConcept['genderAnalysis'] = item.genderAnalysis;
+            fitbitConcept['countAnalysis'] = item.countAnalysis;
+            fitbitConcept['participantCountAnalysis'] = item.participantCountAnalysis;
           }
           if (this.searchText) {
             const matchingConcepts = this.fitbitConcepts.filter(concept =>
-            concept.conceptName.toLowerCase().includes(this.searchText.toLowerCase()));
+              concept.conceptName.toLowerCase().includes(this.searchText.toLowerCase()));
             if (matchingConcepts && matchingConcepts.length > 0) {
-                this.selectedItem = matchingConcepts[0].conceptName;
-                this.selectedDisplay = matchingConcepts[0].displayName;
-                this.selectedAnalyses = matchingConcepts[0];
+              this.selectedItem = matchingConcepts[0].conceptName;
+              this.selectedDisplay = matchingConcepts[0].displayName;
+              this.selectedAnalyses = matchingConcepts[0];
             }
           }
           this.selectedAnalyses = result.items[0];
