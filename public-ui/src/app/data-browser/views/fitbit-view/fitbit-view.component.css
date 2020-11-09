@@ -13,6 +13,7 @@
 }
 .fm-body h2 {
     padding-bottom: 1rem;
+    text-transform: capitalize;
 }
 .rr {
     font-size: .7em;
@@ -51,6 +52,10 @@
     font-size: 0.8em;
     /* border-bottom: 1px solid #262262 ; */
     cursor: pointer;
+}
+
+.fm-menu-item span::first-letter{
+    text-transform: uppercase;
 }
 
 .fm-menu-item-container {

@@ -9,7 +9,6 @@ import { DbConfigService } from '../../../utils/db-config.service';
   styleUrls: ['../../../styles/template.css', './fitbit-view.component.css']
 })
 export class FitbitViewComponent implements OnInit {
-  title = 'Fitbit Data';
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
   fitbitConcepts: any = [];
@@ -21,8 +20,8 @@ export class FitbitViewComponent implements OnInit {
   selectedDisplay: string;
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) { 
-    this.selectedItem = 'All Fitbit Data';
-    this.selectedDisplay = 'All Fitbit® Data';
+    this.selectedItem = 'all Fitbit data';
+    this.selectedDisplay = 'all Fitbit® data';
   }
 
   loading() {
@@ -32,23 +31,23 @@ export class FitbitViewComponent implements OnInit {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.fitbitConcepts.push({
-      id: 1, displayName: 'All Fitbit® Data',
+      id: 1, displayName: 'all Fitbit® data',
       conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'
     });
     this.fitbitConcepts.push({
-      id: 2, displayName: 'Heart rate by zone summary',
+      id: 2, displayName: 'heart rate by zone summary',
       conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat'
     });
     this.fitbitConcepts.push({
-      id: 3, displayName: 'Heart rate (minute-level)',
+      id: 3, displayName: 'heart rate (minute-level)',
       conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate'
     });
     this.fitbitConcepts.push({
-      id: 4, displayName: 'Activity (daily summary)',
+      id: 4, displayName: 'activity (daily summary)',
       conceptName: 'Activity (daily summary)', icon: 'fa-running'
     });
     this.fitbitConcepts.push({
-      id: 5, displayName: 'Activity intraday steps (minute-level)',
+      id: 5, displayName: 'activity intraday steps (minute-level)',
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'
     });
 
