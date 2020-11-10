@@ -28,11 +28,11 @@ import { TooltipService } from '../../../utils/tooltip.service';
 export class SurveyViewComponent implements OnInit, OnDestroy {
   graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
   domainId: string;
-  title;
-  subTitle;
+  title: string;
+  subTitle: string;
   surveys: SurveyModule[] = [];
-  survey;
-  surveyConceptId;
+  survey: any;
+  surveyConceptId: any;
   surveyResult: any;
   resultsComplete = false;
   questionFetchComplete = false;
@@ -66,7 +66,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeDisclaimer: string;
   copeFlag: boolean;
   isCopeSurvey = false;
-  surveyVersions = [];
+  surveyVersions: any[];
 
   constructor(
     private route: ActivatedRoute,
