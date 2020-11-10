@@ -66,7 +66,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeDisclaimer: string;
   copeFlag: boolean;
   isCopeSurvey = false;
-  surveyVersions: any[];
+  surveyVersions = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -262,7 +262,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
     if (q.versionAnalysis && q.versionAnalysis.results) {
-        q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
+      q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
     for (const a of q.countAnalysis.results) {
       if (a.stratum7 && a.stratum7 === '1') {
@@ -312,31 +312,33 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
-      this.subscriptions.push(this.api.getSurveyVersionCounts(
-        this.surveyConceptId.toString()).subscribe({
-          next: x => {
-            x.analyses.items.forEach(item => {
-              item.results.forEach((result, i) => {
-                if (item.analysisId === 3400) {
-                  this.surveyVersions.push(
-                    {
-                      monthName: result.stratum4,
-                      monthNum: result.stratum3.split('/')[0],
-                      participants: result.sourceCountValue,
-                      numberOfQuestion: ''
-                    });
-                } else if (item.analysisId === 3401) {
-                  this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
-                }
+      if (this.isCopeSurvey) {
+        this.subscriptions.push(this.api.getSurveyVersionCounts(
+          this.surveyConceptId.toString()).subscribe({
+            next: x => {
+              x.analyses.items.forEach(item => {
+                item.results.forEach((result, i) => {
+                  if (item.analysisId === 3400) {
+                    this.surveyVersions.push(
+                      {
+                        monthName: result.stratum4,
+                        monthNum: result.stratum3.split('/')[0],
+                        participants: result.sourceCountValue,
+                        numberOfQuestion: ''
+                      });
+                  } else if (item.analysisId === 3401) {
+                    this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
+                  }
+                });
               });
-            });
-          },
-          error: err => {
-            console.error('Observer got an error: ' + err);
-            this.loading = false;
-          },
-          complete: () => { }
-        }));
+            },
+            error: err => {
+              console.error('Observer got an error: ' + err);
+              this.loading = false;
+            },
+            complete: () => { }
+          }));
+      }
     }
   }
 

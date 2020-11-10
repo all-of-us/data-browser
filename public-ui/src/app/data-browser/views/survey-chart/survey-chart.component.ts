@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { AchillesResult, DataBrowserService } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -10,7 +10,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
   templateUrl: './survey-chart.component.html',
   styleUrls: ['./survey-chart.component.css', '../../../styles/template.css', '../../../styles/page.css']
 })
-export class SurveyChartComponent {
+export class SurveyChartComponent implements OnChanges {
   @Input() graphButtons: string[];
   @Input() question: any;
   @Input() answer: any;
@@ -19,17 +19,27 @@ export class SurveyChartComponent {
   @Input() surveyName: string;
   @Input() searchTerm: string;
   @Input() surveyCountAnalysis: any;
-  graphToShow = GraphType.SurveyVersion;
+  @Input() isCopeSurvey: boolean;
   displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
+  graphToShow: string;
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
+  selectedChartAnalysis: any;
 
   constructor(private tooltipText: TooltipService,
     public dbc: DbConfigService,
     private api: DataBrowserService) {
+    if (this.isCopeSurvey) {
+      this.graphToShow = GraphType.SurveyVersion;
+    } else {
+      this.graphToShow = GraphType.BiologicalSex;
+    }
   }
 
+  ngOnChanges() {
+    this.selectGraphType(this.graphToShow, this.question, this.answer);
+  }
 
   public resetSelectedGraphs() {
     this.graphToShow = GraphType.None;
@@ -37,8 +47,9 @@ export class SurveyChartComponent {
   }
 
   public selectGraphType(g, q: any, answer: any) {
-    this.resetSelectedGraphs();
-    this.graphToShow = g;
+    if (answer.id === this.answer.id) {
+      this.graphToShow = g;
+    }
     if (this.answer.stratum4.toLowerCase().indexOf('more than one race') > -1) {
       this.dbc.triggerEvent('conceptClick', 'More than one race /ethncitiy graph view',
         'Expand to see graphs', this.surveyName + ' - Q'
@@ -53,7 +64,7 @@ export class SurveyChartComponent {
     if (q.graphDataToShow === null) {
       q.graphDataToShow = 'Count';
     }
-    switch (g) {
+    switch (this.graphToShow) {
       case GraphType.AgeWhenSurveyWasTaken:
         q.selectedAnalysis = q.ageAnalysis;
         break;
@@ -64,25 +75,30 @@ export class SurveyChartComponent {
         q.selectedAnalysis = q.genderAnalysis;
         break;
     }
-    this.selectGraph(q.graphDataToShow, q, answer);
-  }
-
-  public selectGraph(sg: any, q: any, answer: any) {
-    q.graphDataToShow = sg;
+    this.selectedChartAnalysis = q.selectedAnalysis;
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    // sends information to google analyitics
     this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
       'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
       + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + this.graphToShow, this.searchTerm, null);
-    switch (q.graphToShow) {
-      case GraphType.BiologicalSex:
-        q.selectedAnalysis = q.genderAnalysis;
-        break;
-      case GraphType.AgeWhenSurveyWasTaken:
-        q.selectedAnalysis = q.ageAnalysis;
-        break;
-    }
-    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    // this.selectGraph(q.graphDataToShow, q, answer);
   }
+
+  /// ----<<<< this code seem to be redundent >>>>>>--------
+  // public selectGraph(sg: any, q: any, answer: any) {
+  //   q.graphDataToShow = sg;
+
+  //   switch (q.graphToShow) {
+  //     case GraphType.BiologicalSex:
+  //       q.selectedAnalysis = q.genderAnalysis;
+  //       break;
+  //     case GraphType.AgeWhenSurveyWasTaken:
+  //       q.selectedAnalysis = q.ageAnalysis;
+  //       break;
+  //   }
+  //   this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+  // }
 
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
