@@ -87,7 +87,7 @@ export class TooltipService {
     'overall health': this.overallHealthSurvey,
     'lifestyle': this.lifestyleSurvey,
     'personal medical history': this.personalMedicalHistory,
-    'family medical history': this.familyHistory,
+    'family health history': this.familyHistory,
     'health care access & utilization': this.healthcareAccess,
     'covid-19 participant experience': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.'
   };
