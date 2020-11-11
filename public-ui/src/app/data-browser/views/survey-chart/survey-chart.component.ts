@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { AchillesResult, DataBrowserService } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -10,7 +10,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
   templateUrl: './survey-chart.component.html',
   styleUrls: ['./survey-chart.component.css', '../../../styles/template.css', '../../../styles/page.css']
 })
-export class SurveyChartComponent implements OnChanges {
+export class SurveyChartComponent implements OnInit {
   @Input() graphButtons: string[];
   @Input() question: any;
   @Input() answer: any;
@@ -30,14 +30,15 @@ export class SurveyChartComponent implements OnChanges {
   constructor(private tooltipText: TooltipService,
     public dbc: DbConfigService,
     private api: DataBrowserService) {
+
+  }
+
+  ngOnInit() {
     if (this.isCopeSurvey) {
       this.graphToShow = GraphType.SurveyVersion;
     } else {
       this.graphToShow = GraphType.BiologicalSex;
     }
-  }
-
-  ngOnChanges() {
     this.selectGraphType(this.graphToShow, this.question, this.answer);
   }
 
@@ -47,9 +48,8 @@ export class SurveyChartComponent implements OnChanges {
   }
 
   public selectGraphType(g, q: any, answer: any) {
-    if (answer.id === this.answer.id) {
-      this.graphToShow = g;
-    }
+
+    this.graphToShow = g;
     if (this.answer.stratum4.toLowerCase().indexOf('more than one race') > -1) {
       this.dbc.triggerEvent('conceptClick', 'More than one race /ethncitiy graph view',
         'Expand to see graphs', this.surveyName + ' - Q'
@@ -76,7 +76,7 @@ export class SurveyChartComponent implements OnChanges {
         break;
     }
     this.selectedChartAnalysis = q.selectedAnalysis;
-    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    // this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
     // sends information to google analyitics
     this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
       'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
