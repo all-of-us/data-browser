@@ -141,11 +141,6 @@
     top:0px;
 }
 
-.tbl-body {
-    overflow: auto;
-    height: 45rem;
-}
-
 .tbl-r {
     display: grid;
     grid-template-columns: 30% 25% 20% 1fr;
