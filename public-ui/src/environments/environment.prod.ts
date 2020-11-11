@@ -10,5 +10,6 @@ export const environment = {
   gtmPreview: 'env-65',
   copeFlag: false,
   preCopeFlag: false,
-  fitbit: false
+  fitbit: false,
+  copeStacked: false
 };
