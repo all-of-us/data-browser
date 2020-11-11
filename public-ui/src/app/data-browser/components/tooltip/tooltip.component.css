@@ -1,6 +1,8 @@
 .tooltip {
     position: relative;
     display: inline-block;
+    overflow: visible;
+    z-index: 15000;
 }
 
 .tooltip .tooltiptext {

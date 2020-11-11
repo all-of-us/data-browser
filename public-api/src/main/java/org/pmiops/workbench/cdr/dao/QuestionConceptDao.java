@@ -9,8 +9,9 @@ public interface QuestionConceptDao extends CrudRepository<QuestionConcept, Long
     @Query(nativeQuery=true, value="select * from question_concept where survey_concept_id=?1 and generate_counts=1 and sub=0")
     List<QuestionConcept> getSurveyQuestions(Long survey_concept_id);
 
-    @Query(nativeQuery=true, value="select * from question_concept where concept_id in \n" +
-            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from question_concept where survey_concept_id=?1 and (match(question_string) against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and generate_counts=1;")
+    @Query(nativeQuery=true, value="select * from question_concept q join survey_concept_id s on q.survey_concept_id=s.concept_id" +
+            "where q.concept_id in \n" +
+            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from question_concept where survey_concept_id=?1 and (match(question_string) against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and generate_counts=1 and can_show=0;")
     List<QuestionConcept> getMatchingSurveyQuestions(Long survey_concept_id, String search_word);
 
     @Query(nativeQuery=true, value="select distinct * from question_concept c where concept_id in (?1)")
