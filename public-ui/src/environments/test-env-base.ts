@@ -7,5 +7,6 @@ export const testEnvironmentBase = {
   gaId: 'UA-116298798-4',
   copeFlag: true,
   preCopeFlag: false,
-  fitbit: true
+  fitbit: true,
+  copeStacked: false
 };
