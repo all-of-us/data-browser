@@ -76,29 +76,13 @@ export class SurveyChartComponent implements OnInit {
         break;
     }
     this.selectedChartAnalysis = q.selectedAnalysis;
-    // this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
     // sends information to google analyitics
     this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
       'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
       + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + this.graphToShow, this.searchTerm, null);
-    // this.selectGraph(q.graphDataToShow, q, answer);
   }
-
-  /// ----<<<< this code seem to be redundent >>>>>>--------
-  // public selectGraph(sg: any, q: any, answer: any) {
-  //   q.graphDataToShow = sg;
-
-  //   switch (q.graphToShow) {
-  //     case GraphType.BiologicalSex:
-  //       q.selectedAnalysis = q.genderAnalysis;
-  //       break;
-  //     case GraphType.AgeWhenSurveyWasTaken:
-  //       q.selectedAnalysis = q.ageAnalysis;
-  //       break;
-  //   }
-  //   this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
-  // }
 
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
