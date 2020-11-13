@@ -212,7 +212,9 @@ strong {
     font-weight: bold;
     font-family: GothamBold, Arial, Helvetica, sans-serif;
 }
-
+.sub-table-1 .sub-question-text, .sub-table-2 .sub-question-text {
+    padding-top: 1rem;
+}
 /* .survey-question-heading {
     padding-top: 2%;
     text-align: left;
