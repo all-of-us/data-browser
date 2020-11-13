@@ -167,6 +167,13 @@ strong {
     height: 1.3em;
     color: #216fb4;
 }
+.answer-layout {
+    display:flex;
+    align-items: center;
+}
+.cope-legend-item {
+    margin-right: 1rem;
+}
 
 .survey-tbl-r.survey-tbl-head {
     /* padding-bottom: 0; */

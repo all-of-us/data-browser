@@ -149,7 +149,10 @@
                   <div class="survey-tbl-r">
                     <div class="survey-tbl-d first display-body info-text survey-answer-level-1"
                       [ngClass]="{'active':a.expanded}">
-                      <div>
+                      <div class="answer-layout">
+                        <ng-container *ngIf="isCopeSurvey">
+                          <i [ngStyle]="{'color': a.color }" class="cope-legend-item fas fa-3x fa-circle"></i>
+                        </ng-container>
                         <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                         </app-highlight-search>
                         <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
@@ -341,116 +344,118 @@
                                 </app-highlight-search>
                               </h6>
                               <div class="survey-sub-tbl">
-                              <div class="survey-tbl-r survey-tbl-head">
-                                <div class="survey-tbl-d first display-body info-text">
-                                  Answer
-                                </div>
-                                <div class="survey-tbl-r-group">
-                                  <div class="info-text survey-tbl-d display-body info-text">
-                                    <ng-container *ngIf="isCopeSurvey">
-                                    </ng-container>
-                                    <ng-container *ngIf="!isCopeSurvey">
-                                      <label class="concept-code">Concept Code</label>
-                                    </ng-container>
-                                  </div>
-                                  <div class="info-text survey-tbl-d display-body">
-                                    <ng-container *ngIf="isCopeSurvey">
-                                    </ng-container>
-                                    <ng-container *ngIf="!isCopeSurvey">
-                                      <label class="participant-count">Participant Count</label>
-                                      <app-tooltip
-                                        *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1"
-                                        [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
-                                        [label]="getLabel(q,'Multiple Answers for this survey question help text')"
-                                        [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
-                                    </ng-container>
-                                  </div>
-
-                                  <div class=" info-text survey-tbl-d display-body">
-                                    <ng-container *ngIf="isCopeSurvey">
-                                      Concept Code
-                                      <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1"
-                                        [toolTipText2]="tooltipText.allOfUsHelpText"
-                                        [toolTipText3]="tooltipText.conceptCodeHelpText2"
-                                        [toolTipText4]="tooltipText.allOfUsHelpText"
-                                        [toolTipText5]="tooltipText.conceptCodeHelpText3"
-                                        [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                                        [action]="'Survey Page Tooltip'"></app-tooltip>
-                                    </ng-container>
-                                    <ng-container *ngIf="!isCopeSurvey">
-                                      <span>% Answered out of {{sqa.countValue}}</span>
-                                    </ng-container>
-                                  </div>
-
-                                  <div
-                                    class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="survey-tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.results"
-                                (click)="$event.stopPropagation();showAnswerGraphs(sqa2, subQuestion2)">
-                                <div class="survey-tbl-r">
+                                <div class="survey-tbl-r survey-tbl-head">
                                   <div class="survey-tbl-d first display-body info-text">
-                                    <div>
-                                      <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value">
-                                      </app-highlight-search>
-                                    </div>
+                                    Answer
                                   </div>
                                   <div class="survey-tbl-r-group">
                                     <div class="info-text survey-tbl-d display-body info-text">
-                                      <ng-container *ngIf="isCopeSurvey"></ng-container>
+                                      <ng-container *ngIf="isCopeSurvey">
+                                      </ng-container>
                                       <ng-container *ngIf="!isCopeSurvey">
-                                        <label class="concept-code">{{sqa2.stratum3}}</label>
+                                        <label class="concept-code">Concept Code</label>
                                       </ng-container>
                                     </div>
-                                    <div class="info-text survey-tbl-d display-body info-text">
-                                      <ng-container *ngIf="isCopeSurvey"></ng-container>
+                                    <div class="info-text survey-tbl-d display-body">
+                                      <ng-container *ngIf="isCopeSurvey">
+                                      </ng-container>
                                       <ng-container *ngIf="!isCopeSurvey">
-                                        <div class="participant-count" *ngIf="sqa2.countValue <= 20; else Non20Counts;">
-                                          &le; {{sqa2.countValue | number}}
-                                        </div>
-                                        <ng-template #Non20Counts>
-                                          <div class="body-lead info-text survey-tbl-d">
-                                            {{sqa2.countValue | number}}
-                                          </div>
-                                        </ng-template>
+                                        <label class="participant-count">Participant Count</label>
+                                        <app-tooltip
+                                          *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1"
+                                          [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                                          [label]="getLabel(q,'Multiple Answers for this survey question help text')"
+                                          [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'">
+                                        </app-tooltip>
                                       </ng-container>
                                     </div>
 
-                                    <div class=" info-text survey-tbl-d display-body info-text">
+                                    <div class=" info-text survey-tbl-d display-body">
                                       <ng-container *ngIf="isCopeSurvey">
-                                        <label class="concept-code">{{sqa2.stratum3}}</label>
+                                        Concept Code
+                                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1"
+                                          [toolTipText2]="tooltipText.allOfUsHelpText"
+                                          [toolTipText3]="tooltipText.conceptCodeHelpText2"
+                                          [toolTipText4]="tooltipText.allOfUsHelpText"
+                                          [toolTipText5]="tooltipText.conceptCodeHelpText3"
+                                          [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
+                                          [action]="'Survey Page Tooltip'"></app-tooltip>
                                       </ng-container>
                                       <ng-container *ngIf="!isCopeSurvey">
-                                        <span>{{countPercentage(sqa2.countValue, sqa.countValue).toFixed(2)}}%</span>
+                                        <span>% Answered out of {{sqa.countValue}}</span>
                                       </ng-container>
                                     </div>
 
                                     <div
                                       class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                                      <button class="icon-btn"
-                                        *ngIf="!sqa2.stratum7 && sqa2.stratum4 != 'Did not answer'">
-                                        <clr-icon [ngClass]="sqa2.expanded?'is-solid':''" shape="bar-chart"
-                                          style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
-                                      </button>
-                                      <button class="icon-btn" *ngIf="sqa2.stratum7 && sqa2.stratum7 === '1'">
-                                        <clr-icon *ngIf="!sqa2.expanded" shape="caret" dir="right"></clr-icon>
-                                        <clr-icon *ngIf="sqa2.expanded" shape="caret" dir="down"></clr-icon>
-                                      </button>
+
                                     </div>
                                   </div>
                                 </div>
-                                <div class="row-expansion"
-                                  *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7">
-                                  <app-survey-chart [isCopeSurvey]="isCopeSurvey" [graphButtons]="graphButtons"
-                                    [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis"
-                                    [selectedResult]="sqa2" [surveyName]="survey.name"
-                                    [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
-                                    [answer]="sqa2"></app-survey-chart>
+                                <div class="survey-tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.results"
+                                  (click)="$event.stopPropagation();showAnswerGraphs(sqa2, subQuestion2)">
+                                  <div class="survey-tbl-r">
+                                    <div class="survey-tbl-d first display-body info-text">
+                                      <div>
+                                        <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value">
+                                        </app-highlight-search>
+                                      </div>
+                                    </div>
+                                    <div class="survey-tbl-r-group">
+                                      <div class="info-text survey-tbl-d display-body info-text">
+                                        <ng-container *ngIf="isCopeSurvey"></ng-container>
+                                        <ng-container *ngIf="!isCopeSurvey">
+                                          <label class="concept-code">{{sqa2.stratum3}}</label>
+                                        </ng-container>
+                                      </div>
+                                      <div class="info-text survey-tbl-d display-body info-text">
+                                        <ng-container *ngIf="isCopeSurvey"></ng-container>
+                                        <ng-container *ngIf="!isCopeSurvey">
+                                          <div class="participant-count"
+                                            *ngIf="sqa2.countValue <= 20; else Non20Counts;">
+                                            &le; {{sqa2.countValue | number}}
+                                          </div>
+                                          <ng-template #Non20Counts>
+                                            <div class="body-lead info-text survey-tbl-d">
+                                              {{sqa2.countValue | number}}
+                                            </div>
+                                          </ng-template>
+                                        </ng-container>
+                                      </div>
+
+                                      <div class=" info-text survey-tbl-d display-body info-text">
+                                        <ng-container *ngIf="isCopeSurvey">
+                                          <label class="concept-code">{{sqa2.stratum3}}</label>
+                                        </ng-container>
+                                        <ng-container *ngIf="!isCopeSurvey">
+                                          <span>{{countPercentage(sqa2.countValue, sqa.countValue).toFixed(2)}}%</span>
+                                        </ng-container>
+                                      </div>
+
+                                      <div
+                                        class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
+                                        <button class="icon-btn"
+                                          *ngIf="!sqa2.stratum7 && sqa2.stratum4 != 'Did not answer'">
+                                          <clr-icon [ngClass]="sqa2.expanded?'is-solid':''" shape="bar-chart"
+                                            style="height: 1rem; width: 1rem;color: #2691D0;"></clr-icon>
+                                        </button>
+                                        <button class="icon-btn" *ngIf="sqa2.stratum7 && sqa2.stratum7 === '1'">
+                                          <clr-icon *ngIf="!sqa2.expanded" shape="caret" dir="right"></clr-icon>
+                                          <clr-icon *ngIf="sqa2.expanded" shape="caret" dir="down"></clr-icon>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row-expansion"
+                                    *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7">
+                                    <app-survey-chart [isCopeSurvey]="isCopeSurvey" [graphButtons]="graphButtons"
+                                      [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis"
+                                      [selectedResult]="sqa2" [surveyName]="survey.name"
+                                      [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
+                                      [answer]="sqa2"></app-survey-chart>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
                             </ng-container>
                           </div>
                         </div>

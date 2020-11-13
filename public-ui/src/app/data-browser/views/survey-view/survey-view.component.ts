@@ -67,6 +67,33 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeFlag: boolean;
   isCopeSurvey = false;
   surveyVersions = [];
+  colors = [
+    '#f7dc3c',
+    '#58eed8',
+    '#da1a48',
+    '#122161',
+    '#520758',
+    '#93fa52',
+    '#59bd91',
+    '#7f8e7b',
+    '#702f20',
+    '#f81afe',
+    '#ae8cb3',
+    '#8c9a4a',
+    '#e79c4c',
+    '#cbdd37',
+    '#ebf08e',
+    '#126adc',
+    '#1a4d18',
+    '#d6290a',
+    '#87928e',
+    '#0da989',
+    '#2c7668',
+    '#ef2876',
+    '#e0a39e',
+    '#0d4ffe',
+    '#c5f1b',
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -93,8 +120,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     versions, some questions were modified.</span> <span class='cope-statement-box'><strong>Please Note:</strong><br> While these aggregate data are available
     in the Data Browser tool, to protect participant privacy, only select data will be available in the Registered Tier dataset (i.e., data describing COVID
     positive status will not be made available)</span></div>`;
-
   }
+
+
 
   ngOnInit() {
     this.loadPage();
@@ -258,18 +286,28 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public processResults(q: any, totalCount: number) {
+
     q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
     if (q.versionAnalysis && q.versionAnalysis.results) {
       q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
-    for (const a of q.countAnalysis.results) {
+    let count;
+    q.countAnalysis.results.forEach((a, i) => {
+      count = i;
+      if (this.isCopeSurvey) {
+        // console.log(a,'this is a bad var');
+        a['color'] = this.colors[i];
+        // console.log(a, 'this is a bad var');
+      }
       if (a.stratum7 && a.stratum7 === '1') {
         a.subQuestionFetchComplete = false;
       }
       this.addMissingResults(q, a, totalCount);
-    }
+    });
+    console.log(count);
+
 
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
       totalCount));
@@ -451,6 +489,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
+          console.log(q, 'preprocessed');
+
           this.processResults(q, this.survey.participantCount);
         },
         error: err => {
