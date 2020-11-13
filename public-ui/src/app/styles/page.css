@@ -373,7 +373,6 @@ p {
 
 .survey-tbl-d {
   font-size: 16px;
-  padding: 0 9px;
   position: relative;
   width: calc(24%);
 }
@@ -409,12 +408,6 @@ p {
   min-width: 810px;
 }
 
-.survey-tbl-exp-r *.survey-tbl-exp-r {
-  border-left: none;
-  border-right: none;
-  padding: 0.5rem 0;
-  min-width: auto;
-}
 
 .survey-tbl-exp-r:last-of-type {
   border-bottom: 1px solid #cccccc;
