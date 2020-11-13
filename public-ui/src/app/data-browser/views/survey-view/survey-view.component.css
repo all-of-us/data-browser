@@ -171,13 +171,13 @@ strong {
 .survey-tbl-r.survey-tbl-head {
     /* padding-bottom: 0; */
     background: rgba(218, 230, 237, 0.7);
-    border:#CCCCCC 1px solid;
+    border: #cccccc 1px solid;
     border-bottom: none;
 }
 .survey-sub-tbl {
-    border-bottom:#CCCCCC 1px solid;
+    border-bottom: #cccccc 1px solid;
 }
-.survey-sub-tbl .survey-tbl-exp-r:last-of-type{
+.survey-sub-tbl .survey-tbl-exp-r:last-of-type {
     border-bottom: none;
 }
 #answer-result {
@@ -224,6 +224,7 @@ strong {
 }
 
 .sub-table-2 {
+    padding-top: 1rem;
     margin-left: 2%;
     width: 98%;
 }
