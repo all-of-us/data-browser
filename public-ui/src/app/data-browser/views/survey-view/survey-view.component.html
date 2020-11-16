@@ -100,37 +100,15 @@
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers></chart-survey-answers>
+                <chart-survey-answers [concepts]='versionCountAnalyses'></chart-survey-answers>
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
                       Answer
                     </div>
-                    <div class=" info-text survey-tbl-d display-body">
-                      <ng-container *ngIf="isCopeSurvey">
-                        Concept Code
-                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1"
-                          [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.conceptCodeHelpText2"
-                          [toolTipText4]="tooltipText.allOfUsHelpText" [toolTipText5]="tooltipText.conceptCodeHelpText3"
-                          [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                          [action]="'Survey Page Tooltip'"></app-tooltip>
-                      </ng-container>
-                      <ng-container *ngIf="!isCopeSurvey">
-                        % Answered
-                      </ng-container>
-                    </div>
-                    <div class="survey-tbl-d display-body"></div>
-                  </div>
-                </div>
-                <div [ngClass]="a.expanded?'survey-tbl-r-state':''" class="survey-tbl-exp-r "
-                  *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a,q)"
-                  [hidden]="!showAnswer[q.conceptId]">
-                  <div class="survey-tbl-r">
-                    <div class="survey-tbl-d first display-body info-text survey-answer-level-1"
-                      [ngClass]="{'active':a.expanded}">
-                      <div class="answer-layout">
-                        <ng-container *ngIf="isCopeSurvey && isCopeStacked">
-                          <i [ngStyle]="{'color': a.color }" class="cope-legend-item fas fa-2x fa-circle"></i>
+                    <div class="survey-tbl-r-group survey-tbl-r-group-style ">
+                      <div class="info-text survey-tbl-d display-body">
+                        <ng-container *ngIf="isCopeSurvey">
                         </ng-container>
                         <ng-container *ngIf="!isCopeSurvey">
                           Concept Code

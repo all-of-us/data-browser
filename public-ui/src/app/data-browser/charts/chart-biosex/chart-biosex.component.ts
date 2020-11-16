@@ -26,6 +26,7 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
     this.chartOptions.yAxis.gridLineColor = '#F0F0F0';
 
   }
+  
   public buildChart() {
     this.pointData = [];
     this.categoryArr = [];

@@ -38,7 +38,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionFetchComplete = false;
   resultFetchComplete = false;
   surveyCountAnalysis: any;
-  answserCountAnalyses: any;
+  versionCountAnalyses: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
@@ -268,27 +268,33 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (q.versionAnalysis && q.versionAnalysis.results) {
       q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
-    this.answserCountAnalyses = q.countAnalysis.results;
     const answerCount = q.countAnalysis.results.length;
-    q.countAnalysis.results.forEach((a, i) => {
+    q.countAnalysis.results.forEach((aCount, i) => {
       if (this.isCopeSurvey && this.isCopeStacked) {
         if (answerCount <= 8) {
-          a['color'] = this.dbc.eightColors[i];
+          aCount['color'] = this.dbc.eightColors[i];
         } else if (answerCount <= 10) {
-          a['color'] = this.dbc.tenColors[i];
+          aCount['color'] = this.dbc.tenColors[i];
         } else if (answerCount <= 14) {
-          a['color'] = this.dbc.fourteenColors[i];
+          aCount['color'] = this.dbc.fourteenColors[i];
         } else if (answerCount <= 18) {
-          a['color'] = this.dbc.fourteenColors[i];
+          aCount['color'] = this.dbc.fourteenColors[i];
         } else if (answerCount > 18) {
-          a['color'] = this.dbc.twentyFiveColors[i];
+          aCount['color'] = this.dbc.twentyFiveColors[i];
         }
+        // add color to version analysis to use in chart
+        q.versionAnalysis.results.forEach(aVersion => {
+          if (aVersion.stratum3 === aCount.stratum3 ){
+            aVersion['color'] = aCount['color'];
+          }
+        });
+        if (aCount.stratum7 && aCount.stratum7 === '1') {
+          aCount.subQuestionFetchComplete = false;
+        }
+        this.addMissingResults(q, aCount, totalCount);
       }
-      if (a.stratum7 && a.stratum7 === '1') {
-        a.subQuestionFetchComplete = false;
-      }
-      this.addMissingResults(q, a, totalCount);
     });
+    this.versionCountAnalyses = q.versionAnalysis.results;
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
       totalCount));
     q.countAnalysis.results.sort((a1, a2) => {
@@ -471,7 +477,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
-          console.log(q, 'preprocessed');
 
           this.processResults(q, this.survey.participantCount);
         },

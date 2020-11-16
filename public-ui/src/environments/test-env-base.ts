@@ -8,5 +8,5 @@ export const testEnvironmentBase = {
   copeFlag: true,
   preCopeFlag: false,
   fitbit: true,
-  copeStacked: false
+  copeStacked: true
 };
