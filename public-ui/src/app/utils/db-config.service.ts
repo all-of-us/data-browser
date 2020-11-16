@@ -69,13 +69,13 @@ export class DbConfigService {
   };
 
   UNIT_ORDER = {
-     '903133': ['Inches', 'Centimeter'],
-     '903118': ['Millimeter Mercury Column'],
-     '903115': ['Millimeter Mercury Column'],
-     '903121': ['Centimeter'],
-     '903135': ['Kilogram'],
-     '903136': ['Centimeter'],
-     '903126': ['Centimeter']
+    '903133': ['Inches', 'Centimeter'],
+    '903118': ['Millimeter Mercury Column'],
+    '903115': ['Millimeter Mercury Column'],
+    '903121': ['Centimeter'],
+    '903135': ['Kilogram'],
+    '903136': ['Centimeter'],
+    '903126': ['Centimeter']
   };
 
   /* Colors for chart */
@@ -144,10 +144,10 @@ export class DbConfigService {
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
     { conceptId: 1586134, conceptName: 'The Basics' },
-    { conceptId: 43529712, conceptName: 'Personal Medical History'},
-    { conceptId: 43528895, conceptName: 'Health Care Access and Utilization'},
-    { conceptId: 43528698, conceptName: 'Family Medical History'},
-    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience'}
+    { conceptId: 43529712, conceptName: 'Personal Medical History' },
+    { conceptId: 43528895, conceptName: 'Health Care Access and Utilization' },
+    { conceptId: 43528698, conceptName: 'Family Medical History' },
+    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience' }
   ];
 
   // chart options
@@ -202,6 +202,33 @@ export class DbConfigService {
     'procedure': 'procedures'
   };
 
+  eightColors = [
+    '#2F4B7C', '#496D91', '#6790A2', '#BFE1C6',
+    '#F99059', '#E75955', '#C5254A', '#93003A'
+  ];
+
+  tenColors = [
+    '#2F4B7C', '#44668D', '#5B829C', '#769EA7', '#BFE1C6',
+    '#FA9B58', '#F06F57', '#DB4451', '#BC1B48', '##93003A'
+  ];
+
+  fourteenColors = [
+    '#2F4B7C', '#3E5E88', '#4D7294', '#5E869E', '#719AA6', '#88AFAB', '#BFE1C6', '#FBA858', '#F78858',
+    '#EE6857', '#DF4A53', '#CB2D4C', '#B11044', '#93003A'
+  ];
+
+  eightteenColors = [
+    '#2F4B7C', '#3A5A86', '#46698F', '#527997', '#60889F', '#6F98A0', '#80A8AA', '#93B8AC', '#BFE1C6',
+    '#FBAF57', '#FA9659', '#F57D58', '#EC6556', '#E14D53', '#D2364F', '#C02049', '#AB0A42', '#93003A',
+  ];
+
+  twentyFiveColors = [
+    '#00429D', '#2451A4', '#3761AB', '#4771B2', '#5681B9', '#6492C0', '#73A2C6', '#82B3CD', '#93C4D2',
+    '#A5D5D8', '#B9E5DD', '#D3F4E0', '#BFE1C6', '#D0CCB6', '#DAB8A7', '#E1A399', '#E38F8B', '#E37B7E',
+    '#DF6772', '#D95367', '#D0405C', '#C4Dd52', '#B61A49', '#A60841', '#93003A'
+  ]
+
+
   constructor(private api: DataBrowserService) {
     window['dataLayer'] = window['dataLayer'] || {};
     let chartType = 'histogram';
@@ -239,6 +266,14 @@ export class DbConfigService {
     group = new ConceptGroup('pregnancy', 'Pregnancy');
     group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
     this.pmGroups.push(group);
+
+    // randomize the colors
+    this.eightColors = this.shuffle(this.eightColors);
+    this.tenColors = this.shuffle(this.tenColors);
+    this.fourteenColors = this.shuffle(this.fourteenColors);
+    this.eightteenColors = this.shuffle(this.eightteenColors);
+    this.twentyFiveColors = this.shuffle(this.twentyFiveColors);
+
   }
 
   getGenderAnalysisResults() {
@@ -250,7 +285,7 @@ export class DbConfigService {
   }
 
   public triggerEvent(eventName: string, eventCategory: string, eventAction: string,
-                            eventLabel: string, searchTerm: string, tooltipAction: string) {
+    eventLabel: string, searchTerm: string, tooltipAction: string) {
     window['dataLayer'].push({
       'event': eventName,
       'category': 'Data Browser ' + eventCategory,
@@ -273,7 +308,12 @@ export class DbConfigService {
 
   public matchFitbitMeasurements(searchString: string) {
     return this.FITBIT_MEASUREMENTS.filter(name => name.toLowerCase().includes(
-    searchString.toLowerCase())).length;
+      searchString.toLowerCase())).length;
+  }
+
+  public shuffle(array: any) {
+    array.sort(() => Math.random() - 0.5);
+    return array;
   }
 
 }
