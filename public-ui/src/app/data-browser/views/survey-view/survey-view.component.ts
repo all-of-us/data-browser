@@ -67,6 +67,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeDisclaimer: string;
   copeFlag: boolean;
   isCopeSurvey = false;
+  isCopeStacked = false;
   surveyVersions = [];
 
   constructor(
@@ -102,6 +103,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loadPage();
     this.envDisplay = environment.displayTag;
     this.copeFlag = environment.copeFlag;
+    this.isCopeStacked = environment.copeStacked;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }
@@ -269,7 +271,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.answserCountAnalyses = q.countAnalysis.results;
     const answerCount = q.countAnalysis.results.length;
     q.countAnalysis.results.forEach((a, i) => {
-      if (this.isCopeSurvey) {
+      if (this.isCopeSurvey && this.isCopeStacked) {
         if (answerCount <= 8) {
           a['color'] = this.dbc.eightColors[i];
         } else if (answerCount <= 10) {
