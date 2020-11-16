@@ -38,6 +38,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionFetchComplete = false;
   resultFetchComplete = false;
   surveyCountAnalysis: any;
+  answserCountAnalyses: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
@@ -265,6 +266,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (q.versionAnalysis && q.versionAnalysis.results) {
       q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
+    this.answserCountAnalyses = q.countAnalysis.results;
     const answerCount = q.countAnalysis.results.length;
     q.countAnalysis.results.forEach((a, i) => {
       if (this.isCopeSurvey) {
