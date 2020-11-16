@@ -67,33 +67,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeFlag: boolean;
   isCopeSurvey = false;
   surveyVersions = [];
-  colors = [
-    '#f7dc3c',
-    '#58eed8',
-    '#da1a48',
-    '#122161',
-    '#520758',
-    '#93fa52',
-    '#59bd91',
-    '#7f8e7b',
-    '#702f20',
-    '#f81afe',
-    '#ae8cb3',
-    '#8c9a4a',
-    '#e79c4c',
-    '#cbdd37',
-    '#ebf08e',
-    '#126adc',
-    '#1a4d18',
-    '#d6290a',
-    '#87928e',
-    '#0da989',
-    '#2c7668',
-    '#ef2876',
-    '#e0a39e',
-    '#0d4ffe',
-    '#c5f1b',
-  ];
 
   constructor(
     private route: ActivatedRoute,
