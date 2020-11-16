@@ -372,7 +372,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.getSurveyResults();
     }
   }
-  
+
   // get the current survey  by its route
   public getThisSurvey() {
     this.subscriptions.push(

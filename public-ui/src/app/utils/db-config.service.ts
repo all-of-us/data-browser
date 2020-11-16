@@ -226,7 +226,7 @@ export class DbConfigService {
     '#00429D', '#2451A4', '#3761AB', '#4771B2', '#5681B9', '#6492C0', '#73A2C6', '#82B3CD', '#93C4D2',
     '#A5D5D8', '#B9E5DD', '#D3F4E0', '#BFE1C6', '#D0CCB6', '#DAB8A7', '#E1A399', '#E38F8B', '#E37B7E',
     '#DF6772', '#D95367', '#D0405C', '#C4Dd52', '#B61A49', '#A60841', '#93003A'
-  ]
+  ];
 
 
   constructor(private api: DataBrowserService) {
