@@ -286,29 +286,32 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public processResults(q: any, totalCount: number) {
-
     q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
     q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
     q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
     if (q.versionAnalysis && q.versionAnalysis.results) {
       q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
-    let count;
+    const answerCount = q.countAnalysis.results.length;
     q.countAnalysis.results.forEach((a, i) => {
-      count = i;
       if (this.isCopeSurvey) {
-        // console.log(a,'this is a bad var');
-        a['color'] = this.colors[i];
-        // console.log(a, 'this is a bad var');
+        if (answerCount <= 8) {
+          a['color'] = this.dbc.eightColors[i];
+        } else if (answerCount <= 10) {
+          a['color'] = this.dbc.tenColors[i];
+        } else if (answerCount <= 14) {
+          a['color'] = this.dbc.fourteenColors[i];
+        } else if (answerCount <= 18) {
+          a['color'] = this.dbc.fourteenColors[i];
+        } else if (answerCount > 18) {
+          a['color'] = this.dbc.twentyFiveColors[i];
+        }
       }
       if (a.stratum7 && a.stratum7 === '1') {
         a.subQuestionFetchComplete = false;
       }
       this.addMissingResults(q, a, totalCount);
     });
-    console.log(count);
-
-
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
       totalCount));
     q.countAnalysis.results.sort((a1, a2) => {
@@ -321,6 +324,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return 0;
     });
   }
+
   public addMissingResults(q: any, a: any, totalCount) {
     a.countPercent = this.countPercentage(a.countValue, totalCount);
     if (q.genderAnalysis) {
@@ -395,6 +399,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.getSurveyResults();
     }
   }
+  
   // get the current survey  by its route
   public getThisSurvey() {
     this.subscriptions.push(
