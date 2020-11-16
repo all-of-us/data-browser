@@ -46,6 +46,7 @@ h5.secondary-display {
 .disclaimer-btn {
     font-size:.7em;
     padding: .5em 1em;
+    z-index: 20000;
 }
 
 @media (max-width: 900px) {
