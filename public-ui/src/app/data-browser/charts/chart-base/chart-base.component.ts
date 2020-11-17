@@ -17,7 +17,6 @@ export class ChartBaseComponent {
     shadow: false,
     borderColor: null,
   };
-
   @Input() concepts: any;
 
 

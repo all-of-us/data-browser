@@ -68,7 +68,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeFlag: boolean;
   isCopeSurvey = false;
   isCopeStacked = false;
-  surveyVersions = [];
+  surveyVersions: any[] = [];
+  AnswerChartInfo: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -268,35 +269,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (q.versionAnalysis && q.versionAnalysis.results) {
       q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
-    const answerCount = q.countAnalysis.results.length;
-    q.countAnalysis.results.forEach((aCount, i) => {
-      if (this.isCopeSurvey && this.isCopeStacked) {
-        if (answerCount <= 8) {
-          aCount['color'] = this.dbc.eightColors[i];
-        } else if (answerCount <= 10) {
-          aCount['color'] = this.dbc.tenColors[i];
-        } else if (answerCount <= 14) {
-          aCount['color'] = this.dbc.fourteenColors[i];
-        } else if (answerCount <= 18) {
-          aCount['color'] = this.dbc.fourteenColors[i];
-        } else if (answerCount > 18) {
-          aCount['color'] = this.dbc.twentyFiveColors[i];
-        }
-        // add color to version analysis to use in chart
-        q.versionAnalysis.results.forEach(aVersion => {
-          if (aVersion.stratum3 === aCount.stratum3 ){
-            aVersion['color'] = aCount['color'];
-          }
-        });
-        if (aCount.stratum7 && aCount.stratum7 === '1') {
-          aCount.subQuestionFetchComplete = false;
-        }
-        this.addMissingResults(q, aCount, totalCount);
-      }
-    });
-    this.versionCountAnalyses = q.versionAnalysis.results;
-    q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
-      totalCount));
     q.countAnalysis.results.sort((a1, a2) => {
       if (a1.countValue > a2.countValue) {
         return -1;
@@ -306,6 +278,35 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
+    const answerCount = q.countAnalysis.results.length;
+    q.countAnalysis.results.forEach((aCount, i) => {
+      if (this.isCopeSurvey && this.isCopeStacked) {
+        if (answerCount <= 8) {
+          aCount['color'] = this.dbc.eightColors[i];
+        } else if (answerCount > 8 && answerCount <= 10) {
+          aCount['color'] = this.dbc.tenColors[i];
+        } else if (answerCount <= 14) {
+          aCount['color'] = this.dbc.fourteenColors[i];
+        } else if (answerCount <= 18) {
+          aCount['color'] = this.dbc.fourteenColors[i];
+        } else if (answerCount > 18) {
+          aCount['color'] = this.dbc.twentyFiveColors[i];
+        }
+        this.AnswerChartInfo.push({
+          color: aCount.color,
+          totalCount: aCount.countValue,
+          answerId: aCount.stratum3,
+          answserValue: aCount.stratum4
+        })
+        if (aCount.stratum7 && aCount.stratum7 === '1') {
+          aCount.subQuestionFetchComplete = false;
+        }
+        this.addMissingResults(q, aCount, totalCount);
+      }
+    });
+    q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
+      totalCount));
+
   }
 
   public addMissingResults(q: any, a: any, totalCount) {
@@ -477,8 +478,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
-
           this.processResults(q, this.survey.participantCount);
+          this.versionCountAnalyses = q.versionAnalysis.results;
         },
         error: err => {
           console.log('Error searching: ', err);

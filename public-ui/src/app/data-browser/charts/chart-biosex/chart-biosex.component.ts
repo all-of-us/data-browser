@@ -1,4 +1,4 @@
-import { Component, Injector, OnChanges } from '@angular/core';
+import { Component, Injector, OnChanges , Input} from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 @Component({
   // tslint:disable-next-line: component-selector
@@ -7,7 +7,7 @@ import { ChartBaseComponent } from '../chart-base/chart-base.component';
   styleUrls: ['./chart-biosex.component.css']
 })
 export class ChartBiosexComponent extends ChartBaseComponent implements OnChanges {
-
+  @Input() colors
   chartOptions: any;
   constructor(injector: Injector) {
     super(injector);
@@ -26,7 +26,6 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
     this.chartOptions.yAxis.gridLineColor = '#F0F0F0';
 
   }
-  
   public buildChart() {
     this.pointData = [];
     this.categoryArr = [];

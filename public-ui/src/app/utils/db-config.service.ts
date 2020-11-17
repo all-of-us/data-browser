@@ -209,7 +209,7 @@ export class DbConfigService {
 
   tenColors = [
     '#2F4B7C', '#44668D', '#5B829C', '#769EA7', '#BFE1C6',
-    '#FA9B58', '#F06F57', '#DB4451', '#BC1B48', '##93003A'
+    '#FA9B58', '#F06F57', '#DB4451', '#BC1B48', '#93003A'
   ];
 
   fourteenColors = [
@@ -311,9 +311,20 @@ export class DbConfigService {
       searchString.toLowerCase())).length;
   }
 
-  public shuffle(array: any) {
-    array.sort(() => Math.random() - 0.5);
-    return array;
+  public shuffle(array) {
+    // array.sort(() => Math.random() - 0.5);
+    const shuffledArr = [];
+    const arrLength = array.length;
+    for (let i = 0; i < arrLength; i++) {
+      const negIndex = arrLength - i;
+      const index: number = i;
+      if (index > 0 && index % 2) {
+        shuffledArr.push(array[negIndex]);
+      } else {
+        shuffledArr.push(array[index]);
+      }
+    }
+    return shuffledArr;
   }
 
 }

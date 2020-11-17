@@ -61,8 +61,8 @@
                 </p>
               </div>
             </div>
-            <div class="version-table">
-              <app-survey-version-table [surveys]="surveyVersions" *ngIf="isCopeSurvey && surveyVersions.length > 0">
+            <div *ngIf="isCopeSurvey && surveyVersions.length > 0" class="version-table">
+              <app-survey-version-table [surveys]="surveyVersions">
               </app-survey-version-table>
             </div>
             <div class="pdf-link" (click)="downloadPdf()" *ngIf="!isCopeSurvey">
@@ -100,7 +100,7 @@
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers [concepts]='versionCountAnalyses'></chart-survey-answers>
+                <chart-survey-answers [answerChartInfo]="AnswerChartInfo" [concepts]='versionCountAnalyses'></chart-survey-answers>
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
