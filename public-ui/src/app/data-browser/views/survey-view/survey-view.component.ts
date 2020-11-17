@@ -323,11 +323,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                       {
                         monthName: result.stratum4,
                         monthNum: result.stratum3.split('/')[0],
-                        participants: result.sourceCountValue,
+                        participants: result.countValue,
                         numberOfQuestion: ''
                       });
                   } else if (item.analysisId === 3401) {
-                    this.surveyVersions[i].numberOfQuestion = result.sourceCountValue;
+                    this.surveyVersions[i].numberOfQuestion = result.countValue;
                   }
                 });
               });
