@@ -35,6 +35,8 @@ ENVIRONMENTS = {
     :config_json => "config_test.json",
     :cdr_versions_json => "cdr_versions_test.json",
     :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com",
+    :source_cdr_project => "aou-res-curation-prod",
+    :cdr_sql_bucket => "aou-db-public-cloudsql",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-staging" => {
@@ -42,6 +44,8 @@ ENVIRONMENTS = {
     :config_json => "config_staging.json",
     :cdr_versions_json => "cdr_versions_staging.json",
     :api_base_path => "https://api-dot-aou-db-staging.appspot.com",
+    :source_cdr_project => "aou-res-curation-prod",
+    :cdr_sql_bucket => "aou-db-public-cloudsql",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-stable" => {
@@ -49,6 +53,8 @@ ENVIRONMENTS = {
     :config_json => "config_stable.json",
     :cdr_versions_json => "cdr_versions_stable.json",
     :api_base_path => "https://public.api.stable.fake-research-aou.org",
+    :source_cdr_project => "aou-res-curation-prod",
+    :cdr_sql_bucket => "aou-db-public-cloudsql",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-prod" => {
@@ -56,6 +62,8 @@ ENVIRONMENTS = {
     :config_json => "config_prod.json",
     :cdr_versions_json => "cdr_versions_prod.json",
     :api_base_path => "https://public.api.researchallofus.org",
+    :source_cdr_project => "aou-res-curation-prod",
+    :cdr_sql_bucket => "aou-db-prod-public-cloudsql",
     :gae_vars => {
       "GAE_MIN_IDLE_INSTANCES" => "1",
       "GAE_MAX_INSTANCES" => "64"
@@ -709,6 +717,100 @@ Common.register_command({
   :fn => ->() { run_drop_cdr_db() }
 })
 
+def circle_build_cdr_indices(cmd_name, args)
+  op = WbOptionsParser.new(cmd_name, args)
+  op.opts.data_browser = false
+  op.opts.branch = "master"
+  op.add_option(
+    "--branch [--branch]",
+    ->(opts, v) { opts.branch = v},
+    "Branch. Optional - Default is master."
+  )
+  op.add_option(
+    "--project [--project]",
+    ->(opts, v) { opts.project = v},
+    "Project. Required."
+  )
+  op.add_option(
+    "--bq-dataset [bq-dataset]",
+    ->(opts, v) { opts.bq_dataset = v},
+    "BQ dataset. Required."
+  )
+  op.add_option(
+    "--cdr-sql-bucket [cdr-sql-bucket]",
+    ->(opts, v) { opts.cdr_sql_bucket = v},
+    "Destination bucket name that holds sql files. Required."
+  )
+  op.add_option(
+    "--cdr-version [cdr-version]",
+    ->(opts, v) { opts.cdr_version = v},
+    "CDR version. Required."
+  )
+  op.add_option(
+    "--cdr-date [cdr-date]",
+    ->(opts, v) { opts.cdr_date = v},
+    "CDR date is Required. Please use the date from the source CDR. <YYYY-mm-dd>"
+  )
+  op.add_option(
+    "--data-browser [data-browser]",
+    ->(opts, v) { opts.data_browser = v},
+    "Generate for data browser. Optional - Default is false"
+  )
+  op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.bq_dataset and opts.cdr_version and opts.cdr_date }
+  op.parse.validate
+
+  env = ENVIRONMENTS[op.opts.project]
+
+  common = Common.new
+  content_type = "Content-Type: application/json"
+  accept = "Accept: application/json"
+  circle_token = "Circle-Token: "
+  payload = "{ \"branch\": \"#{op.opts.branch}\", \"parameters\": {\"db_build_cdr_indices\": true, \"cdr_source_project\": \"#{env.fetch(:source_cdr_project)}\", \"cdr_source_dataset\": \"#{op.opts.bq_dataset}\", \"cdr_sql_bucket\": \"#{env.fetch(:cdr_sql_bucket)}\", \"project\": \"#{op.opts.project}\", \"cdr_version_db_name\": \"#{op.opts.cdr_version}\", \"cdr_date\": \"#{op.opts.cdr_date}\", \"data_browser\": #{op.opts.data_browser} }}"
+  common.run_inline "curl -X POST https://circleci.com/api/v2/project/github/all-of-us/cdr-indices/pipeline -H '#{content_type}' -H '#{accept}' -H \"#{circle_token}\ $(cat ~/.circle-creds/key.txt)\" -d '#{payload}'"
+end
+
+Common.register_command({
+  :invocation => "circle-build-cdr-indices",
+  :description => "Build the CDR indices using CircleCi",
+  :fn => ->(*args) { circle_build_cdr_indices("circle-build-cdr-indices", args) }
+})
+
+def circle_import_cdr_data(cmd_name, args)
+  op = WbOptionsParser.new(cmd_name, args)
+  op.opts.branch = "master"
+  op.add_option(
+    "--branch [--branch]",
+    ->(opts, v) { opts.branch = v},
+    "Branch. Optional - Default is master."
+  )
+  op.add_option(
+    "--project [--project]",
+    ->(opts, v) { opts.project = v},
+    "Project. Required."
+  )
+  op.add_option(
+    "--database [database]",
+    ->(opts, v) { opts.database = v},
+    "Database. Required."
+  )
+  op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.database }
+  op.parse.validate
+
+  env = ENVIRONMENTS[op.opts.project]
+
+  common = Common.new
+  content_type = "Content-Type: application/json"
+  accept = "Accept: application/json"
+  circle_token = "Circle-Token: "
+  payload = "{ \"branch\": \"#{op.opts.branch}\", \"parameters\": {\"db_import_cdr_data\": true, \"instance\": \"#{env.fetch(:instance)}\", \"project\": \"#{op.opts.project}\", \"database\": \"#{op.opts.database}\", \"bucket\": \"#{env.fetch(:cdr_sql_bucket)}\/#{op.opts.database}\"}}"
+  common.run_inline "curl -X POST https://circleci.com/api/v2/project/github/all-of-us/cdr-indices/pipeline -H '#{content_type}' -H '#{accept}' -H \"#{circle_token}\ $(cat ~/.circle-creds/key.txt)\" -d '#{payload}'"
+end
+
+Common.register_command({
+  :invocation => "circle-import-cdr-data",
+  :description => "Import the cdr data build to cloudsql db with CircleCi",
+  :fn => ->(*args) { circle_import_cdr_data("circle-import-cdr-data", args) }
+})
 
 Common.register_command({
   :invocation => "run-cloud-data-migrations",
