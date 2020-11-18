@@ -100,7 +100,7 @@
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[answerChartInfo]="AnswerChartInfo" [concepts]='q.versionAnalysis.results'></chart-survey-answers>
+                <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
@@ -218,13 +218,14 @@
                     <div class="survey-row-expansion sub-table-1"
                       *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
                       <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
+                        <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[countAnalysis]="subQuestion.countAnalysis.results" [versionAnalysis]='subQuestion.versionAnalysis.results'></chart-survey-answers>
                         <h6 class="sub-question-text">
                           <clr-icon shape="child-arrow" size="25"></clr-icon>
                           <app-highlight-search [text]="changeAutoInsertText(subQuestion)"
-                            [searchTerm]="searchText.value">
-                          </app-highlight-search>
-                        </h6>
-                        <div class="survey-sub-tbl">
+                          [searchTerm]="searchText.value">
+                        </app-highlight-search>
+                      </h6>
+                      <div class="survey-sub-tbl">
                           <div class="survey-tbl-r survey-tbl-head">
                             <div class="survey-tbl-d first display-body info-text">
                               Answer

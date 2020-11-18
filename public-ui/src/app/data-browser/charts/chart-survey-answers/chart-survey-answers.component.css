@@ -1,4 +1,7 @@
-
+:host {
+    display: block;
+    padding:1rem 3rem;
+}
 .answer-chart-layout {
     display:flex;
     justify-content: center;
@@ -7,15 +10,25 @@
 .legend {
     padding:1rem;
     padding-bottom: 2rem;
+    max-width: 15rem;
 }
 
 .legend-inner {
-    overflow-y: scroll;
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-y: auto;
     max-height: 20rem;
 }
 .legend-item {
+    display: grid;
+    grid-template-columns: 1rem 1fr;
     font-size:.8em;
-    padding-bottom: .4em;
+    padding-bottom: .5em;
+}
+
+.legend-item span {
+    text-align: left;
 }
 
 .standard-chart {

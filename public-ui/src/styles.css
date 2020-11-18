@@ -599,7 +599,8 @@ a a:link a:visited {
 .bio-sex-tooltip,
 .fitbit-tooltip,
 .version-survey-tooltip,
-.age-tooltip {
+.age-tooltip,
+.survey-answer-tooltip {
   display: block;
   width: 500px;
   word-wrap: break-word;
@@ -616,21 +617,28 @@ a a:link a:visited {
 .bio-sex-tooltip {
   max-width: 16rem;
 }
-.fitbit-tooltip {
-  width: 10rem;
-}
+.fitbit-tooltip,
 .age-tooltip {
   width: 10rem;
 }
 
-.version-survey-tooltip {
+.version-survey-tooltip,
+.survey-answer-tooltip {
   width: fit-content;
   display: flex;
   flex-direction: column;
 }
-.version-survey-tooltip span {
+
+.version-survey-tooltip span,
+.survey-answer-tooltip span {
   display: flex;
   white-space: nowrap;
+  color: #262262;
+}
+
+.survey-answer-tooltip strong {
+  color: #262262;
+  padding-bottom: .5rem;
 }
 
 .highcharts-container svg {

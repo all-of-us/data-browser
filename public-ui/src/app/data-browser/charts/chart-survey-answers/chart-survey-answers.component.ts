@@ -12,8 +12,10 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
   chartSeries: any[];
   colors: any[];
   answers: any;
+  answerChartInfo: any[];
   monthOrder = ['May', 'June', 'July/August'];
-  @Input() answerChartInfo: any[];
+  @Input() versionAnalysis: any[];
+  @Input() countAnalysis: any[];
   constructor(injector: Injector) {
     super(injector);
     this.categoryArr = [];
@@ -21,11 +23,19 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
   }
 
   ngOnChanges() {
-    this.answers = this.concepts;
+    this.answerChartInfo = [];
+    this.countAnalysis.forEach(aCount => {
+        this.answerChartInfo.push({
+          color: aCount.color,
+          totalCount: aCount.countValue,
+          answerId: aCount.stratum3,
+          answserValue: aCount.stratum4
+        });
+    });
     this.answerChartInfo.forEach(info => {
       this.colors.push(info.color);
     });
-    this.sortAnswers(this.answers);
+    this.sortAnswers(this.versionAnalysis);
     this.buildChart();
   }
 
@@ -41,22 +51,21 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
     this.chartOptions.series = this.chartSeries;
     this.chartOptions.yAxis.title.text = 'Participant Count';
     this.chartOptions.yAxis.title.style.fontSize = '16px';
-
-    this.chartOptions.xAxis.labels = {
+    const labelStyle = {
       style: {
         fontSize: '16px',
-        fontFamily: 'GothamBook'
+        fontFamily: 'GothamBook',
+        color: '#262262'
       }
     };
-    this.chartOptions.yAxis.labels = {
-      style: {
-        fontSize: '16px',
-        fontFamily: 'GothamBook'
-      }
-    };
+    this.chartOptions.xAxis.labels = labelStyle;
+    this.chartOptions.yAxis.labels = labelStyle;
     this.chartOptions.yAxis.title.margin = 35;
-    this.chartOptions.yAxis.title.style.fontFamily = 'GothamBook';
-    this.chartOptions.yAxis.title.style.padding = '1rem';
+    this.chartOptions.yAxis.title.style = {
+      fontFamily: 'GothamBook',
+      padding: '1rem',
+      color: '#262262'
+    };
 
     this.chartOptions.plotOptions = {
       column: {
@@ -66,23 +75,29 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       },
       series: {
         animation: false,
-        fontSize: '14px'
-      }
+        fontSize: '14px',
+      },
     };
     this.chartOptions.legend = {
       enabled: false
-      // align: 'right',
-      // x: 100,
-      // verticalAlign: 'top',
-      // y: 100,
-      // floating: true,
-      // backgroundColor: 'white',
-      // shadow: false
     };
     this.chartOptions.tooltip = {
       followPointer: true,
-      headerFormat: '<b>{point.x}</b><br/>',
-      pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+      useHTML: true,
+      backgroundColor: 'transparent',
+      borderWidth: 0,
+      padding: 0,
+      color: '#262262',
+      shadow: false,
+      formatter: function () {
+        const count = (this.point.y <= 20) ? '&le; 20' : this.point.y;
+        this.point.toolTipHelpText = `
+            <div class="survey-answer-tooltip">
+            <strong>${this.point.series.name}</strong>
+            <span>${count} Participants </span>
+            <span>${this.point.total} Total </div></span>`;
+        return this.point.toolTipHelpText;
+      }
     };
     this.chartOptions.colors = this.colors;
   }
