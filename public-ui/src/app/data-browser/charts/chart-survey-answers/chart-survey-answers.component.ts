@@ -93,7 +93,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
         const count = (this.point.y <= 20) ? '&le; 20' : this.point.y;
         this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
-            <strong style="color:#262262">${this.point.series.name}</strong>
+            <strong>${this.point.series.name}</strong>
             <span>${count} Participants </span>
             <span>${this.point.total} Total </div></span>`;
         return this.point.toolTipHelpText;
