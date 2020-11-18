@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { faAssistiveListeningSystems, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -66,8 +67,8 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       },
       series: {
         animation: false,
-        fontSize: '14px'
-      }
+        fontSize: '14px',
+      },
     };
     this.chartOptions.legend = {
       enabled: false
@@ -81,8 +82,20 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
     };
     this.chartOptions.tooltip = {
       followPointer: true,
-      headerFormat: '<b>{point.x}</b><br/>',
-      pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+      useHTML: true,
+      backgroundColor: 'transparent',
+      borderWidth: 0,
+      padding: 0,
+      color: '#262262',
+      shadow: false,
+      formatter: function () {
+        const count = (this.point.y <= 20) ? '&le; 20' : this.point.y;
+        this.point.toolTipHelpText = `
+            <div class="survey-answer-tooltip">
+            <strong>${this.point.series.name}</strong>
+            <span>${count} Participants </div></span>`;
+        return this.point.toolTipHelpText;
+      }
     };
     this.chartOptions.colors = this.colors;
   }
