@@ -92,7 +92,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       r[a.stratum7] = [...r[a.stratum7] || [], a];
       return r;
     }, {});
-    let payload = {};
+    const payload = {};
     Object.keys(result).sort((a, b) => {
       return this.monthOrder.indexOf(a) - this.monthOrder.indexOf(b);
     }).forEach(key => {
