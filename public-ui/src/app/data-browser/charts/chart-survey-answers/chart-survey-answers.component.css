@@ -1,0 +1,26 @@
+
+.answer-chart-layout {
+    display:flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.legend {
+    padding:1rem;
+    padding-bottom: 2rem;
+}
+
+.legend-inner {
+    overflow-y: scroll;
+    max-height: 20rem;
+}
+.legend-item {
+    font-size:.8em;
+    padding-bottom: .4em;
+}
+
+.standard-chart {
+    display: block;
+    background-size: contain;
+    height: auto;
+    width: 75%;
+}

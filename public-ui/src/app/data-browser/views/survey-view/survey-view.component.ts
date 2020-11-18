@@ -66,7 +66,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeDisclaimer: string;
   copeFlag: boolean;
   isCopeSurvey = false;
-  surveyVersions = [];
+  CopeStacked = false;
+  surveyVersions: any[] = [];
+  AnswerChartInfo: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -93,13 +95,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     versions, some questions were modified.</span> <span class='cope-statement-box'><strong>Please Note:</strong><br> While these aggregate data are available
     in the Data Browser tool, to protect participant privacy, only select data will be available in the Registered Tier dataset (i.e., data describing COVID
     positive status will not be made available)</span></div>`;
-
   }
+
+
 
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
     this.copeFlag = environment.copeFlag;
+    this.CopeStacked = environment.copeStacked;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }
@@ -264,15 +268,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (q.versionAnalysis && q.versionAnalysis.results) {
       q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
     }
-    for (const a of q.countAnalysis.results) {
-      if (a.stratum7 && a.stratum7 === '1') {
-        a.subQuestionFetchComplete = false;
-      }
-      this.addMissingResults(q, a, totalCount);
-    }
-
-    q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
-      totalCount));
     q.countAnalysis.results.sort((a1, a2) => {
       if (a1.countValue > a2.countValue) {
         return -1;
@@ -282,7 +277,31 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
+    const answerCount = q.countAnalysis.results.length;
+    q.countAnalysis.results.forEach((aCount, i) => {
+      if (this.isCopeSurvey && this.CopeStacked) {
+        if (answerCount <= 8) {
+          aCount['color'] = this.dbc.eightColors[i];
+        } else if (answerCount > 8 && answerCount <= 10) {
+          aCount['color'] = this.dbc.tenColors[i];
+        } else if (answerCount <= 14) {
+          aCount['color'] = this.dbc.fourteenColors[i];
+        } else if (answerCount <= 18) {
+          aCount['color'] = this.dbc.fourteenColors[i];
+        } else if (answerCount > 18) {
+          aCount['color'] = this.dbc.twentyFiveColors[i];
+        }
+        if (aCount.stratum7 && aCount.stratum7 === '1') {
+          aCount.subQuestionFetchComplete = false;
+        }
+        this.addMissingResults(q, aCount, totalCount);
+      }
+    });
+    q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
+      totalCount));
+
   }
+
   public addMissingResults(q: any, a: any, totalCount) {
     a.countPercent = this.countPercentage(a.countValue, totalCount);
     if (q.genderAnalysis) {
@@ -357,6 +376,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.getSurveyResults();
     }
   }
+
   // get the current survey  by its route
   public getThisSurvey() {
     this.subscriptions.push(
@@ -452,6 +472,15 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
+          this.AnswerChartInfo = [];
+          q.countAnalysis.results.forEach(aCount => {
+              this.AnswerChartInfo.push({
+                color: aCount.color,
+                totalCount: aCount.countValue,
+                answerId: aCount.stratum3,
+                answserValue: aCount.stratum4
+              });
+          });
         },
         error: err => {
           console.log('Error searching: ', err);

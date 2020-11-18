@@ -13,6 +13,7 @@ import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
 import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
+import { ChartSurveyAnswersComponent } from './charts/chart-survey-answers/chart-survey-answers.component';
 import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
@@ -65,6 +66,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartFitbitComponent,
     ChartBiosexComponent,
     ChartAgeComponent,
+    ChartSurveyAnswersComponent,
   ],
   exports: [
     DataBrowserRoutingModule,

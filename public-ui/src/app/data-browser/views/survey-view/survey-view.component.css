@@ -167,6 +167,14 @@ strong {
     height: 1.3em;
     color: #216fb4;
 }
+.answer-layout {
+    display:flex;
+    align-items: center;
+}
+.cope-legend-item {
+    margin-right: 1rem;
+    color:transparent;
+}
 
 .survey-tbl-r.survey-tbl-head {
     /* padding-bottom: 0; */
@@ -226,6 +234,7 @@ strong {
 }
 
 .sub-table-2 {
+    padding-top: 1rem;
     margin-left: 2%;
     width: 98%;
 }
