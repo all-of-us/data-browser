@@ -345,7 +345,6 @@ set sm.question_count=num_questions from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
-where is_parent_question=1
 group by survey_concept_id)
 where sm.concept_id = survey_concept_id"
 

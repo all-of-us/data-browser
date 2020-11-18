@@ -79,9 +79,9 @@ const routes: Routes = [
             path: 'fitbit',
                   component: FitbitViewComponent,
                   data: {
-                    title: 'Fitbit® Measurements',
+                    title: 'Fitbit® Data',
                     breadcrumb: {
-                      value: 'FitBit® Measurements'
+                      value: 'Fitbit® Data'
                     }
                   }
          },
