@@ -636,8 +636,9 @@ a a:link a:visited {
   color: #262262;
 }
 
-.version-survey-tooltip strong {
+.survey-answer-tooltip strong {
   color: #262262;
+  padding-bottom: .5rem;
 }
 
 .highcharts-container svg {
