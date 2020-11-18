@@ -100,7 +100,7 @@
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[answerChartInfo]="AnswerChartInfo" [concepts]='q.versionAnalysis.results'></chart-survey-answers>
+                <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">

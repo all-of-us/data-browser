@@ -68,8 +68,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   isCopeSurvey = false;
   CopeStacked = false;
   surveyVersions: any[] = [];
-  AnswerChartInfo: any[] = [];
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -472,15 +470,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
-          this.AnswerChartInfo = [];
-          q.countAnalysis.results.forEach(aCount => {
-              this.AnswerChartInfo.push({
-                color: aCount.color,
-                totalCount: aCount.countValue,
-                answerId: aCount.stratum3,
-                answserValue: aCount.stratum4
-              });
-          });
+
         },
         error: err => {
           console.log('Error searching: ', err);
