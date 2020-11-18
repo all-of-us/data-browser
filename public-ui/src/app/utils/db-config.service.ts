@@ -144,10 +144,10 @@ export class DbConfigService {
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
     { conceptId: 1586134, conceptName: 'The Basics' },
-    { conceptId: 43529712, conceptName: 'Personal Medical History' },
-    { conceptId: 43528895, conceptName: 'Health Care Access and Utilization' },
-    { conceptId: 43528698, conceptName: 'Family Medical History' },
-    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience' }
+    { conceptId: 43529712, conceptName: 'Personal Medical History'},
+    { conceptId: 43528895, conceptName: 'Health Care Access and Utilization'},
+    { conceptId: 43528698, conceptName: 'Family Health History'},
+    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience'}
   ];
 
   // chart options

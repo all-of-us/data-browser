@@ -149,7 +149,7 @@ set count_value =
     else
         cast(CEIL(source_count_value / ${BIN_SIZE}) * ${BIN_SIZE} as int64)
     end
-where count_value > 0"
+where count_value > 0 and analysis_id != 3401"
 
 # Delete bad values from overall health q 10 (Check the data and remove this query when safe)
 bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
