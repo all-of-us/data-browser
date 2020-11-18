@@ -628,10 +628,15 @@ a a:link a:visited {
   display: flex;
   flex-direction: column;
 }
+
 .version-survey-tooltip span,
 .survey-answer-tooltip span {
   display: flex;
   white-space: nowrap;
+  color: #262262;
+}
+
+.version-survey-tooltip strong {
   color: #262262;
 }
 
