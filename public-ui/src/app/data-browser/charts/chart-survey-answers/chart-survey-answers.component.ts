@@ -83,16 +83,16 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       followPointer: true,
       headerFormat: '<b>{point.x}</b><br/>',
       pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-    }
+    };
     this.chartOptions.colors = this.colors;
   }
 
   public sortAnswers(answers: any[]) {
-    let result = answers.reduce((r, a) => {
+    const result = answers.reduce((r, a) => {
       r[a.stratum7] = [...r[a.stratum7] || [], a];
       return r;
     }, {});
-    let payload = {};
+    const payload = {};
     Object.keys(result).sort((a, b) => {
       return this.monthOrder.indexOf(a) - this.monthOrder.indexOf(b);
     }).forEach(key => {
