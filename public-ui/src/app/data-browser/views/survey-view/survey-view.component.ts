@@ -470,7 +470,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
-
         },
         error: err => {
           console.log('Error searching: ', err);
