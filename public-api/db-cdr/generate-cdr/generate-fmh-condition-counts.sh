@@ -151,7 +151,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  observation_source_concept_id=43528652 and value_source_concept_id in (43529842, 43528385))
  group by 4,5,6,7,8
  order by stratum_3 asc"
- # Survey question counts for family medical history condition question
+ # Survey question counts for family health history condition question
  # To do delete if not used anymore
  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`

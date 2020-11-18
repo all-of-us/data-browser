@@ -79,7 +79,7 @@ union all
 select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count"
 
 # Set the survey answer count for all the survey questions
-# (except q2 in the basics survey and questions of family medical history since we deal with them in a different way)
+# (except q2 in the basics survey and questions of family health history since we deal with them in a different way)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
