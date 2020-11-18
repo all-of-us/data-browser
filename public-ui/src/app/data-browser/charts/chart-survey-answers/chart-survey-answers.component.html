@@ -1,1 +1,8 @@
-<chart class="standard-chart" [options]="chartOptions"></chart>
+<div class="answer-chart-layout">
+    <chart class="standard-chart" [options]="chartOptions"></chart>
+    <div class="legend">
+        <div class="legend-inner">
+            <div *ngFor="let item of answerChartInfo " class="legend-item"><i [ngStyle]="{'color': item.color }" class="fas fa-circle"></i> {{item.answserValue}}</div>
+        </div>
+    </div>
+</div>

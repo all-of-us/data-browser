@@ -38,7 +38,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionFetchComplete = false;
   resultFetchComplete = false;
   surveyCountAnalysis: any;
-  versionCountAnalyses: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
@@ -67,7 +66,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   copeDisclaimer: string;
   copeFlag: boolean;
   isCopeSurvey = false;
-  isCopeStacked = false;
+  CopeStacked = false;
   surveyVersions: any[] = [];
   AnswerChartInfo: any[] = [];
 
@@ -104,7 +103,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loadPage();
     this.envDisplay = environment.displayTag;
     this.copeFlag = environment.copeFlag;
-    this.isCopeStacked = environment.copeStacked;
+    this.CopeStacked = environment.copeStacked;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }
@@ -279,8 +278,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return 0;
     });
     const answerCount = q.countAnalysis.results.length;
+    this.AnswerChartInfo = [];
     q.countAnalysis.results.forEach((aCount, i) => {
-      if (this.isCopeSurvey && this.isCopeStacked) {
+      if (this.isCopeSurvey && this.CopeStacked) {
         if (answerCount <= 8) {
           aCount['color'] = this.dbc.eightColors[i];
         } else if (answerCount > 8 && answerCount <= 10) {
@@ -297,7 +297,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           totalCount: aCount.countValue,
           answerId: aCount.stratum3,
           answserValue: aCount.stratum4
-        })
+        });
         if (aCount.stratum7 && aCount.stratum7 === '1') {
           aCount.subQuestionFetchComplete = false;
         }
@@ -479,7 +479,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
-          this.versionCountAnalyses = q.versionAnalysis.results;
         },
         error: err => {
           console.log('Error searching: ', err);

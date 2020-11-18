@@ -1,6 +1,4 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { keyframes } from '@angular/core/src/animation/dsl';
-import { info } from 'console';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -41,14 +39,51 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
     this.chartOptions = this.getChartOptions();
     this.chartOptions.xAxis.categories = this.categoryArr;
     this.chartOptions.series = this.chartSeries;
+    this.chartOptions.yAxis.title.text = 'Participant Count';
+    this.chartOptions.yAxis.title.style.fontSize = '16px';
+
+    this.chartOptions.xAxis.labels = {
+      style: {
+        fontSize: '16px',
+        fontFamily: 'GothamBook'
+      }
+    };
+    this.chartOptions.yAxis.labels = {
+      style: {
+        fontSize: '16px',
+        fontFamily: 'GothamBook'
+      }
+    };
+    this.chartOptions.yAxis.title.margin = 35;
+    this.chartOptions.yAxis.title.style.fontFamily = 'GothamBook';
+    this.chartOptions.yAxis.title.style.padding = '1rem';
+
     this.chartOptions.plotOptions = {
       column: {
         stacking: 'normal',
-        dataLabels: {
-          enabled: true
-        }
+        pointWidth: 50,
+        borderWidth: 0
+      },
+      series: {
+        animation: false,
+        fontSize: '14px'
       }
     };
+    this.chartOptions.legend = {
+      enabled: false
+      // align: 'right',
+      // x: 100,
+      // verticalAlign: 'top',
+      // y: 100,
+      // floating: true,
+      // backgroundColor: 'white',
+      // shadow: false
+    };
+    this.chartOptions.tooltip = {
+      followPointer: true,
+      headerFormat: '<b>{point.x}</b><br/>',
+      pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    }
     this.chartOptions.colors = this.colors;
   }
 
