@@ -2,7 +2,10 @@
     <chart class="standard-chart" [options]="chartOptions"></chart>
     <div class="legend">
         <div class="legend-inner">
-            <div *ngFor="let item of answerChartInfo " class="legend-item"><i [ngStyle]="{'color': item.color }" class="fas fa-circle"></i> {{item.answserValue}}</div>
+            <div *ngFor="let item of answerChartInfo " class="legend-item">
+                <span><i [ngStyle]="{'color': item.color }" class="fas fa-circle"></i></span>
+                <span> {{item.answserValue}}</span>
+            </div>
         </div>
     </div>
 </div>
