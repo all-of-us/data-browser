@@ -13,7 +13,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
   colors: any[];
   answers: any;
   monthOrder = ['May', 'June', 'July/August'];
-  @Input() answerChartInfo: any;
+  @Input() answerChartInfo: any[];
   constructor(injector: Injector) {
     super(injector);
     this.categoryArr = [];
@@ -92,7 +92,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       r[a.stratum7] = [...r[a.stratum7] || [], a];
       return r;
     }, {});
-    const payload = {};
+    let payload = {};
     Object.keys(result).sort((a, b) => {
       return this.monthOrder.indexOf(a) - this.monthOrder.indexOf(b);
     }).forEach(key => {

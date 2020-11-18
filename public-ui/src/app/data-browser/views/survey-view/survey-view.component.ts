@@ -278,7 +278,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       return 0;
     });
     const answerCount = q.countAnalysis.results.length;
-    this.AnswerChartInfo = [];
     q.countAnalysis.results.forEach((aCount, i) => {
       if (this.isCopeSurvey && this.CopeStacked) {
         if (answerCount <= 8) {
@@ -292,12 +291,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         } else if (answerCount > 18) {
           aCount['color'] = this.dbc.twentyFiveColors[i];
         }
-        this.AnswerChartInfo.push({
-          color: aCount.color,
-          totalCount: aCount.countValue,
-          answerId: aCount.stratum3,
-          answserValue: aCount.stratum4
-        });
+        // this.AnswerChartInfo.push({
+        //   color: aCount.color,
+        //   totalCount: aCount.countValue,
+        //   answerId: aCount.stratum3,
+        //   answserValue: aCount.stratum4
+        // });
         if (aCount.stratum7 && aCount.stratum7 === '1') {
           aCount.subQuestionFetchComplete = false;
         }
@@ -479,6 +478,14 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
+          q.countAnalysis.results.forEach(aCount => {
+              this.AnswerChartInfo.push({
+                color: aCount.color,
+                totalCount: aCount.countValue,
+                answerId: aCount.stratum3,
+                answserValue: aCount.stratum4
+              });
+          });
         },
         error: err => {
           console.log('Error searching: ', err);
