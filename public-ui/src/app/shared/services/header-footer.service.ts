@@ -129,6 +129,11 @@ export class HeaderFooterService {
             submenu: false
           }
         ]
+      },
+      {
+        title: 'FAQ',
+        url: this.allOfUsUrl + '/frequently-asked-questions/',
+        submenu: false
       }
     ];
   }
