@@ -312,7 +312,6 @@ export class DbConfigService {
   }
 
   public shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
     const shuffledArr = [];
     const arrLength = array.length;
     for (let i = 0; i < arrLength; i++) {
