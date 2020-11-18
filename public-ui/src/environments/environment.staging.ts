@@ -9,7 +9,7 @@ export const environment = {
   gtmAuth: 'v5hD4oOWvct1sYdnaNp7yQ',
   gtmPreview: 'env-28',
   copeFlag: false,
-  preCopeFlag: false,
+  preCopeFlag: true,
   fitbit: false,
   copeStacked: false
 };
