@@ -54,6 +54,8 @@ then
   exit 1
 fi
 
+SERVICE_ACCOUNT=$(gcloud config get-value account)
+
 # Function for waiting on import to finish.
 # import_wait($file, $seconds_wait_interval)
 function import_wait () {
@@ -77,10 +79,10 @@ function import_wait () {
 # Function to Grant Access to files for service account and db
 function grant_access_to_files () {
   bucket_path=$1
-  SERVICE_ACCOUNT="${PROJECT}@appspot.gserviceaccount.com"
+  # SERVICE_ACCOUNT="${PROJECT}@appspot.gserviceaccount.com"
 
-  gsutil acl ch -u $SERVICE_ACCOUNT:O $bucket_path 2> /dev/null || true # Don't error if there are no files
-  gcloud auth activate-service-account $SERVICE_ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+  # gsutil acl ch -u $SERVICE_ACCOUNT:O $bucket_path 2> /dev/null || true # Don't error if there are no files
+  # gcloud auth activate-service-account $SERVICE_ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
   # Grant access to buckets for service account for cloudsql
   SQL_SERVICE_ACCOUNT=$(gcloud sql instances describe --project $PROJECT \

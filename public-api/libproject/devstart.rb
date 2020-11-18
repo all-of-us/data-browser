@@ -546,9 +546,44 @@ Common.register_command({
   :fn => ->() { run_local_data_migrations() }
 })
 
-def generate_public_cdr_counts(*args)
-  common = Common.new
-  common.run_inline %W{docker-compose run db-generate-public-cdr-counts} + args
+def generate_public_cdr_counts(cmd_name, *args)
+  op = WbOptionsParser.new(cmd_name, args)
+  op.add_option(
+      "--bq-project [bq-project]",
+      ->(opts, v) { opts.bq_project = v},
+      "BQ Project required."
+    )
+    op.add_option(
+      "--bq-dataset [bq-dataset]",
+      ->(opts, v) { opts.bq_dataset = v},
+      "BQ dataset required."
+    )
+    op.add_option(
+      "--project [--project]",
+      ->(opts, v) { opts.project = v},
+      "Project required."
+    )
+    op.add_option(
+      "--cdr-version [cdr-version]",
+      ->(opts, v) { opts.cdr_version = v},
+      "CDR version required."
+    )
+    op.add_option(
+      "--bucket [bucket]",
+      ->(opts, v) { opts.bucket = v},
+      "GCS bucket required."
+    )
+    op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
+    gcc = GcloudContextV2.new(op)
+    op.parse.validate
+    gcc.validate()
+
+    with_cloud_proxy_and_db(gcc) do
+        common = Common.new
+        Dir.chdir('databrowser/db-cdr') do
+          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
+        end
+    end
 end
 
 Common.register_command({
@@ -556,7 +591,7 @@ Common.register_command({
   :description => "generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT> \
  --cdr-version=<''|YYYYMMDD> --bucket <BUCKET>
 Generates databases in bigquery with non de-identified data from a cdr that will be imported to mysql/cloudsql to be used by databrowser.",
-  :fn => ->(*args) { generate_public_cdr_counts(*args) }
+  :fn => ->(*args) { generate_public_cdr_counts("generate-public-cdr-counts", *args) }
 })
 
 def generate_cloudsql_db(cmd_name, *args)
@@ -581,15 +616,20 @@ def generate_cloudsql_db(cmd_name, *args)
     ->(opts, v) { opts.bucket = v},
     "Name of the GCS bucket containing the SQL dump"
   )
-  op.parse.validate
 
-  ServiceAccountContext.new(op.opts.project).run do
+  op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.instance and opts.database and opts.bucket }
+  gcc = GcloudContextV2.new(op)
+  op.parse.validate
+  gcc.validate()
+
+  with_cloud_proxy_and_db(gcc) do
     common = Common.new
-    common.run_inline %W{docker-compose run db-generate-cloudsql-db
-          --project #{op.opts.project} --instance #{op.opts.instance} --database #{op.opts.database}
-          --bucket #{op.opts.bucket}}
+    Dir.chdir('databrowser/db-cdr') do
+        common.run_inline %W{./generate-cdr/generate-cloudsql-db.sh #{op.opts.project} #{op.opts.instance} #{op.opts.database} #{op.opts.bucket}}
+    end
   end
 end
+
 Common.register_command({
   :invocation => "generate-cloudsql-db",
   :description => "generate-cloudsql-db  --project <PROJECT> --instance <INSTANCE> \
