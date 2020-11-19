@@ -381,7 +381,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe(
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.surveyModules.forEach(survey => {
-            const surveyRoute = survey.name.replace(' ', '-').toLowerCase();
+            const surveyRoute = survey.name.split(' ').join('-').toLowerCase();
             if (surveyRoute === this.domainId) {
               localStorage.setItem('surveyModule', JSON.stringify(survey));
               this.setSurvey();
