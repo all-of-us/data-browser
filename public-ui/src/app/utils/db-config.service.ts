@@ -144,10 +144,10 @@ export class DbConfigService {
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
     { conceptId: 1586134, conceptName: 'The Basics' },
-    { conceptId: 43529712, conceptName: 'Personal Medical History'},
-    { conceptId: 43528895, conceptName: 'Health Care Access and Utilization'},
-    { conceptId: 43528698, conceptName: 'Family Health History'},
-    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience'}
+    { conceptId: 43529712, conceptName: 'Personal Medical History' },
+    { conceptId: 43528895, conceptName: 'Health Care Access and Utilization' },
+    { conceptId: 43528698, conceptName: 'Family Health History' },
+    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience' }
   ];
 
   // chart options
@@ -203,29 +203,29 @@ export class DbConfigService {
   };
 
   eightColors = [
-    '#2F4B7C', '#496D91', '#6790A2', '#BFE1C6',
-    '#F99059', '#E75955', '#C5254A', '#93003A'
+    '#2F4B7C', '#F99059', '#496D91', '#E75955',
+    '#6790A2', '#93003A', '#BFE1C6', '#C5254A'
   ];
 
   tenColors = [
-    '#2F4B7C', '#44668D', '#5B829C', '#769EA7', '#BFE1C6',
-    '#FA9B58', '#F06F57', '#DB4451', '#BC1B48', '#93003A'
+    '#2F4B7C', '#FA9B58', '#44668D', '#BC1B48', '#769EA7',
+    '#F06F57', '#5B829C', '#93003A', '#BFE1C6', '#DB4451'
   ];
 
   fourteenColors = [
-    '#2F4B7C', '#3E5E88', '#4D7294', '#5E869E', '#719AA6', '#88AFAB', '#BFE1C6', '#FBA858', '#F78858',
-    '#EE6857', '#DF4A53', '#CB2D4C', '#B11044', '#93003A'
+    '#2F4B7C', '#FBA858', '#88AFAB', '#CB2D4C', '#3E5E88', '#F78858', '#719AA6', '#B11044', '#4D7294',
+    '#EE6857', '#5E869E', '#93003A', '#93003A', '#DF4A53'
   ];
 
   eightteenColors = [
-    '#2F4B7C', '#3A5A86', '#46698F', '#527997', '#60889F', '#6F98A0', '#80A8AA', '#93B8AC', '#BFE1C6',
-    '#FBAF57', '#FA9659', '#F57D58', '#EC6556', '#E14D53', '#D2364F', '#C02049', '#AB0A42', '#93003A',
+    '#2F4B7C', '#FA9659', '#BFE1C6', '#D2364F', '#AB0A42', '#6F98A0', '#3A5A86', '#93B8AC', '#FBAF57',
+    '#527997', '#F57D58', '#46698F', '#EC6556', '#C02049', '#60889F', '#80A8AA', '#E14D53', '#93003A',
   ];
 
   twentyFiveColors = [
-    '#00429D', '#2451A4', '#3761AB', '#4771B2', '#5681B9', '#6492C0', '#73A2C6', '#82B3CD', '#93C4D2',
-    '#A5D5D8', '#B9E5DD', '#D3F4E0', '#BFE1C6', '#D0CCB6', '#DAB8A7', '#E1A399', '#E38F8B', '#E37B7E',
-    '#DF6772', '#D95367', '#D0405C', '#C4Dd52', '#B61A49', '#A60841', '#93003A'
+    '#00429D', '#93C4D2', '#6492C0', '#B61A49', '#E37B7E', '#FBAF57', '#73A2C6', '#FA9659', '#4771B2',
+    '#DF6772', '#A5D5D8', '#3761AB', '#D0CCB6', '#D95367', '#DAB8A7', '#D3F4E0', '#E38F8B', '#2451A4',
+    '#5681B9', '#A60841', '#BFE1C6', '#C42D52', '#82B3CD', '#F57D58', '#93003A'
   ];
 
 
@@ -267,13 +267,6 @@ export class DbConfigService {
     group.concepts.push(new ConceptWithAnalysis('903120', group.groupName, chartType));
     this.pmGroups.push(group);
 
-    // randomize the colors
-    this.eightColors = this.shuffle(this.eightColors);
-    this.tenColors = this.shuffle(this.tenColors);
-    this.fourteenColors = this.shuffle(this.fourteenColors);
-    this.eightteenColors = this.shuffle(this.eightteenColors);
-    this.twentyFiveColors = this.shuffle(this.twentyFiveColors);
-
   }
 
   getGenderAnalysisResults() {
@@ -310,20 +303,5 @@ export class DbConfigService {
     return this.FITBIT_MEASUREMENTS.filter(name => name.toLowerCase().includes(
       searchString.toLowerCase())).length;
   }
-
-  public shuffle(array) {
-    const shuffledArr = [];
-    const arrLength = array.length;
-    for (let i = 0; i < arrLength; i++) {
-      const negIndex = arrLength - i;
-      const index: number = i;
-      if (index > 0 && index % 2) {
-        shuffledArr.push(array[negIndex]);
-      } else {
-        shuffledArr.push(array[index]);
-      }
-    }
-    return shuffledArr;
-  }
-
 }
+
