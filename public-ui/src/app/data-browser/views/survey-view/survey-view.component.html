@@ -74,23 +74,21 @@
           <div class="survey-results" *ngIf="questionFetchComplete">
             <div class="question-result" *ngFor="let q of questions, let i = index">
               <div class="secondary-display">
-                <div class="box-title"> Question {{q.actualQuestionNumber}}
-                  <app-tooltip *ngIf="q.conceptId === 1586140"
-                    [toolTipText1]="tooltipText.raceEthnicityQuestionHelpText1"
-                    [toolTipText2]="tooltipText.raceEthnicityQuestionHelpText2"
-                    [toolTipText3]="tooltipText.raceEthnicityQuestionHelpText3"
-                    [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
-                    [action]="'Survey Page Tooltip'"></app-tooltip>
-                  <app-tooltip *ngIf="q.conceptId === 1585838"
-                    [toolTipText1]="tooltipText.genderIdentityQuestionHelpText1"
-                    [toolTipText2]="tooltipText.allOfUsHelpText"
-                    [toolTipText3]="tooltipText.genderIdentityQuestionHelpText2"
-                    [label]="getLabel(q,'Gender Identity Question Help Text')" [searchTerm]="searchText.value"
-                    [action]="'Survey Page Tooltip'"></app-tooltip>
-                </div>
                 <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
                   <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
                   </app-highlight-search>
+                  <app-tooltip *ngIf="q.conceptId === 1586140"
+                               [toolTipText1]="tooltipText.raceEthnicityQuestionHelpText1"
+                               [toolTipText2]="tooltipText.raceEthnicityQuestionHelpText2"
+                               [toolTipText3]="tooltipText.raceEthnicityQuestionHelpText3"
+                               [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
+                               [action]="'Survey Page Tooltip'"></app-tooltip>
+                  <app-tooltip *ngIf="q.conceptId === 1585838"
+                               [toolTipText1]="tooltipText.genderIdentityQuestionHelpText1"
+                               [toolTipText2]="tooltipText.allOfUsHelpText"
+                               [toolTipText3]="tooltipText.genderIdentityQuestionHelpText2"
+                               [label]="getLabel(q,'Gender Identity Question Help Text')" [searchTerm]="searchText.value"
+                               [action]="'Survey Page Tooltip'"></app-tooltip>
                 </div>
               </div>
               <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
@@ -492,5 +490,5 @@
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
-<app-pop-up [title]="'About The COvid-19 Participant Survey'" [statement]="copeDisclaimer"
+<app-pop-up [title]="'COvid-19 Participant Experience (COPE) survey'" [statement]="copeDisclaimer"
   (closed)="showStatement = false" *ngIf="showStatement"></app-pop-up>

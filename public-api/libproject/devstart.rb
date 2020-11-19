@@ -37,6 +37,7 @@ ENVIRONMENTS = {
     :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
+    :instance => "databrowsermaindb",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-staging" => {
@@ -46,6 +47,7 @@ ENVIRONMENTS = {
     :api_base_path => "https://api-dot-aou-db-staging.appspot.com",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
+    :instance => "databrowsermaindb",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-stable" => {
@@ -55,6 +57,7 @@ ENVIRONMENTS = {
     :api_base_path => "https://public.api.stable.fake-research-aou.org",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
+    :instance => "databrowsermaindb",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-prod" => {
@@ -64,6 +67,7 @@ ENVIRONMENTS = {
     :api_base_path => "https://public.api.researchallofus.org",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-prod-public-cloudsql",
+    :instance => "databrowsermaindb",
     :gae_vars => {
       "GAE_MIN_IDLE_INSTANCES" => "1",
       "GAE_MAX_INSTANCES" => "64"
