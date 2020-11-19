@@ -30,7 +30,7 @@ fi
 
 
 # export for liquibase to use this
-#export CDR_DB_NAME
+export CDR_DB_NAME
 
 # If CDR_DB_NAME matches ^public, we want to the public_db_user env var substituted in the create_db.sql
 if [[ CDR_DB_NAME =~ ^public ]]
