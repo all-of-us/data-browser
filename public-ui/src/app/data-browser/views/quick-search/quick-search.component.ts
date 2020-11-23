@@ -36,7 +36,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     'physical measurements taken at the time of participant enrollment ' +
     ' (“program physical measurements”), ' +
     'and electronic health record (EHR) data. Search using common keywords and/or ' +
-    'billing or data standards codes (ie SNOMED, CPT, ICD). ';
+    'billing or data standards codes (i.e., SNOMED, CPT, ICD). ';
   subTitle = '';
   searchResults = [];
   domainResults = [];
