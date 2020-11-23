@@ -1,5 +1,5 @@
 <div class="fm-container">
-  <h1>Fitbit<span class="rr">®</span> Data</h1>
+  <h1>Fitbit Data</h1>
   <div class="fm-layout">
     <div class="fm-menu">
       <ng-container *ngFor="let menuItem of fitbitConcepts">
@@ -14,7 +14,7 @@
     <div class="fm-body db-card">
       <ng-container *ngIf="isLoading">
         <ng-container *ngIf="selectedItem == 'all Fitbit data'; else otherFitbit">
-          <h2> All Fitbit<span class="rr">®</span> Data</h2>
+          <h2> All Fitbit Data</h2>
         </ng-container>
         <ng-template #otherFitbit>
           <h2>{{selectedDisplay}}</h2>
@@ -23,7 +23,7 @@
           <div class="fm-chart">
             <div class="display-body">Count of participants with
               <ng-container *ngIf="selectedItem == 'All Fitbit Data';else otherChartTitles">
-                all Fitbit<span class="rr">®</span> data
+                all Fitbit data
                 </ng-container>
                 <ng-template #otherChartTitles>
                   {{selectedDisplay}}

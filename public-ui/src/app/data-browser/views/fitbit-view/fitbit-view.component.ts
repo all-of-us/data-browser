@@ -21,7 +21,7 @@ export class FitbitViewComponent implements OnInit {
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) {
     this.selectedItem = 'all Fitbit data';
-    this.selectedDisplay = 'all Fitbit® data';
+    this.selectedDisplay = 'all Fitbit data';
   }
 
   loading() {
@@ -31,7 +31,7 @@ export class FitbitViewComponent implements OnInit {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.fitbitConcepts.push({
-      id: 1, displayName: 'all Fitbit® data',
+      id: 1, displayName: 'all Fitbit data',
       conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'
     });
     this.fitbitConcepts.push({

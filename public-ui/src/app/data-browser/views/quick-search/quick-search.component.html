@@ -196,7 +196,7 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
       </div>
     </div>
     <div [routerLink]="['fitbit']" class="result-box pm-box" *ngIf="fitbitFlag && fitbitMeasurementsFound" > 
-      <p class="result-box-title"> Fitbit<span style="font-size:.7em">® </span>
+      <p class="result-box-title"> Fitbit
         <app-tooltip [toolTipText1]="tooltipText.fitbitTileHelpText" [label]="'Homepage Tooltip Hover'"
                      [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'">
         </app-tooltip>
@@ -204,10 +204,10 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
       <div class="result-body">
         <span class="result-body-item">
           <ng-container *ngIf="searchText.value; else noSearchFM;">
-            <div class="result-stat">{{fitbitMeasurementsFound}}</div> matching Fitbit® Measurements
+            <div class="result-stat">{{fitbitMeasurementsFound}}</div> matching Fitbit Measurements
           </ng-container>
           <ng-template #noSearchFM>
-            <div class="result-stat">{{fitbitMeasurementsFound}}</div> Fitbit® Measurements
+            <div class="result-stat">{{fitbitMeasurementsFound}}</div> Fitbit Measurements
           </ng-template>
         </span>
         <span class="result-body-item result-body-stat" *ngIf="fitbitParticipantCount > 0">
@@ -215,12 +215,12 @@ For more information, visit our <a href="https://www.researchallofus.org/cope-su
           </span>
         </span>
         <span class="result-body-item">
-          Fitbit® data includes heart rate and activity summaries.
+          Fitbit data includes heart rate and activity summaries.
           <br><br><br><br><br>
         </span>
       </div>
       <div class="result-box-link">
-        <a class="result-bottom-link" [routerLink]="['fitbit']"> View Fitbit® measurements </a>
+        <a class="result-bottom-link" [routerLink]="['fitbit']"> View Fitbit measurements </a>
       </div>
     </div>
   </div>
