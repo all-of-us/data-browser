@@ -421,6 +421,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set has_counts = IF(count_value > 0 or source_count_value > 0, 1, 0)
 where concept_id != 0"
 
+echo "Update question names to match the text in the survey pdfs (there are some questions that are present in the table just for building schema so ignoring them)"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set c.concept_name=sqm.concept_name
