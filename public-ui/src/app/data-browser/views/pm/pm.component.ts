@@ -147,7 +147,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   public getCountAnalysis(conceptUnit: any) {
-    return this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(r => r.unitName === this.selectedConceptUnit)[0].results;
+    return this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
+    r => r.unitName === this.selectedConceptUnit)[0].results;
   }
 
   arrangeConceptAnalyses(concept: any) {
@@ -155,15 +156,15 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
         this.organizeGenders(concept);
       }
 
-      var genders = [this.dbc.MALE_GENDER_ID, this.dbc.FEMALE_GENDER_ID, this.dbc.OTHER_GENDER_ID];
-      let prevResult;
-      for (let gca of concept.analyses.measurementGenderCountAnalysis) {
+      let genders = [this.dbc.MALE_GENDER_ID, this.dbc.FEMALE_GENDER_ID, this.dbc.OTHER_GENDER_ID];
+      const prevResult;
+      for (const gca of concept.analyses.measurementGenderCountAnalysis) {
         if (gca.results.length < 3) {
-            for (let result of gca.results) {
+            for (const result of gca.results) {
                 prevResult = result;
-                genders = genders.filter(item => item != result.stratum3);
+                genders = genders.filter(item => item !== result.stratum3);
             }
-            for (let gender of genders) {
+            for (const gender of genders) {
                 const missingResult = { ...prevResult };
                 missingResult.stratum3 = gender ;
                 missingResult.countValue = 20;
