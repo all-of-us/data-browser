@@ -85,7 +85,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
                   } else {
                             this.selectedGroup = this.conceptGroups[0];
                   }
-                  this.selectedConcept = this.selectedGroup.concepts[0];
+                  this.showMeasurement(this.selectedGroup, this.selectedGroup.concepts[0]);
                   this.loadingStack.pop();
                 },
                 error: err =>  {
@@ -138,18 +138,42 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }
 
-  setAnalysisStratum(countAnalysis: any) {
-    for (const r of countAnalysis.results) {
+  setAnalysisStratum(results: any) {
+    for (const r of results) {
         if (r.analysisStratumName === null) {
             r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
         }
     }
   }
 
+  public getCountAnalysis(conceptUnit: any) {
+    return this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(r => r.unitName === this.selectedConceptUnit)[0].results;
+  }
+
   arrangeConceptAnalyses(concept: any) {
       if (concept.analyses.genderAnalysis) {
         this.organizeGenders(concept);
       }
+
+      var genders = [this.dbc.MALE_GENDER_ID, this.dbc.FEMALE_GENDER_ID, this.dbc.OTHER_GENDER_ID];
+      let prevResult;
+      for (let gca of concept.analyses.measurementGenderCountAnalysis) {
+        if (gca.results.length < 3) {
+            for (let result of gca.results) {
+                prevResult = result;
+                genders = genders.filter(item => item != result.stratum3);
+            }
+            for (let gender of genders) {
+                const missingResult = { ...prevResult };
+                missingResult.stratum3 = gender ;
+                missingResult.countValue = 20;
+                missingResult.sourceCountValue = 20;
+                gca.results.push(missingResult);
+            }
+        }
+        this.setAnalysisStratum(gca.results);
+      }
+
   }
 
   organizeGenders(concept: ConceptWithAnalysis) {

@@ -37,17 +37,17 @@
           </ng-template>
         </div>
         <div class="chart-layout"
-          *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.genderAnalysis">
+          *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis">
           <!-- Loop through the genders we have results for showing the graph -->
           <ng-container *ngIf="['903120','903111'].indexOf(selectedConcept.conceptId) === -1; else stackedChart">
-            <div class="bs-chart-item" *ngFor="let gender of selectedConcept.analyses.genderAnalysis.results">
-              <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) && selectedConcept.analyses &&
-              selectedConcept.analyses.measurementValueGenderAnalysis" class="chart-title">
+            <div class="bs-chart-item" *ngFor="let gender of getCountAnalysis(selectedConceptUnit)">
+              <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum3) && selectedConcept.analyses &&
+              selectedConcept.analyses.genderAnalysis" class="chart-title">
                 <span class="chart-title" *ngIf="gender.countValue > 20; else PmChartTitleLE20">
                   {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</span>
                 <ng-template #PmChartTitleLE20>{{gender.analysisStratumName}} – &le; {{gender.countValue.toLocaleString()}}</ng-template>
               </div>
-              <app-chart [genderId]="gender.stratum2"
+              <app-chart [genderId]="gender.stratum3"
                          [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
                          [chartType]="selectedConcept.chartType"
                          [analysis]="getValueAnalysis()"
