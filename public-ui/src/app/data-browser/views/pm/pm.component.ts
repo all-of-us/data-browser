@@ -157,7 +157,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
       }
 
       let genders = [this.dbc.MALE_GENDER_ID, this.dbc.FEMALE_GENDER_ID, this.dbc.OTHER_GENDER_ID];
-      const prevResult;
+      let prevResult;
       for (const gca of concept.analyses.measurementGenderCountAnalysis) {
         if (gca.results.length < 3) {
             for (const result of gca.results) {
