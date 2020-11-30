@@ -326,7 +326,6 @@ Common.register_command({
 })
 
 def run_all_tests(cmd_name, args)
-  run_common_api_tests(cmd_name, args)
   run_public_api_tests(cmd_name, args)
 end
 
