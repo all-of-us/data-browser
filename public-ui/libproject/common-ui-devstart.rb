@@ -4,10 +4,10 @@
 
 require "optparse"
 require "set"
-require_relative "../aou-utils/serviceaccounts"
-require_relative "../aou-utils/swagger"
-require_relative "../aou-utils/utils/common"
-require_relative "../aou-utils/workbench"
+require_relative "../../aou-utils/serviceaccounts"
+require_relative "../../aou-utils/swagger"
+require_relative "../../aou-utils/utils/common"
+require_relative "../../aou-utils/workbench"
 
 DRY_RUN_CMD = %W{echo [DRY_RUN]}
 
