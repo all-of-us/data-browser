@@ -56,7 +56,7 @@ export class FitbitViewComponent implements OnInit {
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking',
       tooltip: this.tooltipText.fitbitActivityStepsHelpText
     });
-console.log(this.tooltipText.fitbitActivityStepsHelpText,'tooltip');
+    console.log(this.tooltipText.fitbitActivityStepsHelpText, 'tooltip');
 
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
