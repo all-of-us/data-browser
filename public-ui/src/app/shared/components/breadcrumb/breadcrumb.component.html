@@ -5,6 +5,9 @@
 
   <div *ngFor="let breadcrumb of breadcrumbs; let last = last"
     [ngClass]="{'breadcrumb-last': last, 'breadcrumb': !last}">
-    <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label.split('-').join(' ') }}</a>
+    <ng-container *ngIf="breadcrumb.label === 'covid-19-participant-experience survey'; else notCope">
+      <a [routerLink]="[breadcrumb.url]">COVID-19 Participant Experience (COPE) survey</a>
+    </ng-container>
+    <ng-template #notCope><a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label.split('-').join(' ') }}</a></ng-template>
   </div>
 </div>
