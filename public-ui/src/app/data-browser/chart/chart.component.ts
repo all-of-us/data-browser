@@ -29,6 +29,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Output() resultClicked = new EventEmitter<any>();
   @Input() domainCountAnalysis: any;
   @Input() surveyCountAnalysis: any;
+  @Input() surveyVersionAnalysis: any;
   @Input() conceptName: string;
   chartOptions: any = null;
   constructor(private dbc: DbConfigService) {
@@ -597,9 +598,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
       color = this.dbc.COLUMN_COLOR;
       analysisStratumName = a.stratum7;
-
+      let version = this.surveyVersionAnalysis.filter(va => va.monthName === a.stratum7)[0];
+      let percentage = ((a.countValue / version.participants) * 100).toFixed();
       legendText = 'Survey Version Count';
-      toolTipHelpText = '<div class="version-survey-tooltip"> <strong>' + a.stratum4 + '</strong> <span>' + count + ' participants </span>' + '</div>';
+      toolTipHelpText = '<div class="version-survey-tooltip"> <strong>' + a.stratum4 + '</strong> <span>' + count + ' participants </span>' +
+      '<span><strong>' + percentage + '</strong>' +
+      '% of all participants that took this version of survey</span>' +
+      '<span>Total Count = <strong> ' + version.participants + ' </strong></span></div>';
       data.push({
         name: analysisStratumName
         , y: a.countValue, color: color, sliced: true, version: a.analysisStratumName,
