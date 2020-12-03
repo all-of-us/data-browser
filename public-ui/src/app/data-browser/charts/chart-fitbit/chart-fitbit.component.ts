@@ -25,6 +25,8 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
     this.chartOptions.yAxis.gridLineColor = '#F0F0F0';
     this.chartOptions.xAxis.gridLineWidth = 1;
     this.chartOptions.xAxis.gridLineColor = '#F0F0F0';
+    this.chartOptions.tooltip.positioner = undefined;
+    this.chartOptions.tooltip.outside = true;
   }
   public buildChart() {
     this.pointData = [];
