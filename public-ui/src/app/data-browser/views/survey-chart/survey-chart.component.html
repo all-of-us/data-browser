@@ -14,6 +14,5 @@
 </div>
 <div class="chart" *ngIf="!displayGraphErrorMessage">
   <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedChartAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
-             [surveyVersionAnalysis]="versionAnalysis"
              [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow"></app-chart>
 </div>
