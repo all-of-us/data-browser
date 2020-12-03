@@ -3,8 +3,10 @@
     <div class="legend">
         <div class="legend-inner">
             <div *ngFor="let item of answerChartInfo " class="legend-item">
-                <span><i [ngStyle]="{'color': item.color }" class="fas fa-circle"></i></span>
-                <span> {{item.answserValue}}</span>
+                <ng-container *ngIf="item.answerId != 0">
+                    <span><i [ngStyle]="{'color': item.color }" class="fas fa-circle"></i></span>
+                    <span> {{item.answserValue}}</span>
+                </ng-container>
             </div>
         </div>
     </div>
