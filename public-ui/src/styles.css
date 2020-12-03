@@ -611,7 +611,7 @@ a a:link a:visited {
   padding: 5px;
   font-family: GothamBook, Arial, sans-serif;
   border: 1px solid #262262;
-  z-index: 1000!important;
+  z-index: 100;
 }
 
 .bio-sex-tooltip {
