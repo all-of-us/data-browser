@@ -348,7 +348,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                   }
                 });
               });
-              console.log(this.surveyVersions);
             },
             error: err => {
               console.error('Observer got an error: ' + err);
