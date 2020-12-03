@@ -210,7 +210,8 @@
                       #chartElement>
                       <app-survey-chart [isCopeSurvey]="isCopeSurvey" [graphButtons]="graphButtons" [question]="q"
                         [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
-                        [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a">
+                        [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
+                        [versionAnalysis]='surveyVersions' [answer]="a">
                       </app-survey-chart>
                     </div>
                     <div class="survey-row-expansion sub-table-1"
@@ -325,7 +326,7 @@
                               *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7">
                               <app-survey-chart [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey"
                                 [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis"
-                                [selectedResult]="sqa" [surveyName]="survey.name"
+                                [selectedResult]="sqa" [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                 [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
                                 [answer]="sqa">
                               </app-survey-chart>
@@ -440,7 +441,7 @@
                                       *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7">
                                       <app-survey-chart [isCopeSurvey]="isCopeSurvey" [graphButtons]="graphButtons"
                                         [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis"
-                                        [selectedResult]="sqa2" [surveyName]="survey.name"
+                                        [selectedResult]="sqa2" [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                         [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
                                         [answer]="sqa2"></app-survey-chart>
                                     </div>
