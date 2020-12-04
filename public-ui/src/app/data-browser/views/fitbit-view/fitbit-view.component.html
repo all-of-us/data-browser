@@ -4,7 +4,7 @@
     <div class="fm-menu">
       <ng-container *ngFor="let menuItem of fitbitConcepts">
         <div class="fm-menu-item-container">
-          <div (click)="setGraphs(menuItem)" class="fm-menu-item"
+          <div tabindex="0" (keydown.enter)="setGraphs(menuItem)"  (click)="setGraphs(menuItem)" class="fm-menu-item"
             [ngClass]="{'active': selectedItem == menuItem.displayName}"> <i class="fas {{menuItem.icon}}"></i>
             <div class="fm-menu-item-display"><span>{{menuItem.displayName}}</span>
               <app-tooltip [toolTipText1]="menuItem.tooltip"></app-tooltip>
