@@ -338,8 +338,8 @@
 1384671,"Are you currently prescribed medications and/or receiving treatment for Other bone, joint or muscle condition?","SkeletalMuscular_RxMedsforOtherBoneJointMuscleCond","Personal Medical History",43529712,0,1,"43528757.1384471.1384671",1,1,7,NULL
 1384672,"About how old were you when you were first told you had Other hormone/endocrine condition?","Endocrine_HowOldWereYouOtherHormone/EndocrineCondi","Personal Medical History",43529712,0,1,"43528758.1384666.1384672",1,1,5,NULL
 1385329,"Other Conditions: Endometriosis","OtherConditions_Endometriosis","Family Health History",43528698,20,1,"43529638.1385329.1385329",0,0,0,NULL
-1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585841.1585348",0,1,4,NULL
-1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585842.1585348",0,1,4,NULL
+1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585841.1585348",0,0,4,NULL
+1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585842.1585348",0,0,4,NULL
 1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585843.1585348",0,1,4,NULL
 1585357,"Are any of these a closer description of how you think of yourself?","GenderIdentity_SexualityCloserDescription","The Basics",1586134,0,1,"1585899.1585904.1585357",0,1,5,NULL
 1585370,"Do you own or rent the place where you live?","HomeOwn_CurrentHomeOwn","The Basics",1586134,0,0,1585370,1,1,12,NULL

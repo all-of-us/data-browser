@@ -193,7 +193,7 @@
                           </ng-container>
                         </div>
                         <div class=" info-text survey-tbl-d display-body info-text display-body info-text graph-btn">
-                          <button class="icon-btn" *ngIf="!a.stratum7 && a.stratum4 != 'Did not answer'">
+                          <button class="icon-btn" *ngIf="(!a.stratum7 || a.stratum7 !== '1') && a.stratum4 != 'Did not answer'">
                             <clr-icon [ngClass]="a.expanded?'is-solid':''" shape="bar-chart"
                               style="height: 1.5rem; width: 1.5rem;color: #2691D0;"></clr-icon>
                           </button>
