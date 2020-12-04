@@ -606,7 +606,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       toolTipHelpText = '<div class="version-survey-tooltip"> <strong>' + a.stratum4 + '</strong> <span>' + count + ' participants </span>' +
             '<span><strong>' + percentage + '</strong>' +
             '% of all participants that took this version of survey</span>' +
-            '<span>Total Count = <strong> ' + version.participants + ' </strong></span></div>';data.push({
+            '<span>Total Count = <strong> ' + version.participants +
+            ' </strong></span></div>';
+      data.push({
         name: analysisStratumName
         , y: a.countValue, color: color, sliced: true, version: a.analysisStratumName,
         toolTipHelpText: toolTipHelpText,
