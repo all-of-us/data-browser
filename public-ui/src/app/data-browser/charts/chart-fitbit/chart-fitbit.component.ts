@@ -1,4 +1,4 @@
-import { Component, Input, Injector, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -43,8 +43,9 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
     for (const concept of this.concepts.results) {
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       console.log(this.countAnalysis.results[0]);
-      var totalCount = (this.countAnalysis && this.countAnalysis.results) ? this.countAnalysis.results[0].countValue : 0;
-      var percentage = ((concept.countValue/totalCount)*100).toFixed();
+      const totalCount = (this.countAnalysis && this.countAnalysis.results) ?
+      this.countAnalysis.results[0].countValue : 0;
+      const percentage = ((concept.countValue/totalCount)*100).toFixed();
       this.pointData.push({
         toolTipHelpText: '<div class="fitbit-tooltip"><strong>' + count +
           ' </strong> participants had <br>'
