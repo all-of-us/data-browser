@@ -210,9 +210,8 @@
                       *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'"
                       #chartElement>
                       <app-survey-chart [isCopeSurvey]="isCopeSurvey" [graphButtons]="graphButtons" [question]="q"
-                        [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name"
-                        [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
-                        [versionAnalysis]='surveyVersions' [answer]="a">
+                        [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a" [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
+                        [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText" [answer]="a">
                       </app-survey-chart>
                     </div>
                     <div class="survey-row-expansion sub-table-1"
@@ -326,8 +325,8 @@
                             <div class="row-expansion"
                               *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7">
                               <app-survey-chart [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey"
-                                [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis"
-                                [selectedResult]="sqa" [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
+                                [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [versionAnalysis]='surveyVersions'
+                                [selectedResult]="sqa" [surveyName]="survey.name"
                                 [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
                                 [answer]="sqa">
                               </app-survey-chart>
