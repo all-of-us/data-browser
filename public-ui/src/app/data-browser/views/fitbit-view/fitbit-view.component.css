@@ -10,6 +10,12 @@
     padding: 2rem;
     padding-top: 0;
 }
+
+.loading-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .fm-body h2 {
     padding-bottom: 1rem;
     text-transform: capitalize;

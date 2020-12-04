@@ -14,8 +14,9 @@
       </ng-container>
     </div>
 
-    <div class="fm-body db-card">
-      <ng-container *ngIf="isLoading">
+    <div [ngClass]= "{'loading-layout': isLoading}" class="fm-body db-card">
+      <app-spinner [loading]="isLoading"></app-spinner>
+      <ng-container *ngIf="!isLoading">
         <h2>{{selectedDisplay}} </h2>
         <div class="fm-body-top">
           <div class="fm-chart">

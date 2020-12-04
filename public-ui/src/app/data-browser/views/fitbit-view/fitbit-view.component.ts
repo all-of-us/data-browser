@@ -14,7 +14,7 @@ export class FitbitViewComponent implements OnInit {
   loadingStack: any = [];
   fitbitConcepts: any = [];
   searchText: string = null;
-  isLoading = false;
+  isLoading = true;
   analyses: any;
   selectedAnalyses: any;
   selectedItem: string;
@@ -81,9 +81,9 @@ export class FitbitViewComponent implements OnInit {
             }
           }
           this.selectedAnalyses = result.items[0];
-          this.isLoading = true;
           // Process fitbit results
           this.loadingStack.pop();
+          this.isLoading = false;
         },
         error: err => {
           this.loadingStack.pop();
