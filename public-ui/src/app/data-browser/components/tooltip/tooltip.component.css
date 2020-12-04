@@ -1,7 +1,7 @@
 .tooltip {
     position: relative;
     display: inline-block;
-    z-index: 15000;
+    z-index: 110;
 }
 
 .tooltip .tooltiptext {
@@ -32,7 +32,7 @@
     border-color: #302C71 transparent transparent transparent;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip:focus .tooltiptext, .tooltip:hover .tooltiptext {
     visibility: visible;
 }
 
@@ -41,5 +41,4 @@
     line-height: normal;
     outline: 2px solid #302C71;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
-    z-index: 17000;
 }

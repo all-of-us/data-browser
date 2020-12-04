@@ -90,7 +90,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         followPointer: true,
         outside: true,
         formatter: function (tooltip) {
-          return '<div class="tooltip-container" style="position: relative; z-index: 20000;">'
+          return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
           + this.point.toolTipHelpText + '</div>';
         },
         useHTML: true,
@@ -604,7 +604,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       const percentage = ((a.countValue / version.participants) * 100).toFixed();
 
       legendText = 'Survey Version Count';
-      toolTipHelpText = '<div class="version-survey-tooltip" style="z-index: 18000;"> <strong>'
+      toolTipHelpText = '<div class="version-survey-tooltip" style="z-index: 180;"> <strong>'
             + a.stratum4 + '</strong> <span>' + count +
             ' participants </span>' +
             '<span><strong>' + percentage + '</strong>' +
