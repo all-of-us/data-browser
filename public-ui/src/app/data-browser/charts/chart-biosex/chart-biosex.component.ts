@@ -45,9 +45,12 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
       if (genderCountResults && genderCountResults.length > 0) {
             percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed();
             if (percentage < 1) {
-                percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed(1);
+                percentage =
+                ((concept.countValue / genderCountResults[0].countValue) * 100)
+                .toFixed(1);
             }
-            const totCount = (genderCountResults[0].countValue <= 20) ? '&le; 20' : genderCountResults[0].countValue;
+            const totCount = (genderCountResults[0].countValue <= 20) ? '&le; 20'
+            : genderCountResults[0].countValue;
             genderCountTooltip += 'Total Count = <strong>' + totCount + '</strong>';
       }
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;

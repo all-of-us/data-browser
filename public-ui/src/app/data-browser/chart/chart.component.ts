@@ -604,8 +604,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       const percentage = ((a.countValue / version.participants) * 100).toFixed();
 
       legendText = 'Survey Version Count';
-      toolTipHelpText = '<div class="version-survey-tooltip" style="z-index: 18000;"> <strong>' + a.stratum4
-             + '</strong> <span>' + count + ' participants </span>' +
+      toolTipHelpText = '<div class="version-survey-tooltip" style="z-index: 18000;"> <strong>'
+            + a.stratum4 + '</strong> <span>' + count +
+            ' participants </span>' +
             '<span><strong>' + percentage + '</strong>' +
             '% of all participants that took this version of survey</span>' +
             '<span>Total Count = <strong> ' + version.participants +

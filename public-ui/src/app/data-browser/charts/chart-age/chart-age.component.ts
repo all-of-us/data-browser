@@ -49,7 +49,8 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
         if (percentage < 1) {
             percentage = ((concept.countValue / ageCountResults[0].countValue) * 100).toFixed(1);
         }
-        const totCount = (ageCountResults[0].countValue <= 20) ? '&le; 20' : ageCountResults[0].countValue;
+        const totCount = (ageCountResults[0].countValue <= 20) ? '&le; 20' :
+        ageCountResults[0].countValue;
         ageCountTooltip += 'Total Count = <strong>' + totCount + '</strong>';
       }
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
