@@ -1,4 +1,4 @@
-import { Component, Input, Injector, OnChanges} from '@angular/core';
+import { Component, Injector, Input, OnChanges} from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 @Component({
   // tslint:disable-next-line: component-selector
@@ -38,13 +38,14 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
 
   public conceptDist() {
     for (const concept of this.concepts.results) {
-      var genderCountResults = this.genderCountAnalysis.results.filter(r => r.stratum4 === concept.stratum2);
-      var genderCountTooltip = '';
-      var percentage;
+      const genderCountResults = this.genderCountAnalysis.results.filter(r =>
+      r.stratum4 === concept.stratum2);
+      const genderCountTooltip = '';
+      const percentage;
       if (genderCountResults && genderCountResults.length > 0) {
-            percentage = ((concept.countValue/genderCountResults[0].countValue) * 100).toFixed();
+            percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed();
             if (percentage < 1) {
-                percentage = ((concept.countValue/genderCountResults[0].countValue) * 100).toFixed(1);
+                percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed(1);
             }
             const totCount = (genderCountResults[0].countValue <= 20) ? '&le; 20' : genderCountResults[0].countValue;
             genderCountTooltip += 'Total Count = <strong>' + totCount + '</strong>';

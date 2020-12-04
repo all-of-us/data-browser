@@ -1,4 +1,4 @@
-import { Component, Input, Injector, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -40,13 +40,14 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
 
   public conceptDist() {
     for (const concept of this.concepts.results) {
-      var ageCountResults = this.ageCountAnalysis.results.filter(r => r.stratum4 === concept.stratum2);
-      var ageCountTooltip = '';
-      var percentage;
+      const ageCountResults = this.ageCountAnalysis.results.filter(r =>
+      r.stratum4 === concept.stratum2);
+      const ageCountTooltip = '';
+      const percentage;
       if (ageCountResults && ageCountResults.length > 0) {
-        percentage = ((concept.countValue/ageCountResults[0].countValue) * 100).toFixed();
+        percentage = ((concept.countValue / ageCountResults[0].countValue) * 100).toFixed();
         if (percentage < 1) {
-            percentage = ((concept.countValue/ageCountResults[0].countValue) * 100).toFixed(1);
+            percentage = ((concept.countValue / ageCountResults[0].countValue) * 100).toFixed(1);
         }
         const totCount = (ageCountResults[0].countValue <= 20) ? '&le; 20' : ageCountResults[0].countValue;
         ageCountTooltip += 'Total Count = <strong>' + totCount + '</strong>';
