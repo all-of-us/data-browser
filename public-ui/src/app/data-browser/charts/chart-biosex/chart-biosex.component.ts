@@ -40,8 +40,8 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
     for (const concept of this.concepts.results) {
       const genderCountResults = this.genderCountAnalysis.results.filter(r =>
       r.stratum4 === concept.stratum2);
-      const genderCountTooltip = '';
-      const percentage;
+      let genderCountTooltip = '';
+      let percentage;
       if (genderCountResults && genderCountResults.length > 0) {
             percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed();
             if (percentage < 1) {

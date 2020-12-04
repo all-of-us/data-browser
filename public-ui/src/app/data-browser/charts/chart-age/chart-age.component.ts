@@ -42,8 +42,8 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
     for (const concept of this.concepts.results) {
       const ageCountResults = this.ageCountAnalysis.results.filter(r =>
       r.stratum4 === concept.stratum2);
-      const ageCountTooltip = '';
-      const percentage;
+      let ageCountTooltip = '';
+      let percentage;
       if (ageCountResults && ageCountResults.length > 0) {
         percentage = ((concept.countValue / ageCountResults[0].countValue) * 100).toFixed();
         if (percentage < 1) {
