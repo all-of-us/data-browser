@@ -516,30 +516,33 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  public showAnswerGraphs(a: any, q: any) {
-    q.selectedResult = a;
-    if (this.isCopeSurvey) {
-      q.selectedAnalysis = q.versionAnalysis;
-    } else {
-      q.selectedAnalysis = q.genderAnalysis;
+  public showAnswerGraphs(a: any, q: any, level?: number) {
+    if (a.stratum7 === '1' && level) {
+      this.getSubQuestions(a, 'display', level);
     }
-    a.expanded = !a.expanded;
-    if (a.expanded) {
-      if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
-        this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
-          'Expand to see graphs', this.survey.name + ' - Q'
-          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
-          , this.prevSearchText, null);
+      q.selectedResult = a;
+      if (this.isCopeSurvey) {
+        q.selectedAnalysis = q.versionAnalysis;
+      } else {
+        q.selectedAnalysis = q.genderAnalysis;
       }
-      this.dbc.triggerEvent('conceptClick', 'View Graphs',
-        'Expand to see graphs', this.survey.name + ' - Q'
-        + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-        ' - ' + ' Icon', this.prevSearchText, null);
-      this.dbc.triggerEvent('conceptClick', 'View Graphs',
-        'Expand to see graphs', this.survey.name + ' - Q'
-        + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-        ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
-    }
+      a.expanded = !a.expanded;
+      if (a.expanded) {
+        if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
+          this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
+            'Expand to see graphs', this.survey.name + ' - Q'
+            + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
+            , this.prevSearchText, null);
+        }
+        this.dbc.triggerEvent('conceptClick', 'View Graphs',
+          'Expand to see graphs', this.survey.name + ' - Q'
+          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
+          ' - ' + ' Icon', this.prevSearchText, null);
+        this.dbc.triggerEvent('conceptClick', 'View Graphs',
+          'Expand to see graphs', this.survey.name + ' - Q'
+          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
+          ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
+      }
   }
 
   public changeResults(e) {

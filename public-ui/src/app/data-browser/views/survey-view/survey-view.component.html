@@ -146,7 +146,7 @@
                     </div>
                   </div>
                   <div [ngClass]="a.expanded?'survey-tbl-r-state':''" class="survey-tbl-exp-r "
-                    *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a,q)"
+                    *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a,q,1)"
                     [hidden]="!showAnswer[q.conceptId]">
                     <div class="survey-tbl-r">
                       <div class="survey-tbl-d first display-body info-text survey-answer-level-1"
@@ -269,7 +269,7 @@
                             </div>
                           </div>
                           <div class="survey-tbl-exp-r" *ngFor="let sqa of subQuestion.countAnalysis.results"
-                            (click)="$event.stopPropagation();showAnswerGraphs(sqa, subQuestion)">
+                            (click)="$event.stopPropagation();showAnswerGraphs(sqa, subQuestion,2)">
                             <div class="survey-tbl-r">
                               <div class="survey-tbl-d first display-body info-text sub-1-que survey-answer-level-1"
                                 [ngClass]="{'active':a.expanded && sqa.expanded}">
@@ -386,7 +386,7 @@
                                     </div>
                                   </div>
                                   <div class="survey-tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.results"
-                                    (click)="$event.stopPropagation();showAnswerGraphs(sqa2, subQuestion2)">
+                                    (click)="$event.stopPropagation();showAnswerGraphs(sqa2, subQuestion2,2)">
                                     <div class="survey-tbl-r">
                                       <div class="survey-tbl-d first display-body info-text">
                                         <div>
