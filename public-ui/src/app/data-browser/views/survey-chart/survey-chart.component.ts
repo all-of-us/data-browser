@@ -20,6 +20,8 @@ export class SurveyChartComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() surveyCountAnalysis: any;
   @Input() isCopeSurvey: boolean;
+  @Input() versionAnalysis: any[];
+
   displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   graphToShow: string;
