@@ -575,14 +575,14 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 with fitbit_data_age as
-(select a.person_id, ceil(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), birth_datetime, DAY)/365.25) as age from
-(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
-union distinct
-SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
-union distinct
-SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
-union distinct
-SELECT distinct person_id as calc_date FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id),
+(select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(datetime, "UTC"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+union all
+select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(date, "UTC"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+union all
+select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(date, "UTC"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+union all
+select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(datetime, "UTC"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+),
 fitbit_data_age_stratum as
 (
 select person_id,

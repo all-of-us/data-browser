@@ -14,9 +14,9 @@
       </ng-container>
     </div>
 
-    <div [ngClass]= "{'loading-layout': isLoading}" class="fm-body db-card">
-      <app-spinner [loading]="isLoading"></app-spinner>
-      <ng-container *ngIf="!isLoading">
+    <div [ngClass]= "{'loading-layout': loading()}" class="fm-body db-card">
+      <app-spinner [loading]="loading()"></app-spinner>
+      <ng-container *ngIf="!loading()">
         <h2>{{selectedDisplay}} </h2>
         <div class="fm-body-top">
           <div class="fm-chart">
@@ -24,17 +24,17 @@
               {{selectedDisplay}}
               by date
             </div>
-            <chart-fitbit [concepts]='selectedAnalyses.participantCountAnalysis'></chart-fitbit>
+            <chart-fitbit [concepts]='selectedAnalyses.participantCountAnalysis' [countAnalysis]="totalCountAnalysis"></chart-fitbit>
           </div>
           <div class="fm-chart">
             <div class="display-body">Sex assigned at birth</div>
-            <chart-biosex [concepts]='selectedAnalyses.genderAnalysis'></chart-biosex>
+            <chart-biosex [concepts]='selectedAnalyses.genderAnalysis' [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"></chart-biosex>
           </div>
         </div>
         <div class="fm-body-bottom">
           <div class="fm-chart">
             <div class="display-body">Age when physical measurement taken</div>
-            <chart-age [concepts]='selectedAnalyses.ageAnalysis'></chart-age>
+            <chart-age [concepts]='selectedAnalyses.ageAnalysis' [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis"></chart-age>
           </div>
         </div>
       </ng-container>

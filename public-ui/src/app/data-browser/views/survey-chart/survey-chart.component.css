@@ -16,3 +16,7 @@
 .survey-chart-choice:hover {
     color: #262262;
 }
+
+.chart {
+    z-index: 17000;
+}
