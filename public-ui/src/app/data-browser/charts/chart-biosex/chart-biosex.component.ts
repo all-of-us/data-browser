@@ -1,4 +1,4 @@
-import { Component, Injector, OnChanges} from '@angular/core';
+import { Component, Injector, Input, OnChanges} from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 @Component({
   // tslint:disable-next-line: component-selector
@@ -8,6 +8,7 @@ import { ChartBaseComponent } from '../chart-base/chart-base.component';
 })
 export class ChartBiosexComponent extends ChartBaseComponent implements OnChanges {
   chartOptions: any;
+  @Input() genderCountAnalysis: any;
   constructor(injector: Injector) {
     super(injector);
   }
@@ -37,12 +38,29 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
 
   public conceptDist() {
     for (const concept of this.concepts.results) {
+      const genderCountResults = this.genderCountAnalysis.results.filter(r =>
+      r.stratum4 === concept.stratum2);
+      let genderCountTooltip = '';
+      let percentage;
+      if (genderCountResults && genderCountResults.length > 0) {
+            percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed();
+            if (percentage < 1) {
+                percentage =
+                ((concept.countValue / genderCountResults[0].countValue) * 100)
+                .toFixed(1);
+            }
+            const totCount = (genderCountResults[0].countValue <= 20) ? '&le; 20'
+            : genderCountResults[0].countValue;
+            genderCountTooltip += 'Total Count = <strong>' + totCount + '</strong>';
+      }
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       this.pointData.push({
         toolTipHelpText: '<div class="bio-sex-tooltip"><strong>' +
           count + '</strong>' +
           ' participants <br> who had <strong>' + concept.analysisStratumName +
-          '</strong> as sex assigned at birth </div>',
+          '</strong> as sex assigned at birth and that is <strong>' +
+           percentage + '% </strong> of all participants with the same criteria. ('
+           + genderCountTooltip + ')</div>',
         name: concept.analysisStratumName,
         y: concept.countValue,
         concept: '',
