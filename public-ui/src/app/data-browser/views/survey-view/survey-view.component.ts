@@ -292,8 +292,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         if (aCount.stratum7 && aCount.stratum7 === '1') {
           aCount.subQuestionFetchComplete = false;
         }
-        this.addMissingResults(q, aCount, totalCount);
       }
+      this.addMissingResults(q, aCount, totalCount);
     });
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
       totalCount));
