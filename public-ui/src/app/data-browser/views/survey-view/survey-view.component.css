@@ -267,6 +267,10 @@ strong {
         align-items: flex-end;
         flex-direction: row;
     }
+    .cope-stat-layout .stat-container {
+        padding-right: 0px;
+        padding-bottom: 2rem;
+    }
     .version-table {
         width: 100%;
     }
