@@ -75,9 +75,10 @@
             <div class="question-result" *ngFor="let q of questions, let i = index">
               <div class="secondary-display">
                 <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
-                  <app-highlight-search [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
+                  <app-highlight-search style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
+                  (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
                   </app-highlight-search>
-                  <app-tooltip *ngIf="q.conceptId === 1586140"
+                  <app-tooltip  *ngIf="q.conceptId === 1586140"
                                [toolTipText1]="tooltipText.raceEthnicityQuestionHelpText1"
                                [toolTipText2]="tooltipText.raceEthnicityQuestionHelpText2"
                                [toolTipText3]="tooltipText.raceEthnicityQuestionHelpText3"
