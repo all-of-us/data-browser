@@ -45,7 +45,7 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
       console.log(this.countAnalysis.results[0]);
       const totalCount = (this.countAnalysis && this.countAnalysis.results) ?
       this.countAnalysis.results[0].countValue : 0;
-      const percentage = ((concept.countValue/totalCount)*100).toFixed();
+      const percentage = ((concept.countValue / totalCount) * 100).toFixed();
       this.pointData.push({
         toolTipHelpText: '<div class="fitbit-tooltip"><strong>' + count +
           ' </strong> participants had <br>'
