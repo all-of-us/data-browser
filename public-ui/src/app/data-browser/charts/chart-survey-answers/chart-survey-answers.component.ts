@@ -91,10 +91,12 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       shadow: false,
       formatter: function () {
         const count = (this.point.y <= 20) ? '&le; 20' : this.point.y;
+        const percentage = ((count/this.point.total)*100).toFixed();
         this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
             <strong>${this.point.series.name}</strong>
             <span>${count} Participants </span>
+            <span>${percentage}% of all participants who took this version of survey</span>
             <span>${this.point.total} Total </div></span>`;
         return this.point.toolTipHelpText;
       }

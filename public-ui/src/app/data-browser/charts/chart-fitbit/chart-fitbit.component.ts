@@ -1,4 +1,4 @@
-import { Component, Injector, OnChanges } from '@angular/core';
+import { Component, Input, Injector, OnChanges } from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -9,6 +9,7 @@ import { ChartBaseComponent } from '../chart-base/chart-base.component';
 })
 export class ChartFitbitComponent extends ChartBaseComponent implements OnChanges {
   chartOptions: any;
+  @Input() countAnalysis: any;
   constructor(injector: Injector) {
     super(injector);
   }
@@ -41,10 +42,16 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
   public conceptDist() {
     for (const concept of this.concepts.results) {
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
+      console.log(this.countAnalysis.results[0]);
+      var totalCount = (this.countAnalysis && this.countAnalysis.results) ? this.countAnalysis.results[0].countValue : 0;
+      var percentage = ((concept.countValue/totalCount)*100).toFixed();
       this.pointData.push({
         toolTipHelpText: '<div class="fitbit-tooltip"><strong>' + count +
           ' </strong> participants had <br>'
-          + concept.stratum1 + '<br> by <strong>' + concept.stratum2 + '</strong> </div>',
+          + concept.stratum1 + '<br> by <strong>' + concept.stratum2 + '</strong>' +
+          ' and that is <strong>' + percentage + '</strong>% of Total Fitbit Participants. (Total Count = )' +
+          '<strong> ' + totalCount + '</strong>'
+          + '</div>',
         name: '',
         y: concept.countValue,
         concept: '',

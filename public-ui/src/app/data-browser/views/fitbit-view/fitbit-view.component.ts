@@ -14,11 +14,12 @@ export class FitbitViewComponent implements OnInit {
   loadingStack: any = [];
   fitbitConcepts: any = [];
   searchText: string = null;
-  isLoading = false;
   analyses: any;
   selectedAnalyses: any;
   selectedItem: string;
   selectedDisplay: string;
+  domainCountAnalysis: any;
+  totalCountAnalysis: any;
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
     public tooltipText: TooltipService) {
     this.selectedItem = 'all Fitbit data';
@@ -56,7 +57,6 @@ export class FitbitViewComponent implements OnInit {
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking',
       tooltip: this.tooltipText.fitbitActivityStepsHelpText
     });
-    console.log(this.tooltipText.fitbitActivityStepsHelpText, 'tooltip');
 
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
@@ -69,6 +69,7 @@ export class FitbitViewComponent implements OnInit {
             fitbitConcept['ageAnalysis'] = item.ageAnalysis;
             fitbitConcept['genderAnalysis'] = item.genderAnalysis;
             fitbitConcept['countAnalysis'] = item.countAnalysis;
+            this.totalCountAnalysis = item.countAnalysis;
             fitbitConcept['participantCountAnalysis'] = item.participantCountAnalysis;
           }
           if (this.searchText) {
@@ -81,7 +82,6 @@ export class FitbitViewComponent implements OnInit {
             }
           }
           this.selectedAnalyses = result.items[0];
-          this.isLoading = true;
           // Process fitbit results
           this.loadingStack.pop();
         },
@@ -90,6 +90,19 @@ export class FitbitViewComponent implements OnInit {
           console.log('Error: ', err);
         }
       }));
+
+      this.loadingStack.push(true);
+      this.subscriptions.push(this.api.getCountAnalysis('Fitbit', 'fitbit')
+            .subscribe({
+              next: result => {
+                this.domainCountAnalysis = result;
+                this.loadingStack.pop();
+              },
+              error: err => {
+                this.loadingStack.pop();
+                console.log('Error: ', err);
+              }
+            }));
   }
 
   setGraphs(conceptObj) {

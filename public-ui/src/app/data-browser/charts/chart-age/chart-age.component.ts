@@ -1,4 +1,4 @@
-import { Component, Injector, OnChanges } from '@angular/core';
+import { Component, Input, Injector, OnChanges } from '@angular/core';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -9,6 +9,7 @@ import { ChartBaseComponent } from '../chart-base/chart-base.component';
 })
 export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
   chartOptions: any;
+  @Input() ageCountAnalysis: any;
   constructor(injector: Injector) {
     super(injector);
   }
@@ -39,11 +40,23 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
 
   public conceptDist() {
     for (const concept of this.concepts.results) {
+      var ageCountResults = this.ageCountAnalysis.results.filter(r => r.stratum4 === concept.stratum2);
+      var ageCountTooltip = '';
+      var percentage;
+      if (ageCountResults && ageCountResults.length > 0) {
+        percentage = ((concept.countValue/ageCountResults[0].countValue) * 100).toFixed();
+        if (percentage < 1) {
+            percentage = ((concept.countValue/ageCountResults[0].countValue) * 100).toFixed(1);
+        }
+        const totCount = (ageCountResults[0].countValue <= 20) ? '&le; 20' : ageCountResults[0].countValue;
+        ageCountTooltip += 'Total Count = <strong>' + totCount + '</strong>';
+      }
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       this.pointData.push({
         toolTipHelpText: '<div class="age-tooltip"><strong>' + count
-        + '</strong> participants where ages within range of <strong>' +
-        concept.analysisStratumName + '</strong></div>',
+        + '</strong> participants were ages within range of <strong>' +
+        concept.analysisStratumName + '</strong> and that is <strong>' +
+        percentage + '% </strong> of all participants with the same criteria. (' + ageCountTooltip + ')</div>',
         name: concept.analysisStratumName,
         y: concept.countValue,
         concept: '',
