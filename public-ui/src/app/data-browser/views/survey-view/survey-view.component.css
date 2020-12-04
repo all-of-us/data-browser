@@ -1,3 +1,7 @@
+.db-card {
+    overflow-x: auto;
+}
+
 strong {
     font-family: GothamBook, Arial, sans-serif;
     color: #302c71;
@@ -114,6 +118,7 @@ strong {
 }
 
 @media only screen and (min-width: 768px) {
+
     .pdf-link {
         position: absolute;
         right: 0;
@@ -212,6 +217,7 @@ strong {
 }
 
 .survey-tbl {
+    min-width: 666px;
     padding-bottom: calc(18px * 3);
 }
 
@@ -249,5 +255,19 @@ strong {
     }
     .question-result:not(.tooltip, .tooltiptext) .survey-tbl:not(.tooltip, .tooltiptext) {
         overflow-x: scroll;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .survey-head {
+        flex-direction: column;
+    }
+    .cope-stat-layout {
+        width: 100%;
+        align-items: flex-end;
+        flex-direction: row;
+    }
+    .version-table {
+        width: 100%;
     }
 }
