@@ -16,13 +16,17 @@ export class RhHeaderComponent implements OnInit {
   openDAboutResearch = false;
   openDData = false;
   allOfUsUrl: string;
-  menuItems: object[];
+  menuItems: any[];
   subTitle: boolean;
-  showSub1: boolean;
+  showSub: boolean;
+  menuModel = {};
   constructor(public hFService: HeaderFooterService) { }
 
   ngOnInit() {
     this.menuItems = this.hFService.menu;
+    this.menuItems.forEach(item => {
+      this.menuModel[item.title] = false;
+    });
     this.allOfUsUrl = environment.researchAllOfUsUrl;
 
   }
@@ -35,10 +39,10 @@ export class RhHeaderComponent implements OnInit {
     this.openTopMenu = !this.openTopMenu;
   }
 
-  public toggleSub(title) {
-    this.subTitle = title;
-    this.showSub1 = !this.showSub1;
-    console.log(this.subTitle, this.showSub1);
+  public toggleSub(title: string, index: number) {
+    if (this.menuItems[index].title === title) {
+      this.showSub = !this.showSub;
+    }
   }
 
 
