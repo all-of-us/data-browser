@@ -36,7 +36,7 @@ export class HeaderFooterService {
       },
       {
         title: 'Data & Tools',
-        url: 'https://www.researchallofus.org/data-snapshots/',
+        url: 'https://www.researchallofus.org/data-tools/',
         submenu: true,
         class: 'active-menu',
         sub0: [
@@ -80,7 +80,7 @@ export class HeaderFooterService {
       },
       {
         title: 'Discover',
-        url: '',
+        url: 'https://www.researchallofus.org/research-projects-directory/?section=abc',
         submenu: true,
         sub0: [
           {

@@ -28,14 +28,15 @@
           <ul class="main-menu">
             <li class={{menu.class}} *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
               <a tabindex="0" href="{{menu.url}}"> {{menu.title}}</a>
-              <ul  *ngIf="menu.submenu" class="sub-menu">
-                <li  (click)="toggleSub(sub.title);" [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1 && subTitle == sub.title}" *ngFor="let sub of menu.sub0">
+              <ul *ngIf="menu.submenu" class="sub-menu">
+                <li [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1 && subTitle == sub.title}"
+                  *ngFor="let sub of menu.sub0">
                   <a class={{sub.class}} tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
-                    <ul *ngIf="showSub1">
-                      <li *ngFor="let sub1 of sub.sub1">
-                        <a href="{{sub1.url}}">{{sub1.title}}</a>
-                      </li>
-                    </ul>
+                  <ul *ngIf="showSub1">
+                    <li *ngFor="let sub1 of sub.sub1">
+                      <a href="{{sub1.url}}">{{sub1.title}}</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -70,82 +71,25 @@
     </div><!-- .site-nav-container -->
   </div><!-- .headwrap -->
   <ul *ngIf="openTopMenu" id="menu-mobile">
-    <li [ngClass]="openAbout?'flip':''" (click)="openAbout = !openAbout" class="main-menu-item menu-item-has-children">
-      <a href="'{{allOfUsUrl}}/about/">About</a>
-      <ul [hidden]="!openAbout" class="sub-menu">
-        <li class="menu-item">
-          <a href="{{allOfUsUrl}}/about/about-the-research-hub/">About the Research Hub</a>
-        </li>
-        <li [ngClass]="openAboutResearch?'flip':''"
-          (click)="$event.stopPropagation();openAboutResearch = !openAboutResearch"
-          class="menu-item menu-item-has-children">
-          <a href="{{allOfUsUrl}}/about/researchers-as-partners/">Researchers as Partners</a>
-          <ul [hidden]="!openAboutResearch" class="sub-menu">
-            <li class="menu-item">
-              <a (click)="$event.stopPropagation();"
-                href="{{allOfUsUrl}}/about/researchers-as-partners/researcher-workshops-and-public-input/">Researcher
-                Workshops and Public Input</a>
-            </li>
-          </ul>
-        </li>
-        <li class="menu-item">
-          <a href="{{allOfUsUrl}}/about/privacy-security-protocols/">Privacy &#038; Security Protocols</a>
-        </li>
-        <li class="menu-item">
-          <a href="{{allOfUsUrl}}/about/research-hub-updates/">Research Hub Updates</a>
+    <li *ngFor="let menu of menuItems; let i = index" [ngClass]="menuModel[menu.title]?'flip':''"
+      (click)="menuModel[menu.title] =!menuModel[menu.title]" class="main-menu-item menu-item-has-children {{menu.title}}">
+      <a href="{{menu.url}}">{{menu.title}}</a>
+      <ul *ngIf="menuModel[menu.title]" class="sub-menu">
+        <li *ngFor="let sub of menu.sub0" class="menu-item">
+          <a href="{{sub.url}}">{{sub.title}}</a>
         </li>
       </ul>
     </li>
-    <li [ngClass]="openDataTools?'flip':''" (click)="openDataTools = !openDataTools"
-      class="main-menu-item menu-item-has-children">
-      <a href="{{allOfUsUrl}}/data/">Data</a>
-      <ul [hidden]="!openDataTools" class="sub-menu">
-        <li class="menu-item">
-          <a href="{{allOfUsUrl}}/data/data-snapshots/">Data Snapshots</a>
-        </li>
-        <li class="menu-item">
-          <a [routerLink]="['']">Data Browser</a>
-        </li>
-        <li [ngClass]="openDataToolsMethods?'flip':''"
-          (click)="$event.stopPropagation();openDataToolsMethods = !openDataToolsMethods"
-          class="menu-item menu-item-has-children">
-          <a href="{{allOfUsUrl}}/data/data-sources/">Data Sources</a>
-          <ul [hidden]="!openDataToolsMethods" class="sub-menu">
-            <li class="menu-item">
-              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/methods/">Methods</a>
-            </li>
-            <li class="menu-item">
-              <a (click)="$event.stopPropagation();" href="{{allOfUsUrl}}/data/data-sources/survey-explorer/">Survey
-                Explorer</a>
-            </li>
-          </ul>
-        </li>
-        <li class="menu-item">
-          <a href="{{allOfUsUrl}}/workbench/">Workbench</a>
-        </li>
-      </ul>
+    <li tabindex="0" class="main-menu-item search">
+      <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform"
+        action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search" type="text" value=""
+          name="s" id="s" placeholder="search..." size="35" autocomplete="off" /><input type="submit" id="searchsubmit"
+          value="" /></form>
     </li>
-    <li [ngClass]="openTools?'flip':''" (click)="openTools = !openTools" class="main-menu-item menu-item-has-children">
-      <a href="{{allOfUsUrl}}/workbench/">Tools</a>
-      <ul [hidden]="!openTools" class="sub-menu">
-        <li class="menu-item">
-          <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/workbench/">Workbench</a>
-        </li>
-        <li class="menu-item">
-          <a (click)="$event.stopPropagation()" href="{{allOfUsUrl}}/guides-support/">Guides & Support</a>
-        </li>
-      </ul>
+    <li class="nav_apply">
+      <a href="https://www.researchallofus.org/apply/">APPLY</a>
     </li>
-    <li class="main-menu-item-second"><a href="{{allOfUsUrl}}/frequently-asked-questions/">FAQ</a></li>
-    <li class="main-menu-item">
-      <form role="search" method="get" id="searchform" action="https://www.staging.researchallofus.org/">
-        <input type="text" value="" name="s" id="s" placeholder="search..." autofocus="autofocus" size="35"
-          autocomplete="off" /><input type="submit" id="searchsubmit" value="" /></form>
-    </li>
-    <li class="nav_apply main-menu-item-second">
-      <a  href="https://www.researchallofus.org/apply/">APPLY</a>
-    </li>
-    <li>
+    <li class="cta-bar">
       <a href="https://workbench.researchallofus.org/login" class="login-btn"> RESEARCHER LOGIN</a>
     </li>
   </ul><!-- #mobile-menu -->
