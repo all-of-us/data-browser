@@ -61,7 +61,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   cdrName: any;
   allOfUsUrl: string;
   showStatement: boolean;
-  preCope: boolean;
   fitbitFlag: boolean;
   cope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
