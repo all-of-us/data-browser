@@ -64,7 +64,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   fmhResultCount = 0;
   showStatement: boolean;
   copeDisclaimer: string;
-  copeFlag: boolean;
   isCopeSurvey = false;
   CopeStacked = false;
   surveyVersions: any[] = [];
@@ -100,7 +99,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
-    this.copeFlag = environment.copeFlag;
     this.CopeStacked = environment.copeStacked;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
