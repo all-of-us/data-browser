@@ -22,8 +22,8 @@ export class FitbitViewComponent implements OnInit {
   totalCountAnalysis: any;
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
     public tooltipText: TooltipService) {
-    this.selectedItem = 'all Fitbit data';
-    this.selectedDisplay = 'all Fitbit data';
+    this.selectedItem = 'any Fitbit data';
+    this.selectedDisplay = 'any Fitbit data';
   }
 
   loading() {
@@ -33,8 +33,8 @@ export class FitbitViewComponent implements OnInit {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.fitbitConcepts.push({
-      id: 1, displayName: 'all Fitbit data',
-      conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness',
+      id: 1, displayName: 'any Fitbit data',
+      conceptName: 'Any Fitbit Data', icon: 'fa-watch-fitness',
       tooltip: this.tooltipText.fitbitAllDataHelpText
     });
     this.fitbitConcepts.push({
