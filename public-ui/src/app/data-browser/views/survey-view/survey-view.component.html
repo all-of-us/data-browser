@@ -99,7 +99,7 @@
                 <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
               </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
+                <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
@@ -153,7 +153,7 @@
                       <div class="survey-tbl-d first display-body info-text survey-answer-level-1"
                         [ngClass]="{'active':a.expanded}">
                         <div class="answer-layout">
-                          <ng-container *ngIf="isCopeSurvey && CopeStacked">
+                          <ng-container *ngIf="isCopeSurvey">
                             <i [ngStyle]="{'color': a.color }" class="cope-legend-item fas fa-2x fa-circle"></i>
                           </ng-container>
                           <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
@@ -217,7 +217,7 @@
                     <div class="survey-row-expansion sub-table-1"
                       *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
                       <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
-                        <chart-survey-answers *ngIf="isCopeSurvey && CopeStacked"[countAnalysis]="subQuestion.countAnalysis.results" [versionAnalysis]='subQuestion.versionAnalysis.results'></chart-survey-answers>
+                        <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="subQuestion.countAnalysis.results" [versionAnalysis]='subQuestion.versionAnalysis.results'></chart-survey-answers>
                         <h6 class="sub-question-text">
                           <clr-icon shape="child-arrow" size="25"></clr-icon>
                           <app-highlight-search [text]="changeAutoInsertText(subQuestion)"

@@ -42,7 +42,6 @@ export class ChartFitbitComponent extends ChartBaseComponent implements OnChange
   public conceptDist() {
     for (const concept of this.concepts.results) {
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
-      console.log(this.countAnalysis.results[0]);
       const totalCount = (this.countAnalysis && this.countAnalysis.results) ?
       this.countAnalysis.results[0].countValue : 0;
       const percentage = ((concept.countValue / totalCount) * 100).toFixed();
