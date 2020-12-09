@@ -1888,11 +1888,11 @@ ceil(TIMESTAMP_DIFF(cast(datetime as timestamp), birth_datetime, DAY)/365.25) as
      select co.person_id, p.gender_concept_id as gender
      from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id
      )
-     select 0 as id, 3101 as analysis_id, 'All Fitbit Data' as stratum_1, cast(gender as string) as stratum_2, 'Fitbit' as stratum_3,
+     select 0 as id, 3101 as analysis_id, 'Any Fitbit Data' as stratum_1, cast(gender as string) as stratum_2, 'Fitbit' as stratum_3,
      count(distinct ca.person_id) as count_value, count(distinct ca.person_id) as source_count_value
      from m_gender ca group by 4
      union all
-     select 0 as id, 3102 as analysis_id, 'All Fitbit Data' as stratum_1,
+     select 0 as id, 3102 as analysis_id, 'Any Fitbit Data' as stratum_1,
      age_stratum as stratum_2, 'Fitbit' as stratum_3,
      count(distinct ca.person_id) as count_value, count(distinct ca.person_id) as source_count_value
      from m_age_stratum ca
@@ -1919,4 +1919,4 @@ select 0 as id, 3107 as analysis_id, 'Heart rate (minute-level)' as stratum_1, c
 union all
 select 0 as id, 3107 as analysis_id, 'Activity intraday steps (minute-level)' as stratum_1, concat(cast(EXTRACT(YEAR from datetime) as string), '-', case when EXTRACT(MONTH from datetime) >= 1 and EXTRACT(MONTH from datetime) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` group by 4
 union all
-select 0 as id, 3107 as analysis_id, 'All Fitbit Data' as stratum_1, concat(cast(EXTRACT(YEAR from data_date) as string), '-', case when EXTRACT(MONTH from data_date) >= 1 and EXTRACT(MONTH from data_date) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from all_fibit_data group by 4;"
+select 0 as id, 3107 as analysis_id, 'Any Fitbit Data' as stratum_1, concat(cast(EXTRACT(YEAR from data_date) as string), '-', case when EXTRACT(MONTH from data_date) >= 1 and EXTRACT(MONTH from data_date) <= 6 then '06-30' else '12-31' end) as stratum_2, 'Fitbit' as stratum_3, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value from all_fibit_data group by 4;"
