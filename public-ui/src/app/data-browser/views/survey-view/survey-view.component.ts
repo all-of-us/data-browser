@@ -64,9 +64,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   fmhResultCount = 0;
   showStatement: boolean;
   copeDisclaimer: string;
-  copeFlag: boolean;
   isCopeSurvey = false;
-  CopeStacked = false;
   surveyVersions: any[] = [];
   constructor(
     private route: ActivatedRoute,
@@ -100,8 +98,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
-    this.copeFlag = environment.copeFlag;
-    this.CopeStacked = environment.copeStacked;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }
@@ -277,7 +273,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     });
     const answerCount = q.countAnalysis.results.length;
     q.countAnalysis.results.forEach((aCount, i) => {
-      if (this.isCopeSurvey && this.CopeStacked) {
+      if (this.isCopeSurvey) {
         if (answerCount <= 8) {
           aCount['color'] = this.dbc.eightColors[i];
         } else if (answerCount > 8 && answerCount <= 10) {

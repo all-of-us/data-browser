@@ -61,7 +61,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   cdrName: any;
   allOfUsUrl: string;
   showStatement: boolean;
-  fitbitFlag: boolean;
   cope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
   If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
@@ -88,8 +87,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
-    this.fitbitFlag = environment.fitbit;
-    this.cope = environment.copeFlag;
     this.pmGroups = this.dbc.pmGroups;
     this.fitbitMeasurementsFound = 4;
     this.physicalMeasurementsFound = this.dbc.pmGroups.length;
@@ -239,10 +236,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         this.fitbitParticipantCount = fitbitDomainInfo[0].participantCount;
     }
     this.surveyResults = results.surveyModules;
-    // TODO remove this filter when the feature flag is turned off or to debug
-    if (!this.cope) {
-       this.surveyResults = results.surveyModules.filter(sm => sm.conceptId !== 1333342);
-    }
 
     this.surveyResults.forEach(result => {
       if (result.name === 'Lifestyle') {
