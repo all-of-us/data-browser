@@ -144,6 +144,10 @@ jobs:
           name: Fetch Submodules
           command: git submodule update --init --recursive
       - run:
+          working_directory: ~/data-browser/aou-utils
+          name: pull master updates
+          command: git pull origin master
+      - run:
           working_directory: ~/data-browser
           name: Download Swagger CLI
           command: |
