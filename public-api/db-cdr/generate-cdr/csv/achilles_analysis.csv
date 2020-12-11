@@ -6,8 +6,6 @@
 4,"Number of persons by race","race_concept_id","","","","",NULL,NULL,"pie","counts"
 5,"Number of persons by ethnicity","ethnicity_concept_id","","","","",NULL,NULL,"column","counts"
 6,"Number of persons by age decile","age_decile","","","","",NULL,NULL,"column","counts"
-7,"Number of persons by gender_identity","gender_identity_concept_id","","","","",NULL,NULL,"column","counts"
-8,"Number of persons by race/ethnicity a/c to ppi data","concept_id","concept_name","","","",NULL,NULL,"column","counts"
 10,"Number of all persons by year of birth by gender","year_of_birth","gender_concept_id","","","",NULL,NULL,"column","counts"
 12,"Number of persons by race and ethnicity","race_concept_id","ethnicity_concept_id","","","",NULL,NULL,"pie","counts"
 100,"Physical Measurements Concept Group Metadata","group_title","group_name","concept_1","concept_2","concept_3",NULL,NULL,NULL,NULL

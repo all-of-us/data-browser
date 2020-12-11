@@ -1,6 +1,6 @@
-"concept_id","concept_name","concept_code","survey_name","survey_concept_id","count_value","sub","path","is_parent_question","generate_counts","question_order_number","question_string"
+concept_id,"concept_name","concept_code","survey_name",survey_concept_id,count_value,sub,"path",is_parent_question,generate_counts,question_order_number,"question_string"
 702783,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingEndocrineCondition","Family Health History",43528698,40740,1,"43528649.702783.702783",1,0,0,NULL
-702786,"Diagnosed Health Condition: Skeletal Muscular Condition","DiagnosedHealthCondition_SkeletalMuscularCondition","Family Health History",43528698,20,0,702786,0,0,10,NULL
+702786,"Diagnosed Health Condition: Skeletal Muscular Condition","DiagnosedHealthCondition_SkeletalMuscularCondition","Family Health History",43528698,20,0,"702786",0,0,10,NULL
 702788,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingDigestiveCondition","Family Health History",43528698,40740,1,"43528649.702788.702788",1,0,0,NULL
 903058,"In the PAST THREE MONTHS, how often have you used prescription stimulants for non-medical reasons (Vyvanse, Ritalin, Concerta, Dexedrine, Adderall, diet pills, etc.)","Past3MonthUseFrequency_PrescriptionStimulant3Month","Lifestyle",1585855,0,1,"1585636.1585639.903058",1,1,7,NULL
 903096," Skip","PMI_Skip","Family Health History",43528698,20,1,"1384639.903096.903096",0,0,0,NULL
@@ -27,32 +27,32 @@
 903633,"How much time did you usually spend doing vigorous physical activities on one of those days (hours per day)?","ipaq_2_cope_a_160","cope",1333342,0,1,"1333286.1332898.903633",0,1,77,""
 903634,"How much time did you usually spend doing moderate physical activities on one of those days (hours per day)?","ipaq_4_cope_a_160","cope",1333342,0,1,"1333288.1332898.903634",0,1,81,""
 903635,"How much time did you usually spend walking on one of those days (hours per day)?","ipaq_6_cope_a_160","cope",1333342,0,1,"1333289.1332898.903635",0,1,85,""
-1332734,"Thinking about your current social habits, in the last 5 days: I have attended social gatherings outside my home of MORE than 10 people.","msds_11","cope",1333342,0,0,1332734,1,1,4,""
-1332735,"Thinking about your current social habits, in the last 5 days: I have attended social gatherings outside my home of LESS than 10 people.","msds_12","cope",1333342,0,0,1332735,1,1,5,""
+1332734,"Thinking about your current social habits, in the last 5 days: I have attended social gatherings outside my home of MORE than 10 people.","msds_11","cope",1333342,0,0,"1332734",1,1,4,""
+1332735,"Thinking about your current social habits, in the last 5 days: I have attended social gatherings outside my home of LESS than 10 people.","msds_12","cope",1333342,0,0,"1332735",1,1,5,""
 1332737,"Are you currently covered by any of the following types of health insurance or health care plans? Select all that apply.","basics_11a","cope",1333342,0,1,"1332874.1332898.1332737",0,1,34,""
-1332738,"Thinking about your current social habits, in the last 5 days: I have gone on shopping trips or outings that were just for fun.","msds_13","cope",1333342,0,0,1332738,1,1,6,""
-1332739,"Please select the response that best reflects your behavior in the past month. Regardless of what happens to me, I believe I can control my reaction to it.","brcs_2","cope",1333342,0,0,1332739,1,1,141,""
-1332741,"Please select the response that best reflects your behavior in the past month. I actively look for ways to replace the losses I encounter in life.","brcs_4","cope",1333342,0,0,1332741,1,1,143,""
-1332744,"Are you currently on chemotherapy or immunotherapy?","copect_54","cope",1333342,0,0,1332744,1,1,35,""
-1332745,"Do you regularly take immunosuppressant medications (including steroids, methotrexate, biologic agents)?","copect_58","cope",1333342,0,0,1332745,1,1,36,""
+1332738,"Thinking about your current social habits, in the last 5 days: I have gone on shopping trips or outings that were just for fun.","msds_13","cope",1333342,0,0,"1332738",1,1,6,""
+1332739,"Please select the response that best reflects your behavior in the past month. Regardless of what happens to me, I believe I can control my reaction to it.","brcs_2","cope",1333342,0,0,"1332739",1,1,141,""
+1332741,"Please select the response that best reflects your behavior in the past month. I actively look for ways to replace the losses I encounter in life.","brcs_4","cope",1333342,0,0,"1332741",1,1,143,""
+1332744,"Are you currently on chemotherapy or immunotherapy?","copect_54","cope",1333342,0,0,"1332744",1,1,35,""
+1332745,"Do you regularly take immunosuppressant medications (including steroids, methotrexate, biologic agents)?","copect_58","cope",1333342,0,0,"1332745",1,1,36,""
 1332746,"How often did you use inhalants?","tsu_ds5_13_xx5","cope",1333342,0,1,"1333017.1333158.1332746",0,1,123,""
 1332747,"Do you think you have used more or less methamphetamine in the past month than you used to?","tsu_ds5_13_xx29","cope",1333342,0,1,"1333017.1333103.1332747",0,1,119,""
-1332748,"Thinking about your current social habits, in the last 5 days: I have stayed home all day (aside from time spent outdoors, but never closer than 6 feet from people who are not from my home).","msds_9","cope",1333342,0,0,1332748,1,1,2,""
-1332749,"Choose the answer that best describes how you felt in the past month. In general, how happy are you?","ukmh_j1","cope",1333342,0,0,1332749,1,1,29,""
-1332750,"Choose the answer that best describes how you felt in the past month. To what extent do you feel your life to be meaningful?","ukmh_j3","cope",1333342,0,0,1332750,1,1,30,""
+1332748,"Thinking about your current social habits, in the last 5 days: I have stayed home all day (aside from time spent outdoors, but never closer than 6 feet from people who are not from my home).","msds_9","cope",1333342,0,0,"1332748",1,1,2,""
+1332749,"Choose the answer that best describes how you felt in the past month. In general, how happy are you?","ukmh_j1","cope",1333342,0,0,"1332749",1,1,29,""
+1332750,"Choose the answer that best describes how you felt in the past month. To what extent do you feel your life to be meaningful?","ukmh_j3","cope",1333342,0,0,"1332750",1,1,30,""
 1332751,"How often did you use synthetic marijuana or fake weed?","tsu_ds5_13_xx7","cope",1333342,0,1,"1333017.1333153.1332751",0,1,108,""
 1332752,"How often did you use prescription sedatives or prescription sleeping pills?","tsu_ds5_13_xx8","cope",1333342,0,1,"1333017.1333159.1332752",0,1,125,""
 1332753,"How often did you use cocaine?","tsu_ds5_13_xx9","cope",1333342,0,1,"1333017.1333154.1332753",0,1,111,""
 1332754,"How often did you use hallucinogens?","tsu_ds5_13_xx10","cope",1333342,0,1,"1333017.1333161.1332754",0,1,128,""
 1332755,"How often did you use prescription stimulants?","tsu_ds5_13_xx11","cope",1333342,0,1,"1333017.1333155.1332755",0,1,114,""
-1332756,"How long has it been since you last used an electronic nicotine product?","lifestyle_2_xx12","cope",1333342,0,0,1332756,1,1,100,""
-1332762,"Thinking about your current social habits, in the last 5 days: I have visited nursing homes or long-term care facilities (outside of work duties).","msds_14","cope",1333342,0,0,1332762,1,1,7,""
-1332763,"Have you EVER been near someone that you know, or suspect, had COVID-19 (such as co-workers, family members, or others)? Select all that apply.","copect_17","cope",1333342,0,0,1332763,1,1,13,""
-1332767,"In the past month: Did someone in your home smoke tobacco/nicotine (including cigarettes, cigar, cigarillos, pipes, hookah) every day, some days, or not at all?","copect_50_xx17","cope",1333342,0,0,1332767,1,1,98,""
+1332756,"How long has it been since you last used an electronic nicotine product?","lifestyle_2_xx12","cope",1333342,0,0,"1332756",1,1,100,""
+1332762,"Thinking about your current social habits, in the last 5 days: I have visited nursing homes or long-term care facilities (outside of work duties).","msds_14","cope",1333342,0,0,"1332762",1,1,7,""
+1332763,"Have you EVER been near someone that you know, or suspect, had COVID-19 (such as co-workers, family members, or others)? Select all that apply.","copect_17","cope",1333342,0,0,"1332763",1,1,13,""
+1332767,"In the past month: Did someone in your home smoke tobacco/nicotine (including cigarettes, cigar, cigarillos, pipes, hookah) every day, some days, or not at all?","copect_50_xx17","cope",1333342,0,0,"1332767",1,1,98,""
 1332769,"Who do you know who has died? Check all that apply.","nhs_covid_fhc17b","cope",1333342,0,1,"1333297.1332898.1332769",0,1,27,""
-1332792,"Are you currently pregnant?","overallhealth_14b","cope",1333342,0,0,1332792,1,1,38,""
-1332793,"In the past month: How many standard drinks containing alcohol do you have on a typical day?","audit_c_2","cope",1333342,0,0,1332793,1,1,102,""
-1332794,"In the last month, how often have you felt that you were unable to control the important things in your life?","cpss_2","cope",1333342,0,0,1332794,1,1,66,""
+1332792,"Are you currently pregnant?","overallhealth_14b","cope",1333342,0,0,"1332792",1,1,38,""
+1332793,"In the past month: How many standard drinks containing alcohol do you have on a typical day?","audit_c_2","cope",1333342,0,0,"1332793",1,1,102,""
+1332794,"In the last month, how often have you felt that you were unable to control the important things in your life?","cpss_2","cope",1333342,0,0,"1332794",1,1,66,""
 1332795,"How often did you use prescription opioids?","tsu_ds5_13_xx1","cope",1333342,0,1,"1333017.1333169.1332795",0,1,134,""
 1332796,"How often did you use heroin?","tsu_ds5_13_xx2","cope",1333342,0,1,"1333017.1332881.1332796",0,1,131,""
 1332797,"How often did you use synthetic stimulants?","tsu_ds5_13_xx4","cope",1333342,0,1,"1333017.1333157.1332797",0,1,120,""
@@ -75,107 +75,107 @@
 1332830,"Did your use include smoking heroin?","tsu_ds5_13_xx37","cope",1333342,0,1,"1333017.1332881.1332830",0,1,132,""
 1332831,"Do you think you have used more or less heroin in the past month than you used to?","tsu_ds5_13_xx38","cope",1333342,0,1,"1333017.1332881.1332831",0,1,133,""
 1332832,"Did your use include smoking prescription opioids?","tsu_ds5_13_xx40","cope",1333342,0,1,"1333017.1333169.1332832",0,1,135,""
-1332833,"What is your current marital status?","basics_8","cope",1333342,0,0,1332833,1,1,37,""
-1332835,"Choose the answer that best describes how you felt in the past month. In uncertain times, I usually expect the best.","lot_r_1","cope",1333342,0,0,1332835,1,1,28,""
-1332843,"What is your current employment status? Select all that apply.","basics_12","cope",1333342,0,0,1332843,1,1,32,""
-1332847,"In the past month, have the following behaviors increased in your household? Select all that apply.","cdc_covid_19_26","cope",1333342,0,0,1332847,1,1,24,""
-1332848,"Please select the response that best reflects your behavior in the past month. I believe I can grow in positive ways by dealing with difficult situations.","brcs_3","cope",1333342,0,0,1332848,1,1,149,""
-1332849,"How long has it been since you last smoked?","copect_50_xx19","cope",1333342,0,0,1332849,1,1,97,""
-1332853,"In the past month: How often do you have six or more drinks containing alcohol on one occasion?","audit_c_3","cope",1333342,0,0,1332853,1,1,103,""
-1332854,"In the last month, how often have you felt nervous and stressed?","cpss_3","cope",1333342,0,0,1332854,1,1,67,""
-1332861,"In the last month, how often have you felt confident about your ability to handle your personal problems?","cpss_4","cope",1333342,0,0,1332861,1,1,68,""
-1332862,"In the last month, how often have you felt that things were going your way?","cpss_5","cope",1333342,0,0,1332862,1,1,69,""
-1332863,"In the last month, how often have you found that you could not cope with all the things that you had to do?","cpss_6","cope",1333342,0,0,1332863,1,1,70,""
-1332866,"In the past 7 days, other things kept making me think about COVID-19.","ies_r_6_3","cope",1333342,0,0,1332866,1,1,18,""
-1332867,"In the past 7 days, I had trouble concentrating.","ies_r_6_6","cope",1333342,0,0,1332867,1,1,21,""
-1332868,"In the last month, how often have you felt that you were on top of things?","cpss_8","cope",1333342,0,0,1332868,1,1,72,""
-1332869,"In the last month, how often have you been angered because of things that were outside of your control?","cpss_9","cope",1333342,0,0,1332869,1,1,73,""
-1332874,"Are you covered by health insurance or some other kind of health care plan?","basics_11","cope",1333342,0,0,1332874,1,1,33,""
-1332876,"In the past month: How often do you have a drink containing alcohol?","audit_c_1","cope",1333342,0,0,1332876,1,1,101,""
-1332878,"In the last month, how often have you been upset because of something that happened unexpectedly?","cpss_1","cope",1333342,0,0,1332878,1,1,65,""
+1332833,"What is your current marital status?","basics_8","cope",1333342,0,0,"1332833",1,1,37,""
+1332835,"Choose the answer that best describes how you felt in the past month. In uncertain times, I usually expect the best.","lot_r_1","cope",1333342,0,0,"1332835",1,1,28,""
+1332843,"What is your current employment status? Select all that apply.","basics_12","cope",1333342,0,0,"1332843",1,1,32,""
+1332847,"In the past month, have the following behaviors increased in your household? Select all that apply.","cdc_covid_19_26","cope",1333342,0,0,"1332847",1,1,24,""
+1332848,"Please select the response that best reflects your behavior in the past month. I believe I can grow in positive ways by dealing with difficult situations.","brcs_3","cope",1333342,0,0,"1332848",1,1,149,""
+1332849,"How long has it been since you last smoked?","copect_50_xx19","cope",1333342,0,0,"1332849",1,1,97,""
+1332853,"In the past month: How often do you have six or more drinks containing alcohol on one occasion?","audit_c_3","cope",1333342,0,0,"1332853",1,1,103,""
+1332854,"In the last month, how often have you felt nervous and stressed?","cpss_3","cope",1333342,0,0,"1332854",1,1,67,""
+1332861,"In the last month, how often have you felt confident about your ability to handle your personal problems?","cpss_4","cope",1333342,0,0,"1332861",1,1,68,""
+1332862,"In the last month, how often have you felt that things were going your way?","cpss_5","cope",1333342,0,0,"1332862",1,1,69,""
+1332863,"In the last month, how often have you found that you could not cope with all the things that you had to do?","cpss_6","cope",1333342,0,0,"1332863",1,1,70,""
+1332866,"In the past 7 days, other things kept making me think about COVID-19.","ies_r_6_3","cope",1333342,0,0,"1332866",1,1,18,""
+1332867,"In the past 7 days, I had trouble concentrating.","ies_r_6_6","cope",1333342,0,0,"1332867",1,1,21,""
+1332868,"In the last month, how often have you felt that you were on top of things?","cpss_8","cope",1333342,0,0,"1332868",1,1,72,""
+1332869,"In the last month, how often have you been angered because of things that were outside of your control?","cpss_9","cope",1333342,0,0,"1332869",1,1,73,""
+1332874,"Are you covered by health insurance or some other kind of health care plan?","basics_11","cope",1333342,0,0,"1332874",1,1,33,""
+1332876,"In the past month: How often do you have a drink containing alcohol?","audit_c_1","cope",1333342,0,0,"1332876",1,1,101,""
+1332878,"In the last month, how often have you been upset because of something that happened unexpectedly?","cpss_1","cope",1333342,0,0,"1332878",1,1,65,""
 1332880,"What do you think is the main reason(s) for these experiences? Select all that apply.","eds_follow_up_1","cope",1333342,0,1,"1333293.1332782.1332880",0,1,155,""
 1332880,"What do you think is the main reason(s) for these experiences? Select all that apply.","eds_follow_up_1","cope",1333342,0,1,"1333293.1332783.1332880",0,1,153,""
 1332880,"What do you think is the main reason(s) for these experiences? Select all that apply.","eds_follow_up_1","cope",1333342,0,1,"1333293.1332918.1332880",0,1,154,""
-1332935,"In your day-to-day life, how often did this happen to you during the past month? People act as if they think you are dishonest.","eds_6","cope",1333342,0,0,1332935,1,1,150,""
-1332937,"In your day-to-day life, how often did this happen to you during the past month? People act as if they're better than you are.","eds_7","cope",1333342,0,0,1332937,1,1,156,""
-1332944,"In the last month, how often have you been able to control irritations in your life?","cpss_7","cope",1333342,0,0,1332944,1,1,71,""
-1332998,"In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?","cpss_10","cope",1333342,0,0,1332998,1,1,74,""
+1332935,"In your day-to-day life, how often did this happen to you during the past month? People act as if they think you are dishonest.","eds_6","cope",1333342,0,0,"1332935",1,1,150,""
+1332937,"In your day-to-day life, how often did this happen to you during the past month? People act as if they're better than you are.","eds_7","cope",1333342,0,0,"1332937",1,1,156,""
+1332944,"In the last month, how often have you been able to control irritations in your life?","cpss_7","cope",1333342,0,0,"1332944",1,1,71,""
+1332998,"In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?","cpss_10","cope",1333342,0,0,"1332998",1,1,74,""
 1333004,"How often did you use methamphetamine?","tsu_ds5_13_xx6","cope",1333342,0,1,"1333017.1333103.1333004",0,1,117,""
-1333011,"In the past month: Did you smoke tobacco/nicotine (including cigarettes, cigar, cigarillos, pipes, hookah) every day, some days, or not at all?","copect_50_xx18","cope",1333342,0,0,1333011,1,1,96,""
+1333011,"In the past month: Did you smoke tobacco/nicotine (including cigarettes, cigar, cigarillos, pipes, hookah) every day, some days, or not at all?","copect_50_xx18","cope",1333342,0,0,"1333011",1,1,96,""
 1333013,"How often did you use cannabis?","tsu_ds5_13_xx3","cope",1333342,0,1,"1333017.1333152.1333013",0,1,105,""
-1333016,"What type of household do you live in?","cu_covid","cope",1333342,0,0,1333016,1,1,31,""
-1333017,"In the past month, have you used any of the following drugs? Select all that apply.","tsu_ds5_13_xx","cope",1333342,0,0,1333017,1,1,104,""
+1333016,"What type of household do you live in?","cu_covid","cope",1333342,0,0,"1333016",1,1,31,""
+1333017,"In the past month, have you used any of the following drugs? Select all that apply.","tsu_ds5_13_xx","cope",1333342,0,0,"1333017",1,1,104,""
 1333018,"Did you use prescription opioids in any way a doctor did not direct you to use it?","tsu_ds5_13_xx39","cope",1333342,0,1,"1333017.1333169.1333018",0,1,136,""
 1333019,"Do you think you have used more or less prescription opioids in the past month than you used to?","tsu_ds5_13_xx41","cope",1333342,0,1,"1333017.1333169.1333019",0,1,137,""
 1333020,"How often did you use the other substance?","tsu_ds5_13_xx42_cope_a_226_2","cope",1333342,0,1,"1333017.1332722.1333020",0,1,138,""
 1333021,"Did your use include smoking the other substance?","tsu_ds5_13_xx43","cope",1333342,0,1,"1333017.1332722.1333021",0,1,139,""
 1333022,"Do you think you have used more or less of the other substance in the past month than you used to?","tsu_ds5_13_xx44","cope",1333342,0,1,"1333017.1332722.1333022",0,1,140,""
-1333024,"Please select the response that best reflects your behavior in the past month. I look for creative ways to alter difficult situations.","brcs_1","cope",1333342,0,0,1333024,1,1,142,""
-1333102,"In the past month, have recommendations for socially distancing caused stress for you?","cdc_covid_19_21","cope",1333342,0,0,1333102,1,1,1,""
-1333104,"In the past month, to cope with social distancing and isolation, are you doing any of the following? Select all that apply.","cdc_covid_19_25","cope",1333342,0,0,1333104,1,1,25,""
-1333105,"Thinking about your current social habits, in the last 5 days: I have gone to my workplace or volunteer site that is outside my home.","msds_10","cope",1333342,0,0,1333105,1,1,3,""
-1333119,"Thinking about these activities in the last 5 days, my social interaction with people outside my home was.","msds_16","cope",1333342,0,0,1333119,1,1,9,""
-1333120,"Choose the answer that is true for you in the past month. I am unhappy being so withdrawn.","ucla_ls8_17","cope",1333342,0,0,1333120,1,1,94,""
-1333121,"In the past 2 weeks, how often have you been bothered by the following problem? Becoming easily annoyed or irritable.","gad_7_6","cope",1333342,0,0,1333121,1,1,54,""
-1333156,"Do you think you have had COVID-19?","copect_40_xx15","cope",1333342,0,0,1333156,1,1,14,""
-1333163,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to confide in or talk to about yourself or your problems.","mos_ss_13","cope",1333342,0,0,1333163,1,1,47,""
-1333164,"Choose the answer that is true for you in the past month. I can find companionship when I want it.","ucla_ls8_15","cope",1333342,0,0,1333164,1,1,93,""
-1333165,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to do things with to help you get your mind off things.","mos_ss_17","cope",1333342,0,0,1333165,1,1,48,""
-1333166,"Choose the answer that is true for you in the past month. People are around me but not with me.","ucla_ls8_18","cope",1333342,0,0,1333166,1,1,95,""
-1333167,"In the past 2 weeks, how often have you been bothered by the following problem? Not being able to stop or control worrying.","gad_7_2","cope",1333342,0,0,1333167,1,1,50,""
-1333168,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to take you to the doctor if you needed it.","mos_ss_2","cope",1333342,0,0,1333168,1,1,40,""
-1333182,"Choose the answer that is true for you in the past month. I feel left out.","ucla_ls8_11","cope",1333342,0,0,1333182,1,1,91,""
-1333183,"Choose the answer that is true for you in the past month. I feel isolated from others.","ucla_ls8_14","cope",1333342,0,0,1333183,1,1,92,""
-1333184,"In the past 2 weeks, how often have you been bothered by the following problem? Worrying too much about different things.","gad_7_3","cope",1333342,0,0,1333184,1,1,51,""
-1333185,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to prepare your meals if you were unable to do it yourself.","mos_ss_3","cope",1333342,0,0,1333185,1,1,41,""
-1333186,"Choose the answer that is true for you in the past month. There is no one I can turn to.","ucla_ls8_3","cope",1333342,0,0,1333186,1,1,89,""
-1333187,"In the past 2 weeks, how often have you been bothered by the following problem? Trouble relaxing.","gad_7_4","cope",1333342,0,0,1333187,1,1,52,""
-1333188,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to help with daily chores if you were sick.","mos_ss_4","cope",1333342,0,0,1333188,1,1,42,""
-1333189,"In the past 2 weeks, how often have you been bothered by the following problem? Being so restless that it's hard to sit still.","gad_7_5","cope",1333342,0,0,1333189,1,1,53,""
-1333190,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to have a good time with.","mos_ss_5","cope",1333342,0,0,1333190,1,1,43,""
-1333191,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to turn to for suggestions about how to deal with a personal problem.","mos_ss_6","cope",1333342,0,0,1333191,1,1,44,""
-1333192,"In the past 2 weeks, how often have you been bothered by the following problem? Feeling afraid as if something awful might happen.","gad_7_7","cope",1333342,0,0,1333192,1,1,55,""
-1333193,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone who understands your problems.","mos_ss_7","cope",1333342,0,0,1333193,1,1,45,""
-1333194,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to love and make you feel wanted.","mos_ss_8","cope",1333342,0,0,1333194,1,1,46,""
-1333195,"In the past 2 weeks, how often have you been bothered by the following problem? Feeling nervous, anxious, or on edge.","gad_7_1","cope",1333342,0,0,1333195,1,1,49,""
-1333200,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to help you if you were confined to bed.","mos_ss_1","cope",1333342,0,0,1333200,1,1,39,""
-1333216,"Choose the answer that is true for you in the past month. I lack companionship.","ucla_ls8_2","cope",1333342,0,0,1333216,1,1,88,""
-1333221,"Choose the answer that is true for you in the past month. I am an outgoing person.","ucla_ls8_9","cope",1333342,0,0,1333221,1,1,90,""
-1333235,"Which of the following symptoms did you have? (select all that apply).","cdc_covid_19_7_xx23","cope",1333342,0,0,1333235,1,1,12,1332763
-1333274,"In the past 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless.","phq_9_2","cope",1333342,0,0,1333274,1,1,57,""
-1333275,"In the past 2 weeks, how often have you been bothered by trouble falling or staying asleep, or sleeping too much.","phq_9_3","cope",1333342,0,0,1333275,1,1,58,""
-1333276,"In the past 2 weeks, how often have you been bothered by feeling tired or having little energy.","phq_9_4","cope",1333342,0,0,1333276,1,1,59,""
-1333277,"In the past 2 weeks, how often have you been bothered by poor appetite or overeating.","phq_9_5","cope",1333342,0,0,1333277,1,1,60,""
-1333278,"In the past 2 weeks, how often have you been bothered by feeling bad about yourself or that you are a failure or have let yourself or your family down.","phq_9_6","cope",1333342,0,0,1333278,1,1,61,""
-1333279,"In the past 2 weeks, how often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television.","phq_9_7","cope",1333342,0,0,1333279,1,1,62,""
-1333280,"In the past 2 weeks, how often have you been bothered by thoughts that you would be better off dead or of hurting yourself in some way.","phq_9_9","cope",1333342,0,0,1333280,1,1,64,""
-1333281,"In the past 2 weeks, how often have you been bothered by little interest or pleasure in doing things.","phq_9_1","cope",1333342,0,0,1333281,1,1,56,""
-1333285,"In the past 2 weeks, how often have you been bothered by moving or speaking so slowly that other people could have noticed? or the opposite - being so fidgety or restless that you have been moving around a lot more than usual.","phq_9_8","cope",1333342,0,0,1333285,1,1,63,""
-1333286,"During the last 7 days, did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?","ipaq_1","cope",1333342,0,0,1333286,1,1,75,""
-1333287,"During the last 7 days, how much time did you spend sitting on a weekday? Please select below to enter the amount of time in minutes OR hours.","ipaq_7","cope",1333342,0,0,1333287,1,1,87,""
-1333288,"Think about all the moderate activities that you did in the last 7 days. During the last 7 days, did you do moderate physical activity like carrying light loads, bicycling at a regular pace, or doubles tennis?","ipaq_3","cope",1333342,0,0,1333288,1,1,79,""
-1333289,"Think about the time you spent walking in the last 7 days. During the last 7 days, did you walk for at least 10 minutes at a time?","ipaq_5","cope",1333342,0,0,1333289,1,1,83,""
-1333291,"In the past month, how has the COVID-19 outbreak affected you? Please select all that apply.","cdc_covid_19_18","cope",1333342,0,0,1333291,1,1,22,""
-1333292,"In the past 7 days, I felt watchful or on-guard.","ies_r_6_2","cope",1333342,0,0,1333292,1,1,17,""
-1333293,"In your day-to-day life, how often did this happen to you during the past month? You are threatened or harassed.","eds_9","cope",1333342,0,0,1333293,1,1,152,""
-1333294,"In the past month, have you experienced the following as a result of COVID-19? Select all that apply.","cdc_covid_19_23","cope",1333342,0,0,1333294,1,1,23,""
-1333295,"In the past 7 days, I was aware that I still had a lot of feelings about COVID-19, but I didn't deal with them.","ies_r_6_4","cope",1333342,0,0,1333295,1,1,19,""
-1333296,"In the past 7 days, I tried not to think about COVID-19.","ies_r_6_5","cope",1333342,0,0,1333296,1,1,20,""
-1333297,"Do you personally know someone who has died of COVID-19?","nhs_covid_fhc17a","cope",1333342,0,0,1333297,1,1,26,""
-1333298,"In your day-to-day life, how often did this happen to you during the past month? You are called names or insulted.","eds_8","cope",1333342,0,0,1333298,1,1,151,""
-1333299,"In the past month: Did you use any type of electronic nicotine product? This includes e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.","lifestyle_2_xx13","cope",1333342,0,0,1333299,1,1,99,""
-1333300,"Now, thinking about the COVID-19 recommendations and mandates...How often in the past month are you doing the recommended pandemic hygiene?","msds_18","cope",1333342,0,0,1333300,1,1,10,""
-1333301,"Thinking about your current social habits, in the last 5 days: I have been in close contact with someone who is in a risk group for COVID-19. This includes someone inside or outside of your household.","msds_15","cope",1333342,0,0,1333301,1,1,8,""
-1333303,"In the past 7 days, I thought about COVID-19 when I didn't mean to.","ies_r_6_1","cope",1333342,0,0,1333303,1,1,16,""
-1333311,"In your day-to-day life, how often did this happen to you during the past month? You are treated with less respect than other people are.","eds_2","cope",1333342,0,0,1333311,1,1,145,""
-1333312,"In your day-to-day life, how often did this happen to you during the past month? You receive poorer service than other people at restaurants or stores.","eds_3","cope",1333342,0,0,1333312,1,1,146,""
-1333313,"In your day-to-day life, how often did this happen to you during the past month? People act as if they think you are not smart.","eds_4","cope",1333342,0,0,1333313,1,1,147,""
-1333314,"In your day-to-day life, how often did this happen to you during the past month? People act as if they are afraid of you.","eds_5","cope",1333342,0,0,1333314,1,1,148,""
-1333324,"In the past month, if you were sick with COVID-19 symptoms, how did you receive treatment(s)? Please select all that apply.","copect_63_xx20","cope",1333342,0,0,1333324,1,1,15,""
-1333325,"In the past month, have you been sick for more than one day with a new illness related to COVID-19 or flu-like symptoms?","cdc_covid_19_7_xx22","cope",1333342,0,0,1333325,1,1,11,""
-1333328,"In your day-to-day life, how often did this happen to you during the past month? You are treated with less courtesy than other people are.","eds_1","cope",1333342,0,0,1333328,1,1,144,""
+1333024,"Please select the response that best reflects your behavior in the past month. I look for creative ways to alter difficult situations.","brcs_1","cope",1333342,0,0,"1333024",1,1,142,""
+1333102,"In the past month, have recommendations for socially distancing caused stress for you?","cdc_covid_19_21","cope",1333342,0,0,"1333102",1,1,1,""
+1333104,"In the past month, to cope with social distancing and isolation, are you doing any of the following? Select all that apply.","cdc_covid_19_25","cope",1333342,0,0,"1333104",1,1,25,""
+1333105,"Thinking about your current social habits, in the last 5 days: I have gone to my workplace or volunteer site that is outside my home.","msds_10","cope",1333342,0,0,"1333105",1,1,3,""
+1333119,"Thinking about these activities in the last 5 days, my social interaction with people outside my home was.","msds_16","cope",1333342,0,0,"1333119",1,1,9,""
+1333120,"Choose the answer that is true for you in the past month. I am unhappy being so withdrawn.","ucla_ls8_17","cope",1333342,0,0,"1333120",1,1,94,""
+1333121,"In the past 2 weeks, how often have you been bothered by the following problem? Becoming easily annoyed or irritable.","gad_7_6","cope",1333342,0,0,"1333121",1,1,54,""
+1333156,"Do you think you have had COVID-19?","copect_40_xx15","cope",1333342,0,0,"1333156",1,1,14,""
+1333163,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to confide in or talk to about yourself or your problems.","mos_ss_13","cope",1333342,0,0,"1333163",1,1,47,""
+1333164,"Choose the answer that is true for you in the past month. I can find companionship when I want it.","ucla_ls8_15","cope",1333342,0,0,"1333164",1,1,93,""
+1333165,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to do things with to help you get your mind off things.","mos_ss_17","cope",1333342,0,0,"1333165",1,1,48,""
+1333166,"Choose the answer that is true for you in the past month. People are around me but not with me.","ucla_ls8_18","cope",1333342,0,0,"1333166",1,1,95,""
+1333167,"In the past 2 weeks, how often have you been bothered by the following problem? Not being able to stop or control worrying.","gad_7_2","cope",1333342,0,0,"1333167",1,1,50,""
+1333168,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to take you to the doctor if you needed it.","mos_ss_2","cope",1333342,0,0,"1333168",1,1,40,""
+1333182,"Choose the answer that is true for you in the past month. I feel left out.","ucla_ls8_11","cope",1333342,0,0,"1333182",1,1,91,""
+1333183,"Choose the answer that is true for you in the past month. I feel isolated from others.","ucla_ls8_14","cope",1333342,0,0,"1333183",1,1,92,""
+1333184,"In the past 2 weeks, how often have you been bothered by the following problem? Worrying too much about different things.","gad_7_3","cope",1333342,0,0,"1333184",1,1,51,""
+1333185,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to prepare your meals if you were unable to do it yourself.","mos_ss_3","cope",1333342,0,0,"1333185",1,1,41,""
+1333186,"Choose the answer that is true for you in the past month. There is no one I can turn to.","ucla_ls8_3","cope",1333342,0,0,"1333186",1,1,89,""
+1333187,"In the past 2 weeks, how often have you been bothered by the following problem? Trouble relaxing.","gad_7_4","cope",1333342,0,0,"1333187",1,1,52,""
+1333188,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to help with daily chores if you were sick.","mos_ss_4","cope",1333342,0,0,"1333188",1,1,42,""
+1333189,"In the past 2 weeks, how often have you been bothered by the following problem? Being so restless that it's hard to sit still.","gad_7_5","cope",1333342,0,0,"1333189",1,1,53,""
+1333190,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to have a good time with.","mos_ss_5","cope",1333342,0,0,"1333190",1,1,43,""
+1333191,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to turn to for suggestions about how to deal with a personal problem.","mos_ss_6","cope",1333342,0,0,"1333191",1,1,44,""
+1333192,"In the past 2 weeks, how often have you been bothered by the following problem? Feeling afraid as if something awful might happen.","gad_7_7","cope",1333342,0,0,"1333192",1,1,55,""
+1333193,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone who understands your problems.","mos_ss_7","cope",1333342,0,0,"1333193",1,1,45,""
+1333194,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to love and make you feel wanted.","mos_ss_8","cope",1333342,0,0,"1333194",1,1,46,""
+1333195,"In the past 2 weeks, how often have you been bothered by the following problem? Feeling nervous, anxious, or on edge.","gad_7_1","cope",1333342,0,0,"1333195",1,1,49,""
+1333200,"Choose the answer that best describes how often you can find this kind of support in the past month. Someone to help you if you were confined to bed.","mos_ss_1","cope",1333342,0,0,"1333200",1,1,39,""
+1333216,"Choose the answer that is true for you in the past month. I lack companionship.","ucla_ls8_2","cope",1333342,0,0,"1333216",1,1,88,""
+1333221,"Choose the answer that is true for you in the past month. I am an outgoing person.","ucla_ls8_9","cope",1333342,0,0,"1333221",1,1,90,""
+1333235,"Which of the following symptoms did you have? (select all that apply).","cdc_covid_19_7_xx23","cope",1333342,0,0,"1333235",1,1,12,"1332763"
+1333274,"In the past 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless.","phq_9_2","cope",1333342,0,0,"1333274",1,1,57,""
+1333275,"In the past 2 weeks, how often have you been bothered by trouble falling or staying asleep, or sleeping too much.","phq_9_3","cope",1333342,0,0,"1333275",1,1,58,""
+1333276,"In the past 2 weeks, how often have you been bothered by feeling tired or having little energy.","phq_9_4","cope",1333342,0,0,"1333276",1,1,59,""
+1333277,"In the past 2 weeks, how often have you been bothered by poor appetite or overeating.","phq_9_5","cope",1333342,0,0,"1333277",1,1,60,""
+1333278,"In the past 2 weeks, how often have you been bothered by feeling bad about yourself or that you are a failure or have let yourself or your family down.","phq_9_6","cope",1333342,0,0,"1333278",1,1,61,""
+1333279,"In the past 2 weeks, how often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television.","phq_9_7","cope",1333342,0,0,"1333279",1,1,62,""
+1333280,"In the past 2 weeks, how often have you been bothered by thoughts that you would be better off dead or of hurting yourself in some way.","phq_9_9","cope",1333342,0,0,"1333280",1,1,64,""
+1333281,"In the past 2 weeks, how often have you been bothered by little interest or pleasure in doing things.","phq_9_1","cope",1333342,0,0,"1333281",1,1,56,""
+1333285,"In the past 2 weeks, how often have you been bothered by moving or speaking so slowly that other people could have noticed? or the opposite - being so fidgety or restless that you have been moving around a lot more than usual.","phq_9_8","cope",1333342,0,0,"1333285",1,1,63,""
+1333286,"During the last 7 days, did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?","ipaq_1","cope",1333342,0,0,"1333286",1,1,75,""
+1333287,"During the last 7 days, how much time did you spend sitting on a weekday? Please select below to enter the amount of time in minutes OR hours.","ipaq_7","cope",1333342,0,0,"1333287",1,1,87,""
+1333288,"Think about all the moderate activities that you did in the last 7 days. During the last 7 days, did you do moderate physical activity like carrying light loads, bicycling at a regular pace, or doubles tennis?","ipaq_3","cope",1333342,0,0,"1333288",1,1,79,""
+1333289,"Think about the time you spent walking in the last 7 days. During the last 7 days, did you walk for at least 10 minutes at a time?","ipaq_5","cope",1333342,0,0,"1333289",1,1,83,""
+1333291,"In the past month, how has the COVID-19 outbreak affected you? Please select all that apply.","cdc_covid_19_18","cope",1333342,0,0,"1333291",1,1,22,""
+1333292,"In the past 7 days, I felt watchful or on-guard.","ies_r_6_2","cope",1333342,0,0,"1333292",1,1,17,""
+1333293,"In your day-to-day life, how often did this happen to you during the past month? You are threatened or harassed.","eds_9","cope",1333342,0,0,"1333293",1,1,152,""
+1333294,"In the past month, have you experienced the following as a result of COVID-19? Select all that apply.","cdc_covid_19_23","cope",1333342,0,0,"1333294",1,1,23,""
+1333295,"In the past 7 days, I was aware that I still had a lot of feelings about COVID-19, but I didn't deal with them.","ies_r_6_4","cope",1333342,0,0,"1333295",1,1,19,""
+1333296,"In the past 7 days, I tried not to think about COVID-19.","ies_r_6_5","cope",1333342,0,0,"1333296",1,1,20,""
+1333297,"Do you personally know someone who has died of COVID-19?","nhs_covid_fhc17a","cope",1333342,0,0,"1333297",1,1,26,""
+1333298,"In your day-to-day life, how often did this happen to you during the past month? You are called names or insulted.","eds_8","cope",1333342,0,0,"1333298",1,1,151,""
+1333299,"In the past month: Did you use any type of electronic nicotine product? This includes e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.","lifestyle_2_xx13","cope",1333342,0,0,"1333299",1,1,99,""
+1333300,"Now, thinking about the COVID-19 recommendations and mandates...How often in the past month are you doing the recommended pandemic hygiene?","msds_18","cope",1333342,0,0,"1333300",1,1,10,""
+1333301,"Thinking about your current social habits, in the last 5 days: I have been in close contact with someone who is in a risk group for COVID-19. This includes someone inside or outside of your household.","msds_15","cope",1333342,0,0,"1333301",1,1,8,""
+1333303,"In the past 7 days, I thought about COVID-19 when I didn't mean to.","ies_r_6_1","cope",1333342,0,0,"1333303",1,1,16,""
+1333311,"In your day-to-day life, how often did this happen to you during the past month? You are treated with less respect than other people are.","eds_2","cope",1333342,0,0,"1333311",1,1,145,""
+1333312,"In your day-to-day life, how often did this happen to you during the past month? You receive poorer service than other people at restaurants or stores.","eds_3","cope",1333342,0,0,"1333312",1,1,146,""
+1333313,"In your day-to-day life, how often did this happen to you during the past month? People act as if they think you are not smart.","eds_4","cope",1333342,0,0,"1333313",1,1,147,""
+1333314,"In your day-to-day life, how often did this happen to you during the past month? People act as if they are afraid of you.","eds_5","cope",1333342,0,0,"1333314",1,1,148,""
+1333324,"In the past month, if you were sick with COVID-19 symptoms, how did you receive treatment(s)? Please select all that apply.","copect_63_xx20","cope",1333342,0,0,"1333324",1,1,15,""
+1333325,"In the past month, have you been sick for more than one day with a new illness related to COVID-19 or flu-like symptoms?","cdc_covid_19_7_xx22","cope",1333342,0,0,"1333325",1,1,11,""
+1333328,"In your day-to-day life, how often did this happen to you during the past month? You are treated with less courtesy than other people are.","eds_1","cope",1333342,0,0,"1333328",1,1,144,""
 1384388,"Are you currently prescribed medications and/or receiving treatment for Astigmatism?","HearingVision_RxMedsforAstigmatism","Personal Medical History",43529712,0,1,"43528759.1384648.1384388",1,1,8,NULL
-1384390," Has a doctor or health care provider ever told you that you have or had any of the following digestive conditions? (select all that apply)","Digestive_DigestiveSystemConditions","Personal Medical History",43529712,0,0,1384390,1,1,4,NULL
+1384390," Has a doctor or health care provider ever told you that you have or had any of the following digestive conditions? (select all that apply)","Digestive_DigestiveSystemConditions","Personal Medical History",43529712,0,0,"1384390",1,1,4,NULL
 1384392,"Other Conditions: Reactions Anesthesia","OtherConditions_ReactionsAnesthesia","Family Health History",43528698,20,1,"43529638.1384392.1384392",0,0,0,NULL
 1384393,"About how old were you when you were first told you had Chronic Lung Disease?","Respiratory_HowOldWereYouChronicLungDisease","Personal Medical History",43529712,0,1,"1384592.1384567.1384393",1,1,2,NULL
 1384394,"About how old were you when you were first told you had any other diagnosis?","Other_HowOldWereYouOtherDiagnosis","Personal Medical History",43529712,0,1,"1384430.1384631.1384394",1,1,12,NULL
@@ -198,7 +198,7 @@
 1384424,"Are you currently prescribed medications and/or receiving treatment for Zika virus?","InfectiousDiseases_RxMedsforZikaVirus","Personal Medical History",43529712,0,1,"1384662.1384527.1384424",1,1,9,NULL
 1384425,"About how old were you when you were first told you had Other mental health or substance use condition?","MentalHealthCondition_OtherHowOld","Personal Medical History",43529712,0,1,"1384495.1384549.1384425",1,1,11,NULL
 1384426,"About how old were you when you were first told you had Cerebral palsy?","NervousSystem_HowOldWereYouCerebralPalsy","Personal Medical History",43529712,0,1,"1384526.1384415.1384426",1,1,10,NULL
-1384430,"Has a doctor or health care provider ever told you that you have…? (select all that apply)","Other_OtherConditions","Personal Medical History",43529712,0,0,1384430,1,1,12,NULL
+1384430,"Has a doctor or health care provider ever told you that you have…? (select all that apply)","Other_OtherConditions","Personal Medical History",43529712,0,0,"1384430",1,1,12,NULL
 1384431,"Are you still seeing a doctor or health care provider for Lyme disease?","InfectiousDiseases_LymeDiseaseCurrently","Personal Medical History",43529712,0,1,"1384662.1384449.1384431",1,1,9,NULL
 1384432,"About how old were you when you were first told you had Lyme disease?","InfectiousDiseases_HowOldWereYouLymeDisease","Personal Medical History",43529712,0,1,"1384662.1384449.1384432",1,1,9,NULL
 1384433,"Are you currently prescribed medications and/or receiving treatment for Osteoarthritis?","SkeletalMuscular_RxMedsforOsteoarthritis","Personal Medical History",43529712,0,1,"43528757.1384547.1384433",1,1,7,NULL
@@ -232,14 +232,14 @@
 1384482,"Are you currently prescribed medications and/or receiving treatment for Cerebral palsy?","NervousSystem_RxMedsforCerebralPalsy","Personal Medical History",43529712,0,1,"1384526.1384415.1384482",1,1,10,NULL
 1384483,"Are you still seeing a doctor or health care provider for Ovarian cancer?","Cancer_OvarianCancerCurrently","Personal Medical History",43529712,0,1,"43528760.1384488.1384483",1,1,3,NULL
 1384486,"Are you currently prescribed medications and/or receiving treatment for Autism spectrum disorder?","MentalHealth_RxMedsforAutism","Personal Medical History",43529712,0,1,"1384495.1384458.1384486",1,1,11,NULL
-1384487,"Has a doctor or health care provider ever told you that you have or had any of the following Kidney conditions?  (select all that apply)","Kidney_KidneyConditions","Personal Medical History",43529712,0,0,1384487,1,1,6,NULL
+1384487,"Has a doctor or health care provider ever told you that you have or had any of the following Kidney conditions?  (select all that apply)","Kidney_KidneyConditions","Personal Medical History",43529712,0,0,"1384487",1,1,6,NULL
 1384488,"Cancer Conditions: Ovarian Cancer","CancerConditions_OvarianCancer","Family Health History",43528698,20,1,"43528515.1384488.1384488",0,0,0,NULL
 1384489,"Are you still seeing a doctor or health care provider for Other infectious disease?","InfectiousDiseases_OtherInfectiousDiseaseCurrently","Personal Medical History",43529712,0,1,"1384662.1384484.1384489",1,1,9,NULL
 1384490,"Are you still seeing a doctor or health care provider for Alcohol use disorder?","MentalHealth_AlcoholDisorderCurrently","Personal Medical History",43529712,0,1,"1384495.1384600.1384490",1,1,11,NULL
 1384492,"About how old were you when you were first told you had Zika virus?","InfectiousDiseases_HowOldWereYouZikaVirus","Personal Medical History",43529712,0,1,"1384662.1384527.1384492",1,1,9,NULL
 1384493,"Are you still seeing a doctor or health care provider for Other kidney condition?","Kidney_OtherKidneyConditionCurrently","Personal Medical History",43529712,0,1,"1384487.1384646.1384493",1,1,6,NULL
 1384494,"About how old were you when you were first told you had Celiac disease?","Digestive_HowOldWereYouCeliacDisease","Personal Medical History",43529712,0,1,"1384390.1384519.1384494",1,1,4,NULL
-1384495,"Has a doctor or health care provider ever told you that you have or had any of the following Mental health and substance use conditions? (select all that apply)","MentalHealth_MentalHealthCondition","Personal Medical History",43529712,0,0,1384495,1,1,11,NULL
+1384495,"Has a doctor or health care provider ever told you that you have or had any of the following Mental health and substance use conditions? (select all that apply)","MentalHealth_MentalHealthCondition","Personal Medical History",43529712,0,0,"1384495",1,1,11,NULL
 1384497,"Circulatory Conditions: Coronary Artery","CirculatoryConditions_CoronaryArtery","Family Health History",43528698,20,1,"1384639.1384497.1384497",0,0,0,NULL
 1384501,"Are you still seeing a doctor or health care provider for PCOS (polycystic ovarian syndrome)?","Other_PCOSCurrently","Personal Medical History",43529712,0,1,"1384430.1384618.1384501",1,1,12,NULL
 1384505,"Are you currently prescribed medications and/or receiving treatment for Shingles?","InfectiousDiseases_RxMedsforShingles","Personal Medical History",43529712,0,1,"1384662.1384610.1384505",1,1,9,NULL
@@ -252,8 +252,8 @@
 1384517,"Are you currently prescribed medications and/or receiving treatment for Other infectious disease?","InfectiousDisease_RxOtherDisease","Personal Medical History",43529712,0,1,"1384662.1384484.1384517",1,1,9,NULL
 1384518,"Are you currently prescribed medications and/or receiving treatment for Alcohol use disorder?","MentalHealth_RxMedsforAlcoholDisorder","Personal Medical History",43529712,0,1,"1384495.1384600.1384625",1,1,11,NULL
 1384519,"Digestive System Conditions: Celiac Disease","DigestiveSystemConditions_CeliacDisease","Family Health History",43528698,20,1,"43528634.1384519.1384519",0,0,0,NULL
-1384522,"Has a doctor or health care provider ever told you that you have or had any of the following circulatory conditions? (select all that apply)","Circulatory_CirculatoryConditions","Personal Medical History",43529712,0,0,1384522,1,1,1,NULL
-1384526," Has a doctor or health care provider ever told you that you have or had any of the following Brain and nervous system conditions?","NervousSystem_NervousSystemCondition","Personal Medical History",43529712,0,0,1384526,1,1,10,NULL
+1384522,"Has a doctor or health care provider ever told you that you have or had any of the following circulatory conditions? (select all that apply)","Circulatory_CirculatoryConditions","Personal Medical History",43529712,0,0,"1384522",1,1,1,NULL
+1384526," Has a doctor or health care provider ever told you that you have or had any of the following Brain and nervous system conditions?","NervousSystem_NervousSystemCondition","Personal Medical History",43529712,0,0,"1384526",1,1,10,NULL
 1384528,"Are you currently prescribed medications and/or receiving treatment for Other brain or nervous system condition?","NervousSystem_RxMedsforOtherBrainNervousSystem","Personal Medical History",43529712,0,1,"1384526.1384582.1384528",1,1,10,NULL
 1384529,"Are you currently prescribed medications and/or receiving treatment for Ovarian cancer?","Cancer_RxMedsforOvarianCancer","Personal Medical History",43529712,0,1,"43528760.1384488.1384529",1,1,3,NULL
 1384530,"Are you still seeing a doctor or health care provider for Reactions to anesthesia (such as hyperthermia)?","Other_ReactionsAnesthesiaCurrently","Personal Medical History",43529712,0,1,"1384430.1384392.1384530",1,1,12,NULL
@@ -284,7 +284,7 @@
 1384584,"Are you currently prescribed medications and/or receiving treatment for Other mental health or substance use condition?","MentalHealth_RxMedsOtherCondition","Personal Medical History",43529712,0,1,"1384495.1384549.1384584",1,1,11,NULL
 1384587,"Are you currently prescribed medications and/or receiving treatment for Chronic Lung Disease?","Respiratory_RxMedsforChronicLungDisease","Personal Medical History",43529712,0,1,"1384592.1384567.1384587",1,1,2,NULL
 1384589,"Are you currently prescribed medications and/or receiving treatment for any other diagnosis?","Other_RxMedsforOtherDiagnosis","Personal Medical History",43529712,0,1,"1384430.1384631.1384589",1,1,12,NULL
-1384592,"Has a doctor or health care provider ever told you that you have or had any of the following respiratory conditions? (select all that apply)","Respiratory_RespiratoryConditions","Personal Medical History",43529712,0,0,1384592,1,1,2,NULL
+1384592,"Has a doctor or health care provider ever told you that you have or had any of the following respiratory conditions? (select all that apply)","Respiratory_RespiratoryConditions","Personal Medical History",43529712,0,0,"1384592",1,1,2,NULL
 1384593,"Are you still seeing a doctor or health care provider for Rheumatoid arthritis?","SkeletalMuscular_RheumatoidArthritisCurrently","Personal Medical History",43529712,0,1,"43528757.1384653.1384593",1,1,7,NULL
 1384596,"Are you still seeing a doctor or health care provider for West Nile virus?","InfectiousDiseases_WestNileVirusCurrently","Personal Medical History",43529712,0,1,"1384662.1384408.1384596",1,1,9,NULL
 1384597,"Are you still seeing a doctor or health care provider for Cerebral palsy?","NervousSystem_CerebralPalsyCurrently","Personal Medical History",43529712,0,1,"1384526.1384415.1384597",1,1,10,NULL
@@ -315,7 +315,7 @@
 1384635,"About how old were you when you were first told you had Other lung condition?","Respiratory_HowOldWereYouOtherLungCondition","Personal Medical History",43529712,0,1,"1384592.1384564.1384635",1,1,2,NULL
 1384636,"About how old were you when you were first told you had Endometriosis?","Other_HowOldWereYouEndometriosis","Personal Medical History",43529712,0,1,"1384430.1385329.1384636",1,1,12,NULL
 1384637,"About how old were you when you were first told you had Chickenpox?","InfectiousDiseases_HowOldWereYouChickenpox","Personal Medical History",43529712,0,1,"1384662.1384578.1384637",1,1,9,NULL
-1384639,"Circulatory: Heartand Blood","Circulatory_HeartandBlood","Family Health History",43528698,20,0,1384639,0,0,3,NULL
+1384639,"Circulatory: Heartand Blood","Circulatory_HeartandBlood","Family Health History",43528698,20,0,"1384639",0,0,3,NULL
 1384641,"Are you currently prescribed medications and/or receiving treatment for Other hormone/endocrine condition?","EndocrineCondition_RxMeds","Personal Medical History",43529712,0,1,"43528758.1384666.1384641",1,1,5,NULL
 1384642,"Are you currently prescribed medications and/or receiving treatment for Severe acute respiratory syndrome (SARS)?","InfectiousDiseases_RxMedsforSARS","Personal Medical History",43529712,0,1,"1384662.1384406.1384642",1,1,9,NULL
 1384645,"Are you still seeing a doctor or health care provider for Pseudogout?","SkeletalMuscular_PseudogoutCurrently","Personal Medical History",43529712,0,1,"43528757.1384422.1384645",1,1,7,NULL
@@ -328,7 +328,7 @@
 1384656,"Mental Health Condition: Depression","MentalHealthCondition_Depression","Family Health History",43528698,20,1,"43529217.1384656.1384656",0,0,0,NULL
 1384660,"Are you still seeing a doctor or health care provider for Celiac disease?","Digestive_CeliacDiseaseCurrently","Personal Medical History",43529712,0,1,"1384390.1384519.1384660",1,1,4,NULL
 1384661,"About how old were you when you were first told you had Other kidney condition?","Kidney_HowOldWereYouOtherKidneyCondition","Personal Medical History",43529712,0,1,"1384487.1384646.1384661",1,1,6,NULL
-1384662,"Has a doctor or health care provider ever told you that you have or had any of the following Infectious diseases?","InfectiousDiseases_InfectiousDiseaseCondition","Personal Medical History",43529712,0,0,1384662,1,1,9,NULL
+1384662,"Has a doctor or health care provider ever told you that you have or had any of the following Infectious diseases?","InfectiousDiseases_InfectiousDiseaseCondition","Personal Medical History",43529712,0,0,"1384662",1,1,9,NULL
 1384663,"Are you currently prescribed medications and/or receiving treatment for Other hearing or eye condition?","HearingVision_RxMedsforOtherHearingEyeCondition","Personal Medical History",43529712,0,1,"43528759.1384428.1384663",1,1,8,NULL
 1384664,"Are you currently prescribed medications and/or receiving treatment for Sexually transmitted infections (Gonorrhea, Syphilis, Chlamydia)?","InfectiousDiseases_RxMedsforSTIs","Personal Medical History",43529712,0,1,"1384662.1384453.1384664",1,1,9,NULL
 1384667,"About how old were you when you were first told you had Other hearing or eye condition?","HearingVision_HowOldOtherCondition","Personal Medical History",43529712,0,1,"43528759.1384428.1384667",1,1,8,NULL
@@ -338,15 +338,15 @@
 1384671,"Are you currently prescribed medications and/or receiving treatment for Other bone, joint or muscle condition?","SkeletalMuscular_RxMedsforOtherBoneJointMuscleCond","Personal Medical History",43529712,0,1,"43528757.1384471.1384671",1,1,7,NULL
 1384672,"About how old were you when you were first told you had Other hormone/endocrine condition?","Endocrine_HowOldWereYouOtherHormone/EndocrineCondi","Personal Medical History",43529712,0,1,"43528758.1384666.1384672",1,1,5,NULL
 1385329,"Other Conditions: Endometriosis","OtherConditions_Endometriosis","Family Health History",43528698,20,1,"43529638.1385329.1385329",0,0,0,NULL
-1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585841.1585348",0,1,4,NULL
-1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585842.1585348",0,1,4,NULL
+1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585841.1585348",0,0,4,NULL
+1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585842.1585348",0,0,4,NULL
 1585348,"Are any of these a closer description to your gender identity?","Gender_CloserGenderDescription","The Basics",1586134,0,1,"1585838.1585843.1585348",0,1,4,NULL
 1585357,"Are any of these a closer description of how you think of yourself?","GenderIdentity_SexualityCloserDescription","The Basics",1586134,0,1,"1585899.1585904.1585357",0,1,5,NULL
-1585370,"Do you own or rent the place where you live?","HomeOwn_CurrentHomeOwn","The Basics",1586134,0,0,1585370,1,1,12,NULL
-1585375,"What is your annual household income from all sources?","Income_AnnualIncome","The Basics",1586134,0,0,1585375,1,1,11,NULL
-1585386,"Are you covered by health insurance or some other kind of health care plan?","Insurance_HealthInsurance","The Basics",1586134,0,0,1585386,1,1,9,NULL
-1585402,"Where are you currently living?","LivingSituation_CurrentLiving","The Basics",1586134,0,1,"1585370.1585373.1585402",1,1,12,NULL
-1585636,"In your LIFETIME, which of the following substances have you ever used?","RecreationalDrugUse_WhichDrugsUsed","Lifestyle",1585855,0,0,1585636,1,1,7,NULL
+1585370,"Do you own or rent the place where you live?","HomeOwn_CurrentHomeOwn","The Basics",1586134,0,0,"1585370",1,1,18,NULL
+1585375,"What is your annual household income from all sources?","Income_AnnualIncome","The Basics",1586134,0,0,"1585375",1,1,17,NULL
+1585386,"Are you covered by health insurance or some other kind of health care plan?","Insurance_HealthInsurance","The Basics",1586134,0,0,"1585386",1,1,9,NULL
+1585402,"Where are you currently living?","LivingSituation_CurrentLiving","The Basics",1586134,0,1,"1585370.1585373.1585402",1,1,18,NULL
+1585636,"In your LIFETIME, which of the following substances have you ever used?","RecreationalDrugUse_WhichDrugsUsed","Lifestyle",1585855,0,0,"1585636",1,1,7,NULL
 1585650,"In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?","Past3MonthUseFrequency_Marijuana3MonthUse","Lifestyle",1585855,0,1,"1585636.1585637.1585650",1,1,7,NULL
 1585656,"In the PAST THREE MONTHS, how often have you used cocaine (coke, crack, etc.)?","Past3MonthUseFrequency_Cocaine3MonthUse","Lifestyle",1585855,0,1,"1585636.1585638.1585656",1,1,7,NULL
 1585668,"In the PAST THREE MONTHS, how often have you used other stimulants (methamphetamine, speed, crystal meth, ice, k2/spice, bath salts, etc.)","Past3MonthUseFrequency_OtherStimulant3MonthUse","Lifestyle",1585855,0,1,"1585636.1585640.1585668",1,1,7,NULL
@@ -356,58 +356,58 @@
 1585692,"In the PAST THREE MONTHS, how often have you used street opioids (heroin, opium, etc.)?","Past3MonthUseFrequency_StreetOpioid3MonthUse","Lifestyle",1585855,0,1,"1585636.1585644.1585692",1,1,7,NULL
 1585698,"In the PAST THREE MONTHS, how often have you used prescription opioids for non-medical reasons (obana, fentanyl, oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine [Supoxone], etc.","Past3MonthUseFrequency_PrescriptionOpiod3MonthUse","Lifestyle",1585855,0,1,"1585636.1585645.1585698",1,1,7,NULL
 1585704,"In the PAST THREE MONTHS, how often have you used other drugs?","Past3MonthUseFrequency_Other3MonthUse","Lifestyle",1585855,0,1,"1585636.1585646.1585704",1,1,7,NULL
-1585711,"In general, would you say your health is:","OverallHealth_GeneralHealth","Overall Health",1585710,0,0,1585711,1,1,4,NULL
-1585717,"In general, would you say your quality of life is:","OverallHealth_GeneralQuality","Overall Health",1585710,0,0,1585717,1,1,5,NULL
-1585723,"In general, how would you rate your physical health?","OverallHealth_GeneralPhysicalHealth","Overall Health",1585710,0,0,1585723,1,1,6,NULL
-1585729,"In general, how would you rate your mental health, including your mood and your ability to think?","OverallHealth_GeneralMentalHealth","Overall Health",1585710,0,0,1585729,1,1,7,NULL
-1585735,"In general, how would you rate your satisfaction with your social activities and relationships?","OverallHealth_SocialSatisfaction","Overall Health",1585710,0,0,1585735,1,1,8,NULL
-1585741,"To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair?","OverallHealth_EverydayActivities","Overall Health",1585710,0,0,1585741,1,1,9,NULL
-1585747,"In the past 7 days, how would you rate your pain on average?","OverallHealth_AveragePain7Days","Overall Health",1585710,0,0,1585747,1,1,10,NULL
-1585748,"In the past 7 days, how would you rate your fatigue?","OverallHealth_AverageFatigue7Days","Overall Health",1585710,0,0,1585748,1,1,11,NULL
-1585754,"In general, please rate how well you carry out your usual social roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)","OverallHealth_GeneralSocial","Overall Health",1585710,0,0,1585754,1,1,12,NULL
-1585760,"In the past 7 days, how often have you been bothered by emotional problems such as feeling anxious, depressed or irritable?","OverallHealth_EmotionalProblem7Days","Overall Health",1585710,0,0,1585760,1,1,13,NULL
-1585766,"How confident are you filling out medical forms by yourself?","OverallHealth_MedicalFormConfidence","Overall Health",1585710,0,0,1585766,1,1,1,NULL
-1585772,"How often do you have someone help you read health-related materials?","OverallHealth_HealthMaterialAssistance","Overall Health",1585710,0,0,1585772,1,1,2,NULL
-1585778,"How often do you have problems learning about your medical condition because of difficulty understanding written information?","OverallHealth_DifficultUnderstandInfo","Overall Health",1585710,0,0,1585778,1,1,3,NULL
-1585784,"Have your menstrual periods stopped permanently?","OverallHealth_MenstrualStopped","Overall Health",1585710,0,0,1585784,1,1,14,NULL
+1585711,"In general, would you say your health is:","OverallHealth_GeneralHealth","Overall Health",1585710,0,0,"1585711",1,1,4,NULL
+1585717,"In general, would you say your quality of life is:","OverallHealth_GeneralQuality","Overall Health",1585710,0,0,"1585717",1,1,5,NULL
+1585723,"In general, how would you rate your physical health?","OverallHealth_GeneralPhysicalHealth","Overall Health",1585710,0,0,"1585723",1,1,6,NULL
+1585729,"In general, how would you rate your mental health, including your mood and your ability to think?","OverallHealth_GeneralMentalHealth","Overall Health",1585710,0,0,"1585729",1,1,7,NULL
+1585735,"In general, how would you rate your satisfaction with your social activities and relationships?","OverallHealth_SocialSatisfaction","Overall Health",1585710,0,0,"1585735",1,1,8,NULL
+1585741,"To what extent are you able to carry out your everyday physical activities such as walking, climbing stairs, carrying groceries, or moving a chair?","OverallHealth_EverydayActivities","Overall Health",1585710,0,0,"1585741",1,1,9,NULL
+1585747,"In the past 7 days, how would you rate your pain on average?","OverallHealth_AveragePain7Days","Overall Health",1585710,0,0,"1585747",1,1,10,NULL
+1585748,"In the past 7 days, how would you rate your fatigue?","OverallHealth_AverageFatigue7Days","Overall Health",1585710,0,0,"1585748",1,1,11,NULL
+1585754,"In general, please rate how well you carry out your usual social roles. (This includes activities at home, at work and in your community, and responsibilities as a parent, child, spouse, employee, friend, etc.)","OverallHealth_GeneralSocial","Overall Health",1585710,0,0,"1585754",1,1,12,NULL
+1585760,"In the past 7 days, how often have you been bothered by emotional problems such as feeling anxious, depressed or irritable?","OverallHealth_EmotionalProblem7Days","Overall Health",1585710,0,0,"1585760",1,1,13,NULL
+1585766,"How confident are you filling out medical forms by yourself?","OverallHealth_MedicalFormConfidence","Overall Health",1585710,0,0,"1585766",1,1,1,NULL
+1585772,"How often do you have someone help you read health-related materials?","OverallHealth_HealthMaterialAssistance","Overall Health",1585710,0,0,"1585772",1,1,2,NULL
+1585778,"How often do you have problems learning about your medical condition because of difficulty understanding written information?","OverallHealth_DifficultUnderstandInfo","Overall Health",1585710,0,0,"1585778",1,1,3,NULL
+1585784,"Have your menstrual periods stopped permanently?","OverallHealth_MenstrualStopped","Overall Health",1585710,0,0,"1585784",1,1,14,NULL
 1585789,"Why did your periods stop?","YesNone_MenstrualStoppedReason","Overall Health",1585710,0,1,"1585784.1585786.1585789",1,1,14,NULL
 1585789,"Why did your periods stop?","YesNone_MenstrualStoppedReason","Overall Health",1585710,0,1,"1585784.1585787.1585789",1,1,14,NULL
 1585791,"Have you ever had a hysterectomy (that is, surgery to remove your uterus or womb)?","OverallHealth_HysterectomyHistory","Overall Health",1585710,0,1,"1585784.1585786.1585791",1,1,14,NULL
 1585796,"Have you ever had an ovary removed?","OverallHealth_OvaryRemovalHistory","Overall Health",1585710,0,1,"1585784.1585786.1585791.1585792.1585796",1,1,14,NULL
 1585796,"Have you ever had an ovary removed?","OverallHealth_OvaryRemovalHistory","Overall Health",1585710,0,1,"1585784.1585786.1585791.1585794.1585796",1,1,14,NULL
 1585796,"Have you ever had an ovary removed?","OverallHealth_OvaryRemovalHistory","Overall Health",1585710,0,1,"1585784.1585786.1585791.903079.1585796",1,1,14,NULL
-1585803,"Have you had a transplant of any type?","OverallHealth_OrganTransplant","Overall Health",1585710,0,0,1585803,1,1,15,NULL
+1585803,"Have you had a transplant of any type?","OverallHealth_OrganTransplant","Overall Health",1585710,0,0,"1585803",1,1,15,NULL
 1585806,"If yes, please check all that apply","OrganTransplant_OrganTransplantDescription","Overall Health",1585710,0,1,"1585803.1585804.1585806",1,1,15,NULL
 1585811,"Are you currently pregnant?","Pregnancy_1PregnancyStatus","Overall Health",1585710,0,1,"1585784.1585785.1585811",1,1,14,NULL
 1585811,"Are you currently pregnant?","Pregnancy_1PregnancyStatus","Overall Health",1585710,0,1,"1585784.1585788.1585811",1,1,14,NULL
-1585815,"Have you traveled outside of the country within the past 6 months?","OverallHealth_OutsideTravel6Month","Overall Health",1585710,0,0,1585815,1,1,16,NULL
-1585838,"What terms best express how you describe your gender identity? (Check all that apply)","Gender_GenderIdentity","The Basics",1586134,0,0,1585838,1,1,4,NULL
-1585845,"What was your biological sex assigned at birth?","BiologicalSexAtBirth_SexAtBirth","The Basics",1586134,0,0,1585845,1,1,3,NULL
-1585852,"Have you ever served on active duty in the United States Armed forces, either in the regular military or in a National Guard or military reserve unit?","ActiveDuty_AvtiveDutyServeStatus","The Basics",1586134,0,0,1585852,1,1,7,NULL
-1585857,"Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?","Smoking_100CigsLifetime","Lifestyle",1585855,0,0,1585857,1,1,1,NULL
+1585815,"Have you traveled outside of the country within the past 6 months?","OverallHealth_OutsideTravel6Month","Overall Health",1585710,0,0,"1585815",1,1,16,NULL
+1585838,"What terms best express how you describe your gender identity? (Check all that apply)","Gender_GenderIdentity","The Basics",1586134,0,0,"1585838",1,1,4,NULL
+1585845,"What was your biological sex assigned at birth?","BiologicalSexAtBirth_SexAtBirth","The Basics",1586134,0,0,"1585845",1,1,3,NULL
+1585852,"Have you ever served on active duty in the United States Armed forces, either in the regular military or in a National Guard or military reserve unit?","ActiveDuty_AvtiveDutyServeStatus","The Basics",1586134,0,0,"1585852",1,1,7,NULL
+1585857,"Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?","Smoking_100CigsLifetime","Lifestyle",1585855,0,0,"1585857",1,1,1,NULL
 1585860,"Do you now smoke cigarettes every day, some days, or not at all?","Smoking_SmokeFrequency","Lifestyle",1585855,0,1,"1585857.1585858.1585860",1,1,1,NULL
 1585867,"In the past, have you ever made a serious attempt to quit smoking? That is, have you stopped smoking for at least one day or longer because you were trying to quit?","Smoking_SeriousQuitAttempt","Lifestyle",1585855,0,1,"1585857.1585858.1585867",1,1,1,NULL
-1585879,"How many years have you lived at your current address?","LivingSituation_HowManyLivingYears","The Basics",1586134,0,0,1585879,1,1,13,NULL
-1585886,"In the past 6 months, have you been worried or concerned about NOT having a place to live?","LivingSituation_StableHouseConcern","The Basics",1586134,0,0,1585886,1,1,14,NULL
-1585892,"What is your current marital status?","MaritalStatus_CurrentMaritalStatus","The Basics",1586134,0,0,1585892,1,1,8,NULL
-1585899,"Which of the following best represents how you think of yourself.","TheBasics_SexualOrientation","The Basics",1586134,0,0,1585899,1,1,5,NULL
-1585940,"What is the highest grade or year of school you completed?","EducationLevel_HighestGrade","The Basics",1586134,0,0,1585940,1,1,6,NULL
-1585952,"What is your current employment status? Please select 1 or more of these categories.","Employment_EmploymentStatus","The Basics",1586134,0,0,1585952,1,1,10,NULL
-1586135,"In what country were you born?","TheBasics_Birthplace","The Basics",1586134,0,0,1586135,1,1,1,NULL
-1586140,"Which categories describe you? Select all that apply. Note, you may select more than one group.","Race_WhatRaceEthnicity","The Basics",1586134,0,0,1586140,1,1,2,NULL
+1585879,"How many years have you lived at your current address?","LivingSituation_HowManyLivingYears","The Basics",1586134,0,0,"1585879",1,1,19,NULL
+1585886,"In the past 6 months, have you been worried or concerned about NOT having a place to live?","LivingSituation_StableHouseConcern","The Basics",1586134,0,0,"1585886",1,1,20,NULL
+1585892,"What is your current marital status?","MaritalStatus_CurrentMaritalStatus","The Basics",1586134,0,0,"1585892",1,1,8,NULL
+1585899,"Which of the following best represents how you think of yourself.","TheBasics_SexualOrientation","The Basics",1586134,0,0,"1585899",1,1,5,NULL
+1585940,"What is the highest grade or year of school you completed?","EducationLevel_HighestGrade","The Basics",1586134,0,0,"1585940",1,1,6,NULL
+1585952,"What is your current employment status? Please select 1 or more of these categories.","Employment_EmploymentStatus","The Basics",1586134,0,0,"1585952",1,1,16,NULL
+1586135,"In what country were you born?","TheBasics_Birthplace","The Basics",1586134,0,0,"1586135",1,1,1,NULL
+1586140,"Which categories describe you? Select all that apply. Note, you may select more than one group.","Race_WhatRaceEthnicity","The Basics",1586134,0,0,"1586140",1,1,2,NULL
 1586151,"Asian (For example: Asian Indian, Chinese, Filipino, Japanese, Korean, Vietnamese, etc.)","Asian_AsianSpecific","The Basics",1586134,0,1,"1586140.1586142.1586151",0,1,2,NULL
 1586152,"Black, African American, or African (For example: African American, Ethiopian, Haitian, Jamaican, Nigerian, Somali, etc.)","Black_BlackSpecific","The Basics",1586134,0,1,"1586140.1586143.1586152",0,1,2,NULL
 1586155,"White (For example: English, European, French, German, Irish, Italian, Polish, etc.)","White_WhiteSpecific","The Basics",1586134,0,1,"1586140.1586146.1586155",0,1,2,NULL
 1586156,"Hispanic, Latino, or Spanish (For example: Colombian, Cuban, Dominican, Mexican or Mexican American, Puerto Rican, Salvadoran, etc.)","Hispanic_HispanicSpecific","The Basics",1586134,0,1,"1586140.1586147.1586156",0,1,2,NULL
-1586166,"Have you ever used an electronic nicotine product, even one or two times? (Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, epipes, and e-hookahs.)","ElectronicSmoking_ElectricSmokeParticipant","Lifestyle",1585855,0,0,1586166,1,1,2,NULL
+1586166,"Have you ever used an electronic nicotine product, even one or two times? (Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, epipes, and e-hookahs.)","ElectronicSmoking_ElectricSmokeParticipant","Lifestyle",1585855,0,0,"1586166",1,1,2,NULL
 1586169,"Do you now use electronic nicotine products…","ElectronicSmoking_ElectricSmokeFrequency","Lifestyle",1585855,0,1,"1586166.1586167.1586169",1,1,2,NULL
-1586174,"Have you ever smoked a traditional cigar, cigarillo, or filtered cigar, even one of two puffs?","CigarSmoking_CigarSmokeParticipant","Lifestyle",1585855,0,0,1586174,1,1,3,NULL
+1586174,"Have you ever smoked a traditional cigar, cigarillo, or filtered cigar, even one of two puffs?","CigarSmoking_CigarSmokeParticipant","Lifestyle",1585855,0,0,"1586174",1,1,3,NULL
 1586177,"Do you now smoke a traditional cigar, cigarillo, or filtered cigar…","CigarSmoking_CurrentCigarFrequency","Lifestyle",1585855,0,1,"1586174.1586175.1586177",1,1,3,NULL
-1586182,"Have you ever smoked tobacco in a hookah, even one or two puffs","HookahSmoking_HookahSmokeParticipant","Lifestyle",1585855,0,0,1586182,1,1,4,NULL
+1586182,"Have you ever smoked tobacco in a hookah, even one or two puffs","HookahSmoking_HookahSmokeParticipant","Lifestyle",1585855,0,0,"1586182",1,1,4,NULL
 1586185,"Do you smoke hookah…","HookahSmoking_CurrentHookahFrequency","Lifestyle",1585855,0,1,"1586182.1586183.1586185",1,1,4,NULL
-1586190,"Have you ever used smokeless tobacco products, even one or two times? (Smokeless tobacco products include snus pouches, Skoal Bandits, loose snus, moist snuff, dip, spit, and chewing tobacco.)","SmokelessTobacco_SmokelessTobaccoParticipant","Lifestyle",1585855,0,0,1586190,1,1,5,NULL
+1586190,"Have you ever used smokeless tobacco products, even one or two times? (Smokeless tobacco products include snus pouches, Skoal Bandits, loose snus, moist snuff, dip, spit, and chewing tobacco.)","SmokelessTobacco_SmokelessTobaccoParticipant","Lifestyle",1585855,0,0,"1586190",1,1,5,NULL
 1586193,"Do you now use smokeless tobacco products…","SmokelessTobacco_SmokelessTobaccoFrequency","Lifestyle",1585855,0,1,"1586190.1586191.1586193",1,1,5,NULL
-1586198,"In your entire life, have you had at least 1 drink of any kind of alcohol, not counting small tastes or sips? (By a “drink,” we mean a can or bottle of beer, a glass of wine or a wine cooler, a shot of liquor, or a mixed drink with liquor in it.)","Alcohol_AlcoholParticipant","Lifestyle",1585855,0,0,1586198,1,1,6,NULL
+1586198,"In your entire life, have you had at least 1 drink of any kind of alcohol, not counting small tastes or sips? (By a “drink,” we mean a can or bottle of beer, a glass of wine or a wine cooler, a shot of liquor, or a mixed drink with liquor in it.)","Alcohol_AlcoholParticipant","Lifestyle",1585855,0,0,"1586198",1,1,6,NULL
 1586201,"How often did you have a drink containing alcohol in the past year?","Alcohol_DrinkFrequencyPastYear","Lifestyle",1585855,0,1,"1586198.1586199.1586201",1,1,6,NULL
 1586207,"On a typical day when you drink, how many drinks do you have?","Alcohol_AverageDailyDrinkCount","Lifestyle",1585855,0,1,"1586198.1586199.1586201.1586203.1586207",1,1,6,NULL
 1586207,"On a typical day when you drink, how many drinks do you have?","Alcohol_AverageDailyDrinkCount","Lifestyle",1585855,0,1,"1586198.1586199.1586201.1586204.1586207",1,1,6,NULL
@@ -417,6 +417,12 @@
 1586213,"How often did you have six or more drinks on one occasion in the past year?","Alcohol_6orMoreDrinksOccurence","Lifestyle",1585855,0,1,"1586198.1586199.1586201.1586204.1586213",1,1,6,NULL
 1586213,"How often did you have six or more drinks on one occasion in the past year?","Alcohol_6orMoreDrinksOccurence","Lifestyle",1585855,0,1,"1586198.1586199.1586201.1586205.1586213",1,1,6,NULL
 1586213,"How often did you have six or more drinks on one occasion in the past year?","Alcohol_6orMoreDrinksOccurence","Lifestyle",1585855,0,1,"1586198.1586199.1586201.1586206.1586213",1,1,6,NULL
+903573,"Are you deaf, or do you have serious difficulty hearing [HHS.ACA Section 4302]","69856-3","The Basics",1586134,0,0,"903573",1,1,10,NULL
+903574,"Are you blind, or do you have serious difficulty seeing, even when wearing glasses [HHS.ACA Section 4302]","69857-1","The Basics",1586134,0,0,"903574",1,1,11,NULL
+903575,"Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions [HHS.ACA Section 4302]","69858-9","The Basics",1586134,0,0,"903575",1,1,12,NULL
+903576,"Do you have serious difficulty walking or climbing stairs [HHS.ACA Section 4302]","69859-7","The Basics",1586134,0,0,"903576",1,1,13,NULL
+903577,"Do you have difficulty dressing or bathing [HHS.ACA Section 4302]","69860-5","The Basics",1586134,0,0,"903577",1,1,14,NULL
+903578,"Because of a physical, mental, or emotional condition, do you have difficulty doing errands alone such as visiting a physician's office or shopping [HHS.ACA Section 4302]","69861-3","The Basics",1586134,0,0,"903578",1,1,15,NULL
 43528377,"Other Conditions: Allergies","OtherConditions_Allergies","Family Health History",43528698,20,1,"43529638.43528377.43528377",0,0,0,NULL
 43528385,"Family Health History Aware: Alot","FamilyMedicalHistoryAware_Alot","Family Health History",43528698,20,1,"43528652.43528385.43528385",0,0,0,NULL
 43528397,"Nervous Condition: Amyotrophic Lateral Sclerosis","NervousCondition_AmyotrophicLateralSclerosis","Family Health History",43528698,20,1,"43529272.43528397.43528397",0,0,0,NULL
@@ -439,7 +445,7 @@
 43528512,"Please indicate if your mother has ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_MotherCancerCondition","Family Health History",43528698,40740,1,"43528764.43528512.43528512",1,0,0,NULL
 43528513,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingCancerCondition","Family Health History",43528698,40740,1,"43528649.43528513.43528513",1,0,0,NULL
 43528514,"Please indicate if your son(s) has/have ever been diagnosed with any of these cancer conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonCancerCondition","Family Health History",43528698,40740,1,"43528651.43528514.43528514",1,0,0,NULL
-43528515,"Diagnosed Health Condition: Cancer Condition","DiagnosedHealthCondition_CancerCondition","Family Health History",43528698,20,0,43528515,0,0,2,NULL
+43528515,"Diagnosed Health Condition: Cancer Condition","DiagnosedHealthCondition_CancerCondition","Family Health History",43528698,20,0,"43528515",0,0,2,NULL
 43528528,"Hearing Vision Conditions: Cataracts","HearingVisionConditions_Cataracts","Family Health History",43528698,20,1,"43529966.43528528.43528528",0,0,0,NULL
 43528539,"Cancer Conditions: Cervical Cancer","CancerConditions_CervicalCancer","Family Health History",43528698,20,1,"43528515.43528539.43528539",0,0,0,NULL
 43528558,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these circulatory conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_DaughterCircCondition","Family Health History",43528698,40740,1,"43528650.43528558.43528558",1,0,0,NULL
@@ -455,18 +461,18 @@
 43528630,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_GrandparentDigestive","Family Health History",43528698,40740,1,"43528765.43528630.43528630",1,0,0,NULL
 43528631,"Please indicate if your mother has ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_MotherDigestiveCondition","Family Health History",43528698,40740,1,"43528764.43528631.43528631",1,0,0,NULL
 43528633,"Please indicate if your son(s) has/have ever been diagnosed with any of these digestive conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonDigestiveCondition","Family Health History",43528698,40740,1,"43528651.43528633.43528633",1,0,0,NULL
-43528634,"Diagnosed Health Condition: Digestive Condition","DiagnosedHealthCondition_DigestiveCondition","Family Health History",43528698,20,0,43528634,0,0,4,NULL
-43528649,"Sibling History: Sibling Diagnosis History","SiblingHistory_SiblingDiagnosisHistory","Family Health History",43528698,20,0,43528649,0,0,15,NULL
-43528650,"Child History: Daughter Diagnosis History","ChildHistory_DaughterDiagnosisHistory","Family Health History",43528698,20,0,43528650,0,0,17,NULL
-43528651,"Child History: Son Diagnosis History","ChildHistory_SonDiagnosisHistory","Family Health History",43528698,20,0,43528651,0,0,16,NULL
-43528652,"How much do you know about illnesses or health problems for your parents, grandparents, brothers, sisters, and/or children?","FamilyHistory_FamilyMedicalHistoryAware","Family Health History",43528698,41600,0,43528652,1,1,1,NULL
-43528660,"DURING THE PAST 12 MONTHS, have you seen or talked to a general doctor who treats a variety of illnesses (a physician in general practice, primary care, family medicine, or internal medicine)?","HealthAdvice_SpokenToGeneralDoctor","Healthcare Access & Utilization",43528895,0,0,43528660,1,1,6,NULL
-43528661,"DURING THE PAST 12 MONTHS, have you seen or talked to A medical doctor who specializes in a particular medical disease or problem (other than obstetrician/gynecologist, psychiatrist, or ophthalmologist)?","HealthAdvice_SpokenToMedicalSpecialist","Healthcare Access & Utilization",43528895,0,0,43528661,1,1,15,NULL
-43528662,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Dental care (including check ups)","CantAffordCare_DentalCare","Healthcare Access & Utilization",43528895,0,0,43528662,1,1,32,NULL
-43528663,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Emergency care","CantAffordCare_EmergencyCare","Healthcare Access & Utilization",43528895,0,0,43528663,1,1,31,NULL
-43528664,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a regular doctor or general health provider (in primary care, general practice, internal medicine, family medicine)","CantAffordCare_HealthcareProvider","Healthcare Access & Utilization",43528895,0,0,43528664,1,1,34,NULL
-43528665,"DURING THE PAST 12 MONTHS, were any of the following true for you: You bought prescription drugs from another country to save money","CantAffordCare_BoughtRxFromOtherCountry","Healthcare Access & Utilization",43528895,0,0,43528665,1,1,42,NULL
-43528666,"DURING THE PAST 12 MONTHS, were any of the following true for you: You used alternative therapies to save money","CantAffordCare_AlternativeTherapies","Healthcare Access & Utilization",43528895,0,0,43528666,1,1,43,NULL
+43528634,"Diagnosed Health Condition: Digestive Condition","DiagnosedHealthCondition_DigestiveCondition","Family Health History",43528698,20,0,"43528634",0,0,4,NULL
+43528649,"Sibling History: Sibling Diagnosis History","SiblingHistory_SiblingDiagnosisHistory","Family Health History",43528698,20,0,"43528649",0,0,15,NULL
+43528650,"Child History: Daughter Diagnosis History","ChildHistory_DaughterDiagnosisHistory","Family Health History",43528698,20,0,"43528650",0,0,17,NULL
+43528651,"Child History: Son Diagnosis History","ChildHistory_SonDiagnosisHistory","Family Health History",43528698,20,0,"43528651",0,0,16,NULL
+43528652,"How much do you know about illnesses or health problems for your parents, grandparents, brothers, sisters, and/or children?","FamilyHistory_FamilyMedicalHistoryAware","Family Health History",43528698,41600,0,"43528652",1,1,1,NULL
+43528660,"DURING THE PAST 12 MONTHS, have you seen or talked to a general doctor who treats a variety of illnesses (a physician in general practice, primary care, family medicine, or internal medicine)?","HealthAdvice_SpokenToGeneralDoctor","Healthcare Access & Utilization",43528895,0,0,"43528660",1,1,6,NULL
+43528661,"DURING THE PAST 12 MONTHS, have you seen or talked to A medical doctor who specializes in a particular medical disease or problem (other than obstetrician/gynecologist, psychiatrist, or ophthalmologist)?","HealthAdvice_SpokenToMedicalSpecialist","Healthcare Access & Utilization",43528895,0,0,"43528661",1,1,15,NULL
+43528662,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Dental care (including check ups)","CantAffordCare_DentalCare","Healthcare Access & Utilization",43528895,0,0,"43528662",1,1,32,NULL
+43528663,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Emergency care","CantAffordCare_EmergencyCare","Healthcare Access & Utilization",43528895,0,0,"43528663",1,1,31,NULL
+43528664,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a regular doctor or general health provider (in primary care, general practice, internal medicine, family medicine)","CantAffordCare_HealthcareProvider","Healthcare Access & Utilization",43528895,0,0,"43528664",1,1,34,NULL
+43528665,"DURING THE PAST 12 MONTHS, were any of the following true for you: You bought prescription drugs from another country to save money","CantAffordCare_BoughtRxFromOtherCountry","Healthcare Access & Utilization",43528895,0,0,"43528665",1,1,42,NULL
+43528666,"DURING THE PAST 12 MONTHS, were any of the following true for you: You used alternative therapies to save money","CantAffordCare_AlternativeTherapies","Healthcare Access & Utilization",43528895,0,0,"43528666",1,1,43,NULL
 43528668,"Cancer Conditions: Endocrine Cancer","CancerConditions_EndocrineCancer","Family Health History",43528698,20,1,"43528515.43528668.43528668",0,0,0,NULL
 43528674,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_DaughterEndoCondition","Family Health History",43528698,40740,1,"43528650.43528674.43528674",1,0,0,NULL
 43528675,"Please indicate if your father has ever been diagnosed with any of these hormone/endocrine conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_FatherEndocrineCondition","Family Health History",43528698,40740,1,"43528763.43528675.43528675",1,0,0,NULL
@@ -479,14 +485,14 @@
 43528712,"Skeletal Muscular Condition: Fibromyalgia","SkeletalMuscularCondition_Fibromyalgia","Family Health History",43528698,20,1,"702786.43528712.43528712",0,0,0,NULL
 43528731,"Hearing Vision Conditions: Glaucoma","HearingVisionConditions_Glaucoma","Family Health History",43528698,20,1,"43529966.43528731.43528731",0,0,0,NULL
 43528741,"Skeletal Muscular Condition: Gout","SkeletalMuscularCondition_Gout","Family Health History",43528698,20,1,"702786.43528741.43528741",0,0,0,NULL
-43528757,"Has a doctor or health care provider ever told you that you have or had any of the following Bone, joint and muscle conditions?  (select all that apply)","SkeletalMuscular_SkeletalMuscularConditions","Personal Medical History",43529712,0,0,43528757,1,1,7,NULL
-43528758," Has a doctor or health care provider ever told you that you have or had any of the following hormone/endocrine conditions (select all that apply)","Endocrine_EndocrineConditions","Personal Medical History",43529712,0,0,43528758,1,1,5,NULL
-43528759,"Has a doctor or health care provider ever told you that you have or had any of the following hearing or vision problems? (select all that apply)","HearingVision_HearingVisionConditions","Personal Medical History",43529712,0,0,43528759,1,1,8,NULL
-43528760,"Has a doctor or health care provider ever told you that you have or had any of the following cancers? (select all that apply)","Cancer_CancerConditions","Personal Medical History",43529712,0,0,43528760,1,1,3,NULL
-43528761,"Hormone/Endocrine Conditions","PersonalMedicalHistory_HormoneEndocrine","Family Health History",43528698,20,0,43528761,0,0,5,NULL
-43528763,"Parent History: Father Diagnosis History","ParentHistory_FatherDiagnosisHistory","Family Health History",43528698,20,0,43528763,0,0,14,NULL
-43528764,"Parent History: Mother Diagnosis History","ParentHistory_MotherDiagnosisHistory","Family Health History",43528698,20,0,43528764,0,0,13,NULL
-43528765,"Grandparent History: Grandparent Diagnosis History","GrandparentHistory_GrandparentDiagnosisHistory","Family Health History",43528698,20,0,43528765,0,0,18,NULL
+43528757,"Has a doctor or health care provider ever told you that you have or had any of the following Bone, joint and muscle conditions?  (select all that apply)","SkeletalMuscular_SkeletalMuscularConditions","Personal Medical History",43529712,0,0,"43528757",1,1,7,NULL
+43528758," Has a doctor or health care provider ever told you that you have or had any of the following hormone/endocrine conditions (select all that apply)","Endocrine_EndocrineConditions","Personal Medical History",43529712,0,0,"43528758",1,1,5,NULL
+43528759,"Has a doctor or health care provider ever told you that you have or had any of the following hearing or vision problems? (select all that apply)","HearingVision_HearingVisionConditions","Personal Medical History",43529712,0,0,"43528759",1,1,8,NULL
+43528760,"Has a doctor or health care provider ever told you that you have or had any of the following cancers? (select all that apply)","Cancer_CancerConditions","Personal Medical History",43529712,0,0,"43528760",1,1,3,NULL
+43528761,"Hormone/Endocrine Conditions","PersonalMedicalHistory_HormoneEndocrine","Family Health History",43528698,20,0,"43528761",0,0,5,NULL
+43528763,"Parent History: Father Diagnosis History","ParentHistory_FatherDiagnosisHistory","Family Health History",43528698,20,0,"43528763",0,0,14,NULL
+43528764,"Parent History: Mother Diagnosis History","ParentHistory_MotherDiagnosisHistory","Family Health History",43528698,20,0,"43528764",0,0,13,NULL
+43528765,"Grandparent History: Grandparent Diagnosis History","GrandparentHistory_GrandparentDiagnosisHistory","Family Health History",43528698,20,0,"43528765",0,0,18,NULL
 43528766,"Are you currently prescribed medications and/or receiving treatment for Bladder cancer?","Cancer_RxMedsforBladderCancer","Personal Medical History",43529712,0,1,"43528760.43528472.43528766",1,1,3,NULL
 43528767,"Are you currently prescribed medications and/or receiving treatment for Blood or soft tissue cancer?","Cancer_RxMedsforBloodCancer","Personal Medical History",43529712,0,1,"43528760.1384404.43528767",1,1,3,NULL
 43528768,"Are you currently prescribed medications and/or receiving treatment for Bone cancer?","Cancer_RxMedsforBoneCancer","Personal Medical History",43529712,0,1,"43528760.43528480.43528768",1,1,3,NULL
@@ -614,7 +620,7 @@
 43529155,"Please indicate if your mother has ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_MotherKidneyCondition","Family Health History",43528698,40740,1,"43528764.43529155.43529155",1,0,0,NULL
 43529156,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingKidneyCondition","Family Health History",43528698,40740,1,"43528649.43529156.43529156",1,0,0,NULL
 43529157,"Please indicate if your son(s) has/have ever been diagnosed with any of these kidney conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonKidneyCondition","Family Health History",43528698,40740,1,"43528651.43529157.43529157",1,0,0,NULL
-43529158,"Diagnosed Health Condition: Kidney Condition","DiagnosedHealthCondition_KidneyCondition","Family Health History",43528698,20,0,43529158,0,0,6,NULL
+43529158,"Diagnosed Health Condition: Kidney Condition","DiagnosedHealthCondition_KidneyCondition","Family Health History",43528698,20,0,"43529158",0,0,6,NULL
 43529162,"Kidney Condition: Kidney Stones","KidneyCondition_KidneyStones","Family Health History",43528698,20,1,"43529158.43529162.43529162",0,0,0,NULL
 43529170,"Other Conditions: Liver Condition","DiagnosedHealthCondition_LiverCondition","Family Health History",43528698,20,1,"43529638.43529170.43529170",0,0,0,NULL
 43529184,"Cancer Conditions: Lung Cancer","CancerConditions_LungCancer","Family Health History",43528698,20,1,"43528515.43529184.43529184",0,0,0,NULL
@@ -624,7 +630,7 @@
 43529214,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_GrandparentMental","Family Health History",43528698,40740,1,"43528765.43529214.43529214",1,0,0,NULL
 43529215,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingMentalCondition","Family Health History",43528698,40740,1,"43528649.43529215.43529215",1,0,0,NULL
 43529216,"Please indicate if your son(s) has/have ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonMentalCondition","Family Health History",43528698,40740,1,"43528651.43529216.43529216",1,0,0,NULL
-43529217,"Diagnosed Health Condition: Mental Condition","DiagnosedHealthCondition_MentalCondition","Family Health History",43528698,20,0,43529217,0,0,9,NULL
+43529217,"Diagnosed Health Condition: Mental Condition","DiagnosedHealthCondition_MentalCondition","Family Health History",43528698,20,0,"43529217",0,0,9,NULL
 43529218,"Please indicate if your father has ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_FatherMentalCondition","Family Health History",43528698,40740,1,"43528763.43529218.43529218",1,0,0,NULL
 43529225,"Nervous Condition: Migraine Headaches","NervousCondition_MigraineHeadaches","Family Health History",43528698,20,1,"43529272.43529225.43529225",0,0,0,NULL
 43529248,"Nervous Condition: Multiple Sclerosis","NervousCondition_MultipleSclerosis","Family Health History",43528698,20,1,"43529272.43529248.43529248",0,0,0,NULL
@@ -633,7 +639,7 @@
 43529269,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_GrandparentNervous","Family Health History",43528698,40740,1,"43528765.43529269.43529269",1,0,0,NULL
 43529270,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingNervousCondition","Family Health History",43528698,40740,1,"43528649.43529270.43529270",1,0,0,NULL
 43529271,"Please indicate if your son(s) has/have ever been diagnosed with any of these nervous conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonNervousCondition","Family Health History",43528698,40740,1,"43528651.43529271.43529271",1,0,0,NULL
-43529272,"Diagnosed Health Condition: Nervous Condition","DiagnosedHealthCondition_NervousCondition","Family Health History",43528698,20,0,43529272,0,0,8,NULL
+43529272,"Diagnosed Health Condition: Nervous Condition","DiagnosedHealthCondition_NervousCondition","Family Health History",43528698,20,0,"43529272",0,0,8,NULL
 43529574,"Family Health History Aware: None","FamilyMedicalHistoryAware_None","Family Health History",43528698,20,1,"43528652.43529574.43529574",0,0,0,NULL
 43529594,"Other Conditions: Obesity","OtherConditions_Obesity","Family Health History",43528698,20,1,"43529638.43529594.43529594",0,0,0,NULL
 43529609,"Skeletal Muscular Condition: Osteoarthritis","SkeletalMuscularCondition_Osteoarthritis","Family Health History",43528698,20,1,"702786.43529609.43529609",0,0,0,NULL
@@ -646,8 +652,7 @@
 43529635,"Please indicate if your mother has ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_MotherOtherHealth","Family Health History",43528698,40740,1,"43528764.43529635.43529635",1,0,0,NULL
 43529636,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingOtherHlthCondition","Family Health History",43528698,40740,1,"43528649.43529636.43529636",1,0,0,NULL
 43529637,"Please indicate if your son(s) has/have ever been diagnosed with any of these other health conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonOtherHealthCondition","Family Health History",43528698,40740,1,"43528651.43529637.43529637",1,0,0,NULL
-43529638,"Other Conditions","PersonalMedicalHistory_OtherMedical","Family Health History",43528698,20,0,43529638,0,0,12,NULL
-43529633,"Other Condition: Father Free Text Box","OtherCondition_FatherFreeTextBox","Family Health History",43528698,4340,1,"43528763.43529633.43529633",0,0,0,NULL
+43529638,"Other Conditions","PersonalMedicalHistory_OtherMedical","Family Health History",43528698,20,0,"43529638",0,0,12,NULL
 43529655,"Diagnosed Health Condition: Daughter No Selection","DiagnosedHealthCondition_DaughterNoSelection","Family Health History",43528698,40360,1,"43528650.43529655.43529655",0,0,0,NULL
 43529656,"Diagnosed Health Condition: Father No Selection","DiagnosedHealthCondition_FatherNoSelection","Family Health History",43528698,40360,1,"43528763.43529656.43529656",0,0,0,NULL
 43529657,"Diagnosed Health Condition: Grandparent No Selection","DiagnosedHealthCondition_GrandparentNoSelection","Family Health History",43528698,40360,1,"43528765.43529657.43529657",0,0,0,NULL
@@ -664,7 +669,7 @@
 43529764,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_GrandparentRespCondition","Family Health History",43528698,40740,1,"43528765.43529764.43529764",1,0,0,NULL
 43529765,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingRespCondition","Family Health History",43528698,40740,1,"43528649.43529765.43529765",1,0,0,NULL
 43529766,"Please indicate if your son(s) has/have ever been diagnosed with any of these respiratory conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonRespiratoryCondition","Family Health History",43528698,40740,1,"43528651.43529766.43529766",1,0,0,NULL
-43529767,"Diagnosed Health Condition: Respiratory Condition","DiagnosedHealthCondition_RespiratoryCondition","Family Health History",43528698,20,0,43529767,0,0,7,NULL
+43529767,"Diagnosed Health Condition: Respiratory Condition","DiagnosedHealthCondition_RespiratoryCondition","Family Health History",43528698,20,0,"43529767",0,0,7,NULL
 43529778,"Skeletal Muscular Condition: Rheumatoid Arthritis","SkeletalMuscularCondition_RheumatoidArthritis","Family Health History",43528698,20,1,"702786.43529778.43529778",0,0,0,NULL
 43529811,"Please indicate if your daughter(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_DaughterSkelMuscCondition","Family Health History",43528698,40740,1,"43528650.43529811.43529811",1,0,0,NULL
 43529812,"Please indicate if your grandparent(s) has/have ever been diagnosed with any of these muscular conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_GrandparentSkelMusc","Family Health History",43528698,40740,1,"43528765.43529812.43529812",1,0,0,NULL
@@ -679,13 +684,13 @@
 43529874,"Circulatory Conditions: Stroke","CirculatoryConditions_Stroke","Family Health History",43528698,20,1,"1384639.43529874.43529874",0,0,0,NULL
 43529887,"Sudden death ***Include in Family History module ONLY","CirculatoryConditions_SuddenDeath","Family Health History",43528698,20,1,"1384639.43529887.43529887",0,0,0,NULL
 43529893,"Skeletal Muscular Condition: Systemic Lupus","SkeletalMuscularCondition_SystemicLupus","Family Health History",43528698,20,1,"702786.43529893.43529893",0,0,0,NULL
-43529899,"How often have you either delayed or not gone to see doctors or health care providers because they were different from you in any of these ways?","HealthProviderRaceReligion_DelayedOrNoCare","Healthcare Access & Utilization",43528895,0,0,43529899,1,1,46,NULL
-43529901,"How important is it to you that your doctors or health care providers understand or are similar to you in any of these ways? Would you say...","HealthProviderRaceReligion_HowImportant","Healthcare Access & Utilization",43528895,0,0,43529901,1,1,44,NULL
-43529902,"How often were you able to see doctors or health care providers who were similar to you in any of these ways? Would you say…","HealthProviderRaceReligion_HowOften","Healthcare Access & Utilization",43528895,0,0,43529902,1,1,45,NULL
-43529903,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t get child care.","DelayedMedicalCare_ChildCare","Healthcare Access & Utilization",43528895,0,0,43529903,1,1,24,NULL
-43529904,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You provide care to an adult and could not leave him/her.","DelayedMedicalCare_ElderlyCare","Healthcare Access & Utilization",43528895,0,0,43529904,1,1,25,NULL
-43529905,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t get time off work.","DelayedMedicalCare_TimeOffWork","Healthcare Access & Utilization",43528895,0,0,43529905,1,1,23,NULL
-43529906,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Didn’t have transportation?","DelayedMedicalCare_Transportation","Healthcare Access & Utilization",43528895,0,0,43529906,1,1,20,NULL
+43529899,"How often have you either delayed or not gone to see doctors or health care providers because they were different from you in any of these ways?","HealthProviderRaceReligion_DelayedOrNoCare","Healthcare Access & Utilization",43528895,0,0,"43529899",1,1,46,NULL
+43529901,"How important is it to you that your doctors or health care providers understand or are similar to you in any of these ways? Would you say...","HealthProviderRaceReligion_HowImportant","Healthcare Access & Utilization",43528895,0,0,"43529901",1,1,44,NULL
+43529902,"How often were you able to see doctors or health care providers who were similar to you in any of these ways? Would you say…","HealthProviderRaceReligion_HowOften","Healthcare Access & Utilization",43528895,0,0,"43529902",1,1,45,NULL
+43529903,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t get child care.","DelayedMedicalCare_ChildCare","Healthcare Access & Utilization",43528895,0,0,"43529903",1,1,24,NULL
+43529904,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You provide care to an adult and could not leave him/her.","DelayedMedicalCare_ElderlyCare","Healthcare Access & Utilization",43528895,0,0,"43529904",1,1,25,NULL
+43529905,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t get time off work.","DelayedMedicalCare_TimeOffWork","Healthcare Access & Utilization",43528895,0,0,"43529905",1,1,23,NULL
+43529906,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Didn’t have transportation?","DelayedMedicalCare_Transportation","Healthcare Access & Utilization",43528895,0,0,"43529906",1,1,20,NULL
 43529909,"Cancer Conditions: Thyroid Cancer","CancerConditions_ThyroidCancer","Family Health History",43528698,20,1,"43528515.43529909.43529909",0,0,0,NULL
 43529925,"Endocrine Condition: Type 1 Diabetes","EndocrineCondition_Type1Diabetes","Family Health History",43528698,20,1,"43528761.43529925.43529925",0,0,0,NULL
 43529934,"Endocrine Condition: Type 2 Diabetes","EndocrineCondition_Type2Diabetes","Family Health History",43528698,20,1,"43528761.43529934.43529934",0,0,0,NULL
@@ -695,14 +700,14 @@
 43529963,"Please indicate if your mother has ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_MotherVisionCondition","Family Health History",43528698,40740,1,"43528764.43529963.43529963",1,0,0,NULL
 43529964,"Please indicate if your brothers and/or sisters [people with the same mother and/or father as you] have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SiblingVisionCondition","Family Health History",43528698,40740,1,"43528649.43529964.43529964",1,0,0,NULL
 43529965,"Please indicate if your son(s) has/have ever been diagnosed with any of these vision conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_SonVisionCondition","Family Health History",43528698,40740,1,"43528651.43529965.43529965",1,0,0,NULL
-43529966,"Diagnosed Health Condition: Vision Condition","DiagnosedHealthCondition_VisionCondition","Family Health History",43528698,20,0,43529966,0,0,11,NULL
+43529966,"Diagnosed Health Condition: Vision Condition","DiagnosedHealthCondition_VisionCondition","Family Health History",43528698,20,0,"43529966",0,0,11,NULL
 43529973,"What is the total number of nurse practitioner, physician assistant, or midwife visits you made in the last 12 months?","HealthAdvice_NursePractitionerVisits","Healthcare Access & Utilization",43528895,0,1,"43530404.43530246.43529973",1,1,7,NULL
 43529974,"What is the total number of visits to a dentist or orthodontist that you made in the last 12 months?","HealthAdvice_DentistVisits","Healthcare Access & Utilization",43528895,0,1,"43530400.43530241.43529974",1,1,14,NULL
 43529975,"What is the total number of visits to a doctor who specializes in women's health that you made in the last 12 months?","HealthAdvice_OBGYNVisits","Healthcare Access & Utilization",43528895,0,1,"43530401.43530247.43529975",1,1,8,NULL
 43529976,"What is the total number of visits to a medical doctor who specializes in a particular medical disease or problem that you made in the last 12 months?","HealthAdvice_MedicalSpecialistVisits","Healthcare Access & Utilization",43528895,0,1,"43528661.43530244.43529976",1,1,15,NULL
 43529977,"What is the total number of visits to a mental health professional that you made in the last 12 months?","HealthAdvice_MentalHealthProfessionalVisits","Healthcare Access & Utilization",43528895,0,1,"43530402.43530245.43529977",1,1,9,NULL
 43529978,"What is the total number of visits to traditional healers that you made in the last 12 months?","HealthAdvice_TraditionalHealerVisits","Healthcare Access & Utilization",43528895,0,1,"43530407.43530250.43529978",1,1,16,NULL
-43530268,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You live in a rural area where distance to the health care provider is too far?","DelayedMedicalCare_RuralArea","Healthcare Access & Utilization",43528895,0,0,43530268,1,1,21,NULL
+43530268,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You live in a rural area where distance to the health care provider is too far?","DelayedMedicalCare_RuralArea","Healthcare Access & Utilization",43528895,0,0,"43530268",1,1,21,NULL
 43530282,"Are you still seeing a doctor or health care provider for Bladder cancer?","Cancer_BladderCancerCurrently","Personal Medical History",43529712,0,1,"43528760.43528472.43530282",1,1,3,NULL
 43530283,"Are you still seeing a doctor or health care provider for Blood or soft tissue cancer?","Cancer_BloodCancerCurrently","Personal Medical History",43529712,0,1,"43528760.1384404.43530283",1,1,3,NULL
 43530284,"Are you still seeing a doctor or health care provider for Bone cancer?","Cancer_BoneCancerCurrently","Personal Medical History",43529712,0,1,"43528760.43528480.43530284",1,1,3,NULL
@@ -814,29 +819,29 @@
 43530396,"Are you still seeing a doctor or health care provider for Systemic lupus?","SkeletalMuscular_LupusCurrently","Personal Medical History",43529712,0,1,"43528757.1384389.43530396",1,1,7,NULL
 43530397,"Are you still seeing a doctor or health care provider for Osteoporosis?","SkeletalMuscular_OsteoporosisCurrently","Personal Medical History",43529712,0,1,"43528757.43529616.43530397",1,1,7,NULL
 43530398,"Are you still seeing a doctor or health care provider for Spine, muscle, or bone disorders (non-cancer)?","SkeletalMuscular_SpineMuscleBoneCurrently","Personal Medical History",43529712,0,1,"43528757.1384534.43530398",1,1,7,NULL
-43530399,"DURING THE PAST 12 MONTHS, have you seen or talked to A chiropractor?","HealthAdvice_SpokenToChiropractor","Healthcare Access & Utilization",43528895,0,0,43530399,1,1,12,NULL
-43530400,"DURING THE PAST 12 MONTHS, have you seen or talked to A dentist or orthodontist?","HealthAdvice_SpokenToDentist","Healthcare Access & Utilization",43528895,0,0,43530400,1,1,14,NULL
-43530401,"DURING THE PAST 12 MONTHS, have you seen or talked to A doctor who specializes in women's health (an obstetrician/gynecologist)?","HealthAdvice_SpokenToOBGYN","Healthcare Access & Utilization",43528895,0,0,43530401,1,1,8,NULL
-43530402,"DURING THE PAST 12 MONTHS, have you seen or talked to A mental health professional such as a psychiatrist, psychologist, psychiatric nurse, or clinical social worker?","HealthAdvice_SpokenToMentalHealthProfessional","Healthcare Access & Utilization",43528895,0,0,43530402,1,1,9,NULL
-43530403,"DURING THE PAST 12 MONTHS, have you seen or talked to An optometrist, ophthalmologist, or eye doctor (someone who prescribes eyeglasses)?","HealthAdvice_SpokenToEyeDoctor","Healthcare Access & Utilization",43528895,0,0,43530403,1,1,10,NULL
-43530404,"DURING THE PAST 12 MONTHS, have you seen or talked to A nurse practitioner, physician assistant, or midwife?","HealthAdvice_SpokenToNursePractitioner","Healthcare Access & Utilization",43528895,0,0,43530404,1,1,7,NULL
-43530405,"DURING THE PAST 12 MONTHS, have you seen or talked to A physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist?","HealthAdvice_SpokenToPhysicalTherapist","Healthcare Access & Utilization",43528895,0,0,43530405,1,1,13,NULL
-43530406,"DURING THE PAST 12 MONTHS, have you seen or talked to A podiatrist or foot doctor?","HealthAdvice_SpokenToPodiatrist","Healthcare Access & Utilization",43528895,0,0,43530406,1,1,11,NULL
-43530407,"DURING THE PAST 12 MONTHS, have you seen or talked to Traditional healers such as, Shaman, acupuncturist, or non-western medicine?","HealthAdvice_SpokenToTraditionalHealer","Healthcare Access & Utilization",43528895,0,0,43530407,1,1,16,NULL
-43530408,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Eyeglasses","CantAffordCare_Eyeglasses","Healthcare Access & Utilization",43528895,0,0,43530408,1,1,33,NULL
-43530409,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Follow-up care","CantAffordCare_FollowupCare","Healthcare Access & Utilization",43528895,0,0,43530409,1,1,36,NULL
-43530410,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Mental health care or counseling","CantAffordCare_MentalHealthCounseling","Healthcare Access & Utilization",43528895,0,0,43530410,1,1,30,NULL
-43530411,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Prescription medicines","CantAffordCare_PrescriptionMedicines","Healthcare Access & Utilization",43528895,0,0,43530411,1,1,29,NULL
-43530412,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a specialist","CantAffordCare_Specialist","Healthcare Access & Utilization",43528895,0,0,43530412,1,1,35,NULL
-43530413,"DURING THE PAST 12 MONTHS, were any of the following true for you: You asked your doctor for a lower cost medication to save money","CantAffordCare_LowerCostRxToSaveMoney","Healthcare Access & Utilization",43528895,0,0,43530413,1,1,41,NULL
+43530399,"DURING THE PAST 12 MONTHS, have you seen or talked to A chiropractor?","HealthAdvice_SpokenToChiropractor","Healthcare Access & Utilization",43528895,0,0,"43530399",1,1,12,NULL
+43530400,"DURING THE PAST 12 MONTHS, have you seen or talked to A dentist or orthodontist?","HealthAdvice_SpokenToDentist","Healthcare Access & Utilization",43528895,0,0,"43530400",1,1,14,NULL
+43530401,"DURING THE PAST 12 MONTHS, have you seen or talked to A doctor who specializes in women's health (an obstetrician/gynecologist)?","HealthAdvice_SpokenToOBGYN","Healthcare Access & Utilization",43528895,0,0,"43530401",1,1,8,NULL
+43530402,"DURING THE PAST 12 MONTHS, have you seen or talked to A mental health professional such as a psychiatrist, psychologist, psychiatric nurse, or clinical social worker?","HealthAdvice_SpokenToMentalHealthProfessional","Healthcare Access & Utilization",43528895,0,0,"43530402",1,1,9,NULL
+43530403,"DURING THE PAST 12 MONTHS, have you seen or talked to An optometrist, ophthalmologist, or eye doctor (someone who prescribes eyeglasses)?","HealthAdvice_SpokenToEyeDoctor","Healthcare Access & Utilization",43528895,0,0,"43530403",1,1,10,NULL
+43530404,"DURING THE PAST 12 MONTHS, have you seen or talked to A nurse practitioner, physician assistant, or midwife?","HealthAdvice_SpokenToNursePractitioner","Healthcare Access & Utilization",43528895,0,0,"43530404",1,1,7,NULL
+43530405,"DURING THE PAST 12 MONTHS, have you seen or talked to A physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist?","HealthAdvice_SpokenToPhysicalTherapist","Healthcare Access & Utilization",43528895,0,0,"43530405",1,1,13,NULL
+43530406,"DURING THE PAST 12 MONTHS, have you seen or talked to A podiatrist or foot doctor?","HealthAdvice_SpokenToPodiatrist","Healthcare Access & Utilization",43528895,0,0,"43530406",1,1,11,NULL
+43530407,"DURING THE PAST 12 MONTHS, have you seen or talked to Traditional healers such as, Shaman, acupuncturist, or non-western medicine?","HealthAdvice_SpokenToTraditionalHealer","Healthcare Access & Utilization",43528895,0,0,"43530407",1,1,16,NULL
+43530408,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Eyeglasses","CantAffordCare_Eyeglasses","Healthcare Access & Utilization",43528895,0,0,"43530408",1,1,33,NULL
+43530409,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Follow-up care","CantAffordCare_FollowupCare","Healthcare Access & Utilization",43528895,0,0,"43530409",1,1,36,NULL
+43530410,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Mental health care or counseling","CantAffordCare_MentalHealthCounseling","Healthcare Access & Utilization",43528895,0,0,"43530410",1,1,30,NULL
+43530411,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: Prescription medicines","CantAffordCare_PrescriptionMedicines","Healthcare Access & Utilization",43528895,0,0,"43530411",1,1,29,NULL
+43530412,"DURING THE PAST 12 MONTHS, was there any time when you needed any of the following, but didn't get it because you couldn't afford it: To see a specialist","CantAffordCare_Specialist","Healthcare Access & Utilization",43528895,0,0,"43530412",1,1,35,NULL
+43530413,"DURING THE PAST 12 MONTHS, were any of the following true for you: You asked your doctor for a lower cost medication to save money","CantAffordCare_LowerCostRxToSaveMoney","Healthcare Access & Utilization",43528895,0,0,"43530413",1,1,41,NULL
 43530414,"About how old were you when you were first told you had Atrial fibrillation (Afib) or Atrial flutter?","Circulatory_HowOldWereYouAtrialFibrillation","Personal Medical History",43529712,0,1,"1384522.43528442.43530414",1,1,1,NULL
-43530415,"DURING THE PAST 12 MONTHS, were any of the following true for you: You delayed filling a prescription to save money","CantAffordCare_DelayedFillingRxToSaveMoney","Healthcare Access & Utilization",43528895,0,0,43530415,1,1,40,NULL
-43530416,"DURING THE PAST 12 MONTHS, were any of the following true for you: You skipped medication doses to save money","CantAffordCare_SkippedMedToSaveMoney","Healthcare Access & Utilization",43528895,0,0,43530416,1,1,38,NULL
-43530417,"DURING THE PAST 12 MONTHS, were any of the following true for you: You took less medicine to save money","CantAffordCare_TookLessMedToSaveMoney","Healthcare Access & Utilization",43528895,0,0,43530417,1,1,39,NULL
-43530418,"DURING THE PAST 12 MONTHS, were you told by a health care provider or doctor’s office that they did not accept your health care coverage?","Insurance_InsuranceAccepted","Healthcare Access & Utilization",43528895,0,0,43530418,1,1,1,NULL
-43530437,"How often did your doctors or health care providers ask for your opinions or beliefs about your medical care or treatment? For example, what kind of tests, procedures, or medications you prefer. Would you say…","HealthAdvice_AskedForOpinion","Healthcare Access & Utilization",43528895,0,0,43530437,1,1,18,NULL
-43530438,"How often did your doctors or health care providers tell or give you information about your health and health care that was easy to understand? Would you say…","HealthAdvice_EaseofUnderstanding","Healthcare Access & Utilization",43528895,0,0,43530438,1,1,19,NULL
-43530439,"How often were you treated with respect by your doctors or health care providers? Would you say…","HealthAdvice_RespectedByProvider","Healthcare Access & Utilization",43528895,0,0,43530439,1,1,17,NULL
+43530415,"DURING THE PAST 12 MONTHS, were any of the following true for you: You delayed filling a prescription to save money","CantAffordCare_DelayedFillingRxToSaveMoney","Healthcare Access & Utilization",43528895,0,0,"43530415",1,1,40,NULL
+43530416,"DURING THE PAST 12 MONTHS, were any of the following true for you: You skipped medication doses to save money","CantAffordCare_SkippedMedToSaveMoney","Healthcare Access & Utilization",43528895,0,0,"43530416",1,1,38,NULL
+43530417,"DURING THE PAST 12 MONTHS, were any of the following true for you: You took less medicine to save money","CantAffordCare_TookLessMedToSaveMoney","Healthcare Access & Utilization",43528895,0,0,"43530417",1,1,39,NULL
+43530418,"DURING THE PAST 12 MONTHS, were you told by a health care provider or doctor’s office that they did not accept your health care coverage?","Insurance_InsuranceAccepted","Healthcare Access & Utilization",43528895,0,0,"43530418",1,1,1,NULL
+43530437,"How often did your doctors or health care providers ask for your opinions or beliefs about your medical care or treatment? For example, what kind of tests, procedures, or medications you prefer. Would you say…","HealthAdvice_AskedForOpinion","Healthcare Access & Utilization",43528895,0,0,"43530437",1,1,18,NULL
+43530438,"How often did your doctors or health care providers tell or give you information about your health and health care that was easy to understand? Would you say…","HealthAdvice_EaseofUnderstanding","Healthcare Access & Utilization",43528895,0,0,"43530438",1,1,19,NULL
+43530439,"How often were you treated with respect by your doctors or health care providers? Would you say…","HealthAdvice_RespectedByProvider","Healthcare Access & Utilization",43528895,0,0,"43530439",1,1,17,NULL
 43530440,"About how old were you when you were first told you had Bladder cancer?","Cancer_HowOldWereYouBladderCancer","Personal Medical History",43529712,0,1,"43528760.43528472.43530440",1,1,3,NULL
 43530441,"About how old were you when you were first told you had Blood or soft tissue cancer?","Cancer_HowOldWereYouBloodCancer","Personal Medical History",43529712,0,1,"43528760.1384404.43530441",1,1,3,NULL
 43530442,"About how old were you when you were first told you had Bone cancer?","Cancer_HowOldWereYouBoneCancer","Personal Medical History",43529712,0,1,"43528760.43528480.43530442",1,1,3,NULL
@@ -945,18 +950,18 @@
 43530554,"About how old were you when you were first told you had Systemic lupus?","SkeletalMuscular_HowOldWereYouLupus","Personal Medical History",43529712,0,1,"43528757.1384389.43530554",1,1,7,NULL
 43530555,"About how old were you when you were first told you had Osteoporosis?","SkeletalMuscular_HowOldWereYouOsteoporosis","Personal Medical History",43529712,0,1,"43528757.43529616.43530555",1,1,7,NULL
 43530556,"About how old were you when you were first told you had Spine, muscle, or bone disorders (non-cancer)?","SkeletalMuscular_HowOldWereYouSpineMuscleBone","Personal Medical History",43529712,0,1,"43528757.1384534.43530556",1,1,7,NULL
-43530557,"If you get sick or have an accident, how worried are you that you will be able to pay your medical bills? Are you very worried, somewhat worried, or not at all worried?","CantAffordCare_WorriedAboutPaying","Healthcare Access & Utilization",43528895,0,0,43530557,1,1,37,NULL
-43530559,"In regard to your health insurance or health care coverage, how does it compare to a year ago? Is it better, worse, or about the same?","Insurance_HealthcareCoverage","Healthcare Access & Utilization",43528895,0,0,43530559,1,1,2,NULL
-43530562,"Is there a place that you USUALLY go to when you are sick or need advice about your health?","HealthAdvice_PlaceforHealthAdvice","Healthcare Access & Utilization",43528895,0,0,43530562,1,1,3,NULL
+43530557,"If you get sick or have an accident, how worried are you that you will be able to pay your medical bills? Are you very worried, somewhat worried, or not at all worried?","CantAffordCare_WorriedAboutPaying","Healthcare Access & Utilization",43528895,0,0,"43530557",1,1,37,NULL
+43530559,"In regard to your health insurance or health care coverage, how does it compare to a year ago? Is it better, worse, or about the same?","Insurance_HealthcareCoverage","Healthcare Access & Utilization",43528895,0,0,"43530559",1,1,2,NULL
+43530562,"Is there a place that you USUALLY go to when you are sick or need advice about your health?","HealthAdvice_PlaceforHealthAdvice","Healthcare Access & Utilization",43528895,0,0,"43530562",1,1,3,NULL
 43530563,"Please indicate if your mother has ever been diagnosed with any of these mental conditions. Think only of the person you are related to by blood. (select all that apply)","DiagnosedHealthCondition_MotherMentalCondition","Family Health History",43528698,40740,1,"43528764.43530563.43530563",1,0,0,NULL
-43530583,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t afford the copay.","DelayedMedicalCare_CantAffordCoPay","Healthcare Access & Utilization",43528895,0,0,43530583,1,1,26,NULL
-43530584,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You had to pay out of pocket for some or all of the procedure.","DelayedMedicalCare_HadToPayOutOfPocket","Healthcare Access & Utilization",43528895,0,0,43530584,1,1,28,NULL
-43530585,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Your deductible was too high/or could not afford the deductible.","DelayedMedicalCare_DeductibleTooHigh","Healthcare Access & Utilization",43528895,0,0,43530585,1,1,27,NULL
+43530583,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Couldn’t afford the copay.","DelayedMedicalCare_CantAffordCoPay","Healthcare Access & Utilization",43528895,0,0,"43530583",1,1,26,NULL
+43530584,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You had to pay out of pocket for some or all of the procedure.","DelayedMedicalCare_HadToPayOutOfPocket","Healthcare Access & Utilization",43528895,0,0,"43530584",1,1,28,NULL
+43530585,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: Your deductible was too high/or could not afford the deductible.","DelayedMedicalCare_DeductibleTooHigh","Healthcare Access & Utilization",43528895,0,0,"43530585",1,1,27,NULL
 43530588,"What is the total number of general doctor visits you made in the last 12 months?","HealthAdvice_GeneralDoctorVisits","Healthcare Access & Utilization",43528895,0,1,"43528660.43530243.43530588",1,1,6,NULL
 43530589,"What is the total number of visits to a chiropractor that you made in the last 12 months?","HealthAdvice_ChiropractorVisits","Healthcare Access & Utilization",43528895,0,1,"43530399.43530240.43530589",1,1,12,NULL
 43530590,"What is the total number of visits to a foot doctor that you made in the last 12 months?","HealthAdvice_PodiatristVisits","Healthcare Access & Utilization",43528895,0,1,"43530406.43530249.43530590",1,1,11,NULL
 43530591,"What is the total number of visits to an eye doctor that you made in the last 12 months?","HealthAdvice_EyeDoctorVisits","Healthcare Access & Utilization",43528895,0,1,"43530403.43530242.43530591",1,1,10,NULL
 43530592,"What is the total number of visits to a physical therapist, speech therapist, respiratory therapist, audiologist, or occupational therapist that you made in the last 12 months?","HealthAdvice_PhysicalTherapistVisits","Healthcare Access & Utilization",43528895,0,1,"43530405.43530248.43530592",1,1,13,NULL
-43530593,"What kind of place do you go to most often?","HealthAdvice_WhatKindOfPlace","Healthcare Access & Utilization",43528895,0,0,43530593,1,1,4,NULL
-43530594,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You were nervous about seeing a health care provider?","DelayedMedicalCare_Nervous","Healthcare Access & Utilization",43528895,0,0,43530594,1,1,22,NULL
-43530595,"About how long has it been since you last saw or talked to a doctor or other health care provider about your own health?","HealthAdvice_SpokenToProfessional","Healthcare Access & Utilization",43528895,0,0,43530595,1,1,5,NULL
+43530593,"What kind of place do you go to most often?","HealthAdvice_WhatKindOfPlace","Healthcare Access & Utilization",43528895,0,0,"43530593",1,1,4,NULL
+43530594,"IN THE PAST 12 MONTHS, have you delayed getting care for following reason: You were nervous about seeing a health care provider?","DelayedMedicalCare_Nervous","Healthcare Access & Utilization",43528895,0,0,"43530594",1,1,22,NULL
+43530595,"About how long has it been since you last saw or talked to a doctor or other health care provider about your own health?","HealthAdvice_SpokenToProfessional","Healthcare Access & Utilization",43528895,0,0,"43530595",1,1,5,NULL

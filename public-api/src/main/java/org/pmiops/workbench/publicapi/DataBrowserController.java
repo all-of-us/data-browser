@@ -937,7 +937,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public ResponseEntity<CountAnalysis> getCountAnalysis(String domainId, String domainDesc) {
         CdrVersionContext.setCdrVersionNoCheckAuthDomain(defaultCdrVersionProvider.get());
 
-        if (domainDesc.equals("ehr")) {
+        if (domainDesc.equals("ehr") || domainDesc.equals("fitbit")) {
             List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
             CountAnalysis ehrCountAnalysis = new CountAnalysis();
             ehrCountAnalysis.setDomainId(domainId);

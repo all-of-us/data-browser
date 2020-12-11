@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TooltipService } from 'app/utils/tooltip.service';
 import { ISubscription } from 'rxjs/Subscription';
 import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -13,15 +14,16 @@ export class FitbitViewComponent implements OnInit {
   loadingStack: any = [];
   fitbitConcepts: any = [];
   searchText: string = null;
-  isLoading = false;
   analyses: any;
   selectedAnalyses: any;
   selectedItem: string;
   selectedDisplay: string;
-
-  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
-    this.selectedItem = 'all Fitbit data';
-    this.selectedDisplay = 'all Fitbit data';
+  domainCountAnalysis: any;
+  totalCountAnalysis: any;
+  constructor(private api: DataBrowserService, public dbc: DbConfigService,
+    public tooltipText: TooltipService) {
+    this.selectedItem = 'any Fitbit data';
+    this.selectedDisplay = 'any Fitbit data';
   }
 
   loading() {
@@ -31,24 +33,29 @@ export class FitbitViewComponent implements OnInit {
   ngOnInit() {
     this.searchText = localStorage.getItem('searchText');
     this.fitbitConcepts.push({
-      id: 1, displayName: 'all Fitbit data',
-      conceptName: 'All Fitbit Data', icon: 'fa-watch-fitness'
+      id: 1, displayName: 'any Fitbit data',
+      conceptName: 'Any Fitbit Data', icon: 'fa-watch-fitness',
+      tooltip: this.tooltipText.fitbitAllDataHelpText
     });
     this.fitbitConcepts.push({
       id: 2, displayName: 'heart rate by zone summary',
-      conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat'
+      conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat',
+      tooltip: this.tooltipText.fitbitHeartZoneHelpText
     });
     this.fitbitConcepts.push({
       id: 3, displayName: 'heart rate (minute-level)',
-      conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate'
+      conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate',
+      tooltip: this.tooltipText.fitbitHeartRateHelpText
     });
     this.fitbitConcepts.push({
       id: 4, displayName: 'activity (daily summary)',
-      conceptName: 'Activity (daily summary)', icon: 'fa-running'
+      conceptName: 'Activity (daily summary)', icon: 'fa-running',
+      tooltip: this.tooltipText.fitbitActivityDailyHelpText
     });
     this.fitbitConcepts.push({
       id: 5, displayName: 'activity intraday steps (minute-level)',
-      conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking'
+      conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking',
+      tooltip: this.tooltipText.fitbitActivityStepsHelpText
     });
 
     this.loadingStack.push(true);
@@ -62,6 +69,7 @@ export class FitbitViewComponent implements OnInit {
             fitbitConcept['ageAnalysis'] = item.ageAnalysis;
             fitbitConcept['genderAnalysis'] = item.genderAnalysis;
             fitbitConcept['countAnalysis'] = item.countAnalysis;
+            this.totalCountAnalysis = item.countAnalysis;
             fitbitConcept['participantCountAnalysis'] = item.participantCountAnalysis;
           }
           if (this.searchText) {
@@ -74,7 +82,6 @@ export class FitbitViewComponent implements OnInit {
             }
           }
           this.selectedAnalyses = result.items[0];
-          this.isLoading = true;
           // Process fitbit results
           this.loadingStack.pop();
         },
@@ -83,6 +90,19 @@ export class FitbitViewComponent implements OnInit {
           console.log('Error: ', err);
         }
       }));
+
+      this.loadingStack.push(true);
+      this.subscriptions.push(this.api.getCountAnalysis('Fitbit', 'fitbit')
+            .subscribe({
+              next: result => {
+                this.domainCountAnalysis = result;
+                this.loadingStack.pop();
+              },
+              error: err => {
+                this.loadingStack.pop();
+                console.log('Error: ', err);
+              }
+            }));
   }
 
   setGraphs(conceptObj) {
@@ -91,7 +111,7 @@ export class FitbitViewComponent implements OnInit {
         this.selectedAnalyses = concept;
       }
     });
-    this.selectedItem = conceptObj.conceptName;
+    this.selectedItem = conceptObj.displayName;
     this.selectedDisplay = conceptObj.displayName;
   }
 

@@ -162,6 +162,15 @@ export class TooltipService {
   counts and percentages may not add up to 100%. To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`;
   q2RolledCategoriesHelpText = `“Other” includes the following categories: Middle Eastern or North African,
   Native Hawaiian or other Pacific Islander, and None of these describe me.`;
+  fitbitAllDataHelpText = `Summary of participant counts for Fitbit data available across all variables.`;
+  fitbitHeartZoneHelpText = `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
+  report the amount of time a participant spent in each heart rate zone.`;
+  fitbitHeartRateHelpText = `Heart rate represented granularly at the minute level. Heart rate zones are the highest number of times your heart
+  can safely beat in one minute.`;
+  fitbitActivityDailyHelpText = `Activity data summarized as a daily report. Activity (daily summary) is a summary and list of a participant's
+  activities and activity log entries for a given day.`;
+  fitbitActivityStepsHelpText = `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
+  daily calories and steps.`;
   constructor() { }
 
 }
