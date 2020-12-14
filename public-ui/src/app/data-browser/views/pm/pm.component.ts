@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import {DataBrowserService} from '../../../../publicGenerated/api/dataBrowser.service';
+import {DataBrowserApi} from '../../../../publicGenerated/fetch/api';
 import {Analysis} from '../../../../publicGenerated/model/analysis';
 import {ConceptGroup} from '../../../utils/conceptGroup';
 import {ConceptWithAnalysis} from '../../../utils/conceptWithAnalysis';
@@ -14,6 +15,7 @@ import {TooltipService} from '../../../utils/tooltip.service';
   styleUrls: ['../../../styles/template.css', '../../../styles/cards.css', './pm.component.css']
 })
 export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
+  api = new DataBrowserApi();
   title = 'Browse Program Physical Measurements';
   pageImage = '/assets/db-images/man-standing.png';
   private subscriptions: ISubscription[] = [];
@@ -51,7 +53,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   pmGroups: any;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService,
+  constructor(private dbApi: DataBrowserService, public dbc: DbConfigService,
               private tooltipText: TooltipService) {
 
   }
@@ -66,9 +68,10 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
     // Get demographic totals
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getConceptAnalysisResults(this.dbc.PM_CONCEPTS.map(String))
-              .subscribe({
-                next: result => {
+    
+    this.api.getConceptAnalysisResults(this.dbc.PM_CONCEPTS.map(String))
+              .then(
+                 result => {
                   const items = result.items;
                   this.conceptGroups = this.dbc.pmGroups;
                   for (const g of this.conceptGroups) {
@@ -88,23 +91,22 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
                   this.showMeasurement(this.selectedGroup, this.selectedGroup.concepts[0]);
                   this.loadingStack.pop();
                 },
-                error: err =>  {
+                err =>  {
                   this.loadingStack.pop();
                   console.log('Error: ', err);
-                }
-        }));
+                });
+
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm')
-          .subscribe({
-            next: result => {
+   this.api.getCountAnalysis('Physical Measurements', 'pm')
+          .then(
+            result => {
               this.domainCountAnalysis = result;
               this.loadingStack.pop();
             },
-            error: err =>  {
+            err =>  {
               this.loadingStack.pop();
               console.log('Error: ', err);
-            }
-    }));
+            });
   }
 
   ngOnDestroy() {

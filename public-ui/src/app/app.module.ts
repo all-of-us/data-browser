@@ -1,5 +1,6 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { Http } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -20,6 +21,8 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
 import { ConfigService, DataBrowserService } from 'publicGenerated';
+import { DataBrowserApi } from '../publicGenerated/fetch/api'
+import {Configuration as newConfig } from '../publicGenerated/fetch'
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -36,9 +39,15 @@ export function getConfiguration(): Configuration {
   });
 }
 
+export function getNewConfiguration(http:HttpClientModule) {
+  return new newConfig({basePath: getPublicBasePath()})
+}
+
 export function getConfigService(http: Http) {
   return new ConfigService(http, getPublicBasePath(), null);
 }
+
+
 
 @NgModule({
   imports: [
@@ -48,11 +57,22 @@ export function getConfigService(http: Http) {
     RouterModule,
     SharedModule,
     DataBrowserModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
   ],
   providers: [
+    {
+      provide: ConfigService,
+      useFactory: getConfigService,
+      deps: [Http]
+    },
+    {
+      provide: DataBrowserApi,
+      useFactory: getNewConfiguration,
+      deps: [HttpClientModule]
+    },
     {
       provide: ConfigService,
       useFactory: getConfigService,
