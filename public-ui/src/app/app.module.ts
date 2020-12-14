@@ -1,5 +1,5 @@
-import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,7 +21,7 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
 import { ConfigService, DataBrowserService } from 'publicGenerated';
-import { Configuration as newConfig } from '../publicGenerated/fetch'
+import { Configuration as newConfig } from '../publicGenerated/fetch';
 import { DataBrowserApi } from '../publicGenerated/fetch/api';
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
