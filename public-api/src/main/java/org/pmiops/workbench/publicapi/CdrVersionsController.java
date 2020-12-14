@@ -15,29 +15,21 @@ import org.pmiops.workbench.model.CdrVersionListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.pmiops.workbench.cdr.CdrVersionMapper;
 
 @RestController
 public class CdrVersionsController implements CdrVersionsApiDelegate {
   private static final Logger log = Logger.getLogger(CdrVersionsController.class.getName());
 
-  @VisibleForTesting
-  static final Function<CdrVersion, org.pmiops.workbench.model.CdrVersion> TO_CLIENT_CDR_VERSION =
-      new Function<CdrVersion, org.pmiops.workbench.model.CdrVersion>() {
-        @Override
-        public org.pmiops.workbench.model.CdrVersion apply(CdrVersion cdrVersion) {
-          return new org.pmiops.workbench.model.CdrVersion()
-              .cdrVersionId(String.valueOf(cdrVersion.getCdrVersionId()))
-              .creationTime(cdrVersion.getCreationTime().getTime())
-              .name(cdrVersion.getName());
-        }
-      };
-
   private final CdrVersionDao cdrVersionDao;
+  private final CdrVersionMapper cdrVersionMapper;
   private final Provider<WorkbenchConfig> workbenchConfigProvider;
 
   @Autowired
-  CdrVersionsController(CdrVersionDao cdrVersionDao, Provider<WorkbenchConfig> workbenchConfigProvider) {
+  CdrVersionsController(CdrVersionDao cdrVersionDao, Provider<WorkbenchConfig> workbenchConfigProvider,
+                        CdrVersionMapper cdrVersionMapper) {
     this.cdrVersionDao = cdrVersionDao;
+    this.cdrVersionMapper = cdrVersionMapper;
     this.workbenchConfigProvider = workbenchConfigProvider;
   }
 
@@ -62,7 +54,7 @@ public class CdrVersionsController implements CdrVersionsApiDelegate {
     // TODO: consider different default CDR versions for different access levels
     return ResponseEntity.ok(new CdrVersionListResponse()
       .items(cdrVersions.stream()
-        .map(TO_CLIENT_CDR_VERSION)
+        .map(cdrVersionMapper::dbModelToClient)
         .collect(Collectors.toList()))
       .defaultCdrVersionId(Long.toString(defaultVersions.get(0))));
   }

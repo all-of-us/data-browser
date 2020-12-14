@@ -106,6 +106,7 @@ buildscript {    // Configuration for building
     classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
     classpath 'io.swagger:swagger-codegen:2.2.3'
     classpath 'org.owasp:dependency-check-gradle:6.0.1'
+    classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
   }
 }
 
@@ -119,6 +120,7 @@ apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.hidetake.swagger.generator'
 apply plugin: 'org.owasp.dependencycheck'
+apply plugin: 'net.ltgt.apt-idea'
 
 sourceSets {
   generated {
@@ -180,6 +182,10 @@ repositories {   // repositories for Jar's you access in your code
   mavenCentral()
 }
 
+ext {
+  mapstructVersion = '1.3.1.Final'
+}
+
 dependencies {
   // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
   providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
@@ -213,6 +219,10 @@ dependencies {
   compile 'io.swagger:swagger-annotations:1.5.16'
   compile 'org.apache.commons:commons-lang3:3.0'
   compile 'com.google.guava:guava:26.0-jre'
+
+  implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+  annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+  testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
   compile 'com.google.api-client:google-api-client:1.30.10'
   compile 'com.auth0:java-jwt:3.10.3'
