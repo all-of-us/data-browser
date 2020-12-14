@@ -55,6 +55,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
+import org.pmiops.workbench.cdr.CdrVersionMapper;
+import org.pmiops.workbench.service.CdrVersionService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -488,6 +490,10 @@ public class DataBrowserControllerTest {
     private AchillesResultDistDao achillesResultDistDao;
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private CdrVersionService cdrVersionService;
+    @Autowired
+    private CdrVersionMapper cdrVersionMapper;
 
 
     private CdrVersion cdrVersion;
@@ -500,7 +506,7 @@ public class DataBrowserControllerTest {
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistDao, entityManager,
-            () -> cdrVersion, cdrVersionDao);
+            cdrVersionService, cdrVersionMapper);
     }
 
     @Test
