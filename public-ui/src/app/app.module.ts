@@ -1,6 +1,6 @@
 import { ErrorHandler, NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { Http } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -20,9 +20,9 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
-import { Configuration as newConfig } from '../publicGenerated/fetch'
 import { ConfigService, DataBrowserService } from 'publicGenerated';
-import { DataBrowserApi } from '../publicGenerated/fetch/api'
+import { Configuration as newConfig } from '../publicGenerated/fetch'
+import { DataBrowserApi } from '../publicGenerated/fetch/api';
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
