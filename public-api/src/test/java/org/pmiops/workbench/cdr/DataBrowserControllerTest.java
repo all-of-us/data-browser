@@ -2,6 +2,7 @@ package org.pmiops.workbench.publicapi;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.mockito.Mock;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.sql.Timestamp;
@@ -55,8 +56,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
-import org.pmiops.workbench.cdr.CdrVersionMapper;
 import org.pmiops.workbench.service.CdrVersionService;
+import org.springframework.boot.test.context.TestConfiguration;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -490,10 +491,7 @@ public class DataBrowserControllerTest {
     private AchillesResultDistDao achillesResultDistDao;
     @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
-    private CdrVersionService cdrVersionService;
-    @Autowired
-    private CdrVersionMapper cdrVersionMapper;
+    @Mock private CdrVersionService cdrVersionService;
 
 
     private CdrVersion cdrVersion;
@@ -506,7 +504,7 @@ public class DataBrowserControllerTest {
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistDao, entityManager,
-            cdrVersionService, cdrVersionMapper);
+            cdrVersionService);
     }
 
     @Test

@@ -158,8 +158,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                  DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
                                  AchillesResultDao achillesResultDao,
                                  AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
-                                 EntityManager entityManager, CdrVersionService cdrVersionService,
-                                 CdrVersionMapper cdrVersionMapper) {
+                                 EntityManager entityManager, CdrVersionService cdrVersionService) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
