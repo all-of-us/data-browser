@@ -20,15 +20,15 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
+import { Configuration as newConfig } from '../publicGenerated/fetch'
 import { ConfigService, DataBrowserService } from 'publicGenerated';
 import { DataBrowserApi } from '../publicGenerated/fetch/api'
-import {Configuration as newConfig } from '../publicGenerated/fetch'
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 
 function getPublicBasePath() {
-  return  environment.publicApiUrl;
+  return environment.publicApiUrl;
 }
 
 
@@ -39,8 +39,8 @@ export function getConfiguration(): Configuration {
   });
 }
 
-export function getNewConfiguration(http:HttpClientModule) {
-  return new newConfig({basePath: getPublicBasePath()})
+export function getNewConfiguration(http: HttpClientModule) {
+  return new newConfig({ basePath: getPublicBasePath() });
 }
 
 export function getConfigService(http: Http) {
