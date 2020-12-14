@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TooltipService } from 'app/utils/tooltip.service';
-import { ISubscription } from 'rxjs/Subscription';
-import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
+import { DataBrowserApi } from 'publicGenerated/fetch';
 import { DbConfigService } from '../../../utils/db-config.service';
 
 @Component({
@@ -10,7 +9,6 @@ import { DbConfigService } from '../../../utils/db-config.service';
   styleUrls: ['../../../styles/template.css', './fitbit-view.component.css']
 })
 export class FitbitViewComponent implements OnInit {
-  private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
   fitbitConcepts: any = [];
   searchText: string = null;
@@ -20,7 +18,8 @@ export class FitbitViewComponent implements OnInit {
   selectedDisplay: string;
   domainCountAnalysis: any;
   totalCountAnalysis: any;
-  constructor(private api: DataBrowserService, public dbc: DbConfigService,
+  api = new DataBrowserApi();
+  constructor( public dbc: DbConfigService,
     public tooltipText: TooltipService) {
     this.selectedItem = 'any Fitbit data';
     this.selectedDisplay = 'any Fitbit data';
@@ -59,9 +58,16 @@ export class FitbitViewComponent implements OnInit {
     });
 
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
-      .subscribe({
-        next: result => {
+    this.getFitbitAnalysisResults();
+    
+    this.loadingStack.push(true);
+    this.getCountAnalysis();
+  }
+
+  public getFitbitAnalysisResults() {
+    return this.api.getFitbitAnalysisResults(this.dbc.FITBIT_MEASUREMENTS)
+      .then(
+        result => {
           this.analyses = result.items;
           for (const item of result.items) {
             const fitbitConcept = this.fitbitConcepts.filter(concept =>
@@ -84,25 +90,22 @@ export class FitbitViewComponent implements OnInit {
           this.selectedAnalyses = result.items[0];
           // Process fitbit results
           this.loadingStack.pop();
-        },
-        error: err => {
+        }).catch(err => {
           this.loadingStack.pop();
           console.log('Error: ', err);
-        }
-      }));
+        });
+  }
 
-      this.loadingStack.push(true);
-      this.subscriptions.push(this.api.getCountAnalysis('Fitbit', 'fitbit')
-            .subscribe({
-              next: result => {
-                this.domainCountAnalysis = result;
-                this.loadingStack.pop();
-              },
-              error: err => {
-                this.loadingStack.pop();
-                console.log('Error: ', err);
-              }
-            }));
+  public getCountAnalysis() {
+    return this.api.getCountAnalysis('Fitbit', 'fitbit')
+      .then(
+        result => {
+          this.domainCountAnalysis = result;
+          this.loadingStack.pop();
+        }).catch(err => {
+          this.loadingStack.pop();
+          console.log('Error: ', err);
+        });
   }
 
   setGraphs(conceptObj) {
