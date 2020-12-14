@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 import { DataBrowserApi } from '../../../../publicGenerated/fetch/api';
 import { Analysis } from '../../../../publicGenerated/model/analysis';
 import { ConceptGroup } from '../../../utils/conceptGroup';
@@ -51,7 +50,7 @@ export class PhysicalMeasurementsComponent implements OnInit {
 
   pmGroups: any;
 
-  constructor(private dbApi: DataBrowserService, public dbc: DbConfigService,
+  constructor(public dbc: DbConfigService,
     private tooltipText: TooltipService) {
 
   }
