@@ -61,7 +61,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   cdrName: any;
   allOfUsUrl: string;
   showStatement: boolean;
-  cope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
   If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
   “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
@@ -240,7 +239,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.surveyResults.forEach(result => {
       if (result.name === 'Lifestyle') {
         result.description = result.description.replace('alcohol and', 'alcohol, and');
-      }
+      }    
     });
     this.loading = false;
   }
