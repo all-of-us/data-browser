@@ -811,7 +811,7 @@ public class DataBrowserControllerTest {
     }
 
     private DbCdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
-        cdrVersion = new CdrVersion();
+        cdrVersion = new DbCdrVersion();
         cdrVersion.setCdrVersionId(cdrVersionId);
         cdrVersion.setCreationTime(new Timestamp(creationTime));
         cdrVersion.setName(name);
