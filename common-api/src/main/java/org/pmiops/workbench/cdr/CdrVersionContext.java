@@ -7,7 +7,7 @@ import org.pmiops.workbench.db.model.DbCdrVersion;
  */
 public class CdrVersionContext {
 
-  private static ThreadLocal<DbCdrVersion> cdrVersion = new ThreadLocal<>();
+  private static ThreadLocal<DbCdrVersion> dbCdrVersion = new ThreadLocal<>();
 
   /**
    * Call this method from source only if you've already fetched the workspace for the user from
@@ -18,15 +18,15 @@ public class CdrVersionContext {
    * Otherwise, call {@link CdrVersionService#setCdrVersion(DbCdrVersion)} to check that the requester
    * is in the authorization domain for the CDR before using it.
    */
-  public static void setCdrVersionNoCheckAuthDomain(DbCdrVersion version) {
-    cdrVersion.set(version);
+  public static void setCdrVersionNoCheckAuthDomain(DbCdrVersion dbCdrVersion1) {
+      dbCdrVersion.set(dbCdrVersion1);
   }
 
   public static void clearCdrVersion() {
-    cdrVersion.remove();
+    dbCdrVersion.remove();
   }
 
   public static DbCdrVersion getCdrVersion() {
-    return cdrVersion.get();
+    return dbCdrVersion.get();
   }
 }

@@ -9,6 +9,8 @@ import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.model.CdrVersion;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.cdr.CdrVersionMapper;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,5 +33,13 @@ public class CdrVersionService {
 
     public CdrVersion findByIsDefault(boolean isDefault) {
         return cdrVersionMapper.dbModelToClient(cdrVersionDao.findByIsDefault(true));
+    }
+
+    public List<CdrVersion> findAllByOrderByCreationTimeDesc() {
+        List<DbCdrVersion> cdrVersions = cdrVersionDao
+                .findAllByOrderByCreationTimeDesc();
+        return cdrVersions.stream()
+                .map(cdrVersionMapper::dbModelToClient)
+                .collect(Collectors.toList());
     }
 }
