@@ -8,7 +8,5 @@ export const environment = {
   gtmId: 'GTM-NQ9XDTW',
   gtmAuth: 'ixtwsbMAbR3hx5st_ek2jg',
   gtmPreview: 'env-65',
-  copeFlag: true,
-  fitbit: true,
-  copeStacked: true
+  fitbit: false,
 };
