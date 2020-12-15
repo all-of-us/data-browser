@@ -13,7 +13,7 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
    * @param matchExpression a boolean full text match expression based on the user's query; see
    *                https://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
    */
-  @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number, m.can_show from \n" +
+  @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number from \n" +
           "survey_module m join question_concept sqm2 on m.concept_id = sqm2.survey_concept_id join \n" +
           "(select distinct c.* from question_concept c where (match(c.question_string) against (?1 in boolean mode) > 0 or match(c.concept_name) against (?1 in boolean mode) > 0) \n" +
           "and c.sub=0 and c.generate_counts=1\n" +
