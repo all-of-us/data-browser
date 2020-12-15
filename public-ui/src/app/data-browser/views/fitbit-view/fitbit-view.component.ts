@@ -19,7 +19,7 @@ export class FitbitViewComponent implements OnInit {
   domainCountAnalysis: any;
   totalCountAnalysis: any;
   api = new DataBrowserApi();
-  constructor( public dbc: DbConfigService,
+  constructor(public dbc: DbConfigService,
     public tooltipText: TooltipService) {
     this.selectedItem = 'any Fitbit data';
     this.selectedDisplay = 'any Fitbit data';
@@ -59,7 +59,7 @@ export class FitbitViewComponent implements OnInit {
 
     this.loadingStack.push(true);
     this.getFitbitAnalysisResults();
-    
+
     this.loadingStack.push(true);
     this.getCountAnalysis();
   }
