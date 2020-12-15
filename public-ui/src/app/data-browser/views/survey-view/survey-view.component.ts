@@ -2,13 +2,14 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Items } from '@clr/angular/data/datagrid/providers/items';
+import { DataBrowserApi } from 'publicGenerated/fetch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from 'rxjs/Subscription';
 import { environment } from '../../../../environments/environment';
 import {
-  AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept,
+  AchillesResult, DomainInfosAndSurveyModulesResponse, QuestionConcept,
   SurveyModule
 } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -26,6 +27,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
+  api = new DataBrowserApi();
   graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
   domainId: string;
   title: string;
@@ -71,7 +73,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: DataBrowserService,
+    private api: DataBrowserApi,
     private tooltipText: TooltipService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
@@ -171,21 +173,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       }));
-    this.subscriptions.push(this.api.getDomainTotals(
-      this.searchText.value, 1, 1).subscribe({
-        next: results => {
-          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
-            this.surveyResultCount = results.surveyModules.filter(
-              x => x.conceptId === this.surveyConceptId)[0].questionCount;
-          } else {
-            if (!this.searchText.value) {
-              this.surveyResultCount = this.survey.questionCount;
-            } else {
-              this.surveyResultCount = 0;
-            }
-          }
-        }
-      }));
+    this.getDomainTotals();
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
       (query) => localStorage.setItem('searchText', query)));
@@ -212,14 +200,35 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       }));
 
-    this.subscriptions.push(this.api.getCountAnalysis(this.surveyConceptId, 'survey').subscribe(
+    this.getCountAnalysis();
+  }
+
+  private getCountAnalysis() {
+    return this.api.getCountAnalysis(this.surveyConceptId, 'survey').then(
       results => {
         this.surveyCountAnalysis = results;
         if (this.surveyCountAnalysis) {
           localStorage.setItem('surveyCountAnalysis', JSON.stringify(results));
         }
       }
-    ));
+    );
+  }
+
+  private getDomainTotals() {
+    return this.api.getDomainTotals(
+      this.searchText.value, 1, 1).then(
+        results => {
+          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = results.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
+          } else {
+            if (!this.searchText.value) {
+              this.surveyResultCount = this.survey.questionCount;
+            } else {
+              this.surveyResultCount = 0;
+            }
+          }
+        });
   }
 
   public processSurveyQuestions(results: any) {
@@ -317,46 +326,52 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   private getSurveyResults() {
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
-      this.subscriptions.push(this.api.getSurveyQuestions(
-        this.surveyConceptId.toString(), this.searchText.value).subscribe({
-          next: x => {
-            this.processSurveyQuestions(x);
-            this.filterResults();
-          },
-          error: err => {
-            console.error('Observer got an error: ' + err);
-            this.loading = false;
-          },
-          complete: () => { this.questionFetchComplete = true; }
-        }));
+      this.getSurveyQuestions();
       if (this.isCopeSurvey) {
-        this.subscriptions.push(this.api.getSurveyVersionCounts(
-          this.surveyConceptId.toString()).subscribe({
-            next: x => {
-              x.analyses.items.forEach(item => {
-                item.results.forEach((result, i) => {
-                  if (item.analysisId === 3400) {
-                    this.surveyVersions.push(
-                      {
-                        monthName: result.stratum4,
-                        monthNum: result.stratum3.split('/')[0],
-                        participants: result.countValue,
-                        numberOfQuestion: ''
-                      });
-                  } else if (item.analysisId === 3401) {
-                    this.surveyVersions[i].numberOfQuestion = result.countValue;
-                  }
-                });
-              });
-            },
-            error: err => {
-              console.error('Observer got an error: ' + err);
-              this.loading = false;
-            },
-            complete: () => { }
-          }));
+        this.getSurveyVersionCounts();
       }
     }
+  }
+
+  private getSurveyVersionCounts() {
+    this.api.getSurveyVersionCounts(
+      this.surveyConceptId.toString()).then(
+        x => {
+          x.analyses.items.forEach(item => {
+            item.results.forEach((result, i) => {
+              if (item.analysisId === 3400) {
+                this.surveyVersions.push(
+                  {
+                    monthName: result.stratum4,
+                    monthNum: result.stratum3.split('/')[0],
+                    participants: result.countValue,
+                    numberOfQuestion: ''
+                  });
+              } else if (item.analysisId === 3401) {
+                this.surveyVersions[i].numberOfQuestion = result.countValue;
+              }
+            });
+          });
+        }).catch(err => {
+          console.error('Observer got an error: ' + err);
+          this.loading = false;
+        });
+  }
+
+
+  private getSurveyQuestions() {
+    return this.api.getSurveyQuestions(
+      this.surveyConceptId.toString(), this.searchText.value).then(
+        x => {
+          this.processSurveyQuestions(x);
+          this.filterResults();
+        }
+      ).then(
+        () => { this.questionFetchComplete = true; }
+      ).catch(err => {
+        console.error('Observer got an error: ' + err);
+        this.loading = false;
+      });
   }
 
   public setSurvey() {
@@ -377,24 +392,22 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   // get the current survey  by its route
   public getThisSurvey() {
-    this.subscriptions.push(
-      this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe(
-        (data: DomainInfosAndSurveyModulesResponse) => {
-          data.surveyModules.forEach(survey => {
-            const surveyRoute = survey.name.split(' ').join('-').toLowerCase();
-            if (surveyRoute === this.domainId) {
-              localStorage.setItem('surveyModule', JSON.stringify(survey));
-              this.setSurvey();
-            }
-          });
-          if (data.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
-            this.surveyResultCount = data.surveyModules.filter(
-              x => x.conceptId === this.surveyConceptId)[0].questionCount;
-          } else {
-            this.surveyResultCount = 0;
+    return this.api.getDomainTotals(this.searchText.value, 1, 1).then(
+      data => {
+        data.surveyModules.forEach(survey => {
+          const surveyRoute = survey.name.split(' ').join('-').toLowerCase();
+          if (surveyRoute === this.domainId) {
+            localStorage.setItem('surveyModule', JSON.stringify(survey));
+            this.setSurvey();
           }
-        })
-    );
+        });
+        if (data.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+          this.surveyResultCount = data.surveyModules.filter(
+            x => x.conceptId === this.surveyConceptId)[0].questionCount;
+        } else {
+          this.surveyResultCount = 0;
+        }
+      });
   }
 
   public countPercentage(countValue: number, totalCount: number) {
@@ -461,21 +474,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public toggleAnswer(q: any, source: any, level: any) {
-    this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
-      .subscribe({
-        next: results => {
-          q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
-          q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
-          q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
-          q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
-          q.resultFetchComplete = true;
-          this.processResults(q, this.survey.participantCount);
-        },
-        error: err => {
-          console.log('Error searching: ', err);
-          this.loading = false;
-        }
-      });
+    this.getSurveyQuestionResults(q);
     if (!this.showAnswer[q.conceptId]) {
       this.showAnswer[q.conceptId] = true;
       q.expanded = true;
@@ -491,28 +490,43 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  private getSurveyQuestionResults(q: any) {
+    return this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
+      .then(
+        results => {
+          q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
+          q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
+          q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+          q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
+          q.resultFetchComplete = true;
+          this.processResults(q, this.survey.participantCount);
+        },
+      ).catch(err => {
+        console.log('Error searching: ', err);
+        this.loading = false;
+      });
+  }
+
   public getSubQuestions(a: any, source: any, level: number) {
     if (!a.subQuestions) {
       a.loading = true;
       a.dots = true;
     }
-    this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
-      .subscribe({
-        next: results => {
+    return this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
+      .then(
+        results => {
           a.subQuestions = results.questions.items;
           for (const q of a.subQuestions) {
             this.processResults(q, a.countValue);
           }
           this.setDefaults(a.subQuestions, level);
         },
-        error: err => {
-          console.log('Error searching: ', err);
-        },
-        complete: () => {
-          a.subQuestionFetchComplete = true;
-          a.loading = false;
-          a.dots = false;
-        }
+      ).then(() => {
+        a.subQuestionFetchComplete = true;
+        a.loading = false;
+        a.dots = false;
+      }).catch(err => {
+        console.log('Error searching: ', err);
       });
   }
 
@@ -520,29 +534,29 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (a.stratum7 === '1' && level) {
       this.getSubQuestions(a, 'display', level);
     }
-      q.selectedResult = a;
-      if (this.isCopeSurvey) {
-        q.selectedAnalysis = q.versionAnalysis;
-      } else {
-        q.selectedAnalysis = q.genderAnalysis;
-      }
-      a.expanded = !a.expanded;
-      if (a.expanded) {
-        if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
-          this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
-            'Expand to see graphs', this.survey.name + ' - Q'
-            + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
-            , this.prevSearchText, null);
-        }
-        this.dbc.triggerEvent('conceptClick', 'View Graphs',
+    q.selectedResult = a;
+    if (this.isCopeSurvey) {
+      q.selectedAnalysis = q.versionAnalysis;
+    } else {
+      q.selectedAnalysis = q.genderAnalysis;
+    }
+    a.expanded = !a.expanded;
+    if (a.expanded) {
+      if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
+        this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
           'Expand to see graphs', this.survey.name + ' - Q'
-          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-          ' - ' + ' Icon', this.prevSearchText, null);
-        this.dbc.triggerEvent('conceptClick', 'View Graphs',
-          'Expand to see graphs', this.survey.name + ' - Q'
-          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-          ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
+          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
+          , this.prevSearchText, null);
       }
+      this.dbc.triggerEvent('conceptClick', 'View Graphs',
+        'Expand to see graphs', this.survey.name + ' - Q'
+        + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
+        ' - ' + ' Icon', this.prevSearchText, null);
+      this.dbc.triggerEvent('conceptClick', 'View Graphs',
+        'Expand to see graphs', this.survey.name + ' - Q'
+        + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
+        ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
+    }
   }
 
   public changeResults(e) {
