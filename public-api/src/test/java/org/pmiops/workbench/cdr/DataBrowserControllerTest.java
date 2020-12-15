@@ -809,7 +809,7 @@ public class DataBrowserControllerTest {
     }
 
     private DbCdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
-        private DbCdrVersion cdrVersion = new DbCdrVersion();
+        DbCdrVersion cdrVersion = new DbCdrVersion();
         cdrVersion.setCdrVersionId(cdrVersionId);
         cdrVersion.setCreationTime(new Timestamp(creationTime));
         cdrVersion.setName(name);
