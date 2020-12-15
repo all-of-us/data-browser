@@ -492,8 +492,6 @@ public class DataBrowserControllerTest {
     private EntityManager entityManager;
     @Mock private CdrVersionService cdrVersionService;
 
-
-    private DbCdrVersion cdrVersion;
     private DataBrowserController dataBrowserController;
 
     @Before
@@ -811,7 +809,7 @@ public class DataBrowserControllerTest {
     }
 
     private DbCdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
-        cdrVersion = new DbCdrVersion();
+        private DbCdrVersion cdrVersion = new DbCdrVersion();
         cdrVersion.setCdrVersionId(cdrVersionId);
         cdrVersion.setCreationTime(new Timestamp(creationTime));
         cdrVersion.setName(name);

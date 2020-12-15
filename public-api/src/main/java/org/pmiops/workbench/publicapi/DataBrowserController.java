@@ -39,7 +39,6 @@ import org.pmiops.workbench.cdr.model.AchillesResultDist;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
-import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.cdr.model.DomainInfo;
 import org.pmiops.workbench.cdr.model.QuestionConcept;
