@@ -71,7 +71,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: DataBrowserApi,
     private tooltipText: TooltipService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
@@ -95,8 +94,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     positive status will not be made available)</span></div>`;
   }
 
-
-
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
@@ -110,6 +107,124 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       s.unsubscribe();
     }
   }
+  //API Calls
+  public getCountAnalysis() {
+    return this.api.getCountAnalysis(this.surveyConceptId, 'survey').then(
+      results => {
+        this.surveyCountAnalysis = results;
+        if (this.surveyCountAnalysis) {
+          localStorage.setItem('surveyCountAnalysis', JSON.stringify(results));
+        }
+      }
+    );
+  }
+
+  public getDomainTotals() {
+    return this.api.getDomainTotals(
+      this.searchText.value, 1, 1).then(
+        results => {
+          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
+            this.surveyResultCount = results.surveyModules.filter(
+              x => x.conceptId === this.surveyConceptId)[0].questionCount;
+          } else {
+            if (!this.searchText.value) {
+              this.surveyResultCount = this.survey.questionCount;
+            } else {
+              this.surveyResultCount = 0;
+            }
+          }
+        });
+  }
+
+  public getSurveyResults() {
+    if (this.surveyConceptId && this.surveyConceptId.toString()) {
+      this.getSurveyQuestions();
+      if (this.isCopeSurvey) {
+        this.getSurveyVersionCounts();
+      }
+    }
+  }
+
+  public getSurveyVersionCounts() {
+    this.api.getSurveyVersionCounts(
+      this.surveyConceptId.toString()).then(
+        x => {
+          x.analyses.items.forEach(item => {
+            item.results.forEach((result, i) => {
+              if (item.analysisId === 3400) {
+                this.surveyVersions.push(
+                  {
+                    monthName: result.stratum4,
+                    monthNum: result.stratum3.split('/')[0],
+                    participants: result.countValue,
+                    numberOfQuestion: ''
+                  });
+              } else if (item.analysisId === 3401) {
+                this.surveyVersions[i].numberOfQuestion = result.countValue;
+              }
+            });
+          });
+        }).catch(err => {
+          console.error('Observer got an error: ' + err);
+          this.loading = false;
+        });
+  }
+
+  public getSurveyQuestions() {
+    return this.api.getSurveyQuestions(
+      this.surveyConceptId.toString(), this.searchText.value).then(
+        x => {
+          this.processSurveyQuestions(x);
+          this.filterResults();
+        }
+      ).then(
+        () => { this.questionFetchComplete = true; }
+      ).catch(err => {
+        console.error('Observer got an error: ' + err);
+        this.loading = false;
+      });
+  }
+
+  public getSurveyQuestionResults(q: any) {
+    return this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
+      .then(
+        results => {
+          q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
+          q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
+          q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+          q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
+          q.resultFetchComplete = true;
+          this.processResults(q, this.survey.participantCount);
+        },
+      ).catch(err => {
+        console.log('Error searching: ', err);
+        this.loading = false;
+      });
+  }
+
+  public getSubQuestions(a: any, source: any, level: number) {
+    if (!a.subQuestions) {
+      a.loading = true;
+      a.dots = true;
+    }
+    return this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
+      .then(
+        results => {
+          a.subQuestions = results.questions.items;
+          for (const q of a.subQuestions) {
+            this.processResults(q, a.countValue);
+          }
+          this.setDefaults(a.subQuestions, level);
+        },
+      ).then(() => {
+        a.subQuestionFetchComplete = true;
+        a.loading = false;
+        a.dots = false;
+      }).catch(err => {
+        console.log('Error searching: ', err);
+      });
+  }
+// API calls above ^^ 
 
   public loadPage() {
     if (!this.prevSearchText) {
@@ -199,34 +314,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.getCountAnalysis();
   }
 
-  private getCountAnalysis() {
-    return this.api.getCountAnalysis(this.surveyConceptId, 'survey').then(
-      results => {
-        this.surveyCountAnalysis = results;
-        if (this.surveyCountAnalysis) {
-          localStorage.setItem('surveyCountAnalysis', JSON.stringify(results));
-        }
-      }
-    );
-  }
-
-  private getDomainTotals() {
-    return this.api.getDomainTotals(
-      this.searchText.value, 1, 1).then(
-        results => {
-          if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
-            this.surveyResultCount = results.surveyModules.filter(
-              x => x.conceptId === this.surveyConceptId)[0].questionCount;
-          } else {
-            if (!this.searchText.value) {
-              this.surveyResultCount = this.survey.questionCount;
-            } else {
-              this.surveyResultCount = 0;
-            }
-          }
-        });
-  }
-
   public processSurveyQuestions(results: any) {
     this.surveyResult = results;
     this.survey = this.surveyResult.survey;
@@ -248,7 +335,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       } else {
         q.graphToShow = GraphType.BiologicalSex;
         q.selectedAnalysis = q.genderAnalysis;
-
       }
       q.graphDataToShow = 'Count';
       q.resultFetchComplete = false;
@@ -302,7 +388,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     });
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
       totalCount));
-
   }
 
   public addMissingResults(q: any, a: any, totalCount) {
@@ -320,56 +405,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getSurveyResults() {
-    if (this.surveyConceptId && this.surveyConceptId.toString()) {
-      this.getSurveyQuestions();
-      if (this.isCopeSurvey) {
-        this.getSurveyVersionCounts();
-      }
-    }
-  }
-
-  private getSurveyVersionCounts() {
-    this.api.getSurveyVersionCounts(
-      this.surveyConceptId.toString()).then(
-        x => {
-          x.analyses.items.forEach(item => {
-            item.results.forEach((result, i) => {
-              if (item.analysisId === 3400) {
-                this.surveyVersions.push(
-                  {
-                    monthName: result.stratum4,
-                    monthNum: result.stratum3.split('/')[0],
-                    participants: result.countValue,
-                    numberOfQuestion: ''
-                  });
-              } else if (item.analysisId === 3401) {
-                this.surveyVersions[i].numberOfQuestion = result.countValue;
-              }
-            });
-          });
-        }).catch(err => {
-          console.error('Observer got an error: ' + err);
-          this.loading = false;
-        });
-  }
-
-
-  private getSurveyQuestions() {
-    return this.api.getSurveyQuestions(
-      this.surveyConceptId.toString(), this.searchText.value).then(
-        x => {
-          this.processSurveyQuestions(x);
-          this.filterResults();
-        }
-      ).then(
-        () => { this.questionFetchComplete = true; }
-      ).catch(err => {
-        console.error('Observer got an error: ' + err);
-        this.loading = false;
-      });
-  }
-
+ 
   public setSurvey() {
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
@@ -484,46 +520,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
         + q.conceptName, this.prevSearchText, null);
     }
-  }
-
-  private getSurveyQuestionResults(q: any) {
-    return this.api.getSurveyQuestionResults(this.surveyConceptId, q.conceptId, q.path)
-      .then(
-        results => {
-          q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
-          q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
-          q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
-          q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
-          q.resultFetchComplete = true;
-          this.processResults(q, this.survey.participantCount);
-        },
-      ).catch(err => {
-        console.log('Error searching: ', err);
-        this.loading = false;
-      });
-  }
-
-  public getSubQuestions(a: any, source: any, level: number) {
-    if (!a.subQuestions) {
-      a.loading = true;
-      a.dots = true;
-    }
-    return this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
-      .then(
-        results => {
-          a.subQuestions = results.questions.items;
-          for (const q of a.subQuestions) {
-            this.processResults(q, a.countValue);
-          }
-          this.setDefaults(a.subQuestions, level);
-        },
-      ).then(() => {
-        a.subQuestionFetchComplete = true;
-        a.loading = false;
-        a.dots = false;
-      }).catch(err => {
-        console.log('Error searching: ', err);
-      });
   }
 
   public showAnswerGraphs(a: any, q: any, level?: number) {
