@@ -28,7 +28,7 @@ import org.pmiops.workbench.cdr.model.AchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
-import org.pmiops.workbench.db.model.CdrVersion;
+import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Concept;
@@ -57,7 +57,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
-import org.springframework.boot.test.context.TestConfiguration;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -494,7 +493,7 @@ public class DataBrowserControllerTest {
     @Mock private CdrVersionService cdrVersionService;
 
 
-    private CdrVersion cdrVersion;
+    private DbCdrVersion cdrVersion;
     private DataBrowserController dataBrowserController;
 
     @Before
@@ -811,7 +810,7 @@ public class DataBrowserControllerTest {
         achillesResultDao.save(ACHILLES_RESULT_13);
     }
 
-    private CdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
+    private DbCdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
         cdrVersion = new CdrVersion();
         cdrVersion.setCdrVersionId(cdrVersionId);
         cdrVersion.setCreationTime(new Timestamp(creationTime));

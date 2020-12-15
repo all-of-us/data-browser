@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 @Table(name = "cdr_version")
-public class CdrVersion {
+public class DbCdrVersion {
 
   private long cdrVersionId;
   private boolean isDefault;
@@ -82,10 +82,10 @@ public class CdrVersion {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof CdrVersion)) {
+    if (!(obj instanceof DbCdrVersion)) {
       return false;
     }
-    CdrVersion that = (CdrVersion) obj;
+    DbCdrVersion that = (DbCdrVersion) obj;
     return new EqualsBuilder().append(this.cdrVersionId, that.cdrVersionId)
         .append(this.isDefault, that.isDefault)
         .append(this.name, that.name)

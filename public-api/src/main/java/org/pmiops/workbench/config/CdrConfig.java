@@ -1,7 +1,7 @@
 package org.pmiops.workbench.config;
 
 import org.pmiops.workbench.db.dao.CdrVersionDao;
-import org.pmiops.workbench.db.model.CdrVersion;
+import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +13,8 @@ public class CdrConfig {
 
   @Bean(name = "defaultCdr")
   @RequestScope(proxyMode = ScopedProxyMode.DEFAULT)
-  public CdrVersion getDefaultCdrVersion(CdrVersionDao cdrVersionDao) {
-    CdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
+  public DbCdrVersion getDefaultCdrVersion(CdrVersionDao cdrVersionDao) {
+    DbCdrVersion cdrVersion = cdrVersionDao.findByIsDefault(true);
     if (cdrVersion == null) {
       throw new ServerErrorException("No default CDR version found");
     }

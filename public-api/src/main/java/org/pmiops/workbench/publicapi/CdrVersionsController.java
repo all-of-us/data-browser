@@ -1,15 +1,13 @@
 package org.pmiops.workbench.publicapi;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import java.util.List;
-import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Provider;
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
-import org.pmiops.workbench.db.model.CdrVersion;
+import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.model.CdrVersionListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +36,11 @@ public class CdrVersionsController implements CdrVersionsApiDelegate {
   public ResponseEntity<CdrVersionListResponse> getCdrVersions() {
     // We return CDR versions for just registered CDR versions; controlled CDR data is currently
     // out of scope for the data browser.
-    List<CdrVersion> cdrVersions = cdrVersionDao
+    List<DbCdrVersion> cdrVersions = cdrVersionDao
         .findAllByOrderByCreationTimeDesc();
     List<Long> defaultVersions = cdrVersions.stream()
       .filter(v -> v.getIsDefault())
-      .map(CdrVersion::getCdrVersionId)
+      .map(DbCdrVersion::getCdrVersionId)
       .collect(Collectors.toList());
     if (defaultVersions.isEmpty()) {
       throw new ServerErrorException("Did not find a default CDR version");

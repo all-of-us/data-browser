@@ -22,7 +22,6 @@ import java.util.TreeSet;
 import java.io.IOException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
@@ -37,11 +36,10 @@ import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.AchillesResult;
 import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.AchillesResultDist;
-import org.pmiops.workbench.cdr.CdrVersionMapper;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
-import org.pmiops.workbench.db.model.CdrVersion;
+import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.cdr.model.DomainInfo;
 import org.pmiops.workbench.cdr.model.QuestionConcept;
@@ -63,7 +61,6 @@ import org.pmiops.workbench.model.CriteriaListResponse;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -97,8 +94,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private ConceptService conceptService;
     @Autowired
     private CdrVersionService cdrVersionService;
-    @Autowired
-    private CdrVersionMapper cdrVersionMapper;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
@@ -169,7 +164,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.achillesResultDistDao = achillesResultDistDao;
         this.entityManager = entityManager;
         this.cdrVersionService = cdrVersionService;
-        this.cdrVersionMapper = cdrVersionMapper;
     }
 
     public static void setAgeStratumNameMap() {
@@ -735,12 +729,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        CdrVersion cdrVersion = cdrVersionService.findByIsDefault(true);
-        if (cdrVersion == null) {
-            throw new DataNotFoundException("Cdr Version table is not available. Please check if the database is up and version is right.");
-        }
 
-        return ResponseEntity.ok(cdrVersionMapper.dbModelToClient(cdrVersion));
+        return ResponseEntity.ok(cdrVersionService.findByIsDefault(true));
     }
 
     @Override
