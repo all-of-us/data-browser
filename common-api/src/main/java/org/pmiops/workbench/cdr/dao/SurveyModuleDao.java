@@ -42,5 +42,5 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
 
   SurveyModule findByConceptId(long conceptId);
 
-  List<SurveyModule> findAllOrderByOrderNumberAsc();
+  List<SurveyModule> findAllByOrderByOrderNumberAsc();
 }
