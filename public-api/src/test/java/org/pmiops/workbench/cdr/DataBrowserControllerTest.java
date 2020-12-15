@@ -199,8 +199,7 @@ public class DataBrowserControllerTest {
             .conceptId(1585855L)
             .questionCount(568120L)
             .participantCount(4L)
-            .orderNumber(0)
-            .canShow(1);
+            .orderNumber(0);
 
     private static final SurveyModule CLIENT_SURVEY_MODULE_2 = new SurveyModule()
             .name("The Basics")
@@ -208,8 +207,7 @@ public class DataBrowserControllerTest {
             .conceptId(1586134L)
             .questionCount(567437L)
             .participantCount(5L)
-            .orderNumber(0)
-            .canShow(1);
+            .orderNumber(0);
 
     private static final SurveyModule CLIENT_SURVEY_MODULE_3 = new SurveyModule()
             .name("Cope")
@@ -217,8 +215,7 @@ public class DataBrowserControllerTest {
             .conceptId(1333342L)
             .questionCount(100L)
             .participantCount(10000L)
-            .orderNumber(0)
-            .canShow(1);
+            .orderNumber(0);
 
     private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
             .analysisId(1900L)
@@ -733,8 +730,7 @@ public class DataBrowserControllerTest {
                 .name(surveyModule.getName())
                 .description(surveyModule.getDescription())
                 .questionCount(surveyModule.getQuestionCount())
-                .participantCount(surveyModule.getParticipantCount())
-                .canShow(1);
+                .participantCount(surveyModule.getParticipantCount());
     }
 
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
