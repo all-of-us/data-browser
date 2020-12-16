@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } fro
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
+import { DataBrowserApi } from 'publicGenerated/fetch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -29,6 +30,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
   ]
 })
 export class EhrViewComponent implements OnInit, OnDestroy {
+  api = new DataBrowserApi();
   domainId: string;
   title: string;
   subTitle: string;
@@ -78,7 +80,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private elm: ElementRef,
-    private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService,
   ) {
@@ -174,19 +175,17 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       } else {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       }
-      this.initSearchSubscription = this.searchDomain(this.prevSearchText)
-        .subscribe({
-          next: results => {
-            this.searchCallback(results);
-            this.displayConceptErrorMessage = false;
-          },
-          error: err => {
-            const errorBody = JSON.parse(err._body);
-            this.displayConceptErrorMessage = true;
-            console.log('Error searching: ', errorBody.message);
-            this.loading = false;
-          }
-        });
+      this.searchDomain(this.prevSearchText)
+        .then(results => {
+          this.searchCallback(results);
+          this.displayConceptErrorMessage = false;
+        }).catch(err => {
+          const errorBody = JSON.parse(err._body);
+          this.displayConceptErrorMessage = true;
+          console.log('Error searching: ', errorBody.message);
+          this.loading = false;
+        }
+        );
       // Add value changed event to search when value changes
       this.subscriptions.push(this.searchText.valueChanges
         .debounceTime(1000)
@@ -229,13 +228,13 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.getThisDomain();
     }
   }
+  //API service calls
 
   // get the current ehr domain by its route
   public getThisDomain() {
-    this.subscriptions.push(
-      this.api.getDomainTotals(
-        this.searchText.value, 1, 1).subscribe(
-        (data: DomainInfosAndSurveyModulesResponse) => {
+    return this.api.getDomainTotals(
+      this.searchText.value, 1, 1).then(
+        (data) => {
           data.domainInfos.forEach(domain => {
             const thisDomain = Domain[domain.domain];
             if (thisDomain && thisDomain.toLowerCase() === this.domainId) {
@@ -244,7 +243,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             }
           });
         })
-    );
   }
 
   public exploreConcept(e) {
@@ -270,8 +268,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
     const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
       (localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0) : 1;
     if (query && query != null) {
-      this.subscriptions.push(this.api.getDomainTotals(query, testFilter, orderFilter)
-        .subscribe(results => {
+      return this.api.getDomainTotals(query, testFilter, orderFilter)
+        .then(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
@@ -280,11 +278,11 @@ export class EhrViewComponent implements OnInit, OnDestroy {
             localStorage.setItem('totalResults', String(this.totalResults));
             this.numPages = Math.ceil(this.totalResults / 50);
           }
-        }));
+        });
     } else {
-      this.subscriptions.push(this.api.getDomainTotals(
+      return (this.api.getDomainTotals(
         this.searchText.value, testFilter, orderFilter)
-        .subscribe(results => {
+        .then(results => {
           domainResults = results.domainInfos.filter(d => d.domain !== null);
           domainResults = domainResults.filter(
             d => d.name.toLowerCase() === this.ehrDomain.name.toLowerCase());
@@ -309,19 +307,19 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.searchRequest.measurementOrders = localStorage.getItem('measurementOrdersChecked') === 'false' ? 0 : 1;
       this.api.searchConcepts(this.searchRequest).subscribe({
         next: res => {
-        if (res.items && res.items.length > 0) {
-          this.processSearchResults(res);
-        } else {
-          this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
-            'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
-        }
-        this.displayConceptErrorMessage = false;
+          if (res.items && res.items.length > 0) {
+            this.processSearchResults(res);
+          } else {
+            this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
+              'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
+          }
+          this.displayConceptErrorMessage = false;
         },
         error: err => {
-        const errorBody = JSON.parse(err._body);
-        this.displayConceptErrorMessage = true;
-        console.log('Error searching: ', errorBody.message);
-        this.loading = false;
+          const errorBody = JSON.parse(err._body);
+          this.displayConceptErrorMessage = true;
+          console.log('Error searching: ', errorBody.message);
+          this.loading = false;
         }
       });
     }
