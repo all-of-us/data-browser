@@ -201,7 +201,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.resetDomainResults();
           }
         }));
-        this.fitbitMeasurementsFound = 4;
+    this.fitbitMeasurementsFound = 4;
   }
   ngOnDestroy() {
     for (const s of this.subscriptions) {
@@ -223,7 +223,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
     this.domainResults = results.domainInfos.filter(
       domain => domain.name.toLowerCase() !== 'physical measurements' &&
-      domain.name.toLowerCase() !== 'fitbit');
+        domain.name.toLowerCase() !== 'fitbit');
     const physicalMeasurementDomainInfo =
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     const fitbitDomainInfo =
@@ -232,14 +232,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.pmParticipantCount = physicalMeasurementDomainInfo[0].participantCount;
     }
     if (fitbitDomainInfo && fitbitDomainInfo.length > 0) {
-        this.fitbitParticipantCount = fitbitDomainInfo[0].participantCount;
+      this.fitbitParticipantCount = fitbitDomainInfo[0].participantCount;
     }
     this.surveyResults = results.surveyModules;
 
     this.surveyResults.forEach(result => {
       if (result.name === 'Lifestyle') {
         result.description = result.description.replace('alcohol and', 'alcohol, and');
-      }    
+      }
     });
     this.loading = false;
   }
@@ -252,7 +252,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.physicalMeasurementsFound = this.dbc.matchPhysicalMeasurements(query);
     this.fitbitMeasurementsFound = this.dbc.matchFitbitMeasurements(query);
     if (this.fitbitMeasurementsFound === 5) {
-        this.fitbitMeasurementsFound = 4;
+      this.fitbitMeasurementsFound = 4;
     }
     this.prevSearchText = query;
     localStorage.setItem('searchText', query);
@@ -321,14 +321,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   public canDisplayPmWTile() {
     if (!this.loading) {
-        if (!this.searchText.value) {
-            return true;
-        }
-        if (this.searchText.value && (this.physicalMeasurementsFound > 0 ||
+      if (!this.searchText.value) {
+        return true;
+      }
+      if (this.searchText.value && (this.physicalMeasurementsFound > 0 ||
         this.fitbitMeasurementsFound > 0)) {
-            return true;
-        }
-        return false;
+        return true;
+      }
+      return false;
     }
     return false;
 

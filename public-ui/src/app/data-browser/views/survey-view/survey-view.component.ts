@@ -108,7 +108,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   /////////////
   //API Calls//
   /////////////
@@ -228,7 +228,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         console.log('Error searching: ', err);
       });
   }
-// API calls above ^^ 
+  // API calls above ^^ 
 
   public loadPage() {
     if (!this.prevSearchText) {
@@ -409,7 +409,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
   }
 
- 
+
   public setSurvey() {
     // Get the survey from local storage the user clicked on on a previous page
     const obj = localStorage.getItem('surveyModule');
