@@ -242,7 +242,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
               this.setDomain();
             }
           });
-        })
+        });
   }
 
   public exploreConcept(e) {

@@ -109,9 +109,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
 
-  /////////////
-  //API Calls//
-  /////////////
+  ///////////////
+  // API Calls //
+  ///////////////
   public getCountAnalysis() {
     return this.api.getCountAnalysis(this.surveyConceptId, 'survey').then(
       results => {
