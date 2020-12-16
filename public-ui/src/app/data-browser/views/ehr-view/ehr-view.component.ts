@@ -228,7 +228,6 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.getThisDomain();
     }
   }
-  //API service calls
 
   // get the current ehr domain by its route
   public getThisDomain() {
