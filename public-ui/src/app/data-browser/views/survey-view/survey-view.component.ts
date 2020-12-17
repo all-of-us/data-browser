@@ -225,7 +225,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         console.log('Error searching: ', err);
       });
   }
-  // API calls above ^^ 
+
 
   public loadPage() {
     if (!this.prevSearchText) {

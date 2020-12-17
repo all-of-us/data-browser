@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {
   CdrVersion
 } from 'publicGenerated';
-import { Configuration, DataBrowserApi, DomainInfosAndSurveyModulesResponse } from 'publicGenerated/fetch'
+import { Configuration, DataBrowserApi, DomainInfosAndSurveyModulesResponse } from 'publicGenerated/fetch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -135,22 +135,22 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
     // Do initial search if we have search text
     if (this.prevSearchText) {
-        this.searchDomains(this.prevSearchText).then(
-          (data: DomainInfosAndSurveyModulesResponse) => {
-            this.searchCallback(data);
-            this.displayDomainTotalsErrorMessage = false;
-          },
-         err => {
-            let errorBody = { 'message': '' };
-            try {
-              errorBody = JSON.parse(err._body);
-            } catch (e) {
-            }
-            this.displayDomainTotalsErrorMessage = true;
-            console.log('Error searching: ', errorBody.message);
-            this.loading = false;
-            this.resetDomainResults();
-          });
+      this.searchDomains(this.prevSearchText).then(
+        (data: DomainInfosAndSurveyModulesResponse) => {
+          this.searchCallback(data);
+          this.displayDomainTotalsErrorMessage = false;
+        },
+        err => {
+          let errorBody = { 'message': '' };
+          try {
+            errorBody = JSON.parse(err._body);
+          } catch (e) {
+          }
+          this.displayDomainTotalsErrorMessage = true;
+          console.log('Error searching: ', errorBody.message);
+          this.loading = false;
+          this.resetDomainResults();
+        });
     }
     // Get domain totals only once so if they erase search we can load them
     this.api.getDomainTotals(this.searchText.value, 1, 1).then(
