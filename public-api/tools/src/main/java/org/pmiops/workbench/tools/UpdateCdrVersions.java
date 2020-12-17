@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
-import org.pmiops.workbench.db.model.CdrVersion;
+import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -46,12 +46,12 @@ public class UpdateCdrVersions {
       FileReader cdrVersionsReader = new FileReader(args[0]);
       Gson gson = new GsonBuilder().registerTypeAdapter(Timestamp.class, new TimestampGsonAdapter())
           .create();
-      List<CdrVersion> cdrVersions =
-          gson.fromJson(cdrVersionsReader, new TypeToken<List<CdrVersion>>() {}.getType());
+      List<DbCdrVersion> dbCdrVersions =
+          gson.fromJson(cdrVersionsReader, new TypeToken<List<DbCdrVersion>>() {}.getType());
 
       Set<Long> ids = new HashSet<>();
       Set<Long> defaultIds = new HashSet<>();
-      for (CdrVersion v : cdrVersions) {
+      for (DbCdrVersion v : dbCdrVersions) {
         if (v.getCdrVersionId() == 0) {
           throw new IllegalArgumentException(
               String.format("Input JSON CDR version '%s' is missing an ID", v.getName()));
@@ -70,13 +70,13 @@ public class UpdateCdrVersions {
                 defaultIds.size(), Joiner.on(", ").join(defaultIds)));
       }
 
-      Map<Long, CdrVersion> currentCdrVersions = Maps.newHashMap();
-      for (CdrVersion cdrVersion: cdrVersionDao.findAll()) {
-        currentCdrVersions.put(cdrVersion.getCdrVersionId(), cdrVersion);
+      Map<Long, DbCdrVersion> currentCdrVersions = Maps.newHashMap();
+      for (DbCdrVersion dbCdrVersion: cdrVersionDao.findAll()) {
+        currentCdrVersions.put(dbCdrVersion.getCdrVersionId(), dbCdrVersion);
       }
       String dryRunSuffix = dryRun ? " (dry run)" : "";
-      for (CdrVersion cdrVersion : cdrVersions) {
-        CdrVersion existingCdrVersion = currentCdrVersions.remove(cdrVersion.getCdrVersionId());
+      for (DbCdrVersion cdrVersion : dbCdrVersions) {
+        DbCdrVersion existingCdrVersion = currentCdrVersions.remove(cdrVersion.getCdrVersionId());
         if (existingCdrVersion == null) {
           logger.info(String.format("Inserting new CDR version %d '%s'%s: %s",
               cdrVersion.getCdrVersionId(), cdrVersion.getName(), dryRunSuffix,
@@ -98,14 +98,14 @@ public class UpdateCdrVersions {
           }
         }
       }
-      for (CdrVersion cdrVersion : currentCdrVersions.values()) {
+      for (DbCdrVersion dbCdrVersion : currentCdrVersions.values()) {
         logger.info(String.format("Deleting CDR version %d '%s' no longer in file%s: %s",
-            cdrVersion.getCdrVersionId(), cdrVersion.getName(), dryRunSuffix,
-            gson.toJson(cdrVersion)));
+                dbCdrVersion.getCdrVersionId(), dbCdrVersion.getName(), dryRunSuffix,
+            gson.toJson(dbCdrVersion)));
         if (!dryRun) {
           // Note: this will fail if the database still has references to the CDR version being
           // deleted.
-          cdrVersionDao.delete(cdrVersion.getCdrVersionId());
+          cdrVersionDao.delete(dbCdrVersion.getCdrVersionId());
         }
       }
     };
