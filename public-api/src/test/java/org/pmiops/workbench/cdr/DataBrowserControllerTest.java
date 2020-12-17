@@ -809,13 +809,13 @@ public class DataBrowserControllerTest {
     }
 
     private DbCdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
-        DbCdrVersion cdrVersion = new DbCdrVersion();
-        cdrVersion.setCdrVersionId(cdrVersionId);
-        cdrVersion.setCreationTime(new Timestamp(creationTime));
-        cdrVersion.setName(name);
-        cdrVersion.setNumParticipants(123);
-        cdrVersion.setPublicDbName("p");
-        cdrVersionDao.save(cdrVersion);
+        DbCdrVersion dbCdrVersion = new DbCdrVersion();
+        dbCdrVersion.setCdrVersionId(cdrVersionId);
+        dbCdrVersion.setCreationTime(new Timestamp(creationTime));
+        dbCdrVersion.setName(name);
+        dbCdrVersion.setNumParticipants(123);
+        dbCdrVersion.setPublicDbName("p");
+        cdrVersionDao.save(dbCdrVersion);
         return cdrVersion;
     }
 }

@@ -36,9 +36,9 @@ public class CdrVersionService {
     }
 
     public List<CdrVersion> findAllByOrderByCreationTimeDesc() {
-        List<DbCdrVersion> cdrVersions = cdrVersionDao
+        List<DbCdrVersion> dbCdrVersions = cdrVersionDao
                 .findAllByOrderByCreationTimeDesc();
-        return cdrVersions.stream()
+        return dbCdrVersions.stream()
                 .map(cdrVersionMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
