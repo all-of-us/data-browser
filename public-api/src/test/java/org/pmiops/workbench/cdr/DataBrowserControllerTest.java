@@ -816,6 +816,6 @@ public class DataBrowserControllerTest {
         dbCdrVersion.setNumParticipants(123);
         dbCdrVersion.setPublicDbName("p");
         cdrVersionDao.save(dbCdrVersion);
-        return cdrVersion;
+        return dbCdrVersion;
     }
 }
