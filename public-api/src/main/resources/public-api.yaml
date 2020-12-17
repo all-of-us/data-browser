@@ -1079,7 +1079,7 @@ definitions:
   Domain:
     type: string
     description: filter on the domain in which concepts should be returned
-    enum: &DOMAIN [OBSERVATION, PROCEDURE, DRUG, CONDITION, MEASUREMENT, DEVICE, RACE, GENDER, ETHNICITY, VISIT, DEATH]
+    enum: &DOMAIN [OBSERVATION, PROCEDURE, DRUG, CONDITION, MEASUREMENT, DEVICE, VISIT, DEATH]
   MatchType:
     type: string
     description: match column type on concept search
