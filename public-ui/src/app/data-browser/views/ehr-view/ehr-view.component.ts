@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -10,11 +11,10 @@ import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../../publicGenerated/model/domain';
+import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { TooltipService } from '../../../utils/tooltip.service';
-import { environment } from 'environments/environment';
 
 /* This displays concept search for a Domain. */
 
