@@ -6,7 +6,7 @@ import {
   Router, RouterStateSnapshot
 } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ServerConfigService } from 'app/services/server-config.service';
 

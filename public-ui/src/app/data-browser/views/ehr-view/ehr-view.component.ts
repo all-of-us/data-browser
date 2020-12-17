@@ -2,7 +2,8 @@ import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } fro
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
-import { DataBrowserApi } from 'publicGenerated/fetch';
+import { DataBrowserApi, Configuration } from 'publicGenerated/fetch';
+import { environment } from 'environments/environment';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -11,7 +12,7 @@ import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../../publicGenerated/model/domain';
-import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchConceptsRequest';
+import { SearchConceptsRequest } from '../../../../publicGenerated/fetch/api';
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
@@ -30,7 +31,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
   ]
 })
 export class EhrViewComponent implements OnInit, OnDestroy {
-  api = new DataBrowserApi();
+  api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
   domainId: string;
   title: string;
   subTitle: string;
@@ -47,7 +48,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
   totalParticipants: number;
   displayConceptErrorMessage = false;
   top10Results: any[] = []; // We graph top10 results
-  searchRequest: SearchConceptsRequest;
+  searchRequest: any;
   private subscriptions: ISubscription[] = [];
   private initSearchSubscription: ISubscription = null;
   /* Show more synonyms when toggled */
@@ -304,8 +305,8 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       this.searchRequest.pageNumber = 0;
       this.searchRequest.measurementTests = localStorage.getItem('measurementTestsChecked') === 'false' ? 0 : 1;
       this.searchRequest.measurementOrders = localStorage.getItem('measurementOrdersChecked') === 'false' ? 0 : 1;
-      this.api.searchConcepts(this.searchRequest).subscribe({
-        next: res => {
+      this.api.searchConcepts(this.searchRequest).then(
+        res => {
           if (res.items && res.items.length > 0) {
             this.processSearchResults(res);
           } else {
@@ -313,13 +314,12 @@ export class EhrViewComponent implements OnInit, OnDestroy {
               'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
           }
           this.displayConceptErrorMessage = false;
-        },
-        error: err => {
-          const errorBody = JSON.parse(err._body);
-          this.displayConceptErrorMessage = true;
-          console.log('Error searching: ', errorBody.message);
-          this.loading = false;
         }
+      ).catch(err => {
+        const errorBody = JSON.parse(err._body);
+        this.displayConceptErrorMessage = true;
+        console.log('Error searching: ', errorBody.message);
+        this.loading = false;
       });
     }
     this.processSearchResults(results);
@@ -375,7 +375,7 @@ export class EhrViewComponent implements OnInit, OnDestroy {
       minCount: 1,
       pageNumber: 0,
     };
-    return this.api.searchConcepts(top10SearchRequest);
+    return this.api.searchConcepts({ query: query });
   }
 
   public searchDomain(query: string) {

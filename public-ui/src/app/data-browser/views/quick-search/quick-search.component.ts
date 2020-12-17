@@ -3,8 +3,9 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import {
-  CdrVersion, DataBrowserService, DomainInfosAndSurveyModulesResponse
+  CdrVersion
 } from 'publicGenerated';
+import { Configuration, DataBrowserApi, DomainInfosAndSurveyModulesResponse } from 'publicGenerated/fetch'
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -22,6 +23,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
     './quick-search.component.css']
 })
 export class QuickSearchComponent implements OnInit, OnDestroy {
+  api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
   dbDesc = `The Data Browser provides interactive views of the publicly available
      All of Us (AoU) Research Program participant data. Currently, participant provided
       information, including surveys
@@ -71,7 +73,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
   private subscriptions: ISubscription[] = [];
 
-  constructor(private api: DataBrowserService,
+  constructor(
     private route: ActivatedRoute,
     private router: Router,
     public dbc: DbConfigService,
@@ -122,12 +124,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.prevSearchText = '';
     }
     this.searchText.setValue(this.prevSearchText);
-    this.subscriptions.push(
-      this.api.getParticipantCount().subscribe(
-        result => this.totalParticipants = result.countValue)
-    );
+    this.api.getParticipantCount().then(
+      result => this.totalParticipants = result.countValue);
 
-    this.api.getCdrVersionUsed().subscribe(
+    this.api.getCdrVersionUsed().then(
       (result: CdrVersion) => {
         this.numParticipants = result.numParticipants;
         this.creationTime = new Date(result.creationTime);
@@ -135,13 +135,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       });
     // Do initial search if we have search text
     if (this.prevSearchText) {
-      this.subscriptions.push(
-        this.searchDomains(this.prevSearchText).subscribe({
-          next: (data: DomainInfosAndSurveyModulesResponse) => {
+        this.searchDomains(this.prevSearchText).then(
+          (data: DomainInfosAndSurveyModulesResponse) => {
             this.searchCallback(data);
             this.displayDomainTotalsErrorMessage = false;
           },
-          error: err => {
+         err => {
             let errorBody = { 'message': '' };
             try {
               errorBody = JSON.parse(err._body);
@@ -151,32 +150,28 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             console.log('Error searching: ', errorBody.message);
             this.loading = false;
             this.resetDomainResults();
-          }
-        }));
+          });
     }
     // Get domain totals only once so if they erase search we can load them
-    this.subscriptions.push(
-      this.api.getDomainTotals(this.searchText.value, 1, 1).subscribe({
-        next: data => {
-          this.searchCallback(data);
-          // Only set results to the totals if we don't have a searchText
-          if (!this.searchText.value) {
-            this.totalResults = data;
-          }
-          this.displayDomainTotalsErrorMessage = false;
-        },
-        error: err => {
-          let errorBody = { 'message': '' };
-          try {
-            errorBody = JSON.parse(err._body);
-          } catch (e) {
-          }
-          this.displayDomainTotalsErrorMessage = true;
-          console.log('Error searching: ', errorBody.message);
-          this.loading = false;
-          this.resetDomainResults();
+    this.api.getDomainTotals(this.searchText.value, 1, 1).then(
+      data => {
+        this.searchCallback(data);
+        // Only set results to the totals if we don't have a searchText
+        if (!this.searchText.value) {
+          this.totalResults = data;
         }
-      }));
+        this.displayDomainTotalsErrorMessage = false;
+      }).catch(err => {
+        let errorBody = { 'message': '' };
+        try {
+          errorBody = JSON.parse(err._body);
+        } catch (e) {
+        }
+        this.displayDomainTotalsErrorMessage = true;
+        console.log('Error searching: ', errorBody.message);
+        this.loading = false;
+        this.resetDomainResults();
+      });
 
     // Search when text value changes
     this.subscriptions.push(
@@ -258,13 +253,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('searchText', query);
     // If query empty reset to already retrieved domain totals
     if (query.length === 0 && this.totalResults) {
-      const resultsObservable = new Observable((observer) => {
+      const resultsObservable = new Promise((observer) => {
         const domains: DomainInfosAndSurveyModulesResponse = {
           domainInfos: this.totalResults.domainInfos,
           surveyModules: this.totalResults.surveyModules
         };
-        observer.next(domains);
-        observer.complete();
+        return domains;
       });
       return resultsObservable;
     }

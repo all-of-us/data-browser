@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Items } from '@clr/angular/data/datagrid/providers/items';
-import { DataBrowserApi } from 'publicGenerated/fetch';
+import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
@@ -27,7 +27,7 @@ import { TooltipService } from '../../../utils/tooltip.service';
 })
 
 export class SurveyViewComponent implements OnInit, OnDestroy {
-  api = new DataBrowserApi();
+  api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
   graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
   domainId: string;
   title: string;
