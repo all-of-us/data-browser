@@ -1,7 +1,6 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import { environment } from 'environments/environment';
 import 'rxjs/add/operator/debounceTime';
@@ -13,9 +12,9 @@ import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../../publicGenerated/model/domain';
 import { SearchConceptsRequest } from '../../../../publicGenerated/fetch/api';
-import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
+import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { TooltipService } from '../../../utils/tooltip.service';
 
 /* This displays concept search for a Domain. */
