@@ -4,13 +4,13 @@ import javax.persistence.*;
 import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
-import org.pmiops.workbench.cdr.model.QuestionConceptId;
+import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
 
 @Entity
 @Table(name = "question_concept")
-public class QuestionConcept {
+public class DbQuestionConcept {
 
-    private QuestionConceptId questionConceptId;
+    private DbQuestionConceptId dbQuestionConceptId;
 
     @EmbeddedId
     @AttributeOverrides({
@@ -21,16 +21,16 @@ public class QuestionConcept {
             @AttributeOverride(name="path",
                     column=@Column(name="path"))
     })
-    public QuestionConceptId getQuestionConceptId() {
-        return questionConceptId;
+    public DbQuestionConceptId getDbQuestionConceptId() {
+        return dbQuestionConceptId;
     }
 
-    public void setQuestionConceptId(QuestionConceptId questionConceptId) {
-        this.questionConceptId = questionConceptId;
+    public void setDbQuestionConceptId(DbQuestionConceptId dbQuestionConceptId) {
+        this.dbQuestionConceptId = dbQuestionConceptId;
     }
 
-    public QuestionConcept questionConceptId(QuestionConceptId questionConceptId) {
-        this.questionConceptId = questionConceptId;
+    public DbQuestionConcept dbQuestionConceptId(DbQuestionConceptId dbQuestionConceptId) {
+        this.dbQuestionConceptId = dbQuestionConceptId;
         return this;
     }
 
@@ -57,7 +57,7 @@ public class QuestionConcept {
         this.conceptName = conceptName;
     }
 
-    public QuestionConcept conceptName(String conceptName) {
+    public DbQuestionConcept conceptName(String conceptName) {
         this.conceptName = conceptName;
         return this;
     }
@@ -71,7 +71,7 @@ public class QuestionConcept {
         this.questionString = questionString;
     }
 
-    public QuestionConcept questionString(String questionString) {
+    public DbQuestionConcept questionString(String questionString) {
         this.questionString = questionString;
         return this;
     }
@@ -85,7 +85,7 @@ public class QuestionConcept {
         this.conceptCode = conceptCode;
     }
 
-    public QuestionConcept conceptCode(String conceptCode) {
+    public DbQuestionConcept conceptCode(String conceptCode) {
         this.conceptCode = conceptCode;
         return this;
     }
@@ -99,7 +99,7 @@ public class QuestionConcept {
         this.surveyName = surveyName;
     }
 
-    public QuestionConcept surveyName(String surveyName) {
+    public DbQuestionConcept surveyName(String surveyName) {
         this.surveyName = surveyName;
         return this;
     }
@@ -113,7 +113,7 @@ public class QuestionConcept {
         this.countValue = count;
     }
 
-    public QuestionConcept count(long count) {
+    public DbQuestionConcept count(long count) {
         this.countValue = count;
         return this;
     }
@@ -127,7 +127,7 @@ public class QuestionConcept {
         this.sub = sub;
     }
 
-    public QuestionConcept sub(int sub) {
+    public DbQuestionConcept sub(int sub) {
         this.sub = sub;
         return this;
     }
@@ -139,7 +139,7 @@ public class QuestionConcept {
     public void setIsParentQuestion(int is_parent_question) {
         this.is_parent_question = is_parent_question;
     }
-    public QuestionConcept isParentQuestion(int is_parent_question) {
+    public DbQuestionConcept isParentQuestion(int is_parent_question) {
         this.is_parent_question = is_parent_question;
         return this;
     }
@@ -151,7 +151,7 @@ public class QuestionConcept {
     public void setGenerateCounts(int generate_counts) {
         this.generate_counts = generate_counts;
     }
-    public QuestionConcept generateCounts(int generate_counts) {
+    public DbQuestionConcept generateCounts(int generate_counts) {
         this.generate_counts = generate_counts;
         return this;
     }
@@ -165,7 +165,7 @@ public class QuestionConcept {
         this.questionOrderNumber = questionOrderNumber;
     }
 
-    public QuestionConcept questionOrderNumber(int questionOrderNumber) {
+    public DbQuestionConcept questionOrderNumber(int questionOrderNumber) {
         this.questionOrderNumber = questionOrderNumber;
         return this;
     }
@@ -179,7 +179,7 @@ public class QuestionConcept {
         this.countAnalysis = analysis;
     }
 
-    public QuestionConcept countAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept countAnalysis(AchillesAnalysis analysis) {
         this.countAnalysis = analysis;
         return this;
     }
@@ -193,7 +193,7 @@ public class QuestionConcept {
         this.genderAnalysis = analysis;
     }
 
-    public QuestionConcept genderAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept genderAnalysis(AchillesAnalysis analysis) {
         this.genderAnalysis = analysis;
         return this;
     }
@@ -207,7 +207,7 @@ public class QuestionConcept {
         this.ageAnalysis = analysis;
     }
 
-    public QuestionConcept ageAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept ageAnalysis(AchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
         return this;
     }
@@ -221,7 +221,7 @@ public class QuestionConcept {
         this.versionAnalysis = analysis;
     }
 
-    public QuestionConcept versionAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept versionAnalysis(AchillesAnalysis analysis) {
         this.versionAnalysis = analysis;
         return this;
     }
