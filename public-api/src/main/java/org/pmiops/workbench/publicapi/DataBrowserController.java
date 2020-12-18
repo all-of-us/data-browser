@@ -1660,7 +1660,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         }
 
-        for(org.pmiops.workbench.model.QuestionConcept q: questions) {
+        for(QuestionConcept q: questions) {
             if (countAnalysis != null) {
                 AchillesAnalysis ca = new AchillesAnalysis(countAnalysis);
                 ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));

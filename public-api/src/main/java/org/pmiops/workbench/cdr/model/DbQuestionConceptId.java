@@ -11,13 +11,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class DbQuestionConceptId implements Serializable{
 
     @Column(name = "concept_id")
-    long conceptId;
+    private long conceptId;
 
     @Column(name = "survey_concept_id")
-    long surveyConceptId;
+    private long surveyConceptId;
 
     @Column(name = "path")
-    String path;
+    private String path;
 
 
     public DbQuestionConceptId() {
