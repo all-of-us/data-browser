@@ -1,6 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -22,7 +21,6 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 (<any>window).StackTrace = StackTrace;
 import { ConfigService, DataBrowserService } from 'publicGenerated';
 import { Configuration as newConfig } from '../publicGenerated/fetch';
-import { DataBrowserApi } from '../publicGenerated/fetch/api';
 import { DbConfigService } from './utils/db-config.service';
 import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
@@ -39,11 +37,9 @@ export function getConfiguration(): Configuration {
   });
 }
 
-export function getNewConfiguration(http: HttpClientModule) {
-  return new newConfig({ basePath: getPublicBasePath() });
-}
 
-export function getConfigService(http: Http) {
+
+export function getConfigService(http: HttpClient) {
   return new ConfigService(http, getPublicBasePath(), null);
 }
 
@@ -66,17 +62,12 @@ export function getConfigService(http: Http) {
     {
       provide: ConfigService,
       useFactory: getConfigService,
-      deps: [Http]
-    },
-    {
-      provide: DataBrowserApi,
-      useFactory: getNewConfiguration,
-      deps: [HttpClientModule]
+      deps: [HttpClient]
     },
     {
       provide: ConfigService,
       useFactory: getConfigService,
-      deps: [Http]
+      deps: [HttpClient]
     },
     {
       provide: Configuration,
