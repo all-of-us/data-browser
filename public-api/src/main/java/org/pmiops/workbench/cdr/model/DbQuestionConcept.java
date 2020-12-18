@@ -1,5 +1,7 @@
 package org.pmiops.workbench.cdr.model;
 
+import javax.persistence.*;
+import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
 import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
@@ -7,6 +9,7 @@ import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
 @Entity
 @Table(name = "question_concept")
 public class DbQuestionConcept {
+
     private String conceptName;
     private String conceptCode;
     private String surveyName;
