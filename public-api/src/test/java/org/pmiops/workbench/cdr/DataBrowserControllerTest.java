@@ -2,6 +2,7 @@ package org.pmiops.workbench.publicapi;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.mockito.Mock;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.sql.Timestamp;
@@ -27,7 +28,7 @@ import org.pmiops.workbench.cdr.model.AchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
-import org.pmiops.workbench.db.model.CdrVersion;
+import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Concept;
@@ -55,6 +56,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
+import org.pmiops.workbench.service.CdrVersionService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -488,9 +490,8 @@ public class DataBrowserControllerTest {
     private AchillesResultDistDao achillesResultDistDao;
     @PersistenceContext
     private EntityManager entityManager;
+    @Mock private CdrVersionService cdrVersionService;
 
-
-    private CdrVersion cdrVersion;
     private DataBrowserController dataBrowserController;
 
     @Before
@@ -500,7 +501,7 @@ public class DataBrowserControllerTest {
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistDao, entityManager,
-            () -> cdrVersion, cdrVersionDao);
+            cdrVersionService);
     }
 
     @Test
@@ -807,14 +808,14 @@ public class DataBrowserControllerTest {
         achillesResultDao.save(ACHILLES_RESULT_13);
     }
 
-    private CdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
-        cdrVersion = new CdrVersion();
-        cdrVersion.setCdrVersionId(cdrVersionId);
-        cdrVersion.setCreationTime(new Timestamp(creationTime));
-        cdrVersion.setName(name);
-        cdrVersion.setNumParticipants(123);
-        cdrVersion.setPublicDbName("p");
-        cdrVersionDao.save(cdrVersion);
-        return cdrVersion;
+    private DbCdrVersion makeCdrVersion(long cdrVersionId, String name, long creationTime) {
+        DbCdrVersion dbCdrVersion = new DbCdrVersion();
+        dbCdrVersion.setCdrVersionId(cdrVersionId);
+        dbCdrVersion.setCreationTime(new Timestamp(creationTime));
+        dbCdrVersion.setName(name);
+        dbCdrVersion.setNumParticipants(123);
+        dbCdrVersion.setPublicDbName("p");
+        cdrVersionDao.save(dbCdrVersion);
+        return dbCdrVersion;
     }
 }
