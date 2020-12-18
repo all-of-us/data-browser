@@ -20,10 +20,10 @@
 }
 
 .data-statement > .card {
-    width: contain;
-    height: contain;
     margin: 15%;
     padding: 1rem;
+    background: white;
+    position: relative;
 }
 
 .data-statement > .card > .close {
