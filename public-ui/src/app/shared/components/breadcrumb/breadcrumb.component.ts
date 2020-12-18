@@ -1,6 +1,8 @@
+
+import {filter} from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { DbConfigService } from '../../../utils/db-config.service';
 
@@ -78,7 +80,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.breadcrumbs = this.buildBreadcrumbs(this.activatedRoute.root);
-    this.subscription = this.router.events.filter(event => event instanceof NavigationEnd)
+    this.subscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(event => {
         this.breadcrumbs = BreadcrumbComponent.filterBreadcrumbs(
           this.buildBreadcrumbs(this.activatedRoute.root));

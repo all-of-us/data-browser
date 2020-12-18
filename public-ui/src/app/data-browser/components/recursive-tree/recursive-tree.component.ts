@@ -1,6 +1,6 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { Concept, DataBrowserService } from '../../../../publicGenerated';
 import { TreeHighlightService } from '../../services/tree-highlight.service';
 

@@ -1,12 +1,14 @@
+
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-import { ISubscription } from 'rxjs/Subscription';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+
+
+
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
@@ -186,10 +188,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         }
         );
       // Add value changed event to search when value changes
-      this.subscriptions.push(this.searchText.valueChanges
-        .debounceTime(1000)
-        .distinctUntilChanged()
-        .switchMap((query) => this.searchDomain(query))
+      this.subscriptions.push(this.searchText.valueChanges.pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        switchMap((query) => this.searchDomain(query)),)
         .subscribe({
           next: results => {
             this.searchCallback(results);

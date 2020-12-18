@@ -1,8 +1,10 @@
+
+import {filter} from 'rxjs/operators';
 import { DOCUMENT, Location } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+
+
+
 
 import { Title } from '@angular/platform-browser';
 import {
@@ -12,7 +14,7 @@ import {
   Router,
 } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { environment } from 'environments/environment';
 
@@ -78,8 +80,8 @@ export class AppComponent implements OnInit {
       this.titleService.setTitle(this.baseTitle);
     }
 
-    this.router.events
-      .filter((event) => event instanceof NavigationEnd)
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd))
       .subscribe((event: RouterEvent) => {
         // Set the db header no menu if we are on home page
         // Not sure why an instance of RouteConfigLoadStart comes in here when we filter

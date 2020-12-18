@@ -1,3 +1,5 @@
+
+import {from as observableFrom,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -5,8 +7,7 @@ import {
   CanActivateChild,
   Router, RouterStateSnapshot
 } from '@angular/router';
-
-import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/mergeMap';
 
 import { ServerConfigService } from 'app/services/server-config.service';
 
@@ -19,13 +20,13 @@ export class IsSafeGuard implements CanActivate, CanActivateChild {
     private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.serverConfigService.getConfig().flatMap(config => {
+    return this.serverConfigService.getConfig().mergeMap(config => {
       // if true function and normal else show emergency page
       if (config.dataBrowserIsSafe) {
-        return Observable.from([true]);
+        return observableFrom([true]);
       }
       this.router.navigate(['/error']);
-      return Observable.from([false]);
+      return observableFrom([false]);
     });
   }
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {

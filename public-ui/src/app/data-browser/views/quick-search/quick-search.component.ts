@@ -1,3 +1,5 @@
+
+import {switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,11 +8,10 @@ import {
   CdrVersion
 } from 'publicGenerated';
 import { Configuration, DataBrowserApi, DomainInfosAndSurveyModulesResponse } from 'publicGenerated/fetch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-import { Observable } from 'rxjs/Rx';
-import { ISubscription } from 'rxjs/Subscription';
+
+
+
+import { Observable ,  SubscriptionLike as ISubscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ConceptGroup } from '../../../utils/conceptGroup';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -175,10 +176,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
 
     // Search when text value changes
     this.subscriptions.push(
-      this.searchText.valueChanges
-        .debounceTime(1000)
-        .distinctUntilChanged()
-        .switchMap((query) => this.searchDomains(query))
+      this.searchText.valueChanges.pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        switchMap((query) => this.searchDomains(query)),)
         .subscribe({
           next: (data: DomainInfosAndSurveyModulesResponse) => {
             this.searchCallback(data);
