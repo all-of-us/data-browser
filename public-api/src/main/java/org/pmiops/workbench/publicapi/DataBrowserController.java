@@ -41,7 +41,6 @@ import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.cdr.model.DomainInfo;
-import org.pmiops.workbench.cdr.model.DbQuestionConcept;
 import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
@@ -811,7 +810,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<AchillesAnalysis> analyses = achillesAnalysisDao.findSurveyAnalysisResults("43528698", questionConceptIds);
 
-        List<org.pmiops.workbench.model.QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions);
+        List<QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions);
 
         resp.setItems(mappedQuestions);
 
@@ -1583,7 +1582,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return binWidth;
     }
 
-    public List<org.pmiops.workbench.model.QuestionConcept> mapAnalysesToQuestions(List<AchillesAnalysis> analyses, List<org.pmiops.workbench.model.QuestionConcept> questions) {
+    public List<QuestionConcept> mapAnalysesToQuestions(List<AchillesAnalysis> analyses, List<QuestionConcept> questions) {
         Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();

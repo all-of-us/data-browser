@@ -2,9 +2,6 @@ package org.pmiops.workbench.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.inject.Provider;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.pmiops.workbench.cdr.model.DbQuestionConcept;
 import org.pmiops.workbench.model.QuestionConcept;
 import org.pmiops.workbench.cdr.QuestionConceptMapper;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;

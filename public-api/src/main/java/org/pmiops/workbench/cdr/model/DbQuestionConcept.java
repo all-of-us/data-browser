@@ -1,7 +1,5 @@
 package org.pmiops.workbench.cdr.model;
 
-import javax.persistence.*;
-import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
 import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
@@ -9,7 +7,19 @@ import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
 @Entity
 @Table(name = "question_concept")
 public class DbQuestionConcept {
-
+    private String conceptName;
+    private String conceptCode;
+    private String surveyName;
+    private long countValue;
+    private int sub;
+    private int is_parent_question;
+    private int generate_counts;
+    private int questionOrderNumber;
+    private String questionString;
+    private AchillesAnalysis countAnalysis;
+    private AchillesAnalysis genderAnalysis;
+    private AchillesAnalysis ageAnalysis;
+    private AchillesAnalysis versionAnalysis;
     private DbQuestionConceptId dbQuestionConceptId;
 
     @EmbeddedId
@@ -33,20 +43,6 @@ public class DbQuestionConcept {
         this.dbQuestionConceptId = dbQuestionConceptId;
         return this;
     }
-
-    private String conceptName;
-    private String conceptCode;
-    private String surveyName;
-    private long countValue;
-    private int sub;
-    private int is_parent_question;
-    private int generate_counts;
-    private int questionOrderNumber;
-    private String questionString;
-    private AchillesAnalysis countAnalysis;
-    private AchillesAnalysis genderAnalysis;
-    private AchillesAnalysis ageAnalysis;
-    private AchillesAnalysis versionAnalysis;
 
     @Column(name = "concept_name")
     public String getConceptName() {

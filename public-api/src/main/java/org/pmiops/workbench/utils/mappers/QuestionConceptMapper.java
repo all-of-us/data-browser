@@ -2,9 +2,6 @@ package org.pmiops.workbench.cdr;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import static org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_DEFAULT;
-import org.mapstruct.CollectionMappingStrategy;
 import org.pmiops.workbench.cdr.model.DbQuestionConcept;
 import org.pmiops.workbench.model.QuestionConcept;
 import org.pmiops.workbench.utils.mappers.CommonMappers;
