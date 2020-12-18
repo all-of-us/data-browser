@@ -51,8 +51,7 @@ buildscript {    // Configuration for building
 sourceSets {
   main {
     java {
-      srcDirs = ['src/main/java', '../src/main/java', '../src/generated/java',
-                 '../../common-api/src/main/java']
+      srcDirs = ['src/main/java', '../src/main/java', '../src/generated/java']
       includes = ['org/pmiops/workbench/tools/**/*.java',
                   'org/pmiops/workbench/db/**/*.java',
                   // In general, command-line tools won't need access to
