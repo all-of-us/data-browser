@@ -11,6 +11,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "stacktrace-js",
+              "portable-fetch",
+              "rxjs/add/operator/mergeMap",
+              "url"
+           ],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -22,8 +28,7 @@
             ],
             "styles": [
               "node_modules/@clr/icons/clr-icons.min.css",
-              "node_modules/@clr/ui/clr-ui.min.css",
-              "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/nouislider/distribute/nouislider.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -174,5 +179,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

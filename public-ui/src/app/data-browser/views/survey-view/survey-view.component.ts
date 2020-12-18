@@ -44,7 +44,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyCountAnalysis: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
-  surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
+  surveyPdfUrl: string;
   surveyName: string;
   surveyDescription: string;
   conceptCodeTooltip: any;
@@ -97,6 +97,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
     this.loadPage();
     this.envDisplay = environment.displayTag;
     if (this.surveyConceptId === 1333342) {

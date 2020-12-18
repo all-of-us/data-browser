@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 //  components
@@ -21,7 +20,6 @@ import { HeaderFooterService } from './services/header-footer.service';
     RouterModule,
     CommonModule,
     FormsModule,
-    HttpModule,
     ReactiveFormsModule,
     NgxPaginationModule
   ],
@@ -39,7 +37,6 @@ import { HeaderFooterService } from './services/header-footer.service';
   exports: [
     CommonModule,
     FormsModule,
-    HttpModule,
     ReactiveFormsModule,
     NgxPaginationModule,
     HighlightSearchComponent,

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChartAgeComponent } from './chart-age.component';
 
@@ -6,7 +6,7 @@ describe('ChartAgeComponent', () => {
   let component: ChartAgeComponent;
   let fixture: ComponentFixture<ChartAgeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChartAgeComponent ]
     })
