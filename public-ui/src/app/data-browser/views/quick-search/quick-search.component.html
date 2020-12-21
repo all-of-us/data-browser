@@ -103,7 +103,7 @@
     <div tabindex="0" (keydown.enter)="viewSurvey(r, searchText.value)" (click)="viewSurvey(r, searchText.value)"
          class="result-box" *ngFor="let r of surveyResults">
       <p class="result-box-title">
-        {{r.name}}
+        {{r.name}}{{r.name.toLowerCase()}}
         <app-tooltip [toolTipText1]="tooltipText.domainHelpText[r.name.toLowerCase()]"
                      [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
                      [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
