@@ -1,9 +1,12 @@
 package org.pmiops.workbench.cdr.model;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Transient;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
 
 @Entity
