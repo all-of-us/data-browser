@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TooltipService } from 'app/utils/tooltip.service';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 import { DbConfigService } from '../../../utils/db-config.service';
 
