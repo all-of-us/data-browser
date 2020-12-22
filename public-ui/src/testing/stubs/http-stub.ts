@@ -1,5 +1,5 @@
 import {RequestOptionsArgs} from '@angular/http/src/interfaces';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 export class HttpStub {
 
