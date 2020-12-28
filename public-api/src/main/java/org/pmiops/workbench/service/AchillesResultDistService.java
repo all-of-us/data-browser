@@ -28,7 +28,9 @@ public class AchillesResultDistService {
         return achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(analysisIds ,conceptIds);
     }
 
-    public List<DbAchillesResultDist> fetchConceptDistResults(Long analysisId, String conceptId) {
-        return achillesResultDistDao.fetchConceptDistResults(analysisId,conceptId);
+    public List<AchillesResultDist> fetchConceptDistResults(Long analysisId, String conceptId) {
+        return achillesResultDistDao.fetchConceptDistResults(analysisId,conceptId).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
     }
 }

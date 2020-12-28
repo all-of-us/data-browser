@@ -1067,14 +1067,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             if(isMeasurement){
                 AchillesAnalysis measurementDistAnalysis = achillesAnalysisDao.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
-                List<DbAchillesResultDist> dbAchillesResultDistList = achillesResultDistService.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
-                HashMap<String,List<DbAchillesResultDist>> results = seperateDistResultsByUnit(dbAchillesResultDistList);
+                List<AchillesResultDist> achillesResultDistList = achillesResultDistService.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
+                HashMap<String,List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
                 List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
                 for(String unit: results.keySet()){
                     AchillesAnalysis mDistAnalysis = new AchillesAnalysis(measurementDistAnalysis);
-                    mDistAnalysis.setAchillesResultDistList(results.get(unit).stream()
-                            .map(achillesMapper::dbModelToClient)
-                            .collect(Collectors.toList()));
+                    mDistAnalysis.setAchillesResultDistList(results.get(unit));
                     mDistAnalysis.setUnitName(unit);
                     unitSeperateAnalysis.add(mDistAnalysis);
                 }
@@ -1569,10 +1567,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return seperatedResults;
     }
 
-    public static HashMap<String,List<DbAchillesResultDist>> seperateDistResultsByUnit(List<DbAchillesResultDist> results) {
-        Multimap<String, DbAchillesResultDist> distResultsWithUnits = Multimaps
-                .index(results, DbAchillesResultDist::getStratum2);
-        HashMap<String,List<DbAchillesResultDist>> seperatedResults = new HashMap<>();
+    public static HashMap<String,List<AchillesResultDist>> seperateDistResultsByUnit(List<AchillesResultDist> results) {
+        Multimap<String, AchillesResultDist> distResultsWithUnits = Multimaps
+                .index(results, AchillesResultDist::getStratum2);
+        HashMap<String,List<AchillesResultDist>> seperatedResults = new HashMap<>();
 
         for(String key:distResultsWithUnits.keySet()){
             seperatedResults.put(key,new ArrayList<>(distResultsWithUnits.get(key)));

@@ -501,7 +501,7 @@ public class DataBrowserControllerTest {
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistDao, entityManager,
-            cdrVersionService);
+            cdrVersionService, achillesMapper);
     }
 
     @Test
