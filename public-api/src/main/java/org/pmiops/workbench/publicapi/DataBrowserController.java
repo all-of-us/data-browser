@@ -37,7 +37,6 @@ import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResultDist;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.AchillesResultDistService;
-import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
@@ -89,8 +88,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private SurveyModuleDao surveyModuleDao;
     @Autowired
     private AchillesResultDistService achillesResultDistService;
-    @Autowired
-    private AchillesMapper achillesMapper;
     @PersistenceContext(unitName = "cdr")
     private EntityManager entityManager;
     @Autowired
@@ -156,8 +153,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                  DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
                                  AchillesResultDao achillesResultDao,
                                  AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistService achillesResultDistService,
-                                 EntityManager entityManager, CdrVersionService cdrVersionService,
-                                 AchillesMapper achillesMapper) {
+                                 EntityManager entityManager, CdrVersionService cdrVersionService) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
@@ -168,7 +164,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.achillesResultDistService = achillesResultDistService;
         this.entityManager = entityManager;
         this.cdrVersionService = cdrVersionService;
-        this.achillesMapper = achillesMapper;
     }
 
     public static void setAgeStratumNameMap() {
