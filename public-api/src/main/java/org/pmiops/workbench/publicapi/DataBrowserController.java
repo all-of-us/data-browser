@@ -31,12 +31,13 @@ import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
-import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.AchillesResult;
 import org.pmiops.workbench.cdr.model.AchillesAnalysis;
-import org.pmiops.workbench.cdr.model.AchillesResultDist;
+import org.pmiops.workbench.cdr.model.DbAchillesResultDist;
 import org.pmiops.workbench.service.CdrVersionService;
+import org.pmiops.workbench.service.AchillesResultDistService;
+import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
@@ -45,6 +46,7 @@ import org.pmiops.workbench.cdr.model.QuestionConcept;
 import org.pmiops.workbench.cdr.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
+import org.pmiops.workbench.model.AchillesResultDist;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
@@ -86,7 +88,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private SurveyModuleDao surveyModuleDao;
     @Autowired
-    private AchillesResultDistDao achillesResultDistDao;
+    private AchillesResultDistService achillesResultDistService;
+    @Autowired
+    private AchillesMapper achillesMapper;
     @PersistenceContext(unitName = "cdr")
     private EntityManager entityManager;
     @Autowired
@@ -151,8 +155,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
                                  DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
                                  AchillesResultDao achillesResultDao,
-                                 AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistDao achillesResultDistDao,
-                                 EntityManager entityManager, CdrVersionService cdrVersionService) {
+                                 AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistService achillesResultDistService,
+                                 EntityManager entityManager, CdrVersionService cdrVersionService,
+                                 AchillesMapper achillesMapper) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
@@ -160,9 +165,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.surveyModuleDao = surveyModuleDao;
         this.achillesResultDao = achillesResultDao;
         this.achillesAnalysisDao = achillesAnalysisDao;
-        this.achillesResultDistDao = achillesResultDistDao;
+        this.achillesResultDistService = achillesResultDistService;
         this.entityManager = entityManager;
         this.cdrVersionService = cdrVersionService;
+        this.achillesMapper = achillesMapper;
     }
 
     public static void setAgeStratumNameMap() {
@@ -350,10 +356,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                         results = cdr.getResults().stream().map(TO_CLIENT_ACHILLES_RESULT).collect(Collectors.toList());
                     }
 
-                    List<org.pmiops.workbench.model.AchillesResultDist> distResults = new ArrayList<>();
-                    if (!cdr.getDistResults().isEmpty()) {
-                        distResults = cdr.getDistResults().stream().map(TO_CLIENT_ACHILLES_RESULT_DIST).collect(Collectors.toList());
-                    }
+                    List<AchillesResultDist> achillesResultDistList = new ArrayList<>();
 
                     return new org.pmiops.workbench.model.Analysis()
                             .analysisId(cdr.getAnalysisId())
@@ -367,7 +370,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .dataType(cdr.getDataType())
                             .unitName(cdr.getUnitName())
                             .results(results)
-                            .distResults(distResults)
+                            .distResults(achillesResultDistList)
                             .unitName(cdr.getUnitName());
 
                 }
@@ -451,38 +454,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                             .measurementValueType(o.getMeasurementValueType())
                             .countValue(o.getCountValue())
                             .sourceCountValue(o.getSourceCountValue());
-                }
-            };
-
-    /**
-     * Converter function from backend representation (used with Hibernate) to
-     * client representation (generated by Swagger).
-     */
-    private static final Function<AchillesResultDist, org.pmiops.workbench.model.AchillesResultDist>
-            TO_CLIENT_ACHILLES_RESULT_DIST =
-            new Function<AchillesResultDist, org.pmiops.workbench.model.AchillesResultDist>() {
-                @Override
-                public org.pmiops.workbench.model.AchillesResultDist apply(AchillesResultDist o) {
-
-                    return new org.pmiops.workbench.model.AchillesResultDist()
-                            .id(o.getId())
-                            .analysisId(o.getAnalysisId())
-                            .stratum1(o.getStratum1())
-                            .stratum2(o.getStratum2())
-                            .stratum3(o.getStratum3())
-                            .stratum4(o.getStratum4())
-                            .stratum5(o.getStratum5())
-                            .stratum6(o.getStratum6())
-                            .countValue(o.getCountValue())
-                            .minValue(o.getMinValue())
-                            .maxValue(o.getMaxValue())
-                            .avgValue(o.getAvgValue())
-                            .stdevValue(o.getStdevValue())
-                            .medianValue(o.getMedianValue())
-                            .p10Value(o.getP10Value())
-                            .p25Value(o.getP25Value())
-                            .p75Value(o.getP75Value())
-                            .p90Value(o.getP90Value());
                 }
             };
 
@@ -971,26 +942,26 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<AchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
 
-        List<AchillesResultDist> overallDistResults = achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
+        List<DbAchillesResultDist> overallDistResults = achillesResultDistService.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
 
-        Multimap<Long, AchillesResultDist> distResultsByAnalysisId = null;
+        Multimap<Long, DbAchillesResultDist> distResultsByAnalysisId = null;
         if(overallDistResults != null){
             distResultsByAnalysisId = Multimaps
-                    .index(overallDistResults, AchillesResultDist::getAnalysisId);
+                    .index(overallDistResults, DbAchillesResultDist::getAnalysisId);
         }
 
-        HashMap<Long,HashMap<String,List<AchillesResultDist>>> analysisDistResults = new HashMap<>();
+        HashMap<Long,HashMap<String,List<DbAchillesResultDist>>> dbAnalysisDistResults = new HashMap<>();
 
         for(Long key:distResultsByAnalysisId.keySet()){
-            Multimap<String,AchillesResultDist> conceptDistResults = Multimaps.index(distResultsByAnalysisId.get(key),AchillesResultDist::getStratum1);
+            Multimap<String, DbAchillesResultDist> conceptDistResults = Multimaps.index(distResultsByAnalysisId.get(key), DbAchillesResultDist::getStratum1);
             for(String concept:conceptDistResults.keySet()) {
-                if(analysisDistResults.containsKey(key)){
-                    HashMap<String,List<AchillesResultDist>> results = analysisDistResults.get(key);
+                if(dbAnalysisDistResults.containsKey(key)){
+                    HashMap<String,List<DbAchillesResultDist>> results = dbAnalysisDistResults.get(key);
                     results.put(concept,new ArrayList<>(conceptDistResults.get(concept)));
                 }else{
-                    HashMap<String,List<AchillesResultDist>> results = new HashMap<>();
+                    HashMap<String,List<DbAchillesResultDist>> results = new HashMap<>();
                     results.put(concept,new ArrayList<>(conceptDistResults.get(concept)));
-                    analysisDistResults.put(key,results);
+                    dbAnalysisDistResults.put(key,results);
                 }
             }
         }
@@ -1033,11 +1004,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }else if(analysisId == MEASUREMENT_GENDER_ANALYSIS_ID){
                     Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
                     List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
-                    HashMap<String,List<AchillesResultDist>> distResults = analysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
+                    HashMap<String,List<DbAchillesResultDist>> distResults = dbAnalysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
                     if (distResults != null) {
-                        List<AchillesResultDist> conceptDistResults = distResults.get(conceptId);
+                        List<DbAchillesResultDist> conceptDistResults = distResults.get(conceptId);
                         if(conceptDistResults != null){
-                            Multimap<String,AchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults,AchillesResultDist::getStratum2);
+                            Multimap<String,DbAchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults,DbAchillesResultDist::getStratum2);
                             for(String unit: unitDistResults.keySet()){
                                 if (results.keySet().contains(unit)) {
                                     AchillesAnalysis unitGenderAnalysis = new AchillesAnalysis(aa);
@@ -1096,12 +1067,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             if(isMeasurement){
                 AchillesAnalysis measurementDistAnalysis = achillesAnalysisDao.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
-                List<AchillesResultDist> achillesResultDistList = achillesResultDistDao.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
-                HashMap<String,List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
+                List<DbAchillesResultDist> dbAchillesResultDistList = achillesResultDistService.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
+                HashMap<String,List<DbAchillesResultDist>> results = seperateDistResultsByUnit(dbAchillesResultDistList);
                 List<AchillesAnalysis> unitSeperateAnalysis = new ArrayList<>();
                 for(String unit: results.keySet()){
                     AchillesAnalysis mDistAnalysis = new AchillesAnalysis(measurementDistAnalysis);
-                    mDistAnalysis.setDistResults(results.get(unit));
+                    mDistAnalysis.setAchillesResultDistList(results.get(unit).stream()
+                            .map(achillesMapper::dbModelToClient)
+                            .collect(Collectors.toList()));
                     mDistAnalysis.setUnitName(unit);
                     unitSeperateAnalysis.add(mDistAnalysis);
                 }
@@ -1348,7 +1321,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
     }
 
-    public void processMeasurementGenderMissingBins(Long analysisId, AchillesAnalysis aa, String conceptId, String unitName, List<AchillesResultDist> resultDists, String type) {
+    public void processMeasurementGenderMissingBins(Long analysisId, AchillesAnalysis aa, String conceptId, String unitName, List<DbAchillesResultDist> resultDists, String type) {
 
         if (resultDists != null) {
             Float maleBinMin = null;
@@ -1364,7 +1337,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             float femaleBinWidth = 0f;
             float otherBinWidth = 0f;
 
-            for(AchillesResultDist ard:resultDists){
+            for(DbAchillesResultDist ard:resultDists){
                 if(Integer.parseInt(ard.getStratum3())== MALE) {
                     maleBinMin = Float.valueOf(ard.getStratum4());
                     maleBinMax = Float.valueOf(ard.getStratum5());
@@ -1596,10 +1569,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return seperatedResults;
     }
 
-    public static HashMap<String,List<AchillesResultDist>> seperateDistResultsByUnit(List<AchillesResultDist> results) {
-        Multimap<String, AchillesResultDist> distResultsWithUnits = Multimaps
-                .index(results, AchillesResultDist::getStratum2);
-        HashMap<String,List<AchillesResultDist>> seperatedResults = new HashMap<>();
+    public static HashMap<String,List<DbAchillesResultDist>> seperateDistResultsByUnit(List<DbAchillesResultDist> results) {
+        Multimap<String, DbAchillesResultDist> distResultsWithUnits = Multimaps
+                .index(results, DbAchillesResultDist::getStratum2);
+        HashMap<String,List<DbAchillesResultDist>> seperatedResults = new HashMap<>();
 
         for(String key:distResultsWithUnits.keySet()){
             seperatedResults.put(key,new ArrayList<>(distResultsWithUnits.get(key)));

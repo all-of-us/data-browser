@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.pmiops.workbench.model.AchillesResultDist;
 
 
 @Entity
@@ -26,7 +27,7 @@ public class AchillesAnalysis {
     private String dataType;
     private String unitName;
     private List<AchillesResult> results = new ArrayList<>();
-    private List<AchillesResultDist> distResults = new ArrayList<>();
+    private List<AchillesResultDist> achillesResultDistList = new ArrayList<>();
 
     public AchillesAnalysis() {}
 
@@ -42,7 +43,7 @@ public class AchillesAnalysis {
                 .chartType(a.getChartType())
                 .dataType(a.getDataType())
                 .results(new ArrayList<>())
-                .distResults(new ArrayList<>());
+                .achillesResultDistList(new ArrayList<>());
     }
 
     @Id
@@ -182,18 +183,19 @@ public class AchillesAnalysis {
     }
 
     @Transient
-    public List<AchillesResultDist> getDistResults() {
-        return distResults;
+    public List<AchillesResultDist> getAchillesResultDistList() {
+        return achillesResultDistList;
     }
-    public void setDistResults(List<AchillesResultDist> distResults) {
-        this.distResults = distResults;
+
+    public void setAchillesResultDistList(List<AchillesResultDist> achillesResultDistList) {
+        this.achillesResultDistList = achillesResultDistList;
     }
-    public AchillesAnalysis distResults(List<AchillesResultDist> distResults) {
-        this.distResults = distResults;
+    public AchillesAnalysis achillesResultDistList(List<AchillesResultDist> achillesResultDistList) {
+        this.achillesResultDistList = achillesResultDistList;
         return this;
     }
     public void addDistResult(AchillesResultDist achillesResultDist) {
-        this.distResults.add(achillesResultDist);
+        this.achillesResultDistList.add(achillesResultDist);
     }
 
     @Override
