@@ -14,6 +14,10 @@ public interface QuestionConceptMapper {
     @Mapping(target = "conceptId", source = "db.dbQuestionConceptId.conceptId")
     @Mapping(target = "surveyConceptId", source = "db.dbQuestionConceptId.surveyConceptId")
     @Mapping(target = "path", source = "db.dbQuestionConceptId.path")
+    @Mapping(target = "countAnalysis.distResults", source="db.countAnalysis.achillesResultDistList")
+    @Mapping(target = "genderAnalysis.distResults", source="db.genderAnalysis.achillesResultDistList")
+    @Mapping(target = "ageAnalysis.distResults", source="db.ageAnalysis.achillesResultDistList")
+    @Mapping(target = "versionAnalysis.distResults", source="db.versionAnalysis.achillesResultDistList")
     QuestionConcept dbModelToClient(DbQuestionConcept db);
 
     default boolean isNonEmpty(String s) {
