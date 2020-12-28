@@ -8,22 +8,22 @@ import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Embeddable
-public class QuestionConceptId implements Serializable{
+public class DbQuestionConceptId implements Serializable{
 
     @Column(name = "concept_id")
-    long conceptId;
+    private long conceptId;
 
     @Column(name = "survey_concept_id")
-    long surveyConceptId;
+    private long surveyConceptId;
 
     @Column(name = "path")
-    String path;
+    private String path;
 
 
-    public QuestionConceptId() {
+    public DbQuestionConceptId() {
     }
 
-    public QuestionConceptId(long conceptId, long surveyConceptId, String path) {
+    public DbQuestionConceptId(long conceptId, long surveyConceptId, String path) {
         this.conceptId = conceptId;
         this.surveyConceptId = surveyConceptId;
         this.path = path;
@@ -37,7 +37,7 @@ public class QuestionConceptId implements Serializable{
         this.conceptId = conceptId;
     }
 
-    public QuestionConceptId conceptId(long conceptId) {
+    public DbQuestionConceptId conceptId(long conceptId) {
         this.conceptId = conceptId;
         return this;
     }
@@ -50,7 +50,7 @@ public class QuestionConceptId implements Serializable{
         this.surveyConceptId = surveyConceptId;
     }
 
-    public QuestionConceptId surveyConceptId(long surveyConceptId) {
+    public DbQuestionConceptId surveyConceptId(long surveyConceptId) {
         this.surveyConceptId = surveyConceptId;
         return this;
     }
@@ -63,7 +63,7 @@ public class QuestionConceptId implements Serializable{
         this.path = path;
     }
 
-    public QuestionConceptId path(String path) {
+    public DbQuestionConceptId path(String path) {
         this.path = path;
         return this;
     }
@@ -72,7 +72,7 @@ public class QuestionConceptId implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        QuestionConceptId that = (QuestionConceptId) o;
+        DbQuestionConceptId that = (DbQuestionConceptId) o;
         return conceptId == that.conceptId &&
                 surveyConceptId == that.surveyConceptId &&
                 path == that.path;

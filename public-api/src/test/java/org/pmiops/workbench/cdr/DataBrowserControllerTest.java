@@ -57,6 +57,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
+import org.pmiops.workbench.service.QuestionConceptService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 
 @RunWith(SpringRunner.class)
@@ -492,6 +493,7 @@ public class DataBrowserControllerTest {
     @PersistenceContext
     private EntityManager entityManager;
     @Mock private CdrVersionService cdrVersionService;
+    @Mock private QuestionConceptService questionConceptService;
     @Mock private AchillesResultDistService achillesResultDistService;
 
     private DataBrowserController dataBrowserController;
@@ -503,7 +505,7 @@ public class DataBrowserControllerTest {
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistService, entityManager,
-            cdrVersionService);
+            cdrVersionService, questionConceptService);
     }
 
     @Test
