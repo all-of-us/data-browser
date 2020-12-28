@@ -58,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.QuestionConceptService;
+import org.pmiops.workbench.service.AchillesResultDistService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -493,6 +494,7 @@ public class DataBrowserControllerTest {
     private EntityManager entityManager;
     @Mock private CdrVersionService cdrVersionService;
     @Mock private QuestionConceptService questionConceptService;
+    @Mock private AchillesResultDistService achillesResultDistService;
 
     private DataBrowserController dataBrowserController;
 
@@ -502,7 +504,7 @@ public class DataBrowserControllerTest {
         ConceptService conceptService = new ConceptService(entityManager, conceptDao);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
-                achillesAnalysisDao, achillesResultDistDao, entityManager,
+                achillesAnalysisDao, achillesResultDistService, entityManager,
             cdrVersionService, questionConceptService);
     }
 
