@@ -197,33 +197,6 @@ public class DataBrowserControllerTest {
             .standardConceptCount(2L)
             .participantCount(3L);
 
-    private static final SurveyModule CLIENT_SURVEY_MODULE_1 = new SurveyModule()
-            .name("Lifestyle")
-            .description("The Lifestyle module provides information on smoking, alcohol and recreational drug use")
-            .conceptId(1585855L)
-            .questionCount(568120L)
-            .participantCount(4L)
-            .orderNumber(0)
-            .canShow(1);
-
-    private static final SurveyModule CLIENT_SURVEY_MODULE_2 = new SurveyModule()
-            .name("The Basics")
-            .description("The Basics module provides demographics and economic information for participants")
-            .conceptId(1586134L)
-            .questionCount(567437L)
-            .participantCount(5L)
-            .orderNumber(0)
-            .canShow(1);
-
-    private static final SurveyModule CLIENT_SURVEY_MODULE_3 = new SurveyModule()
-            .name("Cope")
-            .description("Survey includes information about the impact of COVID-19 on participant mental and physical health.")
-            .conceptId(1333342L)
-            .questionCount(100L)
-            .participantCount(10000L)
-            .orderNumber(0)
-            .canShow(1);
-
     private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
             .analysisId(1900L)
             .analysisName("Measurement Response Gender Distribution")
@@ -463,12 +436,6 @@ public class DataBrowserControllerTest {
             makeDomain(CLIENT_DOMAIN_1, 1L, "0");
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
             makeDomain(CLIENT_DOMAIN_2, 2L, "3");
-    private static final org.pmiops.workbench.cdr.model.DbSurveyModule SURVEY_MODULE_1 =
-            makeSurveyModule(CLIENT_SURVEY_MODULE_1);
-    private static final org.pmiops.workbench.cdr.model.DbSurveyModule SURVEY_MODULE_2 =
-            makeSurveyModule(CLIENT_SURVEY_MODULE_2);
-    private static final org.pmiops.workbench.cdr.model.DbSurveyModule SURVEY_MODULE_3 =
-            makeSurveyModule(CLIENT_SURVEY_MODULE_3);
 
     @Autowired
     private ConceptDao conceptDao;
@@ -782,10 +749,6 @@ public class DataBrowserControllerTest {
 
         domainInfoDao.save(DOMAIN_1);
         domainInfoDao.save(DOMAIN_2);
-
-        surveyModuleService.save(SURVEY_MODULE_1);
-        surveyModuleService.save(SURVEY_MODULE_2);
-        surveyModuleService.save(SURVEY_MODULE_3);
 
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_2);
