@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.pmiops.workbench.model.SurveyModule;
 
 @Entity
 @Table(name = "survey_module")
