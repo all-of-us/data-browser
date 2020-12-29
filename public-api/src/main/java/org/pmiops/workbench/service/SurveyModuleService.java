@@ -36,4 +36,8 @@ public class SurveyModuleService {
     public SurveyModule findByConceptId(Long conceptId) {
         return domainMapper.dbModelToClient(surveyModuleDao.findByConceptId(conceptId));
     }
+
+    public void save(DbSurveyModule surveyModule) {
+        surveyModuleDao.save(surveyModule);
+    }
 }

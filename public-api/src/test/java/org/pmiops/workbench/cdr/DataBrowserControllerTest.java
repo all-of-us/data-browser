@@ -22,7 +22,6 @@ import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
-import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
 import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.AchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
@@ -44,7 +43,6 @@ import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.SurveyModule;
-import org.pmiops.workbench.cdr.model.DbSurveyModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -58,8 +56,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
-import org.pmiops.workbench.service.QuestionConceptService;
 import org.pmiops.workbench.service.SurveyModuleService;
+import org.pmiops.workbench.service.QuestionConceptService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 
 @RunWith(SpringRunner.class)
@@ -465,11 +463,11 @@ public class DataBrowserControllerTest {
             makeDomain(CLIENT_DOMAIN_1, 1L, "0");
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
             makeDomain(CLIENT_DOMAIN_2, 2L, "3");
-    private static final DbSurveyModule SURVEY_MODULE_1 =
+    private static final org.pmiops.workbench.cdr.model.DbSurveyModule SURVEY_MODULE_1 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_1);
-    private static final DbSurveyModule SURVEY_MODULE_2 =
+    private static final org.pmiops.workbench.cdr.model.DbSurveyModule SURVEY_MODULE_2 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_2);
-    private static final DbSurveyModule SURVEY_MODULE_3 =
+    private static final org.pmiops.workbench.cdr.model.DbSurveyModule SURVEY_MODULE_3 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_3);
 
     @Autowired
@@ -482,8 +480,6 @@ public class DataBrowserControllerTest {
     ConceptRelationshipDao conceptRelationshipDao;
     @Autowired
     private DomainInfoDao domainInfoDao;
-    @Autowired
-    private SurveyModuleDao surveyModuleDao;
     @Autowired
     private QuestionConceptDao  questionConceptDao;
     @Autowired
@@ -521,7 +517,6 @@ public class DataBrowserControllerTest {
     public void testGetDomainTotals() throws Exception {
         ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals("", 1, 1);
         assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
-        assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2, CLIENT_SURVEY_MODULE_3);
     }
 
     @Test
@@ -735,8 +730,8 @@ public class DataBrowserControllerTest {
             .participantCount(domain.getParticipantCount());
     }
 
-    private static DbSurveyModule makeSurveyModule(SurveyModule surveyModule) {
-        return new DbSurveyModule()
+    private static org.pmiops.workbench.cdr.model.DbSurveyModule makeSurveyModule(SurveyModule surveyModule) {
+        return new org.pmiops.workbench.cdr.model.DbSurveyModule()
                 .conceptId(surveyModule.getConceptId())
                 .name(surveyModule.getName())
                 .description(surveyModule.getDescription())
@@ -787,9 +782,10 @@ public class DataBrowserControllerTest {
 
         domainInfoDao.save(DOMAIN_1);
         domainInfoDao.save(DOMAIN_2);
-        surveyModuleDao.save(SURVEY_MODULE_1);
-        surveyModuleDao.save(SURVEY_MODULE_2);
-        surveyModuleDao.save(SURVEY_MODULE_3);
+
+        surveyModuleService.save(SURVEY_MODULE_1);
+        surveyModuleService.save(SURVEY_MODULE_2);
+        surveyModuleService.save(SURVEY_MODULE_3);
 
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_2);
