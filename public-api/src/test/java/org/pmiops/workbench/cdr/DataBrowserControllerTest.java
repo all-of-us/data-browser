@@ -44,6 +44,7 @@ import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.SurveyModule;
+import org.pmiops.workbench.cdr.model.DbSurveyModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -464,11 +465,11 @@ public class DataBrowserControllerTest {
             makeDomain(CLIENT_DOMAIN_1, 1L, "0");
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
             makeDomain(CLIENT_DOMAIN_2, 2L, "3");
-    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_1 =
+    private static final DbSurveyModule SURVEY_MODULE_1 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_1);
-    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_2 =
+    private static final DbSurveyModule SURVEY_MODULE_2 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_2);
-    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_3 =
+    private static final DbSurveyModule SURVEY_MODULE_3 =
             makeSurveyModule(CLIENT_SURVEY_MODULE_3);
 
     @Autowired
@@ -734,8 +735,8 @@ public class DataBrowserControllerTest {
             .participantCount(domain.getParticipantCount());
     }
 
-    private static org.pmiops.workbench.cdr.model.SurveyModule makeSurveyModule(SurveyModule surveyModule) {
-        return new org.pmiops.workbench.cdr.model.SurveyModule()
+    private static DbSurveyModule makeSurveyModule(SurveyModule surveyModule) {
+        return new DbSurveyModule()
                 .conceptId(surveyModule.getConceptId())
                 .name(surveyModule.getName())
                 .description(surveyModule.getDescription())
