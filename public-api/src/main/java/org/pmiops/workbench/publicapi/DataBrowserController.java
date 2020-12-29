@@ -28,7 +28,6 @@ import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
-import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.AchillesResult;
@@ -36,12 +35,14 @@ import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResultDist;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.QuestionConceptService;
+import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.cdr.model.DomainInfo;
-import org.pmiops.workbench.cdr.model.SurveyModule;
+import org.pmiops.workbench.model.SurveyModule;
+import org.pmiops.workbench.cdr.model.DbSurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.QuestionConcept;
@@ -83,9 +84,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private DomainInfoDao domainInfoDao;
     @Autowired
-    private SurveyModuleDao surveyModuleDao;
-    @Autowired
     private AchillesResultDistService achillesResultDistService;
+    @Autowired
+    private SurveyModuleService surveyModuleService;
     @PersistenceContext(unitName = "cdr")
     private EntityManager entityManager;
     @Autowired
@@ -150,22 +151,21 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController() {}
 
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
-                                 DomainInfoDao domainInfoDao, SurveyModuleDao surveyModuleDao,
-                                 AchillesResultDao achillesResultDao,
+                                 DomainInfoDao domainInfoDao, AchillesResultDao achillesResultDao,
                                  AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistService achillesResultDistService,
                                  EntityManager entityManager, CdrVersionService cdrVersionService,
-                                 QuestionConceptService questionConceptService) {
+                                 QuestionConceptService questionConceptService, SurveyModuleService surveyModuleService) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
         this.domainInfoDao = domainInfoDao;
-        this.surveyModuleDao = surveyModuleDao;
         this.achillesResultDao = achillesResultDao;
         this.achillesAnalysisDao = achillesAnalysisDao;
         this.achillesResultDistService = achillesResultDistService;
         this.entityManager = entityManager;
         this.cdrVersionService = cdrVersionService;
         this.questionConceptService = questionConceptService;
+        this.surveyModuleService = surveyModuleService;
     }
 
     public static void setAgeStratumNameMap() {
@@ -569,7 +569,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         List<DomainInfo> domainInfos =  null;
-        List<SurveyModule> surveyModules = null;
+        List<SurveyModule> surveyModuleList = null;
 
         if (query != null && !query.isEmpty() && query.length() > 0) {
             String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
@@ -608,7 +608,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
             }
 
-            surveyModules = surveyModuleDao.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
+            surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
         } else {
             Integer getTests = null;
             Integer getOrders = null;
@@ -628,16 +628,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
 
             domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
-            surveyModules = ImmutableList.copyOf(surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0));
+            surveyModuleList = ImmutableList.copyOf(surveyModuleService.findSurveyModules(0));
         }
 
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
                 .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
                 .collect(Collectors.toList()));
-        response.setSurveyModules(surveyModules.stream()
-                .map(SurveyModule.TO_CLIENT_SURVEY_MODULE)
-                .collect(Collectors.toList()));
+        response.setSurveyModules(surveyModuleList);
         return ResponseEntity.ok(response);
     }
 
@@ -675,9 +673,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         SurveyQuestionFetchResponse response = new SurveyQuestionFetchResponse();
 
-        SurveyModule surveyModule = surveyModuleDao.findByConceptId(surveyConceptId);
-
-        response.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+        response.setSurvey(surveyModuleService.findByConceptId(surveyConceptId));
 
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
 
@@ -737,9 +733,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
         SurveyQuestionFetchResponse response = new SurveyQuestionFetchResponse();
 
-        SurveyModule surveyModule = surveyModuleDao.findByConceptId(surveyConceptId);
-
-        response.setSurvey(SurveyModule.TO_CLIENT_SURVEY_MODULE.apply(surveyModule));
+        response.setSurvey(surveyModuleService.findByConceptId(surveyConceptId));
 
         QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
 

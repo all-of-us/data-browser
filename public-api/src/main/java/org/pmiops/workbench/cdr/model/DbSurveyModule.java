@@ -7,22 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.pmiops.workbench.model.SurveyModule;
 
 @Entity
 @Table(name = "survey_module")
-public class SurveyModule {
-
-  public static final Function<SurveyModule, org.pmiops.workbench.model.SurveyModule> TO_CLIENT_SURVEY_MODULE =
-          (surveyModule) ->
-                  new org.pmiops.workbench.model.SurveyModule()
-                          .conceptId(surveyModule.getConceptId())
-                          .name(surveyModule.getName())
-                          .description(surveyModule.getDescription())
-                          .questionCount(surveyModule.getQuestionCount())
-                          .participantCount(surveyModule.getParticipantCount())
-                          .orderNumber(surveyModule.getOrderNumber())
-                          .canShow(surveyModule.getCanShow());
-
+public class DbSurveyModule {
   private long conceptId;
   private String name;
   private String description;
@@ -41,7 +30,7 @@ public class SurveyModule {
     this.conceptId = conceptId;
   }
 
-  public SurveyModule conceptId(Long conceptId) {
+  public DbSurveyModule conceptId(Long conceptId) {
     this.conceptId = conceptId;
     return this;
   }
@@ -55,7 +44,7 @@ public class SurveyModule {
     this.name = name;
   }
 
-  public SurveyModule name(String name) {
+  public DbSurveyModule name(String name) {
     this.name = name;
     return this;
   }
@@ -69,7 +58,7 @@ public class SurveyModule {
     this.description = description;
   }
 
-  public SurveyModule description(String description) {
+  public DbSurveyModule description(String description) {
     this.description = description;
     return this;
   }
@@ -83,7 +72,7 @@ public class SurveyModule {
     this.questionCount = questionCount == null ? 0L : questionCount;
   }
 
-  public SurveyModule questionCount(long questionCount) {
+  public DbSurveyModule questionCount(long questionCount) {
     this.questionCount = questionCount;
     return this;
   }
@@ -97,7 +86,7 @@ public class SurveyModule {
     this.participantCount = participantCount == null ? 0L : participantCount;
   }
 
-  public SurveyModule participantCount(long participantCount){
+  public DbSurveyModule participantCount(long participantCount){
     this.participantCount = participantCount;
     return this;
   }
@@ -111,7 +100,7 @@ public class SurveyModule {
     this.orderNumber = orderNumber;
   }
 
-  public SurveyModule orderNumber(int orderNumber) {
+  public DbSurveyModule orderNumber(int orderNumber) {
     this.orderNumber = orderNumber;
     return this;
   }
@@ -125,7 +114,7 @@ public class SurveyModule {
     this.canShow = canShow;
   }
 
-  public SurveyModule canShow(int canShow) {
+  public DbSurveyModule canShow(int canShow) {
     this.canShow = canShow;
     return this;
   }
@@ -134,14 +123,14 @@ public class SurveyModule {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SurveyModule surveyModule = (SurveyModule) o;
-    return Objects.equals(name, surveyModule.name) &&
-            Objects.equals(description, surveyModule.description) &&
-            Objects.equals(conceptId, surveyModule.conceptId) &&
-            Objects.equals(questionCount, surveyModule.questionCount) &&
-            Objects.equals(participantCount, surveyModule.participantCount) &&
-            Objects.equals(orderNumber, surveyModule.orderNumber) &&
-            Objects.equals(canShow, surveyModule.canShow);
+    DbSurveyModule dbSurveyModule = (DbSurveyModule) o;
+    return Objects.equals(name, dbSurveyModule.name) &&
+            Objects.equals(description, dbSurveyModule.description) &&
+            Objects.equals(conceptId, dbSurveyModule.conceptId) &&
+            Objects.equals(questionCount, dbSurveyModule.questionCount) &&
+            Objects.equals(participantCount, dbSurveyModule.participantCount) &&
+            Objects.equals(orderNumber, dbSurveyModule.orderNumber) &&
+            Objects.equals(canShow, dbSurveyModule.canShow);
   }
 
   @Override
