@@ -22,7 +22,6 @@ import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
-import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
 import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.AchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
@@ -45,8 +44,6 @@ import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.SurveyModule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
@@ -54,18 +51,15 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
+import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.QuestionConceptService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import(LiquibaseAutoConfiguration.class)
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class DataBrowserControllerTest {
 
     private static final Concept CLIENT_CONCEPT_1 = new Concept()
@@ -196,33 +190,6 @@ public class DataBrowserControllerTest {
             .allConceptCount(1L)
             .standardConceptCount(2L)
             .participantCount(3L);
-
-    private static final SurveyModule CLIENT_SURVEY_MODULE_1 = new SurveyModule()
-            .name("Lifestyle")
-            .description("The Lifestyle module provides information on smoking, alcohol and recreational drug use")
-            .conceptId(1585855L)
-            .questionCount(568120L)
-            .participantCount(4L)
-            .orderNumber(0)
-            .canShow(1);
-
-    private static final SurveyModule CLIENT_SURVEY_MODULE_2 = new SurveyModule()
-            .name("The Basics")
-            .description("The Basics module provides demographics and economic information for participants")
-            .conceptId(1586134L)
-            .questionCount(567437L)
-            .participantCount(5L)
-            .orderNumber(0)
-            .canShow(1);
-
-    private static final SurveyModule CLIENT_SURVEY_MODULE_3 = new SurveyModule()
-            .name("Cope")
-            .description("Survey includes information about the impact of COVID-19 on participant mental and physical health.")
-            .conceptId(1333342L)
-            .questionCount(100L)
-            .participantCount(10000L)
-            .orderNumber(0)
-            .canShow(1);
 
     private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
             .analysisId(1900L)
@@ -463,12 +430,6 @@ public class DataBrowserControllerTest {
             makeDomain(CLIENT_DOMAIN_1, 1L, "0");
     private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
             makeDomain(CLIENT_DOMAIN_2, 2L, "3");
-    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_1 =
-            makeSurveyModule(CLIENT_SURVEY_MODULE_1);
-    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_2 =
-            makeSurveyModule(CLIENT_SURVEY_MODULE_2);
-    private static final org.pmiops.workbench.cdr.model.SurveyModule SURVEY_MODULE_3 =
-            makeSurveyModule(CLIENT_SURVEY_MODULE_3);
 
     @Autowired
     private ConceptDao conceptDao;
@@ -480,8 +441,6 @@ public class DataBrowserControllerTest {
     ConceptRelationshipDao conceptRelationshipDao;
     @Autowired
     private DomainInfoDao domainInfoDao;
-    @Autowired
-    private SurveyModuleDao surveyModuleDao;
     @Autowired
     private QuestionConceptDao  questionConceptDao;
     @Autowired
@@ -495,6 +454,7 @@ public class DataBrowserControllerTest {
     @Mock private CdrVersionService cdrVersionService;
     @Mock private QuestionConceptService questionConceptService;
     @Mock private AchillesResultDistService achillesResultDistService;
+    @Mock private SurveyModuleService surveyModuleService;
 
     private DataBrowserController dataBrowserController;
 
@@ -503,9 +463,9 @@ public class DataBrowserControllerTest {
         saveData();
         ConceptService conceptService = new ConceptService(entityManager, conceptDao);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao, domainInfoDao, surveyModuleDao, achillesResultDao,
+                criteriaDao, domainInfoDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistService, entityManager,
-            cdrVersionService, questionConceptService);
+            cdrVersionService, questionConceptService, surveyModuleService);
     }
 
     @Test
@@ -518,7 +478,6 @@ public class DataBrowserControllerTest {
     public void testGetDomainTotals() throws Exception {
         ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals("", 1, 1);
         assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
-        assertThat(response.getBody().getSurveyModules()).containsExactly(CLIENT_SURVEY_MODULE_1, CLIENT_SURVEY_MODULE_2, CLIENT_SURVEY_MODULE_3);
     }
 
     @Test
@@ -732,16 +691,6 @@ public class DataBrowserControllerTest {
             .participantCount(domain.getParticipantCount());
     }
 
-    private static org.pmiops.workbench.cdr.model.SurveyModule makeSurveyModule(SurveyModule surveyModule) {
-        return new org.pmiops.workbench.cdr.model.SurveyModule()
-                .conceptId(surveyModule.getConceptId())
-                .name(surveyModule.getName())
-                .description(surveyModule.getDescription())
-                .questionCount(surveyModule.getQuestionCount())
-                .participantCount(surveyModule.getParticipantCount())
-                .canShow(1);
-    }
-
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
         AchillesAnalysis aa = new AchillesAnalysis();
         aa.setAnalysisId(achillesAnalysis.getAnalysisId());
@@ -784,9 +733,6 @@ public class DataBrowserControllerTest {
 
         domainInfoDao.save(DOMAIN_1);
         domainInfoDao.save(DOMAIN_2);
-        surveyModuleDao.save(SURVEY_MODULE_1);
-        surveyModuleDao.save(SURVEY_MODULE_2);
-        surveyModuleDao.save(SURVEY_MODULE_3);
 
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_2);
