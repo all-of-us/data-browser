@@ -42,7 +42,6 @@ import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.cdr.model.DomainInfo;
 import org.pmiops.workbench.model.SurveyModule;
-import org.pmiops.workbench.cdr.model.DbSurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.QuestionConcept;

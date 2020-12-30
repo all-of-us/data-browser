@@ -697,16 +697,6 @@ public class DataBrowserControllerTest {
             .participantCount(domain.getParticipantCount());
     }
 
-    private static org.pmiops.workbench.cdr.model.DbSurveyModule makeSurveyModule(SurveyModule surveyModule) {
-        return new org.pmiops.workbench.cdr.model.DbSurveyModule()
-                .conceptId(surveyModule.getConceptId())
-                .name(surveyModule.getName())
-                .description(surveyModule.getDescription())
-                .questionCount(surveyModule.getQuestionCount())
-                .participantCount(surveyModule.getParticipantCount())
-                .canShow(1);
-    }
-
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
         AchillesAnalysis aa = new AchillesAnalysis();
         aa.setAnalysisId(achillesAnalysis.getAnalysisId());
