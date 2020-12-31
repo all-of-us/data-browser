@@ -1,11 +1,11 @@
 package org.pmiops.workbench.cdr.dao;
 
 import java.util.List;
-import org.pmiops.workbench.cdr.model.DomainInfo;
+import org.pmiops.workbench.cdr.model.DbDomainInfo;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
+public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
 
   // TODO: consider not using @Query since it doesn't let us re-use shared SQL expressions for these methods?
 
@@ -57,7 +57,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "    where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 \n" +
                   "    group by c1.domain_id) c ON d.domain_id = c.domain_id where d.domain = 4\n" +
                   "order by domain_id")
-  List<DomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds, int hasValues);
+  List<DbDomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds, int hasValues);
 
   @Query(nativeQuery=true,
           value="select " +
@@ -98,7 +98,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "    where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 \n" +
                   "    group by c1.domain_id) c ON d.domain_id = c.domain_id where d.domain = 4\n" +
                   "order by domain_id")
-  List<DomainInfo> findStandardOrCodeMatchConceptCountsWithNoFilter(String matchExpression, String query, List<Long> conceptIds);
+  List<DbDomainInfo> findStandardOrCodeMatchConceptCountsWithNoFilter(String matchExpression, String query, List<Long> conceptIds);
 
   @Query(nativeQuery=true,
           value="select " +
@@ -129,7 +129,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "    select d.domain, d.domain_id, d.name, d.description, d.concept_id,\n" +
                   "    0 all_concept_count, 0 standard_concept_count, d.participant_count participant_count \n" +
                   "    from domain_info d where d.domain = 4 order by domain_id")
-  List<DomainInfo> findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(String matchExpression, String query, List<Long> conceptIds);
+  List<DbDomainInfo> findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(String matchExpression, String query, List<Long> conceptIds);
 
   @Query(nativeQuery=true,
           value="select " +
@@ -152,7 +152,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "     where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 " +
                   "  group by c1.domain_id) c " +
                   "ON d.domain_id = c.domain_id and d.domain=4")
-  List<DomainInfo> findMeasurementStandardOrCodeMatchConceptCountsByValueCheck(String matchExpression, String query, List<Long> conceptIds, int hasValues);
+  List<DbDomainInfo> findMeasurementStandardOrCodeMatchConceptCountsByValueCheck(String matchExpression, String query, List<Long> conceptIds, int hasValues);
 
   @Query(nativeQuery=true,
           value="select " +
@@ -175,14 +175,14 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "     where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 " +
                   "  group by c1.domain_id) c " +
                   "ON d.domain_id = c.domain_id and d.domain=4")
-  List<DomainInfo> findMeasurementStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds);
+  List<DbDomainInfo> findMeasurementStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds);
 
   @Query(nativeQuery=true,
           value="select " +
                   "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
                   "0 all_concept_count, 0 standard_concept_count, d.participant_count participant_count " +
                   "from domain_info d where d.domain=4")
-  List<DomainInfo> findMeasurementNoMatchConceptCounts();
+  List<DbDomainInfo> findMeasurementNoMatchConceptCounts();
 
 
   /**
@@ -192,17 +192,17 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
    * @param matchExpression a boolean full text match expression based on the user's query; see
    *                https://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
    */
-  @Query(value="select new org.pmiops.workbench.cdr.model.DomainInfo(\n" +
+  @Query(value="select new DbDomainInfo(\n" +
       "d.domain, d.domainId, d.name, d.description,\n" +
       "d.conceptId, 0L, COUNT(*), 0L)\n" +
-      "from DomainInfo d\n" +
+      "from DbDomainInfo d\n" +
       "join Concept c ON d.domainId = c.domainId\n" +
       "where (c.countValue > 0 or c.sourceCountValue > 0) \n" +
       "and matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
       "c.standardConcept IN ('S', 'C') and c.canSelect=1\n" +
       "group by d.domain, d.domainId, d.name, d.description, d.conceptId\n" +
       "order by d.domainId")
-  List<DomainInfo> findStandardConceptCounts(String matchExpression);
+  List<DbDomainInfo> findStandardConceptCounts(String matchExpression);
 
   /**
    * Returns domain metadata and concept counts for domains, matching both standard and non-standard
@@ -211,17 +211,17 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
    * @param matchExpression a boolean full text match expression based on the user's query; see
    *                https://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
    */
-  @Query(value="select new org.pmiops.workbench.cdr.model.DomainInfo(\n" +
+  @Query(value="select new DbDomainInfo(\n" +
       "d.domain, d.domainId, d.name, d.description,\n" +
       "d.conceptId, COUNT(*), 0L, 0L)\n" +
-      "from DomainInfo d\n" +
+      "from DbDomainInfo d\n" +
       "join Concept c ON d.domainId = c.domainId\n" +
       "where (c.countValue > 0 or c.sourceCountValue > 0) \n" +
       "and matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0\n" +
           "and c.canSelect = 1\n"+
       "group by d.domain, d.domainId, d.name, d.description, d.conceptId\n" +
       "order by d.domainId")
-  List<DomainInfo> findAllMatchConceptCounts(String matchExpression);
+  List<DbDomainInfo> findAllMatchConceptCounts(String matchExpression);
 
   @Query(nativeQuery=true,
           value = "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count," +
@@ -230,7 +230,7 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "select c.domain_id, count(*) as count from concept c join measurement_concept_info m on c.concept_id=m.concept_id and has_values = ?1 " +
                   "where standard_concept in ('S', 'C') and can_select=1 group by domain_id) c " +
                   "on d.domain_id=c.domain_id and d.domain=4")
-  DomainInfo findMeasurementDomainTotalsWithFilter(int valueFilter);
+  DbDomainInfo findMeasurementDomainTotalsWithFilter(int valueFilter);
 
   @Query(nativeQuery=true,
           value = "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count," +
@@ -239,13 +239,13 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                   "select c.domain_id, count(*) as count from concept c " +
                   "where standard_concept in ('S', 'C') and can_select=1 group by domain_id) c " +
                   "on d.domain_id=c.domain_id and d.domain=4")
-  DomainInfo findMeasurementDomainTotalsWithoutFilter();
+  DbDomainInfo findMeasurementDomainTotalsWithoutFilter();
 
-  List<DomainInfo> findByConceptIdNotOrderByDomainId(long conceptId);
+  List<DbDomainInfo> findByConceptIdNotOrderByDomainId(long conceptId);
 
-  DomainInfo findByConceptId(long conceptId);
+  DbDomainInfo findByConceptId(long conceptId);
 
-  List<DomainInfo> findByOrderByDomainId();
+  List<DbDomainInfo> findByOrderByDomainId();
 
 
   @Query(nativeQuery=true,
@@ -257,5 +257,5 @@ public interface DomainInfoDao extends CrudRepository<DomainInfo, Long> {
                 "and c.domain_id='Measurement' and c.standard_concept in ('S', 'C') and c.can_select=1 and m.has_values in (?1, ?2)) " +
                 "standard_concept_count, d.participant_count participant_count from domain_info d where d.domain=4 " +
                 "order by domain")
-  List<DomainInfo> findDomainTotals(int testFilter, int orderFilter);
+  List<DbDomainInfo> findDomainTotals(int testFilter, int orderFilter);
 }

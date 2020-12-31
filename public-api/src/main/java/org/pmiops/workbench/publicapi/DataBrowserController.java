@@ -40,7 +40,7 @@ import org.pmiops.workbench.service.AchillesResultDistService;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
-import org.pmiops.workbench.cdr.model.DomainInfo;
+import org.pmiops.workbench.cdr.model.DbDomainInfo;
 import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
@@ -567,7 +567,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
-        List<DomainInfo> domainInfos =  null;
+        List<DbDomainInfo> domainInfos =  null;
         List<SurveyModule> surveyModuleList = null;
 
         if (query != null && !query.isEmpty() && query.length() > 0) {
@@ -632,7 +632,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
         response.setDomainInfos(domainInfos.stream()
-                .map(DomainInfo.TO_CLIENT_DOMAIN_INFO)
+                .map(DbDomainInfo.TO_CLIENT_DOMAIN_INFO)
                 .collect(Collectors.toList()));
         response.setSurveyModules(surveyModuleList);
         return ResponseEntity.ok(response);
