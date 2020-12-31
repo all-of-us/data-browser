@@ -1233,10 +1233,6 @@ definitions:
         description: survey release order number
         type: integer
         format: int32
-      canShow:
-        description: determines if this survey can be displayed
-        type: integer
-        format: int32
 
   ErrorResponse:
     type: object
