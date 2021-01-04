@@ -70,7 +70,7 @@
     color: #216fb4;
     font-weight: 400;
     position: relative;
-    z-index: 100;
+    z-index: 99;
 }
 
 .see-more clr-icon {
@@ -133,7 +133,6 @@
 .tbl-r.tbl-head {
     background: #f6f6f8;
     border: 1px solid #CCCCCC;
-    border-bottom: none;
     padding: .5rem 0;
     border-radius: 3px 3px 0 0;
     position: sticky;
@@ -202,6 +201,10 @@
 
 .tbl-exp-r:last-of-type {
     border-bottom: 1px solid #CCCCCC;
+}
+
+.tbl-exp-r:first-of-type {
+    border-top: none;
 }
 
 .tbl-exp-r:hover {

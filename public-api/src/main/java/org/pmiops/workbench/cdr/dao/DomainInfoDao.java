@@ -45,9 +45,9 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
                   "    from domain_info where domain=8" +
                   "    UNION DISTINCT\n" +
                   "    select d.domain, d.domain_id, d.name, d.description, d.concept_id,\n" +
-                  "    0 all_concept_count, c.count standard_concept_count, d.participant_count participant_count \n" +
+                  "    0 all_concept_count, case when c.count is not null then c.count else 0 end as standard_concept_count, d.participant_count participant_count \n" +
                   "    from domain_info d\n" +
-                  "    join (select c1.domain_id, count(*) as count \n" +
+                  "    left join (select c1.domain_id, count(*) as count \n" +
                   "    from ((select domain_id, c.concept_id from concept c join measurement_concept_info m on c.concept_id=m.concept_id and m.has_values in (?4, ?5)\n" +
                   "    where has_counts > 0 and\n" +
                   "    match(concept_name, concept_code, vocabulary_id, synonyms) against (?1 in boolean mode) > 0 and \n" +
