@@ -7,6 +7,7 @@ import {
   CanActivateChild,
   Router, RouterStateSnapshot
 } from '@angular/router';
+import 'rxjs/add/operator/mergeMap';
 
 import { ServerConfigService } from 'app/services/server-config.service';
 
