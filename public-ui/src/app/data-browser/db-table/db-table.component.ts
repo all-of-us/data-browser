@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -14,7 +14,7 @@ import { TooltipService } from '../../utils/tooltip.service';
   styleUrls: ['../../styles/template.css', './db-table.component.css']
 })
 
-export class DbTableComponent implements OnChanges, OnDestroy, OnInit {
+export class DbTableComponent implements OnChanges, OnDestroy {
   @Input() items: any[];
   @Input() searchRequest: SearchConceptsRequest;
   @Input() searchResult: ConceptListResponse;
