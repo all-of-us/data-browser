@@ -28,8 +28,7 @@ public class SurveyModuleDaoTest {
             .conceptId(1585855L)
             .questionCount(568120L)
             .participantCount(4L)
-            .orderNumber(0)
-            .canShow(1));
+            .orderNumber(0));
     surveyModuleDao.save(
         new DbSurveyModule()
             .name("The Basics")
@@ -37,8 +36,7 @@ public class SurveyModuleDaoTest {
             .conceptId(1586134L)
             .questionCount(567437L)
             .participantCount(5L)
-            .orderNumber(0)
-            .canShow(1));
+            .orderNumber(0));
     surveyModuleDao.save(
         new DbSurveyModule()
             .name("Cope")
@@ -46,13 +44,12 @@ public class SurveyModuleDaoTest {
             .conceptId(1333342L)
             .questionCount(100L)
             .participantCount(10000L)
-            .orderNumber(0)
-            .canShow(1));
+            .orderNumber(0));
   }
 
   @Test
   public void findAllSurveyModules() {
-    List<DbSurveyModule> moduleList = surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0);
+    List<DbSurveyModule> moduleList = surveyModuleDao.findAllByOrderByOrderNumberAsc();
     assertThat(moduleList).hasSize(3);
   }
 

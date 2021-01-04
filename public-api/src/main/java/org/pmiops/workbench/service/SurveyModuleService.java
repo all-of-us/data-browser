@@ -27,8 +27,8 @@ public class SurveyModuleService {
                 .collect(Collectors.toList());
     }
 
-    public List<SurveyModule> findSurveyModules(int canShow) {
-        return surveyModuleDao.findByCanShowNotOrderByOrderNumberAsc(0).stream()
+    public List<SurveyModule> findSurveyModules() {
+        return surveyModuleDao.findAllByOrderByOrderNumberAsc().stream()
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
