@@ -16,7 +16,6 @@ public class DbSurveyModule {
   private long questionCount;
   private long participantCount;
   private int orderNumber;
-  private int canShow;
 
   @Id
   @Column(name = "concept_id")
@@ -103,20 +102,6 @@ public class DbSurveyModule {
     return this;
   }
 
-  @Column(name="can_show")
-  public int getCanShow() {
-    return canShow;
-  }
-
-  public void setCanShow(int canShow) {
-    this.canShow = canShow;
-  }
-
-  public DbSurveyModule canShow(int canShow) {
-    this.canShow = canShow;
-    return this;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -127,13 +112,12 @@ public class DbSurveyModule {
             Objects.equals(conceptId, dbSurveyModule.conceptId) &&
             Objects.equals(questionCount, dbSurveyModule.questionCount) &&
             Objects.equals(participantCount, dbSurveyModule.participantCount) &&
-            Objects.equals(orderNumber, dbSurveyModule.orderNumber) &&
-            Objects.equals(canShow, dbSurveyModule.canShow);
+            Objects.equals(orderNumber, dbSurveyModule.orderNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, description, conceptId, questionCount, participantCount, orderNumber, canShow);
+    return Objects.hash(name, description, conceptId, questionCount, participantCount, orderNumber);
   }
 
   @Override
