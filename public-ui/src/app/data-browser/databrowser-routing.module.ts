@@ -76,15 +76,15 @@ const routes: Routes = [
           }
         },
         {
-            path: 'fitbit',
-                  component: FitbitViewComponent,
-                  data: {
-                    title: 'Fitbit Data',
-                    breadcrumb: {
-                      value: 'Fitbit Data'
-                    }
-                  }
-         },
+          path: 'fitbit',
+          component: FitbitViewComponent,
+          data: {
+            title: 'Fitbit Data',
+            breadcrumb: {
+              value: 'Fitbit Data'
+            }
+          }
+        },
         {
           path: 'introductory-videos',
           component: IntroVidsComponent,
@@ -94,11 +94,10 @@ const routes: Routes = [
               value: 'introductory videos'
             }
           }
-        }
-        ]
+        }]
       }
     ]
-  },
+  }
 
 ];
 
