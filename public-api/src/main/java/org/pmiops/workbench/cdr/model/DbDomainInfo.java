@@ -15,16 +15,6 @@ import org.pmiops.workbench.model.Domain;
 @Table(name = "domain_info")
 public class DbDomainInfo implements Comparable<DbDomainInfo> {
 
-  public static final Function<DbDomainInfo, org.pmiops.workbench.model.DomainInfo> TO_CLIENT_DOMAIN_INFO =
-      (domain) -> new org.pmiops.workbench.model.DomainInfo()
-          .domain(domain.getDomainEnum())
-              .domainConceptId(domain.getConceptId())
-          .name(domain.getName())
-          .description(domain.getDescription())
-          .allConceptCount(domain.getAllConceptCount())
-          .standardConceptCount(domain.getStandardConceptCount())
-          .participantCount(domain.getParticipantCount());
-
   private long conceptId;
   private Short domain;
   private String domainId;

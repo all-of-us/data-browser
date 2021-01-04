@@ -27,7 +27,6 @@ import javax.persistence.PersistenceContext;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
-import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.AchillesResult;
@@ -35,6 +34,7 @@ import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResultDist;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.QuestionConceptService;
+import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 import org.pmiops.workbench.cdr.model.Concept;
@@ -42,6 +42,7 @@ import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.cdr.model.DbDomainInfo;
 import org.pmiops.workbench.model.SurveyModule;
+import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.QuestionConcept;
@@ -81,9 +82,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private AchillesResultDao achillesResultDao;
     @Autowired
-    private DomainInfoDao domainInfoDao;
-    @Autowired
     private AchillesResultDistService achillesResultDistService;
+    @Autowired
+    private DomainInfoService domainInfoService;
     @Autowired
     private SurveyModuleService surveyModuleService;
     @PersistenceContext(unitName = "cdr")
@@ -150,14 +151,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController() {}
 
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
-                                 DomainInfoDao domainInfoDao, AchillesResultDao achillesResultDao,
+                                 AchillesResultDao achillesResultDao,
                                  AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistService achillesResultDistService,
                                  EntityManager entityManager, CdrVersionService cdrVersionService,
+                                 DomainInfoService domainInfoService,
                                  QuestionConceptService questionConceptService, SurveyModuleService surveyModuleService) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
-        this.domainInfoDao = domainInfoDao;
         this.achillesResultDao = achillesResultDao;
         this.achillesAnalysisDao = achillesAnalysisDao;
         this.achillesResultDistService = achillesResultDistService;
@@ -165,6 +166,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.cdrVersionService = cdrVersionService;
         this.questionConceptService = questionConceptService;
         this.surveyModuleService = surveyModuleService;
+        this.domainInfoService = domainInfoService;
     }
 
     public static void setAgeStratumNameMap() {
@@ -567,7 +569,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
-        List<DbDomainInfo> domainInfos =  null;
+        List<DomainInfo> domainInfoList =  null;
         List<SurveyModule> surveyModuleList = null;
 
         if (query != null && !query.isEmpty() && query.length() > 0) {
@@ -588,25 +590,24 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 toMatchConceptIds.addAll(drugMatchedConceptIds);
             }
 
-            int measurementQuery = 0;
-            if (testFilter == 1 && orderFilter == 0) {
-                measurementQuery = 1;
+            Integer getTests = null;
+            Integer getOrders = null;
+
+            if (testFilter == 1 && orderFilter == 1) {
+                getTests = 1;
+                getOrders = 0;
+            } else if (testFilter == 1 && orderFilter == 0) {
+                getTests = 1;
+                getOrders = 2;
             } else if (testFilter == 0 && orderFilter == 1) {
-                measurementQuery = 0;
+                getTests = 2;
+                getOrders = 0;
             } else if (testFilter == 0 && orderFilter == 0) {
-                measurementQuery = -1;
-            } else if (testFilter == 1 && orderFilter == 1) {
-                measurementQuery = 2;
+                getTests = 2;
+                getOrders = 2;
             }
 
-            if (measurementQuery == 1 || measurementQuery == 0) {
-                domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCounts(domainKeyword, query, toMatchConceptIds, measurementQuery);
-            } else if (measurementQuery == -1){
-                domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCountsWithoutMeasurementCounts(domainKeyword, query, toMatchConceptIds);
-            } else if (measurementQuery == 2) {
-                domainInfos = domainInfoDao.findStandardOrCodeMatchConceptCountsWithNoFilter(domainKeyword, query, toMatchConceptIds);
-            }
-
+            domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, getTests, getOrders);
             surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
         } else {
             Integer getTests = null;
@@ -626,14 +627,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 getOrders = 2;
             }
 
-            domainInfos =  ImmutableList.copyOf(domainInfoDao.findDomainTotals(getTests, getOrders));
+            domainInfoList =  ImmutableList.copyOf(domainInfoService.getDomainTotals(getTests, getOrders));
             surveyModuleList = ImmutableList.copyOf(surveyModuleService.findSurveyModules());
         }
 
         DomainInfosAndSurveyModulesResponse response = new DomainInfosAndSurveyModulesResponse();
-        response.setDomainInfos(domainInfos.stream()
-                .map(DbDomainInfo.TO_CLIENT_DOMAIN_INFO)
-                .collect(Collectors.toList()));
+        response.setDomainInfos(domainInfoList);
         response.setSurveyModules(surveyModuleList);
         return ResponseEntity.ok(response);
     }
