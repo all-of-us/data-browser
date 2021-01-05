@@ -40,7 +40,6 @@ import org.pmiops.workbench.service.AchillesResultDistService;
 import org.pmiops.workbench.cdr.model.Concept;
 import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
-import org.pmiops.workbench.cdr.model.DbDomainInfo;
 import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
