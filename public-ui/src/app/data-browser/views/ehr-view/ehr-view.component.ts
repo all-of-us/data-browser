@@ -436,16 +436,10 @@ export class EhrViewComponent implements OnInit, OnDestroy {
         pageNumber: this.currentPage - 1,
       };
       if (this.ehrDomain.domain.toLowerCase() === 'measurement') {
-        if (localStorage.getItem('measurementTestsChecked') === null) {
-          this.testFilter = 1;
-        } else {
-          this.testFilter = localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0;
-        }
-        if (localStorage.getItem('measurementOrdersChecked') === null) {
-          this.orderFilter = 1;
-        } else {
-          this.orderFilter = localStorage.getItem('measurementOrdersChecked') === 'true' ? 1 : 0;
-        }
+        this.testFilter = 1;
+        this.orderFilter = 1;
+        localStorage.setItem('measurementTestsChecked', 'true');
+        localStorage.setItem('measurementOrdersChecked', 'true');
         this.searchRequest.measurementTests = this.testFilter;
         this.searchRequest.measurementOrders = this.orderFilter;
       }

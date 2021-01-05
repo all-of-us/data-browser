@@ -1,6 +1,6 @@
 <div class="results-grid">
   <div class="domain-info-layout">
-    <span *ngIf="!displayConceptErrorMessage && (items && items.length > 0)">
+    <span *ngIf="!displayConceptErrorMessage && canDisplayTable()">
       <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
         <h5 id="domain-name" class="primary-display">
           Showing top {{totalResults}}
@@ -42,7 +42,7 @@
       health information related to "{{getTerm()}}"?
       <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
   </div>
-  <ng-container *ngIf="!displayConceptErrorMessage && (items && items.length > 0)">
+  <ng-container *ngIf="!displayConceptErrorMessage && canDisplayTable()">
     <div *ngIf="items.length === 1 && items[0].standardConcept != 'S' && standardConcepts.length > 0">
       <div class=" db-alert">
         <clr-alert [clrAlertClosable]="false" [clrAlertType]="info">
