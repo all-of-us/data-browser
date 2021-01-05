@@ -67,10 +67,6 @@ export class DbTableComponent implements OnChanges, OnDestroy {
 
   public domainCounts() {
     let domainResults = null;
-    this.measurementTestsChecked.setValue(localStorage.getItem('measurementTestsChecked')
-        === 'true' ? 'true' : 'false');
-    this.measurementOrdersChecked.setValue(localStorage.getItem('measurementOrdersChecked')
-        === 'true' ? 'true' : 'false');
     const testFilter = localStorage.getItem('measurementTestsChecked') ?
       (localStorage.getItem('measurementTestsChecked') === 'true' ? 1 : 0) : 1;
     const orderFilter = localStorage.getItem('measurementOrdersChecked') ?
@@ -518,12 +514,5 @@ export class DbTableComponent implements OnChanges, OnDestroy {
     } else {
       this.getMeasurementDomainTotals(getTests, getOrders);
     }
-  }
-
-  public canDisplayTable() {
-    if (this.ehrDomain.domain.toLowerCase() === 'measurement') {
-        return (this.items && this.items.length > 0) || (!this.isChecked1 || !this.isChecked2);
-    }
-    return (this.items && this.items.length > 0) || (!this.isChecked1 && !this.isChecked2);
   }
 }
