@@ -1,4 +1,5 @@
 import { Component, Injector, Input, } from '@angular/core';
+import * as Highcharts from 'highcharts';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ChartService } from '../chart.service';
 
@@ -9,6 +10,7 @@ import { ChartService } from '../chart.service';
 })
 export class ChartBaseComponent {
   protected chartService: ChartService;
+  Highcharts = Highcharts;
   categoryArr: any[] = [];
   pointData: any[] = [];
   toolTipText: string;

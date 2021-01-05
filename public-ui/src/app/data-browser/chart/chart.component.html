@@ -1,4 +1,4 @@
-<chart *ngIf="chartOptions" class="standard-chart"  [options]="chartOptions"></chart>
+<highcharts-chart *ngIf="chartOptions" class="standard-chart"  [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
 <!-- save instance version for fancy highcharts stuff later
 <chart class="standard-chart"  [options]="chartOptions" (load)="saveInstance($event.context )"></chart>
 -->
