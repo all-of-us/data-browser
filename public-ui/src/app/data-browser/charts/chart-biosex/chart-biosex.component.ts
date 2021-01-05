@@ -9,6 +9,7 @@ import { ChartBaseComponent } from '../chart-base/chart-base.component';
 export class ChartBiosexComponent extends ChartBaseComponent implements OnChanges {
   chartOptions: any;
   @Input() genderCountAnalysis: any;
+  @Input() chartType = 'bar';
   constructor(injector: Injector) {
     super(injector);
   }
@@ -31,7 +32,7 @@ export class ChartBiosexComponent extends ChartBaseComponent implements OnChange
     this.categoryArr = [];
     this.conceptDist();
     this.chartObj = {
-      type: 'bar',
+      type: this.chartType,
       backgroundColor: 'transparent'
     };
   }
