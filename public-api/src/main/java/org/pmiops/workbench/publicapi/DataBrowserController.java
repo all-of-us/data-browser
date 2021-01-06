@@ -755,15 +755,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         cdrVersionService.setDefaultCdrVersion();
 
         if (domainDesc.equals("ehr") || domainDesc.equals("fitbit")) {
-            List<DbAchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
+            List<Analysis> ehrAnalysesList = achillesAnalysisService.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
             CountAnalysis ehrCountAnalysis = new CountAnalysis();
             ehrCountAnalysis.setDomainId(domainId);
-            DbAchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
-            DbAchillesAnalysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
+            Analysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
+            Analysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
             addGenderStratum(genderCountAnalysis,4, domainId, null);
             addAgeStratum(ageCountAnalysis, domainId, null,  4);
-            ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
-            ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
+            ehrCountAnalysis.setGenderCountAnalysis(genderCountAnalysis);
+            ehrCountAnalysis.setAgeCountAnalysis(ageCountAnalysis);
             return ResponseEntity.ok(ehrCountAnalysis);
         } else if (domainDesc.equals("survey")){
             List<DbAchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findSurveyAnalysisByIds(ImmutableList.of(SURVEY_GENDER_COUNT_ANALYSIS_ID, SURVEY_AGE_COUNT_ANALYSIIS_ID), domainId);
@@ -777,15 +777,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             surveyCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
             return ResponseEntity.ok(surveyCountAnalysis);
         } else {
-            List<DbAchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
+            List<Analysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
             CountAnalysis ehrCountAnalysis = new CountAnalysis();
             ehrCountAnalysis.setDomainId(domainId);
-            DbAchillesAnalysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
-            DbAchillesAnalysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
+            Analysis genderCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3300).collect(Collectors.toList()).get(0);
+            Analysis ageCountAnalysis = ehrAnalysesList.stream().filter(aa -> aa.getAnalysisId() == 3301).collect(Collectors.toList()).get(0);
             addGenderStratum(genderCountAnalysis,4, domainId, null);
             addAgeStratum(ageCountAnalysis, domainId, null,  4);
-            ehrCountAnalysis.setGenderCountAnalysis(TO_CLIENT_ANALYSIS.apply(genderCountAnalysis));
-            ehrCountAnalysis.setAgeCountAnalysis(TO_CLIENT_ANALYSIS.apply(ageCountAnalysis));
+            ehrCountAnalysis.setGenderCountAnalysis(genderCountAnalysis);
+            ehrCountAnalysis.setAgeCountAnalysis(ageCountAnalysis);
             return ResponseEntity.ok(ehrCountAnalysis);
         }
     }
@@ -815,7 +815,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
 
-        List<DbAchillesAnalysis> ehrAnalysesList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
+        List<Analysis> ehrAnalysesList = achillesAnalysisService.findAnalysisByIdsAndDomain(ImmutableList.of(3300L, 3301L), domainId);
 
         List<DbAchillesResultDist> overallDistResults = achillesResultDistService.fetchByAnalysisIdsAndConceptIds(new ArrayList<Long>( Arrays.asList(MEASUREMENT_GENDER_DIST_ANALYSIS_ID) ),conceptIds);
 
@@ -970,14 +970,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
 
-        List<DbAchillesAnalysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID), "Fitbit");
+        List<Analysis> analysisList = achillesAnalysisService.findAnalysisByIdsAndDomain(ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID), "Fitbit");
 
         if (analysisList.size() == 0) {
             throw new DataNotFoundException("Cannot find analysis data of this concept");
         }
 
-        HashMap<Long, DbAchillesAnalysis> analysisHashMap = new HashMap<>();
-        for(DbAchillesAnalysis aa: analysisList){
+        HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
+        for(Analysis aa: analysisList){
             this.entityManager.detach(aa);
             analysisHashMap.put(aa.getAnalysisId(), aa);
         }
@@ -986,10 +986,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
-            DbAchillesAnalysis countAnalysis = new DbAchillesAnalysis(analysisHashMap.get(COUNT_ANALYSIS_ID));
-            DbAchillesAnalysis ageAnalysis = new DbAchillesAnalysis(analysisHashMap.get(AGE_ANALYSIS_ID));
-            DbAchillesAnalysis genderAnalysis = new DbAchillesAnalysis(analysisHashMap.get(GENDER_ANALYSIS_ID));
-            DbAchillesAnalysis participantCountAnalysis = new DbAchillesAnalysis(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID));
+            Analysis countAnalysis = new Analysis(analysisHashMap.get(COUNT_ANALYSIS_ID));
+            Analysis ageAnalysis = new Analysis(analysisHashMap.get(AGE_ANALYSIS_ID));
+            Analysis genderAnalysis = new Analysis(analysisHashMap.get(GENDER_ANALYSIS_ID));
+            Analysis participantCountAnalysis = new Analysis(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID));
 
             countAnalysis.setResults(analysisHashMap.get(COUNT_ANALYSIS_ID).getResults());
             ageAnalysis.setResults(analysisHashMap.get(AGE_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));

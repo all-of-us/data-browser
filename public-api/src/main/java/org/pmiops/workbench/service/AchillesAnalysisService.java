@@ -25,4 +25,10 @@ public class AchillesAnalysisService {
     public Analysis findAnalysisById(Long analysisId) {
         return achillesMapper.dbModelToClient(achillesAnalysisDao.findAnalysisById(analysisId));
     }
+
+    public List<Analysis> findAnalysisByIdsAndDomain(List<Long> analysisId, String domainId) {
+        return achillesAnalysisDao.findAnalysisByIdsAndDomain(analysisId, domainId).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
 }
