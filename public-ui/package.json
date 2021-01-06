@@ -79,5 +79,8 @@
     "ts-node": "~3.0.4",
     "tslint": "^5.9.1",
     "typescript": "^3.9.5"
+  },
+  "engines": {
+    "yarn": "1.19.2"
   }
 }
