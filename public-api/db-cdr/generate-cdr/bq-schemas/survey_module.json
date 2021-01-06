@@ -28,10 +28,5 @@
     "mode":"REQUIRED",
     "name": "order_number",
     "type": "INTEGER"
-  },
-  {
-    "mode": "REQUIRED",
-    "name": "can_show",
-    "type": "INTEGER"
   }
 ]

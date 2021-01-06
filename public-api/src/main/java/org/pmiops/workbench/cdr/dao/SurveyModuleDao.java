@@ -1,11 +1,11 @@
 package org.pmiops.workbench.cdr.dao;
 
 import java.util.List;
-import org.pmiops.workbench.cdr.model.SurveyModule;
+import org.pmiops.workbench.cdr.model.DbSurveyModule;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
+public interface SurveyModuleDao extends CrudRepository<DbSurveyModule, Long> {
 
   /**
    * Returns metadata and question counts for survey modules, matching questions by name, code,
@@ -13,7 +13,7 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
    * @param matchExpression a boolean full text match expression based on the user's query; see
    *                https://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
    */
-  @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number, m.can_show from \n" +
+  @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number from \n" +
           "survey_module m join question_concept sqm2 on m.concept_id = sqm2.survey_concept_id join \n" +
           "(select distinct c.* from question_concept c where (match(c.question_string) against (?1 in boolean mode) > 0 or match(c.concept_name) against (?1 in boolean mode) > 0) \n" +
           "and c.sub=0 and c.generate_counts=1\n" +
@@ -38,9 +38,9 @@ public interface SurveyModuleDao extends CrudRepository<SurveyModule, Long> {
           "and match(ar2.stratum_4) against(?1 in boolean mode) > 0\n" +
           ") a \n" +
           "on sqm2.concept_id=a.concept_id group by m.name, m.description, m.concept_id order by m.order_number;")
-  List<SurveyModule> findSurveyModuleQuestionCounts(String matchExpression, List<Long> fmhConditionConceptIds, List<Long> fmhFMConceptIds);
+  List<DbSurveyModule> findSurveyModuleQuestionCounts(String matchExpression, List<Long> fmhConditionConceptIds, List<Long> fmhFMConceptIds);
 
-  SurveyModule findByConceptId(long conceptId);
+  DbSurveyModule findByConceptId(long conceptId);
 
-  List<SurveyModule> findByCanShowNotOrderByOrderNumberAsc(int canShow);
+  List<DbSurveyModule> findAllByOrderByOrderNumberAsc();
 }
