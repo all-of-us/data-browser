@@ -7,7 +7,7 @@ import java.util.Objects;
 //TODO need to add a way to dynamically switch between database versions
 //this dynamic connection will eliminate the need for the catalog attribute
 @Table(name = "achilles_results_dist")
-public class AchillesResultDist  {
+public class DbAchillesResultDist  {
 
     private Long id;
     private Long analysisId;
@@ -35,7 +35,7 @@ public class AchillesResultDist  {
     public void setId(Long id) {
         this.id = id;
     }
-    public AchillesResultDist id(Long val) {
+    public DbAchillesResultDist id(Long val) {
         this.id = val;
         return this;
     }
@@ -47,7 +47,7 @@ public class AchillesResultDist  {
     public void setAnalysisId(Long analysisId) {
         this.analysisId = analysisId;
     }
-    public AchillesResultDist analysisId(Long val) {
+    public DbAchillesResultDist analysisId(Long val) {
         this.analysisId = val;
         return this;
     }
@@ -59,7 +59,7 @@ public class AchillesResultDist  {
     public void setStratum1(String stratum1) {
         this.stratum1 = stratum1;
     }
-    public AchillesResultDist stratum1(String val) {
+    public DbAchillesResultDist stratum1(String val) {
         this.stratum1 = val;
         return this;
     }
@@ -71,7 +71,7 @@ public class AchillesResultDist  {
     public void setStratum2(String stratum2) {
         this.stratum2 = stratum2;
     }
-    public AchillesResultDist stratum2(String val) {
+    public DbAchillesResultDist stratum2(String val) {
         this.stratum2 = val;
         return this;
     }
@@ -83,7 +83,7 @@ public class AchillesResultDist  {
     public void setStratum3(String stratum3) {
         this.stratum3 = stratum3;
     }
-    public AchillesResultDist stratum3(String val) {
+    public DbAchillesResultDist stratum3(String val) {
         this.stratum3 = val;
         return this;
     }
@@ -95,7 +95,7 @@ public class AchillesResultDist  {
     public void setStratum4(String stratum4) {
         this.stratum4 = stratum4;
     }
-    public AchillesResultDist stratum4(String val) {
+    public DbAchillesResultDist stratum4(String val) {
         this.stratum4 = val;
         return this;
     }
@@ -107,7 +107,7 @@ public class AchillesResultDist  {
     public void setStratum6(String stratum6) {
         this.stratum6 = stratum6;
     }
-    public AchillesResultDist stratum6(String val) {
+    public DbAchillesResultDist stratum6(String val) {
         this.stratum6 = val;
         return this;
     }
@@ -119,7 +119,7 @@ public class AchillesResultDist  {
     public void setStratum5(String stratum5) {
         this.stratum5 = stratum5;
     }
-    public AchillesResultDist stratum5(String val) {
+    public DbAchillesResultDist stratum5(String val) {
         this.stratum5 = val;
         return this;
     }
@@ -131,7 +131,7 @@ public class AchillesResultDist  {
     public void setCountValue(Long countValue) {
         this.countValue = countValue;
     }
-    public AchillesResultDist countValue(Long val) {
+    public DbAchillesResultDist countValue(Long val) {
         this.countValue = val;
         return this;
     }
@@ -143,7 +143,7 @@ public class AchillesResultDist  {
     public void setMinValue(float minValue) {
         this.minValue = minValue;
     }
-    public AchillesResultDist minValue(Float val) {
+    public DbAchillesResultDist minValue(Float val) {
         this.minValue = val;
         return this;
     }
@@ -155,7 +155,7 @@ public class AchillesResultDist  {
     public void setMaxValue(Float maxValue) {
         this.maxValue = maxValue;
     }
-    public AchillesResultDist maxValue(Float val) {
+    public DbAchillesResultDist maxValue(Float val) {
         this.maxValue = val;
         return this;
     }
@@ -167,7 +167,7 @@ public class AchillesResultDist  {
     public void setAvgValue(float avgValue) {
         this.avgValue = avgValue;
     }
-    public AchillesResultDist avgValue(float val) {
+    public DbAchillesResultDist avgValue(float val) {
         this.avgValue = val;
         return this;
     }
@@ -179,7 +179,7 @@ public class AchillesResultDist  {
     public void setStdevValue(float stdevValue) {
         this.stdevValue = stdevValue;
     }
-    public AchillesResultDist stdevValue(float val) {
+    public DbAchillesResultDist stdevValue(float val) {
         this.stdevValue = val;
         return this;
     }
@@ -191,7 +191,7 @@ public class AchillesResultDist  {
     public void setMedianValue(float medianValue) {
         this.medianValue = medianValue;
     }
-    public AchillesResultDist medianValue(float val) {
+    public DbAchillesResultDist medianValue(float val) {
         this.medianValue = val;
         return this;
     }
@@ -203,7 +203,7 @@ public class AchillesResultDist  {
     public void setP10Value(float p10Value) {
         this.p10Value = p10Value;
     }
-    public AchillesResultDist p10Value(float val) {
+    public DbAchillesResultDist p10Value(float val) {
         this.p10Value = val;
         return this;
     }
@@ -215,7 +215,7 @@ public class AchillesResultDist  {
     public void setP25Value(float p25Value) {
         this.p25Value = p25Value;
     }
-    public AchillesResultDist p25Value(float val) {
+    public DbAchillesResultDist p25Value(float val) {
         this.p25Value = val;
         return this;
     }
@@ -227,7 +227,7 @@ public class AchillesResultDist  {
     public void setP75Value(float p75Value) {
         this.p75Value = p75Value;
     }
-    public AchillesResultDist p75Value(float val) {
+    public DbAchillesResultDist p75Value(float val) {
         this.p75Value = val;
         return this;
     }
@@ -239,14 +239,14 @@ public class AchillesResultDist  {
     public void setP90Value(float p90Value) {
         this.p90Value = p90Value;
     }
-    public AchillesResultDist p90Value(float val) {
+    public DbAchillesResultDist p90Value(float val) {
         this.p90Value = val;
         return this;
     }
 
     @Override
     public String toString() {
-        return "AchillesResultDist{" +
+        return "DbAchillesResultDist{" +
                 "id=" + id +
                 ", analysisId=" + analysisId +
                 ", stratum1='" + stratum1 + '\'' +
@@ -271,7 +271,7 @@ public class AchillesResultDist  {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AchillesResultDist that = (AchillesResultDist) o;
+        DbAchillesResultDist that = (DbAchillesResultDist) o;
         return analysisId == that.analysisId &&
                 Objects.equals(stratum1, that.stratum1) &&
                 Objects.equals(stratum2, that.stratum2) &&
