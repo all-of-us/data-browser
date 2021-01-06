@@ -55,7 +55,12 @@ import 'core-js/es7/reflect';
  */
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
-
+declare module '@angular/core' {
+    interface ModuleWithProviders<T = any> {
+        ngModule: Type<T>;
+        providers?: Provider[];
+    }
+}
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
