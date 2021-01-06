@@ -68,6 +68,20 @@ export class DbConfigService {
     '9': '89+'
   };
 
+  VERSION_STRATUM_MAP = {
+    'January': '1',
+    'February': '2',
+    'March': '3',
+    'April': '4',
+    'May': '5',
+    'June': '6',
+    'July/August': '7',
+    'September': '9',
+    'October': '10',
+    'November': '11',
+    'December': '12'
+  };
+
   UNIT_ORDER = {
     '903133': ['Inches', 'Centimeter'],
     '903118': ['Millimeter Mercury Column'],

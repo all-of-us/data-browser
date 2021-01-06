@@ -7,11 +7,11 @@ import java.util.Objects;
 //TODO need to add a way to dynamically switch between database versions
 //this dynamic connection will eliminate the need for the catalog attribute
 @Table(name = "achilles_results")
-public class AchillesResult  {
+public class DbAchillesResult  {
 
     private Long id;
     private Long analysisId;
-    private AchillesAnalysis analysis;
+    private DbAchillesAnalysis analysis;
     private String stratum1;
     private String stratum2;
     private String stratum3;
@@ -25,9 +25,9 @@ public class AchillesResult  {
     private String measurementValueType;
     private int hasSubQuestions;
 
-    public AchillesResult() {}
+    public DbAchillesResult() {}
 
-    public AchillesResult(Long analysisId, String stratum1, String stratum2, String stratum3, String stratum4, String stratum5, String stratum6, Long countValue, Long sourceCountValue) {
+    public DbAchillesResult(Long analysisId, String stratum1, String stratum2, String stratum3, String stratum4, String stratum5, String stratum6, Long countValue, Long sourceCountValue) {
             this.analysisId = analysisId;
             this.stratum1 = stratum1;
             this.stratum2 = stratum2;
@@ -46,7 +46,7 @@ public class AchillesResult  {
     public void setId(Long id) {
         this.id = id;
     }
-    public AchillesResult id(Long val) {
+    public DbAchillesResult id(Long val) {
         this.id = val;
         return this;
     }
@@ -58,20 +58,20 @@ public class AchillesResult  {
     public void setAnalysisId(Long analysisId) {
         this.analysisId = analysisId;
     }
-    public AchillesResult analysisId(Long val) {
+    public DbAchillesResult analysisId(Long val) {
         this.analysisId = val;
         return this;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="analysis_id", insertable=false, updatable=false)
-    public AchillesAnalysis getAnalysis() {
+    public DbAchillesAnalysis getAnalysis() {
         return analysis;
     }
-    public void setAnalysis(AchillesAnalysis analysis) {
+    public void setAnalysis(DbAchillesAnalysis analysis) {
         this.analysis = analysis;
     }
-    public AchillesResult analysis(AchillesAnalysis analysis) {
+    public DbAchillesResult analysis(DbAchillesAnalysis analysis) {
         this.analysis = analysis;
         return this;
     }
@@ -83,7 +83,7 @@ public class AchillesResult  {
     public void setStratum1(String stratum1) {
         this.stratum1 = stratum1;
     }
-    public AchillesResult stratum1(String val) {
+    public DbAchillesResult stratum1(String val) {
         this.stratum1 = val;
         return this;
     }
@@ -95,7 +95,7 @@ public class AchillesResult  {
     public void setStratum2(String stratum2) {
         this.stratum2 = stratum2;
     }
-    public AchillesResult stratum2(String val) {
+    public DbAchillesResult stratum2(String val) {
         this.stratum2 = val;
         return this;
     }
@@ -107,7 +107,7 @@ public class AchillesResult  {
     public void setStratum3(String stratum3) {
         this.stratum3 = stratum3;
     }
-    public AchillesResult stratum3(String val) {
+    public DbAchillesResult stratum3(String val) {
         this.stratum3 = val;
         return this;
     }
@@ -119,7 +119,7 @@ public class AchillesResult  {
     public void setStratum4(String stratum4) {
         this.stratum4 = stratum4;
     }
-    public AchillesResult stratum4(String val) {
+    public DbAchillesResult stratum4(String val) {
         this.stratum4 = val;
         return this;
     }
@@ -131,7 +131,7 @@ public class AchillesResult  {
     public void setStratum5(String stratum5) {
         this.stratum5 = stratum5;
     }
-    public AchillesResult stratum5(String val) {
+    public DbAchillesResult stratum5(String val) {
         this.stratum5 = val;
         return this;
     }
@@ -143,19 +143,24 @@ public class AchillesResult  {
     public void setStratum6(String stratum6) {
         this.stratum6 = stratum6;
     }
-    public AchillesResult stratum6(String val) {
+    public DbAchillesResult stratum6(String val) {
         this.stratum6 = val;
         return this;
     }
 
     @Column(name="stratum_7")
     public String getStratum7() {
+        if (getAnalysisId() == 3000) {
+            if (getStratum3().equals("903096")) {
+                return "";
+            }
+        }
         return stratum7;
     }
     public void setStratum7(String stratum7) {
         this.stratum7 = stratum7;
     }
-    public AchillesResult stratum7(String val) {
+    public DbAchillesResult stratum7(String val) {
         this.stratum7 = val;
         return this;
     }
@@ -167,7 +172,7 @@ public class AchillesResult  {
     public void setAnalysisStratumName(String analysisStratumName) {
         this.analysisStratumName = analysisStratumName;
     }
-    public AchillesResult analysisStratumName(String val) {
+    public DbAchillesResult analysisStratumName(String val) {
         this.analysisStratumName = val;
         return this;
     }
@@ -179,7 +184,7 @@ public class AchillesResult  {
     public void setMeasurementValueType(String measurementValueType) {
         this.measurementValueType = measurementValueType;
     }
-    public AchillesResult measurementValueType(String val) {
+    public DbAchillesResult measurementValueType(String val) {
         this.measurementValueType = val;
         return this;
     }
@@ -191,7 +196,7 @@ public class AchillesResult  {
     public void setHasSubQuestions(int hasSubQuestions) {
         this.hasSubQuestions = hasSubQuestions;
     }
-    public AchillesResult hasSubQuestions(int val) {
+    public DbAchillesResult hasSubQuestions(int val) {
         this.hasSubQuestions = val;
         return this;
     }
@@ -203,7 +208,7 @@ public class AchillesResult  {
     public void setCountValue(Long countValue) {
         this.countValue = countValue;
     }
-    public AchillesResult countValue(Long val) {
+    public DbAchillesResult countValue(Long val) {
         this.countValue = val;
         return this;
     }
@@ -215,14 +220,14 @@ public class AchillesResult  {
     public void setSourceCountValue(Long sourceCountValue) {
         this.sourceCountValue = sourceCountValue;
     }
-    public AchillesResult sourceCountValue(Long val) {
+    public DbAchillesResult sourceCountValue(Long val) {
         this.sourceCountValue = val;
         return this;
     }
 
     @Override
     public String toString() {
-        return "AchillesResult{" +
+        return "DbAchillesResult{" +
                 "id=" + id +
                 ", analysisId=" + analysisId +
                 ", analysis=" + analysis +
@@ -243,7 +248,7 @@ public class AchillesResult  {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AchillesResult that = (AchillesResult) o;
+        DbAchillesResult that = (DbAchillesResult) o;
         return analysisId == that.analysisId &&
                 Objects.equals(stratum1, that.stratum1) &&
                 Objects.equals(stratum2, that.stratum2) &&

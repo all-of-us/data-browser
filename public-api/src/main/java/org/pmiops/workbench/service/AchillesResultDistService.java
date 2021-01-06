@@ -1,6 +1,5 @@
 package org.pmiops.workbench.service;
 
-import org.pmiops.workbench.cdr.CdrVersionContext;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.inject.Provider;
