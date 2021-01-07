@@ -951,6 +951,12 @@ definitions:
       stratum5Name:
         description:  usually concept name corresponding to stratum
         type: string
+      stratum6Name:
+        description:  usually concept name corresponding to stratum
+        type: string
+      stratum7Name:
+        description:  usually concept name corresponding to stratum
+        type: string
       chartType:
         description:  chart type to display for this analysis column pie box
         type: string

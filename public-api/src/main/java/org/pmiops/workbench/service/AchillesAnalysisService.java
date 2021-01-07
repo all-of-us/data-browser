@@ -31,4 +31,46 @@ public class AchillesAnalysisService {
                 .map(achillesMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
+
+    public List<Analysis> findSurveyAnalysisByIds(List<Long> analysisId, String domainId) {
+        return achillesAnalysisDao.findSurveyAnalysisByIds(analysisId, domainId).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Analysis> findConceptAnalysisResults(String conceptId,List<Long> analysisIds) {
+        return achillesAnalysisDao.findConceptAnalysisResults(conceptId, analysisIds).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Analysis> findSubQuestionResults(List<Long> analysisIds, List<String> questionIds) {
+        return achillesAnalysisDao.findSubQuestionResults(analysisIds, questionIds).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Analysis> findSurveyAnalysisResults(String survey_concept_id, List<String> question_concept_ids) {
+        return achillesAnalysisDao.findSurveyAnalysisResults(survey_concept_id, question_concept_ids).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Analysis> findSurveyQuestionResults(List<Long> analysisId, String surveyConceptId, String questionConceptId, String path) {
+        return achillesAnalysisDao.findSurveyQuestionResults(analysisId, surveyConceptId, questionConceptId, path).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Analysis> findAnalysisByIds(List<Long> analysisIds) {
+        return achillesAnalysisDao.findAnalysisByIds(analysisIds).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Analysis> findSurveyQuestionCounts(List<Long> analysisIds, String questionConceptId, String questionPath) {
+        return achillesAnalysisDao.findSurveyQuestionCounts(analysisIds, questionConceptId, questionPath).stream()
+                .map(achillesMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
 }

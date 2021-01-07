@@ -24,6 +24,8 @@ public class DbAchillesAnalysis {
     private String stratum3Name;
     private String stratum4Name;
     private String stratum5Name;
+    private String stratum6Name;
+    private String stratum7Name;
     private String chartType;
     private String dataType;
     private String unitName;
@@ -41,6 +43,8 @@ public class DbAchillesAnalysis {
                 .stratum3Name(a.getStratum3Name())
                 .stratum4Name(a.getStratum4Name())
                 .stratum5Name(a.getStratum5Name())
+                .stratum6Name(a.getStratum6Name())
+                .stratum7Name(a.getStratum7Name())
                 .chartType(a.getChartType())
                 .dataType(a.getDataType())
                 .results(new ArrayList<>())
@@ -129,6 +133,30 @@ public class DbAchillesAnalysis {
     }
     public DbAchillesAnalysis stratum5Name(String val) {
         this.stratum5Name = val;
+        return this;
+    }
+
+    @Column(name="stratum_6_name")
+    public String getStratum6Name() {
+        return stratum6Name;
+    }
+    public void setStratum6Name(String stratum6Name) {
+        this.stratum6Name = stratum6Name;
+    }
+    public DbAchillesAnalysis stratum6Name(String val) {
+        this.stratum6Name = val;
+        return this;
+    }
+
+    @Column(name="stratum_7_name")
+    public String getStratum7Name() {
+        return stratum7Name;
+    }
+    public void setStratum7Name(String stratum7Name) {
+        this.stratum7Name = stratum7Name;
+    }
+    public DbAchillesAnalysis stratum7Name(String val) {
+        this.stratum7Name = val;
         return this;
     }
 
