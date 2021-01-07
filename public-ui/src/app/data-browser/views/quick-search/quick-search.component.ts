@@ -225,6 +225,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.domainResults = results.domainInfos.filter(
       domain => domain.name.toLowerCase() !== 'physical measurements' &&
       domain.name.toLowerCase() !== 'fitbit');
+    this.domainResults = this.domainResults.filter(domain => domain.standardConceptCount > 0);
     const physicalMeasurementDomainInfo =
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     const fitbitDomainInfo =
