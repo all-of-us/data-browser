@@ -1409,20 +1409,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public static Analysis makeCopyAnalysis(Analysis aa) {
         Analysis analysis = new Analysis();
-        analysis.setAnalysisId(analysis.getAnalysisId());
-        analysis.setAnalysisName(analysis.getAnalysisName());
-        analysis.setStratum1Name(analysis.getStratum1Name());
-        analysis.setStratum2Name(analysis.getStratum2Name());
-        analysis.setStratum3Name(analysis.getStratum3Name());
-        analysis.setStratum4Name(analysis.getStratum4Name());
-        analysis.setStratum5Name(analysis.getStratum5Name());
-        analysis.setStratum6Name(analysis.getStratum6Name());
-        analysis.setStratum7Name(analysis.getStratum7Name());
-        analysis.setChartType(analysis.getChartType());
-        analysis.setDataType(analysis.getDataType());
-        analysis.setResults(analysis.getResults());
-        analysis.setDistResults(analysis.getDistResults());
-        analysis.setUnitName(analysis.getUnitName());
+        analysis.setAnalysisId(aa.getAnalysisId());
+        analysis.setAnalysisName(aa.getAnalysisName());
+        analysis.setStratum1Name(aa.getStratum1Name());
+        analysis.setStratum2Name(aa.getStratum2Name());
+        analysis.setStratum3Name(aa.getStratum3Name());
+        analysis.setStratum4Name(aa.getStratum4Name());
+        analysis.setStratum5Name(aa.getStratum5Name());
+        analysis.setStratum6Name(aa.getStratum6Name());
+        analysis.setStratum7Name(aa.getStratum7Name());
+        analysis.setChartType(aa.getChartType());
+        analysis.setDataType(aa.getDataType());
+        analysis.setResults(aa.getResults());
+        analysis.setDistResults(aa.getDistResults());
+        analysis.setUnitName(aa.getUnitName());
 
         return analysis;
     }

@@ -70,7 +70,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
 
   public hcChartOptions(): any {
     const options = this.makeChartOptions();
-    console.log(options);
     // Override title if they passed one
     if (this.chartTitle) {
       options.title.text = this.chartTitle;
@@ -506,6 +505,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
+          a.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         legendText = 'Sex Assigned At Birth, Selected Answered Count';
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
@@ -765,7 +765,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const cats = [];
     // Todo overlay genders on one graph , use hack for separate gender graphs now
     // Hack to filter gender
-    console.log('*************** Am i here **************');
     let results = this.analysis.results.concat([]);
     if (this.genderId) {
       results = results.filter(r => r.stratum3 === this.genderId);
