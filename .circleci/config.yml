@@ -154,7 +154,6 @@ jobs:
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
       - restore_cache:
           keys:
-          - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
           - public-ui-cache-
       - run:
           working_directory: ~/data-browser/public-ui
