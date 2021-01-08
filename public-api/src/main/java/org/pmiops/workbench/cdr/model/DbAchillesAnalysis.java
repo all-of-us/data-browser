@@ -207,8 +207,17 @@ public class DbAchillesAnalysis {
         this.results = results;
         return this;
     }
-    public void addResult(DbAchillesResult result) {
+
+    public DbAchillesAnalysis addResult(DbAchillesResult result) {
         this.results.add(result);
+        result.setAnalysis(this);
+        return this;
+    }
+
+    public DbAchillesAnalysis removeResult(DbAchillesResult result) {
+        this.results.remove(result);
+        result.setAnalysis(null);
+        return this;
     }
 
     @Transient

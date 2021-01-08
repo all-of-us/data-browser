@@ -558,13 +558,9 @@ public class DataBrowserControllerTest {
     public void testGetMeasurementAnalysisNoMatch() throws Exception{
         ArrayList<String> queryConceptIds = new ArrayList<String>();
         queryConceptIds.add("137990");
-        try {
-            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
-            List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
-            assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
-        } catch(DataNotFoundException dnf) {
-            // No need to do anything
-        }
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
+        List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
+        assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
     }
 
     @Test
@@ -572,25 +568,31 @@ public class DataBrowserControllerTest {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1586134");
         conceptsIds.add("1585855");
-        try {
-            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
-            List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-            assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
-            assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
-        } catch(DataNotFoundException dnf) {
-        }
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
+        List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
+        assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
+        assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
     }
 
     @Test
     public void testGetSurveyDemographicAnalysesNoMatch() throws Exception {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1585855");
-        try {
-            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
-            List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
-            assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
-        } catch(DataNotFoundException dnf) {
-        }
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
+        List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
+        assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
+    }
+
+    @Test
+    public void testGetSurveyDemographicAnalysesMatch() throws Exception{
+        List<String> conceptsIds = new ArrayList<>();
+        conceptsIds.add("1586134");
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds,"");
+        List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
+        Analysis ageAnalysis = conceptAnalysis.get(0).getAgeAnalysis();
+        Analysis genderAnalysis = conceptAnalysis.get(0).getGenderAnalysis();
+        assertThat(ageAnalysis).isNotEqualTo(null);
+        assertThat(genderAnalysis).isNotEqualTo(null);
     }
 
     @Test
@@ -687,6 +689,9 @@ public class DataBrowserControllerTest {
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_6);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_7);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_8);
+
+        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_6);
+        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_7);
 
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);

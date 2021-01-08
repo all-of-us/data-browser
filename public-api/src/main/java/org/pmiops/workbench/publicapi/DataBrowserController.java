@@ -815,10 +815,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             List<Analysis> analysisList = achillesAnalysisService.findConceptAnalysisResults(conceptId,ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, MEASUREMENT_GENDER_ANALYSIS_ID, MEASUREMENT_DIST_ANALYSIS_ID, MEASUREMENT_GENDER_UNIT_ANALYSIS_ID));
 
-            if (analysisList.size() == 0) {
-                throw new DataNotFoundException("Cannot find analysis data of this concept");
-            }
-
             HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
             for(Analysis aa: analysisList){
                 // No need to detach this anymore since analysis is not actual entity. TODO: Delete this once you know things are running fine in test.

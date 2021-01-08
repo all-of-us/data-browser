@@ -26,7 +26,7 @@ import java.util.Arrays;
 public class AchillesAnalysisDaoTest {
 
     @Autowired
-    AchillesAnalysisDao dao;
+    AchillesAnalysisDao achillesAnalysisDao;
 
     @Autowired
     AchillesResultDao achillesResultDao;
@@ -57,11 +57,11 @@ public class AchillesAnalysisDaoTest {
         achillesAnalysis4=createAnalysis(3101L,"Gender","concept_id","ppi_sex_at_birth_concept_id",null,null,null,"pie","counts");
         achillesAnalysis5=createAnalysis(3102L,"Age","concept_id","age_decile",null,null,null,"column","counts");
 
-        dao.save(achillesAnalysis1);
-        dao.save(achillesAnalysis2);
-        dao.save(achillesAnalysis3);
-        dao.save(achillesAnalysis4);
-        dao.save(achillesAnalysis5);
+        achillesAnalysisDao.save(achillesAnalysis1);
+        achillesAnalysisDao.save(achillesAnalysis2);
+        achillesAnalysisDao.save(achillesAnalysis3);
+        achillesAnalysisDao.save(achillesAnalysis4);
+        achillesAnalysisDao.save(achillesAnalysis5);
 
         achillesResult1=createAchillesResult(2397L,3110L,"1586134","1000000","","Smoking",null,260L,0L);
         achillesResult2=createAchillesResult(2380L,3111L,"1585855","2000000","","Drinking is the cause of failure",null,2345L,0L);
@@ -90,14 +90,14 @@ public class AchillesAnalysisDaoTest {
     @Test
     public void findAllAnalyses() throws Exception {
         /* Todo write more tests */
-        final List<DbAchillesAnalysis> list = dao.findAll();
+        final List<DbAchillesAnalysis> list = achillesAnalysisDao.findAll();
         Assert.assertNotEquals(list,null);
     }
 
     @Test
     public void findSurveyAnalysisResults() throws Exception{
         List<String> qids=Arrays.asList("1000000","2000000");
-        final List<DbAchillesAnalysis> list=dao.findSurveyAnalysisResults("1586134",qids);
+        final List<DbAchillesAnalysis> list=achillesAnalysisDao.findSurveyAnalysisResults("1586134",qids);
         Assert.assertNotEquals(list,null);
     }
 
@@ -106,19 +106,11 @@ public class AchillesAnalysisDaoTest {
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3101L);
         analysisIds.add(3102L);
-        List<DbAchillesAnalysis> aa = dao.findConceptAnalysisResults("104567",analysisIds);
+        List<DbAchillesAnalysis> aa = achillesAnalysisDao.findConceptAnalysisResults("104567",analysisIds);
         Assert.assertNotEquals(aa.get(0),null);
         Assert.assertNotEquals(aa.get(1),null);
     }
 
-    @Test
-    public void testGetSurveyDemographicAnalysesMatch() throws Exception{
-        List<String> conceptsIds = new ArrayList<>();
-        conceptsIds.add("1586134");
-        List<DbAchillesAnalysis> analysisList = dao.findConceptAnalysisResults("1586134",ImmutableList.of(3101L, 3102L, 3000L));
-        assertThat(analysisList.size()).isEqualTo(2);
-        assertThat(analysisList.stream().filter(aa -> aa.getAnalysisId() == 3102L).collect(Collectors.toList()).get(0).getResults().size()).isEqualTo(2);
-    }
 
     private DbAchillesAnalysis createAnalysis(Long analysisId,String analysisName,String stratum1Name,String stratum2Name,String stratum3Name,String stratum4Name,String stratum5Name,String chartType,String dataType) {
         return new DbAchillesAnalysis()
@@ -145,25 +137,4 @@ public class AchillesAnalysisDaoTest {
                 .countValue(count)
                 .sourceCountValue(sourceCountValue);
     }
-
-    @After
-    public void flush(){
-        dao.delete(achillesAnalysis1);
-        dao.delete(achillesAnalysis2);
-        dao.delete(achillesAnalysis3);
-        dao.delete(achillesAnalysis4);
-        dao.delete(achillesAnalysis5);
-
-        achillesResultDao.delete(achillesResult1);
-        achillesResultDao.delete(achillesResult2);
-        achillesResultDao.delete(achillesResult3);
-        achillesResultDao.delete(achillesResult4);
-        achillesResultDao.delete(achillesResult5);
-        achillesResultDao.delete(achillesResult6);
-        achillesResultDao.delete(achillesResult7);
-        achillesResultDao.delete(achillesResult8);
-        achillesResultDao.delete(achillesResult9);
-        achillesResultDao.delete(achillesResult10);
-    }
-
 }
