@@ -1,5 +1,5 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -36,7 +36,7 @@ export function getConfiguration(): Configuration {
   });
 }
 
-export function getConfigService(http: Http) {
+export function getConfigService(http: HttpClient) {
   return new ConfigService(http, getPublicBasePath(), null);
 }
 
@@ -48,6 +48,7 @@ export function getConfigService(http: Http) {
     RouterModule,
     SharedModule,
     DataBrowserModule,
+    HttpClientModule,
   ],
   declarations: [
     AppComponent,
@@ -56,7 +57,7 @@ export function getConfigService(http: Http) {
     {
       provide: ConfigService,
       useFactory: getConfigService,
-      deps: [Http]
+      deps: [HttpClient]
     },
     {
       provide: Configuration,

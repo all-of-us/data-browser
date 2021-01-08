@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import {DataBrowserService} from '../../../../publicGenerated/api/dataBrowser.service';
 import {Analysis} from '../../../../publicGenerated/model/analysis';
 import {ConceptGroup} from '../../../utils/conceptGroup';

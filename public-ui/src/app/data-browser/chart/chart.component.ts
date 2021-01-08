@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import * as highcharts from 'highcharts';
+import * as Highcharts from 'highcharts';
 import { reduce } from 'rxjs/operators';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
@@ -32,8 +32,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() surveyVersionAnalysis: any;
   @Input() conceptName: string;
   chartOptions: any = null;
+  Highcharts = Highcharts;
   constructor(private dbc: DbConfigService) {
-    highcharts.setOptions({
+    this.Highcharts.setOptions({
       lang: { thousandsSep: ',' },
     });
   }
@@ -785,7 +786,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             + '</b> <br/>' + participantCountText + '</div>';
         }
       } else {
-        tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
+        tooltipText = '<b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value : <b>' + a.stratum4
           + '</b> <br/>' + participantCountText + '</div>';
       }

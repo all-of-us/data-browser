@@ -1,5 +1,5 @@
 <div class="answer-chart-layout">
-    <chart class="standard-chart" [options]="chartOptions"></chart>
+    <highcharts-chart class="standard-chart" [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
     <div class="legend">
         <div class="legend-inner">
             <div *ngFor="let item of answerChartInfo " class="legend-item">

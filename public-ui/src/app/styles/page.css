@@ -124,7 +124,6 @@ p {
   margin: 0 auto;
 }
 .concept-charts {
-  width: calc((100% / 12) * 10);
   margin: 0 auto;
 }
 .source-chart {

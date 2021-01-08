@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import {DataBrowserService} from 'publicGenerated';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { DbConfigService } from '../../utils/db-config.service';
 
 @Component({
@@ -45,7 +45,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public goToResult(r) {
-    console.log(this.results);
     if (this.results && this.results.domainInfos) {
       this.results.domainInfos.forEach(domain => {
         if (r.domain === domain.domain) {
@@ -89,7 +88,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
     this.measurementTestFilter, this.measurementOrderFilter)
       .subscribe(results => {
         this.results = results;
-        this.results.domainInfos = this.results.domainInfos.filter(d => d.standardConceptCount > 0);
         this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');
         this.pmResults = this.pmResults.filter(d => d.standardConceptCount > 0);
         this.loading = false;

@@ -1,11 +1,9 @@
+
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Items } from '@clr/angular/data/datagrid/providers/items';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import {
   AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept,
@@ -145,19 +143,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     // Filter when text value changes
     this.subscriptions.push(
-      this.searchText.valueChanges
-        .debounceTime(1000)
-        .distinctUntilChanged()
+      this.searchText.valueChanges.pipe(
+        debounceTime(1000),
+        distinctUntilChanged(), )
         .subscribe((query) => {
           // this.router.navigate(
           // ['survey/' + this.domainId.toLowerCase() + '/' + query]
           // );
           // this.resetExpansion();
         }));
-    this.subscriptions.push(this.searchText.valueChanges
-      .debounceTime(1000)
-      .distinctUntilChanged()
-      .switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query))
+    this.subscriptions.push(this.searchText.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query)), )
       .subscribe({
         next: results => {
           this.processSurveyQuestions(results);
@@ -185,10 +183,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
       (query) => localStorage.setItem('searchText', query)));
-    this.subscriptions.push(this.searchText.valueChanges
-      .debounceTime(1000)
-      .distinctUntilChanged()
-      .switchMap((query) => this.api.getDomainTotals(query, 1, 1))
+    this.subscriptions.push(this.searchText.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      switchMap((query) => this.api.getDomainTotals(query, 1, 1)), )
       .subscribe({
         next: results => {
           if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
