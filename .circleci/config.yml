@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:buildimage-0.0.14
+    - image: allofustest/workbench:buildimage-0.0.20
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
@@ -18,7 +18,7 @@ java_defaults: &java_defaults
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:buildimage-0.0.14
+      - image: allofustest/workbench:buildimage-0.0.20
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
