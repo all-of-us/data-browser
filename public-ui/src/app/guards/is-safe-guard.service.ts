@@ -1,5 +1,4 @@
 
-import {from as observableFrom,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -8,6 +7,8 @@ import {
   Router, RouterStateSnapshot
 } from '@angular/router';
 import 'rxjs/add/operator/mergeMap';
+import { Observable } from 'rxjs/Observable';
+import {from as observableFrom} from 'rxjs/observable/from';
 
 import { ServerConfigService } from 'app/services/server-config.service';
 

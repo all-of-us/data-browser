@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import * as Highcharts from 'highcharts';
 import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
@@ -8,6 +9,7 @@ import { ChartBaseComponent } from '../chart-base/chart-base.component';
   styleUrls: ['./chart-survey-answers.component.css']
 })
 export class ChartSurveyAnswersComponent extends ChartBaseComponent implements OnChanges {
+  Highcharts = Highcharts;
   chartOptions: any;
   chartSeries: any[];
   colors: any[];

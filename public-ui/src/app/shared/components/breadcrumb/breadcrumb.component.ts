@@ -1,8 +1,7 @@
-
-import {filter} from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {filter} from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
 import { environment } from '../../../../environments/environment';
 import { DbConfigService } from '../../../utils/db-config.service';
 

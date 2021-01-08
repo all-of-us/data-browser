@@ -1,11 +1,6 @@
 
-import {filter} from 'rxjs/operators';
 import { DOCUMENT, Location } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-
-
-
-
 import { Title } from '@angular/platform-browser';
 import {
   ActivatedRoute,
@@ -13,12 +8,9 @@ import {
   NavigationEnd, NavigationStart,
   Router,
 } from '@angular/router';
-
-import { Observable } from 'rxjs';
-
-import { environment } from 'environments/environment';
-
 import {ServerConfigService} from 'app/services/server-config.service';
+import { environment } from 'environments/environment';
+import {filter} from 'rxjs/operators';
 
 export const overriddenUrlKey = 'allOfUsApiUrlOverride';
 export const overriddenPublicUrlKey = 'publicApiUrlOverride';

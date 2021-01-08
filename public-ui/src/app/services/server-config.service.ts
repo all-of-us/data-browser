@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject} from 'rxjs';
-
 import {ConfigResponse, ConfigService} from 'publicGenerated';
+import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class ServerConfigService {

@@ -55,7 +55,7 @@ def build(cmd_name, args)
     optimize = "--prod"
   end
   common.run_inline %W{yarn run build
-      #{optimize} -=#{options.env} --no-watch --no-progress}
+      #{optimize} --configuration=#{options.env} --no-watch --no-progress}
 end
 
 class CommonUiDevStart
