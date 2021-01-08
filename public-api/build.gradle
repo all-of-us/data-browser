@@ -158,7 +158,7 @@ task integration(type: Test) {
   testClassesDirs = sourceSets.integration.output.classesDirs
   classpath = sourceSets.integration.runtimeClasspath
   systemProperties = [
-          'DB_API_BASE_PATH': System.getenv('DB_API_BASE_PATH')
+      'DB_API_BASE_PATH': System.getenv('DB_API_BASE_PATH')
   ]
   // Option to control size of stack trace:
   // jvmArgs '-XX:MaxJavaStackTraceDepth=10'

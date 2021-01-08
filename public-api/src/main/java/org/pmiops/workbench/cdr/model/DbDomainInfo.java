@@ -1,7 +1,6 @@
 package org.pmiops.workbench.cdr.model;
 
 import java.util.Objects;
-import java.util.function.Function;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,17 +12,7 @@ import org.pmiops.workbench.model.Domain;
 
 @Entity
 @Table(name = "domain_info")
-public class DomainInfo implements Comparable<DomainInfo> {
-
-  public static final Function<DomainInfo, org.pmiops.workbench.model.DomainInfo> TO_CLIENT_DOMAIN_INFO =
-      (domain) -> new org.pmiops.workbench.model.DomainInfo()
-          .domain(domain.getDomainEnum())
-              .domainConceptId(domain.getConceptId())
-          .name(domain.getName())
-          .description(domain.getDescription())
-          .allConceptCount(domain.getAllConceptCount())
-          .standardConceptCount(domain.getStandardConceptCount())
-          .participantCount(domain.getParticipantCount());
+public class DbDomainInfo implements Comparable<DbDomainInfo> {
 
   private long conceptId;
   private Short domain;
@@ -34,11 +23,11 @@ public class DomainInfo implements Comparable<DomainInfo> {
   private long standardConceptCount;
   private long participantCount;
 
-  public DomainInfo() {
+  public DbDomainInfo() {
   }
 
   // Used from JQL queries in DomainInfoDao
-  public DomainInfo(Short domain, String domainId, String name, String description,
+  public DbDomainInfo(Short domain, String domainId, String name, String description,
       long conceptId, long allConceptCount, long standardConceptCount, long participantCount) {
     this.conceptId = conceptId;
     this.domain = domain;
@@ -59,7 +48,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.conceptId = conceptId;
   }
 
-  public DomainInfo conceptId(Long conceptId) {
+  public DbDomainInfo conceptId(Long conceptId) {
     this.conceptId = conceptId;
     return this;
   }
@@ -73,7 +62,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.domain = domain;
   }
 
-  public DomainInfo domain(Short domain) {
+  public DbDomainInfo domain(Short domain) {
     this.domain = domain;
     return this;
   }
@@ -83,7 +72,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     return CommonStorageEnums.domainFromStorage(domain);
   }
 
-  public DomainInfo domainEnum(Domain domain) {
+  public DbDomainInfo domainEnum(Domain domain) {
     this.domain = CommonStorageEnums.domainToStorage(domain);
     return this;
   }
@@ -98,7 +87,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.domainId = domainId;
   }
 
-  public DomainInfo domainId(String domainId) {
+  public DbDomainInfo domainId(String domainId) {
     this.domainId = domainId;
     return this;
   }
@@ -112,7 +101,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.name = name;
   }
 
-  public DomainInfo name(String name) {
+  public DbDomainInfo name(String name) {
     this.name = name;
     return this;
   }
@@ -126,7 +115,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.description = description;
   }
 
-  public DomainInfo description(String description) {
+  public DbDomainInfo description(String description) {
     this.description = description;
     return this;
   }
@@ -140,7 +129,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.allConceptCount = allConceptCount == null ? 0L : allConceptCount;
   }
 
-  public DomainInfo allConceptCount(long allConceptCount) {
+  public DbDomainInfo allConceptCount(long allConceptCount) {
     this.allConceptCount = allConceptCount;
     return this;
   }
@@ -154,7 +143,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.standardConceptCount = standardConceptCount == null ? 0L : standardConceptCount;
   }
 
-  public DomainInfo standardConceptCount(long standardConceptCount) {
+  public DbDomainInfo standardConceptCount(long standardConceptCount) {
     this.standardConceptCount = standardConceptCount;
     return this;
   }
@@ -168,7 +157,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
     this.participantCount = participantCount == null ? 0L : participantCount;
   }
 
-  public DomainInfo participantCount(long participantCount){
+  public DbDomainInfo participantCount(long participantCount){
     this.participantCount = participantCount;
     return this;
   }
@@ -177,7 +166,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    DomainInfo domainInfo = (DomainInfo) o;
+    DbDomainInfo domainInfo = (DbDomainInfo) o;
     return Objects.equals(domain, domainInfo.domain) &&
         Objects.equals(name, domainInfo.name) &&
         Objects.equals(description, domainInfo.description) &&
@@ -198,7 +187,7 @@ public class DomainInfo implements Comparable<DomainInfo> {
   }
 
   @Override
-  public int compareTo(DomainInfo o) {
+  public int compareTo(DbDomainInfo o) {
     return this.getDomain().compareTo(o.getDomain());
   }
 }

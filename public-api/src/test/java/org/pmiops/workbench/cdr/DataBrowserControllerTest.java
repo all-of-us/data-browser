@@ -20,7 +20,7 @@ import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
-import org.pmiops.workbench.cdr.dao.DomainInfoDao;
+import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
 import org.pmiops.workbench.cdr.model.AchillesAnalysis;
 import org.pmiops.workbench.cdr.model.AchillesResult;
@@ -28,7 +28,6 @@ import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.DbCdrVersion;
-import org.pmiops.workbench.db.model.CommonStorageEnums;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
@@ -38,8 +37,6 @@ import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.Domain;
-import org.pmiops.workbench.model.DomainInfo;
-import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.SurveyModule;
@@ -172,24 +169,6 @@ public class DataBrowserControllerTest {
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
             .graphToShow("Sex Assigned at Birth");
-
-    private static final DomainInfo CLIENT_DOMAIN_1 = new DomainInfo()
-            .domain(Domain.CONDITION)
-            .domainConceptId(1L)
-            .name("Diagnoses")
-            .description("Condition Domain")
-            .allConceptCount(123L)
-            .standardConceptCount(456L)
-            .participantCount(789L);
-
-    private static final DomainInfo CLIENT_DOMAIN_2 = new DomainInfo()
-            .domain(Domain.DRUG)
-            .domainConceptId(2L)
-            .name("Medications")
-            .description("Drug Domain")
-            .allConceptCount(1L)
-            .standardConceptCount(2L)
-            .participantCount(3L);
 
     private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
             .analysisId(1900L)
@@ -426,11 +405,6 @@ public class DataBrowserControllerTest {
     private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_7 =
             makeConcept(CLIENT_CONCEPT_7);
 
-    private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_1 =
-            makeDomain(CLIENT_DOMAIN_1, 1L, "0");
-    private static final org.pmiops.workbench.cdr.model.DomainInfo DOMAIN_2 =
-            makeDomain(CLIENT_DOMAIN_2, 2L, "3");
-
     @Autowired
     private ConceptDao conceptDao;
     @Autowired
@@ -439,8 +413,6 @@ public class DataBrowserControllerTest {
     private CdrVersionDao cdrVersionDao;
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
-    @Autowired
-    private DomainInfoDao domainInfoDao;
     @Autowired
     private QuestionConceptDao  questionConceptDao;
     @Autowired
@@ -455,6 +427,7 @@ public class DataBrowserControllerTest {
     @Mock private QuestionConceptService questionConceptService;
     @Mock private AchillesResultDistService achillesResultDistService;
     @Mock private SurveyModuleService surveyModuleService;
+    @Mock private DomainInfoService domainInfoService;
 
     private DataBrowserController dataBrowserController;
 
@@ -463,21 +436,15 @@ public class DataBrowserControllerTest {
         saveData();
         ConceptService conceptService = new ConceptService(entityManager, conceptDao);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao, domainInfoDao, achillesResultDao,
+                criteriaDao, achillesResultDao,
                 achillesAnalysisDao, achillesResultDistService, entityManager,
-            cdrVersionService, questionConceptService, surveyModuleService);
+            cdrVersionService, domainInfoService, questionConceptService, surveyModuleService);
     }
 
     @Test
     public void testGetSourceConcepts() throws Exception {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.getSourceConcepts(7890L, 15);
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_4, CLIENT_CONCEPT_2);
-    }
-
-    @Test
-    public void testGetDomainTotals() throws Exception {
-        ResponseEntity<DomainInfosAndSurveyModulesResponse> response = dataBrowserController.getDomainTotals("", 1, 1);
-        assertThat(response.getBody().getDomainInfos()).containsExactly(CLIENT_DOMAIN_1, CLIENT_DOMAIN_2);
     }
 
     @Test
@@ -678,19 +645,6 @@ public class DataBrowserControllerTest {
         return result;
     }
 
-    private static org.pmiops.workbench.cdr.model.DomainInfo makeDomain(DomainInfo domain, long conceptId, String domainId) {
-        return new org.pmiops.workbench.cdr.model.DomainInfo()
-            .domainEnum(domain.getDomain())
-            .domainId(CommonStorageEnums.domainToDomainId(domain.getDomain()))
-            .domain(Short.valueOf(domainId))
-            .name(domain.getName())
-            .description(domain.getDescription())
-            .conceptId(conceptId)
-            .allConceptCount(domain.getAllConceptCount())
-            .standardConceptCount(domain.getStandardConceptCount())
-            .participantCount(domain.getParticipantCount());
-    }
-
     private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
         AchillesAnalysis aa = new AchillesAnalysis();
         aa.setAnalysisId(achillesAnalysis.getAnalysisId());
@@ -730,9 +684,6 @@ public class DataBrowserControllerTest {
 
         conceptRelationshipDao.save(makeConceptRelationship(1234L, 7890L, "maps to"));
         conceptRelationshipDao.save(makeConceptRelationship(456L, 7890L, "maps to"));
-
-        domainInfoDao.save(DOMAIN_1);
-        domainInfoDao.save(DOMAIN_2);
 
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_2);
