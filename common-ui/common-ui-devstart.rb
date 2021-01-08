@@ -55,7 +55,7 @@ def build(cmd_name, args)
     optimize = "--prod"
   end
   common.run_inline %W{yarn run build
-      #{optimize} --environment=#{options.env} --no-watch --no-progress}
+      #{optimize} -=#{options.env} --no-watch --no-progress}
 end
 
 class CommonUiDevStart
@@ -187,7 +187,7 @@ class BuildOptions
   attr_accessor :env
 
   def initialize
-    self.env = "dev"
+    self.env = "test"
   end
 
   def parse cmd_name, args
@@ -198,7 +198,7 @@ class BuildOptions
           "Environment (default: local-test): [#{ENV_CHOICES.join(" ")}]") do |v|
         # The default environment file (called "dev" in Angular language)
         # compiles a local server to run against the deployed remote test API.
-        self.env = v == "local-test" ? "dev" : v
+        self.env = v == "local-test" ? "test" : v
       end
     end
     parser.parse args
@@ -278,7 +278,7 @@ class DeployUI
     environment_name = environment_names[@opts.project]
 
     swagger_regen(@cmd_name)
-    build(@cmd_name, %W{--environment #{environment_name}})
+    build(@cmd_name, %W{--configuration #{environment_name}})
     ServiceAccountContext.new(@opts.project, @opts.account, @opts.key_file).run do
       cmd_prefix = @opts.dry_run ? DRY_RUN_CMD : []
       common.run_inline(cmd_prefix + %W{gcloud app deploy
