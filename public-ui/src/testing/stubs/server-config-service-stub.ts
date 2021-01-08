@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/observable';
+import {Observable} from 'rxjs/Observable';
 
 import {ConfigResponse} from 'publicGenerated';
 
