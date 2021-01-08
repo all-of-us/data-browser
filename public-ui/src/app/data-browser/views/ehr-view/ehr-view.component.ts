@@ -7,7 +7,7 @@ import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicG
 
 
 
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';

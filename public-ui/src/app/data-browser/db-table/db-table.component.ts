@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { Concept, ConceptListResponse, DataBrowserService, MatchType, SearchConceptsRequest } from 'publicGenerated';
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { GraphType } from '../../utils/enum-defs';
 import { TooltipService } from '../../utils/tooltip.service';
 @Component({

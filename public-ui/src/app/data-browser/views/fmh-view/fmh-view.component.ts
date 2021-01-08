@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {SubscriptionLike as ISubscription} from 'rxjs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
 import {GraphType} from '../../../utils/enum-defs';

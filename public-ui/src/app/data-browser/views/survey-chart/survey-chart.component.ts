@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { AchillesResult, DataBrowserService } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';

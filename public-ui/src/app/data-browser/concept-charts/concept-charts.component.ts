@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { AchillesResult } from '../../../publicGenerated/model/achillesResult';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 

@@ -7,7 +7,7 @@ import { Items } from '@clr/angular/data/datagrid/providers/items';
 
 
 
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../../environments/environment';
 import {
   AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept,
