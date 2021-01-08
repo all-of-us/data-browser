@@ -150,11 +150,6 @@ public class DbAchillesResult  {
 
     @Column(name="stratum_7")
     public String getStratum7() {
-        if (getAnalysisId() == 3000) {
-            if (getStratum3().equals("903096")) {
-                return "";
-            }
-        }
         return stratum7;
     }
     public void setStratum7(String stratum7) {

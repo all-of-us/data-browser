@@ -5,8 +5,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.pmiops.workbench.cdr.model.AchillesAnalysis;
-import org.pmiops.workbench.cdr.model.AchillesResult;
+import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
+import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -24,9 +24,9 @@ public class AchillesResultDaoTest {
     @Autowired
     private AchillesAnalysisDao achillesAnalysisDao;
 
-    private AchillesAnalysis achillesAnalysis1;
+    private DbAchillesAnalysis achillesAnalysis1;
 
-    private AchillesResult achillesResult1;
+    private DbAchillesResult achillesResult1;
 
     @Before
     public void setUp() {
@@ -48,14 +48,14 @@ public class AchillesResultDaoTest {
 
     @Test
     public void findAchillesResultByAnalysisId() throws Exception{
-        final AchillesResult achillesResult=achillesResultDao.findAchillesResultByAnalysisId(5000L);
+        final DbAchillesResult achillesResult=achillesResultDao.findAchillesResultByAnalysisId(5000L);
         Assert.assertNotEquals(achillesResult,null);
     }
 
 
 
-    private AchillesAnalysis createAnalysis(Long analysisId,String analysisName,String stratum1Name,String stratum2Name,String stratum3Name,String stratum4Name,String stratum5Name,String chartType,String dataType) {
-        return new AchillesAnalysis()
+    private DbAchillesAnalysis createAnalysis(Long analysisId,String analysisName,String stratum1Name,String stratum2Name,String stratum3Name,String stratum4Name,String stratum5Name,String chartType,String dataType) {
+        return new DbAchillesAnalysis()
                 .analysisId(analysisId)
                 .analysisName(analysisName)
                 .stratum1Name(stratum1Name)
@@ -67,8 +67,8 @@ public class AchillesResultDaoTest {
                 .dataType(dataType);
     }
 
-    private AchillesResult createAchillesResult(Long id,Long analysisId,String stratum1,String stratum2,String stratum3,String stratum4,String stratum5,Long count,Long sourceCountValue){
-        return new AchillesResult()
+    private DbAchillesResult createAchillesResult(Long id,Long analysisId,String stratum1,String stratum2,String stratum3,String stratum4,String stratum5,Long count,Long sourceCountValue){
+        return new DbAchillesResult()
                 .id(id)
                 .analysisId(analysisId)
                 .stratum1(stratum1)

@@ -5,13 +5,16 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.pmiops.workbench.cdr.model.AchillesAnalysis;
-import org.pmiops.workbench.cdr.model.AchillesResult;
+import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
+import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.annotation.DirtiesContext;
+import com.google.common.collect.ImmutableList;
+import static com.google.common.truth.Truth.assertThat;
+import java.util.stream.Collectors;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -28,18 +31,22 @@ public class AchillesAnalysisDaoTest {
     @Autowired
     AchillesResultDao achillesResultDao;
 
-    private AchillesAnalysis achillesAnalysis1;
-    private AchillesAnalysis achillesAnalysis2;
-    private AchillesAnalysis achillesAnalysis3;
-    private AchillesAnalysis achillesAnalysis4;
-    private AchillesAnalysis achillesAnalysis5;
+    private DbAchillesAnalysis achillesAnalysis1;
+    private DbAchillesAnalysis achillesAnalysis2;
+    private DbAchillesAnalysis achillesAnalysis3;
+    private DbAchillesAnalysis achillesAnalysis4;
+    private DbAchillesAnalysis achillesAnalysis5;
 
-    private AchillesResult achillesResult1;
-    private AchillesResult achillesResult2;
-    private AchillesResult achillesResult3;
-    private AchillesResult achillesResult4;
-    private AchillesResult achillesResult5;
-    private AchillesResult achillesResult6;
+    private DbAchillesResult achillesResult1;
+    private DbAchillesResult achillesResult2;
+    private DbAchillesResult achillesResult3;
+    private DbAchillesResult achillesResult4;
+    private DbAchillesResult achillesResult5;
+    private DbAchillesResult achillesResult6;
+    private DbAchillesResult achillesResult7;
+    private DbAchillesResult achillesResult8;
+    private DbAchillesResult achillesResult9;
+    private DbAchillesResult achillesResult10;
 
     @Before
     public void setUp() {
@@ -62,6 +69,11 @@ public class AchillesAnalysisDaoTest {
         achillesResult4=createAchillesResult(2346L,3112L,"1586134","2000000","","Prefer not to answer",null,890L,0L);
         achillesResult5=createAchillesResult(2456L,3101L,"104567","8507",null,null,null,20L,8L);
         achillesResult6=createAchillesResult(2457L,3102L,"104567","2",null,null,null,78L,90L);
+        achillesResult7=createAchillesResult(2460L, 3101L, "1586134", "8507", "Survey", null, null, 251780L, 251780L);
+        achillesResult8=createAchillesResult(2461L, 3101L, "1586134", "8532", "Survey", null, null, 316080L, 316080L);
+        achillesResult9=createAchillesResult(2462L, 3102L, "1586134", "2", "Survey", null, null, 93020L, 93020L);
+        achillesResult10=createAchillesResult(2463L, 3102L, "1586134", "3", "Survey", null, null, 93020L, 93020L);
+
 
         achillesResultDao.save(achillesResult1);
         achillesResultDao.save(achillesResult2);
@@ -69,19 +81,23 @@ public class AchillesAnalysisDaoTest {
         achillesResultDao.save(achillesResult4);
         achillesResultDao.save(achillesResult5);
         achillesResultDao.save(achillesResult6);
+        achillesResultDao.save(achillesResult7);
+        achillesResultDao.save(achillesResult8);
+        achillesResultDao.save(achillesResult9);
+        achillesResultDao.save(achillesResult10);
     }
 
     @Test
     public void findAllAnalyses() throws Exception {
         /* Todo write more tests */
-        final List<AchillesAnalysis> list = dao.findAll();
+        final List<DbAchillesAnalysis> list = dao.findAll();
         Assert.assertNotEquals(list,null);
     }
 
     @Test
     public void findSurveyAnalysisResults() throws Exception{
         List<String> qids=Arrays.asList("1000000","2000000");
-        final List<AchillesAnalysis> list=dao.findSurveyAnalysisResults("1586134",qids);
+        final List<DbAchillesAnalysis> list=dao.findSurveyAnalysisResults("1586134",qids);
         Assert.assertNotEquals(list,null);
     }
 
@@ -90,13 +106,22 @@ public class AchillesAnalysisDaoTest {
         List<Long> analysisIds = new ArrayList<>();
         analysisIds.add(3101L);
         analysisIds.add(3102L);
-        List<AchillesAnalysis> aa = dao.findConceptAnalysisResults("104567",analysisIds);
+        List<DbAchillesAnalysis> aa = dao.findConceptAnalysisResults("104567",analysisIds);
         Assert.assertNotEquals(aa.get(0),null);
         Assert.assertNotEquals(aa.get(1),null);
     }
 
-    private AchillesAnalysis createAnalysis(Long analysisId,String analysisName,String stratum1Name,String stratum2Name,String stratum3Name,String stratum4Name,String stratum5Name,String chartType,String dataType) {
-        return new AchillesAnalysis()
+    @Test
+    public void testGetSurveyDemographicAnalysesMatch() throws Exception{
+        List<String> conceptsIds = new ArrayList<>();
+        conceptsIds.add("1586134");
+        List<DbAchillesAnalysis> analysisList = dao.findConceptAnalysisResults("1586134",ImmutableList.of(3101L, 3102L, 3000L));
+        assertThat(analysisList.size()).isEqualTo(2);
+        assertThat(analysisList.stream().filter(aa -> aa.getAnalysisId() == 3102L).collect(Collectors.toList()).get(0).getResults().size()).isEqualTo(2);
+    }
+
+    private DbAchillesAnalysis createAnalysis(Long analysisId,String analysisName,String stratum1Name,String stratum2Name,String stratum3Name,String stratum4Name,String stratum5Name,String chartType,String dataType) {
+        return new DbAchillesAnalysis()
                 .analysisId(analysisId)
                 .analysisName(analysisName)
                 .stratum1Name(stratum1Name)
@@ -108,8 +133,8 @@ public class AchillesAnalysisDaoTest {
                 .dataType(dataType);
     }
 
-    private AchillesResult createAchillesResult(Long id,Long analysisId,String stratum1,String stratum2,String stratum3,String stratum4,String stratum5,Long count, Long sourceCountValue){
-        return new AchillesResult()
+    private DbAchillesResult createAchillesResult(Long id,Long analysisId,String stratum1,String stratum2,String stratum3,String stratum4,String stratum5,Long count, Long sourceCountValue){
+        return new DbAchillesResult()
                 .id(id)
                 .analysisId(analysisId)
                 .stratum1(stratum1)
@@ -135,6 +160,10 @@ public class AchillesAnalysisDaoTest {
         achillesResultDao.delete(achillesResult4);
         achillesResultDao.delete(achillesResult5);
         achillesResultDao.delete(achillesResult6);
+        achillesResultDao.delete(achillesResult7);
+        achillesResultDao.delete(achillesResult8);
+        achillesResultDao.delete(achillesResult9);
+        achillesResultDao.delete(achillesResult10);
     }
 
 }
