@@ -170,7 +170,7 @@ jobs:
       - run:
           name: Build with strict compilation
           working_directory: ~/data-browser/public-ui
-          command: ./project.rb build --configuration test
+          command: ./project.rb build --environment test
       - persist_to_workspace:
           root: .
           paths:
