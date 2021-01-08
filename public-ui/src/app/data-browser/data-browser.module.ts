@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
 import { HighchartsChartModule } from 'highcharts-angular';
-import * as highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { SharedModule } from '../shared/shared.module';

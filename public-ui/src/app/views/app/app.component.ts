@@ -1,7 +1,7 @@
 
-import {filter} from 'rxjs/operators';
 import { DOCUMENT, Location } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import {filter} from 'rxjs/operators';
 
 
 

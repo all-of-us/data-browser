@@ -1,13 +1,9 @@
 
-import {switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Items } from '@clr/angular/data/datagrid/providers/items';
-
-
-
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import {
   AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept,
@@ -149,7 +145,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.searchText.valueChanges.pipe(
         debounceTime(1000),
-        distinctUntilChanged(),)
+        distinctUntilChanged(), )
         .subscribe((query) => {
           // this.router.navigate(
           // ['survey/' + this.domainId.toLowerCase() + '/' + query]
@@ -159,7 +155,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query)),)
+      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query)), )
       .subscribe({
         next: results => {
           this.processSurveyQuestions(results);
@@ -190,7 +186,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap((query) => this.api.getDomainTotals(query, 1, 1)),)
+      switchMap((query) => this.api.getDomainTotals(query, 1, 1)), )
       .subscribe({
         next: results => {
           if (results.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {
