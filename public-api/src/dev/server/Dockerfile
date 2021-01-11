@@ -56,7 +56,7 @@ ENV GRADLE_OPTS="-Dorg.gradle.daemon=false"
 
 RUN apk --no-cache add ruby ruby-json ruby-io-console
 
-RUN curl https://services.gradle.org/distributions/gradle-4.3.1-bin.zip -L > /tmp/gradle.zip
+RUN curl https://services.gradle.org/distributions/gradle-5.6.3-bin.zip -L > /tmp/gradle.zip
 WORKDIR /tmp
 RUN unzip gradle.zip && rm gradle.zip \
   && mv gradle-* /gradle
