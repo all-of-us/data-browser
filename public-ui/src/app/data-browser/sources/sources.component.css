@@ -42,7 +42,7 @@ aside {
     padding: 1em;
     padding-top: 0;
     padding-top: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .tree-view {

@@ -792,7 +792,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             + '</b> <br/>' + participantCountText + '</div>';
         }
       } else {
-        tooltipText = '<b>' + analysisStratumName + '</b>' +
+        tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value : <b>' + a.stratum4
           + '</b> <br/>' + participantCountText + '</div>';
       }

@@ -26,7 +26,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
-
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -85,6 +84,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private AchillesResultService achillesResultService;
     @Autowired
     private AchillesAnalysisService achillesAnalysisService;
+    @Autowired
+    private DomainInfoService domainInfoService;
+    @Autowired
+    private AchillesResultDistService achillesResultDistService;
     @Autowired
     private DomainInfoService domainInfoService;
     @Autowired
