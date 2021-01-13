@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
-import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
+
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -79,8 +79,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private ConceptDao conceptDao;
     @Autowired
     private CBCriteriaDao criteriaDao;
-    @Autowired
-    private AchillesAnalysisDao achillesAnalysisDao;
     @Autowired
     private AchillesResultDistService achillesResultDistService;
     @Autowired
@@ -155,7 +153,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController() {}
 
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
-                                 AchillesAnalysisDao achillesAnalysisDao, AchillesResultDistService achillesResultDistService,
+                                 AchillesResultDistService achillesResultDistService,
                                  EntityManager entityManager, CdrVersionService cdrVersionService,
                                  DomainInfoService domainInfoService,
                                  QuestionConceptService questionConceptService, SurveyModuleService surveyModuleService,
@@ -163,7 +161,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
-        this.achillesAnalysisDao = achillesAnalysisDao;
         this.achillesResultDistService = achillesResultDistService;
         this.entityManager = entityManager;
         this.cdrVersionService = cdrVersionService;
