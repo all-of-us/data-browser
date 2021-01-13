@@ -146,7 +146,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public static final long ETHNICITY_ANALYSIS = 5;
 
     public static Map<String, String> ageStratumNameMap = new HashMap<String, String>();
-    public static Map<String, String> versionStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderStratumNameMap = new HashMap<String, String>();
     public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8", "9"}));
 
@@ -182,20 +181,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ageStratumNameMap.put("9", "89+");
     }
 
-    public static void setSurveyVersionNameMap() {
-        versionStratumNameMap.put("January", "1");
-        versionStratumNameMap.put("February", "2");
-        versionStratumNameMap.put("March", "3");
-        versionStratumNameMap.put("April", "4");
-        versionStratumNameMap.put("May", "5");
-        versionStratumNameMap.put("June", "6");
-        versionStratumNameMap.put("July/August", "7");
-        versionStratumNameMap.put("September", "9");
-        versionStratumNameMap.put("October", "10");
-        versionStratumNameMap.put("November", "11");
-        versionStratumNameMap.put("December", "12");
-    }
-
     public static void setGenderStratumNameMap() {
         /* This is to slow to use the db */
         genderStratumNameMap.put("8507", "Male");
@@ -211,7 +196,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     static {
         setAgeStratumNameMap();
         setGenderStratumNameMap();
-        setSurveyVersionNameMap();
     }
 
     /**
