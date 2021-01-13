@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.pmiops.workbench.model.AchillesResultDist;
-import org.pmiops.workbench.cdr.AchillesMapper;
 
 
 @Entity

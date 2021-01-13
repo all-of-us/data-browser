@@ -28,7 +28,6 @@ import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
-import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResultDist;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.model.Analysis;

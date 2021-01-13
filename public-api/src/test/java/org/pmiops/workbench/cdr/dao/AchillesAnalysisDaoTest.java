@@ -1,7 +1,6 @@
 package org.pmiops.workbench.cdr.dao;
 
 import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -12,9 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.annotation.DirtiesContext;
-import com.google.common.collect.ImmutableList;
-import static com.google.common.truth.Truth.assertThat;
-import java.util.stream.Collectors;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -31,31 +27,14 @@ public class AchillesAnalysisDaoTest {
     @Autowired
     AchillesResultDao achillesResultDao;
 
-    private DbAchillesAnalysis achillesAnalysis1;
-    private DbAchillesAnalysis achillesAnalysis2;
-    private DbAchillesAnalysis achillesAnalysis3;
-    private DbAchillesAnalysis achillesAnalysis4;
-    private DbAchillesAnalysis achillesAnalysis5;
-
-    private DbAchillesResult achillesResult1;
-    private DbAchillesResult achillesResult2;
-    private DbAchillesResult achillesResult3;
-    private DbAchillesResult achillesResult4;
-    private DbAchillesResult achillesResult5;
-    private DbAchillesResult achillesResult6;
-    private DbAchillesResult achillesResult7;
-    private DbAchillesResult achillesResult8;
-    private DbAchillesResult achillesResult9;
-    private DbAchillesResult achillesResult10;
-
     @Before
     public void setUp() {
 
-        achillesAnalysis1=createAnalysis(3110L,"Survey Question Answer Count","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string",null,"column","counts");
-        achillesAnalysis2=createAnalysis(3111L,"Gender","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_concept_id","column","counts");
-        achillesAnalysis3=createAnalysis(3112L,"Age","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","column","counts");
-        achillesAnalysis4=createAnalysis(3101L,"Gender","concept_id","ppi_sex_at_birth_concept_id",null,null,null,"pie","counts");
-        achillesAnalysis5=createAnalysis(3102L,"Age","concept_id","age_decile",null,null,null,"column","counts");
+        private DbAchillesAnalysis achillesAnalysis1=createAnalysis(3110L,"Survey Question Answer Count","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string",null,"column","counts");
+        private DbAchillesAnalysis achillesAnalysis2=createAnalysis(3111L,"Gender","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_concept_id","column","counts");
+        private DbAchillesAnalysis achillesAnalysis3=createAnalysis(3112L,"Age","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","column","counts");
+        private DbAchillesAnalysis achillesAnalysis4=createAnalysis(3101L,"Gender","concept_id","ppi_sex_at_birth_concept_id",null,null,null,"pie","counts");
+        private DbAchillesAnalysis achillesAnalysis5=createAnalysis(3102L,"Age","concept_id","age_decile",null,null,null,"column","counts");
 
         achillesAnalysisDao.save(achillesAnalysis1);
         achillesAnalysisDao.save(achillesAnalysis2);
@@ -63,16 +42,16 @@ public class AchillesAnalysisDaoTest {
         achillesAnalysisDao.save(achillesAnalysis4);
         achillesAnalysisDao.save(achillesAnalysis5);
 
-        achillesResult1=createAchillesResult(2397L,3110L,"1586134","1000000","","Smoking",null,260L,0L);
-        achillesResult2=createAchillesResult(2380L,3111L,"1585855","2000000","","Drinking is the cause of failure",null,2345L,0L);
-        achillesResult3=createAchillesResult(2345L,3112L,"1586134","1000000","","Donot know",null,789L,0L);
-        achillesResult4=createAchillesResult(2346L,3112L,"1586134","2000000","","Prefer not to answer",null,890L,0L);
-        achillesResult5=createAchillesResult(2456L,3101L,"104567","8507",null,null,null,20L,8L);
-        achillesResult6=createAchillesResult(2457L,3102L,"104567","2",null,null,null,78L,90L);
-        achillesResult7=createAchillesResult(2460L, 3101L, "1586134", "8507", "Survey", null, null, 251780L, 251780L);
-        achillesResult8=createAchillesResult(2461L, 3101L, "1586134", "8532", "Survey", null, null, 316080L, 316080L);
-        achillesResult9=createAchillesResult(2462L, 3102L, "1586134", "2", "Survey", null, null, 93020L, 93020L);
-        achillesResult10=createAchillesResult(2463L, 3102L, "1586134", "3", "Survey", null, null, 93020L, 93020L);
+        private DbAchillesResult achillesResult1=createAchillesResult(2397L,3110L,"1586134","1000000","","Smoking",null,260L,0L);
+        private DbAchillesResult achillesResult2=createAchillesResult(2380L,3111L,"1585855","2000000","","Drinking is the cause of failure",null,2345L,0L);
+        private DbAchillesResult achillesResult3=createAchillesResult(2345L,3112L,"1586134","1000000","","Donot know",null,789L,0L);
+        private DbAchillesResult achillesResult4=createAchillesResult(2346L,3112L,"1586134","2000000","","Prefer not to answer",null,890L,0L);
+        private DbAchillesResult achillesResult5=createAchillesResult(2456L,3101L,"104567","8507",null,null,null,20L,8L);
+        private DbAchillesResult achillesResult6=createAchillesResult(2457L,3102L,"104567","2",null,null,null,78L,90L);
+        private DbAchillesResult achillesResult7=createAchillesResult(2460L, 3101L, "1586134", "8507", "Survey", null, null, 251780L, 251780L);
+        private DbAchillesResult achillesResult8=createAchillesResult(2461L, 3101L, "1586134", "8532", "Survey", null, null, 316080L, 316080L);
+        private DbAchillesResult achillesResult9=createAchillesResult(2462L, 3102L, "1586134", "2", "Survey", null, null, 93020L, 93020L);
+        private DbAchillesResult achillesResult10=createAchillesResult(2463L, 3102L, "1586134", "3", "Survey", null, null, 93020L, 93020L);
 
         achillesResultDao.save(achillesResult1);
         achillesResultDao.save(achillesResult2);
