@@ -87,10 +87,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private DomainInfoService domainInfoService;
     @Autowired
-    private AchillesResultDistService achillesResultDistService;
-    @Autowired
-    private DomainInfoService domainInfoService;
-    @Autowired
     private SurveyModuleService surveyModuleService;
     @PersistenceContext(unitName = "cdr")
     private EntityManager entityManager;
