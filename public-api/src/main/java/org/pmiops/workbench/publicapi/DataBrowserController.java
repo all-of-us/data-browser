@@ -808,116 +808,115 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 }
             }
         }
+
         for(String conceptId: conceptIds){
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
             boolean isMeasurement = false;
 
-            List<Analysis> analysisList = achillesAnalysisService.findConceptAnalysisResults(conceptId,ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, MEASUREMENT_GENDER_ANALYSIS_ID, MEASUREMENT_DIST_ANALYSIS_ID, MEASUREMENT_GENDER_UNIT_ANALYSIS_ID));
+                List<Analysis> analysisList = achillesAnalysisService.findConceptAnalysisResults(conceptId,ImmutableList.of(GENDER_ANALYSIS_ID, AGE_ANALYSIS_ID, COUNT_ANALYSIS_ID, MEASUREMENT_GENDER_ANALYSIS_ID, MEASUREMENT_DIST_ANALYSIS_ID, MEASUREMENT_GENDER_UNIT_ANALYSIS_ID));
 
-            HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
-            for(Analysis aa: analysisList){
-                // No need to detach this anymore since analysis is not actual entity. TODO: Delete this once you know things are running fine in test.
-                //this.entityManager.detach(aa);
-                analysisHashMap.put(aa.getAnalysisId(), aa);
-            }
-
-            conceptAnalysis.setConceptId(conceptId);
-            Iterator it = analysisHashMap.entrySet().iterator();
-            while(it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                Long analysisId = (Long)pair.getKey();
-                Analysis aa = (Analysis)pair.getValue();
-                //aa.setUnitName(unitName);
-                if(analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
-                    aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
+                HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
+                for (Analysis aa : analysisList) {
+                    analysisHashMap.put(aa.getAnalysisId(), aa);
                 }
-                if (analysisId == COUNT_ANALYSIS_ID) {
-                    conceptAnalysis.setCountAnalysis(aa);
-                }else if(analysisId == GENDER_ANALYSIS_ID){
-                    addGenderStratum(aa,2, conceptId, null);
-                    conceptAnalysis.setGenderAnalysis(aa);
-                }else if(analysisId == AGE_ANALYSIS_ID){
-                    addAgeStratum(aa, conceptId, null, 2);
-                    conceptAnalysis.setAgeAnalysis(aa);
-                }else if(analysisId == MEASUREMENT_GENDER_ANALYSIS_ID){
-                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
-                    List<Analysis> unitSeperateAnalysis = new ArrayList<>();
-                    HashMap<String,List<DbAchillesResultDist>> distResults = dbAnalysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
-                    if (distResults != null) {
-                        List<DbAchillesResultDist> conceptDistResults = distResults.get(conceptId);
-                        if(conceptDistResults != null){
-                            Multimap<String,DbAchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults,DbAchillesResultDist::getStratum2);
-                            for(String unit: unitDistResults.keySet()){
-                                if (results.keySet().contains(unit)) {
-                                    Analysis unitGenderAnalysis = makeCopyAnalysis(aa);
-                                    unitGenderAnalysis.setResults(results.get(unit));
-                                    unitGenderAnalysis.setUnitName(unit);
-                                    if(!unit.equalsIgnoreCase("no unit")) {
-                                        processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
-                                    } else {
-                                        //Seperate text and numeric values
-                                        ArrayList<AchillesResult> textValues = new ArrayList<>();
-                                        ArrayList<AchillesResult> numericValues = new ArrayList<>();
-                                        // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
-                                        for (AchillesResult result: unitGenderAnalysis.getResults()) {
-                                            if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
-                                                result.setMeasurementValueType("numeric");
-                                                numericValues.add(result);
-                                            } else {
-                                                result.setMeasurementValueType("text");
-                                                textValues.add(result);
-                                            }
-                                        }
 
-                                        if (textValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "text");
-                                        }
-                                        if (numericValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID,unitGenderAnalysis, conceptId, null, null, "numeric");
-                                        }
+                conceptAnalysis.setConceptId(conceptId);
+                Iterator it = analysisHashMap.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    Long analysisId = (Long) pair.getKey();
+                    Analysis aa = (Analysis) pair.getValue();
+                    //aa.setUnitName(unitName);
+                    if (analysisId != MEASUREMENT_GENDER_UNIT_ANALYSIS_ID && analysisId != MEASUREMENT_GENDER_ANALYSIS_ID && analysisId != MEASUREMENT_DIST_ANALYSIS_ID && !Strings.isNullOrEmpty(domainId)) {
+                        aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
+                    }
+                    if (analysisId == COUNT_ANALYSIS_ID) {
+                        conceptAnalysis.setCountAnalysis(aa);
+                    } else if (analysisId == GENDER_ANALYSIS_ID) {
+                        addGenderStratum(aa, 2, conceptId, null);
+                        conceptAnalysis.setGenderAnalysis(aa);
+                    } else if (analysisId == AGE_ANALYSIS_ID) {
+                        addAgeStratum(aa, conceptId, null, 2);
+                        conceptAnalysis.setAgeAnalysis(aa);
+                    } else if (analysisId == MEASUREMENT_GENDER_ANALYSIS_ID) {
+                        Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
+                        List<Analysis> unitSeperateAnalysis = new ArrayList<>();
+                        HashMap<String, List<DbAchillesResultDist>> distResults = dbAnalysisDistResults.get(MEASUREMENT_GENDER_DIST_ANALYSIS_ID);
+                        if (distResults != null) {
+                            List<DbAchillesResultDist> conceptDistResults = distResults.get(conceptId);
+                            if (conceptDistResults != null) {
+                                Multimap<String, DbAchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults, DbAchillesResultDist::getStratum2);
+                                for (String unit : unitDistResults.keySet()) {
+                                    if (results.keySet().contains(unit)) {
+                                        Analysis unitGenderAnalysis = makeCopyAnalysis(aa);
                                         unitGenderAnalysis.setResults(results.get(unit));
                                         unitGenderAnalysis.setUnitName(unit);
+                                        if (!unit.equalsIgnoreCase("no unit")) {
+                                            processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID, unitGenderAnalysis, conceptId, unit, new ArrayList<>(unitDistResults.get(unit)), "numeric");
+                                        } else {
+                                            //Seperate text and numeric values
+                                            ArrayList<AchillesResult> textValues = new ArrayList<>();
+                                            ArrayList<AchillesResult> numericValues = new ArrayList<>();
+                                            // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
+                                            for (AchillesResult result : unitGenderAnalysis.getResults()) {
+                                                if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
+                                                    result.setMeasurementValueType("numeric");
+                                                    numericValues.add(result);
+                                                } else {
+                                                    result.setMeasurementValueType("text");
+                                                    textValues.add(result);
+                                                }
+                                            }
 
+                                            if (textValues.size() > 0) {
+                                                processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID, unitGenderAnalysis, conceptId, null, null, "text");
+                                            }
+                                            if (numericValues.size() > 0) {
+                                                processMeasurementGenderMissingBins(MEASUREMENT_GENDER_DIST_ANALYSIS_ID, unitGenderAnalysis, conceptId, null, null, "numeric");
+                                            }
+                                            unitGenderAnalysis.setResults(results.get(unit));
+                                            unitGenderAnalysis.setUnitName(unit);
+
+                                        }
+                                        unitSeperateAnalysis.add(unitGenderAnalysis);
                                     }
-                                    unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }
+                            } else {
+                                unitSeperateAnalysis.add(aa);
                             }
-                        }else {
-                            unitSeperateAnalysis.add(aa);
                         }
+                        addGenderStratum(aa, 3, conceptId, null);
+                        isMeasurement = true;
+                        conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis);
+                    } else if (analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID) {
+                        Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
+                        List<Analysis> unitSeperateAnalysis = new ArrayList<>();
+                        for (String unit : results.keySet()) {
+                            Analysis unitGenderCountAnalysis = makeCopyAnalysis(aa);
+                            unitGenderCountAnalysis.setResults(results.get(unit));
+                            unitGenderCountAnalysis.setUnitName(unit);
+                            unitSeperateAnalysis.add(unitGenderCountAnalysis);
+                        }
+                        isMeasurement = true;
+                        conceptAnalysis.setMeasurementGenderCountAnalysis(unitSeperateAnalysis);
                     }
-                    addGenderStratum(aa,3, conceptId, null);
-                    isMeasurement = true;
-                    conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis);
-                }else if(analysisId == MEASUREMENT_GENDER_UNIT_ANALYSIS_ID){
-                    Map<String,List<AchillesResult>> results = seperateUnitResults(aa);
-                    List<Analysis> unitSeperateAnalysis = new ArrayList<>();
-                    for(String unit: results.keySet()){
-                        Analysis unitGenderCountAnalysis = makeCopyAnalysis(aa);
-                        unitGenderCountAnalysis.setResults(results.get(unit));
-                        unitGenderCountAnalysis.setUnitName(unit);
-                        unitSeperateAnalysis.add(unitGenderCountAnalysis);
-                    }
-                    isMeasurement = true;
-                    conceptAnalysis.setMeasurementGenderCountAnalysis(unitSeperateAnalysis);
                 }
-            }
 
-            if(isMeasurement){
-                Analysis measurementDistAnalysis = achillesAnalysisService.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
-                List<AchillesResultDist> achillesResultDistList = achillesResultDistService.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID,conceptId);
-                HashMap<String,List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
-                List<Analysis> unitSeperateAnalysis = new ArrayList<>();
-                for(String unit: results.keySet()){
-                    Analysis mDistAnalysis = makeCopyAnalysis(measurementDistAnalysis);
-                    mDistAnalysis.setDistResults(results.get(unit));
-                    mDistAnalysis.setUnitName(unit);
-                    unitSeperateAnalysis.add(mDistAnalysis);
+                if (isMeasurement) {
+                    Analysis measurementDistAnalysis = achillesAnalysisService.findAnalysisById(MEASUREMENT_DIST_ANALYSIS_ID);
+                    List<AchillesResultDist> achillesResultDistList = achillesResultDistService.fetchConceptDistResults(MEASUREMENT_DIST_ANALYSIS_ID, conceptId);
+                    HashMap<String, List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
+                    List<Analysis> unitSeperateAnalysis = new ArrayList<>();
+                    for (String unit : results.keySet()) {
+                        Analysis mDistAnalysis = makeCopyAnalysis(measurementDistAnalysis);
+                        mDistAnalysis.setDistResults(results.get(unit));
+                        mDistAnalysis.setUnitName(unit);
+                        unitSeperateAnalysis.add(mDistAnalysis);
+                    }
+                    conceptAnalysis.setMeasurementDistributionAnalysis(unitSeperateAnalysis);
                 }
-                conceptAnalysis.setMeasurementDistributionAnalysis(unitSeperateAnalysis);
-            }
-            conceptAnalysisList.add(conceptAnalysis);
+                conceptAnalysisList.add(conceptAnalysis);
         }
         resp.setItems(conceptAnalysisList.stream().map(TO_CLIENT_CONCEPTANALYSIS).collect(Collectors.toList()));
         return ResponseEntity.ok(resp);
@@ -942,8 +941,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
         for(Analysis aa: analysisList){
-            // No need to detach this anymore since analysis is not actual entity. TODO: Delete this once you know things are running fine in test.
-            //this.entityManager.detach(aa);
             analysisHashMap.put(aa.getAnalysisId(), aa);
         }
 

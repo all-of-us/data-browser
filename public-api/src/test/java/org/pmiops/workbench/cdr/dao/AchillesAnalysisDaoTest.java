@@ -74,7 +74,6 @@ public class AchillesAnalysisDaoTest {
         achillesResult9=createAchillesResult(2462L, 3102L, "1586134", "2", "Survey", null, null, 93020L, 93020L);
         achillesResult10=createAchillesResult(2463L, 3102L, "1586134", "3", "Survey", null, null, 93020L, 93020L);
 
-
         achillesResultDao.save(achillesResult1);
         achillesResultDao.save(achillesResult2);
         achillesResultDao.save(achillesResult3);
@@ -110,6 +109,17 @@ public class AchillesAnalysisDaoTest {
         Assert.assertNotEquals(aa.get(0),null);
         Assert.assertNotEquals(aa.get(1),null);
     }
+
+    @Test
+    public void testGetSurveyDemographicAnalysesMatch() throws Exception{
+        List<Long> analysisIds = new ArrayList<>();
+        analysisIds.add(3101L);
+        analysisIds.add(3102L);
+        List<DbAchillesAnalysis> aa = achillesAnalysisDao.findConceptAnalysisResults("1586134",analysisIds);
+        Assert.assertNotEquals(aa.get(0),null);
+        Assert.assertNotEquals(aa.get(1),null);
+    }
+
 
 
     private DbAchillesAnalysis createAnalysis(Long analysisId,String analysisName,String stratum1Name,String stratum2Name,String stratum3Name,String stratum4Name,String stratum5Name,String chartType,String dataType) {

@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import org.junit.After;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -247,14 +248,14 @@ public class DataBrowserControllerTest {
             .stratum3Name("Version Id");
 
 
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_1 = makeAchillesAnalysis(CLIENT_ANALYSIS_1);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_2 = makeAchillesAnalysis(CLIENT_ANALYSIS_2);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_3 = makeAchillesAnalysis(CLIENT_ANALYSIS_3);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_4 = makeAchillesAnalysis(CLIENT_ANALYSIS_4);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_5 = makeAchillesAnalysis(CLIENT_ANALYSIS_5);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_6);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_7 = makeAchillesAnalysis(CLIENT_ANALYSIS_7);
-    private static final DbAchillesAnalysis ACHILLES_ANALYSIS_8 = makeAchillesAnalysis(CLIENT_ANALYSIS_8);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_1 = makeAchillesAnalysis(CLIENT_ANALYSIS_1);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_2 = makeAchillesAnalysis(CLIENT_ANALYSIS_2);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_3 = makeAchillesAnalysis(CLIENT_ANALYSIS_3);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_4 = makeAchillesAnalysis(CLIENT_ANALYSIS_4);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_5 = makeAchillesAnalysis(CLIENT_ANALYSIS_5);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_6);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_7 = makeAchillesAnalysis(CLIENT_ANALYSIS_7);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_8 = makeAchillesAnalysis(CLIENT_ANALYSIS_8);
 
     private static final DbAchillesResult CLIENT_RESULT_1 = new DbAchillesResult()
             .id(1L)
@@ -311,7 +312,7 @@ public class DataBrowserControllerTest {
             .analysisId(3101L)
             .stratum1("1586134")
             .stratum2("8507")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(251780L)
             .sourceCountValue(251780L);
 
@@ -320,7 +321,7 @@ public class DataBrowserControllerTest {
             .analysisId(3101L)
             .stratum1("1586134")
             .stratum2("8532")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(316080L)
             .sourceCountValue(316080L);
 
@@ -329,7 +330,7 @@ public class DataBrowserControllerTest {
             .analysisId(3102L)
             .stratum1("1586134")
             .stratum2("2")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(93020L)
             .sourceCountValue(93020L);
 
@@ -338,7 +339,7 @@ public class DataBrowserControllerTest {
             .analysisId(3102L)
             .stratum1("1586134")
             .stratum2("3")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(93480L)
             .sourceCountValue(93480L);
 
@@ -570,8 +571,8 @@ public class DataBrowserControllerTest {
         conceptsIds.add("1585855");
         ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
         List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-        assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
-        assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
+        assertThat(conceptAnalysis.get(0).getConceptId()).isEqualTo("1586134");
+        assertThat(conceptAnalysis.get(1).getConceptId()).isEqualTo("1585855");
     }
 
     @Test
@@ -581,18 +582,6 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
         List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
         assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
-    }
-
-    @Test
-    public void testGetSurveyDemographicAnalysesMatch() throws Exception{
-        List<String> conceptsIds = new ArrayList<>();
-        conceptsIds.add("1586134");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds,"");
-        List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-        Analysis ageAnalysis = conceptAnalysis.get(0).getAgeAnalysis();
-        Analysis genderAnalysis = conceptAnalysis.get(0).getGenderAnalysis();
-        assertThat(ageAnalysis).isNotEqualTo(null);
-        assertThat(genderAnalysis).isNotEqualTo(null);
     }
 
     @Test
@@ -693,6 +682,9 @@ public class DataBrowserControllerTest {
         ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_6);
         ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_7);
 
+        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_8);
+        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_9);
+
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);
         achillesResultDao.save(ACHILLES_RESULT_3);
@@ -717,5 +709,42 @@ public class DataBrowserControllerTest {
         dbCdrVersion.setPublicDbName("p");
         cdrVersionDao.save(dbCdrVersion);
         return dbCdrVersion;
+    }
+
+    @After
+    public void flush(){
+        conceptDao.delete(CONCEPT_1);
+        conceptDao.delete(CONCEPT_2);
+        conceptDao.delete(CONCEPT_3);
+        conceptDao.delete(CONCEPT_4);
+        conceptDao.delete(CONCEPT_5);
+        conceptDao.delete(CONCEPT_6);
+        conceptDao.delete(CONCEPT_7);
+
+        conceptRelationshipDao.delete(makeConceptRelationship(1234L, 7890L, "maps to"));
+        conceptRelationshipDao.delete(makeConceptRelationship(456L, 7890L, "maps to"));
+
+        achillesResultDao.delete(ACHILLES_RESULT_1);
+        achillesResultDao.delete(ACHILLES_RESULT_2);
+        achillesResultDao.delete(ACHILLES_RESULT_3);
+        achillesResultDao.delete(ACHILLES_RESULT_4);
+        achillesResultDao.delete(ACHILLES_RESULT_5);
+        achillesResultDao.delete(ACHILLES_RESULT_6);
+        achillesResultDao.delete(ACHILLES_RESULT_7);
+        achillesResultDao.delete(ACHILLES_RESULT_8);
+        achillesResultDao.delete(ACHILLES_RESULT_9);
+        achillesResultDao.delete(ACHILLES_RESULT_10);
+        achillesResultDao.delete(ACHILLES_RESULT_11);
+        achillesResultDao.delete(ACHILLES_RESULT_12);
+        achillesResultDao.delete(ACHILLES_RESULT_13);
+
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_1);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_2);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_3);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_4);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_5);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_6);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_7);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_8);
     }
 }

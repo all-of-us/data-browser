@@ -83,7 +83,6 @@ public class AchillesResultDaoTest {
     @After
     public void flush(){
         achillesAnalysisDao.delete(achillesAnalysis1);
-
         achillesResultDao.delete(achillesResult1);
     }
 
