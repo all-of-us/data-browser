@@ -30,11 +30,11 @@ public class AchillesAnalysisDaoTest {
     @Before
     public void setUp() {
 
-        private DbAchillesAnalysis achillesAnalysis1=createAnalysis(3110L,"Survey Question Answer Count","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string",null,"column","counts");
-        private DbAchillesAnalysis achillesAnalysis2=createAnalysis(3111L,"Gender","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_concept_id","column","counts");
-        private DbAchillesAnalysis achillesAnalysis3=createAnalysis(3112L,"Age","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","column","counts");
-        private DbAchillesAnalysis achillesAnalysis4=createAnalysis(3101L,"Gender","concept_id","ppi_sex_at_birth_concept_id",null,null,null,"pie","counts");
-        private DbAchillesAnalysis achillesAnalysis5=createAnalysis(3102L,"Age","concept_id","age_decile",null,null,null,"column","counts");
+        DbAchillesAnalysis achillesAnalysis1=createAnalysis(3110L,"Survey Question Answer Count","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string",null,"column","counts");
+        DbAchillesAnalysis achillesAnalysis2=createAnalysis(3111L,"Gender","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_concept_id","column","counts");
+        DbAchillesAnalysis achillesAnalysis3=createAnalysis(3112L,"Age","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","column","counts");
+        DbAchillesAnalysis achillesAnalysis4=createAnalysis(3101L,"Gender","concept_id","ppi_sex_at_birth_concept_id",null,null,null,"pie","counts");
+        DbAchillesAnalysis achillesAnalysis5=createAnalysis(3102L,"Age","concept_id","age_decile",null,null,null,"column","counts");
 
         achillesAnalysisDao.save(achillesAnalysis1);
         achillesAnalysisDao.save(achillesAnalysis2);
@@ -42,16 +42,16 @@ public class AchillesAnalysisDaoTest {
         achillesAnalysisDao.save(achillesAnalysis4);
         achillesAnalysisDao.save(achillesAnalysis5);
 
-        private DbAchillesResult achillesResult1=createAchillesResult(2397L,3110L,"1586134","1000000","","Smoking",null,260L,0L);
-        private DbAchillesResult achillesResult2=createAchillesResult(2380L,3111L,"1585855","2000000","","Drinking is the cause of failure",null,2345L,0L);
-        private DbAchillesResult achillesResult3=createAchillesResult(2345L,3112L,"1586134","1000000","","Donot know",null,789L,0L);
-        private DbAchillesResult achillesResult4=createAchillesResult(2346L,3112L,"1586134","2000000","","Prefer not to answer",null,890L,0L);
-        private DbAchillesResult achillesResult5=createAchillesResult(2456L,3101L,"104567","8507",null,null,null,20L,8L);
-        private DbAchillesResult achillesResult6=createAchillesResult(2457L,3102L,"104567","2",null,null,null,78L,90L);
-        private DbAchillesResult achillesResult7=createAchillesResult(2460L, 3101L, "1586134", "8507", "Survey", null, null, 251780L, 251780L);
-        private DbAchillesResult achillesResult8=createAchillesResult(2461L, 3101L, "1586134", "8532", "Survey", null, null, 316080L, 316080L);
-        private DbAchillesResult achillesResult9=createAchillesResult(2462L, 3102L, "1586134", "2", "Survey", null, null, 93020L, 93020L);
-        private DbAchillesResult achillesResult10=createAchillesResult(2463L, 3102L, "1586134", "3", "Survey", null, null, 93020L, 93020L);
+        DbAchillesResult achillesResult1=createAchillesResult(2397L,3110L,"1586134","1000000","","Smoking",null,260L,0L);
+        DbAchillesResult achillesResult2=createAchillesResult(2380L,3111L,"1585855","2000000","","Drinking is the cause of failure",null,2345L,0L);
+        DbAchillesResult achillesResult3=createAchillesResult(2345L,3112L,"1586134","1000000","","Donot know",null,789L,0L);
+        DbAchillesResult achillesResult4=createAchillesResult(2346L,3112L,"1586134","2000000","","Prefer not to answer",null,890L,0L);
+        DbAchillesResult achillesResult5=createAchillesResult(2456L,3101L,"104567","8507",null,null,null,20L,8L);
+        DbAchillesResult achillesResult6=createAchillesResult(2457L,3102L,"104567","2",null,null,null,78L,90L);
+        DbAchillesResult achillesResult7=createAchillesResult(2460L, 3101L, "1586134", "8507", "Survey", null, null, 251780L, 251780L);
+        DbAchillesResult achillesResult8=createAchillesResult(2461L, 3101L, "1586134", "8532", "Survey", null, null, 316080L, 316080L);
+        DbAchillesResult achillesResult9=createAchillesResult(2462L, 3102L, "1586134", "2", "Survey", null, null, 93020L, 93020L);
+        DbAchillesResult achillesResult10=createAchillesResult(2463L, 3102L, "1586134", "3", "Survey", null, null, 93020L, 93020L);
 
         achillesResultDao.save(achillesResult1);
         achillesResultDao.save(achillesResult2);
