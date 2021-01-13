@@ -11,6 +11,8 @@ import { DbConfigService } from '../../utils/db-config.service';
 })
 export class DbNoResultsComponent implements OnChanges, OnDestroy {
   @Input() searchText;
+  @Input() measurementTestFilter;
+  @Input() measurementOrderFilter;
   @Output() newDomain: EventEmitter<any> = new EventEmitter();
   results;
   loading;
@@ -43,6 +45,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public goToResult(r) {
+    console.log(this.results);
     if (this.results && this.results.domainInfos) {
       this.results.domainInfos.forEach(domain => {
         if (r.domain === domain.domain) {
@@ -82,9 +85,11 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public searchDomains(query: string) {
-    this.subscriptions.push(this.api.getDomainTotals(query, 1, 1)
+    this.subscriptions.push(this.api.getDomainTotals(query,
+    this.measurementTestFilter, this.measurementOrderFilter)
       .subscribe(results => {
         this.results = results;
+        this.results.domainInfos = this.results.domainInfos.filter(d => d.standardConceptCount > 0);
         this.pmResults = results.domainInfos.filter(d => d.name === 'Physical Measurements');
         this.pmResults = this.pmResults.filter(d => d.standardConceptCount > 0);
         this.loading = false;
