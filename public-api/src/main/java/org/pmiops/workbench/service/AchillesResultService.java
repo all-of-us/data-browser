@@ -8,8 +8,8 @@ import org.pmiops.workbench.cdr.AchillesMapper;
 
 @Service
 public class AchillesResultService {
-    private AchillesResultDao achillesResultDao;
-    private AchillesMapper achillesMapper;
+    private final AchillesResultDao achillesResultDao;
+    private final AchillesMapper achillesMapper;
 
     @Autowired
     public AchillesResultService(AchillesResultDao achillesResultDao, AchillesMapper achillesMapper) {

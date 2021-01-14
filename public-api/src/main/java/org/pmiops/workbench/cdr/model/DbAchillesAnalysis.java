@@ -10,8 +10,6 @@ import org.pmiops.workbench.model.AchillesResultDist;
 
 
 @Entity
-//TODO need to add a way to dynamically switch between database versions
-//this dynamic connection will eliminate the need for the catalog attribute
 @Table(name = "achilles_analysis")
 public class DbAchillesAnalysis {
 
@@ -163,11 +161,11 @@ public class DbAchillesAnalysis {
     public String getChartType() {
         return chartType;
     }
-    public void setChartType(String stratum5) {
+    public void setChartType(String chartType) {
         this.chartType = chartType;
     }
-    public DbAchillesAnalysis chartType(String val) {
-        this.chartType = val;
+    public DbAchillesAnalysis chartType(String chartType) {
+        this.chartType = chartType;
         return this;
     }
 

@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class AchillesAnalysisService {
-    private AchillesAnalysisDao achillesAnalysisDao;
-    private AchillesMapper achillesMapper;
+    private final AchillesAnalysisDao achillesAnalysisDao;
+    private final AchillesMapper achillesMapper;
 
     @Autowired
     public AchillesAnalysisService(AchillesAnalysisDao achillesAnalysisDao, AchillesMapper achillesMapper) {

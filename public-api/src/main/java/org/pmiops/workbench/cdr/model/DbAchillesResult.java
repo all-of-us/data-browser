@@ -4,8 +4,6 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-//TODO need to add a way to dynamically switch between database versions
-//this dynamic connection will eliminate the need for the catalog attribute
 @Table(name = "achilles_results")
 public class DbAchillesResult  {
 
@@ -26,18 +24,6 @@ public class DbAchillesResult  {
     private int hasSubQuestions;
 
     public DbAchillesResult() {}
-
-    public DbAchillesResult(Long analysisId, String stratum1, String stratum2, String stratum3, String stratum4, String stratum5, String stratum6, Long countValue, Long sourceCountValue) {
-            this.analysisId = analysisId;
-            this.stratum1 = stratum1;
-            this.stratum2 = stratum2;
-            this.stratum3 = stratum3;
-            this.stratum4 = stratum4;
-            this.stratum5 = stratum5;
-            this.stratum6 = stratum6;
-            this.countValue = countValue;
-            this.sourceCountValue = sourceCountValue;
-    }
 
     @Id
     public Long getId() {
