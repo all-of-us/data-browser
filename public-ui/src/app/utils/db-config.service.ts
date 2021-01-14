@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 import { DataBrowserService } from '../../publicGenerated/api/dataBrowser.service';
-import { AchillesResult } from '../../publicGenerated/model/achillesResult';
 import { Analysis } from '../../publicGenerated/model/analysis';
-import { ConceptAnalysis } from '../../publicGenerated/model/conceptAnalysis';
 import { ConceptGroup } from './conceptGroup';
 import { ConceptWithAnalysis } from './conceptWithAnalysis';
 

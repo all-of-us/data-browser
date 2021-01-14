@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
-import { ChartModule } from 'angular2-highcharts';
-import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
-import * as highcharts from 'highcharts';
+import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { SharedModule } from '../shared/shared.module';
@@ -38,7 +36,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
   imports: [
     DataBrowserRoutingModule,
     CommonModule,
-    ChartModule,
+    HighchartsChartModule,
     ClarityModule,
     SharedModule
   ],
@@ -83,13 +81,10 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyChartComponent,
     ClarityModule,
     ChartTopResultsComponent,
-    ChartBaseComponent
+    ChartBaseComponent,
+    HighchartsChartModule
   ],
   providers: [
-    {
-      provide: HighchartsStatic,
-      useValue: highcharts,
-    },
     ChartService,
     TreeHighlightService
   ]
