@@ -194,7 +194,7 @@ class BuildOptions
     parser = OptionParser.new do |p|
       p.banner = "Usage: ./project.rb #{cmd_name} [options]"
       p.on(
-          "--environment ENV", ENV_CHOICES,
+          "--configuration ENV", ENV_CHOICES,
           "Environment (default: local-test): [#{ENV_CHOICES.join(" ")}]") do |v|
         # The default environment file (called "dev" in Angular language)
         # compiles a local server to run against the deployed remote test API.
