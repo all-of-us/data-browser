@@ -5,6 +5,7 @@ import java.util.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Strings;
 import org.springframework.http.HttpStatus;
+import org.pmiops.workbench.cdr.AchillesMapper;
 import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.net.SocketTimeoutException;
@@ -95,6 +96,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private CdrVersionService cdrVersionService;
     @Autowired
     private QuestionConceptService questionConceptService;
+    @Autowired
+    private AchillesMapper achillesMapper;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
@@ -828,7 +831,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                                 Multimap<String, DbAchillesResultDist> unitDistResults = Multimaps.index(conceptDistResults, DbAchillesResultDist::getStratum2);
                                 for (String unit : unitDistResults.keySet()) {
                                     if (results.keySet().contains(unit)) {
-                                        Analysis unitGenderAnalysis = makeCopyAnalysis(aa);
+                                        Analysis unitGenderAnalysis = achillesMapper.makeCopyAnalysis(aa);
                                         unitGenderAnalysis.setResults(results.get(unit));
                                         unitGenderAnalysis.setUnitName(unit);
                                         if (!unit.equalsIgnoreCase("no unit")) {
@@ -872,7 +875,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                         Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
                         List<Analysis> unitSeperateAnalysis = new ArrayList<>();
                         for (String unit : results.keySet()) {
-                            Analysis unitGenderCountAnalysis = makeCopyAnalysis(aa);
+                            Analysis unitGenderCountAnalysis = achillesMapper.makeCopyAnalysis(aa);
                             unitGenderCountAnalysis.setResults(results.get(unit));
                             unitGenderCountAnalysis.setUnitName(unit);
                             unitSeperateAnalysis.add(unitGenderCountAnalysis);
@@ -888,7 +891,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     HashMap<String, List<AchillesResultDist>> results = seperateDistResultsByUnit(achillesResultDistList);
                     List<Analysis> unitSeperateAnalysis = new ArrayList<>();
                     for (String unit : results.keySet()) {
-                        Analysis mDistAnalysis = makeCopyAnalysis(measurementDistAnalysis);
+                        Analysis mDistAnalysis = achillesMapper.makeCopyAnalysis(measurementDistAnalysis);
                         mDistAnalysis.setDistResults(results.get(unit));
                         mDistAnalysis.setUnitName(unit);
                         unitSeperateAnalysis.add(mDistAnalysis);
@@ -927,10 +930,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
-            Analysis countAnalysis = makeCopyAnalysis(analysisHashMap.get(COUNT_ANALYSIS_ID));
-            Analysis ageAnalysis = makeCopyAnalysis(analysisHashMap.get(AGE_ANALYSIS_ID));
-            Analysis genderAnalysis = makeCopyAnalysis(analysisHashMap.get(GENDER_ANALYSIS_ID));
-            Analysis participantCountAnalysis = makeCopyAnalysis(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID));
+            Analysis countAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(COUNT_ANALYSIS_ID));
+            Analysis ageAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(AGE_ANALYSIS_ID));
+            Analysis genderAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(GENDER_ANALYSIS_ID));
+            Analysis participantCountAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID));
 
             countAnalysis.setResults(analysisHashMap.get(COUNT_ANALYSIS_ID).getResults());
             ageAnalysis.setResults(analysisHashMap.get(AGE_ANALYSIS_ID).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
@@ -1062,14 +1065,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             for(String missingGender: completeGenderStratumList){
                 AchillesResult missingResult = null;
                 if (aa.getAnalysisId() == EHR_GENDER_COUNT_ANALYSIS_ID) {
-                    missingResult = makeCopyAchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingGender, null, null,null, 20L, 20L);
+                    missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingGender, null, null,null, 20L, 20L);
                 } else {
                     if (stratum == 1) {
-                        missingResult = makeCopyAchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, null,null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), missingGender, null, null, null, null, null,null, 20L, 20L);
                     } else if (stratum == 2) {
-                        missingResult = makeCopyAchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, null, null, null,null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), conceptId, missingGender, null, null, null, null,null, 20L, 20L);
                     } else if (stratum == 3) {
-                        missingResult = makeCopyAchillesResult(aa.getAnalysisId(), conceptId, null, missingGender, null, null, null,null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), conceptId, null, missingGender, null, null, null,null, 20L, 20L);
                     }
                 }
                 missingResult.setAnalysisStratumName(genderStratumNameMap.get(missingGender));
@@ -1112,9 +1115,9 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         DbAchillesResult result = ehrAgeCountResults.get(0);
                         String percentageValue = String.valueOf(Math.round((20/result.getCountValue())*100/2)*2);
-                        missingResult = makeCopyAchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
                     } else {
-                        missingResult = makeCopyAchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(EHR_AGE_COUNT_ANALYSIS_ID, conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
                     }
                     missingResult.setAnalysisStratumName(ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);
@@ -1123,7 +1126,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
                 completeAgeDeciles.removeAll(uniqueAgeDeciles);
                 for(String missingAgeDecile: completeAgeDeciles){
-                    AchillesResult missingResult = makeCopyAchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, null, null, 20L, 20L);
+                    AchillesResult missingResult = achillesMapper.makeCopyAchillesResult(AGE_ANALYSIS_ID, conceptId, missingAgeDecile, null, null, null, null, null, 20L, 20L);
                     missingResult.setAnalysisStratumName(ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);
                 }
@@ -1280,7 +1283,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     missingBinWidth = String.format("%.2f", maleBinWidth);
                 }
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult achillesResult = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), maleRemaining, null, String.valueOf(maleBinWidth), null, 20L, 20L);
+                AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(MALE), maleRemaining, null, String.valueOf(maleBinWidth), null, 20L, 20L);
                 aa.addResultsItem(achillesResult);
             }
 
@@ -1292,7 +1295,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     missingBinWidth = String.format("%.2f", femaleBinWidth);
                 }
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), femaleRemaining, null, String.valueOf(femaleBinWidth), null, 20L, 20L);
+                AchillesResult ar = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), femaleRemaining, null, String.valueOf(femaleBinWidth), null, 20L, 20L);
                 aa.addResultsItem(ar);
             }
 
@@ -1304,7 +1307,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     missingBinWidth = String.format("%.2f", otherBinWidth);
                 }
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), otherRemaining, null, String.valueOf(otherBinWidth), null, 20L, 20L);
+                AchillesResult ar = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), otherRemaining, null, String.valueOf(otherBinWidth), null, 20L, 20L);
                 aa.addResultsItem(ar);
             }
         } else {
@@ -1329,28 +1332,28 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
             if (("numeric").equals(type)) {
                 if (maleResults.size() == 0) {
-                    AchillesResult achillesResult = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, "0", null, 20L, 20L);
+                    AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "0", null, "0", null, 20L, 20L);
                     aa.addResultsItem(achillesResult);
                 }
                 if (femaleResults.size() == 0) {
-                    AchillesResult ar = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "0", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
                 if (otherResults.size() == 0) {
-                    AchillesResult ar = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "0", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
             } else if(("text").equals(type)) {
                 if (maleResults.size() == 0) {
-                    AchillesResult achillesResult = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "Null", null, "0", null, 20L, 20L);
+                    AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, "No Unit", String.valueOf(MALE), "Null", null, "0", null, 20L, 20L);
                     aa.addResultsItem(achillesResult);
                 }
                 if (femaleResults.size() == 0) {
-                    AchillesResult ar = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "Null", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(FEMALE), "Null", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
                 if (otherResults.size() == 0) {
-                    AchillesResult ar = makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "Null", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(MEASUREMENT_GENDER_ANALYSIS_ID, conceptId, unitName, String.valueOf(OTHER), "Null", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
             }
@@ -1379,41 +1382,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return seperatedResults;
     }
 
-    public static Analysis makeCopyAnalysis(Analysis aa) {
-        Analysis analysis = new Analysis();
-        analysis.setAnalysisId(aa.getAnalysisId());
-        analysis.setAnalysisName(aa.getAnalysisName());
-        analysis.setStratum1Name(aa.getStratum1Name());
-        analysis.setStratum2Name(aa.getStratum2Name());
-        analysis.setStratum3Name(aa.getStratum3Name());
-        analysis.setStratum4Name(aa.getStratum4Name());
-        analysis.setStratum5Name(aa.getStratum5Name());
-        analysis.setStratum6Name(aa.getStratum6Name());
-        analysis.setStratum7Name(aa.getStratum7Name());
-        analysis.setChartType(aa.getChartType());
-        analysis.setDataType(aa.getDataType());
-        analysis.setResults(aa.getResults());
-        analysis.setDistResults(aa.getDistResults());
-        analysis.setUnitName(aa.getUnitName());
-
-        return analysis;
-    }
-
-    public static AchillesResult makeCopyAchillesResult(Long analysisId, String stratum1, String stratum2, String stratum3, String stratum4, String stratum5, String stratum6, String stratum7, Long countValue, Long sourceCountValue) {
-        AchillesResult achillesResult = new AchillesResult();
-        achillesResult.setAnalysisId(analysisId);
-        achillesResult.setStratum1(stratum1);
-        achillesResult.setStratum2(stratum2);
-        achillesResult.setStratum3(stratum3);
-        achillesResult.setStratum4(stratum4);
-        achillesResult.setStratum5(stratum5);
-        achillesResult.setStratum6(stratum6);
-        achillesResult.setStratum7(stratum7);
-        achillesResult.setCountValue(countValue);
-        achillesResult.setSourceCountValue(sourceCountValue);
-
-        return achillesResult;
-    }
 
     public static HashMap<String,List<AchillesResultDist>> seperateDistResultsByUnit(List<AchillesResultDist> results) {
         Multimap<String, AchillesResultDist> distResultsWithUnits = Multimaps
@@ -1535,22 +1503,22 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         for(QuestionConcept q: questions) {
             if (countAnalysis != null) {
-                Analysis ca = makeCopyAnalysis(countAnalysis);
+                Analysis ca = achillesMapper.makeCopyAnalysis(countAnalysis);
                 ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
                 q.setCountAnalysis(ca);
             }
             if (genderAnalysis != null) {
-                Analysis ga = makeCopyAnalysis(genderAnalysis);
+                Analysis ga = achillesMapper.makeCopyAnalysis(genderAnalysis);
                 ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
                 q.setGenderAnalysis(ga);
             }
             if (ageAnalysis != null) {
-                Analysis aa = makeCopyAnalysis(ageAnalysis);
+                Analysis aa = achillesMapper.makeCopyAnalysis(ageAnalysis);
                 aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
                 q.setAgeAnalysis(aa);
             }
             if (versionAnalysis != null) {
-                Analysis aa = makeCopyAnalysis(versionAnalysis);
+                Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
                 aa.setResults(versionAnalysisResultsByQuestion.get(q.getConceptId()));
                 q.setVersionAnalysis(aa);
             }
