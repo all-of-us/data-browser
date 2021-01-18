@@ -23,8 +23,8 @@ public class AchillesResultDistService {
         this.achillesMapper = achillesMapper;
     }
 
-    public List<DbAchillesResultDist> fetchByAnalysisIdsAndConceptIds(List<Long> analysisIds, List<String> conceptIds) {
-        return achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(analysisIds ,conceptIds);
+    public List<DbAchillesResultDist> fetchByAnalysisIdsAndConceptIds(Long analysisId, List<String> conceptIds) {
+        return achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(analysisId, conceptIds);
     }
 
     public List<AchillesResultDist> fetchConceptDistResults(Long analysisId, String conceptId) {
