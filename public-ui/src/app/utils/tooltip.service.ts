@@ -37,8 +37,8 @@ export class TooltipService {
     'The sources represent the many different ways that the standard medical concept ' +
     'returned in the search results has been recorded in patient records. \n' +
     'The sources bar chart provides the top 10 source concepts from the All of Us data.';
-  versionChartHelpText = 'Surveys were released to participants for completion at different' +
-    'time points during the COVID-19 pandemic and has multiple versions. Even though most of' +
+  versionChartHelpText = 'Surveys were released to participants for completion at different ' +
+    'time points during the COVID-19 pandemic and has multiple versions. Even though most of ' +
     'the content is consistent between versions, some questions were modified.';
   matchingConceptsHelpText1 = 'Medical concepts are similar to medical terms; ' +
     'they capture medical information\n' +
@@ -89,7 +89,7 @@ export class TooltipService {
     'personal medical history': this.personalMedicalHistory,
     'family health history': this.familyHistory,
     'health care access & utilization': this.healthcareAccess,
-    'covid-19 participant experience': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.'
+    'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.'
   };
   conceptCodeHelpText1 = 'The concept code is an additional piece of information that\n' +
     'can be utilized to find medical concepts in the ';
