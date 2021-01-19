@@ -26,6 +26,8 @@ import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
+import org.pmiops.workbench.cdr.AchillesMapper;
+import org.pmiops.workbench.cdr.AchillesMapperImpl;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
@@ -433,7 +435,6 @@ public class DataBrowserControllerTest {
     @Mock private SurveyModuleService surveyModuleService;
     @Mock private DomainInfoService domainInfoService;
     @Mock private AchillesResultService achillesResultService;
-    @Mock private AchillesAnalysisService achillesAnalysisService;
 
     private DataBrowserController dataBrowserController;
 
@@ -441,6 +442,8 @@ public class DataBrowserControllerTest {
     public void setUp() {
         saveData();
         ConceptService conceptService = new ConceptService(entityManager, conceptDao);
+        AchillesMapper achillesMapper = new AchillesMapperImpl();
+        AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao, achillesResultDistService, entityManager,
             cdrVersionService, domainInfoService, questionConceptService, surveyModuleService,

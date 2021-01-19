@@ -83,7 +83,6 @@ public class AchillesAnalysisService {
     public AchillesAnalysisService(AchillesAnalysisDao achillesAnalysisDao, AchillesMapper achillesMapper, AchillesResultDistService achillesResultDistService) {
         this.achillesAnalysisDao = achillesAnalysisDao;
         this.achillesMapper = achillesMapper;
-
         this.achillesResultDistService = achillesResultDistService;
     }
 
