@@ -444,7 +444,7 @@ public class DataBrowserControllerTest {
         AchillesMapper achillesMapper = new AchillesMapperImpl();
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao, achillesResultDistService, entityManager,
+                criteriaDao,
             cdrVersionService, domainInfoService, questionConceptService, surveyModuleService,
                 achillesResultService, achillesAnalysisService);
     }
