@@ -3,8 +3,7 @@ package org.pmiops.workbench.db.model;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import org.pmiops.workbench.model.Domain;
-import org.pmiops.workbench.model.AnalysisId;
-import org.pmiops.workbench.model.MatchType;
+import org.pmiops.workbench.model.AnalysisIdConstant;
 
 public class CommonStorageEnums {
 
@@ -34,33 +33,33 @@ public class CommonStorageEnums {
           .build();
 
   // A mapping from our Analysis Id enum to actual analysis ids in our data.
-  private static final BiMap<AnalysisId, Long> ANALYSIS_ID_MAP =
-          ImmutableBiMap.<AnalysisId, Long>builder()
-                  .put(AnalysisId.PARTICIPANT_COUNT_ANALYSIS_ID, 1L)
-                  .put(AnalysisId.COUNT_ANALYSIS_ID, 3000L)
-                  .put(AnalysisId.SURVEY_GENDER_COUNT_ANALYSIS_ID, 3200L)
-                  .put(AnalysisId.SURVEY_AGE_COUNT_ANALYSIS_ID, 3201L)
-                  .put(AnalysisId.GENDER_ANALYSIS_ID, 3101L)
-                  .put(AnalysisId.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID, 3107L)
-                  .put(AnalysisId.AGE_ANALYSIS_ID, 3102L)
-                  .put(AnalysisId.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID, 3400L)
-                  .put(AnalysisId.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID, 3401L)
-                  .put(AnalysisId.SURVEY_COUNT_ANALYSIS_ID, 3110L)
-                  .put(AnalysisId.SURVEY_GENDER_ANALYSIS_ID, 3111L)
-                  .put(AnalysisId.SURVEY_AGE_ANALYSIS_ID, 3112L)
-                  .put(AnalysisId.SURVEY_VERSION_ANALYSIS_ID, 3113L)
-                  .put(AnalysisId.SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID, 3320L)
-                  .put(AnalysisId.SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID, 3321L)
-                  .put(AnalysisId.EHR_GENDER_COUNT_ANALYSIS_ID, 3300L)
-                  .put(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID, 3301L)
-                  .put(AnalysisId.RACE_ANALYSIS_ID, 3103L)
-                  .put(AnalysisId.ETHNICITY_ANALYSIS_ID, 3104L)
-                  .put(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID, 1815L)
-                  .put(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID, 1900L)
-                  .put(AnalysisId.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID, 1910L)
-                  .put(AnalysisId.RACE_ANALYSIS, 4L)
-                  .put(AnalysisId.ETHNICITY_ANALYSIS, 5L)
-                  .put(AnalysisId.GENDER_ANALYSIS, 2L)
+  private static final BiMap<AnalysisIdConstant, Long> ANALYSIS_ID_MAP =
+          ImmutableBiMap.<AnalysisIdConstant, Long>builder()
+                  .put(AnalysisIdConstant.PARTICIPANT_COUNT_ANALYSIS_ID, 1L)
+                  .put(AnalysisIdConstant.COUNT_ANALYSIS_ID, 3000L)
+                  .put(AnalysisIdConstant.SURVEY_GENDER_COUNT_ANALYSIS_ID, 3200L)
+                  .put(AnalysisIdConstant.SURVEY_AGE_COUNT_ANALYSIS_ID, 3201L)
+                  .put(AnalysisIdConstant.GENDER_ANALYSIS_ID, 3101L)
+                  .put(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID, 3107L)
+                  .put(AnalysisIdConstant.AGE_ANALYSIS_ID, 3102L)
+                  .put(AnalysisIdConstant.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID, 3400L)
+                  .put(AnalysisIdConstant.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID, 3401L)
+                  .put(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID, 3110L)
+                  .put(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID, 3111L)
+                  .put(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID, 3112L)
+                  .put(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID, 3113L)
+                  .put(AnalysisIdConstant.SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID, 3320L)
+                  .put(AnalysisIdConstant.SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID, 3321L)
+                  .put(AnalysisIdConstant.EHR_GENDER_COUNT_ANALYSIS_ID, 3300L)
+                  .put(AnalysisIdConstant.EHR_AGE_COUNT_ANALYSIS_ID, 3301L)
+                  .put(AnalysisIdConstant.RACE_ANALYSIS_ID, 3103L)
+                  .put(AnalysisIdConstant.ETHNICITY_ANALYSIS_ID, 3104L)
+                  .put(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID, 1815L)
+                  .put(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID, 1900L)
+                  .put(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID, 1910L)
+                  .put(AnalysisIdConstant.RACE_ANALYSIS, 4L)
+                  .put(AnalysisIdConstant.ETHNICITY_ANALYSIS, 5L)
+                  .put(AnalysisIdConstant.GENDER_ANALYSIS, 2L)
                   .build();
 
   public static Domain domainFromStorage(Short domain) {
@@ -75,8 +74,8 @@ public class CommonStorageEnums {
     return DOMAIN_ID_MAP.get(domain);
   }
 
-  public static Long analysisIdFromName(AnalysisId analsyisId) {
-    return ANALYSIS_ID_MAP.get(analsyisId);
+  public static Long analysisIdFromName(AnalysisIdConstant analysisIdConstant) {
+    return ANALYSIS_ID_MAP.get(analysisIdConstant);
   }
 
   public static Domain domainIdToDomain(String domainId) {

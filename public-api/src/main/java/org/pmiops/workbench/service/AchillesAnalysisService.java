@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.Iterator;
 import com.google.common.base.Strings;
-import org.pmiops.workbench.model.AnalysisId;
+import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
 
 @Service
@@ -131,7 +131,7 @@ public class AchillesAnalysisService {
     }
 
     public Analysis getGenderAnalysis() {
-        Analysis genderAnalysis = achillesMapper.dbModelToClient(achillesAnalysisDao.findAnalysisById(CommonStorageEnums.analysisIdFromName(AnalysisId.GENDER_ANALYSIS)));
+        Analysis genderAnalysis = achillesMapper.dbModelToClient(achillesAnalysisDao.findAnalysisById(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS)));
         addGenderStratum(genderAnalysis,1, "0", null);
         return genderAnalysis;
     }
@@ -162,8 +162,8 @@ public class AchillesAnalysisService {
     }
 
     public List<ConceptAnalysis> getFitbitConceptAnalyses(List<String> concepts) {
-        List<Analysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisId.GENDER_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.AGE_ANALYSIS_ID),
-                CommonStorageEnums.analysisIdFromName(AnalysisId.COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)), "Fitbit").stream()
+        List<Analysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
+                CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)), "Fitbit").stream()
                 .map(achillesMapper::dbModelToClient)
                 .collect(Collectors.toList());
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
@@ -175,15 +175,15 @@ public class AchillesAnalysisService {
 
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
-            Analysis countAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.COUNT_ANALYSIS_ID)));
-            Analysis ageAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.AGE_ANALYSIS_ID)));
-            Analysis genderAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.GENDER_ANALYSIS_ID)));
-            Analysis participantCountAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)));
+            Analysis countAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)));
+            Analysis ageAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)));
+            Analysis genderAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)));
+            Analysis participantCountAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)));
 
-            countAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.COUNT_ANALYSIS_ID)).getResults());
-            ageAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.AGE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
-            genderAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.GENDER_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
-            participantCountAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisId.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            countAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)).getResults());
+            ageAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            genderAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
+            participantCountAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().equals(concept)).collect(Collectors.toList()));
             participantCountAnalysis.getResults().sort((o1, o2) -> o1.getStratum2().compareTo(o2.getStratum2()));
 
             addGenderStratum(genderAnalysis,2, concept, null);
@@ -202,16 +202,16 @@ public class AchillesAnalysisService {
     public List<ConceptAnalysis> getConceptAnalyses(List<String> conceptIds, String domainId) {
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
 
-        List<DbAchillesResultDist> overallDistResults = achillesResultDistService.fetchByAnalysisIdsAndConceptIds(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID), conceptIds);
+        List<DbAchillesResultDist> overallDistResults = achillesResultDistService.fetchByAnalysisIdsAndConceptIds(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), conceptIds);
         Multimap<String, DbAchillesResultDist> conceptDistResults = Multimaps.index(overallDistResults, DbAchillesResultDist::getStratum1);
 
         for(String conceptId: conceptIds){
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
             boolean isMeasurement = false;
 
-            List<Analysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisId.GENDER_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisId.AGE_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.COUNT_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID))).stream()
+            List<Analysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID))).stream()
                     .map(achillesMapper::dbModelToClient)
                     .collect(Collectors.toList());
 
@@ -227,19 +227,19 @@ public class AchillesAnalysisService {
                 Long analysisId = (Long) pair.getKey();
                 Analysis aa = (Analysis) pair.getValue();
                 //aa.setUnitName(unitName);
-                if (analysisId != CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID) && analysisId != CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID) && analysisId != CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID) && !Strings.isNullOrEmpty(domainId)) {
+                if (analysisId != CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID) && analysisId != CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID) && analysisId != CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID) && !Strings.isNullOrEmpty(domainId)) {
                     aa.setResults(aa.getResults().stream().filter(ar -> ar.getStratum3().equalsIgnoreCase(domainId)).collect(Collectors.toList()));
                 }
 
-                if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisId.COUNT_ANALYSIS_ID)) {
+                if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)) {
                     conceptAnalysis.setCountAnalysis(aa);
-                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisId.GENDER_ANALYSIS_ID)) {
+                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)) {
                     addGenderStratum(aa, 2, conceptId, null);
                     conceptAnalysis.setGenderAnalysis(aa);
-                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisId.AGE_ANALYSIS_ID)) {
+                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)) {
                     addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(aa);
-                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID)) {
+                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID)) {
                     Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
 
                     List<Analysis> unitSeperateAnalysis = new ArrayList<>();
@@ -251,7 +251,7 @@ public class AchillesAnalysisService {
                                 unitGenderAnalysis.setResults(results.get(unit));
                                 unitGenderAnalysis.setUnitName(unit);
                                 if (!unit.equalsIgnoreCase("no unit")) {
-                                    processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, unit, new ArrayList<>(conceptDistResultsByUnit.get(unit)), "numeric");
+                                    processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, unit, new ArrayList<>(conceptDistResultsByUnit.get(unit)), "numeric");
                                 } else {
                                     //Seperate text and numeric values
                                     ArrayList<AchillesResult> textValues = new ArrayList<>();
@@ -268,10 +268,10 @@ public class AchillesAnalysisService {
                                     }
 
                                     if (textValues.size() > 0) {
-                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "text");
+                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "text");
                                     }
                                     if (numericValues.size() > 0) {
-                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "numeric");
+                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "numeric");
                                     }
                                     unitGenderAnalysis.setResults(results.get(unit));
                                     unitGenderAnalysis.setUnitName(unit);
@@ -286,7 +286,7 @@ public class AchillesAnalysisService {
                     addGenderStratum(aa, 3, conceptId, null);
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis);
-                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID)) {
+                } else if (analysisId == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID)) {
                     Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
                     List<Analysis> unitSeperateAnalysis = new ArrayList<>();
                     for (String unit : results.keySet()) {
@@ -301,7 +301,7 @@ public class AchillesAnalysisService {
 
             if (isMeasurement) {
                 // Fetches analysis object 1815 with empty results
-                Analysis measurementDistAnalysis = achillesMapper.dbModelToClient(achillesAnalysisDao.findAnalysisById(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_DIST_ANALYSIS_ID)));
+                Analysis measurementDistAnalysis = achillesMapper.dbModelToClient(achillesAnalysisDao.findAnalysisById(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID)));
                 List<AchillesResultDist> achillesResultDistList = conceptDistResults.get(conceptId).stream()
                         .map(achillesMapper::dbModelToClient)
                         .collect(Collectors.toList());
@@ -347,7 +347,7 @@ public class AchillesAnalysisService {
             completeGenderStratumList.removeAll(uniqueGenderStratums);
             for(String missingGender: completeGenderStratumList){
                 AchillesResult missingResult = null;
-                if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_GENDER_COUNT_ANALYSIS_ID)) {
+                if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.EHR_GENDER_COUNT_ANALYSIS_ID)) {
                     missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingGender, null, null,null, 20L, 20L);
                 } else {
                     if (stratum == 1) {
@@ -381,7 +381,7 @@ public class AchillesAnalysisService {
         }
         aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
         if(uniqueAgeDeciles.size() < 8){
-            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID)) {
+            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.EHR_AGE_COUNT_ANALYSIS_ID)) {
                 Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
                 completeAgeDeciles.removeAll(uniqueAgeDeciles);
                 for(String missingAgeDecile: completeAgeDeciles){
@@ -393,9 +393,9 @@ public class AchillesAnalysisService {
                     AchillesResult missingResult = null;
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         DbAchillesResult result = ehrAgeCountResults.get(0);
-                        missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
                     } else {
-                        missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
+                        missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
                     }
                     missingResult.setAnalysisStratumName(ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);
@@ -404,7 +404,7 @@ public class AchillesAnalysisService {
                 Set<String> completeAgeDeciles = new TreeSet<String>(Arrays.asList(new String[] {"2", "3", "4", "5", "6", "7", "8", "9"}));
                 completeAgeDeciles.removeAll(uniqueAgeDeciles);
                 for(String missingAgeDecile: completeAgeDeciles){
-                    AchillesResult missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.AGE_ANALYSIS_ID), conceptId, missingAgeDecile, null, null, null, null, null, 20L, 20L);
+                    AchillesResult missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID), conceptId, missingAgeDecile, null, null, null, null, null, 20L, 20L);
                     missingResult.setAnalysisStratumName(ageStratumNameMap.get(missingAgeDecile));
                     aa.getResults().add(missingResult);
                 }
@@ -585,7 +585,7 @@ public class AchillesAnalysisService {
                     missingBinWidth = String.format("%.2f", maleBinWidth);
                 }
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(MALE), maleRemaining, null, String.valueOf(maleBinWidth), null, 20L, 20L);
+                AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(MALE), maleRemaining, null, String.valueOf(maleBinWidth), null, 20L, 20L);
                 aa.addResultsItem(achillesResult);
             }
 
@@ -597,7 +597,7 @@ public class AchillesAnalysisService {
                     missingBinWidth = String.format("%.2f", femaleBinWidth);
                 }
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(FEMALE), femaleRemaining, null, String.valueOf(femaleBinWidth), null, 20L, 20L);
+                AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(FEMALE), femaleRemaining, null, String.valueOf(femaleBinWidth), null, 20L, 20L);
                 aa.addResultsItem(ar);
             }
 
@@ -609,7 +609,7 @@ public class AchillesAnalysisService {
                     missingBinWidth = String.format("%.2f", otherBinWidth);
                 }
                 missingBinWidth = trimTrailingZeroDecimals(missingBinWidth);
-                AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(OTHER), otherRemaining, null, String.valueOf(otherBinWidth), null, 20L, 20L);
+                AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(OTHER), otherRemaining, null, String.valueOf(otherBinWidth), null, 20L, 20L);
                 aa.addResultsItem(ar);
             }
         } else {
@@ -634,28 +634,28 @@ public class AchillesAnalysisService {
 
             if (("numeric").equals(type)) {
                 if (maleResults.size() == 0) {
-                    AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, "No Unit", String.valueOf(MALE), "0", null, "0", null, 20L, 20L);
+                    AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, "No Unit", String.valueOf(MALE), "0", null, "0", null, 20L, 20L);
                     aa.addResultsItem(achillesResult);
                 }
                 if (femaleResults.size() == 0) {
-                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(FEMALE), "0", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(FEMALE), "0", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
                 if (otherResults.size() == 0) {
-                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(OTHER), "0", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(OTHER), "0", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
             } else if(("text").equals(type)) {
                 if (maleResults.size() == 0) {
-                    AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, "No Unit", String.valueOf(MALE), "Null", null, "0", null, 20L, 20L);
+                    AchillesResult achillesResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, "No Unit", String.valueOf(MALE), "Null", null, "0", null, 20L, 20L);
                     aa.addResultsItem(achillesResult);
                 }
                 if (femaleResults.size() == 0) {
-                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(FEMALE), "Null", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(FEMALE), "Null", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
                 if (otherResults.size() == 0) {
-                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(OTHER), "Null", null, "0", null, 20L, 20L);
+                    AchillesResult ar = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), conceptId, unitName, String.valueOf(OTHER), "Null", null, "0", null, 20L, 20L);
                     aa.addResultsItem(ar);
                 }
             }

@@ -1101,7 +1101,7 @@ definitions:
       - CONCEPT_CODE
       - CONCEPT_ID
       - CONCEPT_NAME
-  AnalysisId:
+  AnalysisIdConstant:
     type: string
     description: analysis id constant map
     enum:
