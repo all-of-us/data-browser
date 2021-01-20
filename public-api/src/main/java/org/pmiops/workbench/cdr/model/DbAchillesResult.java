@@ -23,8 +23,6 @@ public class DbAchillesResult  {
     private String measurementValueType;
     private int hasSubQuestions;
 
-    public DbAchillesResult() {}
-
     @Id
     public Long getId() {
         return id;

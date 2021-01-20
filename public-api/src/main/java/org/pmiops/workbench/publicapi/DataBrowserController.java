@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +44,7 @@ import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.Domain;
+import org.pmiops.workbench.model.AnalysisId;
 import org.pmiops.workbench.model.MatchType;
 import org.pmiops.workbench.model.QuestionConceptListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
@@ -93,41 +93,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
-    public static final long PARTICIPANT_COUNT_ANALYSIS_ID = 1;
-    public static final long COUNT_ANALYSIS_ID = 3000;
-    public static final long SURVEY_GENDER_COUNT_ANALYSIS_ID = 3200;
-    public static final long SURVEY_AGE_COUNT_ANALYSIS_ID = 3201;
-    public static final long GENDER_ANALYSIS_ID = 3101;
-    public static final long PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID = 3107;
-    public static final long AGE_ANALYSIS_ID = 3102;
-
-    public static final long SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID = 3400;
-    public static final long SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID = 3401;
-
-    public static final long SURVEY_COUNT_ANALYSIS_ID = 3110;
-    public static final long SURVEY_GENDER_ANALYSIS_ID = 3111;
-    public static final long SURVEY_AGE_ANALYSIS_ID = 3112;
-    public static final long SURVEY_VERSION_ANALYSIS_ID = 3113;
-
-    public static final long SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID = 3320;
-    public static final long SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID = 3321;
-
-    public static final long EHR_GENDER_COUNT_ANALYSIS_ID = 3300;
-    public static final long EHR_AGE_COUNT_ANALYSIS_ID = 3301;
-
-    public static final long RACE_ANALYSIS_ID = 3103;
-    public static final long ETHNICITY_ANALYSIS_ID = 3104;
-
-    public static final long MEASUREMENT_DIST_ANALYSIS_ID = 1815;
-
-    public static final long MEASUREMENT_GENDER_ANALYSIS_ID = 1900;
-    public static final long MEASUREMENT_GENDER_UNIT_ANALYSIS_ID = 1910;
-
     public static final ArrayList<Long> FMH_CONDITION_CONCEPT_IDS = new ArrayList<>(Arrays.asList(43528515L, 1384639L, 43528634L, 43528761L, 43529158L, 43529767L, 43529272L, 43529217L, 702786L, 43529966L, 43529638L));
     public static final ArrayList<Long> FMH_FM_CONCEPT_IDS = new ArrayList<>(Arrays.asList(43528764L, 43528763L, 43528649L, 43528651L, 43528650L, 43528765L));
-
-    public static final long RACE_ANALYSIS = 4;
-    public static final long ETHNICITY_ANALYSIS = 5;
 
     public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8", "9"}));
 
@@ -622,7 +589,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         SurveyVersionCountResponse surveyVersionCountResponse = new SurveyVersionCountResponse();
 
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findAnalysisByIds(ImmutableList.of(SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID, SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID));
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findAnalysisByIds(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID)));
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyAnalysisList);
         surveyVersionCountResponse.setAnalyses(analysisListResponse);
@@ -636,10 +603,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         ImmutableList<Long> analysisIds = null;
         int stratum;
         if (domainDesc.equals("survey")){
-            analysisIds = ImmutableList.of(SURVEY_GENDER_COUNT_ANALYSIS_ID, SURVEY_AGE_COUNT_ANALYSIS_ID);
+            analysisIds = ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_GENDER_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_AGE_COUNT_ANALYSIS_ID));
             stratum = 2;
         } else {
-            analysisIds = ImmutableList.of(EHR_GENDER_COUNT_ANALYSIS_ID, EHR_AGE_COUNT_ANALYSIS_ID);
+            analysisIds = ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_GENDER_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID));
             stratum = 4;
         }
         return ResponseEntity.ok(achillesAnalysisService.getCountAnalysis(domainId, domainDesc, analysisIds, stratum));
@@ -652,7 +619,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        List<Analysis> surveyQuestionCountList = achillesAnalysisService.findSurveyQuestionCounts(ImmutableList.of(3320L, 3321L), questionConceptId, questionPath);
+        List<Analysis> surveyQuestionCountList = achillesAnalysisService.findSurveyQuestionCounts(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID)), questionConceptId, questionPath);
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyQuestionCountList);
@@ -715,7 +682,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(PARTICIPANT_COUNT_ANALYSIS_ID));
+        return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(CommonStorageEnums.analysisIdFromName(AnalysisId.PARTICIPANT_COUNT_ANALYSIS_ID)));
     }
 
     public List<QuestionConcept> mapAnalysesToQuestions(List<Analysis> analyses, List<QuestionConcept> questions) {
@@ -730,7 +697,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Analysis versionAnalysis = null;
 
         for (Analysis aa: analyses) {
-            if (aa.getAnalysisId() == SURVEY_COUNT_ANALYSIS_ID) {
+            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_COUNT_ANALYSIS_ID)) {
                 countAnalysis = aa;
                 for(AchillesResult ar: aa.getResults()) {
                     Long questionId = Long.valueOf(ar.getStratum2());
@@ -745,7 +712,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == SURVEY_GENDER_ANALYSIS_ID) {
+            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_GENDER_ANALYSIS_ID)) {
                 genderAnalysis = aa;
                 for(AchillesResult ar: aa.getResults()) {
                     Long questionId = Long.valueOf(ar.getStratum2());
@@ -760,7 +727,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == SURVEY_AGE_ANALYSIS_ID) {
+            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_AGE_ANALYSIS_ID)) {
                 ageAnalysis = aa;
                 for (AchillesResult ar : aa.getResults()) {
                     Long questionId = Long.valueOf(ar.getStratum2());
@@ -777,7 +744,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == SURVEY_VERSION_ANALYSIS_ID) {
+            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisId.SURVEY_VERSION_ANALYSIS_ID)) {
 
                 versionAnalysis = aa;
                 for(AchillesResult ar: aa.getResults()) {
