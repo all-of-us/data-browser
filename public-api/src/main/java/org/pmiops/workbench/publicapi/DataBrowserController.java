@@ -12,11 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
@@ -26,7 +24,6 @@ import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.service.QuestionConceptService;
 import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.SurveyModuleService;
-import org.pmiops.workbench.service.AchillesResultDistService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.cdr.model.Concept;
@@ -36,9 +33,7 @@ import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.model.AchillesResult;
 import org.pmiops.workbench.db.model.CommonStorageEnums;
-import org.pmiops.workbench.model.ConceptAnalysis;
 import org.pmiops.workbench.model.QuestionConcept;
-import org.pmiops.workbench.model.AchillesResultDist;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
@@ -71,8 +66,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private CBCriteriaDao criteriaDao;
     @Autowired
-    private AchillesResultDistService achillesResultDistService;
-    @Autowired
     private AchillesResultService achillesResultService;
     @Autowired
     private AchillesAnalysisService achillesAnalysisService;
@@ -80,8 +73,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private DomainInfoService domainInfoService;
     @Autowired
     private SurveyModuleService surveyModuleService;
-    @PersistenceContext(unitName = "cdr")
-    private EntityManager entityManager;
     @Autowired
     private ConceptService conceptService;
     @Autowired
@@ -101,16 +92,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController() {}
 
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
-                                 AchillesResultDistService achillesResultDistService,
-                                 EntityManager entityManager, CdrVersionService cdrVersionService,
+                                 CdrVersionService cdrVersionService,
                                  DomainInfoService domainInfoService,
                                  QuestionConceptService questionConceptService, SurveyModuleService surveyModuleService,
                                  AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
-        this.achillesResultDistService = achillesResultDistService;
-        this.entityManager = entityManager;
         this.cdrVersionService = cdrVersionService;
         this.questionConceptService = questionConceptService;
         this.surveyModuleService = surveyModuleService;
@@ -441,7 +429,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<org.pmiops.workbench.model.Analysis> getGenderAnalysis(){
+    public ResponseEntity<Analysis> getGenderAnalysis(){
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {

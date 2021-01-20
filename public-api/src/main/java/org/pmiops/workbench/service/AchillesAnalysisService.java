@@ -370,16 +370,12 @@ public class AchillesAnalysisService {
         for(AchillesResult ar: aa.getResults()){
             String analysisStratumName=ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
-                if (stratum == 2) {
-                    if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
+                if (stratum == 2 && ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
                         uniqueAgeDeciles.add(ar.getStratum2());
                         ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum2()));
-                    }
-                } else if (stratum == 4) {
-                    if (ar.getStratum4() != null && !ar.getStratum4().equals("0")) {
+                } else if (stratum == 4 && ar.getStratum4() != null && !ar.getStratum4().equals("0")) {
                         uniqueAgeDeciles.add(ar.getStratum4());
                         ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum4()));
-                    }
                 }
             }
         }
@@ -397,7 +393,6 @@ public class AchillesAnalysisService {
                     AchillesResult missingResult = null;
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         DbAchillesResult result = ehrAgeCountResults.get(0);
-                        String percentageValue = String.valueOf(Math.round((20/result.getCountValue())*100/2)*2);
                         missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
                     } else {
                         missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisId.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);

@@ -34,7 +34,6 @@ import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.DbCdrVersion;
-import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
 import org.pmiops.workbench.model.ConceptAnalysis;
