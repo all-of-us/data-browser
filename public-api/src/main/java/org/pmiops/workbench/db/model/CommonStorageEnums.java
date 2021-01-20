@@ -1,4 +1,4 @@
-package org.pmiops.workbench.db.model;
+package org.pmiops.workbench.model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;

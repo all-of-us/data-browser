@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import com.google.common.base.Strings;
 import org.pmiops.workbench.model.AnalysisIdConstant;
-import org.pmiops.workbench.db.model.CommonStorageEnums;
+import org.pmiops.workbench.model.CommonStorageEnums;
 
 @Service
 public class AchillesAnalysisService {
