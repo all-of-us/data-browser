@@ -2,9 +2,8 @@ package org.pmiops.workbench.db.model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
-import org.pmiops.workbench.model.AnalysisId;
 import org.pmiops.workbench.model.Domain;
-
+import org.pmiops.workbench.model.AnalysisId;
 
 public class CommonStorageEnums {
 
