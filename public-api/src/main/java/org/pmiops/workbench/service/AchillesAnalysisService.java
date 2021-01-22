@@ -390,7 +390,6 @@ public class AchillesAnalysisService {
                     ehrAgeCountResults  = ehrCountResults.stream().filter(ar -> ar.getStratum4() != null && ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
                     AchillesResult missingResult = null;
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
-                        DbAchillesResult result = ehrAgeCountResults.get(0);
                         missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
                     } else {
                         missingResult = achillesMapper.makeCopyAchillesResult(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.EHR_AGE_COUNT_ANALYSIS_ID), conceptId, null, null, missingAgeDecile, null, null, null, 20L, 20L);
