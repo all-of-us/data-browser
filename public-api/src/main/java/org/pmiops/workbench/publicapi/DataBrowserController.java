@@ -685,7 +685,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         Analysis versionAnalysis = null;
 
         for (Analysis aa: analyses) {
-            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID)) {
+            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID))) {
                 countAnalysis = aa;
                 for(AchillesResult ar: aa.getResults()) {
                     Long questionId = Long.valueOf(ar.getStratum2());
@@ -700,7 +700,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID)) {
+            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID))) {
                 genderAnalysis = aa;
                 for(AchillesResult ar: aa.getResults()) {
                     Long questionId = Long.valueOf(ar.getStratum2());
@@ -715,7 +715,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID)) {
+            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID))) {
                 ageAnalysis = aa;
                 for (AchillesResult ar : aa.getResults()) {
                     Long questionId = Long.valueOf(ar.getStratum2());
@@ -732,7 +732,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                     }
                 }
             }
-            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID)) {
+            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID))) {
 
                 versionAnalysis = aa;
                 for(AchillesResult ar: aa.getResults()) {
