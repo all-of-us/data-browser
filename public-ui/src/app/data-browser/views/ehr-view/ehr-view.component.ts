@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
@@ -245,7 +245,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   public getThisDomain() {
     this.subscriptions.push(
           this.api.getDomainTotals(
-            this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0, this.valueFilterCheck.orders === true ? 1 : 0).subscribe(
+            this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0,
+            this.valueFilterCheck.orders === true ? 1 : 0).subscribe(
               (data: DomainInfosAndSurveyModulesResponse) => {
                 data.domainInfos.forEach(domain => {
                   const thisDomain = Domain[domain.domain];
@@ -277,7 +278,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   public getNumberOfPages(query: string) {
     let domainResults = null;
     this.subscriptions.push(this.api.getDomainTotals((query && query != null) ? query : '',
-                this.valueFilterCheck.tests === true ? 1 : 0, this.valueFilterCheck.orders === true ? 1 : 0)
+                this.valueFilterCheck.tests === true ? 1 : 0,
+                this.valueFilterCheck.orders === true ? 1 : 0)
                 .subscribe(results => {
                   domainResults = results.domainInfos.filter(d => d.domain !== null);
                   domainResults = domainResults.filter(
@@ -574,9 +576,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public canDisplayTable() {
     if (this.ehrDomain.domain.toLowerCase() === 'measurement') {
-        return (this.items && this.items.length > 0) || (!this.valueFilterCheck.tests || !this.valueFilterCheck.orders);
+        return (this.items && this.items.length > 0) ||
+        (!this.valueFilterCheck.tests || !this.valueFilterCheck.orders);
     }
-    return (this.items && this.items.length > 0) || (!this.valueFilterCheck.tests && !this.valueFilterCheck.orders);
+    return (this.items && this.items.length > 0) ||
+    (!this.valueFilterCheck.tests && !this.valueFilterCheck.orders);
   }
 
   public checkCount(count: number) {
@@ -595,8 +599,10 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   }
 
     public filterMeasurements(box: string, value: boolean) {
-      localStorage.setItem('measurementTestsChecked',  this.valueFilterCheck.tests === true ? 'true' : 'false');
-      localStorage.setItem('measurementOrdersChecked',  this.valueFilterCheck.orders === true ? 'true' : 'false');
+      localStorage.setItem('measurementTestsChecked',
+      this.valueFilterCheck.tests === true ? 'true' : 'false');
+      localStorage.setItem('measurementOrdersChecked',
+      this.valueFilterCheck.orders === true ? 'true' : 'false');
       const searchRequest = {
             query: this.searchRequest.query,
             domain: this.searchRequest.domain,
@@ -622,7 +628,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             }
       });
       this.dataLoadingStack.push(true);
-      this.api.getDomainTotals(this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0, this.valueFilterCheck.orders === true ? 1 : 0).subscribe({
+      this.api.getDomainTotals(this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0,
+      this.valueFilterCheck.orders === true ? 1 : 0).subscribe({
             next: results => {
               const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
               this.totalResults = domainResults[0].standardConceptCount;
