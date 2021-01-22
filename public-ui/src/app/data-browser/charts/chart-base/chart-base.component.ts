@@ -48,7 +48,9 @@ export class ChartBaseComponent {
                   'Participant Count: <b>&le; 20 </b>');
             }
           }
-          return this.point.toolTipHelpText;
+
+          return '<div class="tooltip-container" style="position: absolute; z-index: 220;">'
+            + this.point.toolTipHelpText + '</div>';
         },
         positioner: function(width, height, point) {
           const columnWidth = this.chart.series[0].options.pointWidth;
