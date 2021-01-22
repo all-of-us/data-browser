@@ -386,7 +386,7 @@ public class AchillesAnalysisService {
                 completeAgeDeciles.removeAll(uniqueAgeDeciles);
                 for(String missingAgeDecile: completeAgeDeciles){
                     List<DbAchillesResult> ehrAgeCountResults = null;
-                    ehrAgeCountResults  = ehrCountResults.stream().filter(ar -> ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
+                    ehrAgeCountResults  = ehrCountResults.stream().filter(ar -> ar.getStratum4() != null && ar.getStratum4().equals(missingAgeDecile)).collect(Collectors.toList());
                     AchillesResult missingResult = null;
                     if (ehrAgeCountResults != null && ehrAgeCountResults.size() > 0) {
                         DbAchillesResult result = ehrAgeCountResults.get(0);
