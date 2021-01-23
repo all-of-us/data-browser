@@ -11,11 +11,12 @@ import {
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { IntroVidReactComponent } from './IntroVidsReactComponent';
-import { VideoService, Video } from '../../../services/video.service'
+import { Video, VideoService } from '../../../services/video.service';
 const containerElementName = 'myReactComponentContainer';
 
 @Component({
     selector: 'react-intro-vids',
+      // tslint:disable-next-line: component-selector
     template: `<span #${containerElementName}></span>`,
     styleUrls: ['../../../../styles/template.css', '../intro-vids.component.css'],
     encapsulation: ViewEncapsulation.None,
@@ -49,7 +50,7 @@ export class IntroVidsWrapperComponent implements OnChanges, OnDestroy, AfterVie
                     {
                         this.videos.map((video: Video, index) => {
                             const key = 'video' + index;
-                            return <span key={key}> <IntroVidReactComponent {...video} /></span>
+                            return <span key={key}> <IntroVidReactComponent {...video} /></span>;
                         })
                     }
                 </div>

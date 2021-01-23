@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Video } from '../../../services/video.service'
+import { Video } from '../../../services/video.service';
 
 
 export const IntroVidReactComponent: FunctionComponent<Video> =
@@ -16,9 +16,9 @@ export const IntroVidReactComponent: FunctionComponent<Video> =
                     }
                     {
                         props.subtitles.map((sub) => {
-                            return <track 
-                            key={sub.label} default={sub.default} label={sub.label} kind='subtitles' 
-                            lang={sub.lang} src={sub.url}></track>;
+                            return <track
+                                key={sub.label} default={sub.default} label={sub.label}
+                                lang={sub.lang} src={sub.url}></track>;
                         })
                     }
                     Sorry, your browser doesn't support embedded videos,
