@@ -1,127 +1,34 @@
 import { Component } from '@angular/core';
-
+import { VideoService } from '../../services/video.service'
+import { environment } from 'environments/environment'
 @Component({
   selector: 'app-intro-vids',
-  templateUrl: './intro-vids.component.html',
+  template: environment.testReact ? '<react-intro-vids></react-intro-vids>' : `
+            <div class="db-container">
+              <h1 class="primary-display">Introductory Videos</h1>
+              <ng-container *ngFor="let video of videos">
+                <h2 class="secondary-display">{{video.title}}</h2>
+                <div class="vid-container">
+                  <video poster="{{video.poster}}"controls >
+                    <ng-container *ngFor='let src of video.src'>
+                      <source src="{{src.url}}" type="{{src.type}}" />
+                    </ng-container>
+                    <ng-container *ngFor='let sub of video.subtitles'>
+                      <track default={{sub.default}} label="{{sub.label}}" kind="subtitles" srclang="{{sub.lang}}" src="{{sub.url}}" >
+                    </ng-container>
+                      Sorry, your browser doesn't support embedded videos,
+                      but don't worry, you can <a href="{{video.downloadUrl}}">download it</a>
+                      and watch it with your favorite video player!
+                  </video>
+                </div>
+              </ng-container>
+          </div>`,
   styleUrls: ['../../../styles/template.css', './intro-vids.component.css']
 })
 export class IntroVidsComponent {
-
-  videos = [{
-    title: 'Participant Intro',
-    downloadUrl: '',
-    poster: '/assets/videos/participant_video_poster.png',
-    subtitles: [{
-      url: '/assets/videos/participant_en.vtt',
-      lang: 'en',
-      label: 'English',
-      default: true
-    },
-    {
-      url: '/assets/videos/participant_es.vtt',
-      lang: 'es',
-      label: 'Spanish',
-      default: false
-    }],
-    src: [{
-      url: '/assets/videos/participant_intro.mp4',
-      type: 'video/mp4'
-    },
-    {
-      url: '/assets/videos/participant_intro.ogv',
-      type: 'video/ogg'
-    },
-    {
-      url: '/assets/videos/participant_intro.webm',
-      type: 'video/webm'
-    }],
-  },
-  {
-    title: 'Researcher Intro',
-    downloadUrl: '',
-    poster: '/assets/videos/researcher_video_poster.png',
-    subtitles: [{
-      url: '/assets/videos/researcher_en.vtt',
-      lang: 'en',
-      label: 'English',
-      default: true
-    },
-    {
-      url: '/assets/videos/researcher_es.vtt',
-      lang: 'es',
-      label: 'Spanish',
-      default: false
-    }],
-    src: [{
-      url: '/assets/videos/researcher_intro.mp4',
-      type: 'video/mp4'
-    },
-    {
-      url: '/assets/videos/researcher_intro.ogv',
-      type: 'video/ogg'
-    },
-    {
-      url: '/assets/videos/researcher_intro.webm',
-      type: 'video/webm'
-    }],
-  },
-  {
-    title: 'Surveys Intro',
-    downloadUrl: '',
-    poster: '/assets/videos/surveys_video_poster.png',
-    subtitles: [{
-      url: '/assets/videos/surveys_en.vtt',
-      lang: 'en',
-      label: 'English',
-      default: true
-    },
-    {
-      url: '/assets/videos/surveys_es.vtt',
-      lang: 'es',
-      label: 'Spanish',
-      default: false
-    }],
-    src: [{
-      url: '/assets/videos/surveys_intro.mp4',
-      type: 'video/mp4'
-    },
-    {
-      url: '/assets/videos/surveys_intro.ogv',
-      type: 'video/ogg'
-    },
-    {
-      url: '/assets/videos/surveys_intro.webm',
-      type: 'video/webm'
-    }],
-  },
-  {
-    title: 'Physical Measurements Intro',
-    downloadUrl: '',
-    poster: '/assets/videos/physical_measurements_video_poster.png',
-    subtitles: [{
-      url: '/assets/videos/physical_measurements_en.vtt',
-      lang: 'en',
-      label: 'English',
-      default: true
-    },
-    {
-      url: '/assets/videos/physical_measurements_es.vtt',
-      lang: 'es',
-      label: 'Spanish',
-      default: false
-    }],
-    src: [{
-      url: '/assets/videos/physical_measurements_intro.mp4',
-      type: 'video/mp4'
-    },
-    {
-      url: '/assets/videos/physical_measurements_intro.ogv',
-      type: 'video/ogg'
-    },
-    {
-      url: '/assets/videos/physical_measurements_intro.webm',
-      type: 'video/webm'
-    }],
-  }];
+  videos: any[];
+  constructor(private videoService: VideoService) {
+    this.videos = this.videoService.videos;
+  }
 
 }

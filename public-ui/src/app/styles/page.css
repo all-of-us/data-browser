@@ -1,16 +1,5 @@
 /* primary display */
 
-.primary-display,
-h1 {
-  font-family: Arial, sans-serif;
-  font-size: 36.8px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 45.36px;
-  letter-spacing: normal;
-  text-align: left;
-}
 
 .alert,
 .alert-box,
@@ -37,6 +26,18 @@ h1 {
   align-items: center;
   text-align: center;
   min-height: 10vh;
+}
+
+.primary-display,
+h1 {
+  font-family: Arial, sans-serif;
+  font-size: 36.8px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 45.36px;
+  letter-spacing: normal;
+  text-align: left;
 }
 
 .secondary-display,
