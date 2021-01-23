@@ -44,11 +44,11 @@ export class IntroVidsWrapperComponent implements OnChanges, OnDestroy, AfterVie
     private render() {
         ReactDOM.render(
             <span>
-                <div className="db-container">
-                    <h1 className="primary-display">Introductory Videos</h1>
+                <div className='db-container'>
+                    <h1 className='primary-display'>Introductory Videos</h1>
                     {
-                        this.videos.map((video: video, index) => {
-                            const key = "video" + index;
+                        this.videos.map((video: Video, index) => {
+                            const key = 'video' + index;
                             return <span key={key}> <IntroVidReactComponent {...video} /></span>
                         })
                     }
