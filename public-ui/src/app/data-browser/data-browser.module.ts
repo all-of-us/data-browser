@@ -22,18 +22,18 @@ import { ConceptChartsComponent } from './concept-charts/concept-charts.componen
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
 import { DbTableComponent } from './db-table/db-table.component';
 import { TreeHighlightService } from './services/tree-highlight.service';
+import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
-import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids_react/intro-vids_react.wrapper';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
+import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids_react/intro-vids_react.wrapper';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { VideoService } from './services/video.service'
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
