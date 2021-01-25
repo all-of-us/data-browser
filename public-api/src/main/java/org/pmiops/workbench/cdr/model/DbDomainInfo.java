@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.pmiops.workbench.db.model.CommonStorageEnums;
+import org.pmiops.workbench.model.CommonStorageEnums;
 import org.pmiops.workbench.model.Domain;
 
 @Entity

@@ -13,8 +13,6 @@ import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 
 
 @Entity
-//TODO need to add a way to dynamically switch between database versions
-//this dynamic connection will eliminate the need for the catalog attribute
 @Table(name = "concept_relationship")
 public class ConceptRelationship {
 

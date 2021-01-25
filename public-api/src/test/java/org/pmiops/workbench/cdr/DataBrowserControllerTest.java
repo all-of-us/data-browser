@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import org.junit.After;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,14 +22,18 @@ import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.DomainInfoService;
+import org.pmiops.workbench.service.AchillesAnalysisService;
+import org.pmiops.workbench.service.AchillesResultService;
+import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
-import org.pmiops.workbench.cdr.model.AchillesAnalysis;
-import org.pmiops.workbench.cdr.model.AchillesResult;
+import org.pmiops.workbench.cdr.AchillesMapper;
+import org.pmiops.workbench.cdr.AchillesMapperImpl;
+import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
+import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.DbCdrVersion;
-import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
 import org.pmiops.workbench.model.ConceptAnalysis;
@@ -170,7 +175,7 @@ public class DataBrowserControllerTest {
             .drugBrands(new ArrayList<String>())
             .graphToShow("Sex Assigned at Birth");
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_1 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_1 = new DbAchillesAnalysis()
             .analysisId(1900L)
             .analysisName("Measurement Response Gender Distribution")
             .stratum1Name("Measurement Concept Id")
@@ -181,7 +186,7 @@ public class DataBrowserControllerTest {
             .dataType("counts");
 
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_2 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_2 = new DbAchillesAnalysis()
             .analysisId(1901L)
             .analysisName("Measurement Response Age Distribution")
             .stratum1Name("Measurement Concept Id")
@@ -191,7 +196,7 @@ public class DataBrowserControllerTest {
             .chartType("column")
             .dataType("counts");
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_3 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_3 = new DbAchillesAnalysis()
             .analysisId(1911L)
             .analysisName("Measurement Response Male Distribution")
             .stratum1Name("Measurement Concept Id")
@@ -202,7 +207,7 @@ public class DataBrowserControllerTest {
             .dataType("counts");
 
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_4 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_4 = new DbAchillesAnalysis()
             .analysisId(1912L)
             .analysisName("Measurement Response Female Distribution")
             .stratum1Name("Measurement Concept Id")
@@ -212,7 +217,7 @@ public class DataBrowserControllerTest {
             .chartType("column")
             .dataType("counts");
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_5 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_5 = new DbAchillesAnalysis()
             .analysisId(3101L)
             .analysisName("Gender Distribution")
             .stratum1Name("Concept Id")
@@ -220,7 +225,7 @@ public class DataBrowserControllerTest {
             .stratum3Name("DomainId")
             .chartType("pie")
             .dataType("counts");
-    private static final AchillesAnalysis CLIENT_ANALYSIS_6 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_6 = new DbAchillesAnalysis()
             .analysisId(3102L)
             .analysisName("Age Distribution")
             .stratum1Name("Concept Id")
@@ -229,14 +234,14 @@ public class DataBrowserControllerTest {
             .chartType("column")
             .dataType("counts");
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_7 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_7 = new DbAchillesAnalysis()
             .analysisId(3400L)
             .analysisName("Survey Module Counts By Version")
             .stratum1Name("Survey Concept Id")
             .stratum2Name("Version Month")
             .stratum3Name("Version Id");
 
-    private static final AchillesAnalysis CLIENT_ANALYSIS_8 = new AchillesAnalysis()
+    private static final DbAchillesAnalysis CLIENT_ANALYSIS_8 = new DbAchillesAnalysis()
             .analysisId(3401L)
             .analysisName("Survey Question Counts By Version")
             .stratum1Name("Survey Concept Id")
@@ -244,16 +249,16 @@ public class DataBrowserControllerTest {
             .stratum3Name("Version Id");
 
 
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_1 = makeAchillesAnalysis(CLIENT_ANALYSIS_1);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_2 = makeAchillesAnalysis(CLIENT_ANALYSIS_2);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_3 = makeAchillesAnalysis(CLIENT_ANALYSIS_3);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_4 = makeAchillesAnalysis(CLIENT_ANALYSIS_4);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_5 = makeAchillesAnalysis(CLIENT_ANALYSIS_5);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_6);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_7 = makeAchillesAnalysis(CLIENT_ANALYSIS_7);
-    private static final AchillesAnalysis ACHILLES_ANALYSIS_8 = makeAchillesAnalysis(CLIENT_ANALYSIS_8);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_1 = makeAchillesAnalysis(CLIENT_ANALYSIS_1);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_2 = makeAchillesAnalysis(CLIENT_ANALYSIS_2);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_3 = makeAchillesAnalysis(CLIENT_ANALYSIS_3);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_4 = makeAchillesAnalysis(CLIENT_ANALYSIS_4);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_5 = makeAchillesAnalysis(CLIENT_ANALYSIS_5);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_6 = makeAchillesAnalysis(CLIENT_ANALYSIS_6);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_7 = makeAchillesAnalysis(CLIENT_ANALYSIS_7);
+    private static DbAchillesAnalysis ACHILLES_ANALYSIS_8 = makeAchillesAnalysis(CLIENT_ANALYSIS_8);
 
-    private static final AchillesResult CLIENT_RESULT_1 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_1 = new DbAchillesResult()
             .id(1L)
             .analysisId(1900L)
             .stratum1("137989")
@@ -263,7 +268,7 @@ public class DataBrowserControllerTest {
             .sourceCountValue(34L);
 
 
-    private static final AchillesResult CLIENT_RESULT_2 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_2 = new DbAchillesResult()
             .id(2L)
             .analysisId(1900L)
             .stratum1("137989")
@@ -273,7 +278,7 @@ public class DataBrowserControllerTest {
             .sourceCountValue(34L);
 
 
-    private static final AchillesResult CLIENT_RESULT_3 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_3 = new DbAchillesResult()
             .id(3L)
             .analysisId(1901L)
             .stratum1("137989")
@@ -283,7 +288,7 @@ public class DataBrowserControllerTest {
             .sourceCountValue(34L);
 
 
-    private static final AchillesResult CLIENT_RESULT_4 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_4 = new DbAchillesResult()
             .id(4L)
             .analysisId(1901L)
             .stratum1("137989")
@@ -293,7 +298,7 @@ public class DataBrowserControllerTest {
             .sourceCountValue(34L);
 
 
-    private static final AchillesResult CLIENT_RESULT_5 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_5 = new DbAchillesResult()
             .id(5L)
             .analysisId(1901L)
             .stratum1("137989")
@@ -303,43 +308,43 @@ public class DataBrowserControllerTest {
             .sourceCountValue(34L);
 
 
-    private static final AchillesResult CLIENT_RESULT_6 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_6 = new DbAchillesResult()
             .id(6L)
             .analysisId(3101L)
             .stratum1("1586134")
             .stratum2("8507")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(251780L)
             .sourceCountValue(251780L);
 
-    private static final AchillesResult CLIENT_RESULT_7 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_7 = new DbAchillesResult()
             .id(7L)
             .analysisId(3101L)
             .stratum1("1586134")
             .stratum2("8532")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(316080L)
             .sourceCountValue(316080L);
 
-    private static final AchillesResult CLIENT_RESULT_8 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_8 = new DbAchillesResult()
             .id(8L)
             .analysisId(3102L)
             .stratum1("1586134")
             .stratum2("2")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(93020L)
             .sourceCountValue(93020L);
 
-    private static final AchillesResult CLIENT_RESULT_9 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_9 = new DbAchillesResult()
             .id(9L)
             .analysisId(3102L)
             .stratum1("1586134")
             .stratum2("3")
-            .stratum3("Survey")
+            .stratum3("")
             .countValue(93480L)
             .sourceCountValue(93480L);
 
-    private static final AchillesResult CLIENT_RESULT_10 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_10 = new DbAchillesResult()
             .id(10L)
             .analysisId(3400L)
             .stratum1("1333342")
@@ -348,7 +353,7 @@ public class DataBrowserControllerTest {
             .countValue(1000L)
             .sourceCountValue(1000L);
 
-    private static final AchillesResult CLIENT_RESULT_11 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_11 = new DbAchillesResult()
             .id(11L)
             .analysisId(3400L)
             .stratum1("1333342")
@@ -357,7 +362,7 @@ public class DataBrowserControllerTest {
             .countValue(1000L)
             .sourceCountValue(1000L);
 
-    private static final AchillesResult CLIENT_RESULT_12 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_12 = new DbAchillesResult()
             .id(12L)
             .analysisId(3401L)
             .stratum1("1333342")
@@ -366,7 +371,7 @@ public class DataBrowserControllerTest {
             .countValue(50L)
             .sourceCountValue(50L);
 
-    private static final AchillesResult CLIENT_RESULT_13 = new AchillesResult()
+    private static final DbAchillesResult CLIENT_RESULT_13 = new DbAchillesResult()
             .id(12L)
             .analysisId(3401L)
             .stratum1("1333342")
@@ -376,19 +381,19 @@ public class DataBrowserControllerTest {
             .sourceCountValue(50L);
 
 
-    private static final AchillesResult ACHILLES_RESULT_1 = makeAchillesResult(CLIENT_RESULT_1);
-    private static final AchillesResult ACHILLES_RESULT_2 = makeAchillesResult(CLIENT_RESULT_2);
-    private static final AchillesResult ACHILLES_RESULT_3 = makeAchillesResult(CLIENT_RESULT_3);
-    private static final AchillesResult ACHILLES_RESULT_4 = makeAchillesResult(CLIENT_RESULT_4);
-    private static final AchillesResult ACHILLES_RESULT_5 = makeAchillesResult(CLIENT_RESULT_5);
-    private static final AchillesResult ACHILLES_RESULT_6 = makeAchillesResult(CLIENT_RESULT_6);
-    private static final AchillesResult ACHILLES_RESULT_7 = makeAchillesResult(CLIENT_RESULT_7);
-    private static final AchillesResult ACHILLES_RESULT_8 = makeAchillesResult(CLIENT_RESULT_8);
-    private static final AchillesResult ACHILLES_RESULT_9 = makeAchillesResult(CLIENT_RESULT_9);
-    private static final AchillesResult ACHILLES_RESULT_10 = makeAchillesResult(CLIENT_RESULT_10);
-    private static final AchillesResult ACHILLES_RESULT_11 = makeAchillesResult(CLIENT_RESULT_11);
-    private static final AchillesResult ACHILLES_RESULT_12 = makeAchillesResult(CLIENT_RESULT_12);
-    private static final AchillesResult ACHILLES_RESULT_13 = makeAchillesResult(CLIENT_RESULT_13);
+    private static final DbAchillesResult ACHILLES_RESULT_1 = makeAchillesResult(CLIENT_RESULT_1);
+    private static final DbAchillesResult ACHILLES_RESULT_2 = makeAchillesResult(CLIENT_RESULT_2);
+    private static final DbAchillesResult ACHILLES_RESULT_3 = makeAchillesResult(CLIENT_RESULT_3);
+    private static final DbAchillesResult ACHILLES_RESULT_4 = makeAchillesResult(CLIENT_RESULT_4);
+    private static final DbAchillesResult ACHILLES_RESULT_5 = makeAchillesResult(CLIENT_RESULT_5);
+    private static final DbAchillesResult ACHILLES_RESULT_6 = makeAchillesResult(CLIENT_RESULT_6);
+    private static final DbAchillesResult ACHILLES_RESULT_7 = makeAchillesResult(CLIENT_RESULT_7);
+    private static final DbAchillesResult ACHILLES_RESULT_8 = makeAchillesResult(CLIENT_RESULT_8);
+    private static final DbAchillesResult ACHILLES_RESULT_9 = makeAchillesResult(CLIENT_RESULT_9);
+    private static final DbAchillesResult ACHILLES_RESULT_10 = makeAchillesResult(CLIENT_RESULT_10);
+    private static final DbAchillesResult ACHILLES_RESULT_11 = makeAchillesResult(CLIENT_RESULT_11);
+    private static final DbAchillesResult ACHILLES_RESULT_12 = makeAchillesResult(CLIENT_RESULT_12);
+    private static final DbAchillesResult ACHILLES_RESULT_13 = makeAchillesResult(CLIENT_RESULT_13);
 
     private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_1 =
             makeConcept(CLIENT_CONCEPT_1);
@@ -428,6 +433,7 @@ public class DataBrowserControllerTest {
     @Mock private AchillesResultDistService achillesResultDistService;
     @Mock private SurveyModuleService surveyModuleService;
     @Mock private DomainInfoService domainInfoService;
+    @Mock private AchillesResultService achillesResultService;
 
     private DataBrowserController dataBrowserController;
 
@@ -435,10 +441,12 @@ public class DataBrowserControllerTest {
     public void setUp() {
         saveData();
         ConceptService conceptService = new ConceptService(entityManager, conceptDao);
+        AchillesMapper achillesMapper = new AchillesMapperImpl();
+        AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao, achillesResultDao,
-                achillesAnalysisDao, achillesResultDistService, entityManager,
-            cdrVersionService, domainInfoService, questionConceptService, surveyModuleService);
+                criteriaDao,
+            cdrVersionService, domainInfoService, questionConceptService, surveyModuleService,
+                achillesResultService, achillesAnalysisService);
     }
 
     @Test
@@ -552,25 +560,9 @@ public class DataBrowserControllerTest {
     public void testGetMeasurementAnalysisNoMatch() throws Exception{
         ArrayList<String> queryConceptIds = new ArrayList<String>();
         queryConceptIds.add("137990");
-        try {
-            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
-            List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
-            assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
-        } catch(DataNotFoundException dnf) {
-            // No need to do anything
-        }
-    }
-
-    @Test
-    public void testGetSurveyDemographicAnalysesMatch() throws Exception{
-        List<String> conceptsIds = new ArrayList<>();
-        conceptsIds.add("1586134");
-        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds,"");
-        List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-        Analysis ageAnalysis = conceptAnalysis.get(0).getAgeAnalysis();
-        Analysis genderAnalysis = conceptAnalysis.get(0).getGenderAnalysis();
-        assertThat(ageAnalysis).isNotEqualTo(null);
-        assertThat(genderAnalysis).isNotEqualTo(null);
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(queryConceptIds,"");
+        List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
+        assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
     }
 
     @Test
@@ -578,25 +570,19 @@ public class DataBrowserControllerTest {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1586134");
         conceptsIds.add("1585855");
-        try {
-            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
-            List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
-            assertThat(conceptAnalysis.get(0).getGenderAnalysis().getResults().size()).isEqualTo(3);
-            assertThat(conceptAnalysis.get(1).getGenderAnalysis()).isEqualTo(null);
-        } catch(DataNotFoundException dnf) {
-        }
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
+        List<ConceptAnalysis> conceptAnalysis = response.getBody().getItems();
+        assertThat(conceptAnalysis.get(0).getConceptId()).isEqualTo("1586134");
+        assertThat(conceptAnalysis.get(1).getConceptId()).isEqualTo("1585855");
     }
 
     @Test
     public void testGetSurveyDemographicAnalysesNoMatch() throws Exception {
         List<String> conceptsIds = new ArrayList<>();
         conceptsIds.add("1585855");
-        try {
-            ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
-            List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
-            assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
-        } catch(DataNotFoundException dnf) {
-        }
+        ResponseEntity<ConceptAnalysisListResponse> response = dataBrowserController.getConceptAnalysisResults(conceptsIds, "");
+        List<ConceptAnalysis> conceptAnalysisList = response.getBody().getItems();
+        assertThat(conceptAnalysisList.get(0).getAgeAnalysis()).isEqualTo(null);
     }
 
     @Test
@@ -645,8 +631,8 @@ public class DataBrowserControllerTest {
         return result;
     }
 
-    private static AchillesAnalysis makeAchillesAnalysis(AchillesAnalysis achillesAnalysis){
-        AchillesAnalysis aa = new AchillesAnalysis();
+    private static DbAchillesAnalysis makeAchillesAnalysis(DbAchillesAnalysis achillesAnalysis){
+        DbAchillesAnalysis aa = new DbAchillesAnalysis();
         aa.setAnalysisId(achillesAnalysis.getAnalysisId());
         aa.setAnalysisName(achillesAnalysis.getAnalysisName());
         aa.setStratum1Name(achillesAnalysis.getStratum1Name());
@@ -658,8 +644,8 @@ public class DataBrowserControllerTest {
         return aa;
     }
 
-    private static AchillesResult makeAchillesResult(AchillesResult achillesResult){
-        AchillesResult ar = new AchillesResult();
+    private static DbAchillesResult makeAchillesResult(DbAchillesResult achillesResult){
+        DbAchillesResult ar = new DbAchillesResult();
         ar.setId(achillesResult.getId());
         ar.setAnalysisId(achillesResult.getAnalysisId());
         ar.setStratum1(achillesResult.getStratum1());
@@ -694,6 +680,12 @@ public class DataBrowserControllerTest {
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_7);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_8);
 
+        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_6);
+        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_7);
+
+        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_8);
+        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_9);
+
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);
         achillesResultDao.save(ACHILLES_RESULT_3);
@@ -718,5 +710,42 @@ public class DataBrowserControllerTest {
         dbCdrVersion.setPublicDbName("p");
         cdrVersionDao.save(dbCdrVersion);
         return dbCdrVersion;
+    }
+
+    @After
+    public void flush(){
+        conceptDao.delete(CONCEPT_1);
+        conceptDao.delete(CONCEPT_2);
+        conceptDao.delete(CONCEPT_3);
+        conceptDao.delete(CONCEPT_4);
+        conceptDao.delete(CONCEPT_5);
+        conceptDao.delete(CONCEPT_6);
+        conceptDao.delete(CONCEPT_7);
+
+        conceptRelationshipDao.delete(makeConceptRelationship(1234L, 7890L, "maps to"));
+        conceptRelationshipDao.delete(makeConceptRelationship(456L, 7890L, "maps to"));
+
+        achillesResultDao.delete(ACHILLES_RESULT_1);
+        achillesResultDao.delete(ACHILLES_RESULT_2);
+        achillesResultDao.delete(ACHILLES_RESULT_3);
+        achillesResultDao.delete(ACHILLES_RESULT_4);
+        achillesResultDao.delete(ACHILLES_RESULT_5);
+        achillesResultDao.delete(ACHILLES_RESULT_6);
+        achillesResultDao.delete(ACHILLES_RESULT_7);
+        achillesResultDao.delete(ACHILLES_RESULT_8);
+        achillesResultDao.delete(ACHILLES_RESULT_9);
+        achillesResultDao.delete(ACHILLES_RESULT_10);
+        achillesResultDao.delete(ACHILLES_RESULT_11);
+        achillesResultDao.delete(ACHILLES_RESULT_12);
+        achillesResultDao.delete(ACHILLES_RESULT_13);
+
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_1);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_2);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_3);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_4);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_5);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_6);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_7);
+        achillesAnalysisDao.delete(ACHILLES_ANALYSIS_8);
     }
 }
