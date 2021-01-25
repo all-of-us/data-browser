@@ -22,10 +22,10 @@ public class DbQuestionConcept {
     private int generate_counts;
     private int questionOrderNumber;
     private String questionString;
-    private AchillesAnalysis countAnalysis;
-    private AchillesAnalysis genderAnalysis;
-    private AchillesAnalysis ageAnalysis;
-    private AchillesAnalysis versionAnalysis;
+    private DbAchillesAnalysis countAnalysis;
+    private DbAchillesAnalysis genderAnalysis;
+    private DbAchillesAnalysis ageAnalysis;
+    private DbAchillesAnalysis versionAnalysis;
     private DbQuestionConceptId dbQuestionConceptId;
 
     @EmbeddedId
@@ -173,57 +173,57 @@ public class DbQuestionConcept {
     }
 
     @Transient
-    public AchillesAnalysis getCountAnalysis() {
+    public DbAchillesAnalysis getCountAnalysis() {
         return countAnalysis;
     }
 
-    public void setCountAnalysis(AchillesAnalysis analysis) {
+    public void setCountAnalysis(DbAchillesAnalysis analysis) {
         this.countAnalysis = analysis;
     }
 
-    public DbQuestionConcept countAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept countAnalysis(DbAchillesAnalysis analysis) {
         this.countAnalysis = analysis;
         return this;
     }
 
     @Transient
-    public AchillesAnalysis getGenderAnalysis() {
+    public DbAchillesAnalysis getGenderAnalysis() {
         return this.genderAnalysis;
     }
 
-    public void setGenderAnalysis(AchillesAnalysis analysis) {
+    public void setGenderAnalysis(DbAchillesAnalysis analysis) {
         this.genderAnalysis = analysis;
     }
 
-    public DbQuestionConcept genderAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept genderAnalysis(DbAchillesAnalysis analysis) {
         this.genderAnalysis = analysis;
         return this;
     }
 
     @Transient
-    public AchillesAnalysis getAgeAnalysis() {
+    public DbAchillesAnalysis getAgeAnalysis() {
         return this.ageAnalysis;
     }
 
-    public void setAgeAnalysis(AchillesAnalysis analysis) {
+    public void setAgeAnalysis(DbAchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
     }
 
-    public DbQuestionConcept ageAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept ageAnalysis(DbAchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
         return this;
     }
 
     @Transient
-    public AchillesAnalysis getVersionAnalysis() {
+    public DbAchillesAnalysis getVersionAnalysis() {
         return this.versionAnalysis;
     }
 
-    public void setVersionAnalysis(AchillesAnalysis analysis) {
+    public void setVersionAnalysis(DbAchillesAnalysis analysis) {
         this.versionAnalysis = analysis;
     }
 
-    public DbQuestionConcept versionAnalysis(AchillesAnalysis analysis) {
+    public DbQuestionConcept versionAnalysis(DbAchillesAnalysis analysis) {
         this.versionAnalysis = analysis;
         return this;
     }

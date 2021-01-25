@@ -1,6 +1,5 @@
 package org.pmiops.workbench.service;
 
-import org.pmiops.workbench.cdr.CdrVersionContext;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.inject.Provider;
@@ -24,8 +23,8 @@ public class AchillesResultDistService {
         this.achillesMapper = achillesMapper;
     }
 
-    public List<DbAchillesResultDist> fetchByAnalysisIdsAndConceptIds(List<Long> analysisIds, List<String> conceptIds) {
-        return achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(analysisIds ,conceptIds);
+    public List<DbAchillesResultDist> fetchByAnalysisIdsAndConceptIds(Long analysisId, List<String> conceptIds) {
+        return achillesResultDistDao.fetchByAnalysisIdsAndConceptIds(analysisId, conceptIds);
     }
 
     public List<AchillesResultDist> fetchConceptDistResults(Long analysisId, String conceptId) {

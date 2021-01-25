@@ -506,6 +506,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
           analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
+          a.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[a.stratum5];
         }
         legendText = 'Sex Assigned At Birth, Selected Answered Count';
         bsResult = this.surveyCountAnalysis.genderCountAnalysis.results.
@@ -597,10 +598,13 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let toolTipHelpText = null;
       let color = null;
       let count;
+
       count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
       color = this.dbc.COLUMN_COLOR;
       analysisStratumName = a.stratum7;
-
+      if (analysisStratumName === null) {
+        analysisStratumName = this.dbc.VERSION_STRATUM_MAP[a.stratum7];
+      }
       const version = this.surveyVersionAnalysis.filter(va => va.monthName === a.stratum7)[0];
       const percentage = ((a.countValue / version.participants) * 100).toFixed();
 
@@ -706,6 +710,9 @@ export class ChartComponent implements OnChanges, AfterViewInit {
           toolTipHelpText = toolTipHelpText.replace('when', 'when physical measurement with');
         }
       } else if (analysisId === this.dbc.SURVEY_AGE_ANALYSIS_ID) {
+        if (a.analysisStratumName === null) {
+            a.analysisStratumName = this.dbc.AGE_STRATUM_MAP[a.stratum5];
+        }
         ageHelpText = 'Age When Survey Was Taken';
         legendText = ageHelpText + ', Selected Answered Count';
         ageResult = this.surveyCountAnalysis.ageCountAnalysis.results.

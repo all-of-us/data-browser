@@ -1,4 +1,4 @@
-package org.pmiops.workbench.db.model;
+package org.pmiops.workbench.model;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;

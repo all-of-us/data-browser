@@ -19,8 +19,6 @@ import javax.persistence.FetchType;
 
 
 @Entity
-//TODO need to add a way to dynamically switch between database versions
-//this dynamic connection will eliminate the need for the catalog attribute
 @Table(name = "concept")
 public class Concept {
 
