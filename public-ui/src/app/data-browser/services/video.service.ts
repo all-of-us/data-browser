@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
 
 export interface Video {
   title: string;
@@ -19,6 +16,11 @@ export interface Video {
       type: string;
   }[];
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+
 
 export class VideoService {
   videos = [{
