@@ -11,8 +11,9 @@ import {
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 const containerElementName = 'myReactComponentContainer';
-import { IntroVidReactComponent } from './IntroVidsReactComponent';
 import { Video, VideoService } from '../../../services/video.service';
+
+import { IntroVidReactComponent } from './IntroVidsReactComponent';
 
 @Component({
     // tslint:disable-next-line: component-selector
