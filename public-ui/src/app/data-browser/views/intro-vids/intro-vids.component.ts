@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { VideoService } from '../../services/video.service';
 import { environment } from 'environments/environment';
+import { VideoService } from '../../services/video.service';
 @Component({
   selector: 'app-intro-vids',
   styleUrls: ['../../../styles/template.css', './intro-vids.component.css'],

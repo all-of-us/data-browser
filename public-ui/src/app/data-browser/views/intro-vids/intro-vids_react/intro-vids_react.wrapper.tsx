@@ -10,13 +10,12 @@ import {
 } from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IntroVidReactComponent } from './IntroVidsReactComponent';
-import { Video, VideoService } from '../../../services/video.service';
 const containerElementName = 'myReactComponentContainer';
+import { Video, VideoService } from '../../../services/video.service';
 
 @Component({
+    // tslint:disable-next-line: component-selector
     selector: 'react-intro-vids',
-      // tslint:disable-next-line: component-selector
     template: `<span #${containerElementName}></span>`,
     styleUrls: ['../../../../styles/template.css', '../intro-vids.component.css'],
     encapsulation: ViewEncapsulation.None,

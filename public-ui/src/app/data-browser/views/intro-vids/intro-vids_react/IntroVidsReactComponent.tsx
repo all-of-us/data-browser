@@ -1,6 +1,6 @@
-import { Video } from '../../../services/video.service';
 import * as React from 'react';
-import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import { FunctionComponent } from 'react';
+import { Video } from '../../../services/video.service';
 
 
 export const IntroVidReactComponent: FunctionComponent<Video> =
