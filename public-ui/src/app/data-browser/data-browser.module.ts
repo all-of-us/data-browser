@@ -29,7 +29,6 @@ import { ErrorMessageComponent } from './views/error-message/error-message.compo
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
-import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids_react/intro-vids_react.wrapper';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
@@ -48,7 +47,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SourceTreeComponent,
     EhrViewComponent,
     IntroVidsComponent,
-    IntroVidsWrapperComponent,
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
     SurveyChartComponent,

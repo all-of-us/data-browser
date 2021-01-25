@@ -13,7 +13,7 @@ import * as ReactDOM from 'react-dom';
 const containerElementName = 'myReactComponentContainer';
 import { Video, VideoService } from '../../../services/video.service';
 
-import { IntroVidReactComponent } from './IntroVidsReactComponent';
+import { IntroVidReactComponent } from './intro-vids_react.component';
 
 @Component({
     // tslint:disable-next-line: component-selector
