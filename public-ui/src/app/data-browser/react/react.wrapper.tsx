@@ -24,7 +24,7 @@ import { ReactComponent } from './react.component';
 export class WrapperComponent implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
 
-    prop = {text:'sup'}
+    prop = {text:'sup'};
     
     constructor() {
     }
