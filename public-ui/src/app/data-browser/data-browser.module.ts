@@ -32,6 +32,7 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { WrapperComponent } from './react/react.wrapper';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -65,6 +66,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartBiosexComponent,
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
+    WrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -72,6 +74,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     CommonModule,
     ConceptChartsComponent,
     DbNoResultsComponent,
+    WrapperComponent,
     RecursiveTreeComponent,
     SourceTreeComponent,
     EhrViewComponent,
