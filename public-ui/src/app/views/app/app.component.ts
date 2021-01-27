@@ -68,7 +68,8 @@ export class AppComponent implements OnInit {
     // naming the current environment.
     this.baseTitle = this.titleService.getTitle();
     if (environment.displayTag) {
-      this.baseTitle = `[${environment.displayTag}] ${this.baseTitle}`;
+      this.baseTitle = (environment.displayTag.toLowerCase() === 'prod') ?
+      `${this.baseTitle}` : `[${environment.displayTag}] ${this.baseTitle}`;
       this.titleService.setTitle(this.baseTitle);
     }
 
