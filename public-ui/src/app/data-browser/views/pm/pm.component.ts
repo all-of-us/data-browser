@@ -147,8 +147,12 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   public getCountAnalysis(conceptUnit: any) {
+    const genderSort = ['Male','Female','Other'];
     return this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
-    r => r.unitName === this.selectedConceptUnit)[0].results;
+    r => r.unitName === this.selectedConceptUnit)[0].results
+    .sort((a,b)=>{
+        return genderSort.indexOf(a.analysisStratumName) - genderSort.indexOf(b.analysisStratumName)
+    });
   }
 
   arrangeConceptAnalyses(concept: any) {
@@ -235,3 +239,4 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     return this.selectedConceptValueAnalysis;
   }
 }
+
