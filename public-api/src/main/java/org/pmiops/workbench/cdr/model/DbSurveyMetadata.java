@@ -5,14 +5,21 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import org.pmiops.workbench.cdr.model.DbQuestionConceptId;
+import org.pmiops.workbench.cdr.model.DbSurveyMetadataId;
 
 @Entity
-@Table(name = "question_concept")
-public class DbQuestionConcept {
-
+@Table(name = "survey_metadata")
+public class DbSurveyMetadata {
+    private long id;
     private String conceptName;
     private String conceptCode;
     private String surveyName;
@@ -20,13 +27,14 @@ public class DbQuestionConcept {
     private int sub;
     private int is_parent_question;
     private int generate_counts;
-    private int questionOrderNumber;
+    private int orderNumber;
     private String questionString;
     private DbAchillesAnalysis countAnalysis;
     private DbAchillesAnalysis genderAnalysis;
     private DbAchillesAnalysis ageAnalysis;
     private DbAchillesAnalysis versionAnalysis;
-    private DbQuestionConceptId dbQuestionConceptId;
+    private DbSurveyMetadataId dbSurveyMetadataId;
+    private String type;
 
     @EmbeddedId
     @AttributeOverrides({
@@ -37,16 +45,30 @@ public class DbQuestionConcept {
             @AttributeOverride(name="path",
                     column=@Column(name="path"))
     })
-    public DbQuestionConceptId getDbQuestionConceptId() {
-        return dbQuestionConceptId;
+    public DbSurveyMetadataId getDbSurveyMetadataId() {
+        return dbSurveyMetadataId;
     }
 
-    public void setDbQuestionConceptId(DbQuestionConceptId dbQuestionConceptId) {
-        this.dbQuestionConceptId = dbQuestionConceptId;
+    public void setDbSurveyMetadataId(DbSurveyMetadataId dbSurveyMetadataId) {
+        this.dbSurveyMetadataId = dbSurveyMetadataId;
     }
 
-    public DbQuestionConcept dbQuestionConceptId(DbQuestionConceptId dbQuestionConceptId) {
-        this.dbQuestionConceptId = dbQuestionConceptId;
+    public DbSurveyMetadata dbSurveyMetadataId(DbSurveyMetadataId dbSurveyMetadataId) {
+        this.dbSurveyMetadataId = dbSurveyMetadataId;
+        return this;
+    }
+
+    @Column(name = "id")
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public DbSurveyMetadata id(long id) {
+        this.id = id;
         return this;
     }
 
@@ -59,7 +81,7 @@ public class DbQuestionConcept {
         this.conceptName = conceptName;
     }
 
-    public DbQuestionConcept conceptName(String conceptName) {
+    public DbSurveyMetadata conceptName(String conceptName) {
         this.conceptName = conceptName;
         return this;
     }
@@ -73,7 +95,7 @@ public class DbQuestionConcept {
         this.questionString = questionString;
     }
 
-    public DbQuestionConcept questionString(String questionString) {
+    public DbSurveyMetadata questionString(String questionString) {
         this.questionString = questionString;
         return this;
     }
@@ -87,7 +109,7 @@ public class DbQuestionConcept {
         this.conceptCode = conceptCode;
     }
 
-    public DbQuestionConcept conceptCode(String conceptCode) {
+    public DbSurveyMetadata conceptCode(String conceptCode) {
         this.conceptCode = conceptCode;
         return this;
     }
@@ -101,7 +123,7 @@ public class DbQuestionConcept {
         this.surveyName = surveyName;
     }
 
-    public DbQuestionConcept surveyName(String surveyName) {
+    public DbSurveyMetadata surveyName(String surveyName) {
         this.surveyName = surveyName;
         return this;
     }
@@ -115,7 +137,7 @@ public class DbQuestionConcept {
         this.countValue = count;
     }
 
-    public DbQuestionConcept count(long count) {
+    public DbSurveyMetadata count(long count) {
         this.countValue = count;
         return this;
     }
@@ -129,7 +151,7 @@ public class DbQuestionConcept {
         this.sub = sub;
     }
 
-    public DbQuestionConcept sub(int sub) {
+    public DbSurveyMetadata sub(int sub) {
         this.sub = sub;
         return this;
     }
@@ -141,7 +163,7 @@ public class DbQuestionConcept {
     public void setIsParentQuestion(int is_parent_question) {
         this.is_parent_question = is_parent_question;
     }
-    public DbQuestionConcept isParentQuestion(int is_parent_question) {
+    public DbSurveyMetadata isParentQuestion(int is_parent_question) {
         this.is_parent_question = is_parent_question;
         return this;
     }
@@ -153,22 +175,35 @@ public class DbQuestionConcept {
     public void setGenerateCounts(int generate_counts) {
         this.generate_counts = generate_counts;
     }
-    public DbQuestionConcept generateCounts(int generate_counts) {
+    public DbSurveyMetadata generateCounts(int generate_counts) {
         this.generate_counts = generate_counts;
         return this;
     }
 
-    @Column(name = "question_order_number")
-    public int getQuestionOrderNumber() {
-        return questionOrderNumber;
+    @Column(name = "order_number")
+    public int getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setQuestionOrderNumber(int questionOrderNumber) {
-        this.questionOrderNumber = questionOrderNumber;
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
-    public DbQuestionConcept questionOrderNumber(int questionOrderNumber) {
-        this.questionOrderNumber = questionOrderNumber;
+    public DbSurveyMetadata orderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public DbSurveyMetadata type(String type) {
+        this.type = type;
         return this;
     }
 
@@ -181,7 +216,7 @@ public class DbQuestionConcept {
         this.countAnalysis = analysis;
     }
 
-    public DbQuestionConcept countAnalysis(DbAchillesAnalysis analysis) {
+    public DbSurveyMetadata countAnalysis(DbAchillesAnalysis analysis) {
         this.countAnalysis = analysis;
         return this;
     }
@@ -195,7 +230,7 @@ public class DbQuestionConcept {
         this.genderAnalysis = analysis;
     }
 
-    public DbQuestionConcept genderAnalysis(DbAchillesAnalysis analysis) {
+    public DbSurveyMetadata genderAnalysis(DbAchillesAnalysis analysis) {
         this.genderAnalysis = analysis;
         return this;
     }
@@ -209,7 +244,7 @@ public class DbQuestionConcept {
         this.ageAnalysis = analysis;
     }
 
-    public DbQuestionConcept ageAnalysis(DbAchillesAnalysis analysis) {
+    public DbSurveyMetadata ageAnalysis(DbAchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
         return this;
     }
@@ -223,7 +258,7 @@ public class DbQuestionConcept {
         this.versionAnalysis = analysis;
     }
 
-    public DbQuestionConcept versionAnalysis(DbAchillesAnalysis analysis) {
+    public DbSurveyMetadata versionAnalysis(DbAchillesAnalysis analysis) {
         this.versionAnalysis = analysis;
         return this;
     }

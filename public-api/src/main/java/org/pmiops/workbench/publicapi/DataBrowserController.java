@@ -20,7 +20,7 @@ import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.model.Analysis;
-import org.pmiops.workbench.service.QuestionConceptService;
+import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultService;
@@ -32,7 +32,7 @@ import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.model.AchillesResult;
 import org.pmiops.workbench.model.CommonStorageEnums;
-import org.pmiops.workbench.model.QuestionConcept;
+import org.pmiops.workbench.model.SurveyMetadata;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
@@ -40,7 +40,7 @@ import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.MatchType;
-import org.pmiops.workbench.model.QuestionConceptListResponse;
+import org.pmiops.workbench.model.SurveyMetadataListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.CountAnalysis;
@@ -77,7 +77,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private CdrVersionService cdrVersionService;
     @Autowired
-    private QuestionConceptService questionConceptService;
+    private SurveyMetadataService surveyMetadataService;
     @Autowired
     private AchillesMapper achillesMapper;
 
@@ -93,13 +93,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
                                  CdrVersionService cdrVersionService,
                                  DomainInfoService domainInfoService,
-                                 QuestionConceptService questionConceptService, SurveyModuleService surveyModuleService,
+                                 SurveyMetadataService surveyMetadataService, SurveyModuleService surveyModuleService,
                                  AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
         this.conceptService = conceptService;
         this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
         this.cdrVersionService = cdrVersionService;
-        this.questionConceptService = questionConceptService;
+        this.surveyMetadataService = surveyMetadataService;
         this.surveyModuleService = surveyModuleService;
         this.domainInfoService = domainInfoService;
         this.achillesResultService = achillesResultService;
@@ -451,14 +451,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
 
-        QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
+        SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
 
         if (searchWord == null || searchWord.isEmpty()) {
             // Get all the questions
-            questionResp.setItems(questionConceptService.getSurveyQuestions(surveyConceptId));
+            questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId));
         } else {
             // TODO Get only the matching questions
-            questionResp.setItems(questionConceptService.getMatchingSurveyQuestions(surveyConceptId, searchWord));
+            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, searchWord));
         }
 
         response.setQuestions(questionResp);
@@ -466,7 +466,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, Integer level) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long conceptId, Long answerConceptId, Integer level) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -474,23 +474,23 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
         SurveyQuestionFetchResponse response = new SurveyQuestionFetchResponse();
 
-        List<QuestionConcept> questions = new ArrayList<>();
+        List<SurveyMetadata> questions = new ArrayList<>();
 
         if (level == 1) {
-            questions = questionConceptService.getSubQuestionsLevel1(String.valueOf(questionConceptId), String.valueOf(answerConceptId), String.valueOf(surveyConceptId));
+            questions = surveyMetadataService.getSubQuestionsLevel1(String.valueOf(conceptId), String.valueOf(answerConceptId), String.valueOf(surveyConceptId));
         } else if (level == 2) {
-            questions = questionConceptService.getSubQuestionsLevel2(String.valueOf(answerConceptId));
+            questions = surveyMetadataService.getSubQuestionsLevel2(String.valueOf(answerConceptId));
         }
 
         List<String> questionIds = new ArrayList<>();
 
-        for(QuestionConcept qc: questions) {
+        for(SurveyMetadata qc: questions) {
             questionIds.add(String.valueOf(qc.getConceptId()));
         }
 
         List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), questionIds);
 
-        QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
+        SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
         questionResp.setItems(mapAnalysesToQuestions(surveyAnalysisList, questions));
 
         response.setQuestions(questionResp);
@@ -499,7 +499,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getFMHQuestions(Long surveyConceptId, List<String> questionConceptIds, String searchWord) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getFMHQuestions(Long surveyConceptId, List<String> conceptIds, String searchWord) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -509,14 +509,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         response.setSurvey(surveyModuleService.findByConceptId(surveyConceptId));
 
-        QuestionConceptListResponse questionResp = new QuestionConceptListResponse();
+        SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
 
         if (searchWord == null || searchWord.isEmpty()) {
             // Get all the questions\
-            questionResp.setItems(questionConceptService.getFMHQuestions(questionConceptIds));
+            questionResp.setItems(surveyMetadataService.getFMHQuestions(conceptIds));
         } else {
             // TODO Get only the matching questions
-            questionResp.setItems(questionConceptService.getMatchingFMHQuestions(questionConceptIds, searchWord));
+            questionResp.setItems(surveyMetadataService.getMatchingFMHQuestions(conceptIds, searchWord));
         }
 
         response.setQuestions(questionResp);
@@ -525,26 +525,26 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<QuestionConceptListResponse> getFMHSurveyQuestionResults(String questionConceptId, String answerConceptId) {
+    public ResponseEntity<SurveyMetadataListResponse> getFMHSurveyQuestionResults(String conceptId, String answerConceptId) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
-        QuestionConceptListResponse resp = new QuestionConceptListResponse();
+        SurveyMetadataListResponse resp = new SurveyMetadataListResponse();
 
-        List<QuestionConcept> subQuestions = questionConceptService.getSubQuestionsLevel1(questionConceptId, answerConceptId, "43528698");
+        List<SurveyMetadata> subQuestions = surveyMetadataService.getSubQuestionsLevel1(conceptId, answerConceptId, "43528698");
 
-        List<String> questionConceptIds = new ArrayList<>();
+        List<String> conceptIds = new ArrayList<>();
 
-        for(QuestionConcept q: subQuestions) {
-            questionConceptIds.add(String.valueOf(q.getConceptId()));
+        for(SurveyMetadata q: subQuestions) {
+            conceptIds.add(String.valueOf(q.getConceptId()));
         }
 
-        List<Analysis> analyses = achillesAnalysisService.findSurveyAnalysisResults("43528698", questionConceptIds);
+        List<Analysis> analyses = achillesAnalysisService.findSurveyAnalysisResults("43528698", conceptIds);
 
-        List<QuestionConcept> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions);
+        List<SurveyMetadata> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions);
 
         resp.setItems(mappedQuestions);
 
@@ -552,7 +552,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<AnalysisListResponse> getSurveyQuestionResults(Long surveyConceptId, Long questionConceptId, String questionPath) {
+    public ResponseEntity<AnalysisListResponse> getSurveyQuestionResults(Long surveyConceptId, Long conceptId, String questionPath) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -560,7 +560,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), String.valueOf(surveyConceptId), String.valueOf(questionConceptId), questionPath);
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), String.valueOf(surveyConceptId), String.valueOf(conceptId), questionPath);
         analysisListResponse.setItems(surveyAnalysisList);
 
         return ResponseEntity.ok(analysisListResponse);
@@ -600,13 +600,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<AnalysisListResponse> getSurveyQuestionCounts(String questionConceptId, String questionPath) {
+    public ResponseEntity<AnalysisListResponse> getSurveyQuestionCounts(String conceptId, String questionPath) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        List<Analysis> surveyQuestionCountList = achillesAnalysisService.findSurveyQuestionCounts(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID)), questionConceptId, questionPath);
+        List<Analysis> surveyQuestionCountList = achillesAnalysisService.findSurveyQuestionCounts(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID)), conceptId, questionPath);
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyQuestionCountList);
@@ -672,7 +672,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_ANALYSIS_ID)));
     }
 
-    public List<QuestionConcept> mapAnalysesToQuestions(List<Analysis> analyses, List<QuestionConcept> questions) {
+    public List<SurveyMetadata> mapAnalysesToQuestions(List<Analysis> analyses, List<SurveyMetadata> questions) {
         Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
         Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
@@ -750,7 +750,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         }
 
-        for(QuestionConcept q: questions) {
+        for(SurveyMetadata q: questions) {
             if (countAnalysis != null) {
                 Analysis ca = achillesMapper.makeCopyAnalysis(countAnalysis);
                 ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));

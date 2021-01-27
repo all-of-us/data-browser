@@ -9,7 +9,8 @@
 
     <validCheckSum>ANY</validCheckSum>
 
-    <loadData tableName="question_concept" file="csv/question_concept.csv" encoding="UTF-8" quotchar='"'>
+    <loadData tableName="survey_metadata" file="csv/survey_metadata.csv" encoding="UTF-8" quotchar='"'>
+      <column name="id" type="NUMERIC"/>
       <column name="concept_id" type="NUMERIC"/>
       <column name="concept_name" type="STRING"/>
       <column name="concept_code" type="STRING"/>
@@ -20,8 +21,9 @@
       <column name="path" type="STRING"/>
       <column name="is_parent_question" type="NUMERIC" />
       <column name="generate_counts" type="NUMERIC" />
-      <column name="question_order_number" type="NUMERIC" />
+      <column name="order_number" type="NUMERIC" />
       <column name="question_string" type="STRING" />
+      <column name="type" type="STRING" />
     </loadData>
 
   </changeSet>

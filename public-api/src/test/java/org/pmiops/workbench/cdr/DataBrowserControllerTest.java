@@ -25,7 +25,7 @@ import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.DomainInfoService;
-import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
+import org.pmiops.workbench.cdr.dao.SurveyMetadataDao;
 import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.AchillesMapperImpl;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -56,7 +56,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.SurveyModuleService;
-import org.pmiops.workbench.service.QuestionConceptService;
+import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 
 @RunWith(SpringRunner.class)
@@ -419,7 +419,7 @@ public class DataBrowserControllerTest {
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
     @Autowired
-    private QuestionConceptDao  questionConceptDao;
+    private SurveyMetadataDao  surveyMetadataDao;
     @Autowired
     private AchillesAnalysisDao achillesAnalysisDao;
     @Autowired
@@ -429,7 +429,7 @@ public class DataBrowserControllerTest {
     @PersistenceContext
     private EntityManager entityManager;
     @Mock private CdrVersionService cdrVersionService;
-    @Mock private QuestionConceptService questionConceptService;
+    @Mock private SurveyMetadataService surveyMetadataService;
     @Mock private AchillesResultDistService achillesResultDistService;
     @Mock private SurveyModuleService surveyModuleService;
     @Mock private DomainInfoService domainInfoService;
@@ -445,7 +445,7 @@ public class DataBrowserControllerTest {
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao,
-            cdrVersionService, domainInfoService, questionConceptService, surveyModuleService,
+            cdrVersionService, domainInfoService, surveyMetadataService, surveyModuleService,
                 achillesResultService, achillesAnalysisService);
     }
 
