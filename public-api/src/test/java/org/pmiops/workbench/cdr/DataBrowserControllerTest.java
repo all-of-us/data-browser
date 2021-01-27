@@ -680,12 +680,6 @@ public class DataBrowserControllerTest {
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_7);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_8);
 
-        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_6);
-        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_7);
-
-        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_8);
-        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_9);
-
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);
         achillesResultDao.save(ACHILLES_RESULT_3);
