@@ -25,7 +25,6 @@ import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.DomainInfoService;
-import org.pmiops.workbench.cdr.dao.SurveyMetadataDao;
 import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.AchillesMapperImpl;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -419,8 +418,6 @@ public class DataBrowserControllerTest {
     private CdrVersionDao cdrVersionDao;
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
-    @Autowired
-    private SurveyMetadataDao  surveyMetadataDao;
     @Autowired
     private AchillesAnalysisDao achillesAnalysisDao;
     @Autowired
