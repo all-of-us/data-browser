@@ -42,6 +42,7 @@ import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.Domain;
+import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.SurveyModule;
@@ -680,6 +681,12 @@ public class DataBrowserControllerTest {
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_7);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_8);
 
+        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_6);
+        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_7);
+
+        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_8);
+        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_9);
+
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);
         achillesResultDao.save(ACHILLES_RESULT_3);
@@ -732,9 +739,6 @@ public class DataBrowserControllerTest {
         achillesResultDao.delete(ACHILLES_RESULT_11);
         achillesResultDao.delete(ACHILLES_RESULT_12);
         achillesResultDao.delete(ACHILLES_RESULT_13);
-
-        ACHILLES_ANALYSIS_5.setResults(null);
-        ACHILLES_ANALYSIS_6.setResults(null);
 
         achillesAnalysisDao.delete(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.delete(ACHILLES_ANALYSIS_2);
