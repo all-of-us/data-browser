@@ -3,7 +3,6 @@ package org.pmiops.workbench.service;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.pmiops.workbench.model.SurveyMetadata;
-import org.pmiops.workbench.model.SurveySection;
 import org.pmiops.workbench.cdr.SurveyMetadataMapper;
 import org.pmiops.workbench.cdr.dao.SurveyMetadataDao;
 import java.util.List;
