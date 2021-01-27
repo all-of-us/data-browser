@@ -151,8 +151,8 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     return this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
       r => r.unitName === this.selectedConceptUnit)[0].results
       .sort((a, b) => {
-        return genderSort.indexOf(a.analysisStratumName) - 
-               genderSort.indexOf(b.analysisStratumName);
+        return genderSort.indexOf(a.analysisStratumName) -
+          genderSort.indexOf(b.analysisStratumName);
       });
   }
 
