@@ -21,7 +21,7 @@ import { ReactComponent } from './react.component';
     styleUrls: ['../../styles/template.css', './react.component.css'],
     encapsulation: ViewEncapsulation.None,
 })
-export class WrapperComponent implements OnChanges, OnDestroy, AfterViewInit {
+export class ReactWrapperComponent implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
 
     prop = {text:'sup'};

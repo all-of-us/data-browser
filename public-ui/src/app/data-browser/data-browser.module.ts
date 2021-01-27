@@ -30,9 +30,9 @@ import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
+import { ReactWrapperComponent } from './react/react.wrapper';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { WrapperComponent } from './react/react.wrapper';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -74,7 +74,7 @@ import { WrapperComponent } from './react/react.wrapper';
     CommonModule,
     ConceptChartsComponent,
     DbNoResultsComponent,
-    WrapperComponent,
+    ReactWrapperComponent,
     RecursiveTreeComponent,
     SourceTreeComponent,
     EhrViewComponent,
