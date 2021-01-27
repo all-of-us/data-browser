@@ -24,7 +24,7 @@ import org.pmiops.workbench.publicapi.client.model.CountAnalysis;
 import org.pmiops.workbench.publicapi.client.model.CriteriaListResponse;
 import org.pmiops.workbench.publicapi.client.model.CriteriaParentResponse;
 import org.pmiops.workbench.publicapi.client.model.DomainInfosAndSurveyModulesResponse;
-import org.pmiops.workbench.publicapi.client.model.QuestionConceptListResponse;
+import org.pmiops.workbench.publicapi.client.model.SurveyMetadataListResponse;
 import org.pmiops.workbench.publicapi.client.model.SearchConceptsRequest;
 import org.pmiops.workbench.publicapi.client.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.publicapi.client.model.SurveyVersionCountResponse;
@@ -175,7 +175,7 @@ public class DataBrowserApiTest {
     public void getFMHSurveyQuestionResultsTest() throws ApiException {
         String questionConceptId = null;
         String answerConceptId = null;
-        QuestionConceptListResponse response = api.getFMHSurveyQuestionResults(questionConceptId, answerConceptId);
+        SurveyMetadataListResponse response = api.getFMHSurveyQuestionResults(questionConceptId, answerConceptId);
 
         // TODO: test validations
     }
