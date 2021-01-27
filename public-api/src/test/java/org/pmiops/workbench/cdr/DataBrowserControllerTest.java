@@ -739,6 +739,8 @@ public class DataBrowserControllerTest {
         achillesResultDao.delete(ACHILLES_RESULT_12);
         achillesResultDao.delete(ACHILLES_RESULT_13);
 
+        ACHILLES_ANALYSIS_5.setResults(null);
+
         achillesAnalysisDao.delete(ACHILLES_ANALYSIS_1);
         achillesAnalysisDao.delete(ACHILLES_ANALYSIS_2);
         achillesAnalysisDao.delete(ACHILLES_ANALYSIS_3);
