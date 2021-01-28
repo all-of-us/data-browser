@@ -287,7 +287,7 @@
                   </div>
                 </div>
                 <ng-container *ngIf="r.graphToShow === graphType.Sources; else NonSourceCharts">
-                  <app-sources (exploreConcept)="exploreConcept.emit($event)" [ehrDomain]="ehrDomain"
+                  <app-sources (exploreConcept)="exploreConcept($event)" [ehrDomain]="ehrDomain"
                                [graphToShow]="r.graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r">
                   </app-sources>
                 </ng-container>
