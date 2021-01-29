@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
@@ -150,7 +150,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     }
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
     // if no domainObj or if the domain in the obj doesn't match the route
-    if (!domainObj || domainObj.domain.toLowerCase() !== this.domainId.toLowerCase()) {
+    if (!domainObj || domainObj.domain !== this.domainId) {
       this.getThisDomain();
     } else {
       this.setDomain();
@@ -160,10 +160,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     } else { this.showTopConcepts = true; }
     if (this.selectedConcept && this.selectedConcept.currentValue) {
        this.expandRow(this.selectedConcept, true);
-    }
-    if (localStorage.getItem('conceptExplore') === 'true') {
-       localStorage.removeItem('conceptExplore');
-       this.expandRow(JSON.parse(localStorage.getItem('selectedConcept')));
     }
     if (this.treeData && this.treeData.currentValue) {
        this.selectedConcept = JSON.parse(localStorage.getItem('selectedConcept'));
@@ -266,14 +262,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   public exploreConcept(e) {
     localStorage.setItem('selectedConceptCode', e.conceptId.toString());
     localStorage.setItem('selectedConcept', JSON.stringify(e));
-    localStorage.setItem('conceptExplore', 'true');
     this.router.navigate(
       [],
       {
         relativeTo: this.route,
-        queryParams: { search: e.conceptId },
-      }).then(() => {
-            window.location.reload();
+        queryParams: { search: e.conceptId }
       });
     // trigger the TreeData
     setTimeout(() => {
@@ -397,7 +390,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.selectedConcept = concept;
         setTimeout(() => { // wait till previous selected row shrinks
           this.scrollTo('#c' + this.selectedConcept.conceptId);
-        }, 10);
+        }, 1);
       }
       if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
         if (concept.measurementConceptInfo !== null &&
@@ -571,14 +564,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public clearSearch() {
     this.searchText.setValue('');
-    this.router.navigate(
-      ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
-      {
-        replaceUrl: true
-      }
-    ).then(() => {
-       window.location.reload();
-    });
   }
 
   loading() {
