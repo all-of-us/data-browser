@@ -13,7 +13,6 @@ export class SourcesComponent {
   @Input() treeData: any[];
   @Input() graphToShow: string;
   @Input() ehrDomain: any;
-  @Output() exploreConcept: EventEmitter<any> = new EventEmitter();
   treeConcept: any;
 
   constructor(

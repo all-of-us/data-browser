@@ -97,6 +97,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.searchFromUrl = params.search;
         this.prevSearchText = params.search;
         this.searchText.setValue(this.prevSearchText);
+        this.loadPage();
       } else {
         this.router.navigate(
           ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
@@ -181,7 +182,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       } else {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       }
-      this.dataLoadingStack.push(true);
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
         .subscribe({
           next: results => {
@@ -190,13 +190,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             if (this.selectedConcept && localStorage.getItem('fromDifferentPage') === 'true') {
                 this.expandRow(this.selectedConcept, true);
             }
-            this.dataLoadingStack.pop();
           },
           error: err => {
             const errorBody = JSON.parse(err._body);
             this.displayConceptErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
-            this.dataLoadingStack.pop();
           }
         });
       // Add value changed event to search when value changes
@@ -257,22 +255,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
                 });
               })
         );
-  }
-
-  public exploreConcept(e) {
-    localStorage.setItem('selectedConceptCode', e.conceptId.toString());
-    localStorage.setItem('selectedConcept', JSON.stringify(e));
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.route,
-        queryParams: { search: e.conceptId }
-      });
-    // trigger the TreeData
-    setTimeout(() => {
-      this.treeData = [1];
-      this.selectedConcept = e;
-    }, 2000);
   }
 
   public getNumberOfPages(query: string) {
@@ -410,6 +392,10 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.searchResult.items = this.searchResult.items.filter(
       x => this.dbc.PM_CONCEPTS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
+    if (this.items.length === 1) {
+        console.log(this.items[0].conceptId);
+        this.expandRow(this.items[0], true);
+    }
     this.items = this.items.sort((a, b) => {
       if (a.countValue > b.countValue) {
         return -1;
