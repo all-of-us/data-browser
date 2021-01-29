@@ -393,7 +393,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       x => this.dbc.PM_CONCEPTS.indexOf(x.conceptId) === -1);
     this.items = this.searchResult.items;
     if (this.items.length === 1) {
-        console.log(this.items[0].conceptId);
         this.expandRow(this.items[0], true);
     }
     this.items = this.items.sort((a, b) => {
