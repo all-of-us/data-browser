@@ -6,7 +6,7 @@ import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import {
-  AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, QuestionConcept,
+  AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, SurveyMetadata,
   SurveyModule
 } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -543,7 +543,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loadPage();
   }
 
-  public changeAutoInsertText(q: QuestionConcept) {
+  public changeAutoInsertText(q: SurveyMetadata) {
     if (q.conceptId === 1585704) {
       q.conceptName = q.conceptName.replace('[INSERT LANGUAGE FROM SU01j]', '');
     }

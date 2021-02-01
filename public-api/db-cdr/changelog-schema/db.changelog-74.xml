@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-74">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="survey_metadata"/>
+      </not>
+    </preConditions>
+    <createTable tableName="survey_metadata">
+      <column name="id" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="concept_id" type="INTEGER">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="concept_name" type="VARCHAR(1000)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="concept_code" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="survey_name" type="VARCHAR(200)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="survey_concept_id" type="INTEGER">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="count_value" type="BIGINT" defaultValue="0">
+        <constraints nullable="true"/>
+      </column>
+      <column name="sub" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="path" type="varchar(500)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="is_parent_question" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="generate_counts" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="order_number" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="question_string" type="varchar(2000)">
+      </column>
+      <column name="type" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

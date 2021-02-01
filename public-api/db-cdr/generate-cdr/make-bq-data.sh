@@ -82,7 +82,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info question_concept)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata)
 
 for t in "${create_tables[@]}"
 do
@@ -93,7 +93,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata question_concept)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata survey_metadata)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -200,14 +200,14 @@ fi
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(path, '.')[OFFSET(1)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` where ARRAY_LENGTH(SPLIT(path, '.')) = 3 and generate_counts=1) b
+from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(path, '.')[OFFSET(1)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where ARRAY_LENGTH(SPLIT(path, '.')) = 3 and generate_counts=1) b
 where a.stratum_2=b.qid
 and a.stratum_3=b.aid and a.analysis_id=3110 and a.stratum_3 not in ('43529842', '43528385', '43529574')"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid1, SPLIT(path, '.')[OFFSET(1)] aid1, SPLIT(path, '.')[OFFSET(2)] as qid2, SPLIT(path, '.')[OFFSET(3)] as aid2 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` where ARRAY_LENGTH(SPLIT(path, '.')) = 5 and generate_counts=1) b
+from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid1, SPLIT(path, '.')[OFFSET(1)] aid1, SPLIT(path, '.')[OFFSET(2)] as qid2, SPLIT(path, '.')[OFFSET(3)] as aid2 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where ARRAY_LENGTH(SPLIT(path, '.')) = 5 and generate_counts=1) b
 where a.stratum_2=b.qid2 and a.stratum_3=b.aid2
 and a.stratum_6=CONCAT(qid1, '.', aid1, '.', qid2)
 and a.analysis_id=3110 and a.stratum_3 not in ('43529842', '43528385', '43529574')"
@@ -330,7 +330,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
 (select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` cr
+from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
 on ob.observation_source_concept_id=cr.concept_id
 where cr.concept_id not in (1384403, 43529654, 43528428)
 group by survey_concept_id,cr.concept_id)
@@ -342,7 +342,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 set sm.question_count=num_questions from
 (select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
-\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` sq
+\`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` sq
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
 group by survey_concept_id)
@@ -426,7 +426,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set c.concept_name=sqm.concept_name
 from  (select distinct concept_id , concept_name
-from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.question_concept\` where generate_counts = 1 group by 1,2) as sqm
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_metadata\` where generate_counts = 1 group by 1,2) as sqm
 where c.concept_id = sqm.concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -489,9 +489,9 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
  when 43529170 then 'Other Conditions: Liver Condition' else concept_name end where concept_id in (1384639, 43528761, 43529170, 43529638);"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` q
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` q
 SET q.question_string = t2.qs
-FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.question_concept\` AS q2 INNER JOIN (
+FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS q2 INNER JOIN (
 SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
 GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6

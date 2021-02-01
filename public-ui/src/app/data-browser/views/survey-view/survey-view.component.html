@@ -72,7 +72,9 @@
             </div>
           </div>
           <div class="survey-results" *ngIf="questionFetchComplete">
-            <div class="question-result" *ngFor="let q of questions, let i = index">
+            <ng-container *ngFor="let q of questions, let i = index">
+              <ng-container *ngIf="q.type === 'QUESTION';else topic">
+                <div class="question-result">
               <div class="secondary-display">
                 <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
                   <app-highlight-search style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
@@ -92,12 +94,12 @@
                                [action]="'Survey Page Tooltip'"></app-tooltip>
                 </div>
               </div>
-              <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                (click)="toggleAnswer(q, 'display', 0)">
-                See Answers
-                <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
-                <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
-              </a>
+                <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
+                   (click)="toggleAnswer(q, 'display', 0)">
+                  See Answers
+                  <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
+                  <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
+                </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
                 <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
                 <div class="survey-tbl">
@@ -455,8 +457,12 @@
                     </div>
                   </div>
                 </div>
+              </ng-container></div>
               </ng-container>
-            </div>
+              <ng-template #topic>
+                <h3 class="topic-text">{{q.questionString}}</h3>
+              </ng-template>
+            </ng-container>
             <hr *ngIf="questions.length > 0 && surveyConceptId === 43528698">
             <app-fmh-view [searchText]="searchText" *ngIf="surveyConceptId === 43528698"
               [participantCount]="survey.participantCount" [surveyName]="survey.name"

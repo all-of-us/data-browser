@@ -406,7 +406,7 @@ paths:
         200:
           description: A collection of questions
           schema:
-            $ref: "#/definitions/QuestionConceptListResponse"
+            $ref: "#/definitions/SurveyMetadataListResponse"
 
   /v1/databrowser/survey-question-results:
     get:
@@ -593,7 +593,7 @@ definitions:
       questions:
         description: survey questions
         type: object
-        $ref: "#/definitions/QuestionConceptListResponse"
+        $ref: "#/definitions/SurveyMetadataListResponse"
       survey:
         $ref: "#/definitions/SurveyModule"
 
@@ -605,7 +605,7 @@ definitions:
       questions:
         description: survey questions
         type: object
-        $ref: "#/definitions/QuestionConceptListResponse"
+        $ref: "#/definitions/SurveyMetadataListResponse"
 
   SurveyVersionCountResponse:
     type: object
@@ -721,7 +721,7 @@ definitions:
         description: parent row
         $ref: "#/definitions/CBCriteria"
 
-  QuestionConcept:
+  SurveyMetadata:
     type: object
     required:
       - conceptId
@@ -729,6 +729,10 @@ definitions:
       - surveyName
 
     properties:
+      id:
+        description: id of each row
+        type: integer
+        format: int64
       conceptId:
         description: id of the concept
         type: integer
@@ -761,12 +765,15 @@ definitions:
         description: flag to indicate if the question is parent question
         type: integer
         format: int32
-      questionOrderNumber:
+      orderNumber:
         description: question order number
         type: integer
         format: int32
       questionString:
         description: question string
+        type: string
+      type:
+        description: type of survey data
         type: string
       countAnalysis:
         description: count analysis
@@ -781,7 +788,7 @@ definitions:
         description: version analysis
         $ref: "#/definitions/Analysis"
 
-  QuestionConceptListResponse:
+  SurveyMetadataListResponse:
     type: object
     required:
       - items
@@ -789,7 +796,7 @@ definitions:
       items:
         type: array
         items:
-          $ref: "#/definitions/QuestionConcept"
+          $ref: "#/definitions/SurveyMetadata"
 
   AchillesResult:
     type: object
