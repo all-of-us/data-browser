@@ -1,0 +1,155 @@
+version: "3.4"
+
+# x- indicates an "extension", so docker-compose will ignore the attribute. The
+# name is not important, it's just the necessary syntax to create a YAML anchor
+# for reuse across the below services.
+x-api-defaults: &api-defaults
+  # This image label exists for documentation purposes only, e.g. to identify
+  # it via `docker images`. We do not actually push this image up to DockerHub.
+  # Since docker-compose should never find this image remotely, it will rebuild
+  # it from the provided build context or use a cached local version.
+  # When making changes to this image, you can modify this tag to force all devs
+  # to rebuild.
+  image: allofustest/workbench-dev-api:local-3
+  build:
+    context: ./src/dev/server
+  user: ${UID}
+  working_dir: /w/api
+  environment:
+    - GOOGLE_APPLICATION_CREDENTIALS=/w/public-api/sa-key.json
+  env_file:
+    - db/vars.env
+  volumes:
+    - src-sync:/w:nocopy
+    - gradle-cache:/.gradle
+    - ~/.config:/.config:cached
+    - ~/.gsutil:/.gsutil:cached
+
+services:
+  scripts:
+    <<: *api-defaults
+  db:
+    image: mysql:5.7
+    env_file:
+      - db/vars.env
+    volumes:
+      - db:/var/lib/mysql
+  public-api:
+    <<: *api-defaults
+    command: gradle :appengineRun
+    ports:
+      - 127.0.0.1:8083:8083
+      - 127.0.0.1:8084:8002
+  db-migration:
+    <<: *api-defaults
+    depends_on:
+      - db
+    command: wait-for db:3306 -- ./run-migrations.sh main
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-public-migration:
+    <<: *api-defaults
+    depends_on:
+      - db
+    command: wait-for db:3306 -- ./generate-cdr/init-new-cdr-db.sh --cdr-db-name public
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-public-data-migration:
+      <<: *api-defaults
+      depends_on:
+        - db
+      command: wait-for db:3306 -- ./generate-cdr/init-new-cdr-db.sh --cdr-db-name public --run-list data --context local
+      environment:
+        - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-generate-public-cdr-counts:
+    <<: *api-defaults
+    depends_on:
+      - db
+    entrypoint: ["./generate-cdr/generate-public-cdr-counts.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-generate-cloudsql-db:
+    <<: *api-defaults
+    depends_on:
+      - db
+    entrypoint: ["./generate-cdr/generate-cloudsql-db.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-generate-local-cdr-db:
+    <<: *api-defaults
+    depends_on:
+      - db
+    entrypoint: ["./generate-cdr/generate-local-cdr-db.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-generate-local-count-dbs:
+    <<: *api-defaults
+    depends_on:
+      - db
+    entrypoint: ["./generate-cdr/generate-local-count-dbs.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-mysqldump-local-db:
+    <<: *api-defaults
+    depends_on:
+      - db
+    entrypoint: ["./generate-cdr/make-mysqldump.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-cloudsql-import:
+    <<: *api-defaults
+    entrypoint: ["./generate-cdr/cloudsql-import.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  db-local-mysql-import:
+    <<: *api-defaults
+    entrypoint: ["./generate-cdr/local-mysql-import.sh"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
+
+  drop-cdr-db:
+    <<: *api-defaults
+    command: wait-for db:3306 -- ./run-drop-db.sh
+
+  cloud-sql-proxy:
+    <<: *api-defaults
+    command: |
+      cloud_sql_proxy
+        -instances all-of-us-db-test:us-central1:databrowsermaindb=tcp:0.0.0.0:3307
+        -credential_file=/w/sa-key.json
+  mysql-cloud:
+    <<: *api-defaults
+    depends_on:
+      - cloud-sql-proxy
+    image: mysql:5.7
+    user: ${UID}
+    working_dir: /w
+    volumes:
+      - .:/w:cached
+    entrypoint: mysql --host=cloud-sql-proxy --port=3307
+
+  update-config:
+    <<: *api-defaults
+    depends_on:
+      - db
+    entrypoint: wait-for db:3306 -- ./gradlew :tools:loadConfig
+
+  update-cdr-versions:
+      <<: *api-defaults
+      depends_on:
+        - db
+      entrypoint: wait-for db:3306 -- ./gradlew :tools:updateCdrVersions
+
+volumes:
+  db:
+  gradle-cache:
+  gradle-public-api-cache:
