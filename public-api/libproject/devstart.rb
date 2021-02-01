@@ -109,8 +109,17 @@ end
 
 def ensure_docker(cmd_name, args)
   unless Workbench.in_docker?
+    ensure_docker_sync()
     exec(*(%W{docker-compose run --rm scripts ./project.rb #{cmd_name}} + args))
   end
+end
+
+def ensure_docker_sync()
+  common = Common.new
+  at_exit do
+    common.run_inline %W{docker-sync stop}
+  end
+  common.run_inline %W{docker-sync start}
 end
 
 # exec against a live local API server - used for script access to a local API
@@ -167,6 +176,9 @@ def dev_up()
   end
 
   at_exit { common.run_inline %W{docker-compose down} }
+
+  ensure_docker_sync()
+
   common.status "Starting database..."
   common.run_inline %W{docker-compose up -d db}
   common.status "Running database migrations..."

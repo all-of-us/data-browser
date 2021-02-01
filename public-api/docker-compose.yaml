@@ -24,6 +24,7 @@ x-api-defaults: &api-defaults
     - gradle-cache:/.gradle
     - ~/.config:/.config:cached
     - ~/.gsutil:/.gsutil:cached
+    - db-sync:/w:nocopy
 services:
   scripts:
     <<: *api-defaults
@@ -285,3 +286,5 @@ volumes:
   db:
   gradle-cache:
   gradle-public-api-cache:
+  db-sync:
+    external: true

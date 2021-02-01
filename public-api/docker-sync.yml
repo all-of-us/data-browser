@@ -1,0 +1,32 @@
+version: "2"
+options:
+  verbose: true
+syncs:
+  #IMPORTANT: ensure this name is unique and does not match your other application container name
+  db-sync: #tip: add -sync and you keep consistent names as a convention
+    src: '..'
+    dest: 'cached'
+    host_disk_mount_mode: 'cached' # see https://docs.docker.com/docker-for-mac/osxfs-caching/#cached
+    # See http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#ignore for the excludes syntax.
+    sync_excludes: [
+      '.gradle',
+      '.idea',
+      'public-api/build',
+      'public-api/out',
+      'public-api/src/generated',
+      'node_modules',
+      'tsc-app',
+      'tsc-out',
+      'public-ui/coverage',
+      'public-ui/dist',
+      'public-ui/src/generated'
+    ]
+    # For AoU, we need docker-sync to write files with the same userid used by the container. We have
+    # other machinery that causes our Docker containers to run as the host userid. Using the 'from_host'
+    # option here causes docker-sync to do the same.
+    sync_userid: 'from_host'
+    sync_user: 'from_host'
+    sync_groupid: 'from_host'
+    sync_group: 'from_host'
+    sync_host_ip: 'localhost'
+    sync_host_port: 10872
