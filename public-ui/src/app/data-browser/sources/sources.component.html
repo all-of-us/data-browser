@@ -7,7 +7,7 @@
           <p><strong>{{treeConcept.conceptName}}</strong></p>
           <p>{{concept.vocabularyId}} Code: {{treeConcept.conceptCode}}</p>
           <p>OMOP Concept Id: {{treeConcept.conceptId}}</p>
-          <a [routerLink]="['/ehr/' + ehrDomain.name.toLowerCase()]" [queryParams]="{search:treeConcept.conceptId}"
+          <a [routerLink]="['/ehr/' + ehrDomain.name.toLowerCase()]" [queryParams]="{search:treeConcept.conceptId, explore: 'true'}"
             class="explore" *ngIf="treeConcept.explorable">Explore this
             concept.</a>
         </ng-container>
