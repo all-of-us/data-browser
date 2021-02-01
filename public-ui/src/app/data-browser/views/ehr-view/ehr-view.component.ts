@@ -97,7 +97,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.searchFromUrl = params.search;
         this.prevSearchText = params.search;
         this.searchText.setValue(this.prevSearchText);
-        if (params["explore"] && params['explore'] === 'true') {
+        if (params['explore'] && params['explore'] === 'true') {
             this.loadPage();
         }
       } else {
