@@ -223,7 +223,6 @@ def setup_local_environment()
 end
 
 def run_local_migrations()
-  ensure_docker_sync()
   setup_local_environment
   # Runs migrations against the local database.
   common = Common.new
