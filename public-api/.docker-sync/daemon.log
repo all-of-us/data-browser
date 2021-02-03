@@ -1,0 +1,217 @@
+          ok  Starting native_osx for sync db-sync
+          ok  db-sync container still running, restarting unison in container
+unison: stopped
+unison: started
+     success  Sync container started
+     success  Showing unison logs from your sync container: db-sync
+[2021-02-02 13:18:20 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:18:19.25 on 02 Feb 2021
+[2021-02-02 13:18:20 -0600] Sync Log:  [BGN] Copying public-api/.docker-sync/daemon.log from /host_sync to /app_sync
+[2021-02-02 13:18:20 -0600] Sync Log:  [END] Copying public-api/.docker-sync/daemon.log
+[2021-02-02 13:18:20 -0600] Sync Log:  [BGN] Copying public-api/.docker-sync/daemon.pid from /host_sync to /app_sync
+[2021-02-02 13:18:20 -0600] Sync Log:  [END] Copying public-api/.docker-sync/daemon.pid
+[2021-02-02 13:18:20 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:18:19.25 on 02 Feb 2021
+[2021-02-02 13:18:20 -0600] Sync Log:  Synchronization complete at 13:18:19  (2 items transferred, 0 skipped, 0 failed)
+          ok  Starting native_osx for sync db-sync
+          ok  db-sync container still running, restarting unison in container
+unison: stopped
+unison: started
+     success  Sync container started
+     success  Showing unison logs from your sync container: db-sync
+[2021-02-02 14:03:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:03:27.56 on 02 Feb 2021
+[2021-02-02 14:03:27 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.log from /host_sync to /app_sync
+[2021-02-02 14:03:28 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.log
+[2021-02-02 14:03:28 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.pid from /host_sync to /app_sync
+[2021-02-02 14:03:28 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.pid
+[2021-02-02 14:03:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:03:27.58 on 02 Feb 2021
+[2021-02-02 14:03:28 -0600] Sync Log:  Synchronization complete at 14:03:27  (2 items transferred, 0 skipped, 0 failed)
+[2021-02-02 14:03:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:03:28.64 on 02 Feb 2021
+[2021-02-02 14:03:29 -0600] Sync Log:  [BGN] Copying db from /app_sync to /host_sync
+[2021-02-02 14:03:29 -0600] Sync Log:  [END] Copying db
+[2021-02-02 14:03:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:03:28.69 on 02 Feb 2021
+[2021-02-02 14:03:29 -0600] Sync Log:  Synchronization complete at 14:03:28  (1 item transferred, 0 skipped, 0 failed)
+          ok  Starting native_osx for sync db-sync
+          ok  db-sync container still running, restarting unison in container
+unison: stopped
+unison: started
+     success  Sync container started
+     success  Showing unison logs from your sync container: db-sync
+[2021-02-02 14:10:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:10:45.67 on 02 Feb 2021
+[2021-02-02 14:10:46 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.log from /host_sync to /app_sync
+[2021-02-02 14:10:46 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.log
+[2021-02-02 14:10:46 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.pid from /host_sync to /app_sync
+[2021-02-02 14:10:46 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.pid
+[2021-02-02 14:10:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:10:45.67 on 02 Feb 2021
+[2021-02-02 14:10:46 -0600] Sync Log:  Synchronization complete at 14:10:45  (2 items transferred, 0 skipped, 0 failed)
+[2021-02-02 14:11:03 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:11:03.09 on 02 Feb 2021
+[2021-02-02 14:11:03 -0600] Sync Log:  [BGN] Updating file public-api/docker-compose.yaml from /host_sync to /app_sync
+[2021-02-02 14:11:03 -0600] Sync Log:  [END] Updating file public-api/docker-compose.yaml
+[2021-02-02 14:11:03 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:11:03.09 on 02 Feb 2021
+[2021-02-02 14:11:03 -0600] Sync Log:  Synchronization complete at 14:11:03  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-02 14:11:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:11:41.56 on 02 Feb 2021
+[2021-02-02 14:11:42 -0600] Sync Log:  [BGN] Updating file public-api/docker-compose.yaml from /host_sync to /app_sync
+[2021-02-02 14:11:42 -0600] Sync Log:  [END] Updating file public-api/docker-compose.yaml
+[2021-02-02 14:11:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:11:41.56 on 02 Feb 2021
+[2021-02-02 14:11:42 -0600] Sync Log:  Synchronization complete at 14:11:41  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-02 14:58:45 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:58:45.33 on 02 Feb 2021
+[2021-02-02 14:58:45 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv from /host_sync to /app_sync
+[2021-02-02 14:58:45 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv
+[2021-02-02 14:58:45 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:58:45.34 on 02 Feb 2021
+[2021-02-02 14:58:45 -0600] Sync Log:  Synchronization complete at 14:58:45  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-02 14:58:49 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:58:48.91 on 02 Feb 2021
+[2021-02-02 14:58:49 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_analysis.csv from /host_sync to /app_sync
+[2021-02-02 14:58:49 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_analysis.csv
+[2021-02-02 14:58:49 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_2.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:49 -0600] Sync Log:  Failed: The source file /host_sync/public-api/db-cdr/csv/achilles_results_2.csv_.gstmp
+[2021-02-02 14:58:49 -0600] Sync Log:  has been modified during synchronization.  Transfer aborted.
+[2021-02-02 14:58:49 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_3.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:49 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_results_3.csv_.gstmp
+[2021-02-02 14:58:49 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:58:48.94 on 02 Feb 2021
+[2021-02-02 14:58:49 -0600] Sync Log:  Synchronization incomplete at 14:58:48  (2 items transferred, 0 skipped, 1 failed)
+[2021-02-02 14:58:49 -0600] Sync Log:    failed: public-api/db-cdr/csv/achilles_results_2.csv_.gstmp
+[2021-02-02 14:58:50 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:58:50.52 on 02 Feb 2021
+[2021-02-02 14:58:50 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_2.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  Failed: The source file /host_sync/public-api/db-cdr/csv/achilles_results_2.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  has been modified during synchronization.  Transfer aborted.
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_attribute.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_attribute.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_attribute_categorical.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  Failed: The source file /host_sync/public-api/db-cdr/csv/cb_criteria_attribute_categorical.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  has been modified during synchronization.  Transfer aborted.
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_drug.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_drug.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_person.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  Failed: Error in copying locally:
+[2021-02-02 14:58:51 -0600] Sync Log:  /host_sync/public-api/db-cdr/csv/cb_criteria_person.csv_.gstmp: No such file or directory
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_person_demo.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_person_demo.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_physical_measurement.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_physical_measurement.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_survey.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_survey.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_visit.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_visit.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/concept.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/concept.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/concept_relationship.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  Failed: The source file /host_sync/public-api/db-cdr/csv/concept_relationship.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  has been modified during synchronization.  Transfer aborted.
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/domain.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/domain.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/domain_info.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/domain_info.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/measurement_concept_info.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  Failed: Error in copying locally:
+[2021-02-02 14:58:51 -0600] Sync Log:  /host_sync/public-api/db-cdr/csv/measurement_concept_info.csv_.gstmp: No such file or directory
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/survey_metadata.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  Failed: The source file /host_sync/public-api/db-cdr/csv/survey_metadata.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  has been modified during synchronization.  Transfer aborted.
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/survey_module.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/survey_module.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/survey_sections.csv from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/survey_sections.csv
+[2021-02-02 14:58:51 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/vocabulary.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:51 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/vocabulary.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:58:50.82 on 02 Feb 2021
+[2021-02-02 14:58:51 -0600] Sync Log:  Synchronization incomplete at 14:58:50  (12 items transferred, 0 skipped, 6 failed)
+[2021-02-02 14:58:51 -0600] Sync Log:    failed: public-api/db-cdr/csv/achilles_results_2.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:    failed: public-api/db-cdr/csv/cb_criteria_attribute_categorical.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:    failed: public-api/db-cdr/csv/cb_criteria_person.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:    failed: public-api/db-cdr/csv/concept_relationship.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:    failed: public-api/db-cdr/csv/measurement_concept_info.csv_.gstmp
+[2021-02-02 14:58:51 -0600] Sync Log:    failed: public-api/db-cdr/csv/survey_metadata.csv_.gstmp
+[2021-02-02 14:58:52 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:58:52.10 on 02 Feb 2021
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_dist.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_results_dist.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_ancestor.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_ancestor.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_attribute_categorical.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_attribute_categorical.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_person.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_person.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_person_demo.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_person_demo.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/concept_relationship.csv_.gstmp from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  Failed: The source file /host_sync/public-api/db-cdr/csv/concept_relationship.csv_.gstmp
+[2021-02-02 14:58:52 -0600] Sync Log:  has been modified during synchronization.  Transfer aborted.
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/domain_vocabulary_info.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/domain_vocabulary_info.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/measurement_concept_info.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/measurement_concept_info.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/question_concept.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/question_concept.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/survey_metadata.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/survey_metadata.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/survey_question_map.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/survey_question_map.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/vocabulary.csv from /host_sync to /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/vocabulary.csv
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/cb_criteria_person_demo.csv_.gstmp from /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/cb_criteria_person_demo.csv_.gstmp
+[2021-02-02 14:58:52 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/vocabulary.csv_.gstmp from /app_sync
+[2021-02-02 14:58:52 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/vocabulary.csv_.gstmp
+[2021-02-02 14:58:52 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:58:52.23 on 02 Feb 2021
+[2021-02-02 14:58:52 -0600] Sync Log:  Synchronization incomplete at 14:58:52  (13 items transferred, 0 skipped, 1 failed)
+[2021-02-02 14:58:52 -0600] Sync Log:    failed: public-api/db-cdr/csv/concept_relationship.csv_.gstmp
+[2021-02-02 14:59:02 -0600] Sync Log:  Synchronization complete at 14:59:02  (0 item transferred, 1 skipped, 0 failed)
+[2021-02-02 14:59:02 -0600] Sync Log:    skipped: public-api/db-cdr/csv/achilles_results_2.csv_.gstmp (Failed to fingerprint file "/host_sync/public-api/db-cdr/csv/achilles_results_2.csv_.gstmp": the file keeps on changing)
+[2021-02-02 14:59:04 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:59:04.56 on 02 Feb 2021
+[2021-02-02 14:59:04 -0600] Sync Log:  [ERROR] Skipping public-api/db-cdr/csv/concept_relationship.csv_.gstmp
+[2021-02-02 14:59:04 -0600] Sync Log:    Failed to fingerprint file "/host_sync/public-api/db-cdr/csv/concept_relationship.csv_.gstmp": the file keeps on changing
+[2021-02-02 14:59:04 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_drug.csv from /host_sync to /app_sync
+[2021-02-02 14:59:04 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_drug.csv
+[2021-02-02 14:59:04 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_measurement.csv from /host_sync to /app_sync
+[2021-02-02 14:59:04 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_measurement.csv
+[2021-02-02 14:59:04 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_relationship.csv from /host_sync to /app_sync
+[2021-02-02 14:59:06 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_relationship.csv
+[2021-02-02 14:59:06 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/cb_criteria_drug.csv_.gstmp from /app_sync
+[2021-02-02 14:59:06 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/cb_criteria_drug.csv_.gstmp
+[2021-02-02 14:59:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:59:04.71 on 02 Feb 2021
+[2021-02-02 14:59:06 -0600] Sync Log:  Synchronization complete at 14:59:04  (4 items transferred, 1 skipped, 0 failed)
+[2021-02-02 14:59:06 -0600] Sync Log:    skipped: public-api/db-cdr/csv/concept_relationship.csv_.gstmp (Failed to fingerprint file "/host_sync/public-api/db-cdr/csv/concept_relationship.csv_.gstmp": the file keeps on changing)
+[2021-02-02 14:59:26 -0600] Sync Log:  Synchronization complete at 14:59:26  (0 item transferred, 2 skipped, 0 failed)
+[2021-02-02 14:59:26 -0600] Sync Log:    skipped: public-api/db-cdr/csv/achilles_results_3.csv_.gstmp (Failed to fingerprint file "/host_sync/public-api/db-cdr/csv/achilles_results_3.csv_.gstmp": the file keeps on changing)
+[2021-02-02 14:59:26 -0600] Sync Log:    skipped: public-api/db-cdr/csv/concept_relationship.csv_.gstmp (Error in digesting /host_sync/public-api/db-cdr/csv/concept_relationship.csv_.gstmp:
+[2021-02-02 14:59:26 -0600] Sync Log:  /host_sync/public-api/db-cdr/csv/concept_relationship.csv_.gstmp: No such file or directory)
+[2021-02-02 14:59:32 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:59:32.24 on 02 Feb 2021
+[2021-02-02 14:59:32 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_1.csv from /host_sync to /app_sync
+[2021-02-02 14:59:32 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_results_1.csv
+[2021-02-02 14:59:32 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_2.csv from /host_sync to /app_sync
+[2021-02-02 14:59:33 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_results_2.csv
+[2021-02-02 14:59:33 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_3.csv from /host_sync to /app_sync
+[2021-02-02 14:59:33 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_results_3.csv
+[2021-02-02 14:59:33 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/achilles_results_4.csv from /host_sync to /app_sync
+[2021-02-02 14:59:33 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/achilles_results_4.csv
+[2021-02-02 14:59:33 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_condition.csv from /host_sync to /app_sync
+[2021-02-02 14:59:33 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_condition.csv
+[2021-02-02 14:59:33 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/cb_criteria_procedure.csv from /host_sync to /app_sync
+[2021-02-02 14:59:33 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/cb_criteria_procedure.csv
+[2021-02-02 14:59:33 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/concept.csv from /host_sync to /app_sync
+[2021-02-02 14:59:34 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/concept.csv
+[2021-02-02 14:59:34 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/concept_relationship.csv from /host_sync to /app_sync
+[2021-02-02 14:59:34 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/concept_relationship.csv
+[2021-02-02 14:59:34 -0600] Sync Log:  [BGN] Copying public-api/db-cdr/csv/concept_synonym.csv from /host_sync to /app_sync
+[2021-02-02 14:59:34 -0600] Sync Log:  [END] Copying public-api/db-cdr/csv/concept_synonym.csv
+[2021-02-02 14:59:34 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/achilles_results_3.csv_.gstmp from /app_sync
+[2021-02-02 14:59:34 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/achilles_results_3.csv_.gstmp
+[2021-02-02 14:59:34 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/concept.csv_.gstmp from /app_sync
+[2021-02-02 14:59:34 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/concept.csv_.gstmp
+[2021-02-02 14:59:34 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:59:34.01 on 02 Feb 2021
+[2021-02-02 14:59:34 -0600] Sync Log:  Synchronization complete at 14:59:34  (11 items transferred, 0 skipped, 0 failed)
+[2021-02-02 15:16:36 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:16:35.92 on 02 Feb 2021
+[2021-02-02 15:16:36 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/achilles_analysis.csv from /app_sync
+[2021-02-02 15:16:36 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/achilles_analysis.csv
+[2021-02-02 15:16:36 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/achilles_results_1.csv from /app_sync
+[2021-02-02 15:16:37 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/achilles_results_1.csv
+[2021-02-02 15:16:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:16:37.55 on 02 Feb 2021
+[2021-02-02 15:16:37 -0600] Sync Log:  Synchronization complete at 15:16:37  (2 items transferred, 0 skipped, 0 failed)
+[2021-02-02 15:16:38 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:16:38.63 on 02 Feb 2021
+[2021-02-02 15:16:38 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/achilles_results_2.csv from /app_sync
+[2021-02-02 15:16:40 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/achilles_results_2.csv
+[2021-02-02 15:16:40 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/achilles_results_3.csv from /app_sync
+[2021-02-02 15:16:42 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/achilles_results_3.csv
+[2021-02-02 15:16:42 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv/achilles_results_4.csv from /app_sync
+[2021-02-02 15:16:43 -0600] Sync Log:  [END] Deleting public-api/db-cdr/csv/achilles_results_4.csv
+[2021-02-02 15:16:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:16:43.36 on 02 Feb 2021
+[2021-02-02 15:16:43 -0600] Sync Log:  Synchronization complete at 15:16:43  (3 items transferred, 0 skipped, 0 failed)
+[2021-02-02 15:16:44 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:16:44.40 on 02 Feb 2021
+[2021-02-02 15:16:44 -0600] Sync Log:  [BGN] Deleting public-api/db-cdr/csv from /app_sync
