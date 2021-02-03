@@ -90,6 +90,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
     this.route.queryParams.subscribe(params => {
+      console.log("++++ here ??? ++++");
       if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === 'true') {
         this.currentPage = 1;
       }
@@ -99,6 +100,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.searchText.setValue(this.prevSearchText);
         if (params['explore'] && params['explore'] === 'true') {
             this.loadPage();
+        } else {
+            console.log('did i change here ?');
         }
       } else {
         this.router.navigate(
@@ -142,15 +145,34 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public loadPage() {
     this.items = [];
-    // Get search text from localStorage
+        // Get search text from localStorage
     if (!this.prevSearchText) {
-      if (this.searchFromUrl) {
-        this.prevSearchText = this.searchFromUrl;
-      } else {
-        this.prevSearchText = '';
-        this.prevSearchText = localStorage.getItem('searchText');
-      }
+          if (this.searchFromUrl) {
+            this.prevSearchText = this.searchFromUrl;
+          } else {
+            this.prevSearchText = '';
+            this.prevSearchText = localStorage.getItem('searchText');
+          }
     }
+    this.searchText.valueChanges.pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        switchMap((query) => this.searchDomain(query)))
+        .subscribe({
+          next: results => {
+            this.searchCallback(results);
+            this.displayConceptErrorMessage = false;
+            localStorage.setItem('searchText', this.searchText.value === null ?
+            '' : this.searchText.value);
+          },
+          error: err => {
+            console.log('Error searching: ', err);
+            const errorBody = JSON.parse(err._body);
+            this.displayConceptErrorMessage = true;
+            console.log('Error searching: ', errorBody.message);
+            this.toggleTopConcepts();
+          }
+    });
     const domainObj = JSON.parse(localStorage.getItem('ehrDomain'));
     // if no domainObj or if the domain in the obj doesn't match the route
     if (!domainObj || domainObj.domain !== this.domainId) {
@@ -199,31 +221,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             console.log('Error searching: ', errorBody.message);
           }
         });
-      // Add value changed event to search when value changes
-      this.subscriptions.push(this.searchText.valueChanges.pipe(
-        debounceTime(1000),
-        distinctUntilChanged(),
-        switchMap((query) => this.searchDomain(query)))
-        .subscribe({
-          next: results => {
-            this.searchCallback(results);
-            this.displayConceptErrorMessage = false;
-          },
-          error: err => {
-            console.log('Error searching: ', err);
-            const errorBody = JSON.parse(err._body);
-            this.displayConceptErrorMessage = true;
-            console.log('Error searching: ', errorBody.message);
-            this.toggleTopConcepts();
-          }
-        }));
-      this.subscriptions.push(this.searchText.valueChanges
-        .subscribe((query) => {
-          if (query == null) {
-            query = '';
-          }
-          localStorage.setItem('searchText', query);
-        }));
     }
   }
 
@@ -550,7 +547,15 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public clearSearch() {
+    console.log('cleared ??');
     this.searchText.setValue('');
+    this.router.navigate(
+            [],
+            {
+              relativeTo: this.route,
+              replaceUrl: true
+    });
+    console.log(this.router.url);
   }
 
   loading() {

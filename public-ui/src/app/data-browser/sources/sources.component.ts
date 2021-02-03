@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DataBrowserService } from 'publicGenerated';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Concept } from '../../../publicGenerated';
 import { TooltipService } from '../../utils/tooltip.service';
 @Component({
@@ -17,7 +18,9 @@ export class SourcesComponent {
 
   constructor(
     public tooltipText: TooltipService,
-    private api: DataBrowserService) { }
+    private api: DataBrowserService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
 
   public conceptTreeClick(node) {
@@ -37,5 +40,14 @@ export class SourcesComponent {
         this.treeConcept['explorable'] = true;
       }
     });
+  }
+
+  public exploreConcept(conceptId: any) {
+    this.router.navigate(
+      ['/ehr/' + this.ehrDomain.name.toLowerCase()],
+         {
+            relativeTo: this.route,
+            queryParams: { search: conceptId, explore: 'true' }
+        });
   }
 }
