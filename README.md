@@ -6,9 +6,15 @@ All of Us public data browser.
 System requirements:
 
   * [Docker CE](https://www.docker.com/community-edition)
+      * __IMPORTANT__: be sure to allocate ~70-80% of available memory and swap to the Docker Engine. This should be 
+        at least 12GB memory and 2GB swap to avoid OOM isues. See https://docs.docker.com/docker-for-mac/#advanced for 
+        screenshots and instructions for Mac.
   * [Ruby](https://www.ruby-lang.org/en/downloads/)
   * [Python](https://www.python.org/downloads/) >= 2.7.9
   * [gcloud](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version)
+  * [Docker sync](https://docker-sync.io)
+    * `gem install docker-sync`
+    * If you'd prefer to install as non-root, you can [follow instructions for user-level install](https://docker-sync.readthedocs.io/en/latest/getting-started/installation.html).
 
 Docker must be installed to build and run code (For Google workstations, see
 go/installdocker.). Ruby is required to run our development scripts, which

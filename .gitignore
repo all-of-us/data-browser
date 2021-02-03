@@ -6,6 +6,7 @@
 .externalToolBuilders
 .settings
 /public-api/?/
+/public-api/.docker-sync/
 /public-api/db/?/
 /public-api/.swagger-codegen/*
 /public-api/sa-key.json

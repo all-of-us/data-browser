@@ -109,8 +109,17 @@ end
 
 def ensure_docker(cmd_name, args)
   unless Workbench.in_docker?
+    ensure_docker_sync()
     exec(*(%W{docker-compose run --rm scripts ./project.rb #{cmd_name}} + args))
   end
+end
+
+def ensure_docker_sync()
+  common = Common.new
+  at_exit do
+    common.run_inline %W{docker-sync stop}
+  end
+  common.run_inline %W{docker-sync start}
 end
 
 # exec against a live local API server - used for script access to a local API
@@ -167,6 +176,14 @@ def dev_up()
   end
 
   at_exit { common.run_inline %W{docker-compose down} }
+
+  # ensures that sa-key.json is included in the docker-sync image
+  # This is necessary because docker-compose exposes it as GOOGLE_APPLICATION_CREDENTIALS
+  # which is needed to construct the IamCredentialsClient Bean
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    ensure_docker_sync()
+  end
+
   common.status "Starting database..."
   common.run_inline %W{docker-compose up -d db}
   common.status "Running database migrations..."
@@ -523,6 +540,7 @@ Common.register_command({
 })
 
 def run_local_data_migrations()
+  ensure_docker_sync()
   common = Common.new
   common.run_inline %W{docker-compose run db-migration}
   common.run_inline %W{docker-compose run db-public-migration}
@@ -736,6 +754,7 @@ Imports .sql file to local mysql instance",
 
 
 def run_drop_cdr_db()
+  ensure_docker_sync()
   common = Common.new
   common.run_inline %W{docker-compose run drop-cdr-db}
 end
@@ -920,6 +939,7 @@ Common.register_command({
 })
 
 def update_cdr_versions_local(cmd_name, *args)
+  ensure_docker_sync()
   setup_local_environment
   op = update_cdr_version_options(cmd_name, args)
   op.parse.validate
