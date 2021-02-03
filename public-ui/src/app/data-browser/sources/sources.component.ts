@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DataBrowserService } from 'publicGenerated';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DataBrowserService } from 'publicGenerated';
 import { Concept } from '../../../publicGenerated';
 import { TooltipService } from '../../utils/tooltip.service';
 @Component({
