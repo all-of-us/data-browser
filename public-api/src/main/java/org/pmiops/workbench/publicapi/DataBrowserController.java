@@ -120,11 +120,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 @Override
                 public org.pmiops.workbench.model.Concept apply(Concept concept) {
                     MeasurementConceptInfo measurementInfo = null;
-                    if(concept.getMeasurementConceptInfo() != null){
-                        measurementInfo = conceptMapper.dbModelToClient(concept.getMeasurementConceptInfo());
+                    if(concept.getDbMeasurementConceptInfo() != null){
+                        measurementInfo = conceptMapper.dbModelToClient(concept.getDbMeasurementConceptInfo());
                     }
                     String graphToShow = null;
-                    if (concept.getDomainId().equals("Measurement") && concept.getMeasurementConceptInfo() != null && concept.getMeasurementConceptInfo().getHasValues() == 1) {
+                    if (concept.getDomainId().equals("Measurement") && concept.getDbMeasurementConceptInfo() != null && concept.getDbMeasurementConceptInfo().getHasValues() == 1) {
                         graphToShow = "Values";
                     } else {
                         graphToShow = "Sex Assigned at Birth";
