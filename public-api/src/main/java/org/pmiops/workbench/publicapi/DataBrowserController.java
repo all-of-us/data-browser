@@ -27,7 +27,8 @@ import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.cdr.model.Concept;
-import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
+import org.pmiops.workbench.cdr.model.DbMeasurementConceptInfo;
+import org.pmiops.workbench.model.MeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
@@ -118,7 +119,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             new Function<Concept, org.pmiops.workbench.model.Concept>() {
                 @Override
                 public org.pmiops.workbench.model.Concept apply(Concept concept) {
-                    org.pmiops.workbench.model.MeasurementConceptInfo measurementInfo = null;
+                    MeasurementConceptInfo measurementInfo = null;
                     if(concept.getMeasurementConceptInfo() != null){
                         measurementInfo = conceptMapper.dbModelToClient(concept.getMeasurementConceptInfo());
                     }
