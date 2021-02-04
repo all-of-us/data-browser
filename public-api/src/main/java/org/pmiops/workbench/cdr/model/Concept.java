@@ -38,7 +38,7 @@ public class Concept {
     private String drugBrandNames;
     private int canSelect;
     private int hasCounts;
-    private MeasurementConceptInfo measurementConceptInfo = null;
+    private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
 
     public Concept() {
     }
@@ -302,15 +302,15 @@ public class Concept {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)
-    public MeasurementConceptInfo getMeasurementConceptInfo() {
-        return measurementConceptInfo;
+    public DbMeasurementConceptInfo getDbMeasurementConceptInfo() {
+        return dbMeasurementConceptInfo;
     }
-    public void setMeasurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
-        this.measurementConceptInfo = measurementConceptInfo;
+    public void setDbMeasurementConceptInfo(DbMeasurementConceptInfo dbMeasurementConceptInfo) {
+        this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
     }
 
-    public Concept measurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
-        this.measurementConceptInfo = measurementConceptInfo;
+    public Concept dbMeasurementConceptInfo(DbMeasurementConceptInfo dbMeasurementConceptInfo) {
+        this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
         return this;
     }
 

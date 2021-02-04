@@ -193,13 +193,13 @@ public class ConceptService {
                     }
                     if (domainId != null) {
                         if (domainId.equals("Measurement")) {
-                            root.fetch("measurementConceptInfo", JoinType.LEFT);
+                            root.fetch("dbMeasurementConceptInfo", JoinType.LEFT);
                             if (measurementTests == 1 && measurementOrders == 0) {
-                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 1));
+                                predicates.add(criteriaBuilder.equal(root.get("dbMeasurementConceptInfo").get("hasValues"), 1));
                             } else if (measurementTests == 0 && measurementOrders == 1) {
-                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 0));
+                                predicates.add(criteriaBuilder.equal(root.get("dbMeasurementConceptInfo").get("hasValues"), 0));
                             } else if (measurementTests == 0 && measurementOrders == 0) {
-                                predicates.add(criteriaBuilder.equal(root.get("measurementConceptInfo").get("hasValues"), 2));
+                                predicates.add(criteriaBuilder.equal(root.get("dbMeasurementConceptInfo").get("hasValues"), 2));
                             }
                         }
                         predicates.add(criteriaBuilder.equal(root.get("domainId"), criteriaBuilder.literal(domainId)));
