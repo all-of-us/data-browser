@@ -75,9 +75,11 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
             for (const c of g.concepts) {
               if (c.conceptId === '903133') {
                 // Hardcoding the order of units for height pm
-                let sortOrder = ['centimeter', 'inch (us)'];
-                items.filter(i => i.conceptId === c.conceptId)[0].measurementGenderCountAnalysis.sort((a, b) => {
-                    return sortOrder.indexOf(a.unitName.toLowerCase()) - sortOrder.indexOf(b.unitName.toLowerCase());
+                const sortOrder = ['centimeter', 'inch (us)'];
+                items.filter(i => i.conceptId === c.conceptId)[0].measurementGenderCountAnalysis.sort((a, b)
+                => {
+                    return sortOrder.indexOf(a.unitName.toLowerCase()) -
+                    sortOrder.indexOf(b.unitName.toLowerCase());
                 });
               }
               const matchedItem = items.filter(i => i.conceptId === c.conceptId);
