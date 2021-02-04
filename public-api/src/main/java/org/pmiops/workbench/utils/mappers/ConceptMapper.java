@@ -2,7 +2,7 @@ package org.pmiops.workbench.cdr;
 
 import org.mapstruct.Mapper;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
-import org.pmiops.workbench.cdr.model.Concept;
+import org.pmiops.workbench.cdr.model.DbMeasurementConceptInfo;
 import org.mapstruct.Mapping;
 import org.pmiops.workbench.utils.mappers.CommonMappers;
 import org.pmiops.workbench.utils.mappers.MapStructConfig;
