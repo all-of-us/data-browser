@@ -6,6 +6,7 @@ import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.cdr.DomainMapper;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.Arrays;
 
