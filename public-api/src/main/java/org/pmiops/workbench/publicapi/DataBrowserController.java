@@ -326,7 +326,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), questionIds);
 
         SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
-        questionResp.setItems(mapAnalysesToQuestions(surveyAnalysisList, questions));
+        questionResp.setItems(achillesAnalysisService.mapAnalysesToQuestions(surveyAnalysisList, questions));
 
         response.setQuestions(questionResp);
 
@@ -379,7 +379,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<Analysis> analyses = achillesAnalysisService.findSurveyAnalysisResults("43528698", conceptIds);
 
-        List<SurveyMetadata> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions);
+        List<SurveyMetadata> mappedQuestions = achillesAnalysisService.mapAnalysesToQuestions(analyses, subQuestions);
 
         resp.setItems(mappedQuestions);
 
@@ -504,108 +504,5 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_ANALYSIS_ID)));
-    }
-
-    public List<SurveyMetadata> mapAnalysesToQuestions(List<Analysis> analyses, List<SurveyMetadata> questions) {
-        Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> versionAnalysisResultsByQuestion = new HashMap<>();
-
-        Analysis countAnalysis = null;
-        Analysis genderAnalysis = null;
-        Analysis ageAnalysis = null;
-        Analysis versionAnalysis = null;
-
-        for (Analysis aa: analyses) {
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID))) {
-                countAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (countAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = countAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        countAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID))) {
-                genderAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (genderAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = genderAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        genderAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID))) {
-                ageAnalysis = aa;
-                for (AchillesResult ar : aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (validAgeDeciles.contains(ar.getStratum5())) {
-                        if (ageAnalysisResultsByQuestion.containsKey(questionId)) {
-                            List<AchillesResult> tempResults = ageAnalysisResultsByQuestion.get(questionId);
-                            tempResults.add(ar);
-                        } else {
-                            List<AchillesResult> tempResults = new ArrayList<>();
-                            tempResults.add(ar);
-                            ageAnalysisResultsByQuestion.put(questionId, tempResults);
-                        }
-                    }
-                }
-            }
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID))) {
-
-                versionAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (versionAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = versionAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        versionAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-        }
-
-        for(SurveyMetadata q: questions) {
-            if (countAnalysis != null) {
-                Analysis ca = achillesMapper.makeCopyAnalysis(countAnalysis);
-                ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setCountAnalysis(ca);
-            }
-            if (genderAnalysis != null) {
-                Analysis ga = achillesMapper.makeCopyAnalysis(genderAnalysis);
-                ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setGenderAnalysis(ga);
-            }
-            if (ageAnalysis != null) {
-                Analysis aa = achillesMapper.makeCopyAnalysis(ageAnalysis);
-                aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setAgeAnalysis(aa);
-            }
-            if (versionAnalysis != null) {
-                Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
-                aa.setResults(versionAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setVersionAnalysis(aa);
-            }
-        }
-
-        return questions;
     }
 }
