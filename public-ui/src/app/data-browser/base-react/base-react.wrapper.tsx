@@ -20,6 +20,7 @@ const containerElementName = 'myReactComponentContainer';
     styleUrls: ['../../styles/template.css'],
     encapsulation: ViewEncapsulation.None,
 })
+  // tslint:disable-next-line: component-class-suffix
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
 
@@ -33,7 +34,7 @@ export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
         this.render();
     }
 
-    ngOnDestroy() : void {
+    ngOnDestroy(): void {
         ReactDOM.unmountComponentAtNode(this.containerRef.nativeElement);
     }
 

@@ -1,17 +1,44 @@
 import {
     Component,
     ElementRef,
+    Injector,
     ViewChild,
-    ViewEncapsulation,
-    Injector
+    ViewEncapsulation
 } from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { FunctionComponent } from 'react';
-const containerElementName = 'myReactComponentContainer';
-import { Video, VideoService } from '../../services/video.service';
 import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
 
+import { FunctionComponent } from 'react';
+import { Video, VideoService } from '../../services/video.service';
+const containerElementName = 'myReactComponentContainer';
+
+const IntroVidReactComponent: FunctionComponent<Video> =
+    (props) => {
+        return <span>
+            <h2 className='secondary-display'>{props.title}</h2>
+            <div className='vid-container'>
+                <video poster={props.poster} controls >
+                    {
+                        props.src.map((source) => {
+                            return <source key={source.url} src={source.url} type={source.type} />;
+                        })
+                    }
+                    {
+                        props.subtitles.map((sub) => {
+                            return <track
+                                key={sub.label} default={sub.default} label={sub.label}
+                                lang={sub.lang} src={sub.url}></track>;
+                        })
+                    }
+                    Sorry, your browser doesn't support embedded videos,
+                     but don't worry, you can <a href={props.downloadUrl}>
+                        download this video here</a>
+                    and watch it with your favorite video player!
+                </video>
+            </div>
+        </span>;
+    };
 
 @Component({
     // tslint:disable-next-line: component-selector
@@ -38,7 +65,8 @@ export class IntroVidComponent extends BaseReactWrapper {
                     {
                         this.videos.map((video: Video, index) => {
                             const key = 'video' + index;
-                            return <span key={key}> <IntroVidReactComponent {...video} /> </span>;
+                            return <span key={key}>
+                                <IntroVidReactComponent {...video} /> </span>;
                         })
                     }
                 </div>
@@ -46,30 +74,6 @@ export class IntroVidComponent extends BaseReactWrapper {
     }
 }
 
-export const IntroVidReactComponent: FunctionComponent<Video> =
-    (props) => {
-        return <span>
-            <h2 className='secondary-display'>{props.title}</h2>
-            <div className='vid-container'>
-                <video poster={props.poster} controls >
-                    {
-                        props.src.map((source) => {
-                            return <source key={source.url} src={source.url} type={source.type} />;
-                        })
-                    }
-                    {
-                        props.subtitles.map((sub) => {
-                            return <track
-                                key={sub.label} default={sub.default} label={sub.label}
-                                lang={sub.lang} src={sub.url}></track>;
-                        })
-                    }
-                    Sorry, your browser doesn't support embedded videos,
-                     but don't worry, you can <a href={props.downloadUrl}>download it</a>
-                    and watch it with your favorite video player!
-                </video>
-            </div>
-        </span>;
-    };
+
 
 

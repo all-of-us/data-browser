@@ -28,12 +28,11 @@ import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
-import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
+import { IntroVidComponent } from './views/intro-vids/intro-vids-react.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
-import { IntroVidComponent } from './views/intro-vids/intro-vids-react.component'
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -47,7 +46,6 @@ import { IntroVidComponent } from './views/intro-vids/intro-vids-react.component
     RecursiveTreeComponent,
     SourceTreeComponent,
     EhrViewComponent,
-    IntroVidsComponent,
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
     SurveyChartComponent,
@@ -78,7 +76,6 @@ import { IntroVidComponent } from './views/intro-vids/intro-vids-react.component
     RecursiveTreeComponent,
     SourceTreeComponent,
     EhrViewComponent,
-    IntroVidsComponent,
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
     SurveyChartComponent,
