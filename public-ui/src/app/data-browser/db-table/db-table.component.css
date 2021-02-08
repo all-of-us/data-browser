@@ -1,0 +1,270 @@
+.medline-link {
+    font-size: 14px;
+    color: #262262;
+    background: #f6f6f8;
+    border-radius: 10px;
+    padding: .5rem 1rem;
+    line-height: 1.5;
+}
+
+.fas {
+  transform: rotate(-45deg);
+}
+
+
+#domain-summary {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 28px;
+}
+
+#domain-name, #domain-name-text{
+    font-size: 20px;
+    line-height: 18px;
+    display: inline;
+}
+
+.domain-info-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1rem 0;
+}
+
+.results-tbl-row-inner {
+    width: 100%;
+    padding: 18px;
+    padding-bottom: none;
+    border-left: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+    border-right: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.aka {
+    padding-left: 9px;
+    padding-top: 9px;
+    font-size: 14px;
+}
+
+.aka .info-icon {
+    filter: contrast(43%) brightness(165%);
+    transform: scale(0.7);
+}
+
+.aka-text {
+    /* width: 170px; */
+    font-family: Arial, sans-serif;
+    font-style: italic;
+    color: #6B6B6B;
+}
+
+.aka-info {
+    opacity: .7;
+}
+
+.aka-layout {
+    font-size: .8em;
+}
+
+.see-more, .see-less, .brands-link {
+    display: inline;
+    color: #216fb4;
+    font-weight: 400;
+    position: relative;
+    z-index: 99;
+}
+
+.see-more clr-icon {
+    margin-top: 0.276rem;
+    margin-left: -3.7px;
+}
+
+.icon-btn-group {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.icon-btn-group .icon-btn {
+    font-size: 2.5rem;
+}
+
+.source-btn_active {
+    background: url('/assets/icons/source_btn_active.svg');
+}
+
+.source-btn {
+    background: url('/assets/icons/source_btn.svg');
+}
+
+.source-btn, .source-btn_active {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: auto;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.row-selected {
+    background: #f6f6f8;
+}
+
+.results-tbl-row-expanded .results-tbl-row .domain-info-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+.tbl-head .tbl-d::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    background: url('/assets/icons/divider.svg');
+    background-repeat: no-repeat;
+    left: -10px;
+    padding-right: 1rem;
+}
+
+.tbl-head .tbl-d:first-of-type::before {
+    content: none;
+}
+
+.tbl-r.tbl-head {
+    background: #f6f6f8;
+    border: 1px solid #CCCCCC;
+    padding: .5rem 0;
+    border-radius: 3px 3px 0 0;
+    position: sticky;
+    top:0px;
+    z-index:100;
+}
+
+.tbl-exp-r:first-of-type {
+    border-top: none;
+}
+
+.tbl-r {
+    display: grid;
+    grid-template-columns: 30% 25% 20% 1fr;
+    text-align: left;
+    min-width: 810px;
+}
+
+.tbl-r_labs {
+    display: grid;
+    grid-template-columns: 30% 25% 20% 10% 1fr;
+    text-align: left;
+    min-width: 810px;
+}
+
+.tbl-r_labs .tbl-d:nth-of-type(4) {
+    text-align: center;
+}
+
+.tbl-d {
+    padding: 0 .5rem;
+    font-size: .8em;
+    position: relative;
+}
+
+.row-expansion {
+    width: 100%;
+    text-align: center;
+    padding-top: 9px;
+    background: #f6f6f8;
+    border-top: none;
+    padding-bottom: 27px;
+}
+
+.tbl-r-state {
+    background: #f6f6f8;
+}
+
+.tbl-r-expanded {
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+.tbl-exp-r {
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    cursor: pointer;
+    transition: .2s background ease-out;
+    padding: 9px;
+    padding-top:20px;
+    min-width: 810px;
+}
+
+.tbl-exp-r *.tbl-exp-r {
+    border-left: none;
+    border-right: none;
+    padding: 0.5rem 0;
+    min-width: auto;
+}
+
+.tbl-exp-r:last-of-type {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.tbl-exp-r:hover {
+    background: #f6f6f8;
+    transition: .1s background ease-in;
+}
+
+.tbl-r {
+    border: none;
+}
+
+.icon-btn {
+    position: relative;
+    width: 100%;
+    text-align: right;
+}
+
+.icon-choice {
+    height: 1.25rem;
+    width: 1.25rem;
+    color: #2691D0;
+    cursor: pointer;
+}
+
+.tooltip-lg {}
+
+#answer-result {
+    width: calc(47%);
+}
+
+h5.secondary-display {
+    padding: 18px;
+    font-size: 1.3em;
+}
+
+.source-layout {
+    display: flex;
+    margin: 0 2rem;
+}
+
+.source-item {
+    width: 50%;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.source-item:not(:nth-of-type(2)) {
+    width: 50%;
+    min-width: 10rem;
+}
+
+@media (max-width: 600px) {
+    .chart-choice {
+        font-size: 4vw;
+        padding: 2px;
+    }
+}
+
+@media (max-width: 900px) {
+    .results-grid {
+        overflow-x: scroll;
+    }
+}

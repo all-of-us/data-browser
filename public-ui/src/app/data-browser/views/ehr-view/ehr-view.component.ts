@@ -604,6 +604,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       this.api.searchConcepts(searchRequest).subscribe({
             next: results => {
               this.items = results.items;
+
               this.top10Results = results.items.slice(0, 10);
               this.dataLoadingStack.pop();
             },

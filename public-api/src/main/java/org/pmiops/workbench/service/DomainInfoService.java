@@ -31,4 +31,25 @@ public class DomainInfoService {
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
+
+    public List<Integer> getTestOrderFilter(int testFilter, int orderFilter) {
+        Integer getTests = null;
+        Integer getOrders = null;
+
+        if (testFilter == 1 && orderFilter == 1) {
+            getTests = 1;
+            getOrders = 0;
+        } else if (testFilter == 1 && orderFilter == 0) {
+            getTests = 1;
+            getOrders = 2;
+        } else if (testFilter == 0 && orderFilter == 1) {
+            getTests = 2;
+            getOrders = 0;
+        } else if (testFilter == 0 && orderFilter == 0) {
+            getTests = 2;
+            getOrders = 2;
+        }
+
+        return new ArrayList<>(Arrays.asList(getTests, getOrders));
+    }
 }
