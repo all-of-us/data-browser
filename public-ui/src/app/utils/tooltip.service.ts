@@ -119,12 +119,10 @@ export class TooltipService {
     'temperature might have a value of 96.8 degrees. ' +
     'Values can also be reported in different units, ' +
     'such as Fahrenheit or Celsius for body temperature.';
-  pmValueChartHelpText = 'Values provide the numeric result of the physical ' +
-    'measurements taken at the time of participant enrollment. ' +
-    'For example, a participant’s measurement of their body ' +
-    'temperature might have a value of 96.8 degrees. ' +
-    'Values can also be reported in different units, ' +
-    'such as Fahrenheit or Celsius for body temperature.';
+  pmValueChartHelpText = 'Values provide the numeric result of the ' +
+    'physical measurements taken at the time of participant enrollment. ' +
+    'Unit of measurement displayed has not been converted so each data ' +
+    'point represents a unique participant.';
   participantCountHelpText = `The overall participant count listed in the header for this column
    includes all participants that have at least one medical concept from this domain in their
    electronic health record (EHR). Participants may have more than one medical concept from
