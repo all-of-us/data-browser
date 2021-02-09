@@ -25,7 +25,6 @@ import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.DomainInfoService;
-import org.pmiops.workbench.cdr.dao.QuestionConceptDao;
 import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.AchillesMapperImpl;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -42,6 +41,7 @@ import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.Domain;
+import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.SurveyModule;
@@ -56,7 +56,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.SurveyModuleService;
-import org.pmiops.workbench.service.QuestionConceptService;
+import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 
 @RunWith(SpringRunner.class)
@@ -419,8 +419,6 @@ public class DataBrowserControllerTest {
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
     @Autowired
-    private QuestionConceptDao  questionConceptDao;
-    @Autowired
     private AchillesAnalysisDao achillesAnalysisDao;
     @Autowired
     private AchillesResultDao achillesResultDao;
@@ -429,7 +427,7 @@ public class DataBrowserControllerTest {
     @PersistenceContext
     private EntityManager entityManager;
     @Mock private CdrVersionService cdrVersionService;
-    @Mock private QuestionConceptService questionConceptService;
+    @Mock private SurveyMetadataService surveyMetadataService;
     @Mock private AchillesResultDistService achillesResultDistService;
     @Mock private SurveyModuleService surveyModuleService;
     @Mock private DomainInfoService domainInfoService;
@@ -445,7 +443,7 @@ public class DataBrowserControllerTest {
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao,
-            cdrVersionService, domainInfoService, questionConceptService, surveyModuleService,
+            cdrVersionService, domainInfoService, surveyMetadataService, surveyModuleService,
                 achillesResultService, achillesAnalysisService);
     }
 
@@ -679,12 +677,6 @@ public class DataBrowserControllerTest {
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_6);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_7);
         achillesAnalysisDao.save(ACHILLES_ANALYSIS_8);
-
-        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_6);
-        ACHILLES_ANALYSIS_5.addResult(ACHILLES_RESULT_7);
-
-        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_8);
-        ACHILLES_ANALYSIS_6.addResult(ACHILLES_RESULT_9);
 
         achillesResultDao.save(ACHILLES_RESULT_1);
         achillesResultDao.save(ACHILLES_RESULT_2);

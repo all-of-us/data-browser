@@ -149,7 +149,11 @@ strong {
     color: #262262;
 }
 
-.question-result:first-of-type {
+.question-result:first-of-type .topic-text:first-of-type{
+    border-top: none;
+}
+
+.topic-text:first-of-type{
     border-top: none;
 }
 
@@ -274,4 +278,16 @@ strong {
     .version-table {
         width: 100%;
     }
+}
+
+.topic-text + .question-result {
+  border-top: none;
+}
+
+.topic-text {
+    border-top: 1px solid #cccccc;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }

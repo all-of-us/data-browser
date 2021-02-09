@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
-import {DataBrowserService} from '../../../../publicGenerated/api/dataBrowser.service';
-import {Analysis} from '../../../../publicGenerated/model/analysis';
-import {ConceptGroup} from '../../../utils/conceptGroup';
-import {ConceptWithAnalysis} from '../../../utils/conceptWithAnalysis';
-import {DbConfigService} from '../../../utils/db-config.service';
+import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
+import { Analysis } from '../../../../publicGenerated/model/analysis';
+import { ConceptGroup } from '../../../utils/conceptGroup';
+import { ConceptWithAnalysis } from '../../../utils/conceptWithAnalysis';
+import { DbConfigService } from '../../../utils/db-config.service';
 import { DomainType } from '../../../utils/enum-defs';
-import {TooltipService} from '../../../utils/tooltip.service';
+import { TooltipService } from '../../../utils/tooltip.service';
 
 @Component({
   selector: 'app-physical-measurements',
@@ -52,7 +52,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   pmGroups: any;
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
-              private tooltipText: TooltipService) {
+    private tooltipText: TooltipService) {
 
   }
 
@@ -67,44 +67,53 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     // Get demographic totals
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getConceptAnalysisResults(this.dbc.PM_CONCEPTS.map(String))
-              .subscribe({
-                next: result => {
-                  const items = result.items;
-                  this.conceptGroups = this.dbc.pmGroups;
-                  for (const g of this.conceptGroups) {
-                    for (const c of g.concepts) {
-                        const matchedItem = items.filter(i => i.conceptId === c.conceptId);
-                        c.analyses = matchedItem.length > 0 ? matchedItem[0] : null;
-                        this.arrangeConceptAnalyses(c);
-                    }
-                  }
-                  if (this.searchText) {
-                    this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
-                            conceptgroup.groupName.toLowerCase().
-                            includes(this.searchText.toLowerCase()))[0];
-                  } else {
-                            this.selectedGroup = this.conceptGroups[0];
-                  }
-                  this.showMeasurement(this.selectedGroup, this.selectedGroup.concepts[0]);
-                  this.loadingStack.pop();
-                },
-                error: err =>  {
-                  this.loadingStack.pop();
-                  console.log('Error: ', err);
-                }
-        }));
+      .subscribe({
+        next: result => {
+          const items = result.items;
+          this.conceptGroups = this.dbc.pmGroups;
+          for (const g of this.conceptGroups) {
+            for (const c of g.concepts) {
+              if (c.conceptId === '903133') {
+                // Hardcoding the order of units for height pm
+                const sortOrder = ['centimeter', 'inch (us)'];
+                items.filter(i => i.conceptId === c.conceptId)[0].measurementGenderCountAnalysis
+                .sort((a, b) => {
+                    return sortOrder.indexOf(a.unitName.toLowerCase()) -
+                    sortOrder.indexOf(b.unitName.toLowerCase());
+                });
+              }
+              const matchedItem = items.filter(i => i.conceptId === c.conceptId);
+              c.analyses = matchedItem.length > 0 ? matchedItem[0] : null;
+              this.arrangeConceptAnalyses(c);
+            }
+          }
+          if (this.searchText) {
+            this.selectedGroup = this.conceptGroups.filter(conceptgroup =>
+              conceptgroup.groupName.toLowerCase().
+                includes(this.searchText.toLowerCase()))[0];
+          } else {
+            this.selectedGroup = this.conceptGroups[0];
+          }
+          this.showMeasurement(this.selectedGroup, this.selectedGroup.concepts[0]);
+          this.loadingStack.pop();
+        },
+        error: err => {
+          this.loadingStack.pop();
+          console.log('Error: ', err);
+        }
+      }));
     this.loadingStack.push(true);
     this.subscriptions.push(this.api.getCountAnalysis('Physical Measurements', 'pm')
-          .subscribe({
-            next: result => {
-              this.domainCountAnalysis = result;
-              this.loadingStack.pop();
-            },
-            error: err =>  {
-              this.loadingStack.pop();
-              console.log('Error: ', err);
-            }
-    }));
+      .subscribe({
+        next: result => {
+          this.domainCountAnalysis = result;
+          this.loadingStack.pop();
+        },
+        error: err => {
+          this.loadingStack.pop();
+          console.log('Error: ', err);
+        }
+      }));
   }
 
   ngOnDestroy() {
@@ -117,22 +126,22 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
     this.selectedGroup = group;
     this.selectedConcept = concept;
     if (this.selectedConcept && this.selectedConcept.analyses &&
-    this.selectedConcept.analyses.measurementGenderCountAnalysis) {
-        this.unitNames = [];
-        for (const r of this.selectedConcept.analyses.measurementGenderCountAnalysis) {
-              let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
-              tempUnitNames = tempUnitNames.filter(
-              function(elem, index, self) {
-                return index === self.indexOf(elem);
-              });
-              this.unitNames.push(...tempUnitNames);
-        }
+      this.selectedConcept.analyses.measurementGenderCountAnalysis) {
+      this.unitNames = [];
+      for (const r of this.selectedConcept.analyses.measurementGenderCountAnalysis) {
+        let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
+        tempUnitNames = tempUnitNames.filter(
+          function (elem, index, self) {
+            return index === self.indexOf(elem);
+          });
+        this.unitNames.push(...tempUnitNames);
+      }
     }
     if (this.unitNames) {
-        this.selectedConceptUnit = this.unitNames[0];
-        if (this.selectedConceptUnit) {
-            this.setAnalysis();
-        }
+      this.selectedConceptUnit = this.unitNames[0];
+      if (this.selectedConceptUnit) {
+        this.setAnalysis();
+      }
     }
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
@@ -140,86 +149,91 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   setAnalysisStratum(results: any) {
     for (const r of results) {
-        if (r.analysisStratumName === null) {
-            r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
-        }
+      if (r.analysisStratumName === null) {
+        r.analysisStratumName = this.dbc.GENDER_STRATUM_MAP[r.stratum3];
+      }
     }
   }
 
   public getCountAnalysis(conceptUnit: any) {
+    const genderSort = ['Male', 'Female', 'Other'];
     return this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
-    r => r.unitName === this.selectedConceptUnit)[0].results;
+      r => r.unitName === this.selectedConceptUnit)[0].results
+      .sort((a, b) => {
+        return genderSort.indexOf(a.analysisStratumName) -
+          genderSort.indexOf(b.analysisStratumName);
+      });
   }
 
   arrangeConceptAnalyses(concept: any) {
-      if (concept.analyses.genderAnalysis) {
-        this.organizeGenders(concept);
-      }
+    if (concept.analyses.genderAnalysis) {
+      this.organizeGenders(concept);
+    }
 
-      let genders = [this.dbc.MALE_GENDER_ID, this.dbc.FEMALE_GENDER_ID, this.dbc.OTHER_GENDER_ID];
-      let prevResult;
-      for (const gca of concept.analyses.measurementGenderCountAnalysis) {
-        if (gca.results.length < 3) {
-            for (const result of gca.results) {
-                prevResult = result;
-                genders = genders.filter(item => item !== result.stratum3);
-            }
-            for (const gender of genders) {
-                const missingResult = { ...prevResult };
-                missingResult.stratum3 = gender ;
-                missingResult.countValue = 20;
-                missingResult.sourceCountValue = 20;
-                gca.results.push(missingResult);
-            }
+    let genders = [this.dbc.MALE_GENDER_ID, this.dbc.FEMALE_GENDER_ID, this.dbc.OTHER_GENDER_ID];
+    let prevResult;
+    for (const gca of concept.analyses.measurementGenderCountAnalysis) {
+      if (gca.results.length < 3) {
+        for (const result of gca.results) {
+          prevResult = result;
+          genders = genders.filter(item => item !== result.stratum3);
         }
-        this.setAnalysisStratum(gca.results);
+        for (const gender of genders) {
+          const missingResult = { ...prevResult };
+          missingResult.stratum3 = gender;
+          missingResult.countValue = 20;
+          missingResult.sourceCountValue = 20;
+          gca.results.push(missingResult);
+        }
       }
+      this.setAnalysisStratum(gca.results);
+    }
 
   }
 
   organizeGenders(concept: ConceptWithAnalysis) {
-      const analysis: Analysis = concept.analyses.genderAnalysis;
-      let male = null;
-      let female = null;
-      let other = null;
+    const analysis: Analysis = concept.analyses.genderAnalysis;
+    let male = null;
+    let female = null;
+    let other = null;
 
-      // No need to do anything if only one gender
-      if (analysis.results.length <= 1) {
-        return;
+    // No need to do anything if only one gender
+    if (analysis.results.length <= 1) {
+      return;
+    }
+    const results = [];
+    for (const g of analysis.results) {
+      if (g.stratum2 === this.dbc.MALE_GENDER_ID) {
+        male = g;
+      } else if (g.stratum2 === this.dbc.FEMALE_GENDER_ID) {
+        female = g;
+      } else if (g.stratum2 === this.dbc.OTHER_GENDER_ID) {
+        other = g;
       }
-      const results = [];
-      for (const g of analysis.results) {
-        if (g.stratum2 === this.dbc.MALE_GENDER_ID) {
-          male = g;
-        } else if (g.stratum2 === this.dbc.FEMALE_GENDER_ID) {
-          female = g;
-        } else if (g.stratum2 === this.dbc.OTHER_GENDER_ID) {
-          other = g;
-        }
-      }
+    }
 
-      // Order genders how we want to display  Male, Female , Others
-      if (male) { results.push(male); }
-      if (female) { results.push(female); }
-      if (other) { results.push(other); }
-      analysis.results = results;
+    // Order genders how we want to display  Male, Female , Others
+    if (male) { results.push(male); }
+    if (female) { results.push(female); }
+    if (other) { results.push(other); }
+    analysis.results = results;
   }
 
   setUnit(unit) {
-      this.selectedConceptUnit = unit;
-      this.setAnalysis();
+    this.selectedConceptUnit = unit;
+    this.setAnalysis();
   }
 
   setAnalysis() {
     if (['903120', '903111'].indexOf(this.selectedConcept.conceptId) === -1) {
-            let temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
-                                a => a.unitName.toLowerCase() ===
-                                this.selectedConceptUnit.toLowerCase());
-            this.selectedConceptValueAnalysis = temp[0];
-            temp = this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
-                                        a => a.unitName.toLowerCase() ===
-                                        this.selectedConceptUnit.toLowerCase());
-            this.selectedConceptValueCountAnalysis = temp[0];
+      let temp = this.selectedConcept.analyses.measurementValueGenderAnalysis.filter(
+        a => a.unitName.toLowerCase() ===
+          this.selectedConceptUnit.toLowerCase());
+      this.selectedConceptValueAnalysis = temp[0];
+      temp = this.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
+        a => a.unitName.toLowerCase() ===
+          this.selectedConceptUnit.toLowerCase());
+      this.selectedConceptValueCountAnalysis = temp[0];
     }
   }
 
@@ -230,8 +244,9 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   getValueAnalysis() {
     if (!this.selectedConceptValueAnalysis) {
-        return this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
+      return this.selectedConcept.analyses.measurementValueGenderAnalysis[0];
     }
     return this.selectedConceptValueAnalysis;
   }
 }
+

@@ -20,7 +20,6 @@ import { SurveyVersionTableComponent } from './components/survey-version-table/s
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
-import { DbTableComponent } from './db-table/db-table.component';
 import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
@@ -55,7 +54,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyViewComponent,
     ChartTopResultsComponent,
     ChartBaseComponent,
-    DbTableComponent,
     SourcesComponent,
     FmhViewComponent,
     TooltipComponent,
