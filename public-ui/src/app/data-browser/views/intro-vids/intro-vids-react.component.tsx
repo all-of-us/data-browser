@@ -47,6 +47,7 @@ const IntroVidReactComponent: FunctionComponent<Video> =
     styleUrls: ['../../../styles/template.css', './intro-vids.component.css'],
     encapsulation: ViewEncapsulation.None,
 })
+
 export class IntroVidsWrapperComponent extends BaseReactWrapper {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
     video: Video;
