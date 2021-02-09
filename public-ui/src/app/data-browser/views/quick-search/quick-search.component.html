@@ -17,7 +17,6 @@
   publications.
   <br><br><button (click)="showStatement = true" class="disclaimer-btn">public data use statement</button>
 </p>
-
 <div class="search-icon-container">
   <div class="search">
     <div class="search-title">
@@ -211,4 +210,5 @@
     <app-error-message [dataType]="'data'"></app-error-message>
   </div>
 </section>
-<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" *ngIf="showStatement" ></app-pop-up>
+<my-react-component *ngIf="showStatement && testReact" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" (close)="popUpClose($event)"></my-react-component>
+<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" *ngIf="showStatement && !testReact" ></app-pop-up>
