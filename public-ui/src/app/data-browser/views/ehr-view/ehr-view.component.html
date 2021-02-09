@@ -325,5 +325,5 @@
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText" [measurementTestFilter]="testFilter" [measurementOrderFilter]="orderFilter"></app-db-no-results>
 </div>
-<my-react-component *ngIf="showStatement && testReact" [title]="'DATA DISCLAIMER'" [statement]="dateStatement" (close)="popUpClose($event)"></my-react-component>
+<my-react-component *ngIf="showStatement && testReact" [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (close)="showStatement = false"></my-react-component>
 <app-pop-up [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>

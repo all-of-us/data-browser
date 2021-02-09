@@ -497,5 +497,6 @@
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
+<my-react-component *ngIf="showStatement && testReact" [title]="'COvid-19 Participant Experience (COPE) survey'" [statement]="copeDisclaimer" (close)="showStatement = false"></my-react-component>
 <app-pop-up [title]="'COvid-19 Participant Experience (COPE) survey'" [statement]="copeDisclaimer"
-  (closed)="showStatement = false" *ngIf="showStatement"></app-pop-up>
+  (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
