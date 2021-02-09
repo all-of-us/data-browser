@@ -46,3 +46,4 @@ Common-api/out/*
 **/gradle
 **/gradlew
 **/gradlew.bat
+.vscode/settings.json

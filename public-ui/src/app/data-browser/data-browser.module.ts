@@ -21,11 +21,13 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
 import { TreeHighlightService } from './services/tree-highlight.service';
+import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
+import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
@@ -44,7 +46,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     RecursiveTreeComponent,
     SourceTreeComponent,
     EhrViewComponent,
-    IntroVidsComponent,
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
     SurveyChartComponent,
@@ -63,6 +64,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartBiosexComponent,
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
+    IntroVidsComponent,
+    IntroVidsWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -73,18 +76,20 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     RecursiveTreeComponent,
     SourceTreeComponent,
     EhrViewComponent,
-    IntroVidsComponent,
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
     SurveyChartComponent,
     ClarityModule,
     ChartTopResultsComponent,
     ChartBaseComponent,
-    HighchartsChartModule
+    HighchartsChartModule,
+    IntroVidsComponent,
+    IntroVidsWrapperComponent,
   ],
   providers: [
     ChartService,
-    TreeHighlightService
+    TreeHighlightService,
+    VideoService
   ]
 })
 

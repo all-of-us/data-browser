@@ -9,4 +9,6 @@ export const environment = {
   gtmAuth: 'v5hD4oOWvct1sYdnaNp7yQ',
   gtmPreview: 'env-28',
   fitbit: false,
+  // testRact to true to see react components
+  testReact: false
 };
