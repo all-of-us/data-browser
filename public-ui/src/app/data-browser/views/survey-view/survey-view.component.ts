@@ -56,6 +56,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
   envDisplay: string;
+  testReact: boolean;
   @ViewChild('chartElement') chartEl: ElementRef;
   @ViewChild('subChartElement1') subChartEl1: ElementRef;
   @ViewChild('subChartElement2') subChartEl2: ElementRef;
@@ -73,7 +74,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
-
+    this.testReact = environment.testReact;
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
