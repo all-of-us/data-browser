@@ -8,6 +8,7 @@ import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../../publicGenerated/model/domain';
+import { environment } from '../../../../environments/environment';
 import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
@@ -43,6 +44,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     selectedFilterGrid = false;
   dataLoadingStack: any = [];
   totalParticipants: number;
+  testReact: boolean;
   displayConceptErrorMessage = false;
   top10Results: any[] = []; // We graph top10 results
   searchRequest: SearchConceptsRequest;
@@ -89,6 +91,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
+    this.testReact = environment.testReact;
     this.route.queryParams.subscribe(params => {
       if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === 'true') {
         this.currentPage = 1;
@@ -707,5 +710,9 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
     public resetSelectedGraphs(concept: any) {
         concept.graphToShow = GraphType.None;
+    }
+
+    public popUpClose() {
+       this.showStatement = false;
     }
 }

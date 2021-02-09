@@ -62,6 +62,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
+  testReact: boolean;
   showStatement: boolean;
   cope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
@@ -89,6 +90,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
+    this.testReact = environment.testReact;
     this.pmGroups = this.dbc.pmGroups;
     this.fitbitMeasurementsFound = 4;
     this.physicalMeasurementsFound = this.dbc.pmGroups.length;
@@ -336,5 +338,9 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
     return false;
 
+  }
+
+  public popUpClose() {
+    this.showStatement = false;
   }
 }
