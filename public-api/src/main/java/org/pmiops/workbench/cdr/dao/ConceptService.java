@@ -32,6 +32,13 @@ import org.pmiops.workbench.model.StandardConceptFilter;
 @Service
 public class ConceptService {
 
+    @PersistenceContext(unitName = "cdr")
+    private EntityManager entityManager;
+    @Autowired
+    private ConceptDao conceptDao;
+    @Autowired
+    private ConceptMapper conceptMapper;
+
     public static enum SearchType {
         CONCEPT_SEARCH, SURVEY_COUNTS, DOMAIN_COUNTS;
     }
@@ -62,14 +69,6 @@ public class ConceptService {
         NON_STANDARD_CONCEPTS,
         STANDARD_OR_CODE_ID_MATCH
     }
-
-    @PersistenceContext(unitName = "cdr")
-    private EntityManager entityManager;
-
-    @Autowired
-    private ConceptDao conceptDao;
-    @Autowired
-    private ConceptMapper conceptMapper;
 
     public ConceptService() {
     }
