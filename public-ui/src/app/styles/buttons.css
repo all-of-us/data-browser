@@ -93,3 +93,13 @@ button.icon-btn {
     border: none;
     width:auto;
 }
+
+.disclaimer-btn-survey {
+    padding: 0.5rem;
+    margin-top: 1rem;
+}
+
+.disclaimer-btn-ehr {
+    font-size:.7em;
+    padding: .5em 1em;
+}

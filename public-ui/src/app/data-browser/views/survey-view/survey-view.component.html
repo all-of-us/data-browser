@@ -2,8 +2,8 @@
   <div class="page-header">
     <div class="title-container" *ngIf="surveyConceptId && surveyName && surveyDescription">
       <h1> {{surveyName}} </h1>
-      <button *ngIf="isCopeSurvey" (click)="showStatement = true" class="disclaimer-btn">IMPORTANT CONSIDERATIONS FOR
-        COPE SURVEY - LEARN MORE</button>
+      <button *ngIf="isCopeSurvey && !testReact" (click)="showStatement = true" class="disclaimer-btn disclaimer-btn-survey">{{helptext.helptexts['CopeDisclaimerBtn'].title}}</button>
+      <react-button *ngIf="isCopeSurvey && testReact" [styleClass]="helptext.helptexts['CopeDisclaimerBtn'].class" [title]="helptext.helptexts['CopeDisclaimerBtn'].title" (click)="showStatement = true"></react-button>
       <div class="desc-container">
         <p class="body-default help-text survey-desc">{{surveyDescription}} Survey questions appear in the order in
           which participants took the survey.</p>
