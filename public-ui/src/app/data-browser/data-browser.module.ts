@@ -30,9 +30,13 @@ import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
+import { PopUpReactWrapper } from '../shared/components/pop-up/PopUpReactWrapper';
+import { PopUpReactComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
+import { ReactButtonComponent } from '../shared/components/button/ReactButtonComponent';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -65,7 +69,9 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
-    IntroVidsWrapperComponent
+    IntroVidsWrapperComponent,
+    PopUpReactWrapper,
+    ReactButtonComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -85,6 +91,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighchartsChartModule,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
+    PopUpReactWrapper
   ],
   providers: [
     ChartService,

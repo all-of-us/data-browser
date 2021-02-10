@@ -12,37 +12,36 @@ import {
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FunctionComponent } from 'react';
-import { PopUpReactComponent } from './PopUpReactComponent';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
 const containerElementName = 'myReactComponentContainer';
 
 @Component({
-  selector: 'popup-react',
+  selector: 'react-button',
   template: `<span #${containerElementName}></span>`,
-  styleUrls: ['../../../styles/template.css', './pop-up.component.css'],
+  styleUrls: ['../../../styles/page.css', '../../../styles/buttons.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class PopUpReactWrapper extends BaseReactWrapper {
+export class ReactButtonComponent extends BaseReactWrapper {
   @ViewChild(containerElementName, { static: true }) containerRef: ElementRef;
-  @Input() public title = 'test title';
-  @Input() public statement;
-  @Output() public close = new EventEmitter<void>();
+  @Input() public title;
+  @Input() public styleClass;
+  @Output() public click = new EventEmitter<void>();
 
   constructor(public injector: Injector) {
     super(injector);
-    this.closeClick = this.closeClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  public closeClick() {
-      if (this.close) {
-        this.close.emit();
+  public handleClick() {
+      if (this.click) {
+        this.click.emit();
         this.render();
       }
     }
 
   public render() {
     const {title} = this;
-    const {statement} = this;
-    ReactDOM.render( <PopUpReactComponent title={title} statement={statement} onClick={this.closeClick}/>, this.containerRef.nativeElement);
+    const {styleClass} = this;
+    ReactDOM.render( <button onClick={this.handleClick} className={styleClass}>{title}</button>, this.containerRef.nativeElement);
   }
 }

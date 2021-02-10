@@ -9,5 +9,6 @@ export const environment = {
   gtmId: 'GTM-NQ9XDTW',
   gtmAuth: 'kMy-ZUX8XsBfuanMZzP_5A',
   gtmPreview: 'env-25',
-  fitbit: true
+  fitbit: true,
+  testReact: true
 };

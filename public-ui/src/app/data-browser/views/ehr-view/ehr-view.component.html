@@ -15,7 +15,8 @@
     < Back to main search </a> <div class="result-list">
   <div class="db-card">
     <div class="db-card-inner">
-      <button (click)="showStatement = true" class="disclaimer-btn">data disclaimer</button>
+      <button (click)="showStatement = true" class="disclaimer-btn disclaimer-btn-ehr" *ngIf="!testReact">{{helptext.helptexts['EhrViewDisclaimerBtn'].title}}</button>
+      <react-button *ngIf="testReact" [styleClass]="helptext.helptexts['EhrViewDisclaimerBtn'].class" [title]="helptext.helptexts['EhrViewDisclaimerBtn'].title" (click)="showStatement = true"></react-button>
       <section *ngIf="items.length > 0 || displayConceptErrorMessage">
         <!-- Top summary boxes -- only show if have results -->
         <h5 id="domain-summary" class="secondary-display">
