@@ -15,6 +15,20 @@ import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
 const containerElementName = 'myReactComponentContainer';
 
+const PopUpReactComponent =
+    (props) => {
+    return <div className='data-statement'>
+            <div className='card'>
+                <div onClick={props.closeClick} className='close'>x</div>
+                   <h2 className='card-title'>{props.title}</h2>
+                   <div className='card-body' dangerouslySetInnerHTML={{ __html: props.statement }}></div>
+                   <div className='btn-container'>
+                  <button onClick={props.closeClick} className='disclaimer-btn'>OK</button>
+                  </div>
+                </div>
+          </div>;
+    }
+
 @Component({
   selector: 'app-popup-react',
   template: `<span #${containerElementName}></span>`,
@@ -22,7 +36,7 @@ const containerElementName = 'myReactComponentContainer';
   encapsulation: ViewEncapsulation.None,
 })
 
-export class PopUpReactWrapperComponent extends BaseReactWrapper {
+export class PopUpWrapper extends BaseReactWrapper {
   @ViewChild(containerElementName, { static: true }) containerRef: ElementRef;
   @Input() public title = 'test title';
   @Input() public statement;
@@ -45,15 +59,6 @@ export class PopUpReactWrapperComponent extends BaseReactWrapper {
     const {statement} = this;
     const {closeClick} = this;
     ReactDOM.render(
-        <div className='data-statement'>
-                  <div className='card'>
-                     <div onClick={closeClick} className='close'>x</div>
-                    <h2 className='card-title'>{title}</h2>
-                    <div className='card-body' dangerouslySetInnerHTML={{ __html: statement }}></div>
-                    <div className='btn-container'>
-                    <button onClick={closeClick} className='disclaimer-btn'>OK</button>
-                     </div>
-                  </div>
-                 </div>, this.containerRef.nativeElement);
+        <PopUpReactComponent title={title} statement={statement} closeClick={closeClick}/>, this.containerRef.nativeElement);
   }
 }
