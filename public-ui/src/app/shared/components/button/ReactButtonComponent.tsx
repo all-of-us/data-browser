@@ -20,7 +20,7 @@ const ReactButtonComponent =
     (props) => {
         return <button onClick={props.handleClick} className={props.styleClass}>
         {props.title}</button>;
-    }
+    };
 
 @Component({
   selector: 'app-react-button',

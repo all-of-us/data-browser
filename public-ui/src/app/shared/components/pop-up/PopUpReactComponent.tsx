@@ -28,7 +28,7 @@ const PopUpReactComponent =
                   </div>
                 </div>
           </div>;
-    }
+    };
 
 @Component({
   selector: 'app-popup-react',
@@ -37,7 +37,7 @@ const PopUpReactComponent =
   encapsulation: ViewEncapsulation.None,
 })
 
-export class PopUpWrapper extends BaseReactWrapper {
+export class PopUpWrapperComponent extends BaseReactWrapper {
   @ViewChild(containerElementName, { static: true }) containerRef: ElementRef;
   @Input() public title = 'test title';
   @Input() public statement;
