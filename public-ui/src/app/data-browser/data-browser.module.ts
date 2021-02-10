@@ -4,6 +4,7 @@ import { ClarityModule } from '@clr/angular';
 /* Components */
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
+import { DbHomeWrapperComponent } from './views/quick-search/quick-search-react.component';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
@@ -65,7 +66,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
-    IntroVidsWrapperComponent
+    IntroVidsWrapperComponent,
+    DbHomeWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -85,6 +87,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighchartsChartModule,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
+    DbHomeWrapperComponent
   ],
   providers: [
     ChartService,
