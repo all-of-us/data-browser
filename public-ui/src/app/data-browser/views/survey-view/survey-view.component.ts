@@ -11,6 +11,7 @@ import {
 } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
+import { HelpTextService } from '../../services/helptext.service';
 import { TooltipService } from '../../../utils/tooltip.service';
 
 @Component({
@@ -70,7 +71,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: DataBrowserService,
     private tooltipText: TooltipService,
-    public dbc: DbConfigService) {
+    public dbc: DbConfigService,
+    public helptext: HelpTextService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
@@ -83,13 +85,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = '';
       }
     });
-    this.copeDisclaimer = `<div class="cope-statement"><span class='cope-statement-body'>This optional survey was released to participants for completion
-    at multiple time points during the COVID-19 pandemic. As a result, a participant may have
-    multiple data points if they completed more than one survey.</span>
-    <span class='cope-statement-body'>This survey has multiple versions. Even though most of the content is consistent between
-    versions, some questions were modified.</span> <span class='cope-statement-box'><strong>Please Note:</strong><br> While these aggregate data are available
-    in the Data Browser tool, to protect participant privacy, only select data will be available in the Registered Tier dataset (i.e., data describing COVID
-    positive status will not be made available)</span></div>`;
   }
 
 

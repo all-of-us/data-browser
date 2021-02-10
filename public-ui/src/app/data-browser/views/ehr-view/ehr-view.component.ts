@@ -13,6 +13,7 @@ import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchC
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
+import { HelpTextService } from '../../services/helptext.service';
 import { TooltipService } from '../../../utils/tooltip.service';
 
 /* This displays concept search for a Domain. */
@@ -72,11 +73,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   testFilter = 0;
   orderFilter = 0;
   showStatement: boolean;
-  dataStatement = `The <i>All of Us</i> Research Program includes a demographically, geographically, and
-  medically diverse group of participants, however, it is not a representative sample of the
-  population of the United States. Enrollment in the <i>All of Us</i> Research program is open to all who
-  choose to participate, and the program is committed to engaging with and encouraging participation
-  of minority groups that are historically underrepresented in biomedical research.`;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -84,6 +80,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private api: DataBrowserService,
     private tooltipText: TooltipService,
     public dbc: DbConfigService,
+    public helptext: HelpTextService
   ) {
   }
 
@@ -710,9 +707,5 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
     public resetSelectedGraphs(concept: any) {
         concept.graphToShow = GraphType.None;
-    }
-
-    public popUpClose() {
-       this.showStatement = false;
     }
 }
