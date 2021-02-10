@@ -21,7 +21,8 @@ const PopUpReactComponent =
             <div className='card'>
                 <div onClick={props.closeClick} className='close'>x</div>
                    <h2 className='card-title'>{props.title}</h2>
-                   <div className='card-body' dangerouslySetInnerHTML={{ __html: props.statement }}></div>
+                   <div className='card-body' dangerouslySetInnerHTML=
+                    {{ __html: props.statement }}></div>
                    <div className='btn-container'>
                   <button onClick={props.closeClick} className='disclaimer-btn'>OK</button>
                   </div>
@@ -59,6 +60,7 @@ export class PopUpWrapper extends BaseReactWrapper {
     const {statement} = this;
     const {closeClick} = this;
     ReactDOM.render(
-        <PopUpReactComponent title={title} statement={statement} closeClick={closeClick}/>, this.containerRef.nativeElement);
+        <PopUpReactComponent title={title} statement={statement} closeClick={closeClick}/>,
+        this.containerRef.nativeElement);
   }
 }
