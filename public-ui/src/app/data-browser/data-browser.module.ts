@@ -30,10 +30,10 @@ import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
-import { PopUpReactWrapper } from '../shared/components/pop-up/PopUpReactWrapper';
 import { PopUpReactComponent } from '../shared/components/pop-up/PopUpReactComponent';
-import { QuickSearchComponent } from './views/quick-search/quick-search.component';
+import { PopUpReactWrapper } from '../shared/components/pop-up/PopUpReactWrapper';
 import { ReactButtonComponent } from '../shared/components/button/ReactButtonComponent';
+import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 

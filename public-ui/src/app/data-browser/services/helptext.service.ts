@@ -45,5 +45,6 @@ export class HelpTextService {
     class: 'disclaimer-btn disclaimer-btn-survey',
     title: 'IMPORTANT CONSIDERATIONS FOR COPE SURVEY - LEARN MORE'
   }};
+
   constructor() { }
 }

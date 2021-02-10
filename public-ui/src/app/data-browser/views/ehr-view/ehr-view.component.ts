@@ -4,17 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
 import { Domain } from '../../../../publicGenerated/model/domain';
-import { environment } from '../../../../environments/environment';
 import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchConceptsRequest';
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { HelpTextService } from '../../services/helptext.service';
 import { TooltipService } from '../../../utils/tooltip.service';
+import { HelpTextService } from '../../services/helptext.service';
 
 /* This displays concept search for a Domain. */
 
