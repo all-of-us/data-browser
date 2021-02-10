@@ -18,7 +18,8 @@ const containerElementName = 'myReactComponentContainer';
 
 const ReactButtonComponent =
     (props) => {
-        return <button onClick={props.handleClick} className={props.styleClass}>{props.title}</button>;
+        return <button onClick={props.handleClick} className={props.styleClass}>
+        {props.title}</button>;
     }
 
 @Component({
@@ -27,7 +28,7 @@ const ReactButtonComponent =
   styleUrls: ['../../../styles/page.css', '../../../styles/buttons.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ReactButtonWrapper extends BaseReactWrapper {
+export class ReactButtonWrapperComponent extends BaseReactWrapper {
   @ViewChild(containerElementName, { static: true }) containerRef: ElementRef;
   @Input() public title;
   @Input() public styleClass;
@@ -49,7 +50,8 @@ export class ReactButtonWrapper extends BaseReactWrapper {
     const {title} = this;
     const {styleClass} = this;
     const {handleClick} = this;
-    ReactDOM.render( <ReactButtonComponent title={title} styleClass={styleClass} handleClick={handleClick}/>,
+    ReactDOM.render( <ReactButtonComponent title={title} styleClass={styleClass}
+    handleClick={handleClick}/>,
     this.containerRef.nativeElement);
   }
 }
