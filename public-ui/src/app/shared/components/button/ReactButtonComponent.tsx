@@ -16,13 +16,18 @@ import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wr
 
 const containerElementName = 'myReactComponentContainer';
 
+const ReactButtonComponent =
+    (props) => {
+        return <button onClick={props.handleClick} className={props.styleClass}>{props.title}</button>;
+    }
+
 @Component({
   selector: 'app-react-button',
   template: `<span #${containerElementName}></span>`,
   styleUrls: ['../../../styles/page.css', '../../../styles/buttons.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ReactButtonComponent extends BaseReactWrapper {
+export class ReactButtonWrapper extends BaseReactWrapper {
   @ViewChild(containerElementName, { static: true }) containerRef: ElementRef;
   @Input() public title;
   @Input() public styleClass;
@@ -43,7 +48,8 @@ export class ReactButtonComponent extends BaseReactWrapper {
   public render() {
     const {title} = this;
     const {styleClass} = this;
-    ReactDOM.render( <button onClick={this.handleClick} className={styleClass}>{title}</button>,
+    const {handleClick} = this;
+    ReactDOM.render( <ReactButtonComponent title={title} styleClass={styleClass} handleClick={handleClick}/>,
     this.containerRef.nativeElement);
   }
 }

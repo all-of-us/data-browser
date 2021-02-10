@@ -5,8 +5,8 @@ import { ClarityModule } from '@clr/angular';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
-import { ReactButtonComponent } from '../shared/components/button/ReactButtonComponent';
-import { PopUpReactWrapperComponent } from '../shared/components/pop-up/PopUpReactWrapper';
+import { ReactButtonWrapper } from '../shared/components/button/ReactButtonComponent';
+import { PopUpWrapper } from '../shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
@@ -69,8 +69,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
-    PopUpReactWrapperComponent,
-    ReactButtonComponent
+    PopUpWrapper,
+    ReactButtonWrapper
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -90,7 +90,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighchartsChartModule,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
-    PopUpReactWrapperComponent
+    ReactButtonWrapper
   ],
   providers: [
     ChartService,
