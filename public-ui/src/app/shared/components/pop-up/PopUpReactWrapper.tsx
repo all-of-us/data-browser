@@ -10,10 +10,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import * as React from 'react';
+import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
 import { PopUpReactComponent } from './PopUpReactComponent';
-import { FunctionComponent } from 'react';
 const containerElementName = 'myReactComponentContainer';
 
 @Component({
@@ -44,7 +44,7 @@ export class PopUpReactWrapperComponent extends BaseReactWrapper {
   public render() {
     const {title} = this;
     const {statement} = this;
-    ReactDOM.render( <PopUpReactComponent title={title} statement={statement} onClick={this.closeClick}/>,
-    this.containerRef.nativeElement);
+    ReactDOM.render( <PopUpReactComponent title={title} statement={statement}
+    onClick={this.closeClick}/>, this.containerRef.nativeElement);
   }
 }
