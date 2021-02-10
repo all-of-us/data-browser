@@ -13,7 +13,6 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import { PopUpReactComponent } from './PopUpReactComponent';
 const containerElementName = 'myReactComponentContainer';
 
 @Component({
@@ -44,7 +43,17 @@ export class PopUpReactWrapperComponent extends BaseReactWrapper {
   public render() {
     const {title} = this;
     const {statement} = this;
-    ReactDOM.render( <PopUpReactComponent title={title} statement={statement}
-    onClick={this.closeClick}/>, this.containerRef.nativeElement);
+    const {closeClick} = this;
+    ReactDOM.render(
+        <div className='data-statement'>
+                  <div className='card'>
+                     <div onClick={closeClick} className='close'>x</div>
+                    <h2 className='card-title'>{title}</h2>
+                    <div className='card-body' dangerouslySetInnerHTML={{ __html: statement }}></div>
+                    <div className='btn-container'>
+                    <button onClick={closeClick} className='disclaimer-btn'>OK</button>
+                     </div>
+                  </div>
+                 </div>, this.containerRef.nativeElement);
   }
 }
