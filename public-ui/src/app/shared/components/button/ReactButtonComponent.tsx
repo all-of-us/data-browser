@@ -11,12 +11,13 @@ import {
 } from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { FunctionComponent } from 'react';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
+import { FunctionComponent } from 'react';
+
 const containerElementName = 'myReactComponentContainer';
 
 @Component({
-  selector: 'react-button',
+  selector: 'app-react-button',
   template: `<span #${containerElementName}></span>`,
   styleUrls: ['../../../styles/page.css', '../../../styles/buttons.css'],
   encapsulation: ViewEncapsulation.None,
@@ -42,6 +43,7 @@ export class ReactButtonComponent extends BaseReactWrapper {
   public render() {
     const {title} = this;
     const {styleClass} = this;
-    ReactDOM.render( <button onClick={this.handleClick} className={styleClass}>{title}</button>, this.containerRef.nativeElement);
+    ReactDOM.render( <button onClick={this.handleClick} className={styleClass}>{title}</button>,
+    this.containerRef.nativeElement);
   }
 }

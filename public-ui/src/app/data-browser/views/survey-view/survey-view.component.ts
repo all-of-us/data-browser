@@ -11,8 +11,8 @@ import {
 } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { HelpTextService } from '../../services/helptext.service';
 import { TooltipService } from '../../../utils/tooltip.service';
+import { HelpTextService } from '../../services/helptext.service';
 
 @Component({
   selector: 'app-survey-view',

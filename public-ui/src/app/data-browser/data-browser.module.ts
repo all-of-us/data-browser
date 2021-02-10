@@ -32,7 +32,7 @@ import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { ReactButtonComponent } from '../shared/components/button/ReactButtonComponent';
 import { PopUpReactComponent } from '../shared/components/pop-up/PopUpReactComponent';
-import { PopUpReactWrapper } from '../shared/components/pop-up/PopUpReactWrapper';
+import { PopUpReactWrapperComponent } from '../shared/components/pop-up/PopUpReactWrapper';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
@@ -70,7 +70,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
-    PopUpReactWrapper,
+    PopUpReactWrapperComponent,
     ReactButtonComponent
   ],
   exports: [
@@ -91,7 +91,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighchartsChartModule,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
-    PopUpReactWrapper
+    PopUpReactWrapperComponent
   ],
   providers: [
     ChartService,

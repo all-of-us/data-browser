@@ -16,7 +16,7 @@
   to acknowledge the <i>All of Us</i> Research Program in any presentations or
   publications.
   <br><br><button (click)="showStatement = true" class="disclaimer-btn" *ngIf="!testReact">{{helptext.helptexts['QuickSearchDisclaimerBtn'].title}}</button>
-  <react-button *ngIf="testReact" [styleClass]="helptext.helptexts['QuickSearchDisclaimerBtn'].class" [title]="helptext.helptexts['QuickSearchDisclaimerBtn'].title" (click)="showStatement = true"></react-button>
+  <app-react-button *ngIf="testReact" [styleClass]="helptext.helptexts['QuickSearchDisclaimerBtn'].class" [title]="helptext.helptexts['QuickSearchDisclaimerBtn'].title" (click)="showStatement = true"></app-react-button>
 </p>
 <div class="search-icon-container">
   <div class="search">
@@ -211,5 +211,5 @@
     <app-error-message [dataType]="'data'"></app-error-message>
   </div>
 </section>
-<popup-react *ngIf="showStatement && testReact" [title]="helptext.helptexts['QuickSearchPopup'].title" [statement]="helptext.helptexts['QuickSearchPopup'].statement" (close)="showStatement = false"></popup-react>
+<app-popup-react *ngIf="showStatement && testReact" [title]="helptext.helptexts['QuickSearchPopup'].title" [statement]="helptext.helptexts['QuickSearchPopup'].statement" (close)="showStatement = false"></app-popup-react>
 <app-pop-up (closed)="showStatement = false" [title]="helptext.helptexts['QuickSearchPopup'].title" [statement]="helptext.helptexts['QuickSearchPopup'].statement" *ngIf="showStatement && !testReact" ></app-pop-up>
