@@ -16,8 +16,7 @@ const containerElementName = 'myReactComponentContainer';
 const ResultLinksComponent: FunctionComponent =
     (props): any => {
         return <React.Fragment>
-            </React.Fragment>
-            
+            </React.Fragment>;
     };
 
 @Component({
