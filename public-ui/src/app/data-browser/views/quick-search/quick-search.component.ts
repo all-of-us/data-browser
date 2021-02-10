@@ -15,8 +15,8 @@ import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../../environments/environment';
 import { ConceptGroup } from '../../../utils/conceptGroup';
 import { DbConfigService } from '../../../utils/db-config.service';
-import { HelpTextService } from '../../services/helptext.service';
 import { TooltipService } from '../../../utils/tooltip.service';
+import { HelpTextService } from '../../services/helptext.service';
 
 @Component({
   selector: 'app-quick-search',

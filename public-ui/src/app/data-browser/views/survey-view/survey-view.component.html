@@ -3,7 +3,7 @@
     <div class="title-container" *ngIf="surveyConceptId && surveyName && surveyDescription">
       <h1> {{surveyName}} </h1>
       <button *ngIf="isCopeSurvey && !testReact" (click)="showStatement = true" class="disclaimer-btn disclaimer-btn-survey">{{helptext.helptexts['CopeDisclaimerBtn'].title}}</button>
-      <react-button *ngIf="isCopeSurvey && testReact" [styleClass]="helptext.helptexts['CopeDisclaimerBtn'].class" [title]="helptext.helptexts['CopeDisclaimerBtn'].title" (click)="showStatement = true"></react-button>
+      <app-react-button *ngIf="isCopeSurvey && testReact" [styleClass]="helptext.helptexts['CopeDisclaimerBtn'].class" [title]="helptext.helptexts['CopeDisclaimerBtn'].title" (click)="showStatement = true"></app-react-button>
       <div class="desc-container">
         <p class="body-default help-text survey-desc">{{surveyDescription}} Survey questions appear in the order in
           which participants took the survey.</p>
@@ -497,6 +497,6 @@
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
-<popup-react *ngIf="showStatement && testReact" [title]="helptext.helptexts['CopePopUp'].title" [statement]="helptext.helptexts['CopePopUp'].statement" (close)="showStatement = false"></popup-react>
+<app-popup-react *ngIf="showStatement && testReact" [title]="helptext.helptexts['CopePopUp'].title" [statement]="helptext.helptexts['CopePopUp'].statement" (close)="showStatement = false"></app-popup-react>
 <app-pop-up [title]="helptext.helptexts['CopePopUp'].title" [statement]="helptext.helptexts['CopePopUp'].statement"
   (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
