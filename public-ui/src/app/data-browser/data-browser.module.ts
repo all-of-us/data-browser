@@ -6,7 +6,6 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
 import { ReactButtonComponent } from '../shared/components/button/ReactButtonComponent';
-import { PopUpReactComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { PopUpReactWrapperComponent } from '../shared/components/pop-up/PopUpReactWrapper';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
