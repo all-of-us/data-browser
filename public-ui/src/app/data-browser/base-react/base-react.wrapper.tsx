@@ -38,8 +38,8 @@ export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
         ReactDOM.unmountComponentAtNode(this.containerRef.nativeElement);
     }
 
-    public render() {
-        ReactDOM.render(<React.Fragment></React.Fragment>, this.containerRef.nativeElement);
+    render() {
+        // this will be overwritten by the extended wrapper
     }
 }
 
