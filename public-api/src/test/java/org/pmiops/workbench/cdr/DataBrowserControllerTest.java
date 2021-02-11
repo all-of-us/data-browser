@@ -531,7 +531,7 @@ public class DataBrowserControllerTest {
     @Test
     public void testConceptIdSearch() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("456")
-                .standardConceptFilter(StandardConceptFilter.ALL_CONCEPTS));
+                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
     }
 
