@@ -21,9 +21,13 @@
 <div class="search-icon-container">
   <div class="search">
     <div class="search-title">
-      <span class="secondary-display">{{title}} <app-tooltip [toolTipText1]="subTitle1" [toolTipText2]="'All of Us'"
+      <span class="secondary-display">{{title}}
+        <app-tooltip-react *ngIf="testReact" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Tooltip Homepage search across data'" [tooltips]="tooltips" [shape]="'info-standard'"
+        [className]="'is-solid info-icon'"></app-tooltip-react>
+        <app-tooltip [toolTipText1]="subTitle1" [toolTipText2]="'All of Us'"
           [toolTipText3]="subTitle2" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-          [action]="'Tooltip Homepage search across data'"></app-tooltip></span>
+          [action]="'Tooltip Homepage search across data'" *ngIf="!testReact"></app-tooltip>
+      </span>
     </div>
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>

@@ -62,6 +62,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
+  testReact: boolean;
   showStatement: boolean;
   cope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
@@ -71,6 +72,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   Enrollment in the <i>All of Us</i> Research program is open to all who choose to participate,
   and the program is committed to engaging with and encouraging participation of minority groups that are
   historically underrepresented in biomedical research."`;
+  tooltips = [];
 
   private subscriptions: ISubscription[] = [];
 
@@ -83,12 +85,16 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.dataType = params.dataType;
     });
+    this.tooltips.push(this.subTitle1);
+    this.tooltips.push('All of Us');
+    this.tooltips.push(this.subTitle2);
   }
 
   ngOnInit() {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
+    this.testReact = environment.testReact;
     this.pmGroups = this.dbc.pmGroups;
     this.fitbitMeasurementsFound = 4;
     this.physicalMeasurementsFound = this.dbc.pmGroups.length;

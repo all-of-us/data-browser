@@ -85,7 +85,7 @@ app-spinner {
 }
 
 .search-title:not(.secondary-display.tooltip, .secondary-display.tooltiptext) {
-    white-space: nowrap;
+    white-space: wrap;
     display: flex;
 }
 

@@ -343,6 +343,7 @@ p {
 
 .allofus-italics {
   font-style: italic;
+  word-wrap: break-word;
 }
 
 .survey-tbl-r {

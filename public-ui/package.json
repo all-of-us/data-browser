@@ -29,6 +29,7 @@
     "@angular/router": "^10.2.4",
     "@clr/angular": "^4.0.0",
     "@clr/icons": "^0.11.12",
+    "@clr/react": "^4.0.11",
     "@clr/ui": "^0.11.12",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
