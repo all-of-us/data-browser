@@ -556,9 +556,6 @@ definitions:
         type: "array"
         items:
           type: "string"
-      graphToShow:
-        description: graph to show when first expanded
-        type: "string"
 
   ConceptListResponse:
     type: object

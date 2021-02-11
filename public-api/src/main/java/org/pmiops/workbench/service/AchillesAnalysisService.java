@@ -753,25 +753,29 @@ public class AchillesAnalysisService {
             Analysis countAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID));
             if (countAnalysis != null) {
                 Analysis ca = achillesMapper.makeCopyAnalysis(countAnalysis);
-                ca.setResults(countAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId())).stream().collect(Collectors.toList()));
+                ca.setResults(new ArrayList<>(
+                        countAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setCountAnalysis(ca);
             }
             Analysis genderAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID));
             if (genderAnalysis != null) {
                 Analysis ga = achillesMapper.makeCopyAnalysis(genderAnalysis);
-                ga.setResults(genderAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId())).stream().collect(Collectors.toList()));
+                ga.setResults(new ArrayList<>(
+                        genderAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setGenderAnalysis(ga);
             }
             Analysis ageAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID));
             if (ageAnalysis != null) {
                 Analysis aa = achillesMapper.makeCopyAnalysis(ageAnalysis);
-                aa.setResults(ageAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId())).stream().collect(Collectors.toList()));
+                aa.setResults(new ArrayList<>(
+                        ageAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setAgeAnalysis(aa);
             }
             Analysis versionAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID));
             if (versionAnalysis != null) {
                 Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
-                aa.setResults(versionAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId())).stream().collect(Collectors.toList()));
+                aa.setResults(new ArrayList<>(
+                        versionAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setVersionAnalysis(aa);
             }
         }
