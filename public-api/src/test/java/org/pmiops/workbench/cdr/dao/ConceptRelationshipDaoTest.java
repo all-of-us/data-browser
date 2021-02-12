@@ -24,9 +24,9 @@ public class ConceptRelationshipDaoTest {
 
     @Autowired
     ConceptDao conceptDao;
+
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
-
 
     private final DbConcept concept1 = makeConcept(123L, "concept a", "S", "conceptA", "classId", "V1", "Condition", 123L, 0.2F, 0L, 1);
     private final DbConcept concept2 = makeConcept(456L, "concept b", null, "conceptB", "classId", "V2", "Condition", 456L, 0.2F, 0L, 1);
@@ -34,7 +34,6 @@ public class ConceptRelationshipDaoTest {
     private final DbConcept concept4 = makeConcept(1234L, "concept D test concept 1", null, "conceptD", "classId", "V4", "Measurement", 567L, 0.2F, 0L, 1);
     private final DbConcept concept5 = makeConcept(5678L, "concept E test concept 1", "S", "conceptE", "classId", "V5", "Condition", 1234L, 0.2F, 0L, 1);
     private final DbConcept concept6 = makeConcept(7890L, "concept F test concept 2", null, "conceptF", "classId", "V6", "Condition", 1234L, 0.2f, 0L, 1);
-
 
     @Before
     public void setUp() {
@@ -63,6 +62,8 @@ public class ConceptRelationshipDaoTest {
         final List<DbConcept> list = conceptDao.findStandardConcepts(1234L);
         Assert.assertEquals(list.get(0),concept5);
     }
+
+
 
     private DbConcept makeConcept(long conceptId, String conceptName, String standardConcept, String conceptCode, String conceptClassId, String vocabularyId, String domainId, long count, float prevalence,
                                 long sourceCountValue, int canSelect) {

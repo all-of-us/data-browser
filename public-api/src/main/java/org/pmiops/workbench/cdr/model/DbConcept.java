@@ -355,7 +355,7 @@ public class DbConcept {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts, drugBrandNames, graphToShow);
+        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts, drugBrandNames);
     }
 
     @Override
