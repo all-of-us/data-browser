@@ -13,14 +13,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.FetchType;
 
 
 @Entity
 @Table(name = "concept")
-public class Concept {
+public class DbConcept {
 
     private long conceptId;
     private String conceptName;
@@ -38,13 +37,14 @@ public class Concept {
     private String drugBrandNames;
     private int canSelect;
     private int hasCounts;
-    private MeasurementConceptInfo measurementConceptInfo = null;
+    private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
+    private String graphToShow;
 
-    public Concept() {
+    public DbConcept() {
     }
 
     // Copy constructor for copying everything but synonyms
-    public Concept(Concept a) {
+    public DbConcept(DbConcept a) {
         this.conceptId(a.getConceptId())
                 .conceptName(a.getConceptName())
                 .standardConcept(a.getStandardConcept())
@@ -69,7 +69,7 @@ public class Concept {
         this.conceptId = conceptId;
     }
 
-    public Concept conceptId(long conceptId) {
+    public DbConcept conceptId(long conceptId) {
         this.conceptId = conceptId;
         return this;
     }
@@ -83,7 +83,7 @@ public class Concept {
         this.conceptName = conceptName;
     }
 
-    public Concept conceptName(String conceptName) {
+    public DbConcept conceptName(String conceptName) {
         this.conceptName = conceptName;
         return this;
     }
@@ -97,7 +97,7 @@ public class Concept {
         this.canSelect = canSelect;
     }
 
-    public Concept canSelect(int canSelect) {
+    public DbConcept canSelect(int canSelect) {
         this.canSelect = canSelect;
         return this;
     }
@@ -111,7 +111,7 @@ public class Concept {
         this.standardConcept = standardConcept;
     }
 
-    public Concept standardConcept(String standardConcept) {
+    public DbConcept standardConcept(String standardConcept) {
         this.standardConcept = standardConcept;
         return this;
     }
@@ -125,7 +125,7 @@ public class Concept {
         this.conceptCode = conceptCode;
     }
 
-    public Concept conceptCode(String conceptCode) {
+    public DbConcept conceptCode(String conceptCode) {
         this.conceptCode = conceptCode;
         return this;
     }
@@ -138,7 +138,7 @@ public class Concept {
         this.conceptClassId = conceptClassId;
     }
 
-    public Concept conceptClassId(String conceptClassId) {
+    public DbConcept conceptClassId(String conceptClassId) {
         this.conceptClassId = conceptClassId;
         return this;
     }
@@ -152,7 +152,7 @@ public class Concept {
         this.vocabularyId = vocabularyId;
     }
 
-    public Concept vocabularyId(String vocabularyId) {
+    public DbConcept vocabularyId(String vocabularyId) {
         this.vocabularyId = vocabularyId;
         return this;
     }
@@ -166,7 +166,7 @@ public class Concept {
         this.domainId = domainId;
     }
 
-    public Concept domainId(String domainId) {
+    public DbConcept domainId(String domainId) {
         this.domainId = domainId;
         return this;
     }
@@ -181,7 +181,7 @@ public class Concept {
         this.countValue = count;
     }
 
-    public Concept count(long count) {
+    public DbConcept count(long count) {
         this.countValue = count;
         return this;
     }
@@ -195,7 +195,7 @@ public class Concept {
         this.sourceCountValue = count;
     }
 
-    public Concept sourceCountValue(Long count) {
+    public DbConcept sourceCountValue(Long count) {
         this.sourceCountValue = count;
         return this;
     }
@@ -209,7 +209,7 @@ public class Concept {
         this.prevalence = prevalence;
     }
 
-    public Concept prevalence(float prevalence) {
+    public DbConcept prevalence(float prevalence) {
         this.prevalence = prevalence;
         return this;
     }
@@ -229,14 +229,14 @@ public class Concept {
                 // and the concept name if it shows up in the pipe-concatenated synonyms;
                 // unescape || to |.
                 synonyms.addAll(Arrays.asList(parts).subList(1, parts.length).stream()
-                    .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
-                    .map((part) -> part.replaceAll("\\|\\|", "|"))
-                    .collect(Collectors.toList()));
+                        .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
+                        .map((part) -> part.replaceAll("\\|\\|", "|"))
+                        .collect(Collectors.toList()));
             }
         }
     }
 
-    public Concept synonymsStr(String synonymsStr) {
+    public DbConcept synonymsStr(String synonymsStr) {
         setSynonymsStr(synonymsStr);
         return this;
     }
@@ -260,7 +260,7 @@ public class Concept {
         }
     }
 
-    public Concept drugBrandNames(String drugBrandNames) {
+    public DbConcept drugBrandNames(String drugBrandNames) {
         setDrugBrandNames(drugBrandNames);
         return this;
     }
@@ -275,8 +275,28 @@ public class Concept {
         this.hasCounts = hasCounts;
     }
 
-    public Concept hasCounts(int hasCounts) {
+    public DbConcept hasCounts(int hasCounts) {
         this.hasCounts = hasCounts;
+        return this;
+    }
+
+    @Transient
+    public String getGraphToShow() {
+        if (getDomainId().equals("Measurement") && getDbMeasurementConceptInfo() != null && getDbMeasurementConceptInfo().getHasValues() == 1) {
+            return "Values";
+        } else {
+            return "Sex Assigned at Birth";
+        }
+    }
+    public void setGraphToShow() {
+        if (getDomainId().equals("Measurement") && getDbMeasurementConceptInfo() != null && getDbMeasurementConceptInfo().getHasValues() == 1) {
+            this.graphToShow = "Values";
+        } else {
+            this.graphToShow = "Sex Assigned at Birth";
+        }
+    }
+    public DbConcept graphToShow(String graphToShow) {
+        this.graphToShow = graphToShow;
         return this;
     }
 
@@ -287,7 +307,7 @@ public class Concept {
     public void setSynonyms(List<String> synonyms) {
         this.synonyms = synonyms;
     }
-    public Concept synonyms(List<String> synonyms) {
+    public DbConcept synonyms(List<String> synonyms) {
         this.synonyms = synonyms;
         return this;
     }
@@ -295,22 +315,22 @@ public class Concept {
     @Transient
     public List<String> getDrugBrands() { return drugBrands; }
     public void setDrugBrands(List<String> drugBrands) { this.drugBrands = drugBrands; }
-    public Concept drugBrands(List<String> drugBrands) {
+    public DbConcept drugBrands(List<String> drugBrands) {
         this.drugBrands = drugBrands;
         return this;
     }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)
-    public MeasurementConceptInfo getMeasurementConceptInfo() {
-        return measurementConceptInfo;
+    public DbMeasurementConceptInfo getDbMeasurementConceptInfo() {
+        return dbMeasurementConceptInfo;
     }
-    public void setMeasurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
-        this.measurementConceptInfo = measurementConceptInfo;
+    public void setDbMeasurementConceptInfo(DbMeasurementConceptInfo dbMeasurementConceptInfo) {
+        this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
     }
 
-    public Concept measurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
-        this.measurementConceptInfo = measurementConceptInfo;
+    public DbConcept dbMeasurementConceptInfo(DbMeasurementConceptInfo dbMeasurementConceptInfo) {
+        this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
         return this;
     }
 
@@ -318,7 +338,7 @@ public class Concept {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Concept concept = (Concept) o;
+        DbConcept concept = (DbConcept) o;
         return conceptId == concept.conceptId &&
                 countValue == concept.countValue &&
                 Float.compare(concept.prevalence, prevalence) == 0 &&
