@@ -24,3 +24,16 @@ unison: started
 [2021-02-12 10:16:04 -0600] Sync Log:  [END] Copying public-api/.docker-sync/daemon.pid
 [2021-02-12 10:16:04 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 10:16:03.87 on 12 Feb 2021
 [2021-02-12 10:16:04 -0600] Sync Log:  Synchronization complete at 10:16:03  (2 items transferred, 0 skipped, 0 failed)
+          ok  Starting native_osx for sync db-sync
+          ok  db-sync container still running, restarting unison in container
+unison: stopped
+unison: started
+     success  Sync container started
+     success  Showing unison logs from your sync container: db-sync
+[2021-02-12 11:40:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 11:40:43.29 on 12 Feb 2021
+[2021-02-12 11:40:43 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.log from /host_sync to /app_sync
+[2021-02-12 11:40:43 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.log
+[2021-02-12 11:40:43 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.pid from /host_sync to /app_sync
+[2021-02-12 11:40:43 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.pid
+[2021-02-12 11:40:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 11:40:43.30 on 12 Feb 2021
+[2021-02-12 11:40:43 -0600] Sync Log:  Synchronization complete at 11:40:43  (2 items transferred, 0 skipped, 0 failed)
