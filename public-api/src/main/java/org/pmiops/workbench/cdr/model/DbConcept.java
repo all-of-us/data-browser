@@ -38,8 +38,25 @@ public class DbConcept {
     private int canSelect;
     private int hasCounts;
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
+    private String graphToShow;
 
     public DbConcept() {
+    }
+
+    // Copy constructor for copying everything but synonyms
+    public DbConcept(DbConcept a) {
+        this.conceptId(a.getConceptId())
+                .conceptName(a.getConceptName())
+                .standardConcept(a.getStandardConcept())
+                .conceptCode(a.getConceptCode())
+                .conceptClassId(a.getConceptClassId())
+                .vocabularyId(a.getVocabularyId())
+                .domainId(a.getDomainId())
+                .count(a.getCountValue())
+                .sourceCountValue(a.getSourceCountValue())
+                .prevalence(a.getPrevalence())
+                .synonymsStr(a.getSynonymsStr())
+                .drugBrandNames(a.getDrugBrandNames());
     }
 
     @Id
@@ -212,9 +229,9 @@ public class DbConcept {
                 // and the concept name if it shows up in the pipe-concatenated synonyms;
                 // unescape || to |.
                 synonyms.addAll(Arrays.asList(parts).subList(1, parts.length).stream()
-                    .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
-                    .map((part) -> part.replaceAll("\\|\\|", "|"))
-                    .collect(Collectors.toList()));
+                        .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
+                        .map((part) -> part.replaceAll("\\|\\|", "|"))
+                        .collect(Collectors.toList()));
             }
         }
     }
@@ -260,6 +277,26 @@ public class DbConcept {
 
     public DbConcept hasCounts(int hasCounts) {
         this.hasCounts = hasCounts;
+        return this;
+    }
+
+    @Transient
+    public String getGraphToShow() {
+        if (getDomainId().equals("Measurement") && getDbMeasurementConceptInfo() != null && getDbMeasurementConceptInfo().getHasValues() == 1) {
+            return "Values";
+        } else {
+            return "Sex Assigned at Birth";
+        }
+    }
+    public void setGraphToShow() {
+        if (getDomainId().equals("Measurement") && getDbMeasurementConceptInfo() != null && getDbMeasurementConceptInfo().getHasValues() == 1) {
+            this.graphToShow = "Values";
+        } else {
+            this.graphToShow = "Sex Assigned at Birth";
+        }
+    }
+    public DbConcept graphToShow(String graphToShow) {
+        this.graphToShow = graphToShow;
         return this;
     }
 
@@ -318,7 +355,7 @@ public class DbConcept {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts, drugBrandNames);
+        return Objects.hash(conceptId, conceptName, standardConcept, conceptCode, conceptClassId, vocabularyId, domainId, countValue, sourceCountValue,prevalence, canSelect, hasCounts, drugBrandNames, graphToShow);
     }
 
     @Override

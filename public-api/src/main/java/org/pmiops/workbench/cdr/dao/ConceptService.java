@@ -66,7 +66,6 @@ public class ConceptService {
     }
 
     public enum StandardConceptFilterVal {
-        ALL_CONCEPTS,
         STANDARD_CONCEPTS,
         NON_STANDARD_CONCEPTS,
         STANDARD_OR_CODE_ID_MATCH
@@ -135,7 +134,7 @@ public class ConceptService {
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
     public Slice<DbConcept> searchConcepts(String query, StandardConceptFilterVal standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
-                                           int measurementTests, int measurementOrders) {
+                                         int measurementTests, int measurementOrders) {
 
         Specification<DbConcept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
@@ -159,7 +158,7 @@ public class ConceptService {
                     }
 
                     if (standardConceptFilter.equals(StandardConceptFilterVal.STANDARD_CONCEPTS)) {
-                        predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                            predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                     } else if (standardConceptFilter.equals(StandardConceptFilterVal.NON_STANDARD_CONCEPTS)) {
                         predicates.add(
                                 criteriaBuilder.or(
