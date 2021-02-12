@@ -229,9 +229,9 @@ public class DbConcept {
                 // and the concept name if it shows up in the pipe-concatenated synonyms;
                 // unescape || to |.
                 synonyms.addAll(Arrays.asList(parts).subList(1, parts.length).stream()
-                    .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
-                    .map((part) -> part.replaceAll("\\|\\|", "|"))
-                    .collect(Collectors.toList()));
+                        .filter((part) -> !Strings.isNullOrEmpty(part) && !part.equals(conceptName))
+                        .map((part) -> part.replaceAll("\\|\\|", "|"))
+                        .collect(Collectors.toList()));
             }
         }
     }

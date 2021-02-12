@@ -20,21 +20,7 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
             "by c.count_value desc",nativeQuery=true)
     List<DbConcept> findSourceConcepts(@Param("conceptId") long conceptId,@Param("minCount") Integer minCount);
 
-    @Query(value = "select c.* from concept c " +
-            "join concept_relationship rel on rel.concept_id_2 = c.concept_id " +
-            "and rel.concept_id_1 = :conceptId and rel.relationship_id = 'maps to' " +
-            "where c.concept_id != :conceptId order by c.count_value desc",
-            nativeQuery = true)
-    List<DbConcept> findConceptsMapsToParents(@Param("conceptId") long conceptId);
-
-    List<DbConcept> findByConceptName(String conceptName);
-
-    @Query(value = "select c.* from concept c " +
-            "where c.vocabulary_id in ('Gender', 'Race', 'Ethnicity')",
-            nativeQuery = true)
-    List<DbConcept> findGenderRaceEthnicityFromConcept();
-
-    /**
+    /**findVocabularyAllConceptCounts
      * Return the number of standard concepts in each vocabulary for the specified domain matching the
      * specified expression, matching concept name, synonym, ID, or code.
      * @param matchExp SQL MATCH expression to match concept name or synonym
@@ -49,22 +35,6 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
             "group by c.vocabularyId\n" +
             "order by c.vocabularyId\n")
     List<VocabularyCount> findVocabularyStandardConceptCounts(String matchExp, String domainId);
-
-    /**
-     * Return the number of concepts (standard or non-standard) in each vocabulary
-     * for the specified domain matching the specified expression, matching concept name, synonym,
-     * ID, or code.
-     * @param matchExp SQL MATCH expression to match concept name or synonym
-     * @param domainId domain ID to use when filtering concepts
-     * @return per-vocabulary concept counts
-     */
-    @Query(value = "select c.vocabularyId as vocabularyId, count(*) as conceptCount from Concept c\n" +
-            "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
-            "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
-            "c.domainId = ?2\n" +
-            "group by c.vocabularyId\n" +
-            "order by c.vocabularyId\n")
-    List<VocabularyCount> findVocabularyAllConceptCounts(String matchExp, String domainId);
 
     @Query(value = "select distinct cr.concept_id_2 from cb_criteria_relationship cr \n" +
             "join concept c1 on (cr.concept_id_2 = c1.concept_id\n" +

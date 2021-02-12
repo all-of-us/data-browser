@@ -17,6 +17,7 @@ public interface ConceptMapper {
 
     @Mapping(target = "conceptSynonyms", source="synonyms")
     @Mapping(target = "measurementConceptInfo", source="dbMeasurementConceptInfo")
+    @Mapping(target = "graphToShow", ignore = true)
     Concept dbModelToClient(DbConcept db);
 
     default boolean isNonEmpty(String s) {

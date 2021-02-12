@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import com.google.common.base.Strings;
 import org.pmiops.workbench.model.CommonStorageEnums;
@@ -39,8 +41,8 @@ public class ConceptService {
     @Autowired
     private ConceptMapper conceptMapper;
 
-    public static enum SearchType {
-        CONCEPT_SEARCH, SURVEY_COUNTS, DOMAIN_COUNTS;
+    public enum SearchType {
+        CONCEPT_SEARCH, SURVEY_COUNTS, DOMAIN_COUNTS
     }
 
     public static class ConceptIds {
@@ -64,7 +66,6 @@ public class ConceptService {
     }
 
     public enum StandardConceptFilterVal {
-        ALL_CONCEPTS,
         STANDARD_CONCEPTS,
         NON_STANDARD_CONCEPTS,
         STANDARD_OR_CODE_ID_MATCH
@@ -167,32 +168,28 @@ public class ConceptService {
 
                     } else if (standardConceptFilter.equals(StandardConceptFilterVal.STANDARD_OR_CODE_ID_MATCH)) {
                         if (keyword != null) {
-                            if(keyword != null){
-                                List<Predicate> conceptCodeMatch = new ArrayList<>();
-                                List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
-                                predicates.remove(predicates.size()-1);
-                                List<Predicate> conceptMatch = new ArrayList<>();
-                                conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
-                                conceptMatch.add(
-                                        criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
-                                conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
-                                standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
-                                        criteriaBuilder.literal(query)));
-                                if (conceptIds.size() > 0) {
-                                    standardOrCodeOrIdMatch.add(root.get("conceptId").in(conceptIds));
-                                }
-                                try {
-                                    long conceptId = Long.parseLong(query);
-                                    standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
-                                            criteriaBuilder.literal(conceptId)));
-                                } catch (NumberFormatException e) {
-                                    // Not a long, don't try to match it to a concept ID.
-                                }
-                                conceptCodeMatch.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
-                                predicates.add(criteriaBuilder.or(conceptCodeMatch.toArray(new Predicate[0])));
-                            } else {
-                                predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                            List<Predicate> conceptCodeMatch = new ArrayList<>();
+                            List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
+                            predicates.remove(predicates.size()-1);
+                            List<Predicate> conceptMatch = new ArrayList<>();
+                            conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                            conceptMatch.add(
+                                    criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
+                            conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
+                            standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptCode"),
+                                    criteriaBuilder.literal(query)));
+                            if (conceptIds.size() > 0) {
+                                standardOrCodeOrIdMatch.add(root.get("conceptId").in(conceptIds));
                             }
+                            try {
+                                long conceptId = Long.parseLong(query);
+                                standardOrCodeOrIdMatch.add(criteriaBuilder.equal(root.get("conceptId"),
+                                        criteriaBuilder.literal(conceptId)));
+                            } catch (NumberFormatException e) {
+                                // Not a long, don't try to match it to a concept ID.
+                            }
+                            conceptCodeMatch.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
+                            predicates.add(criteriaBuilder.or(conceptCodeMatch.toArray(new Predicate[0])));
                         } else {
                             predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                         }
@@ -272,22 +269,15 @@ public class ConceptService {
         List<Long> drugConcepts = new ArrayList<>();
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Long> drugMatchedConcepts = new ArrayList<>();
-            drugMatchedConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-            if(drugMatchedConcepts.size() > 0) {
-                drugConcepts = drugMatchedConcepts;
-            }
+            drugConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
         }
 
-        Integer minCount = searchConceptsRequest.getMinCount();
-        if(minCount == null){
-            minCount = 1;
-        }
+        Integer minCount = Optional.ofNullable(searchConceptsRequest.getMinCount()).orElse(1);
 
         StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
 
 
-        if(searchConceptsRequest.getQuery() == null || searchConceptsRequest.getQuery().isEmpty()){
+        if(StringUtils.isEmpty(searchConceptsRequest.getQuery())){
             if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
                 standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
             }
@@ -304,7 +294,7 @@ public class ConceptService {
 
         StandardConceptFilterVal convertedConceptFilter = StandardConceptFilterVal.valueOf(standardConceptFilter.name());
 
-        Slice<DbConcept> concepts = null;
+        Slice<DbConcept> concepts;
         int measurementTests = 1;
         int measurementOrders = 1;
 
@@ -343,13 +333,13 @@ public class ConceptService {
 
         List<Concept> conceptList = new ArrayList<>();
 
-        if (concepts != null) {
+        if (concepts.getContent() != null) {
             conceptList = concepts.getContent().stream()
                     .map(conceptMapper::dbModelToClient)
                     .collect(Collectors.toList());
 
             if(response.getStandardConcepts() != null) {
-                conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+                conceptList = conceptList.stream().filter(c -> !c.getConceptId().equals(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
             }
         }
         response.setItems(conceptList);
