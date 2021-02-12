@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.AchillesResult;
 import org.pmiops.workbench.model.AchillesResultDist;
+import org.pmiops.workbench.model.SurveyMetadata;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.DbAchillesResultDist;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
@@ -372,11 +373,11 @@ public class AchillesAnalysisService {
             String analysisStratumName=ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 if (stratum == 2 && ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
-                        uniqueAgeDeciles.add(ar.getStratum2());
-                        ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum2()));
+                    uniqueAgeDeciles.add(ar.getStratum2());
+                    ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum2()));
                 } else if (stratum == 4 && ar.getStratum4() != null && !ar.getStratum4().equals("0")) {
-                        uniqueAgeDeciles.add(ar.getStratum4());
-                        ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum4()));
+                    uniqueAgeDeciles.add(ar.getStratum4());
+                    ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum4()));
                 }
             }
         }
@@ -735,5 +736,49 @@ public class AchillesAnalysisService {
         }
 
         return binWidth;
+    }
+
+    public List<SurveyMetadata> mapAnalysesToQuestions(List<Analysis> analyses, List<SurveyMetadata> questions) {
+        Map<Long, Analysis> analysisMap = analyses.stream().collect(Collectors.toMap(Analysis::getAnalysisId, Analysis -> Analysis));
+        Multimap<String, AchillesResult> countAnalysisResultsByQuestion = Multimaps.index(
+                analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> genderAnalysisResultsByQuestion = Multimaps.index(
+                analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> ageAnalysisResultsByQuestion = Multimaps.index(
+                analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> versionAnalysisResultsByQuestion = Multimaps.index(
+                analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
+
+        for(SurveyMetadata q: questions) {
+            Analysis countAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID));
+            if (countAnalysis != null) {
+                Analysis ca = achillesMapper.makeCopyAnalysis(countAnalysis);
+                ca.setResults(new ArrayList<>(
+                        countAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
+                q.setCountAnalysis(ca);
+            }
+            Analysis genderAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID));
+            if (genderAnalysis != null) {
+                Analysis ga = achillesMapper.makeCopyAnalysis(genderAnalysis);
+                ga.setResults(new ArrayList<>(
+                        genderAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
+                q.setGenderAnalysis(ga);
+            }
+            Analysis ageAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID));
+            if (ageAnalysis != null) {
+                Analysis aa = achillesMapper.makeCopyAnalysis(ageAnalysis);
+                aa.setResults(new ArrayList<>(
+                        ageAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
+                q.setAgeAnalysis(aa);
+            }
+            Analysis versionAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID));
+            if (versionAnalysis != null) {
+                Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
+                aa.setResults(new ArrayList<>(
+                        versionAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
+                q.setVersionAnalysis(aa);
+            }
+        }
+        return questions;
     }
 }

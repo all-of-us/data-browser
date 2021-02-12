@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.pmiops.workbench.cdr.model.Concept;
+import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +28,12 @@ public class ConceptRelationshipDaoTest {
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
 
-
-    Concept concept1 = makeConcept(123L, "concept a", "S", "conceptA", "classId", "V1", "Condition", 123L, 0.2F, 0L, 1);
-    Concept concept2 = makeConcept(456L, "concept b", null, "conceptB", "classId", "V2", "Condition", 456L, 0.2F, 0L, 1);
-    Concept concept3 = makeConcept(789L, "concept c", null, "conceptC", "classId", "V3", "Condition", 567L, 0.2F, 0L, 1);
-    Concept concept4 = makeConcept(1234L, "concept D test concept 1", null, "conceptD", "classId", "V4", "Measurement", 567L, 0.2F, 0L, 1);
-    Concept concept5 = makeConcept(5678L, "concept E test concept 1", "S", "conceptE", "classId", "V5", "Condition", 1234L, 0.2F, 0L, 1);
-    Concept concept6 = makeConcept(7890L, "concept F test concept 2", null, "conceptF", "classId", "V6", "Condition", 1234L, 0.2f, 0L, 1);
-
+    private final DbConcept concept1 = makeConcept(123L, "concept a", "S", "conceptA", "classId", "V1", "Condition", 123L, 0.2F, 0L, 1);
+    private final DbConcept concept2 = makeConcept(456L, "concept b", null, "conceptB", "classId", "V2", "Condition", 456L, 0.2F, 0L, 1);
+    private final DbConcept concept3 = makeConcept(789L, "concept c", null, "conceptC", "classId", "V3", "Condition", 567L, 0.2F, 0L, 1);
+    private final DbConcept concept4 = makeConcept(1234L, "concept D test concept 1", null, "conceptD", "classId", "V4", "Measurement", 567L, 0.2F, 0L, 1);
+    private final DbConcept concept5 = makeConcept(5678L, "concept E test concept 1", "S", "conceptE", "classId", "V5", "Condition", 1234L, 0.2F, 0L, 1);
+    private final DbConcept concept6 = makeConcept(7890L, "concept F test concept 2", null, "conceptF", "classId", "V6", "Condition", 1234L, 0.2f, 0L, 1);
 
     @Before
     public void setUp() {
@@ -61,15 +59,15 @@ public class ConceptRelationshipDaoTest {
 
     @Test
     public void testConceptSearchCodeMatch() throws Exception{
-        final List<Concept> list = conceptDao.findStandardConcepts(1234L);
+        final List<DbConcept> list = conceptDao.findStandardConcepts(1234L);
         Assert.assertEquals(list.get(0),concept5);
     }
 
 
 
-    private Concept makeConcept(long conceptId, String conceptName, String standardConcept, String conceptCode, String conceptClassId, String vocabularyId, String domainId, long count, float prevalence,
-                                long sourceCountValue, int canSelect) {
-        return new Concept()
+    private DbConcept makeConcept(long conceptId, String conceptName, String standardConcept, String conceptCode, String conceptClassId, String vocabularyId, String domainId, long count, float prevalence,
+                                  long sourceCountValue, int canSelect) {
+        return new DbConcept()
                 .conceptId(conceptId)
                 .conceptName(conceptName)
                 .standardConcept(standardConcept)

@@ -294,6 +294,9 @@ Common.register_command({
 def run_public_api_and_db()
   common = Common.new
   common.status "Starting database..."
+  ServiceAccountContext.new(TEST_PROJECT).run do
+      ensure_docker_sync()
+  end
   common.run_inline %W{docker-compose up -d db}
   common.status "Starting public API."
   common.run_inline_swallowing_interrupt %W{docker-compose up public-api}

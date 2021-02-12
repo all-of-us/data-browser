@@ -70,7 +70,7 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
       "d.domain, d.domainId, d.name, d.description,\n" +
       "d.conceptId, 0L, COUNT(*), 0L)\n" +
       "from DbDomainInfo d\n" +
-      "join Concept c ON d.domainId = c.domainId\n" +
+      "join DbConcept c ON d.domainId = c.domainId\n" +
       "where (c.countValue > 0 or c.sourceCountValue > 0) \n" +
       "and matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
       "c.standardConcept IN ('S', 'C') and c.canSelect=1\n" +
@@ -89,7 +89,7 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
       "d.domain, d.domainId, d.name, d.description,\n" +
       "d.conceptId, COUNT(*), 0L, 0L)\n" +
       "from DbDomainInfo d\n" +
-      "join Concept c ON d.domainId = c.domainId\n" +
+      "join DbConcept c ON d.domainId = c.domainId\n" +
       "where (c.countValue > 0 or c.sourceCountValue > 0) \n" +
       "and matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0\n" +
           "and c.canSelect = 1\n"+
