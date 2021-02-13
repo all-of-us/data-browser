@@ -12,7 +12,6 @@ import {
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
 import { TooltipService } from '../../../utils/tooltip.service';
-import { HelpTextService } from '../../services/helptext.service';
 
 @Component({
   selector: 'app-survey-view',
@@ -71,8 +70,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: DataBrowserService,
     private tooltipText: TooltipService,
-    public dbc: DbConfigService,
-    public helptext: HelpTextService) {
+    public dbc: DbConfigService) {
+    this.closePopUp = this.closePopUp.bind(this);
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
@@ -649,6 +648,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getMatchingQuestionCount() {
     return this.surveyResultCount;
+  }
+
+  closePopUp() {
+    this.showStatement = false;
   }
 
   public resetExpansion() {

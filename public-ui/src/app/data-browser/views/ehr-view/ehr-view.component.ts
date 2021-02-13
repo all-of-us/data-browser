@@ -14,7 +14,6 @@ import { StandardConceptFilter } from '../../../../publicGenerated/model/standar
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
 import { TooltipService } from '../../../utils/tooltip.service';
-import { HelpTextService } from '../../services/helptext.service';
 
 /* This displays concept search for a Domain. */
 
@@ -79,9 +78,9 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private elm: ElementRef,
     private api: DataBrowserService,
     private tooltipText: TooltipService,
-    public dbc: DbConfigService,
-    public helptext: HelpTextService
+    public dbc: DbConfigService
   ) {
+    this.closePopUp = this.closePopUp.bind(this);
   }
 
   ngOnInit() {
@@ -708,4 +707,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     public resetSelectedGraphs(concept: any) {
         concept.graphToShow = GraphType.None;
     }
+
+   closePopUp() {
+       this.showStatement = false;
+   }
 }
