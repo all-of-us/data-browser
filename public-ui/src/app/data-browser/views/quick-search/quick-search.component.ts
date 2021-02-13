@@ -16,7 +16,6 @@ import { environment } from '../../../../environments/environment';
 import { ConceptGroup } from '../../../utils/conceptGroup';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { TooltipService } from '../../../utils/tooltip.service';
-import { HelpTextService } from '../../services/helptext.service';
 
 @Component({
   selector: 'app-quick-search',
@@ -73,12 +72,12 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public dbc: DbConfigService,
-    public helptext: HelpTextService,
     public tooltipText: TooltipService) {
     this.dbc.getGenderAnalysisResults();
     this.route.params.subscribe(params => {
       this.dataType = params.dataType;
     });
+    this.closePopUp = this.closePopUp.bind(this);
   }
 
   ngOnInit() {
@@ -332,6 +331,9 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         return false;
     }
     return false;
-
   }
+
+ closePopUp() {
+    this.showStatement = false;
+ }
 }
