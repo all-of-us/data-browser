@@ -120,8 +120,8 @@ export class DbHomeWrapperComponent extends BaseReactWrapper {
                         {
                             physicalMeasurementDomainInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
-                                return <ResultLinksComponent key={key} {...phyMeasurements} />
-                            });
+                                return <ResultLinksComponent key={key} {...phyMeasurements} />;
+                            })
 
                         }
                     </div>
