@@ -61,10 +61,9 @@ class PopUpReactComponent extends React.Component {
   }
 
   render() {
-    const {helpText, popUpClose} = this.props;
     return <div className='data-statement'>
                     <div className='card'>
-                        <div onClick={popUpClose} className='close'>x</div>
+                        <div onClick={this.props.popUpClose} className='close'>x</div>
                            <h2 className='card-title'>{helptexts[helpText].title}</h2>
                            <div className='card-body'>{helptexts[helpText].statement}</div>
                            <div className='btn-container'>
