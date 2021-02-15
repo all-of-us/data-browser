@@ -54,7 +54,7 @@ export class IntroVidsWrapperComponent extends BaseReactWrapper {
     videos: Video[];
 
     constructor(public vidService: VideoService, public injector: Injector) {
-        super(injector, IntroVidReactComponent, []);
+        super(injector);
         this.videos = this.vidService.videos;
     }
 
