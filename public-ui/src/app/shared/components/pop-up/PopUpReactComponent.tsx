@@ -26,8 +26,8 @@ const helptexts = { 'QuickSearchPopup': {
                participants, however, it is not a representative sample of the population of the
                United States. Enrollment in the <i>All of Us</i> Research program is open to all
                who choose to participate, and the program is committed to engaging with and
-               encouraging participation of minority groups that are historically underrepresented
-               in biomedical research. </div>
+               encouraging participation of minority groups that are historically
+               underrepresented in biomedical research. </div>
   },
   'EhrViewPopUp': {
     title: 'DATA DISCLAIMER',
