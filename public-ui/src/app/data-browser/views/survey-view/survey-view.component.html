@@ -497,6 +497,6 @@
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
-<app-popup-react *ngIf="showStatement && testReact" [helpText]="'CopePopUp'" [popUpClose]="closePopUp"></app-popup-react>
+<app-popup-react *ngIf="showStatement && testReact" [helpText]="'CopePopUp'" [onClose]="closePopUp"></app-popup-react>
 <app-pop-up [title]="helptext.helptexts['CopePopUp'].title" [statement]="helptext.helptexts['CopePopUp'].statement"
   (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
