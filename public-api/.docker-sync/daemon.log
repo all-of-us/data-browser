@@ -38,3 +38,29 @@ unison: started
 [2021-02-04 11:54:35 -0600] Sync Log:  [END] Copying public-ui/docker-sync.yml
 [2021-02-04 11:54:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 11:54:35.62 on 04 Feb 2021
 [2021-02-04 11:54:35 -0600] Sync Log:  Synchronization complete at 11:54:35  (1 item transferred, 0 skipped, 0 failed)
+          ok  Starting native_osx for sync db-sync
+          ok  db-sync container still running, restarting unison in container
+unison: stopped
+unison: started
+     success  Sync container started
+     success  Showing unison logs from your sync container: db-sync
+[2021-02-15 16:12:11 -0600] Sync Log:  [END] Deleting public-api/.docker-sync/daemon.pid
+[2021-02-15 16:12:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:12:07.02 on 15 Feb 2021
+[2021-02-15 16:12:11 -0600] Sync Log:  Synchronization complete at 16:12:07  (27 items transferred, 0 skipped, 0 failed)
+[2021-02-15 16:12:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:12:09.05 on 15 Feb 2021
+[2021-02-15 16:12:11 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.log from /host_sync to /app_sync
+[2021-02-15 16:12:11 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.log
+[2021-02-15 16:12:11 -0600] Sync Log:  [BGN] Copying public-api/.docker-sync/daemon.pid from /host_sync to /app_sync
+[2021-02-15 16:12:11 -0600] Sync Log:  [END] Copying public-api/.docker-sync/daemon.pid
+[2021-02-15 16:12:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:12:09.05 on 15 Feb 2021
+[2021-02-15 16:12:11 -0600] Sync Log:  Synchronization complete at 16:12:09  (2 items transferred, 0 skipped, 0 failed)
+[2021-02-15 16:12:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:12:11.36 on 15 Feb 2021
+[2021-02-15 16:12:12 -0600] Sync Log:  [BGN] Updating file .git/logs/refs/remotes/origin/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-15 16:12:12 -0600] Sync Log:  [END] Updating file .git/logs/refs/remotes/origin/Api_CleanUP_Concept
+[2021-02-15 16:12:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:12:11.36 on 15 Feb 2021
+[2021-02-15 16:12:12 -0600] Sync Log:  Synchronization complete at 16:12:11  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-15 16:12:13 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:12:12.38 on 15 Feb 2021
+[2021-02-15 16:12:13 -0600] Sync Log:  [BGN] Updating file .git/refs/remotes/origin/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-15 16:12:13 -0600] Sync Log:  [END] Updating file .git/refs/remotes/origin/Api_CleanUP_Concept
+[2021-02-15 16:12:13 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:12:12.38 on 15 Feb 2021
+[2021-02-15 16:12:13 -0600] Sync Log:  Synchronization complete at 16:12:12  (1 item transferred, 0 skipped, 0 failed)
