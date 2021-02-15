@@ -32,6 +32,7 @@ import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
+import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
@@ -395,19 +396,19 @@ public class DataBrowserControllerTest {
     private static final DbAchillesResult ACHILLES_RESULT_12 = makeAchillesResult(CLIENT_RESULT_12);
     private static final DbAchillesResult ACHILLES_RESULT_13 = makeAchillesResult(CLIENT_RESULT_13);
 
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_1 =
+    private static final DbConcept CONCEPT_1 =
             makeConcept(CLIENT_CONCEPT_1);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_2 =
+    private static final DbConcept CONCEPT_2 =
             makeConcept(CLIENT_CONCEPT_2);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_3 =
+    private static final DbConcept CONCEPT_3 =
             makeConcept(CLIENT_CONCEPT_3);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_4 =
+    private static final DbConcept CONCEPT_4 =
             makeConcept(CLIENT_CONCEPT_4);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_5 =
+    private static final DbConcept CONCEPT_5 =
             makeConcept(CLIENT_CONCEPT_5);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_6 =
+    private static final DbConcept CONCEPT_6 =
             makeConcept(CLIENT_CONCEPT_6);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_7 =
+    private static final DbConcept CONCEPT_7 =
             makeConcept(CLIENT_CONCEPT_7);
 
     @Autowired
@@ -594,8 +595,8 @@ public class DataBrowserControllerTest {
         }
     }
 
-  static org.pmiops.workbench.cdr.model.Concept makeConcept(Concept concept) {
-    org.pmiops.workbench.cdr.model.Concept result = new org.pmiops.workbench.cdr.model.Concept();
+  static DbConcept makeConcept(Concept concept) {
+    DbConcept result = new DbConcept();
     result.setConceptId(concept.getConceptId());
     result.setConceptName(concept.getConceptName());
     result.setStandardConcept(concept.getStandardConcept());
