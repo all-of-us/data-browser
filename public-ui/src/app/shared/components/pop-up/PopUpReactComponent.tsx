@@ -55,33 +55,19 @@ const helptexts = { 'QuickSearchPopup': {
                made available) </span> </div> </div>
   }};
 
-interface Props {
-    helpText: string;
-    popUpClose: Function;
-}
-
-class PopUpReactComponent extends React.Component<Props, {}> {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+const PopUpReactComponent =
+    (props) => {
     return <div className='data-statement'>
             <div className='card'>
-                <div onClick={this.props.popUpClose} className='close'>x</div>
-                   <h2 className='card-title'>
-                    {helptexts[this.props.helpText].title}</h2>
-                   <div className='card-body'>
-                    {helptexts[this.props.helpText].statement}</div>
+                <div onClick={props.onClose} className='close'>x</div>
+                   <h2 className='card-title'>{helptexts[props.helpText].title}</h2>
+                   <div className='card-body'>{helptexts[props.helpText].statement}</div>
                    <div className='btn-container'>
-                  <button onClick={this.props.popUpClose}
-                    className='disclaimer-btn'>OK</button>
+                  <button onClick={props.onClose} className='disclaimer-btn'>OK</button>
+                  </div>
                 </div>
-            </div>
-           </div>;
-  }
-}
-
+          </div>;
+    };
 
 @Component({
   selector: 'app-popup-react',
@@ -93,9 +79,14 @@ class PopUpReactComponent extends React.Component<Props, {}> {
 export class PopUpWrapperComponent extends BaseReactWrapper {
   @ViewChild(containerElementName, { static: true }) containerRef: ElementRef;
   @Input() public helpText: string;
-  @Input('onClose') popUpClose: Function;
+  @Input('onClose') onClose: Function;
 
   constructor(public injector: Injector) {
-    super(injector, PopUpReactComponent, ['helpText', 'popUpClose']);
+    super(injector);
   }
+
+  public render() {
+      ReactDOM.render( <PopUpReactComponent helpText={this.helpText} onClose={this.onClose}/>,
+      this.containerRef.nativeElement);
+    }
 }
