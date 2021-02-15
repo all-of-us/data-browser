@@ -943,3 +943,16 @@ unison: started
 [2021-02-12 16:48:14 -0600] Sync Log:  [END] Copying .git/objects/e1
 [2021-02-12 16:48:14 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:48:14.20 on 12 Feb 2021
 [2021-02-12 16:48:14 -0600] Sync Log:  Synchronization complete at 16:48:14  (11 items transferred, 0 skipped, 0 failed)
+          ok  Starting native_osx for sync db-sync
+          ok  db-sync container still running, restarting unison in container
+unison: stopped
+unison: started
+     success  Sync container started
+     success  Showing unison logs from your sync container: db-sync
+[2021-02-15 13:55:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:55:36.89 on 15 Feb 2021
+[2021-02-15 13:55:37 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.log from /host_sync to /app_sync
+[2021-02-15 13:55:37 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.log
+[2021-02-15 13:55:37 -0600] Sync Log:  [BGN] Updating file public-api/.docker-sync/daemon.pid from /host_sync to /app_sync
+[2021-02-15 13:55:37 -0600] Sync Log:  [END] Updating file public-api/.docker-sync/daemon.pid
+[2021-02-15 13:55:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:55:36.90 on 15 Feb 2021
+[2021-02-15 13:55:37 -0600] Sync Log:  Synchronization complete at 13:55:36  (2 items transferred, 0 skipped, 0 failed)
