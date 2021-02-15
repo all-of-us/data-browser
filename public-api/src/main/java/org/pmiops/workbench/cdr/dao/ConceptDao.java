@@ -1,13 +1,13 @@
 package org.pmiops.workbench.cdr.dao;
 
 import java.util.List;
-import org.pmiops.workbench.cdr.model.Concept;
+import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.cdr.model.VocabularyCount;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface ConceptDao extends CrudRepository<Concept, Long> {
+public interface ConceptDao extends CrudRepository<DbConcept, Long> {
 
     @Query(nativeQuery=true, value="select c.* from concept c join concept_relationship cr on c.concept_id=cr.concept_id_2 " +
             "where cr.concept_id_1=?1 and cr.relationship_id='Maps to' and c.can_select=1")
@@ -41,7 +41,7 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
      * @param domainId domain ID to use when filtering concepts
      * @return per-vocabulary concept counts
      */
-    @Query(value = "select c.vocabularyId as vocabularyId, count(distinct c.conceptId) as conceptCount from Concept c\n" +
+    @Query(value = "select c.vocabularyId as vocabularyId, count(distinct c.conceptId) as conceptCount from DbConcept c\n" +
             "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
             "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
             "c.standardConcept IN ('S', 'C') and\n" +
@@ -58,7 +58,7 @@ public interface ConceptDao extends CrudRepository<Concept, Long> {
      * @param domainId domain ID to use when filtering concepts
      * @return per-vocabulary concept counts
      */
-    @Query(value = "select c.vocabularyId as vocabularyId, count(*) as conceptCount from Concept c\n" +
+    @Query(value = "select c.vocabularyId as vocabularyId, count(*) as conceptCount from DbConcept c\n" +
             "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
             "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
             "c.domainId = ?2\n" +
