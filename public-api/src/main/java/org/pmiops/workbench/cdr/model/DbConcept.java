@@ -38,7 +38,7 @@ public class DbConcept {
     private String drugBrandNames;
     private int canSelect;
     private int hasCounts;
-    private MeasurementConceptInfo measurementConceptInfo = null;
+    private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
 
     // Copy constructor for copying everything but synonyms
     public DbConcept(Concept a) {
@@ -299,15 +299,15 @@ public class DbConcept {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)
-    public MeasurementConceptInfo getMeasurementConceptInfo() {
-        return measurementConceptInfo;
+    public DbMeasurementConceptInfo getDbMeasurementConceptInfo() {
+        return dbMeasurementConceptInfo;
     }
-    public void setMeasurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
-        this.measurementConceptInfo = measurementConceptInfo;
+    public void setDbMeasurementConceptInfo(MeasurementConceptInfo dbMeasurementConceptInfo) {
+        this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
     }
 
-    public DbConcept measurementConceptInfo(MeasurementConceptInfo measurementConceptInfo) {
-        this.measurementConceptInfo = measurementConceptInfo;
+    public DbConcept dbMeasurementConceptInfo(DbMeasurementConceptInfo dbMeasurementConceptInfo) {
+        this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
         return this;
     }
 
