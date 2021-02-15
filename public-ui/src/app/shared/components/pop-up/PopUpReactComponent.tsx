@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Injector,
   Input,
   Output,
   ViewChild,
@@ -54,20 +55,26 @@ const helptexts = { 'QuickSearchPopup': {
                made available) </span> </div> </div>
   }};
 
+class PopUpReactComponent extends React.Component<Props, State> {
+  constructor(props) {
+      super(props);
+  }
 
-const PopUpReactComponent =
-    (props) => {
+  render() {
+    const {helpText, popUpClose} = this.props;
     return <div className='data-statement'>
-            <div className='card'>
-                <div onClick={props.popUpClose} className='close'>x</div>
-                   <h2 className='card-title'>{helptexts[props.helpText].title}</h2>
-                   <div className='card-body'>{helptexts[props.helpText].statement}</div>
-                   <div className='btn-container'>
-                  <button onClick={props.popUpClose} className='disclaimer-btn'>OK</button>
-                  </div>
-                </div>
-          </div>;
-    };
+                    <div className='card'>
+                        <div onClick={popUpClose} className='close'>x</div>
+                           <h2 className='card-title'>{helptexts[helpText].title}</h2>
+                           <div className='card-body'>{helptexts[helpText].statement}</div>
+                           <div className='btn-container'>
+                          <button onClick={popUpClose} className='disclaimer-btn'>OK</button>
+                          </div>
+                        </div>
+                  </div>;
+  }
+}
+
 
 @Component({
   selector: 'app-popup-react',
@@ -81,7 +88,7 @@ export class PopUpWrapperComponent extends BaseReactWrapper {
   @Input() public helpText: string;
   @Input('onClose') popUpClose: Function;
 
-  constructor() {
-    super(PopUpReactComponent, ['helpText', 'popUpClose']);
+  constructor(public injector: Injector) {
+    super(injector, PopUpReactComponent, ['helpText', 'popUpClose']);
   }
 }
