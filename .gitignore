@@ -8,7 +8,7 @@
 /public-api/?/
 /public-api/.docker-sync/
 /public-api/db/?/
-/public-api/.docker-sync/
+/public-api/.docker-sync/*
 /public-api/.swagger-codegen/*
 /public-api/sa-key.json
 /public-api/src/main/resources/merged.yaml
