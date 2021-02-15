@@ -116,32 +116,32 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             TO_CLIENT_CONCEPT =
             new Function<DbConcept, Concept>() {
                 @Override
-                public Concept apply(Concept concept) {
+                public Concept apply(DbConcept dbConcept) {
                     MeasurementConceptInfo measurementInfo = null;
-                    if(concept.getMeasurementConceptInfo() != null){
-                        measurementInfo = TO_CLIENT_MEASUREMENT_CONCEPT_INFO.apply(concept.getMeasurementConceptInfo());
+                    if(dbConcept.getDbMeasurementConceptInfo() != null){
+                        measurementInfo = TO_CLIENT_MEASUREMENT_CONCEPT_INFO.apply(dbConcept.getDbMeasurementConceptInfo());
                     }
                     String graphToShow = null;
-                    if (concept.getDomainId().equals("Measurement") && concept.getMeasurementConceptInfo() != null && concept.getMeasurementConceptInfo().getHasValues() == 1) {
+                    if (dbConcept.getDomainId().equals("Measurement") && dbConcept.getDbMeasurementConceptInfo() != null && dbConcept.getDbMeasurementConceptInfo().getHasValues() == 1) {
                         graphToShow = "Values";
                     } else {
                         graphToShow = "Sex Assigned at Birth";
                     }
                     return new Concept()
-                            .conceptId(concept.getConceptId())
-                            .conceptName(concept.getConceptName())
-                            .standardConcept(concept.getStandardConcept())
-                            .conceptCode(concept.getConceptCode())
-                            .conceptClassId(concept.getConceptClassId())
-                            .vocabularyId(concept.getVocabularyId())
-                            .domainId(concept.getDomainId())
-                            .countValue(concept.getCountValue())
-                            .sourceCountValue(concept.getSourceCountValue())
-                            .prevalence(concept.getPrevalence())
-                            .conceptSynonyms(concept.getSynonyms())
-                            .canSelect(concept.getCanSelect())
+                            .conceptId(dbConcept.getConceptId())
+                            .conceptName(dbConcept.getConceptName())
+                            .standardConcept(dbConcept.getStandardConcept())
+                            .conceptCode(dbConcept.getConceptCode())
+                            .conceptClassId(dbConcept.getConceptClassId())
+                            .vocabularyId(dbConcept.getVocabularyId())
+                            .domainId(dbConcept.getDomainId())
+                            .countValue(dbConcept.getCountValue())
+                            .sourceCountValue(dbConcept.getSourceCountValue())
+                            .prevalence(dbConcept.getPrevalence())
+                            .conceptSynonyms(dbConcept.getSynonyms())
+                            .canSelect(dbConcept.getCanSelect())
                             .measurementConceptInfo(measurementInfo)
-                            .drugBrands(concept.getDrugBrands())
+                            .drugBrands(dbConcept.getDrugBrands())
                             .graphToShow(graphToShow);
                 }
             };
@@ -154,7 +154,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             TO_CLIENT_MEASUREMENT_CONCEPT_INFO =
             new Function<DbMeasurementConceptInfo, MeasurementConceptInfo>() {
                 @Override
-                public MeasurementConceptInfo apply(MeasurementConceptInfo measurementConceptInfo) {
+                public MeasurementConceptInfo apply(DbMeasurementConceptInfo measurementConceptInfo) {
                     return new MeasurementConceptInfo()
                             .conceptId(measurementConceptInfo.getConceptId())
                             .hasValues(measurementConceptInfo.getHasValues());
@@ -291,7 +291,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
 
-        Slice<Concept> concepts = null;
+        Slice<DbConcept> concepts = null;
         int measurementTests = 1;
         int measurementOrders = 1;
 
@@ -309,12 +309,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         ConceptListResponse response = new ConceptListResponse();
 
-        for(Concept con : concepts.getContent()){
+        for(DbConcept con : concepts.getContent()){
             String conceptCode = con.getConceptCode();
             String conceptId = String.valueOf(con.getConceptId());
 
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
-                List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
+                List<DbConcept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
                 response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
                 response.setSourceOfStandardConcepts(con.getConceptId());
             }
@@ -329,7 +329,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             response.setMatchType(MatchType.NAME);
         }
 
-        List<Concept> conceptList = new ArrayList<>();
+        List<DbConcept> conceptList = new ArrayList<>();
 
         if (concepts != null) {
             conceptList = new ArrayList(concepts.getContent());
@@ -658,7 +658,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if(count == null){
             count = 0;
         }
-        List<Concept> conceptList = conceptDao.findSourceConcepts(conceptId,count);
+        List<DbConcept> conceptList = conceptDao.findSourceConcepts(conceptId,count);
         ConceptListResponse resp = new ConceptListResponse();
         resp.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
         return ResponseEntity.ok(resp);

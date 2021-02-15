@@ -40,6 +40,10 @@ public class DbConcept {
     private int hasCounts;
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
 
+    public DbConcept() {
+
+    }
+
     // Copy constructor for copying everything but synonyms
     public DbConcept(DbConcept a) {
         this.conceptId(a.getConceptId())
@@ -315,7 +319,7 @@ public class DbConcept {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Concept concept = (Concept) o;
+        DbConcept concept = (DbConcept) o;
         return conceptId == concept.conceptId &&
                 countValue == concept.countValue &&
                 Float.compare(concept.prevalence, prevalence) == 0 &&

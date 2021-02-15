@@ -215,7 +215,7 @@ public class ConceptService {
 
         Pageable pageable = new PageRequest(page, limit,
                 new Sort(Direction.DESC, "countValue"));
-        NoCountFindAllDao<Concept, Long> conceptDao = new NoCountFindAllDao<>(Concept.class,
+        NoCountFindAllDao<DbConcept, Long> conceptDao = new NoCountFindAllDao<>(DbConcept.class,
                 entityManager);
         return conceptDao.findAll(conceptSpecification, pageable);
     }
@@ -224,8 +224,8 @@ public class ConceptService {
         ImmutableList.Builder<Long> standardConceptIds = ImmutableList.builder();
         ImmutableList.Builder<Long> sourceConceptIds = ImmutableList.builder();
 
-        Iterable<Concept> concepts = conceptDao.findAll(conceptIds);
-        for (Concept concept : concepts) {
+        Iterable<DbConcept> concepts = conceptDao.findAll(conceptIds);
+        for (DbConcept concept : concepts) {
             if (ConceptService.STANDARD_CONCEPT_CODE.equals(concept.getStandardConcept())
                     || ConceptService.CLASSIFICATION_CONCEPT_CODE.equals(concept.getStandardConcept())) {
                 standardConceptIds.add(concept.getConceptId());

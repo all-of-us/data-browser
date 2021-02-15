@@ -81,7 +81,7 @@ public class ConceptSynonym {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, concept, conceptSynonymName);
+        return Objects.hash(conceptId, dbConcept, conceptSynonymName);
     }
 
     @Override
