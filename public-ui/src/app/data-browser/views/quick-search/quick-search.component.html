@@ -210,5 +210,5 @@
     <app-error-message [dataType]="'data'"></app-error-message>
   </div>
 </section>
-<app-popup-react *ngIf="showStatement && testReact" [helpText]="'QuickSearchPopup'" [onClose]="closePopUp"></app-popup-react>
+<app-popup-react *ngIf="showStatement && testReact" [helpText]="'QuickSearchPopup'" [popUpClose]="closePopUp"></app-popup-react>
 <app-pop-up (closed)="showStatement = false" [title]="helptext.helptexts['QuickSearchPopup'].title" [statement]="helptext.helptexts['QuickSearchPopup'].statement" *ngIf="showStatement && !testReact" ></app-pop-up>
