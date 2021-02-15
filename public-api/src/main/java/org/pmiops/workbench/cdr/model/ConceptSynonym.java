@@ -45,7 +45,7 @@ public class ConceptSynonym {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)
-    public Concept getDbConcept() {
+    public DbConcept getDbConcept() {
         return dbConcept;
     }
     public void setDbConcept(DbConcept dbConcept) {
