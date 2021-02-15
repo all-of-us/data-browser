@@ -55,19 +55,19 @@ const helptexts = { 'QuickSearchPopup': {
                made available) </span> </div> </div>
   }};
 
-class PopUpReactComponent extends React.Component<{helpText: String, popUpClose: Function}, {}> {
-  constructor(props) {
-      super(props);
-  }
+class PopUpReactComponent extends React.Component {
 
   render() {
     return <div className='data-statement'>
                     <div className='card'>
                         <div onClick={this.props.popUpClose} className='close'>x</div>
-                           <h2 className='card-title'>{helptexts[this.props.helpText].title}</h2>
-                           <div className='card-body'>{helptexts[this.props.helpText].statement}</div>
+                           <h2 className='card-title'>
+                            {helptexts[this.props.helpText].title}</h2>
+                           <div className='card-body'>
+                            {helptexts[this.props.helpText].statement}</div>
                            <div className='btn-container'>
-                          <button onClick={this.props.popUpClose} className='disclaimer-btn'>OK</button>
+                          <button onClick={this.props.popUpClose}
+                            className='disclaimer-btn'>OK</button>
                           </div>
                         </div>
                   </div>;
