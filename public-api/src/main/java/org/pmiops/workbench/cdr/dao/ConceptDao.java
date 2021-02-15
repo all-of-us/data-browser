@@ -11,28 +11,28 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
 
     @Query(nativeQuery=true, value="select c.* from concept c join concept_relationship cr on c.concept_id=cr.concept_id_2 " +
             "where cr.concept_id_1=?1 and cr.relationship_id='Maps to' and c.can_select=1")
-    List<Concept> findStandardConcepts(long concept_id);
+    List<DbConcept> findStandardConcepts(long concept_id);
 
     @Query(value="select c.* from concept c "+
             "join concept_relationship rel on " +
             "rel.concept_id_1 = c.concept_id and rel.concept_id_2 = :conceptId and " +
             "rel.relationship_id = 'maps to' where c.source_count_value > :minCount order " +
             "by c.count_value desc",nativeQuery=true)
-    List<Concept> findSourceConcepts(@Param("conceptId") long conceptId,@Param("minCount") Integer minCount);
+    List<DbConcept> findSourceConcepts(@Param("conceptId") long conceptId,@Param("minCount") Integer minCount);
 
     @Query(value = "select c.* from concept c " +
             "join concept_relationship rel on rel.concept_id_2 = c.concept_id " +
             "and rel.concept_id_1 = :conceptId and rel.relationship_id = 'maps to' " +
             "where c.concept_id != :conceptId order by c.count_value desc",
             nativeQuery = true)
-    List<Concept> findConceptsMapsToParents(@Param("conceptId") long conceptId);
+    List<DbConcept> findConceptsMapsToParents(@Param("conceptId") long conceptId);
 
-    List<Concept> findByConceptName(String conceptName);
+    List<DbConcept> findByConceptName(String conceptName);
 
     @Query(value = "select c.* from concept c " +
             "where c.vocabulary_id in ('Gender', 'Race', 'Ethnicity')",
             nativeQuery = true)
-    List<Concept> findGenderRaceEthnicityFromConcept();
+    List<DbConcept> findGenderRaceEthnicityFromConcept();
 
     /**
      * Return the number of standard concepts in each vocabulary for the specified domain matching the
@@ -77,7 +77,7 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
             "and match(c.name, c.code) against(?1 in boolean mode) > 0 " +
             "order by c.name asc) " +
             "and c1.concept_class_id = 'Ingredient' and (c1.has_counts > 0)) ", nativeQuery = true)
-    List<Concept> findDrugIngredientsByBrand(String query);
+    List<DbConcept> findDrugIngredientsByBrand(String query);
 
     @Query(value = "select distinct c.concept_id from cb_criteria c\n" +
             "inner join ( \n" +
@@ -98,7 +98,7 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
             "and match(c.name, c.code) against(?1 in boolean mode) > 0 " +
             "order by c.name asc) " +
             "and c1.concept_class_id = 'Ingredient') and cr.concept_id_2 not in (?2) and (c1.has_counts > 0)", nativeQuery = true)
-    List<Concept> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
+    List<DbConcept> findDrugIngredientsByBrandNotInConceptIds(String query, List<Long> conceptIds);
     */
 
     @Query(value = "select distinct cr.concept_id_2 from cb_criteria_relationship cr \n" +
