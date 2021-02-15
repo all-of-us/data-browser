@@ -9,6 +9,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
+import * as fp from 'lodash/fp';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 const containerElementName = 'myReactComponentContainer';
@@ -24,7 +25,7 @@ const containerElementName = 'myReactComponentContainer';
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
 
-    constructor(public injector: Injector) {}
+    constructor(public injector: Injector, private WrappedComponent: React.ComponentType, private propNames: string[]) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         this.render();
@@ -38,8 +39,12 @@ export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
         ReactDOM.unmountComponentAtNode(this.containerRef.nativeElement);
     }
 
-    render() {
-        // this will be overwritten by the extended wrapper
-    }
+    render(): void {
+        const {WrappedComponent, propNames} = this;
+        ReactDOM.render(
+          <WrappedComponent {...fp.fromPairs(propNames.map(name => [name, this[name]]))} />,
+          this.containerRef.nativeElement
+        );
+      }
 }
 
