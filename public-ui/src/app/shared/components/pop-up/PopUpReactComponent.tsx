@@ -55,7 +55,7 @@ const helptexts = { 'QuickSearchPopup': {
                made available) </span> </div> </div>
   }};
 
-class PopUpReactComponent extends React.Component {
+class PopUpReactComponent extends React.Component<{helpText: string, popUpClose: function}, {}> {
   constructor(props) {
       super(props);
   }
