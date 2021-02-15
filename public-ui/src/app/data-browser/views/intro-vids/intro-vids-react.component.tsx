@@ -1,7 +1,6 @@
 import {
     Component,
     ElementRef,
-    Injector,
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
@@ -53,8 +52,8 @@ export class IntroVidsWrapperComponent extends BaseReactWrapper {
     video: Video;
     videos: Video[];
 
-    constructor(public vidService: VideoService, public injector: Injector) {
-        super(injector, IntroVidReactComponent, []);
+    constructor(public vidService: VideoService) {
+        super(IntroVidReactComponent, []);
         this.videos = this.vidService.videos;
     }
 

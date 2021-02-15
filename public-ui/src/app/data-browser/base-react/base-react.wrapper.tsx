@@ -25,7 +25,7 @@ const containerElementName = 'myReactComponentContainer';
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
 
-    constructor(public injector: Injector, private WrappedComponent: React.ComponentType,
+    constructor(private WrappedComponent: React.ComponentType,
     private propNames: string[]) {}
 
     ngOnChanges(changes: SimpleChanges): void {

@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Injector,
   Input,
   Output,
   ViewChild,
@@ -82,7 +81,7 @@ export class PopUpWrapperComponent extends BaseReactWrapper {
   @Input() public helpText: string;
   @Input('onClose') popUpClose: Function;
 
-  constructor(public injector: Injector) {
-    super(injector, PopUpReactComponent, ['helpText', 'popUpClose']);
+  constructor() {
+    super(PopUpReactComponent, ['helpText', 'popUpClose']);
   }
 }
