@@ -26,7 +26,7 @@ public class DbMeasurementConceptInfo {
 
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="concept_id")
-    private Concept concept;
+    private DbConcept dbConcept;
 
     public DbMeasurementConceptInfo() {}
 

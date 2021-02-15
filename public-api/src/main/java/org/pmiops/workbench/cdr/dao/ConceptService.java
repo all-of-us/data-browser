@@ -10,7 +10,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.JoinType;
 
-import org.pmiops.workbench.cdr.model.Concept;
+import org.pmiops.workbench.cdr.model.DbConcept;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -121,10 +121,10 @@ public class ConceptService {
     public static final String STANDARD_CONCEPT_CODE = "S";
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
-    public Slice<Concept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
+    public Slice<DbConcept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
                                          int measurementTests, int measurementOrders) {
 
-        Specification<Concept> conceptSpecification =
+        Specification<DbConcept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();
                     List<Predicate> standardConceptPredicates = new ArrayList<>();

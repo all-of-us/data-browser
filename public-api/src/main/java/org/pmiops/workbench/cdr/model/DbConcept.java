@@ -41,7 +41,7 @@ public class DbConcept {
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
 
     // Copy constructor for copying everything but synonyms
-    public DbConcept(Concept a) {
+    public DbConcept(DbConcept a) {
         this.conceptId(a.getConceptId())
                 .conceptName(a.getConceptName())
                 .standardConcept(a.getStandardConcept())
@@ -302,7 +302,7 @@ public class DbConcept {
     public DbMeasurementConceptInfo getDbMeasurementConceptInfo() {
         return dbMeasurementConceptInfo;
     }
-    public void setDbMeasurementConceptInfo(MeasurementConceptInfo dbMeasurementConceptInfo) {
+    public void setDbMeasurementConceptInfo(DbMeasurementConceptInfo dbMeasurementConceptInfo) {
         this.dbMeasurementConceptInfo = dbMeasurementConceptInfo;
     }
 
