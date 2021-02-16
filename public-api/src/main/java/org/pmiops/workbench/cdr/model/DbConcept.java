@@ -39,7 +39,7 @@ public class DbConcept {
     private int canSelect;
     private int hasCounts;
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
-
+    private String graphToShow = null;
     public DbConcept() {
 
     }
@@ -58,6 +58,11 @@ public class DbConcept {
                 .prevalence(a.getPrevalence())
                 .synonymsStr(a.getSynonymsStr())
                 .drugBrandNames(a.getDrugBrandNames());
+        if (a.getDomainId().equals("Measurement") && a.getMeasurementConceptInfo() != null && a.getMeasurementConceptInfo().getHasValues() == 1) {
+            this.graphToShow = "Values";
+        } else {
+            this.graphToShow = "Sex Assigned at Birth";
+        }
     }
 
     @Id
@@ -299,6 +304,11 @@ public class DbConcept {
     public DbConcept drugBrands(List<String> drugBrands) {
         this.drugBrands = drugBrands;
         return this;
+    }
+
+    @Transient
+    public String getGraphToShow() {
+        return graphToShow;
     }
 
     @OneToOne(fetch = FetchType.LAZY)
