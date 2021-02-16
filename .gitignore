@@ -47,3 +47,4 @@ Common-api/out/*
 **/gradlew
 **/gradlew.bat
 .vscode/settings.json
+public-api/.docker-sync/daemon.log
