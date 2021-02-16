@@ -4,13 +4,22 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.pmiops.workbench.cdr.ConceptMapper;
+import org.pmiops.workbench.model.Domain;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.JoinType;
-
+import org.pmiops.workbench.model.StandardConceptFilter;
+import com.google.common.base.Strings;
+import org.pmiops.workbench.model.MatchType;
+import org.apache.commons.lang3.StringUtils;
+import org.pmiops.workbench.model.CommonStorageEnums;
 import org.pmiops.workbench.cdr.model.DbConcept;
+import org.pmiops.workbench.model.Concept;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +28,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.pmiops.workbench.cdr.ConceptMapper;
+import org.pmiops.workbench.model.SearchConceptsRequest;
+import org.pmiops.workbench.model.ConceptListResponse;
 
 @Service
 public class ConceptService {
@@ -47,26 +59,22 @@ public class ConceptService {
 
     }
 
-    public enum StandardConceptFilter {
-        ALL_CONCEPTS,
-        STANDARD_CONCEPTS,
-        NON_STANDARD_CONCEPTS,
-        STANDARD_OR_CODE_ID_MATCH
-    }
-
     @PersistenceContext(unitName = "cdr")
     private EntityManager entityManager;
 
     @Autowired
     private ConceptDao conceptDao;
+    @Autowired
+    private ConceptMapper conceptMapper;
 
     public ConceptService() {
     }
 
     // Used for tests
-    public ConceptService(EntityManager entityManager, ConceptDao conceptDao) {
+    public ConceptService(EntityManager entityManager, ConceptDao conceptDao, ConceptMapper conceptMapper) {
         this.entityManager = entityManager;
         this.conceptDao = conceptDao;
+        this.conceptMapper = conceptMapper;
     }
 
     public static String modifyMultipleMatchKeyword(String query, SearchType searchType) {
@@ -235,5 +243,106 @@ public class ConceptService {
             }
         }
         return new ConceptIds(standardConceptIds.build(), sourceConceptIds.build());
+    }
+
+    public List<Concept> getStandardConcepts(Long conceptId) {
+        return conceptDao.findStandardConcepts(conceptId).stream()
+                .map(conceptMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Concept> getSourceConcepts(Long conceptId, Integer count) {
+        return conceptDao.findSourceConcepts(conceptId, count).stream()
+                .map(conceptMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> getDrugIngredientsByBrand(String query) {
+        return conceptDao.findDrugIngredientsByBrand(query);
+    }
+
+    public ConceptListResponse getConcepts(SearchConceptsRequest searchConceptsRequest) {
+        Integer maxResults = searchConceptsRequest.getMaxResults();
+        if(maxResults == null || maxResults == 0){
+            maxResults = Integer.MAX_VALUE;
+        }
+        List<Long> drugConcepts = new ArrayList<>();
+
+        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
+            drugConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+        }
+
+        Integer minCount = Optional.ofNullable(searchConceptsRequest.getMinCount()).orElse(1);
+
+        org.pmiops.workbench.model.StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
+
+
+        if(StringUtils.isEmpty(searchConceptsRequest.getQuery())){
+            if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
+                standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
+            }
+        }else{
+            if(standardConceptFilter == null){
+                standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
+            }
+        }
+
+        String domainId = null;
+        if (searchConceptsRequest.getDomain() != null) {
+            domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
+        }
+
+        StandardConceptFilter convertedConceptFilter = StandardConceptFilter.valueOf(standardConceptFilter.name());
+
+        Slice<DbConcept> concepts;
+        int measurementTests = 1;
+        int measurementOrders = 1;
+
+        if (domainId != null && domainId.equals("Measurement")) {
+            if (searchConceptsRequest.getMeasurementTests() != null) {
+                measurementTests = searchConceptsRequest.getMeasurementTests();
+            }
+            if (searchConceptsRequest.getMeasurementOrders() != null) {
+                measurementOrders = searchConceptsRequest.getMeasurementOrders();
+            }
+        }
+        concepts = searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
+                searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
+                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
+
+        ConceptListResponse response = new ConceptListResponse();
+
+        for(DbConcept con : concepts.getContent()){
+            String conceptCode = con.getConceptCode();
+            String conceptId = String.valueOf(con.getConceptId());
+
+            if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
+                response.setStandardConcepts(getStandardConcepts(con.getConceptId()));
+                response.setSourceOfStandardConcepts(con.getConceptId());
+            }
+
+            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
+                response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
+                response.setMatchedConceptName(con.getConceptName());
+            }
+        }
+
+        if(response.getMatchType() == null && response.getStandardConcepts() == null){
+            response.setMatchType(MatchType.NAME);
+        }
+
+        List<Concept> conceptList = new ArrayList<>();
+
+        if (concepts.getContent() != null) {
+            conceptList = concepts.getContent().stream()
+                    .map(conceptMapper::dbModelToClient)
+                    .collect(Collectors.toList());
+
+            if(response.getStandardConcepts() != null) {
+                conceptList = conceptList.stream().filter(c -> !c.getConceptId().equals(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+            }
+        }
+        response.setItems(conceptList);
+        return response;
     }
 }
