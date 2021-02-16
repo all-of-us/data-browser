@@ -1047,3 +1047,62 @@ unison: started
 [2021-02-16 12:35:51 -0600] Sync Log:  [END] Copying public-api/.docker-sync/daemon.pid
 [2021-02-16 12:35:51 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 12:35:49.88 on 16 Feb 2021
 [2021-02-16 12:35:51 -0600] Sync Log:  Synchronization complete at 12:35:49  (2 items transferred, 0 skipped, 0 failed)
+[2021-02-16 12:56:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 12:56:15.94 on 16 Feb 2021
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Updating file .git/index from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Updating file .git/index
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/25/a8fdfa343effbbdf3232b5457d046d22fb48b0 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/25/a8fdfa343effbbdf3232b5457d046d22fb48b0
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/2b/518a64bee865d08cb11876e25acb750c030bcb from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/2b/518a64bee865d08cb11876e25acb750c030bcb
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/35/05d3db0dbe7f6d592da9e891aacfdd815435c2 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/35/05d3db0dbe7f6d592da9e891aacfdd815435c2
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/37 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/37
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/4e/70006cee121c331cf59f5f98b8701f158d0fa0 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/4e/70006cee121c331cf59f5f98b8701f158d0fa0
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/77/2ba5aa20a299668caeceb89c577b4ca2b70300 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/77/2ba5aa20a299668caeceb89c577b4ca2b70300
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/87 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/87
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/95/65bcbf21914119e815b9f830a1f4037cd0b27a from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/95/65bcbf21914119e815b9f830a1f4037cd0b27a
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/c9/f9e48f0a891d1032d004c07313ca61118c3bd0 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/c9/f9e48f0a891d1032d004c07313ca61118c3bd0
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/d4/d2d39cbe5a7679d4307328115f418cd7bc7f0d from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/d4/d2d39cbe5a7679d4307328115f418cd7bc7f0d
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/d7/3d7000bb52d8f7197b90c269d060daa84efaeb from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/d7/3d7000bb52d8f7197b90c269d060daa84efaeb
+[2021-02-16 12:56:16 -0600] Sync Log:  [BGN] Copying .git/objects/f9/cde2551985f1ed2c681f3fe64e7d8fcac3f9e7 from /host_sync to /app_sync
+[2021-02-16 12:56:16 -0600] Sync Log:  [END] Copying .git/objects/f9/cde2551985f1ed2c681f3fe64e7d8fcac3f9e7
+[2021-02-16 12:56:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 12:56:16.00 on 16 Feb 2021
+[2021-02-16 12:56:16 -0600] Sync Log:  Synchronization complete at 12:56:16  (13 items transferred, 0 skipped, 0 failed)
+[2021-02-16 12:56:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 12:56:17.07 on 16 Feb 2021
+[2021-02-16 12:56:18 -0600] Sync Log:  [BGN] Updating file .git/logs/HEAD from /host_sync to /app_sync
+[2021-02-16 12:56:18 -0600] Sync Log:  [END] Updating file .git/logs/HEAD
+[2021-02-16 12:56:18 -0600] Sync Log:  [BGN] Updating file .git/logs/refs/heads/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 12:56:18 -0600] Sync Log:  [END] Updating file .git/logs/refs/heads/Api_CleanUP_Concept
+[2021-02-16 12:56:18 -0600] Sync Log:  [BGN] Updating file .git/logs/refs/remotes/origin/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 12:56:18 -0600] Sync Log:  [END] Updating file .git/logs/refs/remotes/origin/Api_CleanUP_Concept
+[2021-02-16 12:56:18 -0600] Sync Log:  [BGN] Copying .git/objects/55/fadb8a4fe9df3d3b730471414a824de15c9c68 from /host_sync to /app_sync
+[2021-02-16 12:56:18 -0600] Sync Log:  [END] Copying .git/objects/55/fadb8a4fe9df3d3b730471414a824de15c9c68
+[2021-02-16 12:56:18 -0600] Sync Log:  [BGN] Updating file .git/refs/heads/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 12:56:18 -0600] Sync Log:  [END] Updating file .git/refs/heads/Api_CleanUP_Concept
+[2021-02-16 12:56:18 -0600] Sync Log:  [BGN] Updating file .git/refs/remotes/origin/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 12:56:18 -0600] Sync Log:  [END] Updating file .git/refs/remotes/origin/Api_CleanUP_Concept
+[2021-02-16 12:56:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 12:56:17.08 on 16 Feb 2021
+[2021-02-16 12:56:18 -0600] Sync Log:  Synchronization complete at 12:56:17  (6 items transferred, 0 skipped, 0 failed)
+[2021-02-16 12:59:25 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 12:59:25.27 on 16 Feb 2021
+[2021-02-16 12:59:25 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/utils/mappers/ConceptMapper.java from /host_sync to /app_sync
+[2021-02-16 12:59:25 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/utils/mappers/ConceptMapper.java
+[2021-02-16 12:59:25 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 12:59:25.27 on 16 Feb 2021
+[2021-02-16 12:59:25 -0600] Sync Log:  Synchronization complete at 12:59:25  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 12:59:55 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 12:59:55.69 on 16 Feb 2021
+[2021-02-16 12:59:55 -0600] Sync Log:  [BGN] Updating file public-api/src/main/resources/public-api.yaml from /host_sync to /app_sync
+[2021-02-16 12:59:55 -0600] Sync Log:  [END] Updating file public-api/src/main/resources/public-api.yaml
+[2021-02-16 12:59:55 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 12:59:55.70 on 16 Feb 2021
+[2021-02-16 12:59:55 -0600] Sync Log:  Synchronization complete at 12:59:55  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:00:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:00:11.67 on 16 Feb 2021
+[2021-02-16 13:00:11 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 13:00:11 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 13:00:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:00:11.67 on 16 Feb 2021
+[2021-02-16 13:00:11 -0600] Sync Log:  Synchronization complete at 13:00:11  (1 item transferred, 0 skipped, 0 failed)
