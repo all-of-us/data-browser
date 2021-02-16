@@ -39,10 +39,8 @@ public class DbConcept {
     private int canSelect;
     private int hasCounts;
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
-    private String graphToShow = "Sex Assigned at Birth";
 
     public DbConcept() {
-
     }
 
     // Copy constructor for copying everything but synonyms
@@ -59,11 +57,6 @@ public class DbConcept {
                 .prevalence(a.getPrevalence())
                 .synonymsStr(a.getSynonymsStr())
                 .drugBrandNames(a.getDrugBrandNames());
-        if (a.getDomainId().equals("Measurement") && a.getDbMeasurementConceptInfo() != null && a.getDbMeasurementConceptInfo().getHasValues() == 1) {
-            this.graphToShow = "Values";
-        } else {
-            this.graphToShow = "Sex Assigned at Birth";
-        }
     }
 
     @Id
@@ -304,18 +297,6 @@ public class DbConcept {
     public void setDrugBrands(List<String> drugBrands) { this.drugBrands = drugBrands; }
     public DbConcept drugBrands(List<String> drugBrands) {
         this.drugBrands = drugBrands;
-        return this;
-    }
-
-    @Transient
-    public String getGraphToShow() {
-        return graphToShow;
-    }
-    public void setGraphToShow(String graphToShow) {
-        this.graphToShow = graphToShow;
-    }
-    public DbConcept graphToShow(String graphToShow) {
-        this.graphToShow = graphToShow;
         return this;
     }
 

@@ -35,8 +35,8 @@ import org.pmiops.workbench.model.ConceptListResponse;
 @Service
 public class ConceptService {
 
-    public static enum SearchType {
-        CONCEPT_SEARCH, SURVEY_COUNTS, DOMAIN_COUNTS;
+    public enum SearchType {
+        CONCEPT_SEARCH, SURVEY_COUNTS, DOMAIN_COUNTS
     }
 
     public static class ConceptIds {
@@ -164,7 +164,6 @@ public class ConceptService {
 
                     } else if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH)) {
                         if (keyword != null) {
-                            if(keyword != null){
                                 List<Predicate> conceptCodeMatch = new ArrayList<>();
                                 List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
                                 predicates.remove(predicates.size()-1);
@@ -187,9 +186,6 @@ public class ConceptService {
                                 }
                                 conceptCodeMatch.add(criteriaBuilder.or(standardOrCodeOrIdMatch.toArray(new Predicate[0])));
                                 predicates.add(criteriaBuilder.or(conceptCodeMatch.toArray(new Predicate[0])));
-                            } else {
-                                predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
-                            }
                         } else {
                             predicates.add(criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                         }
