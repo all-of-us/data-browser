@@ -90,10 +90,11 @@ public class DataBrowserControllerTest {
             .conceptClassId("classId2")
             .vocabularyId("V2")
             .domainId("Measurement")
+            .standardConcept("S")
             .countValue(456L)
             .sourceCountValue(25L)
             .prevalence(0.3F)
-            .conceptSynonyms(ImmutableList.of("456"))
+            .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
             .graphToShow("Sex Assigned at Birth");
