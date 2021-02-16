@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    Directive,
     ElementRef,
     OnChanges,
     OnDestroy,
@@ -9,7 +10,10 @@ import * as fp from 'lodash/fp';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-  // tslint:disable-next-line: component-class-suffix
+// Add empty directive decorator to base class per Angular docs:
+// https://angular.io/guide/migration-undecorated-classes
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild('root') containerRef: ElementRef;
 
