@@ -93,7 +93,7 @@ public class DataBrowserControllerTest {
             .countValue(456L)
             .sourceCountValue(25L)
             .prevalence(0.3F)
-            .conceptSynonyms(new ArrayList<String>())
+            .conceptSynonyms(ImmutableList.of("456"))
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
             .graphToShow("Sex Assigned at Birth");
