@@ -1,32 +1,21 @@
 import {
     AfterViewInit,
-    Component,
     ElementRef,
-    Injector,
     OnChanges,
     OnDestroy,
-    SimpleChanges,
     ViewChild,
-    ViewEncapsulation
 } from '@angular/core';
+import * as fp from 'lodash/fp';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-const containerElementName = 'myReactComponentContainer';
 
-@Component({
-    // tslint:disable-next-line: component-selector
-    selector: 'base-react-wrapper',
-    template: `<span #${containerElementName}></span>`,
-    styleUrls: ['../../styles/template.css'],
-    encapsulation: ViewEncapsulation.None,
-})
   // tslint:disable-next-line: component-class-suffix
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
-    @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
+    @ViewChild('root') containerRef: ElementRef;
 
-    constructor(public injector: Injector) {}
+    constructor(private WrappedComponent: React.ComponentType, private propNames: string[]) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(): void {
         this.render();
     }
 
@@ -39,7 +28,10 @@ export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     }
 
     render() {
-        // this will be overwritten by the extended wrapper
+        const {WrappedComponent, propNames} = this;
+        ReactDOM.render(
+          <WrappedComponent {...fp.fromPairs(propNames.map(name => [name, this[name]]))}/>,
+          this.containerRef.nativeElement
+        );
     }
 }
-
