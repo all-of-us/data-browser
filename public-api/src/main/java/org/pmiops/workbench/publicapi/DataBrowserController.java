@@ -41,7 +41,6 @@ import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
 import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.AnalysisIdConstant;
-import org.pmiops.workbench.model.MatchType;
 import org.pmiops.workbench.model.SurveyMetadataListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;

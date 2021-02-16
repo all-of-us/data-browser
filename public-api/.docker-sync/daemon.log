@@ -1722,3 +1722,625 @@ unison: started
 [2021-02-16 13:46:14 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
 [2021-02-16 13:46:14 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:46:14.05 on 16 Feb 2021
 [2021-02-16 13:46:14 -0600] Sync Log:  Synchronization complete at 13:46:14  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:46:17 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:46:17.18 on 16 Feb 2021
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Updating file .git/index from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Updating file .git/index
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/11/ae81622da4a7bfbac89834718b01f5398f612c from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/11/ae81622da4a7bfbac89834718b01f5398f612c
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/14/dbcc373efa98d34e7239343837aade01f12a7b from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/14/dbcc373efa98d34e7239343837aade01f12a7b
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/16/7990efdfd9e672d4e00b23dd3f5a486c461938 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/16/7990efdfd9e672d4e00b23dd3f5a486c461938
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/44/d6afae16e8714a17d7c866df53ebcdd120bc65 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/44/d6afae16e8714a17d7c866df53ebcdd120bc65
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/4b/21e201f5a4ecace8a30284752a0f88ad9e25f9 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/4b/21e201f5a4ecace8a30284752a0f88ad9e25f9
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/54/8e51b0bdd525cdd6c558f48350aabcbbf4490e from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/54/8e51b0bdd525cdd6c558f48350aabcbbf4490e
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/62/bd96dc14250ce5463a8a0541ea7c89fe5c6d96 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/62/bd96dc14250ce5463a8a0541ea7c89fe5c6d96
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/72/4ab5491695db6701fb24a94693dbec1e3e9a9e from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/72/4ab5491695db6701fb24a94693dbec1e3e9a9e
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/83/9c7c5af8b4443a4c4ae3a2e538f04e64ec1e9d from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/83/9c7c5af8b4443a4c4ae3a2e538f04e64ec1e9d
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/91/b3e0961487237e4db92cfea39b3f9bef9693e4 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/91/b3e0961487237e4db92cfea39b3f9bef9693e4
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/d2/380255e5fb340d2c58d8d4bc64aae9d63c2c80 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/d2/380255e5fb340d2c58d8d4bc64aae9d63c2c80
+[2021-02-16 13:46:17 -0600] Sync Log:  [BGN] Copying .git/objects/fd/96cacca0502b0f8156de1c26c54efcc268cc82 from /host_sync to /app_sync
+[2021-02-16 13:46:17 -0600] Sync Log:  [END] Copying .git/objects/fd/96cacca0502b0f8156de1c26c54efcc268cc82
+[2021-02-16 13:46:17 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:46:17.20 on 16 Feb 2021
+[2021-02-16 13:46:17 -0600] Sync Log:  Synchronization complete at 13:46:17  (13 items transferred, 0 skipped, 0 failed)
+[2021-02-16 13:46:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:46:18.26 on 16 Feb 2021
+[2021-02-16 13:46:18 -0600] Sync Log:  [BGN] Updating file .git/logs/HEAD from /host_sync to /app_sync
+[2021-02-16 13:46:18 -0600] Sync Log:  [END] Updating file .git/logs/HEAD
+[2021-02-16 13:46:18 -0600] Sync Log:  [BGN] Updating file .git/logs/refs/heads/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 13:46:18 -0600] Sync Log:  [END] Updating file .git/logs/refs/heads/Api_CleanUP_Concept
+[2021-02-16 13:46:18 -0600] Sync Log:  [BGN] Copying .git/objects/bf/76fa79e482a0685d91ea6ec5b6061a987d1388 from /host_sync to /app_sync
+[2021-02-16 13:46:18 -0600] Sync Log:  [END] Copying .git/objects/bf/76fa79e482a0685d91ea6ec5b6061a987d1388
+[2021-02-16 13:46:18 -0600] Sync Log:  [BGN] Updating file .git/refs/heads/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 13:46:18 -0600] Sync Log:  [END] Updating file .git/refs/heads/Api_CleanUP_Concept
+[2021-02-16 13:46:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:46:18.27 on 16 Feb 2021
+[2021-02-16 13:46:18 -0600] Sync Log:  Synchronization complete at 13:46:18  (4 items transferred, 0 skipped, 0 failed)
+[2021-02-16 13:46:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:46:22.67 on 16 Feb 2021
+[2021-02-16 13:46:22 -0600] Sync Log:  [BGN] Updating file .git/logs/refs/remotes/origin/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 13:46:22 -0600] Sync Log:  [END] Updating file .git/logs/refs/remotes/origin/Api_CleanUP_Concept
+[2021-02-16 13:46:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:46:22.67 on 16 Feb 2021
+[2021-02-16 13:46:22 -0600] Sync Log:  Synchronization complete at 13:46:22  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:46:23 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:46:23.65 on 16 Feb 2021
+[2021-02-16 13:46:23 -0600] Sync Log:  [BGN] Updating file .git/refs/remotes/origin/Api_CleanUP_Concept from /host_sync to /app_sync
+[2021-02-16 13:46:23 -0600] Sync Log:  [END] Updating file .git/refs/remotes/origin/Api_CleanUP_Concept
+[2021-02-16 13:46:23 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:46:23.66 on 16 Feb 2021
+[2021-02-16 13:46:23 -0600] Sync Log:  Synchronization complete at 13:46:23  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:52:14 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:52:13.80 on 16 Feb 2021
+[2021-02-16 13:52:14 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:52:14 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:52:14 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:52:13.80 on 16 Feb 2021
+[2021-02-16 13:52:14 -0600] Sync Log:  Synchronization complete at 13:52:13  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:52:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:52:17.91 on 16 Feb 2021
+[2021-02-16 13:52:18 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:52:18 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:52:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:52:17.92 on 16 Feb 2021
+[2021-02-16 13:52:18 -0600] Sync Log:  Synchronization complete at 13:52:17  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:54:48 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:54:47.39 on 16 Feb 2021
+[2021-02-16 13:54:48 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:54:48 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:54:48 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:54:47.40 on 16 Feb 2021
+[2021-02-16 13:54:48 -0600] Sync Log:  Synchronization complete at 13:54:47  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:54:50 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:54:49.99 on 16 Feb 2021
+[2021-02-16 13:54:50 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:54:50 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:54:50 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:54:49.99 on 16 Feb 2021
+[2021-02-16 13:54:50 -0600] Sync Log:  Synchronization complete at 13:54:49  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:54:52 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:54:52.02 on 16 Feb 2021
+[2021-02-16 13:54:52 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:54:52 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:54:52 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:54:52.02 on 16 Feb 2021
+[2021-02-16 13:54:52 -0600] Sync Log:  Synchronization complete at 13:54:52  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:54:55 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:54:55.01 on 16 Feb 2021
+[2021-02-16 13:54:55 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:54:55 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:54:55 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:54:55.01 on 16 Feb 2021
+[2021-02-16 13:54:55 -0600] Sync Log:  Synchronization complete at 13:54:55  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 13:57:33 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 13:57:32.66 on 16 Feb 2021
+[2021-02-16 13:57:33 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 13:57:33 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 13:57:33 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 13:57:32.67 on 16 Feb 2021
+[2021-02-16 13:57:33 -0600] Sync Log:  Synchronization complete at 13:57:32  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:01:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:01:17.51 on 16 Feb 2021
+[2021-02-16 14:01:18 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 14:01:18 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 14:01:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:01:17.51 on 16 Feb 2021
+[2021-02-16 14:01:18 -0600] Sync Log:  Synchronization complete at 14:01:17  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:01:25 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:01:25.27 on 16 Feb 2021
+[2021-02-16 14:01:25 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 14:01:25 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 14:01:25 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:01:25.27 on 16 Feb 2021
+[2021-02-16 14:01:25 -0600] Sync Log:  Synchronization complete at 14:01:25  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:01:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:01:27.30 on 16 Feb 2021
+[2021-02-16 14:01:27 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 14:01:27 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 14:01:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:01:27.30 on 16 Feb 2021
+[2021-02-16 14:01:27 -0600] Sync Log:  Synchronization complete at 14:01:27  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:51:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:51:11.39 on 16 Feb 2021
+[2021-02-16 14:51:11 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 14:51:11 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 14:51:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:51:11.39 on 16 Feb 2021
+[2021-02-16 14:51:11 -0600] Sync Log:  Synchronization complete at 14:51:11  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:51:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:51:12.40 on 16 Feb 2021
+[2021-02-16 14:51:12 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 14:51:12 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 14:51:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:51:12.41 on 16 Feb 2021
+[2021-02-16 14:51:12 -0600] Sync Log:  Synchronization complete at 14:51:12  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:57:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:57:26.73 on 16 Feb 2021
+[2021-02-16 14:57:27 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java from /host_sync to /app_sync
+[2021-02-16 14:57:27 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java
+[2021-02-16 14:57:27 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 14:57:27 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 14:57:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:57:26.74 on 16 Feb 2021
+[2021-02-16 14:57:27 -0600] Sync Log:  Synchronization complete at 14:57:26  (2 items transferred, 0 skipped, 0 failed)
+[2021-02-16 14:57:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:57:29.27 on 16 Feb 2021
+[2021-02-16 14:57:29 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java from /host_sync to /app_sync
+[2021-02-16 14:57:29 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java
+[2021-02-16 14:57:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:57:29.27 on 16 Feb 2021
+[2021-02-16 14:57:29 -0600] Sync Log:  Synchronization complete at 14:57:29  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:57:39 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:57:38.55 on 16 Feb 2021
+[2021-02-16 14:57:39 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 14:57:39 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 14:57:39 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:57:38.55 on 16 Feb 2021
+[2021-02-16 14:57:39 -0600] Sync Log:  Synchronization complete at 14:57:38  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 14:57:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 14:57:42.75 on 16 Feb 2021
+[2021-02-16 14:57:43 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 14:57:43 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 14:57:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 14:57:42.75 on 16 Feb 2021
+[2021-02-16 14:57:43 -0600] Sync Log:  Synchronization complete at 14:57:42  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:04:20 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:04:20.35 on 16 Feb 2021
+[2021-02-16 15:04:20 -0600] Sync Log:  [BGN] Copying public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:04:20 -0600] Sync Log:  [END] Copying public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:04:20 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:04:20.35 on 16 Feb 2021
+[2021-02-16 15:04:20 -0600] Sync Log:  Synchronization complete at 15:04:20  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:04:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:04:27.38 on 16 Feb 2021
+[2021-02-16 15:04:27 -0600] Sync Log:  [BGN] Updating file .git/index from /host_sync to /app_sync
+[2021-02-16 15:04:27 -0600] Sync Log:  [END] Updating file .git/index
+[2021-02-16 15:04:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:04:27.39 on 16 Feb 2021
+[2021-02-16 15:04:27 -0600] Sync Log:  Synchronization complete at 15:04:27  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:04:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:04:42.41 on 16 Feb 2021
+[2021-02-16 15:04:42 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 15:04:42 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 15:04:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:04:42.41 on 16 Feb 2021
+[2021-02-16 15:04:42 -0600] Sync Log:  Synchronization complete at 15:04:42  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:05:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:05:21.04 on 16 Feb 2021
+[2021-02-16 15:05:21 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 15:05:21 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 15:05:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:05:21.04 on 16 Feb 2021
+[2021-02-16 15:05:21 -0600] Sync Log:  Synchronization complete at 15:05:21  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:12.09 on 16 Feb 2021
+[2021-02-16 15:07:12 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 15:07:12 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 15:07:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:12.09 on 16 Feb 2021
+[2021-02-16 15:07:12 -0600] Sync Log:  Synchronization complete at 15:07:12  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:26 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:25.50 on 16 Feb 2021
+[2021-02-16 15:07:26 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:07:26 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:07:26 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:25.50 on 16 Feb 2021
+[2021-02-16 15:07:26 -0600] Sync Log:  Synchronization complete at 15:07:25  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:33 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:32.48 on 16 Feb 2021
+[2021-02-16 15:07:33 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:07:33 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:07:33 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:32.48 on 16 Feb 2021
+[2021-02-16 15:07:33 -0600] Sync Log:  Synchronization complete at 15:07:32  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:39.75 on 16 Feb 2021
+[2021-02-16 15:07:40 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:07:40 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:07:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:39.76 on 16 Feb 2021
+[2021-02-16 15:07:40 -0600] Sync Log:  Synchronization complete at 15:07:39  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:44 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:43.96 on 16 Feb 2021
+[2021-02-16 15:07:44 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:07:44 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:07:44 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:43.96 on 16 Feb 2021
+[2021-02-16 15:07:44 -0600] Sync Log:  Synchronization complete at 15:07:43  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:46.49 on 16 Feb 2021
+[2021-02-16 15:07:46 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:07:46 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:07:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:46.49 on 16 Feb 2021
+[2021-02-16 15:07:46 -0600] Sync Log:  Synchronization complete at 15:07:46  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:07:58 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:07:57.63 on 16 Feb 2021
+[2021-02-16 15:07:58 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:07:58 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:07:58 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:07:57.63 on 16 Feb 2021
+[2021-02-16 15:07:58 -0600] Sync Log:  Synchronization complete at 15:07:57  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:08:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:08:27.76 on 16 Feb 2021
+[2021-02-16 15:08:28 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:08:28 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:08:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:08:27.76 on 16 Feb 2021
+[2021-02-16 15:08:28 -0600] Sync Log:  Synchronization complete at 15:08:27  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:08:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:08:42.18 on 16 Feb 2021
+[2021-02-16 15:08:42 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:08:42 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:08:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:08:42.18 on 16 Feb 2021
+[2021-02-16 15:08:42 -0600] Sync Log:  Synchronization complete at 15:08:42  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:08:59 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:08:58.56 on 16 Feb 2021
+[2021-02-16 15:08:59 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:08:59 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:08:59 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:08:58.57 on 16 Feb 2021
+[2021-02-16 15:08:59 -0600] Sync Log:  Synchronization complete at 15:08:58  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:09:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:09:05.70 on 16 Feb 2021
+[2021-02-16 15:09:06 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:09:06 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:09:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:09:05.70 on 16 Feb 2021
+[2021-02-16 15:09:06 -0600] Sync Log:  Synchronization complete at 15:09:05  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:09:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:09:14.58 on 16 Feb 2021
+[2021-02-16 15:09:15 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:09:15 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:09:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:09:14.58 on 16 Feb 2021
+[2021-02-16 15:09:15 -0600] Sync Log:  Synchronization complete at 15:09:14  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:09:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:09:21.82 on 16 Feb 2021
+[2021-02-16 15:09:22 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:09:22 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:09:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:09:21.82 on 16 Feb 2021
+[2021-02-16 15:09:22 -0600] Sync Log:  Synchronization complete at 15:09:21  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:09:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:09:29.07 on 16 Feb 2021
+[2021-02-16 15:09:29 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:09:29 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:09:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:09:29.08 on 16 Feb 2021
+[2021-02-16 15:09:29 -0600] Sync Log:  Synchronization complete at 15:09:29  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:09:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:09:39.72 on 16 Feb 2021
+[2021-02-16 15:09:40 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:09:40 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:09:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:09:39.72 on 16 Feb 2021
+[2021-02-16 15:09:40 -0600] Sync Log:  Synchronization complete at 15:09:39  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:09:49 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:09:49.29 on 16 Feb 2021
+[2021-02-16 15:09:49 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:09:49 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:09:49 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:09:49.30 on 16 Feb 2021
+[2021-02-16 15:09:49 -0600] Sync Log:  Synchronization complete at 15:09:49  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:10:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:10:20.99 on 16 Feb 2021
+[2021-02-16 15:10:21 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:10:21 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:10:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:10:20.99 on 16 Feb 2021
+[2021-02-16 15:10:21 -0600] Sync Log:  Synchronization complete at 15:10:21  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:10:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:10:24.09 on 16 Feb 2021
+[2021-02-16 15:10:24 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:10:24 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:10:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:10:24.09 on 16 Feb 2021
+[2021-02-16 15:10:24 -0600] Sync Log:  Synchronization complete at 15:10:24  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:10:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:10:41.81 on 16 Feb 2021
+[2021-02-16 15:10:42 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:10:42 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:10:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:10:41.81 on 16 Feb 2021
+[2021-02-16 15:10:42 -0600] Sync Log:  Synchronization complete at 15:10:41  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:11:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:11:21.97 on 16 Feb 2021
+[2021-02-16 15:11:22 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:11:22 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:11:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:11:21.98 on 16 Feb 2021
+[2021-02-16 15:11:22 -0600] Sync Log:  Synchronization complete at 15:11:21  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:11:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:11:24.50 on 16 Feb 2021
+[2021-02-16 15:11:24 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:11:24 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:11:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:11:24.50 on 16 Feb 2021
+[2021-02-16 15:11:24 -0600] Sync Log:  Synchronization complete at 15:11:24  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:12:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:12:10.93 on 16 Feb 2021
+[2021-02-16 15:12:11 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:12:11 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:12:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:12:10.93 on 16 Feb 2021
+[2021-02-16 15:12:11 -0600] Sync Log:  Synchronization complete at 15:12:10  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:12:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:12:15.37 on 16 Feb 2021
+[2021-02-16 15:12:15 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:12:15 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:12:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:12:15.37 on 16 Feb 2021
+[2021-02-16 15:12:15 -0600] Sync Log:  Synchronization complete at 15:12:15  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:12:19 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:12:18.77 on 16 Feb 2021
+[2021-02-16 15:12:19 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:12:19 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:12:19 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:12:18.77 on 16 Feb 2021
+[2021-02-16 15:12:19 -0600] Sync Log:  Synchronization complete at 15:12:18  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:12:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:12:22.55 on 16 Feb 2021
+[2021-02-16 15:12:22 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:12:22 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:12:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:12:22.55 on 16 Feb 2021
+[2021-02-16 15:12:22 -0600] Sync Log:  Synchronization complete at 15:12:22  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:13:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:13:37.32 on 16 Feb 2021
+[2021-02-16 15:13:37 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:13:37 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:13:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:13:37.32 on 16 Feb 2021
+[2021-02-16 15:13:37 -0600] Sync Log:  Synchronization complete at 15:13:37  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:14:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:14:37.60 on 16 Feb 2021
+[2021-02-16 15:14:37 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:14:37 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:14:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:14:37.60 on 16 Feb 2021
+[2021-02-16 15:14:37 -0600] Sync Log:  Synchronization complete at 15:14:37  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:14:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:14:46.05 on 16 Feb 2021
+[2021-02-16 15:14:46 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:14:46 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:14:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:14:46.05 on 16 Feb 2021
+[2021-02-16 15:14:46 -0600] Sync Log:  Synchronization complete at 15:14:46  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:02 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:02.31 on 16 Feb 2021
+[2021-02-16 15:15:02 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:02 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:02 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:02.31 on 16 Feb 2021
+[2021-02-16 15:15:02 -0600] Sync Log:  Synchronization complete at 15:15:02  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:06.27 on 16 Feb 2021
+[2021-02-16 15:15:06 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:06 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:06.27 on 16 Feb 2021
+[2021-02-16 15:15:06 -0600] Sync Log:  Synchronization complete at 15:15:06  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:09 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:09.77 on 16 Feb 2021
+[2021-02-16 15:15:09 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:09 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:09 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:09.77 on 16 Feb 2021
+[2021-02-16 15:15:09 -0600] Sync Log:  Synchronization complete at 15:15:09  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:13 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:12.93 on 16 Feb 2021
+[2021-02-16 15:15:13 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:13 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:13 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:12.93 on 16 Feb 2021
+[2021-02-16 15:15:13 -0600] Sync Log:  Synchronization complete at 15:15:12  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:14.95 on 16 Feb 2021
+[2021-02-16 15:15:15 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:15 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:14.96 on 16 Feb 2021
+[2021-02-16 15:15:15 -0600] Sync Log:  Synchronization complete at 15:15:14  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:17 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:17.67 on 16 Feb 2021
+[2021-02-16 15:15:17 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:17 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:17 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:17.68 on 16 Feb 2021
+[2021-02-16 15:15:17 -0600] Sync Log:  Synchronization complete at 15:15:17  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:20.84 on 16 Feb 2021
+[2021-02-16 15:15:21 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:21 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:20.84 on 16 Feb 2021
+[2021-02-16 15:15:21 -0600] Sync Log:  Synchronization complete at 15:15:20  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:37.71 on 16 Feb 2021
+[2021-02-16 15:15:37 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:37 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:37 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:37.71 on 16 Feb 2021
+[2021-02-16 15:15:37 -0600] Sync Log:  Synchronization complete at 15:15:37  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:15:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:15:46.42 on 16 Feb 2021
+[2021-02-16 15:15:46 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:15:46 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:15:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:15:46.42 on 16 Feb 2021
+[2021-02-16 15:15:46 -0600] Sync Log:  Synchronization complete at 15:15:46  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:16:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:16:29.32 on 16 Feb 2021
+[2021-02-16 15:16:29 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:16:29 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:16:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:16:29.32 on 16 Feb 2021
+[2021-02-16 15:16:29 -0600] Sync Log:  Synchronization complete at 15:16:29  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:16:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:16:42.88 on 16 Feb 2021
+[2021-02-16 15:16:43 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:16:43 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:16:43 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:16:42.88 on 16 Feb 2021
+[2021-02-16 15:16:43 -0600] Sync Log:  Synchronization complete at 15:16:42  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:19:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:19:27.79 on 16 Feb 2021
+[2021-02-16 15:19:27 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:19:27 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:19:27 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:19:27.79 on 16 Feb 2021
+[2021-02-16 15:19:27 -0600] Sync Log:  Synchronization complete at 15:19:27  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:21:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:21:16.53 on 16 Feb 2021
+[2021-02-16 15:21:16 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:21:16 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:21:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:21:16.53 on 16 Feb 2021
+[2021-02-16 15:21:16 -0600] Sync Log:  Synchronization complete at 15:21:16  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:22:19 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:22:18.69 on 16 Feb 2021
+[2021-02-16 15:22:19 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:22:19 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:22:19 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:22:18.69 on 16 Feb 2021
+[2021-02-16 15:22:19 -0600] Sync Log:  Synchronization complete at 15:22:18  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:22:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:22:23.10 on 16 Feb 2021
+[2021-02-16 15:22:24 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:22:24 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:22:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:22:23.10 on 16 Feb 2021
+[2021-02-16 15:22:24 -0600] Sync Log:  Synchronization complete at 15:22:23  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:24:26 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:24:25.21 on 16 Feb 2021
+[2021-02-16 15:24:26 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:24:26 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:24:26 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:24:25.22 on 16 Feb 2021
+[2021-02-16 15:24:26 -0600] Sync Log:  Synchronization complete at 15:24:25  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:24:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:24:28.83 on 16 Feb 2021
+[2021-02-16 15:24:29 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:24:29 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:24:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:24:28.84 on 16 Feb 2021
+[2021-02-16 15:24:29 -0600] Sync Log:  Synchronization complete at 15:24:28  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:24:57 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:24:56.43 on 16 Feb 2021
+[2021-02-16 15:24:57 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:24:57 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:24:57 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:24:56.43 on 16 Feb 2021
+[2021-02-16 15:24:57 -0600] Sync Log:  Synchronization complete at 15:24:56  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:25:08 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:25:07.15 on 16 Feb 2021
+[2021-02-16 15:25:08 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:25:08 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:25:08 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:25:07.16 on 16 Feb 2021
+[2021-02-16 15:25:08 -0600] Sync Log:  Synchronization complete at 15:25:07  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:25:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:25:27.23 on 16 Feb 2021
+[2021-02-16 15:25:28 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:25:28 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:25:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:25:27.23 on 16 Feb 2021
+[2021-02-16 15:25:28 -0600] Sync Log:  Synchronization complete at 15:25:27  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:25:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:25:41.47 on 16 Feb 2021
+[2021-02-16 15:25:42 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:25:42 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:25:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:25:41.47 on 16 Feb 2021
+[2021-02-16 15:25:42 -0600] Sync Log:  Synchronization complete at 15:25:41  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:25:56 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:25:55.87 on 16 Feb 2021
+[2021-02-16 15:25:56 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:25:56 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:25:56 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:25:55.88 on 16 Feb 2021
+[2021-02-16 15:25:56 -0600] Sync Log:  Synchronization complete at 15:25:55  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:26:08 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:26:07.08 on 16 Feb 2021
+[2021-02-16 15:26:08 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /host_sync to /app_sync
+[2021-02-16 15:26:08 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:26:08 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:26:07.08 on 16 Feb 2021
+[2021-02-16 15:26:08 -0600] Sync Log:  Synchronization complete at 15:26:07  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:34:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:34:40.30 on 16 Feb 2021
+[2021-02-16 15:34:40 -0600] Sync Log:  [BGN] Deleting public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java from /app_sync
+[2021-02-16 15:34:40 -0600] Sync Log:  [END] Deleting public-api/src/test/java/org/pmiops/workbench/cdr/dao/ConceptServiceTest.java
+[2021-02-16 15:34:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:34:40.30 on 16 Feb 2021
+[2021-02-16 15:34:40 -0600] Sync Log:  Synchronization complete at 15:34:40  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:34:41 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:34:41.32 on 16 Feb 2021
+[2021-02-16 15:34:41 -0600] Sync Log:  [BGN] Updating file .git/index from /host_sync to /app_sync
+[2021-02-16 15:34:41 -0600] Sync Log:  [END] Updating file .git/index
+[2021-02-16 15:34:41 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:34:41.33 on 16 Feb 2021
+[2021-02-16 15:34:41 -0600] Sync Log:  Synchronization complete at 15:34:41  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:34:47 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:34:47.69 on 16 Feb 2021
+[2021-02-16 15:34:47 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:34:47 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:34:47 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:34:47.69 on 16 Feb 2021
+[2021-02-16 15:34:47 -0600] Sync Log:  Synchronization complete at 15:34:47  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:36:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:36:12.57 on 16 Feb 2021
+[2021-02-16 15:36:12 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:36:12 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:36:12 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:36:12.57 on 16 Feb 2021
+[2021-02-16 15:36:12 -0600] Sync Log:  Synchronization complete at 15:36:12  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:36:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:36:16.47 on 16 Feb 2021
+[2021-02-16 15:36:16 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:36:16 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:36:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:36:16.47 on 16 Feb 2021
+[2021-02-16 15:36:16 -0600] Sync Log:  Synchronization complete at 15:36:16  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:36:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:36:24.37 on 16 Feb 2021
+[2021-02-16 15:36:24 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:36:24 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:36:24 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:36:24.37 on 16 Feb 2021
+[2021-02-16 15:36:24 -0600] Sync Log:  Synchronization complete at 15:36:24  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:36:31 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:36:31.44 on 16 Feb 2021
+[2021-02-16 15:36:31 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:36:31 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:36:31 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:36:31.44 on 16 Feb 2021
+[2021-02-16 15:36:31 -0600] Sync Log:  Synchronization complete at 15:36:31  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:36:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:36:35.73 on 16 Feb 2021
+[2021-02-16 15:36:35 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:36:35 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:36:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:36:35.74 on 16 Feb 2021
+[2021-02-16 15:36:35 -0600] Sync Log:  Synchronization complete at 15:36:35  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:39:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:39:11.80 on 16 Feb 2021
+[2021-02-16 15:39:11 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:39:11 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:39:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:39:11.81 on 16 Feb 2021
+[2021-02-16 15:39:11 -0600] Sync Log:  Synchronization complete at 15:39:11  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:39:54 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:39:54.27 on 16 Feb 2021
+[2021-02-16 15:39:54 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:39:54 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:39:54 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:39:54.27 on 16 Feb 2021
+[2021-02-16 15:39:54 -0600] Sync Log:  Synchronization complete at 15:39:54  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:39:56 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:39:56.29 on 16 Feb 2021
+[2021-02-16 15:39:56 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:39:56 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:39:56 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:39:56.29 on 16 Feb 2021
+[2021-02-16 15:39:56 -0600] Sync Log:  Synchronization complete at 15:39:56  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:43:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:43:22.12 on 16 Feb 2021
+[2021-02-16 15:43:22 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:43:22 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:43:22 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:43:22.12 on 16 Feb 2021
+[2021-02-16 15:43:22 -0600] Sync Log:  Synchronization complete at 15:43:22  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:44:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:44:40.54 on 16 Feb 2021
+[2021-02-16 15:44:40 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:44:40 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:44:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:44:40.54 on 16 Feb 2021
+[2021-02-16 15:44:40 -0600] Sync Log:  Synchronization complete at 15:44:40  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:45:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:45:21.14 on 16 Feb 2021
+[2021-02-16 15:45:21 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:45:21 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:45:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:45:21.14 on 16 Feb 2021
+[2021-02-16 15:45:21 -0600] Sync Log:  Synchronization complete at 15:45:21  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:46:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:46:15.52 on 16 Feb 2021
+[2021-02-16 15:46:15 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:46:15 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:46:15 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:46:15.52 on 16 Feb 2021
+[2021-02-16 15:46:15 -0600] Sync Log:  Synchronization complete at 15:46:15  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:46:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:46:16.54 on 16 Feb 2021
+[2021-02-16 15:46:16 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:46:16 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:46:16 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:46:16.54 on 16 Feb 2021
+[2021-02-16 15:46:16 -0600] Sync Log:  Synchronization complete at 15:46:16  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:47:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:47:29.14 on 16 Feb 2021
+[2021-02-16 15:47:29 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:47:29 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:47:29 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:47:29.14 on 16 Feb 2021
+[2021-02-16 15:47:29 -0600] Sync Log:  Synchronization complete at 15:47:29  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:48:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:48:46.23 on 16 Feb 2021
+[2021-02-16 15:48:46 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:48:46 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:48:46 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:48:46.24 on 16 Feb 2021
+[2021-02-16 15:48:46 -0600] Sync Log:  Synchronization complete at 15:48:46  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:48:49 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:48:49.79 on 16 Feb 2021
+[2021-02-16 15:48:49 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:48:49 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:48:49 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:48:49.79 on 16 Feb 2021
+[2021-02-16 15:48:49 -0600] Sync Log:  Synchronization complete at 15:48:49  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:50:25 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:50:25.40 on 16 Feb 2021
+[2021-02-16 15:50:25 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:50:25 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:50:25 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:50:25.40 on 16 Feb 2021
+[2021-02-16 15:50:25 -0600] Sync Log:  Synchronization complete at 15:50:25  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:50:31 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:50:31.57 on 16 Feb 2021
+[2021-02-16 15:50:31 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:50:31 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:50:31 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:50:31.58 on 16 Feb 2021
+[2021-02-16 15:50:31 -0600] Sync Log:  Synchronization complete at 15:50:31  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:52:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:52:18.44 on 16 Feb 2021
+[2021-02-16 15:52:18 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:52:18 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:52:18 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:52:18.45 on 16 Feb 2021
+[2021-02-16 15:52:18 -0600] Sync Log:  Synchronization complete at 15:52:18  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:52:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:52:41.96 on 16 Feb 2021
+[2021-02-16 15:52:42 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:52:42 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:52:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:52:41.96 on 16 Feb 2021
+[2021-02-16 15:52:42 -0600] Sync Log:  Synchronization complete at 15:52:41  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:52:45 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:52:45.30 on 16 Feb 2021
+[2021-02-16 15:52:45 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:52:45 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:52:45 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:52:45.30 on 16 Feb 2021
+[2021-02-16 15:52:45 -0600] Sync Log:  Synchronization complete at 15:52:45  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:54:54 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:54:53.85 on 16 Feb 2021
+[2021-02-16 15:54:54 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:54:54 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:54:54 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:54:53.85 on 16 Feb 2021
+[2021-02-16 15:54:54 -0600] Sync Log:  Synchronization complete at 15:54:53  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:56:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:56:20.82 on 16 Feb 2021
+[2021-02-16 15:56:21 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:56:21 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:56:21 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:56:20.82 on 16 Feb 2021
+[2021-02-16 15:56:21 -0600] Sync Log:  Synchronization complete at 15:56:20  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:56:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:56:39.97 on 16 Feb 2021
+[2021-02-16 15:56:40 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:56:40 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:56:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:56:39.97 on 16 Feb 2021
+[2021-02-16 15:56:40 -0600] Sync Log:  Synchronization complete at 15:56:39  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 15:59:53 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 15:59:52.93 on 16 Feb 2021
+[2021-02-16 15:59:53 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 15:59:53 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 15:59:53 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 15:59:52.94 on 16 Feb 2021
+[2021-02-16 15:59:53 -0600] Sync Log:  Synchronization complete at 15:59:52  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:00:07 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:00:06.99 on 16 Feb 2021
+[2021-02-16 16:00:07 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 16:00:07 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 16:00:07 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:00:07.00 on 16 Feb 2021
+[2021-02-16 16:00:07 -0600] Sync Log:  Synchronization complete at 16:00:07  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:02:19 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:02:19.17 on 16 Feb 2021
+[2021-02-16 16:02:19 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 16:02:19 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 16:02:19 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:02:19.18 on 16 Feb 2021
+[2021-02-16 16:02:19 -0600] Sync Log:  Synchronization complete at 16:02:19  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:02:23 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:02:23.29 on 16 Feb 2021
+[2021-02-16 16:02:23 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 16:02:23 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 16:02:23 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:02:23.30 on 16 Feb 2021
+[2021-02-16 16:02:23 -0600] Sync Log:  Synchronization complete at 16:02:23  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:02:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:02:28.14 on 16 Feb 2021
+[2021-02-16 16:02:28 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 16:02:28 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 16:02:28 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:02:28.15 on 16 Feb 2021
+[2021-02-16 16:02:28 -0600] Sync Log:  Synchronization complete at 16:02:28  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:05:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:05:06.04 on 16 Feb 2021
+[2021-02-16 16:05:06 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/publicapi/DataBrowserController.java from /host_sync to /app_sync
+[2021-02-16 16:05:06 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/publicapi/DataBrowserController.java
+[2021-02-16 16:05:06 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:05:06.04 on 16 Feb 2021
+[2021-02-16 16:05:06 -0600] Sync Log:  Synchronization complete at 16:05:06  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:05:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:05:11.03 on 16 Feb 2021
+[2021-02-16 16:05:11 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 16:05:11 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 16:05:11 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:05:11.03 on 16 Feb 2021
+[2021-02-16 16:05:11 -0600] Sync Log:  Synchronization complete at 16:05:11  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:06:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:06:34.54 on 16 Feb 2021
+[2021-02-16 16:06:35 -0600] Sync Log:  [BGN] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java from /host_sync to /app_sync
+[2021-02-16 16:06:35 -0600] Sync Log:  [END] Updating file public-api/src/test/java/org/pmiops/workbench/cdr/DataBrowserControllerTest.java
+[2021-02-16 16:06:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:06:34.54 on 16 Feb 2021
+[2021-02-16 16:06:35 -0600] Sync Log:  Synchronization complete at 16:06:34  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:09:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:09:39.57 on 16 Feb 2021
+[2021-02-16 16:09:40 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java from /host_sync to /app_sync
+[2021-02-16 16:09:40 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java
+[2021-02-16 16:09:40 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:09:39.57 on 16 Feb 2021
+[2021-02-16 16:09:40 -0600] Sync Log:  Synchronization complete at 16:09:39  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:09:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:09:41.60 on 16 Feb 2021
+[2021-02-16 16:09:42 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java from /host_sync to /app_sync
+[2021-02-16 16:09:42 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptDao.java
+[2021-02-16 16:09:42 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:09:41.61 on 16 Feb 2021
+[2021-02-16 16:09:42 -0600] Sync Log:  Synchronization complete at 16:09:41  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:10:30 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:10:30.16 on 16 Feb 2021
+[2021-02-16 16:10:30 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 16:10:30 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 16:10:30 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:10:30.17 on 16 Feb 2021
+[2021-02-16 16:10:30 -0600] Sync Log:  Synchronization complete at 16:10:30  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:10:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:10:34.63 on 16 Feb 2021
+[2021-02-16 16:10:35 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 16:10:35 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 16:10:35 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:10:34.64 on 16 Feb 2021
+[2021-02-16 16:10:35 -0600] Sync Log:  Synchronization complete at 16:10:34  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:10:38 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:10:38.18 on 16 Feb 2021
+[2021-02-16 16:10:38 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 16:10:38 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 16:10:38 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:10:38.18 on 16 Feb 2021
+[2021-02-16 16:10:38 -0600] Sync Log:  Synchronization complete at 16:10:38  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:10:48 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:10:47.45 on 16 Feb 2021
+[2021-02-16 16:10:48 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 16:10:48 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 16:10:48 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:10:47.45 on 16 Feb 2021
+[2021-02-16 16:10:48 -0600] Sync Log:  Synchronization complete at 16:10:47  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:10:51 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:10:51.17 on 16 Feb 2021
+[2021-02-16 16:10:51 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 16:10:51 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 16:10:51 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:10:51.18 on 16 Feb 2021
+[2021-02-16 16:10:51 -0600] Sync Log:  Synchronization complete at 16:10:51  (1 item transferred, 0 skipped, 0 failed)
+[2021-02-16 16:11:00 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 16:11:00.40 on 16 Feb 2021
+[2021-02-16 16:11:00 -0600] Sync Log:  [BGN] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java from /host_sync to /app_sync
+[2021-02-16 16:11:00 -0600] Sync Log:  [END] Updating file public-api/src/main/java/org/pmiops/workbench/cdr/dao/ConceptService.java
+[2021-02-16 16:11:00 -0600] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 16:11:00.41 on 16 Feb 2021
+[2021-02-16 16:11:01 -0600] Sync Log:  Synchronization complete at 16:11:00  (1 item transferred, 0 skipped, 0 failed)

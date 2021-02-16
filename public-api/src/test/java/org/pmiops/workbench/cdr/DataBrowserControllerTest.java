@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import org.junit.After;
 import java.util.List;
+import org.pmiops.workbench.model.MatchType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.Before;
@@ -437,17 +438,17 @@ public class DataBrowserControllerTest {
     @Mock private AchillesResultService achillesResultService;
 
     private DataBrowserController dataBrowserController;
+    private ConceptService conceptService;
 
     @Before
     public void setUp() {
         saveData();
         AchillesMapper achillesMapper = new AchillesMapperImpl();
         ConceptMapper conceptMapper = new ConceptMapperImpl();
-        ConceptService conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
+        conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao,
-            cdrVersionService, domainInfoService, surveyMetadataService, surveyModuleService,
+                criteriaDao, cdrVersionService, domainInfoService, surveyMetadataService, surveyModuleService,
                 achillesResultService, achillesAnalysisService);
     }
 
@@ -462,8 +463,8 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .domain(Domain.CONDITION)
                 .minCount(0));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_5,
-          CLIENT_CONCEPT_6, CLIENT_CONCEPT_7);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_5,
+                CLIENT_CONCEPT_6, CLIENT_CONCEPT_7);
     }
 
 
@@ -473,7 +474,7 @@ public class DataBrowserControllerTest {
                 .domain(Domain.CONDITION)
                 .maxResults(1)
                 .minCount(0));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_5);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_5);
     }
 
     @Test
@@ -495,10 +496,10 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptSynonymSearch() throws Exception{
-      ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
-          .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
-      // CLIENT_CONCEPT_7 excluded because it has a zero count
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
+                .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
+        // CLIENT_CONCEPT_7 excluded because it has a zero count
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
     }
 
     @Test
@@ -506,7 +507,7 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_4,
-            CLIENT_CONCEPT_5, CLIENT_CONCEPT_6);
+                CLIENT_CONCEPT_5, CLIENT_CONCEPT_6);
     }
 
     @Test
@@ -514,7 +515,7 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .query("")
                 .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2, CLIENT_CONCEPT_3);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2, CLIENT_CONCEPT_3);
     }
 
     @Test
@@ -538,24 +539,24 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptIdSearch() throws Exception{
-        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("456")
+        ConceptListResponse response = conceptService.getConcepts(new SearchConceptsRequest().query("456")
                 .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
+        assertThat(response.getSourceOfStandardConcepts()).isEqualTo(456L);
     }
+
 
     @Test
     public void testConceptSearchDomainFilter() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004").domain(Domain.CONDITION));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
     }
 
 
     @Test
     public void testConceptCodeMatch() throws Exception {
-      ResponseEntity<ConceptListResponse> response = dataBrowserController
-          .searchConcepts(new SearchConceptsRequest().query("002")
-              .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
+        ConceptListResponse response = conceptService.getConcepts(new SearchConceptsRequest().query("002")
+                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
+        assertThat(response.getMatchType()).isEqualTo(MatchType.CODE);
     }
 
     @Test
@@ -598,7 +599,7 @@ public class DataBrowserControllerTest {
         }
     }
 
-  static DbConcept makeConcept(Concept concept) {
+    static DbConcept makeConcept(Concept concept) {
     DbConcept result = new DbConcept();
     result.setConceptId(concept.getConceptId());
     result.setConceptName(concept.getConceptName());

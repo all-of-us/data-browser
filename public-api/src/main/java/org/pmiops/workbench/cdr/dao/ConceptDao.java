@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface ConceptDao extends CrudRepository<DbConcept, Long> {
+    List<DbConcept> findAll();
 
     @Query(nativeQuery=true, value="select c.* from concept c join concept_relationship cr on c.concept_id=cr.concept_id_2 " +
             "where cr.concept_id_1=?1 and cr.relationship_id='Maps to' and c.can_select=1")
@@ -19,22 +20,6 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
             "rel.relationship_id = 'maps to' where c.source_count_value > :minCount order " +
             "by c.count_value desc",nativeQuery=true)
     List<DbConcept> findSourceConcepts(@Param("conceptId") long conceptId,@Param("minCount") Integer minCount);
-
-    /**
-     * Return the number of standard concepts in each vocabulary for the specified domain matching the
-     * specified expression, matching concept name, synonym, ID, or code.
-     * @param matchExp SQL MATCH expression to match concept name or synonym
-     * @param domainId domain ID to use when filtering concepts
-     * @return per-vocabulary concept counts
-     */
-    @Query(value = "select c.vocabularyId as vocabularyId, count(distinct c.conceptId) as conceptCount from DbConcept c\n" +
-            "where (c.countValue > 0 or c.sourceCountValue > 0) and\n" +
-            "matchConcept(c.conceptName, c.conceptCode, c.vocabularyId, c.synonymsStr, ?1) > 0 and\n" +
-            "c.standardConcept IN ('S', 'C') and\n" +
-            "c.domainId = ?2\n" +
-            "group by c.vocabularyId\n" +
-            "order by c.vocabularyId\n")
-    List<VocabularyCount> findVocabularyStandardConceptCounts(String matchExp, String domainId);
 
     @Query(value = "select distinct cr.concept_id_2 from cb_criteria_relationship cr \n" +
             "join concept c1 on (cr.concept_id_2 = c1.concept_id\n" +
