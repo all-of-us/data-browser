@@ -90,7 +90,6 @@ public class DataBrowserControllerTest {
             .conceptClassId("classId2")
             .vocabularyId("V2")
             .domainId("Measurement")
-            .standardConcept("S")
             .countValue(456L)
             .sourceCountValue(25L)
             .prevalence(0.3F)
@@ -540,7 +539,7 @@ public class DataBrowserControllerTest {
     @Test
     public void testConceptIdSearch() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("456")
-                .standardConceptFilter(StandardConceptFilter.ALL_CONCEPTS));
+                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
       assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
     }
 
