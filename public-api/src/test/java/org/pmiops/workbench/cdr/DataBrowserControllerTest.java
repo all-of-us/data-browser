@@ -59,6 +59,8 @@ import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.AchillesResultDistService;
+import org.pmiops.workbench.cdr.ConceptMapper;
+import org.pmiops.workbench.cdr.ConceptMapperImpl;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -439,8 +441,9 @@ public class DataBrowserControllerTest {
     @Before
     public void setUp() {
         saveData();
-        ConceptService conceptService = new ConceptService(entityManager, conceptDao);
         AchillesMapper achillesMapper = new AchillesMapperImpl();
+        ConceptMapper conceptMapper = new ConceptMapperImpl();
+        ConceptService conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, conceptDao,
                 criteriaDao,
