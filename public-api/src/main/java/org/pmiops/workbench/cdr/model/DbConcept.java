@@ -58,7 +58,7 @@ public class DbConcept {
                 .prevalence(a.getPrevalence())
                 .synonymsStr(a.getSynonymsStr())
                 .drugBrandNames(a.getDrugBrandNames());
-        if (a.getDomainId().equals("Measurement") && a.getMeasurementConceptInfo() != null && a.getMeasurementConceptInfo().getHasValues() == 1) {
+        if (a.getDomainId().equals("Measurement") && a.getDbMeasurementConceptInfo() != null && a.getDbMeasurementConceptInfo().getHasValues() == 1) {
             this.graphToShow = "Values";
         } else {
             this.graphToShow = "Sex Assigned at Birth";
