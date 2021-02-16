@@ -310,6 +310,13 @@ public class DbConcept {
     public String getGraphToShow() {
         return graphToShow;
     }
+    public void setGraphToShow(String graphToShow) {
+        this.graphToShow = graphToShow;
+    }
+    public DbConcept graphToShow(String graphToShow) {
+        this.graphToShow = graphToShow;
+        return this;
+    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)
