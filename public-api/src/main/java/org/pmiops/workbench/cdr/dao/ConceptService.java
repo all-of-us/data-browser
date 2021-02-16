@@ -305,7 +305,7 @@ public class ConceptService {
 
         for(DbConcept con : concepts.getContent()){
             String conceptCode = con.getConceptCode();
-            boolean isConceptCodeOrId = Stream.of(conceptCode, String.valueOf(con.getConceptId())).anyMatch(searchConceptsRequest.getQuery()::equals);
+            boolean isConceptCodeOrId = StringUtils.isEmpty(searchConceptsRequest.getQuery()) ? false : Stream.of(conceptCode, String.valueOf(con.getConceptId())).anyMatch(searchConceptsRequest.getQuery()::equals);
 
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && isConceptCodeOrId) {
                 response.setStandardConcepts(getStandardConcepts(con.getConceptId()));
