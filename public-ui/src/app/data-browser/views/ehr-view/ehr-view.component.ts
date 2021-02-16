@@ -317,7 +317,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       return this.graphButtons;
   }
 
-  public checkIfExpanded(concept: Concept, event: any, sources?: boolean) {
+  public checkIfExpanded(concept: any, event: any, sources?: boolean) {
       const classList = event.target.classList;
       for (let i = 0; i < classList.length; i++) {
         const item = classList[i];
