@@ -619,7 +619,6 @@ public class DataBrowserControllerTest {
     } else {
         result.setHasCounts(1);
     }
-    result.setGraphToShow(concept.getGraphToShow());
     return result;
   }
 

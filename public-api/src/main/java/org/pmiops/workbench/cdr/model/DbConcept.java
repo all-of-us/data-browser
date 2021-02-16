@@ -39,7 +39,7 @@ public class DbConcept {
     private int canSelect;
     private int hasCounts;
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
-    private String graphToShow = null;
+    private String graphToShow = "Sex Assigned at Birth";
 
     public DbConcept() {
 
