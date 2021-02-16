@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.FetchType;
 

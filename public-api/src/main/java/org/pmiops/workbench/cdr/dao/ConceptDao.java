@@ -2,7 +2,6 @@ package org.pmiops.workbench.cdr.dao;
 
 import java.util.List;
 import org.pmiops.workbench.cdr.model.DbConcept;
-import org.pmiops.workbench.cdr.model.VocabularyCount;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

@@ -38,6 +38,13 @@ import org.pmiops.workbench.model.ConceptListResponse;
 @Service
 public class ConceptService {
 
+    @PersistenceContext(unitName = "cdr")
+    private EntityManager entityManager;
+    @Autowired
+    private ConceptDao conceptDao;
+    @Autowired
+    private ConceptMapper conceptMapper;
+
     public enum SearchType {
         CONCEPT_SEARCH, SURVEY_COUNTS, DOMAIN_COUNTS
     }
@@ -61,14 +68,6 @@ public class ConceptService {
         }
 
     }
-
-    @PersistenceContext(unitName = "cdr")
-    private EntityManager entityManager;
-
-    @Autowired
-    private ConceptDao conceptDao;
-    @Autowired
-    private ConceptMapper conceptMapper;
 
     public ConceptService() {
     }

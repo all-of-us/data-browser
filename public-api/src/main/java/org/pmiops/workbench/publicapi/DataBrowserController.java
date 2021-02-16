@@ -2,8 +2,6 @@ package org.pmiops.workbench.publicapi;
 
 import java.util.logging.Logger;
 import java.util.*;
-import com.google.common.base.Strings;
-import org.pmiops.workbench.cdr.AchillesMapper;
 import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -15,8 +13,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.pmiops.workbench.model.MeasurementConceptInfo;
-import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
@@ -27,8 +23,6 @@ import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
-import org.pmiops.workbench.cdr.model.DbConcept;
-import org.pmiops.workbench.cdr.model.DbMeasurementConceptInfo;
 import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
@@ -39,7 +33,6 @@ import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
-import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.SurveyMetadataListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
@@ -47,12 +40,10 @@ import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.CountAnalysis;
 import org.pmiops.workbench.model.CriteriaParentResponse;
 import org.pmiops.workbench.model.CriteriaListResponse;
-import org.pmiops.workbench.model.StandardConceptFilter;
 import org.pmiops.workbench.model.TestFilter;
 import org.pmiops.workbench.model.OrderFilter;
 import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Multimap;
@@ -81,8 +72,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private CdrVersionService cdrVersionService;
     @Autowired
     private SurveyMetadataService surveyMetadataService;
-    @Autowired
-    private AchillesMapper achillesMapper;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 

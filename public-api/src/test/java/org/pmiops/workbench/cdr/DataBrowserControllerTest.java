@@ -592,7 +592,7 @@ public class DataBrowserControllerTest {
         }
     }
 
-    static DbConcept makeConcept(Concept concept) {
+    private static DbConcept makeConcept(Concept concept) {
     DbConcept result = new DbConcept();
     result.setConceptId(concept.getConceptId());
     result.setConceptName(concept.getConceptName());
