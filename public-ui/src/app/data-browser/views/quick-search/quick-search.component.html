@@ -211,4 +211,4 @@
   </div>
 </section>
 <app-popup-react *ngIf="showStatement && testReact" [helpText]="'QuickSearchPopup'" [onClose]="closePopUp"></app-popup-react>
-<app-pop-up (closed)="showStatement = false" [title]="helptext.helptexts['QuickSearchPopup'].title" [statement]="helptext.helptexts['QuickSearchPopup'].statement" *ngIf="showStatement && !testReact" ></app-pop-up>
+<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" *ngIf="showStatement && !testReact" ></app-pop-up>

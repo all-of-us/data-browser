@@ -326,4 +326,4 @@
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText" [measurementTestFilter]="testFilter" [measurementOrderFilter]="orderFilter"></app-db-no-results>
 </div>
 <app-popup-react *ngIf="showStatement && testReact" [helpText]="'EhrViewPopUp'" [onClose]="closePopUp"></app-popup-react>
-<app-pop-up [title]="helptext.helptexts['EhrViewPopUp'].title" [statement]="helptext.helptexts['EhrViewPopUp'].statement" (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
+<app-pop-up [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>

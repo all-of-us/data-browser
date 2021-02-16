@@ -65,6 +65,13 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   testReact: boolean;
   showStatement: boolean;
   cope: boolean;
+  statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
+    If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
+    “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
+    however, it is not a representative sample of the population of the United States.
+    Enrollment in the <i>All of Us</i> Research program is open to all who choose to participate,
+    and the program is committed to engaging with and encouraging participation of minority groups that are
+    historically underrepresented in biomedical research."`;
 
   private subscriptions: ISubscription[] = [];
 
