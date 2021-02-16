@@ -3,6 +3,10 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+<<<<<<< HEAD
+=======
+  Injector,
+>>>>>>> fc9dbf1b67f78ddef1b9bb8c4b8fefdb30a61c69
   Input,
   Output,
   ViewChild,
