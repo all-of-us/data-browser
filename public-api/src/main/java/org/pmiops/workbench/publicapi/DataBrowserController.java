@@ -48,6 +48,8 @@ import org.pmiops.workbench.model.CountAnalysis;
 import org.pmiops.workbench.model.CriteriaParentResponse;
 import org.pmiops.workbench.model.CriteriaListResponse;
 import org.pmiops.workbench.model.StandardConceptFilter;
+import org.pmiops.workbench.model.TestFilter;
+import org.pmiops.workbench.model.OrderFilter;
 import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
@@ -230,12 +232,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
                 toMatchConceptIds.addAll(drugMatchedConceptIds);
             }
 
-            List<Integer> filter = domainInfoService.getTestOrderFilter(testFilter, orderFilter);
+            // TODO change these inputs from api call in ehr component
+            List<Integer> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
             domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, filter.get(0), filter.get(1));
             surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
         } else {
-            List<Integer> filter = domainInfoService.getTestOrderFilter(testFilter, orderFilter);
+            List<Integer> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
             domainInfoList =  ImmutableList.copyOf(domainInfoService.getDomainTotals(filter.get(0), filter.get(1)));
             surveyModuleList = ImmutableList.copyOf(surveyModuleService.findSurveyModules());

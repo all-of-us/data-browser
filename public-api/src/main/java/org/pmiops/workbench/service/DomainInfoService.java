@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
+import org.pmiops.workbench.model.TestFilter;
+import org.pmiops.workbench.model.OrderFilter;
 
 @Service
 public class DomainInfoService {
@@ -34,20 +35,20 @@ public class DomainInfoService {
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> getTestOrderFilter(int testFilter, int orderFilter) {
+    public List<Integer> getTestOrderFilter(TestFilter testFilter, OrderFilter orderFilter) {
         Integer getTests = null;
         Integer getOrders = null;
 
-        if (testFilter == 1 && orderFilter == 1) {
+        if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
             getTests = 1;
             getOrders = 0;
-        } else if (testFilter == 1 && orderFilter == 0) {
+        } else if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
             getTests = 1;
             getOrders = 2;
-        } else if (testFilter == 0 && orderFilter == 1) {
+        } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
             getTests = 2;
             getOrders = 0;
-        } else if (testFilter == 0 && orderFilter == 0) {
+        } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
             getTests = 2;
             getOrders = 2;
         }

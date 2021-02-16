@@ -2,6 +2,7 @@ package org.pmiops.workbench.cdr.dao;
 
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.JoinType;
 import org.pmiops.workbench.model.StandardConceptFilter;
+import org.pmiops.workbench.model.TestFilter;
+import org.pmiops.workbench.model.OrderFilter;
 import com.google.common.base.Strings;
 import org.pmiops.workbench.model.MatchType;
 import org.apache.commons.lang3.StringUtils;
@@ -130,7 +133,7 @@ public class ConceptService {
     public static final String CLASSIFICATION_CONCEPT_CODE = "C";
 
     public Slice<DbConcept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
-                                         int measurementTests, int measurementOrders) {
+                                         TestFilter testFilter, OrderFilter orderFilter) {
 
         Specification<DbConcept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
@@ -197,12 +200,12 @@ public class ConceptService {
                     }
                     if (domainId != null) {
                         if (domainId.equals("Measurement")) {
-                            root.fetch("measurementConceptInfo", JoinType.LEFT);
-                            if (measurementTests == 1 && measurementOrders == 0) {
+                            root.fetch("dbMeasurementConceptInfo", JoinType.LEFT);
+                            if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
                                 predicates.add(criteriaBuilder.equal(root.get("dbMeasurementConceptInfo").get("hasValues"), 1));
-                            } else if (measurementTests == 0 && measurementOrders == 1) {
+                            } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
                                 predicates.add(criteriaBuilder.equal(root.get("dbMeasurementConceptInfo").get("hasValues"), 0));
-                            } else if (measurementTests == 0 && measurementOrders == 0) {
+                            } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
                                 predicates.add(criteriaBuilder.equal(root.get("dbMeasurementConceptInfo").get("hasValues"), 2));
                             }
                         }
@@ -265,13 +268,9 @@ public class ConceptService {
 
         List<Long> drugConcepts = new ArrayList<>();
 
-        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            drugConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-        }
-
         Integer minCount = Optional.ofNullable(searchConceptsRequest.getMinCount()).orElse(1);
 
-        org.pmiops.workbench.model.StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
+        StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
 
 
         if(StringUtils.isEmpty(searchConceptsRequest.getQuery())){
@@ -291,34 +290,29 @@ public class ConceptService {
 
         StandardConceptFilter convertedConceptFilter = StandardConceptFilter.valueOf(standardConceptFilter.name());
 
-        Slice<DbConcept> concepts;
-        int measurementTests = 1;
-        int measurementOrders = 1;
+        TestFilter testFilter = (domainId != null && domainId.equals("Measurement") && searchConceptsRequest.getMeasurementTests() != null) ? (searchConceptsRequest.getMeasurementTests() == 1 ? TestFilter.SELECTED : TestFilter.UNSELECTED): TestFilter.SELECTED;
+        OrderFilter orderFilter = (domainId != null && domainId.equals("Measurement") && searchConceptsRequest.getMeasurementOrders() != null) ? (searchConceptsRequest.getMeasurementOrders() == 1 ? OrderFilter.SELECTED : OrderFilter.UNSELECTED) : OrderFilter.SELECTED;
 
-        if (domainId != null && domainId.equals("Measurement")) {
-            if (searchConceptsRequest.getMeasurementTests() != null) {
-                measurementTests = searchConceptsRequest.getMeasurementTests();
-            }
-            if (searchConceptsRequest.getMeasurementOrders() != null) {
-                measurementOrders = searchConceptsRequest.getMeasurementOrders();
-            }
+        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
+            drugConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
         }
-        concepts = searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
+
+        Slice<DbConcept> concepts = searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
                 searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
-                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
+                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), testFilter, orderFilter);
 
         ConceptListResponse response = new ConceptListResponse();
 
         for(DbConcept con : concepts.getContent()){
             String conceptCode = con.getConceptCode();
-            String conceptId = String.valueOf(con.getConceptId());
+            boolean isConceptCodeOrId = Stream.of(conceptCode, String.valueOf(con.getConceptId())).anyMatch(searchConceptsRequest.getQuery()::equals);
 
-            if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
+            if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && isConceptCodeOrId) {
                 response.setStandardConcepts(getStandardConcepts(con.getConceptId()));
                 response.setSourceOfStandardConcepts(con.getConceptId());
             }
 
-            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
+            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && isConceptCodeOrId) {
                 response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
                 response.setMatchedConceptName(con.getConceptName());
             }
