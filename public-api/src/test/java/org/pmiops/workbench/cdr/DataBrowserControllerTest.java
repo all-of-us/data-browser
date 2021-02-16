@@ -80,8 +80,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.2F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_2 = new Concept()
             .conceptId(456L)
@@ -95,8 +94,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.3F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_3 = new Concept()
             .conceptId(789L)
