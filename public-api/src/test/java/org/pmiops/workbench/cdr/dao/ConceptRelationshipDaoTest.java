@@ -61,7 +61,7 @@ public class ConceptRelationshipDaoTest {
 
     @Test
     public void testConceptSearchCodeMatch() throws Exception{
-        final List<Concept> list = conceptDao.findStandardConcepts(1234L);
+        final List<DbConcept> list = conceptDao.findStandardConcepts(1234L);
         Assert.assertEquals(list.get(0),concept5);
     }
 
