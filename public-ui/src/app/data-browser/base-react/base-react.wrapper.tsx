@@ -16,14 +16,19 @@ import * as ReactDOM from 'react-dom';
 // tslint:disable-next-line: directive-class-suffix
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild('root') containerRef: ElementRef;
-
+    initialized = false;
+    
     constructor(private WrappedComponent: React.ComponentType, private propNames: string[]) {}
 
     ngOnChanges(): void {
-        this.render();
+        // If not initialized, don't render. Prevents error caused by containerRef being undefined
+        if (this.initialized) {
+            this.render();
+        }
     }
 
     ngAfterViewInit(): void {
+        this.initialized = true;
         this.render();
     }
 
