@@ -40,6 +40,7 @@ public class DbConcept {
     private int hasCounts;
     private DbMeasurementConceptInfo dbMeasurementConceptInfo = null;
     private String graphToShow = null;
+
     public DbConcept() {
 
     }
