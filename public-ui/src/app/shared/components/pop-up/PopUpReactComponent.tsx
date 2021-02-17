@@ -42,15 +42,15 @@ const helptexts = { 'QuickSearchPopup': {
     title: 'COvid-19 Participant Experience (COPE) survey',
     statement: <div className='card-body'>
                <div className='cope-statement'>
-               <span className='cope-statement-body'>This optional survey was released to participants
-               for completion at multiple time points during the COVID-19 pandemic. As a result, a
-               participant may have multiple data points if they completed more than one survey.
-               </span> <span className='cope-statement-body'>This survey has multiple versions. Even
-               though most of the content is consistent between versions, some questions were modified.
-               </span> <span className='cope-statement-box'><strong>Please Note:</strong><br />
-               While these aggregate data are available in the Data Browser tool, to protect participant
-               privacy, only select data will be available in the Registered Tier dataset (i.e., data
-               describing COVID positive status will not be made available)
+               <span className='cope-statement-body'>This optional survey was released to
+               participants for completion at multiple time points during the COVID-19 pandemic.
+               As a result, a participant may have multiple data points if they completed more than
+               one survey. </span> <span className='cope-statement-body'>This survey has multiple
+               versions. Even though most of the content is consistent between versions, some
+               questions were modified. </span> <span className='cope-statement-box'><strong>Please
+               Note:</strong><br /> While these aggregate data are available in the Data Browser tool,
+               to protect participant privacy, only select data will be available in the Registered Tier
+               dataset (i.e., data describing COVID positive status will not be made available)
                </span> </div> </div>
   }};
 
