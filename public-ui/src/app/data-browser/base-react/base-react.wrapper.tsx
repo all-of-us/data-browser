@@ -17,7 +17,7 @@ import * as ReactDOM from 'react-dom';
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     @ViewChild('root') containerRef: ElementRef;
     initialized = false;
-    
+
     constructor(private WrappedComponent: React.ComponentType, private propNames: string[]) {}
 
     ngOnChanges(): void {
