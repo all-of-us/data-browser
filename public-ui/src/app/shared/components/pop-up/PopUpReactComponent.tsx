@@ -48,10 +48,10 @@ const helptexts = { 'QuickSearchPopup': {
                one survey. </span> <span className='cope-statement-body'>This survey has multiple
                versions. Even though most of the content is consistent between versions, some
                questions were modified. </span> <span className='cope-statement-box'><strong>Please
-               Note:</strong><br /> While these aggregate data are available in the Data Browser tool,
-               to protect participant privacy, only select data will be available in the Registered Tier
-               dataset (i.e., data describing COVID positive status will not be made available)
-               </span> </div> </div>
+               Note:</strong><br /> While these aggregate data are available in the Data Browser
+               tool, to protect participant privacy, only select data will be available in the
+               Registered Tier dataset (i.e., data describing COVID positive status will not be
+               made available) </span> </div> </div>
   }};
 
 
