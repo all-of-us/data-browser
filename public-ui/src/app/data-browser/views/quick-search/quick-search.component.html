@@ -211,4 +211,5 @@
     <app-error-message [dataType]="'data'"></app-error-message>
   </div>
 </section>
-<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" *ngIf="showStatement" ></app-pop-up>
+<app-popup-react *ngIf="showStatement && testReact" [helpText]="'QuickSearchPopup'" [onClose]="closePopUp"></app-popup-react>
+<app-pop-up (closed)="showStatement = false" [title]="'PUBLIC DATA USE STATEMENT'" [statement]="statement" *ngIf="showStatement && !testReact" ></app-pop-up>

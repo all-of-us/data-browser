@@ -10,6 +10,8 @@
     left: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 115;
+    font-weight: 700;
+    color: #302c71;
 }
 
 .card-title {
@@ -17,6 +19,7 @@
     text-align: left;
     padding-bottom: 1em;
     font-weight: bold;
+    color: #302c71;
 }
 
 .data-statement > .card {

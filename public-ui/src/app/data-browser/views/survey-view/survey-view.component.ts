@@ -42,6 +42,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyName: string;
   surveyDescription: string;
   conceptCodeTooltip: any;
+  testReact: boolean;
   /* Have questions array for filtering and keep track of what answers the pick  */
   allQuestions: any = [];
   questions: any = [];
@@ -73,7 +74,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
-
+    this.closePopUp = this.closePopUp.bind(this);
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
@@ -96,6 +97,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadPage();
     this.envDisplay = environment.displayTag;
+    this.testReact = environment.testReact;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }
@@ -678,5 +680,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  closePopUp() {
+    this.showStatement = false;
   }
 }
