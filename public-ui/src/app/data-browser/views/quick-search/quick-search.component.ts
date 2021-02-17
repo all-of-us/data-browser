@@ -62,15 +62,16 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
+  testReact: boolean;
   showStatement: boolean;
   cope: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
-  If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
-  “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
-  however, it is not a representative sample of the population of the United States.
-  Enrollment in the <i>All of Us</i> Research program is open to all who choose to participate,
-  and the program is committed to engaging with and encouraging participation of minority groups that are
-  historically underrepresented in biomedical research."`;
+    If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
+    “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
+    however, it is not a representative sample of the population of the United States.
+    Enrollment in the <i>All of Us</i> Research program is open to all who choose to participate,
+    and the program is committed to engaging with and encouraging participation of minority groups that are
+    historically underrepresented in biomedical research."`;
 
   private subscriptions: ISubscription[] = [];
 
@@ -83,12 +84,14 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.dataType = params.dataType;
     });
+    this.closePopUp = this.closePopUp.bind(this);
   }
 
   ngOnInit() {
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
+    this.testReact = environment.testReact;
     this.pmGroups = this.dbc.pmGroups;
     this.fitbitMeasurementsFound = 4;
     this.physicalMeasurementsFound = this.dbc.pmGroups.length;
@@ -335,6 +338,9 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
         return false;
     }
     return false;
-
   }
+
+ closePopUp() {
+    this.showStatement = false;
+ }
 }
