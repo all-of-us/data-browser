@@ -1,19 +1,16 @@
 package org.pmiops.workbench.publicapi;
 
 import java.util.logging.Logger;
-import java.util.*;
 import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Optional;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.pmiops.workbench.cdr.dao.ConceptDao;
 import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.CdrVersionService;
@@ -55,8 +52,6 @@ import org.pmiops.workbench.exceptions.DataNotFoundException;
 public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Autowired
-    private ConceptDao conceptDao;
-    @Autowired
     private CBCriteriaDao criteriaDao;
     @Autowired
     private AchillesResultService achillesResultService;
@@ -82,13 +77,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public DataBrowserController() {}
 
-    public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
-                                 CdrVersionService cdrVersionService,
-                                 DomainInfoService domainInfoService,
+    public DataBrowserController(ConceptService conceptService, CBCriteriaDao criteriaDao,
+                                 CdrVersionService cdrVersionService, DomainInfoService domainInfoService,
                                  SurveyMetadataService surveyMetadataService, SurveyModuleService surveyModuleService,
                                  AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
         this.conceptService = conceptService;
-        this.conceptDao = conceptDao;
         this.criteriaDao = criteriaDao;
         this.cdrVersionService = cdrVersionService;
         this.surveyMetadataService = surveyMetadataService;

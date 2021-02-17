@@ -440,9 +440,8 @@ public class DataBrowserControllerTest {
         ConceptMapper conceptMapper = new ConceptMapperImpl();
         conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
-        dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao, cdrVersionService, domainInfoService, surveyMetadataService, surveyModuleService,
-                achillesResultService, achillesAnalysisService);
+        dataBrowserController = new DataBrowserController(conceptService, criteriaDao, cdrVersionService, domainInfoService, surveyMetadataService,
+                surveyModuleService, achillesResultService, achillesAnalysisService);
     }
 
     @Test
