@@ -1,16 +1,11 @@
 package org.pmiops.workbench.cdr.model;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import javax.persistence.FetchType;
-
 
 @Entity
 @Table(name = "measurement_concept_info")
