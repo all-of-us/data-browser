@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
@@ -70,6 +71,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   testFilter = 0;
   orderFilter = 0;
   showStatement: boolean;
+  testReact: boolean;
   dataStatement = `The <i>All of Us</i> Research Program includes a demographically, geographically, and
   medically diverse group of participants, however, it is not a representative sample of the
   population of the United States. Enrollment in the <i>All of Us</i> Research program is open to all who
@@ -83,9 +85,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private tooltipText: TooltipService,
     public dbc: DbConfigService,
   ) {
+    this.closePopUp = this.closePopUp.bind(this);
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
@@ -708,4 +712,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     public resetSelectedGraphs(concept: any) {
         concept.graphToShow = GraphType.None;
     }
+
+    closePopUp() {
+        this.showStatement = false;
+   }
 }
