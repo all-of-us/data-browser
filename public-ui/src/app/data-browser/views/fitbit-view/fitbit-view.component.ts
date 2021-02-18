@@ -21,7 +21,7 @@ export class FitbitViewComponent implements OnInit {
   domainCountAnalysis: any;
   totalCountAnalysis: any;
   constructor(private api: DataBrowserService, public dbc: DbConfigService,
-    public tooltipText: TooltipService) {
+    public tooltipService: TooltipService) {
     this.selectedItem = 'any Fitbit data';
     this.selectedDisplay = 'any Fitbit data';
   }
@@ -35,27 +35,27 @@ export class FitbitViewComponent implements OnInit {
     this.fitbitConcepts.push({
       id: 1, displayName: 'any Fitbit data',
       conceptName: 'Any Fitbit Data', icon: 'fa-watch-fitness',
-      tooltip: this.tooltipText.fitbitAllDataHelpText
+      tooltip: this.tooltipService.tooltips['fitbitAllDataHelpText']
     });
     this.fitbitConcepts.push({
       id: 2, displayName: 'heart rate by zone summary',
       conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat',
-      tooltip: this.tooltipText.fitbitHeartZoneHelpText
+      tooltip: this.tooltipService.tooltips['fitbitHeartZoneHelpText']
     });
     this.fitbitConcepts.push({
       id: 3, displayName: 'heart rate (minute-level)',
       conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate',
-      tooltip: this.tooltipText.fitbitHeartRateHelpText
+      tooltip: this.tooltipService.tooltips['fitbitHeartRateHelpText']
     });
     this.fitbitConcepts.push({
       id: 4, displayName: 'activity (daily summary)',
       conceptName: 'Activity (daily summary)', icon: 'fa-running',
-      tooltip: this.tooltipText.fitbitActivityDailyHelpText
+      tooltip: this.tooltipService.tooltips['fitbitActivityDailyHelpText']
     });
     this.fitbitConcepts.push({
       id: 5, displayName: 'activity intraday steps (minute-level)',
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking',
-      tooltip: this.tooltipText.fitbitActivityStepsHelpText
+      tooltip: this.tooltipService.tooltips['fitbitActivityStepsHelpText']
     });
 
     this.loadingStack.push(true);

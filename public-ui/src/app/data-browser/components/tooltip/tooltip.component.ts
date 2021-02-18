@@ -12,10 +12,12 @@ export class TooltipComponent implements OnInit {
   @Input() searchTerm: string;
   @Input() action: string;
   @Input() tooltipKey: string;
+  tooltips: Array<string>;
 
   constructor(public dbc: DbConfigService, public tooltip: TooltipService) { }
 
   ngOnInit() {
+    this.tooltips = this.getTooltips();
   }
 
   public hoverOnTooltip() {
@@ -24,7 +26,7 @@ export class TooltipComponent implements OnInit {
   }
 
   public getTooltips() {
-    return "texts" in this.tooltip[this.tooltipKey] ? this.tooltip[this.tooltipKey]['texts'] : this.tooltip[this.tooltipKey];
+    return (typeof this.tooltip.tooltips[this.tooltipKey] === 'string') ? [this.tooltip.tooltips[this.tooltipKey]] : this.tooltip.tooltips[this.tooltipKey]['texts'];
   }
 
 }

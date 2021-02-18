@@ -50,8 +50,7 @@
       <ng-container *ngIf="!searchText.value; else no_search_term">
         <h5 id="domain-name-text" class="primary-display">
           concepts for this domain
-          <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1"
-                       [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.matchingConceptsHelpText2"
+          <app-tooltip [tooltipKey]="'matchingConceptsHelpText'"
                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                        [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
         </h5>
@@ -59,8 +58,7 @@
       <ng-template #no_search_term>
         <h5 id="domain-name-text" class="primary-display" *ngIf="searchText.value">
           matching medical concepts
-          <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1"
-                       [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.matchingConceptsHelpText2"
+          <app-tooltip [tooltipKey]="'matchingConceptsHelpText'"
                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                        [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
         </h5>
@@ -68,8 +66,7 @@
     </span>
           <span *ngIf="displayConceptErrorMessage">
       <h5 id="domain-name" class="primary-display">Showing top 50 concepts for this domain</h5>
-      <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1" [toolTipText2]="tooltipText.allOfUsHelpText"
-                   [toolTipText3]="tooltipText.matchingConceptsHelpText2" [label]="'EHR Tooltip Hover'"
+      <app-tooltip [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
                    [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
     </span>
           <h6 *ngIf="searchText.value && !displayConceptErrorMessage && (items && items.length > 0)"
@@ -90,12 +87,12 @@
           </div>
           <div class="tbl-r tbl-head">
             <div class="tbl-d body-lead"> {{ehrDomain.name}}
-              <app-tooltip [toolTipText1]="tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]"
+              <app-tooltip [tooltipKey]="ehrDomain.domain.toLowerCase()"
                            [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                            [action]="'Domain name tooltip hover in matching concepts table'"></app-tooltip>
             </div>
             <div class="tbl-d body-lead"> Participants of {{totalParticipants | number}}
-              <app-tooltip [toolTipText1]="tooltipText.participantCountHelpText" [label]="'EHR Tooltip Hover'"
+              <app-tooltip [tooltipKey]="'participantCountHelpText'" [label]="'EHR Tooltip Hover'"
                            [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'"></app-tooltip>
             </div>
             <div class="tbl-d body-lead"> % of

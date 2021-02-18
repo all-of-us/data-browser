@@ -80,7 +80,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private router: Router,
     private elm: ElementRef,
     private api: DataBrowserService,
-    private tooltipText: TooltipService,
+    private tooltipService: TooltipService,
     public dbc: DbConfigService,
   ) {
   }
@@ -660,25 +660,25 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
     public showToolTip(g: string) {
         if (g === 'Sex Assigned at Birth') {
-          return this.tooltipText.biologicalSexChartHelpText + '\n' +
-            this.tooltipText.ehrBSCountChartHelpText + '\n';
+          return this.tooltipService.tooltips['biologicalSexChartHelpText'] + '\n' +
+            this.tooltipService.tooltips['ehrBSCountChartHelpText'] + '\n';
         }
         if (g === 'Gender Identity') {
-          return this.tooltipText.genderIdentityChartHelpText;
+          return this.tooltipService.tooltips['genderIdentityChartHelpText'];
         }
         if (g === 'Race / Ethnicity') {
-          return this.tooltipText.raceEthnicityChartHelpText;
+          return this.tooltipService.tooltips['raceEthnicityChartHelpText'];
         }
         if (g === 'Age') {
 
-          return this.tooltipText.ehrAgeChartHelpText + '\n' +
-            this.tooltipText.ehrAgeCountChartHelpText + '\n';
+          return this.tooltipService.tooltips['ehrAgeChartHelpText'] + '\n' +
+            this.tooltipService.tooltips['ehrAgeCountChartHelpText'] + '\n';
         }
         if (g === 'Sources') {
-          return this.tooltipText.sourcesChartHelpText;
+          return this.tooltipService.tooltips['sourcesChartHelpText'];
         }
         if (g === 'Values') {
-          return this.tooltipText.valueChartHelpText;
+          return this.tooltipService.tooltips['valueChartHelpText'];
         }
     }
 

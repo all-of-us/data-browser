@@ -66,7 +66,7 @@
       (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
       <p class="result-box-title">
         {{r.name}}
-        <app-tooltip [tooltipKey]="'r.domain.toLowerCase()'"
+        <app-tooltip [tooltipKey]="r.domain.toLowerCase()"
           [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
           [action]="'Hover on ' + r.name + 'tile tooltip'"></app-tooltip>
       </p>
@@ -106,7 +106,7 @@
          class="result-box" *ngFor="let r of surveyResults">
       <p class="result-box-title">
         {{r.name}}
-        <app-tooltip [tooltipKey]="'r.name.toLowerCase()'"
+        <app-tooltip [tooltipKey]="r.name.toLowerCase()"
                      [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
                      [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
       </p>

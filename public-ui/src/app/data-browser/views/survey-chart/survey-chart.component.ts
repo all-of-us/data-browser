@@ -29,7 +29,7 @@ export class SurveyChartComponent implements OnInit {
   genderPercentageAnalysis: any;
   selectedChartAnalysis: any;
 
-  constructor(private tooltipText: TooltipService,
+  constructor(private tooltipService: TooltipService,
     public dbc: DbConfigService,
     private api: DataBrowserService) {
 
@@ -88,23 +88,24 @@ export class SurveyChartComponent implements OnInit {
 
   public showToolTip(g: string) {
     if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.surveyBSCountChartHelpText + '\n';
+      return this.tooltipService.tooltips['biologicalSexChartHelpText'] + '\n' +
+        this.tooltipService.tooltips['surveyBSCountChartHelpText'] + '\n';
+      return 'surveyBSChart';
     }
     if (g === 'Gender Identity') {
-      return this.tooltipText.genderIdentityChartHelpText;
+      return 'genderIdentityChartHelpText';
     }
     if (g === 'Race / Ethnicity') {
-      return this.tooltipText.raceEthnicityChartHelpText;
+      return 'raceEthnicityChartHelpText';
     }
     if (g === 'Age When Survey Was Taken') {
-      return this.tooltipText.surveyAgeChartHelpText;
+      return 'surveyAgeChartHelpText';
     }
     if (g === 'Sources') {
-      return this.tooltipText.sourcesChartHelpText;
+      return 'sourcesChartHelpText';
     }
     if (g === 'Survey Versions') {
-      return this.tooltipText.versionChartHelpText;
+      return 'versionChartHelpText';
     }
   }
 

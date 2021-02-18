@@ -28,15 +28,13 @@
                 <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                     <div class="info-text survey-tbl-d display-body">
                         Concept Code
-                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1" [toolTipText2]="tooltipText.conceptCodeHelpText2"
-                                     [toolTipText3]="tooltipText.allOfUsHelpText" [toolTipText4]="tooltipText.allOfUsHelpText"
-                                     [toolTipText5]="tooltipText.conceptCodeHelpText3"
+                        <app-tooltip [tooltipKey]="'conceptCodeHelpText'"
                                      [label]="'FMH Concept Code Hover'" [searchTerm]="searchText.value" [action]="'Hover on FMH Concept Code Tooltip'">
                         </app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         Participant Count
-                        <app-tooltip [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                        <app-tooltip [tooltipKey]="'surveyParticipantCountHelpText'"
                                      [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
 
                     </div>
@@ -55,7 +53,7 @@
                             <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                             </app-highlight-search>
                             <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
-                                         [toolTipText1]="tooltipText.q2RolledCategoriesHelpText" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
+                                         [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
                             </app-tooltip>
                         </div>
                     </div>
@@ -176,15 +174,13 @@
                 <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                     <div class="info-text survey-tbl-d display-body">
                         Concept Code
-                        <app-tooltip [toolTipText1]="tooltipText.conceptCodeHelpText1" [toolTipText2]="tooltipText.allOfUsHelpText"
-                                     [toolTipText3]="tooltipText.conceptCodeHelpText2" [toolTipText4]="tooltipText.allOfUsHelpText"
-                                     [toolTipText5]="tooltipText.conceptCodeHelpText3"
+                        <app-tooltip [tooltipKey]="'conceptCodeHelpText'"
                                      [label]="'FMH Concept Code'" [searchTerm]="searchText.value" [action]="'FMH Concept Code'">
                         </app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         Participant Count
-                        <app-tooltip [toolTipText1]="tooltipText.surveyParticipantCountHelpText"
+                        <app-tooltip [tooltipKey]="'surveyParticipantCountHelpText'"
                                      [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
@@ -202,7 +198,7 @@
                             <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                             </app-highlight-search>
                             <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
-                                         [toolTipText1]="tooltipText.q2RolledCategoriesHelpText" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
+                                         [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
                             </app-tooltip>
                         </div>
                     </div>

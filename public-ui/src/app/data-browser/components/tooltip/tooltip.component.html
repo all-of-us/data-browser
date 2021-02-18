@@ -1,5 +1,5 @@
 <div tabindex="0" class="tooltip" (focusin)="hoverOnTooltip()" (mouseenter)="hoverOnTooltip()"><clr-icon shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
-  <span class="tooltiptext" *ngFor="let tooltip of getTooltips(); let i = index">
+  <span class="tooltiptext" *ngFor="let tooltip of tooltips; let i = index">
     <span class="allofus-italics" *ngIf="(index === 1 || index === 3); else noItalic">{{tooltip}}</span>
     <ng-template #noItalic>{{tooltip}}</ng-template>
   </span>
