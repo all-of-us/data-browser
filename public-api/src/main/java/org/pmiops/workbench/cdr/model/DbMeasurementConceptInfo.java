@@ -17,16 +17,14 @@ import javax.persistence.FetchType;
 public class DbMeasurementConceptInfo {
     private Long conceptId;
     private int hasValues;
-
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="concept_id")
-    private DbConcept dbConcept;
+    private String measurementType;
 
     public DbMeasurementConceptInfo() {}
 
     public DbMeasurementConceptInfo(DbMeasurementConceptInfo m) {
         this.conceptId(m.getConceptId())
-                .hasValues(m.getHasValues());
+            .hasValues(m.getHasValues())
+            .measurementType(m.getMeasurementType());
     }
 
     @Id
@@ -54,13 +52,26 @@ public class DbMeasurementConceptInfo {
         return this;
     }
 
+    @Column(name="measurement_type")
+    public String getMeasurementType() {
+        return measurementType;
+    }
+    public void setMeasurementType(String measurementType) {
+        this.measurementType = measurementType;
+    }
+    public DbMeasurementConceptInfo measurementType(String measurementType) {
+        this.measurementType = measurementType;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DbMeasurementConceptInfo that = (DbMeasurementConceptInfo) o;
         return Objects.equals(conceptId, that.conceptId) &&
-                Objects.equals(hasValues, that.hasValues);
+                Objects.equals(hasValues, that.hasValues) &&
+                Objects.equals(measurementType, that.measurementType);
     }
 
     @Override

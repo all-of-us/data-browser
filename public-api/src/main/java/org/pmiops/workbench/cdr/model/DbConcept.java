@@ -293,11 +293,6 @@ public class DbConcept {
 
     @Transient
     public List<String> getDrugBrands() { return drugBrands; }
-    public void setDrugBrands(List<String> drugBrands) { this.drugBrands = drugBrands; }
-    public DbConcept drugBrands(List<String> drugBrands) {
-        this.drugBrands = drugBrands;
-        return this;
-    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)

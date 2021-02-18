@@ -23,36 +23,27 @@ public class DomainInfoService {
         this.domainMapper = domainMapper;
     }
 
-    public List<DomainInfo> getStandardCodeMatchCounts(String matchExpression, String query, List<Long> conceptIds, int testFilter, int orderFilter) {
-        return domainInfoDao.findStandardOrCodeMatchConceptCounts(matchExpression, query, conceptIds, testFilter, orderFilter).stream()
+    public List<DomainInfo> getStandardCodeMatchCounts(String matchExpression, String query, List<Long> conceptIds, List<String> filter) {
+        return domainInfoDao.findStandardOrCodeMatchConceptCounts(matchExpression, query, conceptIds, filter).stream()
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
 
-    public List<DomainInfo> getDomainTotals(int testFilter, int orderFilter) {
-        return domainInfoDao.findDomainTotals(testFilter, orderFilter).stream()
+    public List<DomainInfo> getDomainTotals(List<String> filter) {
+        return domainInfoDao.findDomainTotals(filter).stream()
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> getTestOrderFilter(TestFilter testFilter, OrderFilter orderFilter) {
-        Integer getTests = null;
-        Integer getOrders = null;
+    public List<String> getTestOrderFilter(TestFilter testFilter, OrderFilter orderFilter) {
 
         if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
-            getTests = 1;
-            getOrders = 0;
+            return new ArrayList<>(Arrays.asList("TEST", "ORDER"));
         } else if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
-            getTests = 1;
-            getOrders = 2;
+            return new ArrayList<>(Arrays.asList("TEST"));
         } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
-            getTests = 2;
-            getOrders = 0;
-        } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
-            getTests = 2;
-            getOrders = 2;
+            return new ArrayList<>(Arrays.asList("ORDER"));
         }
-
-        return new ArrayList<>(Arrays.asList(getTests, getOrders));
+        return new ArrayList<>(Arrays.asList(""));
     }
 }

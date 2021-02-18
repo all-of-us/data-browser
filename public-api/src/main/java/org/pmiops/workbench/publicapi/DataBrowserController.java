@@ -215,14 +215,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             }
 
             // TODO change these inputs from api call in ehr component
-            List<Integer> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
+            List<String> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
-            domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, filter.get(0), filter.get(1));
+            domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, filter);
             surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
         } else {
-            List<Integer> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
+            List<String> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
-            domainInfoList =  ImmutableList.copyOf(domainInfoService.getDomainTotals(filter.get(0), filter.get(1)));
+            domainInfoList =  ImmutableList.copyOf(domainInfoService.getDomainTotals(filter));
             surveyModuleList = ImmutableList.copyOf(surveyModuleService.findSurveyModules());
         }
 
