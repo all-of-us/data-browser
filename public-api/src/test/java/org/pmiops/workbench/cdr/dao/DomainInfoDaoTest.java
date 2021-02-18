@@ -55,7 +55,7 @@ public class DomainInfoDaoTest {
 
   @Test
   public void findDomainTotals() {
-    List<DbDomainInfo> domainInfoList = domainInfoDao.findDomainTotals(1, 1);
+    List<DbDomainInfo> domainInfoList = domainInfoDao.findDomainTotals(new ArrayList<>(Arrays.asList("TEST", "ORDER")));
     assertThat(domainInfoList).hasSize(3);
   }
 }
