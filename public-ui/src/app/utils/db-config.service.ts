@@ -157,7 +157,7 @@ export class DbConfigService {
     { conceptId: 43529712, conceptName: 'Personal Medical History' },
     { conceptId: 43528895, conceptName: 'Health Care Access and Utilization' },
     { conceptId: 43528698, conceptName: 'Family Health History' },
-    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience' }
+    { conceptId: 1333342, conceptName: 'COVID-19 Participant Experience (COPE)' }
   ];
 
   // chart options
