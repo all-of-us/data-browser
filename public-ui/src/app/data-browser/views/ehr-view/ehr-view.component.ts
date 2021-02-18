@@ -12,7 +12,7 @@ import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchC
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 /* This displays concept search for a Domain. */
 

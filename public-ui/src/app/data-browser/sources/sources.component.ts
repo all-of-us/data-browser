@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService } from 'publicGenerated';
 import { Concept } from '../../../publicGenerated';
-import { TooltipService } from '../../utils/tooltip.service';
+import { TooltipService } from '../services/tooltip.service';
 @Component({
   selector: 'app-sources',
   templateUrl: './sources.component.html',

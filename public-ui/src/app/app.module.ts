@@ -21,7 +21,7 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 (<any>window).StackTrace = StackTrace;
 import { ConfigService, DataBrowserService } from 'publicGenerated';
 import { DbConfigService } from './utils/db-config.service';
-import { TooltipService } from './utils/tooltip.service';
+import { TooltipService } from './data-browser/services/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 
 function getPublicBasePath() {

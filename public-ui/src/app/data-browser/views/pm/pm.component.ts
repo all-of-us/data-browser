@@ -6,7 +6,7 @@ import { ConceptGroup } from '../../../utils/conceptGroup';
 import { ConceptWithAnalysis } from '../../../utils/conceptWithAnalysis';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { DomainType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-physical-measurements',

@@ -2,6 +2,7 @@
 import { DOCUMENT, Location } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import {initializeAnalytics} from 'app/utils/google_analytics';
 import {
   ActivatedRoute,
   Event as RouterEvent,
@@ -84,7 +85,7 @@ export class AppComponent implements OnInit {
         this.setTitleFromRoute(event);
       });
 
-    this.setTagManager();
+    initializeAnalytics();
   }
 
   /**

@@ -1,6 +1,6 @@
 <div tabindex="0" class="tooltip" (focusin)="hoverOnTooltip()" (mouseenter)="hoverOnTooltip()"><clr-icon shape="info-standard" size="18" class="is-solid info-icon"></clr-icon>
-  <span class="tooltiptext" *ngIf="haveMultipleTooltipTexts(); else singleTooltipText">
-    {{toolTipText1}} <span class="allofus-italics">{{toolTipText2}}</span> {{toolTipText3}} <span class="allofus-italics">{{toolTipText4}}</span> {{toolTipText5}}
-    </span>
-  <ng-template #singleTooltipText><span class="tooltiptext">{{toolTipText1}}</span></ng-template>
+  <span class="tooltiptext" *ngFor="let tooltip of getTooltips(); let i = index">
+    <span class="allofus-italics" *ngIf="(index === 1 || index === 3); else noItalic">{{tooltip}}</span>
+    <ng-template #noItalic>{{tooltip}}</ng-template>
+  </span>
 </div>
