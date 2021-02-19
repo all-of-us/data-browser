@@ -91,6 +91,29 @@ export const menuItems = [
   }
 ];
 
+export const socialLinks = [
+  {
+    name: 'Facebook',
+    url: 'https://www.facebook.com/AllofUsResearch/',
+    image: 'assets/db-images/facebook-logo.svg'
+  },
+  {
+    name: 'Twitter',
+    url: 'https://twitter.com/AllofUsResearch/',
+    image: 'assets/db-images/twitter-logo.svg'
+  },
+  {
+    name: 'Instagram',
+    url: 'https://www.instagram.com/allofusresearch/',
+    image: 'assets/db-images/instagram-logo.svg'
+  },
+  {
+    name: 'YouTube',
+    url: 'https://www.youtube.com/channel/UCQId1TfpwPaYiDIGlxEhlkA',
+    image: 'assets/db-images/youtube-logo.svg'
+  },
+];
+
 @Injectable()
 export class HeaderFooterService {
   menu: any;
