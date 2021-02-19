@@ -10,4 +10,5 @@
 		</div> -->
   <!-- .cta-content -->
 </main>
-<app-rh-footer></app-rh-footer>
+<app-rh-footer *ngIf="!testReact"></app-rh-footer>
+<app-rh-footer-react *ngIf="testReact"></app-rh-footer-react>
