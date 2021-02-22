@@ -11,9 +11,9 @@ import {
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
-import { tooltips, getTooltip } from '../../services/tooltip.service';
+import { getTooltip, tooltips } from '../../services/tooltip.service';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import {triggerEvent} from '../../../utils/google_analytics';
+import { triggerEvent } from '../../../utils/google_analytics';
 
 const containerElementName = 'root';
 

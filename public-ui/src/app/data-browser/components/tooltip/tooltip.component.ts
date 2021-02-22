@@ -26,7 +26,8 @@ export class TooltipComponent implements OnInit {
   }
 
   public getTooltips() {
-    return (typeof this.tooltip.tooltips[this.tooltipKey] === 'string') ? [this.tooltip.tooltips[this.tooltipKey]] : this.tooltip.tooltips[this.tooltipKey]['texts'];
+    return (typeof this.tooltip.tooltips[this.tooltipKey] === 'string') ?
+    [this.tooltip.tooltips[this.tooltipKey]] :
+    this.tooltip.tooltips[this.tooltipKey]['texts'];
   }
-
 }
