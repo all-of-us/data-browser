@@ -37,13 +37,13 @@ public class DomainInfoService {
 
     public List<String> getTestOrderFilter(TestFilter testFilter, OrderFilter orderFilter) {
 
-        if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
-            return new ArrayList<>(Arrays.asList("TEST", "ORDER"));
-        } else if (testFilter.equals(TestFilter.SELECTED) && orderFilter.equals(OrderFilter.UNSELECTED)) {
-            return new ArrayList<>(Arrays.asList("TEST"));
-        } else if (testFilter.equals(TestFilter.UNSELECTED) && orderFilter.equals(OrderFilter.SELECTED)) {
-            return new ArrayList<>(Arrays.asList("ORDER"));
+        List<String> testOrderFilters = new ArrayList<>();
+        if (testFilter.equals(TestFilter.SELECTED)) {
+            testOrderFilters.add("TEST");
         }
-        return new ArrayList<>(Arrays.asList(""));
+        if (orderFilter.equals(OrderFilter.SELECTED)) {
+            testOrderFilters.add("ORDER");
+        }
+        return testOrderFilters;
     }
 }

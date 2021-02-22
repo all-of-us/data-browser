@@ -13,8 +13,6 @@ import org.pmiops.workbench.utils.mappers.MapStructConfig;
         config = MapStructConfig.class,
         uses = {CommonMappers.class})
 public interface ConceptMapper {
-    MeasurementConceptInfo dbModelToClient(DbMeasurementConceptInfo db);
-
     @Mapping(target = "conceptSynonyms", source="synonyms")
     @Mapping(target = "measurementConceptInfo", source="dbMeasurementConceptInfo")
     Concept dbModelToClient(DbConcept db);
