@@ -58,17 +58,22 @@
 <app-spinner [loading]="loading"></app-spinner>
 <section class="results">
   <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
+    <app-tooltip-react *ngIf="testReact" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Tooltip Home Page EHR Domains'" [tooltipKey]="'ehrDomainHelpText'" [shape]="'info-standard'"
+                       [className]="'is-solid info-icon'"></app-tooltip-react>
     <app-tooltip [tooltipKey]="'ehrDomainHelpText'" [label]="'Homepage Tooltip Hover'"
-      [searchTerm]="searchText.value" [action]="'Tooltip Home Page EHR Domains'"></app-tooltip>
+      [searchTerm]="searchText.value" [action]="'Tooltip Home Page EHR Domains'" *ngIf="!testReact"></app-tooltip>
   </h5>
   <div class="result-boxes" *ngIf="showDataType(EHR_DATATYPE)">
     <div [routerLink]="setEhrUrl(r)" [queryParams]="{search: searchText.value}"
       (click)="viewEhrDomain(r, searchText.value)" class="result-box" *ngFor="let r of domainResults">
       <p class="result-box-title">
         {{r.name}}
+        <app-tooltip-react *ngIf="testReact" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on ' + r.name + 'tile tooltip'"
+                           [tooltipKey]="r.domain.toLowerCase()" [shape]="'info-standard'"
+                           [className]="'is-solid info-icon'"></app-tooltip-react>
         <app-tooltip [tooltipKey]="r.domain.toLowerCase()"
           [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-          [action]="'Hover on ' + r.name + 'tile tooltip'"></app-tooltip>
+          [action]="'Hover on ' + r.name + 'tile tooltip'" *ngIf="!testReact"></app-tooltip>
       </p>
       <div class="result-body">
         <span class="result-body-item">
@@ -106,9 +111,12 @@
          class="result-box" *ngFor="let r of surveyResults">
       <p class="result-box-title">
         {{r.name}}
+        <app-tooltip-react *ngIf="testReact" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"
+                           [tooltipKey]="r.name.toLowerCase()" [shape]="'info-standard'"
+                           [className]="'is-solid info-icon'"></app-tooltip-react>
         <app-tooltip [tooltipKey]="r.name.toLowerCase()"
                      [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value"
-                     [action]="'Hover on Survey Tile ' + r.name + ' tooltip'"></app-tooltip>
+                     [action]="'Hover on Survey Tile ' + r.name + ' tooltip'" *ngIf="!testReact"></app-tooltip>
       </p>
       <div class="result-body">
         <div class="result-body-item">
@@ -152,8 +160,11 @@
     <div [routerLink]="['physical-measurements']" class="result-box pm-box" *ngIf="physicalMeasurementsFound > 0">
       <p class="result-box-title">
         Program Physical Measurements
+        <app-tooltip-react *ngIf="testReact" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'"
+                           [tooltipKey]="'physicalMeasurements'" [shape]="'info-standard'"
+                           [className]="'is-solid info-icon'"></app-tooltip-react>
         <app-tooltip [tooltipKey]="'physicalMeasurements'" [label]="'Homepage Tooltip Hover'"
-          [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'">
+          [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'" *ngIf="!testReact">
         </app-tooltip>
       </p>
       <div class="result-body">
@@ -180,8 +191,11 @@
     </div>
     <div [routerLink]="['fitbit']" class="result-box pm-box" *ngIf="fitbitMeasurementsFound" > 
       <p class="result-box-title"> Fitbit
+        <app-tooltip-react *ngIf="testReact" [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'"
+                           [tooltipKey]="'fitbitTileHelpText'" [shape]="'info-standard'"
+                           [className]="'is-solid info-icon'"></app-tooltip-react>
         <app-tooltip [tooltipKey]="'fitbitTileHelpText'" [label]="'Homepage Tooltip Hover'"
-                     [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'">
+                     [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'" *ngIf="!testReact">
         </app-tooltip>
       </p>
       <div class="result-body">

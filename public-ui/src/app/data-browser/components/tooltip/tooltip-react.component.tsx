@@ -13,7 +13,7 @@ import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
 import {triggerEvent} from '../../../utils/google_analytics';
-import { tooltips } from '../../services/tooltip.service';
+import { tooltips, getTooltip } from '../../services/tooltip.service';
 
 const containerElementName = 'root';
 
@@ -45,7 +45,7 @@ export class TooltipReactComponent extends React.Component<Props, State> {
                     <ClrIcon shape={this.props.shape} className={this.props.className} style={{width: 18, height: 18}} />
                     <span className="tooltiptext">
                     {
-                        tooltips[this.props.tooltipKey]['texts'].map((tooltip, index) => {
+                        getTooltip(this.props.tooltipKey).map((tooltip, index) => {
                           if (index === 1 || index === 3) {
                             return <span className="allofus-italics" key={index}> {tooltip} </span>;
                           }  else {

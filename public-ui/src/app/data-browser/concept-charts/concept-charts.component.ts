@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { environment } from '../../../environments/environment';
 import { AchillesResult } from '../../../publicGenerated/model/achillesResult';
 import { Analysis } from '../../../publicGenerated/model/analysis';
-
 import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.service';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptAnalysis } from '../../../publicGenerated/model/conceptAnalysis';
@@ -54,8 +54,11 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   toDisplayAgeAnalysis: Analysis;
   domainCountAnalysis: any;
   conceptName: string;
+  testReact: boolean;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService) { }
+  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
+    this.testReact = environment.testReact;
+  }
 
   loading() {
     return this.loadingStack.length > 0;

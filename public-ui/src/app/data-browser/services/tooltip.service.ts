@@ -39,7 +39,8 @@ export const tooltips = {
                   identity information to the `, `All of Us`,
             `Research Program. Because participants can select more than one option,
                   counts and percentages may not add up to 100%. To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`]
-  },    'matchingConceptsHelpText': {
+  },
+  'matchingConceptsHelpText': {
             texts: ['Medical concepts are similar to medical terms; ' +
                             'they capture medical information\n' +
                             'in an individual’s records and may sometimes have values associated with them.\n' +
@@ -53,7 +54,7 @@ export const tooltips = {
                             'one mention of the matching medical concepts in their records.\n' +
                             'Matching medical concepts that have the highest participant counts ' +
                             'are returned at the top of the list.']
-        },
+  },
   'ehrDomainHelpText' : 'Electronic health records contain information ' +
         'about an individual’s health.\n' +
         'Medical concepts are similar to medical terms;\n' +
@@ -105,42 +106,11 @@ export const tooltips = {
   'pmAgeChartHelpText' : 'The age bar chart displays a binned distribution of the ages at ' +
          'which the participants had the physical measurement taken.',
   'histogramUnitChartText': 'Toggle here to view unit specific histograms',
-  'biologicalSexChartHelpText' : `The sex assigned to a child at birth, most often based on
-      the child’s external anatomy.`,
-    'surveyBSChart': `The sex assigned to a child at birth, most often based on
-                            the child’s external anatomy. Counts are the total sum of participants of the
-                                                                sex assigned who selected this answer.`,
-  'ehrBSCountChartHelpText' : ` Counts are the total sum of participants with the medical
-      concept mentioned in their
-      electronic health record (EHR).`,
-  'ehrAgeCountChartHelpText' : ` Counts are the total sum of participants with the medical
-      concept mentioned in their
-      electronic health record (EHR).`,
-  'surveyBSCountChartHelpText' : `Counts are the total sum of participants of the
-      sex assigned who selected this answer.`,
-  'genderIdentityChartHelpText' : 'Gender identity refers to one’s internal \n' +
-        'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
-        'or may not correspond to a person’s \n' +
-        'sex assigned at birth or to a person’s secondary sex characteristics.',
-  'ehrAgeChartHelpText' : `The age bar chart displays a binned distribution of the ages at which
-       medical concepts first occurred in participants' electronic health records. For example, if
-       a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
-       the participant is included once in the bar chart at the age of first occurrence, age 25.`,
+  'surveyBSChart': `The sex assigned to a child at birth, most often based on
+                    the child’s external anatomy. Counts are the total sum of participants of the
+                    sex assigned who selected this answer.`,
   'surveyAgeChartHelpText' : 'The age bar chart displays a binned distribution of the ' +
         'ages at which the participants took the indicated survey.',
-  'raceEthnicityChartHelpText' : `“Race” refers to physical differences that groups and cultures
-      consider socially significant, while “ethnicity” refers to shared culture, such as language,
-      ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
-      as separate questions, recent data from the Census Bureau determined that combining the
-      question leads to better understanding of the question as well as improving the accuracy of
-      resulting data on race and ethnicity. Participants are able to select more than one
-      race/ethnicity which can lead to the bar charts totaling more than 100%.`,
-  'sourcesChartHelpText' : 'Individual health records often contain medical ' +
-        'information that means the same thing ' +
-        'but may be recorded in many different ways. \n' +
-        'The sources represent the many different ways that the standard medical concept ' +
-        'returned in the search results has been recorded in patient records. \n' +
-        'The sources bar chart provides the top 10 source concepts from the All of Us data.',
   'versionChartHelpText' : 'Surveys were released to participants for completion at different ' +
         'time points during the COVID-19 pandemic and has multiple versions. Even though most of ' +
         'the content is consistent between versions, some questions were modified.',
@@ -173,19 +143,59 @@ export const tooltips = {
         medical concept in the hierarchy, but never more than once for the same concept. As a result,
          the sum total of counts for the descendants in the tree may be more than the count
          returned for the top level concept.`,
-      'allOfUsHelpText' : `All of Us`,
-      'q2RolledCategoriesHelpText' : `“Other” includes the following categories: Middle Eastern or North African,
+  'allOfUsHelpText' : `All of Us`,
+  'q2RolledCategoriesHelpText' : `“Other” includes the following categories: Middle Eastern or North African,
       Native Hawaiian or other Pacific Islander, and None of these describe me.`,
-      'fitbitAllDataHelpText' : `Summary of participant counts for Fitbit data available across all variables.`,
-      'fitbitHeartZoneHelpText' : `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
+  'fitbitAllDataHelpText' : `Summary of participant counts for Fitbit data available across all variables.`,
+  'fitbitHeartZoneHelpText' : `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
       report the amount of time a participant spent in each heart rate zone.`,
-      'fitbitHeartRateHelpText' : `Heart rate represented granularly at the minute level. Heart rate zones are the highest number of times your heart
+  'fitbitHeartRateHelpText' : `Heart rate represented granularly at the minute level. Heart rate zones are the highest number of times your heart
       can safely beat in one minute.`,
-      'fitbitActivityDailyHelpText' : `Activity data summarized as a daily report. Activity (daily summary) is a summary and list of a participant's
+  'fitbitActivityDailyHelpText' : `Activity data summarized as a daily report. Activity (daily summary) is a summary and list of a participant's
       activities and activity log entries for a given day.`,
-      'fitbitActivityStepsHelpText' : `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
-      daily calories and steps.`
-  };
+  'fitbitActivityStepsHelpText' : `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
+      daily calories and steps.`,
+  'percentageOfParticipants': `The overall participant count of this medical concept divided by the total number of participants`,
+  'valueFilter': `This code contains values. Search the medical concept keyword to see related Labs & Measurements results`,
+  'orderFilter': `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
+  'conceptSynonyms': `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names and descriptions, if available, are listed for each medical concept.`,
+  'Sex Assigned at Birth': `The sex assigned to a child at birth, most often based on the child’s external anatomy. \n Counts are the total sum of participants with the medical
+                          concept mentioned in their electronic health record (EHR).`,
+  'Gender Identity':   `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
+                            or may not correspond to a person’s \n`,
+  'Race / Ethnicity': `“Race” refers to physical differences that groups and cultures
+                                consider socially significant, while “ethnicity” refers to shared culture, such as language,
+                                ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
+                                as separate questions, recent data from the Census Bureau determined that combining the
+                                question leads to better understanding of the question as well as improving the accuracy of
+                                resulting data on race and ethnicity. Participants are able to select more than one
+                                race/ethnicity which can lead to the bar charts totaling more than 100%.`,
+  'Age': `The age bar chart displays a binned distribution of the ages at which
+                     medical concepts first occurred in participants' electronic health records. For example, if
+                     a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
+                     the participant is included once in the bar chart at the age of first occurrence, age 25. \n Counts are the total sum of participants with the medical
+                     concept mentioned in their electronic health record (EHR). \n`,
+  'Sources': 'Individual health records often contain medical ' +
+                         'information that means the same thing ' +
+                         'but may be recorded in many different ways. \n' +
+                         'The sources represent the many different ways that the standard medical concept ' +
+                         'returned in the search results has been recorded in patient records. \n' +
+                         'The sources bar chart provides the top 10 source concepts from the All of Us data.',
+  'Values': 'Values provide the numeric result of an ' +
+                        'examination or test done on a participant. ' +
+                        'For example, a participant’s measurement of their body ' +
+                        'temperature might have a value of 96.8 degrees. ' +
+                        'Values can also be reported in different units, ' +
+                        'such as Fahrenheit or Celsius for body temperature.',
+};
+
+export const getTooltip = (textKey) => {
+    if (typeof tooltips[textKey] === 'string') {
+            return [tooltips[textKey]];
+    } else {
+            return tooltips[textKey]['texts'];
+    }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -290,42 +300,11 @@ export class TooltipService {
   'pmAgeChartHelpText' : 'The age bar chart displays a binned distribution of the ages at ' +
          'which the participants had the physical measurement taken.',
   'histogramUnitChartText': 'Toggle here to view unit specific histograms',
-  'biologicalSexChartHelpText' : `The sex assigned to a child at birth, most often based on
-      the child’s external anatomy.`,
   'surveyBSChart': `The sex assigned to a child at birth, most often based on
-                          the child’s external anatomy. Counts are the total sum of participants of the
-                                                              sex assigned who selected this answer.`,
-  'ehrBSCountChartHelpText' : ` Counts are the total sum of participants with the medical
-      concept mentioned in their
-      electronic health record (EHR).`,
-  'ehrAgeCountChartHelpText' : ` Counts are the total sum of participants with the medical
-      concept mentioned in their
-      electronic health record (EHR).`,
-  'surveyBSCountChartHelpText' : `Counts are the total sum of participants of the
-      sex assigned who selected this answer.`,
-  'genderIdentityChartHelpText' : 'Gender identity refers to one’s internal \n' +
-        'sense of gender (e.g. being a man, a woman, or genderqueer) that may \n' +
-        'or may not correspond to a person’s \n' +
-        'sex assigned at birth or to a person’s secondary sex characteristics.',
-  'ehrAgeChartHelpText' : `The age bar chart displays a binned distribution of the ages at which
-       medical concepts first occurred in participants' electronic health records. For example, if
-       a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
-       the participant is included once in the bar chart at the age of first occurrence, age 25.`,
+                   the child’s external anatomy. Counts are the total sum of participants of the
+                   sex assigned who selected this answer.`,
   'surveyAgeChartHelpText' : 'The age bar chart displays a binned distribution of the ' +
         'ages at which the participants took the indicated survey.',
-  'raceEthnicityChartHelpText' : `“Race” refers to physical differences that groups and cultures
-      consider socially significant, while “ethnicity” refers to shared culture, such as language,
-      ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
-      as separate questions, recent data from the Census Bureau determined that combining the
-      question leads to better understanding of the question as well as improving the accuracy of
-      resulting data on race and ethnicity. Participants are able to select more than one
-      race/ethnicity which can lead to the bar charts totaling more than 100%.`,
-  'sourcesChartHelpText' : 'Individual health records often contain medical ' +
-        'information that means the same thing ' +
-        'but may be recorded in many different ways. \n' +
-        'The sources represent the many different ways that the standard medical concept ' +
-        'returned in the search results has been recorded in patient records. \n' +
-        'The sources bar chart provides the top 10 source concepts from the All of Us data.',
   'versionChartHelpText' : 'Surveys were released to participants for completion at different ' +
         'time points during the COVID-19 pandemic and has multiple versions. Even though most of ' +
         'the content is consistent between versions, some questions were modified.',
@@ -350,27 +329,59 @@ export class TooltipService {
        The vocabulary code listed here is a standard vocabulary code for the medical
        information. Standard codes are ways of representing data that is recorded many
        different ways in original patient records but essentially means the same thing.`,
-      'surveyParticipantCountHelpText' : `Participants could select more than one answer.
+  'surveyParticipantCountHelpText' : `Participants could select more than one answer.
       Total Counts may be greater than 100%.`,
-      'rolledUpConceptsHelpText' : `Each concept in the hierarchy including the top level concept
+  'rolledUpConceptsHelpText' : `Each concept in the hierarchy including the top level concept
        returns a count of unique participants with at least one mention of the medical concept in
         their records. As a result, within a hierarchy, participants may be counted for more than one
         medical concept in the hierarchy, but never more than once for the same concept. As a result,
          the sum total of counts for the descendants in the tree may be more than the count
          returned for the top level concept.`,
-      'allOfUsHelpText' : `All of Us`,
-      'surveyExplorerUrl' : 'https://www.researchallofus.org/data/data-sources/survey-explorer/',
-      'q2RolledCategoriesHelpText' : `“Other” includes the following categories: Middle Eastern or North African,
+  'allOfUsHelpText' : `All of Us`,
+  'surveyExplorerUrl' : 'https://www.researchallofus.org/data/data-sources/survey-explorer/',
+  'q2RolledCategoriesHelpText' : `“Other” includes the following categories: Middle Eastern or North African,
       Native Hawaiian or other Pacific Islander, and None of these describe me.`,
-      'fitbitAllDataHelpText' : `Summary of participant counts for Fitbit data available across all variables.`,
-      'fitbitHeartZoneHelpText' : `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
+  'fitbitAllDataHelpText' : `Summary of participant counts for Fitbit data available across all variables.`,
+  'fitbitHeartZoneHelpText' : `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
       report the amount of time a participant spent in each heart rate zone.`,
-      'fitbitHeartRateHelpText' : `Heart rate represented granularly at the minute level. Heart rate zones are the highest number of times your heart
+  'fitbitHeartRateHelpText' : `Heart rate represented granularly at the minute level. Heart rate zones are the highest number of times your heart
       can safely beat in one minute.`,
-      'fitbitActivityDailyHelpText' : `Activity data summarized as a daily report. Activity (daily summary) is a summary and list of a participant's
+  'fitbitActivityDailyHelpText' : `Activity data summarized as a daily report. Activity (daily summary) is a summary and list of a participant's
       activities and activity log entries for a given day.`,
-      'fitbitActivityStepsHelpText' : `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
-      daily calories and steps.`
+  'fitbitActivityStepsHelpText' : `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
+      daily calories and steps.`,
+  'percentageOfParticipants': `The overall participant count of this medical concept divided by the total number of participants`,
+  'valueFilter': `This code contains values. Search the medical concept keyword to see related Labs & Measurements results`,
+  'orderFilter': `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
+  'conceptSynonyms': `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names and descriptions, if available, are listed for each medical concept.`
+ ,'Sex Assigned at Birth': `The sex assigned to a child at birth, most often based on the child’s external anatomy. \n Counts are the total sum of participants with the medical
+                            concept mentioned in their electronic health record (EHR).`,
+  'Gender Identity':   `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
+                              or may not correspond to a person’s \n`,
+  'Race / Ethnicity': `“Race” refers to physical differences that groups and cultures
+                                  consider socially significant, while “ethnicity” refers to shared culture, such as language,
+                                  ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
+                                  as separate questions, recent data from the Census Bureau determined that combining the
+                                  question leads to better understanding of the question as well as improving the accuracy of
+                                  resulting data on race and ethnicity. Participants are able to select more than one
+                                  race/ethnicity which can lead to the bar charts totaling more than 100%.`,
+  'Age': `The age bar chart displays a binned distribution of the ages at which
+          medical concepts first occurred in participants' electronic health records. For example, if
+                       a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
+                       the participant is included once in the bar chart at the age of first occurrence, age 25. \n Counts are the total sum of participants with the medical
+                       concept mentioned in their electronic health record (EHR). \n`,
+  'Sources': 'Individual health records often contain medical ' +
+                           'information that means the same thing ' +
+                           'but may be recorded in many different ways. \n' +
+                           'The sources represent the many different ways that the standard medical concept ' +
+                           'returned in the search results has been recorded in patient records. \n' +
+                           'The sources bar chart provides the top 10 source concepts from the All of Us data.',
+  'Values': 'Values provide the numeric result of an ' +
+                          'examination or test done on a participant. ' +
+                          'For example, a participant’s measurement of their body ' +
+                          'temperature might have a value of 96.8 degrees. ' +
+                          'Values can also be reported in different units, ' +
+                          'such as Fahrenheit or Celsius for body temperature.',
   };
   constructor() { }
 }

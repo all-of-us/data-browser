@@ -28,13 +28,21 @@
                 <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                     <div class="info-text survey-tbl-d display-body">
                         Concept Code
-                        <app-tooltip [tooltipKey]="'conceptCodeHelpText'"
+                        <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" *ngIf="testReact"
+                                           [label]="'FMH Concept Code Hover'" [searchTerm]="searchText.value" [action]="'Hover on FMH Concept Code Tooltip'"
+                                           [shape]="'info-standard'"
+                                           [className]="'is-solid info-icon'"></app-tooltip-react>
+                        <app-tooltip [tooltipKey]="'conceptCodeHelpText'" *ngIf="!testReact"
                                      [label]="'FMH Concept Code Hover'" [searchTerm]="searchText.value" [action]="'Hover on FMH Concept Code Tooltip'">
                         </app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         Participant Count
-                        <app-tooltip [tooltipKey]="'surveyParticipantCountHelpText'"
+                        <app-tooltip-react *ngIf="testReact" [tooltipKey]="'surveyParticipantCountHelpText'"
+                                           [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"
+                                           [shape]="'info-standard'"
+                                           [className]="'is-solid info-icon'"></app-tooltip-react>
+                        <app-tooltip *ngIf="!testReact" [tooltipKey]="'surveyParticipantCountHelpText'"
                                      [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
 
                     </div>
@@ -52,8 +60,14 @@
                         <div>
                             <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                             </app-highlight-search>
-                            <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
-                                         [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
+                            <app-tooltip-react *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && testReact"
+                                               [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'" [searchTerm]="searchText.value"
+                                               [action]="'Other category Help Text'"
+                                               [shape]="'info-standard'"
+                                               [className]="'is-solid info-icon'"></app-tooltip-react>
+                            <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && !testReact"
+                                         [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'" [searchTerm]="searchText.value"
+                                         [action]="'Other category Help Text'">
                             </app-tooltip>
                         </div>
                     </div>
@@ -174,14 +188,24 @@
                 <div class="survey-tbl-r-group survey-tbl-r-group-style ">
                     <div class="info-text survey-tbl-d display-body">
                         Concept Code
-                        <app-tooltip [tooltipKey]="'conceptCodeHelpText'"
+                        <app-tooltip-react *ngIf="testReact" [tooltipKey]="'conceptCodeHelpText'"
+                                           [label]="'FMH Concept Code'" [searchTerm]="searchText.value" [action]="'FMH Concept Code'"
+                                           [shape]="'info-standard'"
+                                           [className]="'is-solid info-icon'"></app-tooltip-react>
+                        <app-tooltip *ngIf="!testReact" [tooltipKey]="'conceptCodeHelpText'"
                                      [label]="'FMH Concept Code'" [searchTerm]="searchText.value" [action]="'FMH Concept Code'">
                         </app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         Participant Count
-                        <app-tooltip [tooltipKey]="'surveyParticipantCountHelpText'"
-                                     [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
+                        <app-tooltip-react *ngIf="testReact" [tooltipKey]="'surveyParticipantCountHelpText'"
+                                           [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value"
+                                           [action]="'Survey Page Tooltip'"
+                                           [shape]="'info-standard'"
+                                           [className]="'is-solid info-icon'"></app-tooltip-react>
+                        <app-tooltip *ngIf="!testReact" [tooltipKey]="'surveyParticipantCountHelpText'"
+                                     [label]="getLabel(q,'Participant count tooltip')" [searchTerm]="searchText.value"
+                                     [action]="'Survey Page Tooltip'"></app-tooltip>
                     </div>
                     <div class=" info-text survey-tbl-d display-body">
                         % Answered
@@ -197,8 +221,14 @@
                         <div>
                             <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
                             </app-highlight-search>
-                            <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
-                                         [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'" [searchTerm]="searchText.value" [action]="'Other category Help Text'">
+                            <app-tooltip-react *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && testReact"
+                                               [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'"
+                                               [searchTerm]="searchText.value" [action]="'Other category Help Text'"
+                                               [shape]="'info-standard'"
+                                               [className]="'is-solid info-icon'"></app-tooltip-react>
+                            <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && !testReact"
+                                         [tooltipKey]="'q2RolledCategoriesHelpText'" [label]="'Other category Help Text'"
+                                         [searchTerm]="searchText.value" [action]="'Other category Help Text'">
                             </app-tooltip>
                         </div>
                     </div>

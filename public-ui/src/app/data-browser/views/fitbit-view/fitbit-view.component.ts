@@ -35,27 +35,27 @@ export class FitbitViewComponent implements OnInit {
     this.fitbitConcepts.push({
       id: 1, displayName: 'any Fitbit data',
       conceptName: 'Any Fitbit Data', icon: 'fa-watch-fitness',
-      tooltip: this.tooltipService.tooltips['fitbitAllDataHelpText']
+      tooltipKey: 'fitbitAllDataHelpText'
     });
     this.fitbitConcepts.push({
       id: 2, displayName: 'heart rate by zone summary',
       conceptName: 'Heart Rate (Summary)', icon: 'fa-heartbeat',
-      tooltip: this.tooltipService.tooltips['fitbitHeartZoneHelpText']
+      tooltipKey: 'fitbitHeartZoneHelpText'
     });
     this.fitbitConcepts.push({
       id: 3, displayName: 'heart rate (minute-level)',
       conceptName: 'Heart rate (minute-level)', icon: 'fa-monitor-heart-rate',
-      tooltip: this.tooltipService.tooltips['fitbitHeartRateHelpText']
+      tooltipKey: 'fitbitHeartRateHelpText'
     });
     this.fitbitConcepts.push({
       id: 4, displayName: 'activity (daily summary)',
       conceptName: 'Activity (daily summary)', icon: 'fa-running',
-      tooltip: this.tooltipService.tooltips['fitbitActivityDailyHelpText']
+      tooltipKey: 'fitbitActivityDailyHelpText'
     });
     this.fitbitConcepts.push({
       id: 5, displayName: 'activity intraday steps (minute-level)',
       conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking',
-      tooltip: this.tooltipService.tooltips['fitbitActivityStepsHelpText']
+      tooltipKey: 'fitbitActivityStepsHelpText'
     });
 
     this.loadingStack.push(true);

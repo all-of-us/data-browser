@@ -161,10 +161,6 @@ strong {
     width: 100%;
 }
 
-.question-result:not(.tooltip, .tooltiptext) .survey-tbl:not(.tooltip, .tooltiptext) {
-    overflow-x: scroll;
-}
-
 .see-answers {
     font-size: 14px;
     cursor: pointer;
@@ -251,15 +247,6 @@ strong {
 .disclaimer-btn {
     padding: 0.5rem;
     margin-top: 1rem;
-}
-
-@media (max-width: 900px) {
-    .results:not(.tooltip, .tooltiptext) {
-        overflow-x: scroll;
-    }
-    .question-result:not(.tooltip, .tooltiptext) .survey-tbl:not(.tooltip, .tooltiptext) {
-        overflow-x: scroll;
-    }
 }
 
 @media only screen and (max-width: 768px) {

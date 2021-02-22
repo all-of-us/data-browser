@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
@@ -35,6 +36,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   prevSearchText = '';
   searchResult: ConceptListResponse;
   items: any[] = [];
+  testReact: boolean;
   fullResultItemsList: any[] = [];
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
@@ -86,6 +88,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
@@ -655,30 +658,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
           window.scrollBy(0, -60);
         } else {
           console.log('Scroll failed ID:', id);
-        }
-    }
-
-    public showToolTip(g: string) {
-        if (g === 'Sex Assigned at Birth') {
-          return this.tooltipService.tooltips['biologicalSexChartHelpText'] + '\n' +
-            this.tooltipService.tooltips['ehrBSCountChartHelpText'] + '\n';
-        }
-        if (g === 'Gender Identity') {
-          return this.tooltipService.tooltips['genderIdentityChartHelpText'];
-        }
-        if (g === 'Race / Ethnicity') {
-          return this.tooltipService.tooltips['raceEthnicityChartHelpText'];
-        }
-        if (g === 'Age') {
-
-          return this.tooltipService.tooltips['ehrAgeChartHelpText'] + '\n' +
-            this.tooltipService.tooltips['ehrAgeCountChartHelpText'] + '\n';
-        }
-        if (g === 'Sources') {
-          return this.tooltipService.tooltips['sourcesChartHelpText'];
-        }
-        if (g === 'Values') {
-          return this.tooltipService.tooltips['valueChartHelpText'];
         }
     }
 
