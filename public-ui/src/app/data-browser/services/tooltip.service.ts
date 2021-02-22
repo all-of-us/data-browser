@@ -87,9 +87,9 @@ export const tooltips = {
           'processes that are ordered or carried out on individuals for ' +
           'diagnostic or therapeutic purposes are captured by the procedures domain.',
   'the basics': `This survey asks basic demographic questions including
-                        questions about a participant's work and home.`,
+                 questions about a participant's work and home.`,
   'overall health': `This survey collects information about a participant’s overall health
-                             including general health, daily activities, and women’s health topics.`,
+                     including general health, daily activities, and women’s health topics.`,
   'lifestyle': `This survey asks questions about a participant’s use of tobacco, alcohol,
                      and recreational drugs.`,
   'personal medical history': `This survey collects information about past medical history,
@@ -195,7 +195,7 @@ export const getTooltip = (textKey) => {
     } else {
             return tooltips[textKey]['texts'];
     }
-}
+};
 
 @Injectable({
   providedIn: 'root'
@@ -283,7 +283,7 @@ export class TooltipService {
   'the basics': `This survey asks basic demographic questions including
                         questions about a participant's work and home.`,
   'overall health': `This survey collects information about a participant’s overall health
-                             including general health, daily activities, and women’s health topics.`,
+                     including general health, daily activities, and women’s health topics.`,
   'lifestyle': `This survey asks questions about a participant’s use of tobacco, alcohol,
                      and recreational drugs.`,
   'personal medical history': `This survey collects information about past medical history,
@@ -353,35 +353,32 @@ export class TooltipService {
   'percentageOfParticipants': `The overall participant count of this medical concept divided by the total number of participants`,
   'valueFilter': `This code contains values. Search the medical concept keyword to see related Labs & Measurements results`,
   'orderFilter': `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
-  'conceptSynonyms': `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names and descriptions, if available, are listed for each medical concept.`
- ,'Sex Assigned at Birth': `The sex assigned to a child at birth, most often based on the child’s external anatomy. \n Counts are the total sum of participants with the medical
+  'conceptSynonyms': `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names and descriptions, if available, are listed for each medical concept.`,
+  'Sex Assigned at Birth': `The sex assigned to a child at birth, most often based on the child’s external anatomy. \n Counts are the total sum of participants with the medical
                             concept mentioned in their electronic health record (EHR).`,
   'Gender Identity':   `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
                               or may not correspond to a person’s \n`,
   'Race / Ethnicity': `“Race” refers to physical differences that groups and cultures
-                                  consider socially significant, while “ethnicity” refers to shared culture, such as language,
-                                  ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
-                                  as separate questions, recent data from the Census Bureau determined that combining the
-                                  question leads to better understanding of the question as well as improving the accuracy of
-                                  resulting data on race and ethnicity. Participants are able to select more than one
-                                  race/ethnicity which can lead to the bar charts totaling more than 100%.`,
+                       consider socially significant, while “ethnicity” refers to shared culture, such as language,
+                       ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
+                       as separate questions, recent data from the Census Bureau determined that combining the
+                       question leads to better understanding of the question as well as improving the accuracy of
+                       resulting data on race and ethnicity. Participants are able to select more than one
+                       race/ethnicity which can lead to the bar charts totaling more than 100%.`,
   'Age': `The age bar chart displays a binned distribution of the ages at which
           medical concepts first occurred in participants' electronic health records. For example, if
-                       a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
-                       the participant is included once in the bar chart at the age of first occurrence, age 25. \n Counts are the total sum of participants with the medical
-                       concept mentioned in their electronic health record (EHR). \n`,
-  'Sources': 'Individual health records often contain medical ' +
-                           'information that means the same thing ' +
-                           'but may be recorded in many different ways. \n' +
-                           'The sources represent the many different ways that the standard medical concept ' +
-                           'returned in the search results has been recorded in patient records. \n' +
-                           'The sources bar chart provides the top 10 source concepts from the All of Us data.',
-  'Values': 'Values provide the numeric result of an ' +
-                          'examination or test done on a participant. ' +
-                          'For example, a participant’s measurement of their body ' +
-                          'temperature might have a value of 96.8 degrees. ' +
-                          'Values can also be reported in different units, ' +
-                          'such as Fahrenheit or Celsius for body temperature.',
+          a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
+          the participant is included once in the bar chart at the age of first occurrence, age 25. \n Counts are the total sum of participants with the medical
+          concept mentioned in their electronic health record (EHR). \n`,
+  'Sources': `Individual health records often contain medical information that means the same thing
+              but may be recorded in many different ways. The sources represent the many different ways that the standard medical concept
+              returned in the search results has been recorded in patient records.
+              The sources bar chart provides the top 10 source concepts from the All of Us data.`,
+  'Values': `Values provide the numeric result of an examination or test done on a participant.
+             For example, a participant’s measurement of their body
+             temperature might have a value of 96.8 degrees.
+             Values can also be reported in different units,
+             such as Fahrenheit or Celsius for body temperature.`,
   };
   constructor() { }
 }

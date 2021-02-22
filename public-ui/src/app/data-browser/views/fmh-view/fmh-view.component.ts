@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
-import {GraphType} from '../../../utils/enum-defs';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import { TooltipService } from '../../services/tooltip.service';
 import { environment } from '../../../../environments/environment';
+import {GraphType} from '../../../utils/enum-defs';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-fmh-view',
@@ -59,8 +59,8 @@ export class FmhViewComponent implements OnInit {
          debounceTime(1000),
          distinctUntilChanged(),
          switchMap((query) => this.api.getFMHQuestions(43528698,
-                                                                this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds),
-                                                                this.searchText.value)), )
+         this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds),
+         this.searchText.value)), )
          .subscribe({
            next: x => {
              this.conditionQuestions = x.questions.items.filter
