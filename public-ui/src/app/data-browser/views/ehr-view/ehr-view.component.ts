@@ -72,6 +72,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   testFilter = 0;
   orderFilter = 0;
   showStatement: boolean;
+  testReact: boolean;
   dataStatement = `The <i>All of Us</i> Research Program includes a demographically, geographically, and
   medically diverse group of participants, however, it is not a representative sample of the
   population of the United States. Enrollment in the <i>All of Us</i> Research program is open to all who
@@ -85,6 +86,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private tooltipService: TooltipService,
     public dbc: DbConfigService,
   ) {
+    this.closePopUp = this.closePopUp.bind(this);
   }
 
   ngOnInit() {
@@ -687,4 +689,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     public resetSelectedGraphs(concept: any) {
         concept.graphToShow = GraphType.None;
     }
+
+    closePopUp() {
+        this.showStatement = false;
+   }
 }
