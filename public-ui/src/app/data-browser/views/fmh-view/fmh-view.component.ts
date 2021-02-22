@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
-import { environment } from '../../../../environments/environment';
 import {GraphType} from '../../../utils/enum-defs';
 import { TooltipService } from '../../services/tooltip.service';
 
