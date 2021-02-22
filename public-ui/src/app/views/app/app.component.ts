@@ -2,7 +2,6 @@
 import { DOCUMENT, Location } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {initializeAnalytics} from 'app/utils/google_analytics';
 import {
   ActivatedRoute,
   Event as RouterEvent,
@@ -10,6 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import {ServerConfigService} from 'app/services/server-config.service';
+import {initializeAnalytics} from 'app/utils/google_analytics';
 import { environment } from 'environments/environment';
 import {filter} from 'rxjs/operators';
 
