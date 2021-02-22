@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { TooltipService } from '../../services/tooltip.service';
-import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 import { DbConfigService } from '../../../utils/db-config.service';
+import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 
 @Component({
   selector: 'app-fitbit-view',

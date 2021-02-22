@@ -1,13 +1,13 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../environments/environment';
+import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.service';
 import { AchillesResult } from '../../../publicGenerated/model/achillesResult';
 import { Analysis } from '../../../publicGenerated/model/analysis';
 import { Concept } from '../../../publicGenerated/model/concept';
 import { ConceptAnalysis } from '../../../publicGenerated/model/conceptAnalysis';
 import { ConceptWithAnalysis } from '../../utils/conceptWithAnalysis';
 import { DbConfigService } from '../../utils/db-config.service';
-import { DataBrowserService } from '../../../publicGenerated/api/dataBrowser.service';
 import { GraphType } from '../../utils/enum-defs';
 
 @Component({
