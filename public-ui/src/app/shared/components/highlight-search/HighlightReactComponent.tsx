@@ -21,9 +21,9 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
   if (!searchTerm || searchTerm === ' ' ||
         searchTerm === '.' || searchTerm === ',') {
         words = [text];
-        return words.map((word, w) => <span key={w}>
+        return  <React.Fragment>{words.map((word, w) => <span key={w}>
               {word}
-            </span>);
+            </span>)}</React.Fragment>;
   } else {
         let searchWords = searchTerm.split(new RegExp(',| '));
         searchWords = searchWords.filter(w => w.length > 0 );
@@ -45,13 +45,13 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
         }
   }
 
-  return words.map((word, w) => <span key={w}
+  return  <React.Fragment>{words.map((word, w) => <span key={w}
     style={matchString.test(word.toLowerCase()) ? {
       backgroundColor: highlightColor,
       display: 'inline-block'
     } : {}}>
       {word}
-    </span>);
+    </span>)}</React.Fragment>;
 }
 
 const HighlightReactComponent: React.FunctionComponent<{searchTerm: string, text: string}> =
