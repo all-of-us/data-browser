@@ -103,8 +103,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.searchText.setValue(this.prevSearchText);
         if (params['explore'] && params['explore'] === 'true') {
             this.loadPage();
-        } else {
-            console.log('did i change here ?');
         }
       } else {
         this.router.navigate(
@@ -386,6 +384,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         } else if (sources) {
           concept.graphToShow = GraphType.Sources;
         }
+      } else {
+        concept.graphToShow = GraphType.BiologicalSex;
       }
     }
 
