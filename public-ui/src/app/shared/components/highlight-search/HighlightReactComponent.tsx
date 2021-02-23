@@ -48,6 +48,7 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
   return  <React.Fragment>{words.map((word, w) => <span key={w}
     style={matchString.test(word.toLowerCase()) ? {
       backgroundColor: highlightColor,
+      fontWeight: 700,
       display: 'inline-block'
     } : {}}>
       {word}
