@@ -1,4 +1,5 @@
-<app-rh-header></app-rh-header>
+<app-rh-header *ngIf="!testReact"></app-rh-header>
+<app-rh-header-react *ngIf="testReact"></app-rh-header-react>
 <main class="main-bg" *ngIf="true">
   <app-breadcrumb></app-breadcrumb>
   <div class="db-container">
