@@ -1,7 +1,6 @@
 import {
     Component,
     ElementRef,
-    Injector,
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
@@ -14,18 +13,10 @@ import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-async function  getDomainInfo(): Promise<any> {
-     return await  api.getDomainTotals('', 1, 1).then(
-        async result => {
-            return  await {
-                surveyInfo: result.surveyModules,
-                domainInfo: result.domainInfos
-            };
-        }
-    );
-}
 
-const ResultLinksComponent: FunctionComponent<any> =
+
+
+export const ResultLinksComponent: FunctionComponent<any> =
     ({
         name,
         description,
@@ -62,55 +53,88 @@ const ResultLinksComponent: FunctionComponent<any> =
 
     };
 
-const domainInfo: any = getDomainInfo();
-console.log(domainInfo,'wtf');
-const physicalMeasurementDomainInfo = domainInfo.domainInfo.filter(domain => {
-    return domain.name.toLowerCase() === 'physical measurements'
-        || domain.name.toLowerCase() === 'fitbit';
-});
-
-
-
-domainInfo.domainInfo = domainInfo.domainInfo.filter(
-    domain => domain.name.toLowerCase() !== 'physical measurements' &&
-        domain.name.toLowerCase() !== 'fitbit');
-
-const dBHomeComponent = ():any => {
-    <section className='results'>
-        <h5 className='result-heading secondary-display'> EHR Domains:</h5>
-        <div id='survey' className='result-boxes'>
-            {
-                domainInfo.domainInfo.map((domain, index) => {
-                    const key = 'domain' + index;
-                    return <ResultLinksComponent key={key} {...domain} />;
-
-                })
-
-            }
-        </div>
-        <h5 className='result-heading secondary-display'>Survey Questions:</h5>
-        <div className='result-boxes'>
-            {
-                domainInfo.surveyInfo.map((survey, index) => {
-                    const key = 'survey' + index;
-                    return <ResultLinksComponent key={key} {...survey} />;
-                })
-
-            }
-        </div>
-        <h5 className='result-heading secondary-display'>
-            Physical Measurements and Wearables:</h5>
-        <div className='result-boxes'>
-            {
-                physicalMeasurementDomainInfo.map((phyMeasurements, index) => {
-                    const key = 'phyMeasurements' + index;
-                    return <ResultLinksComponent key={key} {...phyMeasurements} />;
-                })
-
-            }
-        </div>
-    </section>
+interface Props {
+    
 }
+
+interface State {
+    surveyInfo: Array<any>,
+    domainInfo: Array<any>,
+    physicalMesurmentsInfo: Array<any>
+}
+
+export const dBHomeComponent = (
+    class extends React.Component<Props, State>{
+        constructor(props: Props) {
+            super(props);
+            this.state = {
+                surveyInfo: [],
+                domainInfo: [],
+                physicalMesurmentsInfo: []
+            }
+        }
+        
+        // life cycle hook
+        componentWillMount() {
+            this.getDomainInfos();
+        }
+
+        getDomainInfos() {
+            // http get the domain info to populate the cards on the homepage
+            return api.getDomainTotals('', 1, 1).then(
+                result => {
+                    const domainInfo = result.domainInfos.filter(
+                        domain => domain.name.toLowerCase() !== 'physical measurements' &&
+                            domain.name.toLowerCase() !== 'fitbit');
+                    const physicalMesurmentsInfo = result.domainInfos.filter(domain => {
+                        return domain.name.toLowerCase() === 'physical measurements'
+                            || domain.name.toLowerCase() === 'fitbit';
+                    });
+                    this.setState({ domainInfo: domainInfo })
+                    this.setState({ surveyInfo: result.surveyModules })
+                    this.setState({ physicalMesurmentsInfo: physicalMesurmentsInfo })
+                }
+            )
+        }
+
+        render() {
+            return <section className='results'>
+                <h5 className='result-heading secondary-display'> EHR Domains:</h5>
+                <div id='survey' className='result-boxes'>
+                    {
+                        this.state.domainInfo.map((domain, index) => {
+                            const key = 'domain' + index;
+                            return <ResultLinksComponent key={key} {...domain} />;
+
+                        })
+
+                    }
+                </div>
+                <h5 className='result-heading secondary-display'>Survey Questions:</h5>
+                <div className='result-boxes'>
+                    {
+                        this.state.surveyInfo.map((survey, index) => {
+                            const key = 'survey' + index;
+                            return <ResultLinksComponent key={key} {...survey} />;
+                        })
+
+                    }
+                </div>
+                <h5 className='result-heading secondary-display'>
+                    Physical Measurements and Wearables:</h5>
+                <div className='result-boxes'>
+                    {
+                        this.state.physicalMesurmentsInfo.map((phyMeasurements, index) => {
+                            const key = 'phyMeasurements' + index;
+                            return <ResultLinksComponent key={key} {...phyMeasurements} />;
+                        })
+                    }
+                </div>
+            </section>
+        }
+    }
+)
+
 
 
 @Component({
@@ -123,14 +147,8 @@ const dBHomeComponent = ():any => {
 
 export class DbHomeWrapperComponent extends BaseReactWrapper {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
-
-    domainInfo: any;
+    
     constructor() {
         super(dBHomeComponent, []);
     }
-
-
 }
-
-
-
