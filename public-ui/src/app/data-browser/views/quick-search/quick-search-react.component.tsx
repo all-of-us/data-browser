@@ -53,27 +53,23 @@ export const ResultLinksComponent: FunctionComponent<any> =
 
     };
 
-interface Props {
-    
-}
-
 interface State {
-    surveyInfo: Array<any>,
-    domainInfo: Array<any>,
-    physicalMesurmentsInfo: Array<any>
+    surveyInfo: Array<any>;
+    domainInfo: Array<any>;
+    physicalMesurmentsInfo: Array<any>;
 }
 
 export const dBHomeComponent = (
-    class extends React.Component<Props, State>{
-        constructor(props: Props) {
+    class extends React.Component<State> {
+        constructor(props: State) {
             super(props);
             this.state = {
                 surveyInfo: [],
                 domainInfo: [],
                 physicalMesurmentsInfo: []
-            }
+            };
         }
-        
+
         // life cycle hook
         componentWillMount() {
             this.getDomainInfos();
@@ -90,11 +86,11 @@ export const dBHomeComponent = (
                         return domain.name.toLowerCase() === 'physical measurements'
                             || domain.name.toLowerCase() === 'fitbit';
                     });
-                    this.setState({ domainInfo: domainInfo })
-                    this.setState({ surveyInfo: result.surveyModules })
-                    this.setState({ physicalMesurmentsInfo: physicalMesurmentsInfo })
+                    this.setState({ domainInfo: domainInfo });
+                    this.setState({ surveyInfo: result.surveyModules });
+                    this.setState({ physicalMesurmentsInfo: physicalMesurmentsInfo });
                 }
-            )
+            );
         }
 
         render() {
@@ -130,10 +126,10 @@ export const dBHomeComponent = (
                         })
                     }
                 </div>
-            </section>
+            </section>;
         }
     }
-)
+);
 
 
 
@@ -147,7 +143,7 @@ export const dBHomeComponent = (
 
 export class DbHomeWrapperComponent extends BaseReactWrapper {
     @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
-    
+
     constructor() {
         super(dBHomeComponent, []);
     }
