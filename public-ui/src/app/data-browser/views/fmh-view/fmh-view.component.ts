@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
 import {GraphType} from '../../../utils/enum-defs';
@@ -28,6 +29,7 @@ export class FmhViewComponent implements OnInit {
   analyses = [];
   questionResults: any = [];
   questionFetchComplete = false;
+  testReact: boolean;
   @Input() participantCount: number;
   @Input() surveyName: number;
   questionOrder = {43528515: 1, 1384639: 2, 43528634: 3, 43528761: 4,
@@ -47,6 +49,7 @@ export class FmhViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     this.conditionText = 'For participants who selected "A lot" or "Some" in the first question, ' +
       'view family history by medical condition and/or event';
     this.fmText = 'For participants who selected "A lot" or "Some" in the first question, ' +
