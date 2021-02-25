@@ -13,7 +13,7 @@ import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchC
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
@@ -82,7 +82,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private router: Router,
     private elm: ElementRef,
     private api: DataBrowserService,
-    private tooltipText: TooltipService,
+    private tooltipService: TooltipService,
     public dbc: DbConfigService,
   ) {
     this.closePopUp = this.closePopUp.bind(this);
@@ -659,30 +659,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
           window.scrollBy(0, -60);
         } else {
           console.log('Scroll failed ID:', id);
-        }
-    }
-
-    public showToolTip(g: string) {
-        if (g === 'Sex Assigned at Birth') {
-          return this.tooltipText.biologicalSexChartHelpText + '\n' +
-            this.tooltipText.ehrBSCountChartHelpText + '\n';
-        }
-        if (g === 'Gender Identity') {
-          return this.tooltipText.genderIdentityChartHelpText;
-        }
-        if (g === 'Race / Ethnicity') {
-          return this.tooltipText.raceEthnicityChartHelpText;
-        }
-        if (g === 'Age') {
-
-          return this.tooltipText.ehrAgeChartHelpText + '\n' +
-            this.tooltipText.ehrAgeCountChartHelpText + '\n';
-        }
-        if (g === 'Sources') {
-          return this.tooltipText.sourcesChartHelpText;
-        }
-        if (g === 'Values') {
-          return this.tooltipText.valueChartHelpText;
         }
     }
 

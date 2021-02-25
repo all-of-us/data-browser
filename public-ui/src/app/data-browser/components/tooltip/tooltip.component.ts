@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DbConfigService} from '../../../utils/db-config.service';
+import {TooltipService} from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-tooltip',
@@ -7,54 +8,16 @@ import {DbConfigService} from '../../../utils/db-config.service';
   styleUrls: ['./tooltip.component.css', '../../../styles/page.css']
 })
 export class TooltipComponent implements OnInit {
-  @Input() toolTipText1: string;
-  @Input() toolTipText2: string;
-  @Input() toolTipText3: string;
-  @Input() toolTipText4: string;
-  @Input() toolTipText5: string;
   @Input() label: string;
   @Input() searchTerm: string;
   @Input() action: string;
+  @Input() tooltipKey: string;
+  tooltips: Array<string>;
 
-  constructor(public dbc: DbConfigService) { }
+  constructor(public dbc: DbConfigService, public tooltip: TooltipService) { }
 
   ngOnInit() {
-  }
-
-  public haveMultipleTooltipTexts() {
-    if (this.haveThreeToolTipTexts() || this.haveFiveToolTipTexts()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public haveThreeToolTipTexts() {
-    if (this.toolTipText1 && this.toolTipText2 && this.toolTipText3) {
-      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0
-        && this.toolTipText3.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  public haveFiveToolTipTexts() {
-    if (this.toolTipText1 && this.toolTipText2 && this.toolTipText3 &&
-      this.toolTipText4 && this.toolTipText5) {
-      if (this.toolTipText1.length > 0 && this.toolTipText2.length > 0 &&
-        this.toolTipText3.length > 0 && this.toolTipText4.length > 0 &&
-        this.toolTipText5.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+    this.tooltips = this.getTooltips();
   }
 
   public hoverOnTooltip() {
@@ -62,4 +25,9 @@ export class TooltipComponent implements OnInit {
       this.label, this.searchTerm, this.action);
   }
 
+  public getTooltips() {
+    return (typeof this.tooltip.tooltips[this.tooltipKey] === 'string') ?
+    [this.tooltip.tooltips[this.tooltipKey]] :
+    this.tooltip.tooltips[this.tooltipKey]['texts'];
+  }
 }

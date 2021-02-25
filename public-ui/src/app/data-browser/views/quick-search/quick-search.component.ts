@@ -7,15 +7,14 @@ import {
   CdrVersion, DataBrowserService, DomainInfosAndSurveyModulesResponse
 } from 'publicGenerated';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-
-
+import { TooltipService } from '../../services/tooltip.service';
 
 import { Observable} from 'rxjs/internal/Observable';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../../environments/environment';
 import { ConceptGroup } from '../../../utils/conceptGroup';
 import { DbConfigService } from '../../../utils/db-config.service';
-import { TooltipService } from '../../../utils/tooltip.service';
+
 
 @Component({
   selector: 'app-quick-search',
@@ -62,9 +61,9 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
-  testReact: boolean;
   showStatement: boolean;
   cope: boolean;
+  testReact: boolean;
   statement = `<i>All of Us</i> Research Program data are not representative of the population of the United States.
     If you present, publish, or distribute <i>All of Us</i> data, please include the following disclaimer:<br>
     “The <i>All of Us</i> Research Program includes a demographically, geographically, and medically diverse group of participants,
@@ -79,7 +78,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public dbc: DbConfigService,
-    public tooltipText: TooltipService) {
+    public tooltipService: TooltipService) {
     this.dbc.getGenderAnalysisResults();
     this.route.params.subscribe(params => {
       this.dataType = params.dataType;
@@ -88,6 +87,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;

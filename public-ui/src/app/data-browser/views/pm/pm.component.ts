@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { environment } from '../../../../environments/environment';
 import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
 import { Analysis } from '../../../../publicGenerated/model/analysis';
 import { ConceptGroup } from '../../../utils/conceptGroup';
 import { ConceptWithAnalysis } from '../../../utils/conceptWithAnalysis';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { DomainType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-physical-measurements',
@@ -21,7 +22,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   ageChartTitle = 'Age When Physical Measurement Was Taken';
   bsChartTitle = 'Sex Assigned At Birth';
   domainCountAnalysis: any;
-
+  testReact: boolean;
   // Todo put constants in a class for use in other views
   chartType = 'bar';
 
@@ -61,6 +62,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     this.searchText = localStorage.getItem('searchText');
     this.pmGroups = this.dbc.pmGroups;
 

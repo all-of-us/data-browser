@@ -9,6 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import {ServerConfigService} from 'app/services/server-config.service';
+import {initializeAnalytics} from 'app/utils/google_analytics';
 import { environment } from 'environments/environment';
 import {filter} from 'rxjs/operators';
 
@@ -84,7 +85,7 @@ export class AppComponent implements OnInit {
         this.setTitleFromRoute(event);
       });
 
-    this.setTagManager();
+    initializeAnalytics();
   }
 
   /**

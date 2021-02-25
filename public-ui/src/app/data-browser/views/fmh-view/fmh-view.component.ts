@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
 import {GraphType} from '../../../utils/enum-defs';
-import {TooltipService} from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-fmh-view',
