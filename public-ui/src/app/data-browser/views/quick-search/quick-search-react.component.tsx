@@ -60,7 +60,7 @@ interface State {
 }
 
 export const dBHomeComponent = (
-    class extends React.Component<{},State> {
+    class extends React.Component<{}, State> {
         constructor(props: State) {
             super(props);
             this.state = {
