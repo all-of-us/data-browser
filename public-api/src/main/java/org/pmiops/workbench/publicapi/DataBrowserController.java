@@ -17,6 +17,7 @@ import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.DomainInfoService;
+import org.pmiops.workbench.service.CriteriaService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
@@ -64,6 +65,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private ConceptService conceptService;
     @Autowired
+    private CriteriaService criteriaService;
+    @Autowired
     private CdrVersionService cdrVersionService;
     @Autowired
     private SurveyMetadataService surveyMetadataService;
@@ -77,11 +80,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public DataBrowserController() {}
 
-    public DataBrowserController(ConceptService conceptService, CBCriteriaDao criteriaDao,
+    public DataBrowserController(ConceptService conceptService, CBCriteriaDao criteriaDao, CriteriaService criteriaService,
                                  CdrVersionService cdrVersionService, DomainInfoService domainInfoService,
                                  SurveyMetadataService surveyMetadataService, SurveyModuleService surveyModuleService,
                                  AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
         this.conceptService = conceptService;
+        this.criteriaService = criteriaService;
         this.criteriaDao = criteriaDao;
         this.cdrVersionService = cdrVersionService;
         this.surveyMetadataService = surveyMetadataService;
@@ -125,41 +129,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
-        Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
-        CriteriaParentResponse response = new CriteriaParentResponse();
-        if (criteriaList.size() > 0) {
-            List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
-            CBCriteria parent = null;
-            CBCriteria standardParent = null;
-            CBCriteria sourceParent = null;
-            if (parentList.size() > 1) {
-                List<CBCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList());
-                standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
-                List<CBCriteria> sourceParentList = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList());
-                sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
-                if (standardParent != null) {
-                    if (sourceParent != null) {
-                        standardParent.setSourceCount(sourceParent.getCount());
-                    }
-                    parent = standardParent;
-                } else {
-                    parent = sourceParent;
-                }
-            } else {
-                parent = parentList.get(0);
-            }
-            if (criteriaList.size() >= 1) {
-                criteriaList.remove(parent);
-            }
-            Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
-            response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
-            Multimap<Long, CBCriteria> parentCriteria = Multimaps
-                    .index(criteriaList, CBCriteria::getParentId);
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.ok(response);
-        }
+        return ResponseEntity.ok(criteriaService.getRolledUpCounts(String.valueOf(conceptId), domainId));
     }
 
     @Override
