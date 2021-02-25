@@ -71,7 +71,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsComponent,
     IntroVidsWrapperComponent,
     PopUpWrapperComponent,
-    TooltipWrapperComponent
+    TooltipWrapperComponent,
     HighlightWrapperComponent
   ],
   exports: [
@@ -93,7 +93,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsComponent,
     IntroVidsWrapperComponent,
     PopUpWrapperComponent,
-    TooltipWrapperComponent
+    TooltipWrapperComponent,
     HighlightWrapperComponent
   ],
   providers: [
