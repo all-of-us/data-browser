@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" width='26' height='26'
+     aria-hidden='true' role='img' focusable='false' xmlns='http://www.w3.org/2000/svg'
+     viewBox='0 0 28 26'>
+  <style type="text/css">
+    .svg-icon{fill:#FFFFFF;transition: fill 120ms ease-in-out;}
+  </style>
+  <path class='svg-icon'
+      d='M21 7.759h-5.057V5.646c0-.993.703-1.225 1.198-1.225h3.542V.051l-5.13-.015c-4.654 0-5.536 3.258-5.536 5.345v2.378H6.462v4.435h3.555v13.307h5.926V12.194h4.563L21 7.76'>
+  </path>
+</svg>
