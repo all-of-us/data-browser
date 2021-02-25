@@ -14,7 +14,7 @@ public class ConceptSynonym {
 
     private long id;
     private long conceptId;
-    private Concept concept;
+    private DbConcept dbConcept;
     private String conceptSynonymName;
 
     @Id
@@ -45,14 +45,14 @@ public class ConceptSynonym {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)
-    public Concept getConcept() {
-        return concept;
+    public DbConcept getDbConcept() {
+        return dbConcept;
     }
-    public void setConcept(Concept concept) {
-        this.concept = concept;
+    public void setDbConcept(DbConcept dbConcept) {
+        this.dbConcept = dbConcept;
     }
-    public ConceptSynonym conceptSynonym(Concept concept) {
-        this.concept = concept;
+    public ConceptSynonym conceptSynonym(DbConcept dbConcept) {
+        this.dbConcept = dbConcept;
         return this;
     }
 
@@ -81,7 +81,7 @@ public class ConceptSynonym {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conceptId, concept, conceptSynonymName);
+        return Objects.hash(conceptId, dbConcept, conceptSynonymName);
     }
 
     @Override

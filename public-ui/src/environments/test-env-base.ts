@@ -6,5 +6,5 @@ export const testEnvironmentBase = {
   researchAllOfUsUrl: 'https://researchallofus.org',
   gaId: 'UA-116298798-4',
   // testReact to true to see react components
-  testReact: true
+  testReact: false
 };

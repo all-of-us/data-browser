@@ -1699,7 +1699,7 @@ where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910"
 echo "Filling measurement concept info table"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.measurement_concept_info\`
-(concept_id, has_values)
+(concept_id, has_values, measurement_type)
 with
 distinct_3000_measurement_concepts as
 (select distinct cast(stratum_1 as int64) as concept from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` where stratum_3='Measurement' and analysis_id=3000),
@@ -1719,15 +1719,15 @@ a.concept=m.measurement_concept_id or a.concept=m.measurement_source_concept_id
 where m.value_as_concept_id > 0
 group by a.concept),
 no_values as
-(select concept, 0 as has_values from no_1900_measurement_concepts where concept not in
+(select concept, 0 as has_values, 'ORDER' as measurement_type from no_1900_measurement_concepts where concept not in
 (select distinct concept from measurement_value_number_counts)
 and concept not in (select distinct concept from measurement_value_concept_counts)),
 yes_values_1 as
-(select concept, 1 as has_values from no_1900_measurement_concepts where concept in
+(select concept, 1 as has_values, 'TEST' as measurement_type from no_1900_measurement_concepts where concept in
 (select distinct concept from measurement_value_number_counts)
 or concept in (select distinct concept from measurement_value_concept_counts)),
 yes_values_2 as
-(select concept, 1 as has_values from distinct_1900_measurement_concepts)
+(select concept, 1 as has_values, 'TEST' as measurement_type from distinct_1900_measurement_concepts)
 select * from no_values
 union distinct
 select * from yes_values_1

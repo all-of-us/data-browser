@@ -11,6 +11,7 @@ import { PageTemplateSignedOutComponent } from '../views/page-template-signed-ou
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
 import { PopUpComponent } from './components/pop-up/pop-up.component';
+import { RhFooterReactComponent } from './components/rh-footer/rh-footer';
 import { RhFooterComponent } from './components/rh-footer/rh-footer.component';
 import { RhHeaderComponent } from './components/rh-header/rh-header.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
@@ -35,6 +36,7 @@ import { HeaderFooterService } from './services/header-footer.service';
     BetaBarComponent,
     SpinnerComponent,
     RhFooterComponent,
+    RhFooterReactComponent,
     PopUpComponent
   ],
   exports: [
@@ -50,6 +52,7 @@ import { HeaderFooterService } from './services/header-footer.service';
     BetaBarComponent,
     SpinnerComponent,
     RhFooterComponent,
+    RhFooterReactComponent,
     PopUpComponent
   ],
   providers: [

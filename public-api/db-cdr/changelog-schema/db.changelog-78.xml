@@ -5,15 +5,16 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" id="changelog-26" runAlways="true" context="local or cloud">
-
-    <validCheckSum>ANY</validCheckSum>
-
-    <loadData tableName="measurement_concept_info" file="csv/measurement_concept_info.csv" encoding="UTF-8" quotchar='"'>
-      <column name="concept_id" type="NUMERIC"/>
-      <column name="has_values" type="NUMERIC"/>
-      <column name="measurement_type" type="STRING"/>
-    </loadData>
-
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-78">
+  <validCheckSum>ANY</validCheckSum>
+  <preConditions onFail="MARK_RAN">
+    <not>
+      <columnExists tableName="measurement_concept_info" columnName="measurement_type"/>
+    </not>
+  </preConditions>
+  <addColumn tableName="measurement_concept_info">
+    <column name="measurement_type" type="VARCHAR(50)" />
+  </addColumn>
   </changeSet>
+
 </databaseChangeLog>

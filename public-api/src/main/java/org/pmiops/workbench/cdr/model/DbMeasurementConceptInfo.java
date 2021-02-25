@@ -1,38 +1,25 @@
 package org.pmiops.workbench.cdr.model;
 
-import com.google.common.base.Strings;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import javax.persistence.FetchType;
-
 
 @Entity
 @Table(name = "measurement_concept_info")
-public class MeasurementConceptInfo {
+public class DbMeasurementConceptInfo {
     private Long conceptId;
     private int hasValues;
+    private String measurementType;
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="concept_id")
-    private Concept concept;
+    public DbMeasurementConceptInfo() {}
 
-    public MeasurementConceptInfo() {}
-
-    public MeasurementConceptInfo(MeasurementConceptInfo m) {
+    public DbMeasurementConceptInfo(DbMeasurementConceptInfo m) {
         this.conceptId(m.getConceptId())
-                .hasValues(m.getHasValues());
+            .hasValues(m.getHasValues())
+            .measurementType(m.getMeasurementType());
     }
 
     @Id
@@ -43,7 +30,7 @@ public class MeasurementConceptInfo {
     public void setConceptId(Long conceptId) {
         this.conceptId = conceptId;
     }
-    public MeasurementConceptInfo conceptId(Long cid) {
+    public DbMeasurementConceptInfo conceptId(Long cid) {
         this.conceptId = cid;
         return this;
     }
@@ -55,8 +42,20 @@ public class MeasurementConceptInfo {
     public void setHasValues(int val) {
         this.hasValues = val;
     }
-    public MeasurementConceptInfo hasValues(int val) {
+    public DbMeasurementConceptInfo hasValues(int val) {
         this.hasValues = val;
+        return this;
+    }
+
+    @Column(name="measurement_type")
+    public String getMeasurementType() {
+        return measurementType;
+    }
+    public void setMeasurementType(String measurementType) {
+        this.measurementType = measurementType;
+    }
+    public DbMeasurementConceptInfo measurementType(String measurementType) {
+        this.measurementType = measurementType;
         return this;
     }
 
@@ -64,9 +63,10 @@ public class MeasurementConceptInfo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MeasurementConceptInfo that = (MeasurementConceptInfo) o;
+        DbMeasurementConceptInfo that = (DbMeasurementConceptInfo) o;
         return Objects.equals(conceptId, that.conceptId) &&
-                Objects.equals(hasValues, that.hasValues);
+                Objects.equals(hasValues, that.hasValues) &&
+                Objects.equals(measurementType, that.measurementType);
     }
 
     @Override
