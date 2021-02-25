@@ -12,7 +12,7 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import{ ClrIcon } from '../../../utils/clr-icon';
+import { ClrIcon } from '../../../utils/clr-icon';
 import { triggerEvent } from '../../../utils/google_analytics';
 import { getTooltip, tooltips } from '../../services/tooltip.service';
 
