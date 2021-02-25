@@ -78,8 +78,11 @@
               <div class="secondary-display">
                 <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
                   <app-highlight-search style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                  (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
+                  (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="!testReact">
                   </app-highlight-search>
+                  <app-highlight-react style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
+                                        (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="testReact">
+                  </app-highlight-react>
                   <app-tooltip-react *ngIf="q.conceptId === 1586140 && testReact" [tooltipKey]="'raceEthnicityQuestionHelpText'"
                                      [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
                                      [action]="'Survey Page Tooltip'"></app-tooltip-react>
@@ -157,8 +160,10 @@
                           <ng-container *ngIf="isCopeSurvey">
                             <i [ngStyle]="{'color': a.color }" class="cope-legend-item fas fa-2x fa-circle"></i>
                           </ng-container>
-                          <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value">
+                          <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value" *ngIf="!testReact">
                           </app-highlight-search>
+                          <app-highlight-react [text]="a.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
+                          </app-highlight-react>
                           <app-tooltip-react *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && testReact"
                                              [tooltipKey]="'q2RolledCategoriesHelpText'"
                                              [label]="getLabel(q,'Other category Help Text')" [searchTerm]="searchText.value"
@@ -226,8 +231,11 @@
                         <h6 class="sub-question-text">
                           <clr-icon shape="child-arrow" size="25"></clr-icon>
                           <app-highlight-search [text]="changeAutoInsertText(subQuestion)"
-                          [searchTerm]="searchText.value">
+                          [searchTerm]="searchText.value" *ngIf="!testReact">
                         </app-highlight-search>
+                          <app-highlight-react [text]="changeAutoInsertText(subQuestion)"
+                                                [searchTerm]="searchText.value" *ngIf="testReact">
+                          </app-highlight-react>
                       </h6>
                       <div class="survey-sub-tbl">
                           <div class="survey-tbl-r survey-tbl-head">
@@ -282,8 +290,10 @@
                               <div class="survey-tbl-d first display-body info-text sub-1-que survey-answer-level-1"
                                 [ngClass]="{'active':a.expanded && sqa.expanded}">
                                 <div>
-                                  <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value">
+                                  <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value" *ngIf="!testReact">
                                   </app-highlight-search>
+                                  <app-highlight-react [text]="sqa.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
+                                  </app-highlight-react>
                                 </div>
                               </div>
                               <div class="survey-tbl-r-group">
@@ -344,8 +354,11 @@
                                 <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
                                   <clr-icon shape="child-arrow" size="25"></clr-icon>
                                   <app-highlight-search [text]="changeAutoInsertText(subQuestion2)"
-                                    [searchTerm]="searchText.value">
+                                    [searchTerm]="searchText.value" *ngIf="!testReact">
                                   </app-highlight-search>
+                                  <app-highlight-react [text]="changeAutoInsertText(subQuestion2)"
+                                                        [searchTerm]="searchText.value" *ngIf="testReact">
+                                  </app-highlight-react>
                                 </h6>
                                 <div class="survey-sub-tbl">
                                   <div class="survey-tbl-r survey-tbl-head">
@@ -401,8 +414,10 @@
                                     <div class="survey-tbl-r">
                                       <div class="survey-tbl-d first display-body info-text">
                                         <div>
-                                          <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value">
+                                          <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value" *ngIf="!testReact">
                                           </app-highlight-search>
+                                          <app-highlight-react [text]="sqa2.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
+                                          </app-highlight-react>
                                         </div>
                                       </div>
                                       <div class="survey-tbl-r-group">

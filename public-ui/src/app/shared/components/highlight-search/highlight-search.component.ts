@@ -8,10 +8,6 @@ import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 export class HighlightSearchComponent implements OnChanges, OnDestroy {
   @Input() text: string;
   @Input() searchTerm: string;
-  @Input() isSource: boolean;
-  @Input() conceptId: string;
-  @Input() isStandard: string;
-  @Input() indNum: number;
   words: string[] = [];
   matchString: RegExp;
   ngOnChanges() {
