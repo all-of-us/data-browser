@@ -11,6 +11,7 @@ import {
 } from 'publicGenerated';
 import * as StackTrace from 'stacktrace-js';
 import { DataBrowserModule } from './data-browser/data-browser.module';
+import { TooltipService } from './data-browser/services/tooltip.service';
 import { ErrorReporterService } from './services/error-reporter.service';
 import { ServerConfigService } from './services/server-config.service';
 import { SharedModule } from './shared/shared.module';
@@ -21,7 +22,6 @@ import { AppComponent, overriddenUrlKey } from './views/app/app.component';
 (<any>window).StackTrace = StackTrace;
 import { ConfigService, DataBrowserService } from 'publicGenerated';
 import { DbConfigService } from './utils/db-config.service';
-import { TooltipService } from './utils/tooltip.service';
 import { overriddenPublicUrlKey } from './views/app/app.component';
 
 function getPublicBasePath() {

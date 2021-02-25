@@ -5,6 +5,8 @@ import { ClarityModule } from '@clr/angular';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
+import { HighlightWrapperComponent } from '../shared/components/highlight-search/HighlightReactComponent';
+import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from '../shared/shared.module';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
@@ -17,9 +19,11 @@ import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
+import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
+import { TooltipService } from './services/tooltip.service';
 import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
@@ -65,7 +69,10 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
-    IntroVidsWrapperComponent
+    IntroVidsWrapperComponent,
+    PopUpWrapperComponent,
+    TooltipWrapperComponent,
+    HighlightWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -85,11 +92,15 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighchartsChartModule,
     IntroVidsComponent,
     IntroVidsWrapperComponent,
+    PopUpWrapperComponent,
+    TooltipWrapperComponent,
+    HighlightWrapperComponent
   ],
   providers: [
     ChartService,
     TreeHighlightService,
-    VideoService
+    VideoService,
+    TooltipService
   ]
 })
 

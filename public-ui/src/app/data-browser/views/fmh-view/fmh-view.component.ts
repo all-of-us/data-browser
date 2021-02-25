@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import {DataBrowserService} from '../../../../publicGenerated';
 import {DbConfigService} from '../../../utils/db-config.service';
 import {GraphType} from '../../../utils/enum-defs';
-import {TooltipService} from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-fmh-view',
@@ -27,6 +29,7 @@ export class FmhViewComponent implements OnInit {
   analyses = [];
   questionResults: any = [];
   questionFetchComplete = false;
+  testReact: boolean;
   @Input() participantCount: number;
   @Input() surveyName: number;
   questionOrder = {43528515: 1, 1384639: 2, 43528634: 3, 43528761: 4,
@@ -46,33 +49,35 @@ export class FmhViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     this.conditionText = 'For participants who selected "A lot" or "Some" in the first question, ' +
       'view family history by medical condition and/or event';
     this.fmText = 'For participants who selected "A lot" or "Some" in the first question, ' +
       'view family history by family member below.';
     this.getSurveyResults();
-     this.subscriptions.push(this.searchText.valueChanges
-       .debounceTime(1000)
-       .distinctUntilChanged()
-       .switchMap((query) => this.api.getFMHQuestions(43528698,
-         this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds),
-         this.searchText.value).subscribe({
-         next: x => {
-             this.conditionQuestions = x.questions.items.filter
-             (y => this.conditionQuestionConceptIds.includes(String(y.conceptId)));
-             this.fmQuestions = x.questions.items.filter
-             (y => this.fmQuestionConceptIds.includes(String(y.conceptId)));
-             this.processQuestions(this.conditionQuestions);
-             this.processQuestions(this.fmQuestions);
-             this.sortQuestions();
-             // this.resetExpansion();
-             this.filterResults();
-             },
-         error: err => {
-           console.log('Error searching: ', err);
-           this.loading = false;
-         }
-       })));
+    this.subscriptions.push(this.searchText.valueChanges.pipe(
+             debounceTime(1000),
+             distinctUntilChanged(),
+             switchMap((query) => this.api.getFMHQuestions(43528698,
+             this.conditionQuestionConceptIds.concat(this.fmQuestionConceptIds),
+             this.searchText.value)), )
+             .subscribe({
+               next: x => {
+                 this.conditionQuestions = x.questions.items.filter
+                              (y => this.conditionQuestionConceptIds.includes(String(y.conceptId)));
+                              this.fmQuestions = x.questions.items.filter
+                              (y => this.fmQuestionConceptIds.includes(String(y.conceptId)));
+                              this.processQuestions(this.conditionQuestions);
+                              this.processQuestions(this.fmQuestions);
+                              this.sortQuestions();
+                              // this.resetExpansion();
+                              this.filterResults();
+               },
+               error: err => {
+                 console.log('Error searching: ', err);
+                 this.loading = false;
+               }
+             }));
   }
 
   private getSurveyResults() {

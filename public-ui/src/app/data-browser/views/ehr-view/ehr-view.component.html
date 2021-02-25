@@ -50,27 +50,32 @@
       <ng-container *ngIf="!searchText.value; else no_search_term">
         <h5 id="domain-name-text" class="primary-display">
           concepts for this domain
-          <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1"
-                       [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.matchingConceptsHelpText2"
+          <app-tooltip-react *ngIf="testReact" [tooltipKey]="'matchingConceptsHelpText'"
+                             [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                             [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
+          <app-tooltip [tooltipKey]="'matchingConceptsHelpText'"
                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                       [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
+                       [action]="'Matching medical concepts tooltip hover'" *ngIf="!testReact"></app-tooltip>
         </h5>
       </ng-container>
       <ng-template #no_search_term>
         <h5 id="domain-name-text" class="primary-display" *ngIf="searchText.value">
           matching medical concepts
-          <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1"
-                       [toolTipText2]="tooltipText.allOfUsHelpText" [toolTipText3]="tooltipText.matchingConceptsHelpText2"
+                    <app-tooltip-react *ngIf="testReact" [tooltipKey]="'matchingConceptsHelpText'"
+                                       [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                       [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
+          <app-tooltip [tooltipKey]="'matchingConceptsHelpText'"
                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                       [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
+                       [action]="'Matching medical concepts tooltip hover'" *ngIf="!testReact"></app-tooltip>
         </h5>
       </ng-template>
     </span>
           <span *ngIf="displayConceptErrorMessage">
       <h5 id="domain-name" class="primary-display">Showing top 50 concepts for this domain</h5>
-      <app-tooltip [toolTipText1]="tooltipText.matchingConceptsHelpText1" [toolTipText2]="tooltipText.allOfUsHelpText"
-                   [toolTipText3]="tooltipText.matchingConceptsHelpText2" [label]="'EHR Tooltip Hover'"
-                   [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip>
+                      <app-tooltip-react *ngIf="testReact" [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
+                                         [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
+      <app-tooltip [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
+                   [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'" *ngIf="!testReact"></app-tooltip>
     </span>
           <h6 *ngIf="searchText.value && !displayConceptErrorMessage && (items && items.length > 0)"
               class="primary-display medline-link">Interested in general
@@ -90,18 +95,26 @@
           </div>
           <div class="tbl-r tbl-head">
             <div class="tbl-d body-lead"> {{ehrDomain.name}}
-              <app-tooltip [toolTipText1]="tooltipText.domainHelpText[ehrDomain.domain.toLowerCase()]"
+              <app-tooltip-react *ngIf="testReact" [tooltipKey]="ehrDomain.domain.toLowerCase()"
+                                 [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                 [action]="'Domain name tooltip hover in matching concepts table'"></app-tooltip-react>
+              <app-tooltip [tooltipKey]="ehrDomain.domain.toLowerCase()"
                            [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                           [action]="'Domain name tooltip hover in matching concepts table'"></app-tooltip>
+                           [action]="'Domain name tooltip hover in matching concepts table'" *ngIf="!testReact"></app-tooltip>
             </div>
             <div class="tbl-d body-lead"> Participants of {{totalParticipants | number}}
-              <app-tooltip [toolTipText1]="tooltipText.participantCountHelpText" [label]="'EHR Tooltip Hover'"
-                           [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'"></app-tooltip>
+              <app-tooltip-react *ngIf="testReact" [tooltipKey]="'participantCountHelpText'" [label]="'EHR Tooltip Hover'"
+                                 [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'"></app-tooltip-react>
+              <app-tooltip [tooltipKey]="'participantCountHelpText'" [label]="'EHR Tooltip Hover'"
+                           [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'" *ngIf="!testReact"></app-tooltip>
             </div>
             <div class="tbl-d body-lead"> % of
               {{totalParticipants | number}}
-              <app-tooltip
-                      [toolTipText1]="'The overall participant count of this medical concept divided by the total number of participants'"
+              <app-tooltip-react *ngIf="testReact" [tooltipKey]="'percentageOfParticipants'"
+                                 [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                 [action]="'Percentage of participant count tooltip hover'"></app-tooltip-react>
+              <app-tooltip *ngIf="!testReact"
+                      [tooltipKey]="'percentageOfParticipants'"
                       [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                       [action]="'Percentage of participant count tooltip hover'"></app-tooltip>
             </div>
@@ -135,8 +148,10 @@
                 <div class="body-lead tbl-d"
                      *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
                   <div class="code-tooltip">
-                    <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" [isSource]="true">
+                    <b>Exact Source Match:</b> <br />
+                    <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="!testReact">
                     </app-highlight-search>
+                    <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="testReact"></app-highlight-react>
                   </div>
                 </div>
                 <ng-template #code_match_standard>
@@ -144,8 +159,10 @@
                        *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
                     <div class="code-tooltip"
                          *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
-                      <app-highlight-search [isStandard]="true" [text]="r.conceptName" [searchTerm]="prevSearchText">
+                      <b>Standard concept match:</b> <br />
+                      <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="!testReact">
                       </app-highlight-search>
+                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="testReact"></app-highlight-react>
                     </div>
                   </div>
                 </ng-template>
@@ -156,8 +173,9 @@
                   {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
                 </span>
                       <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
-                      <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText">
+                      <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="!testReact">
                       </app-highlight-search>
+                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="testReact"></app-highlight-react>
                     </div>
                   </div>
                 </ng-template>
@@ -180,14 +198,16 @@
             <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder"
                   class="vial-span">
               <i class="fas fa-vial fa-rotate-45"></i>
-              <app-tooltip
-                      [toolTipText1]="'This code contains values. Search the medical concept keyword to see related Labs & Measurements results'">
+                        <app-tooltip-react *ngIf="testReact" [tooltipKey]="'valueFilter'"></app-tooltip-react>
+              <app-tooltip *ngIf="!testReact"
+                      [tooltipKey]="'valueFilter'">
               </app-tooltip>
             </span>
                   <ng-template #labOrder><span class="order-span">
                 <i class="far fa-file-signature"></i>
-                <app-tooltip
-                        [toolTipText1]="'This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.'">
+                              <app-tooltip-react *ngIf="testReact" [tooltipKey]="'orderFilter'"></app-tooltip-react>
+                <app-tooltip *ngIf="!testReact"
+                        [tooltipKey]="'orderFilter'">
                 </app-tooltip>
               </span></ng-template>
                 </div>
@@ -220,19 +240,29 @@
                 <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
                      class="aka-text">
                   <span>Also Known As</span>
-                  <app-tooltip
-                          [toolTipText1]="'Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names and descriptions, if available, are listed for each medical concept.'"
+                  <app-tooltip-react *ngIf="testReact" [tooltipKey]="'conceptSynonyms'"
+                                     [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                     [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
+                  <app-tooltip *ngIf="!testReact"
+                          [tooltipKey]="'conceptSynonyms'"
                           [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                           [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"></app-tooltip>
                 </div>
 
                 <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
+                                      *ngIf="!showMoreSynonyms[r.conceptId] && !testReact" [text]="synonymString[r.conceptId].substring(0,100)"
                                       [searchTerm]="prevSearchText">
                 </app-highlight-search>
                 <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
+                                      *ngIf="showMoreSynonyms[r.conceptId] && !testReact" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
                 </app-highlight-search>
+                <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+                                      *ngIf="!showMoreSynonyms[r.conceptId] && testReact" [text]="synonymString[r.conceptId].substring(0,100)"
+                                      [searchTerm]="prevSearchText">
+                </app-highlight-react>
+                <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+                                      *ngIf="showMoreSynonyms[r.conceptId] && testReact" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
+                </app-highlight-react>
                 <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"
                    (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
                    *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
@@ -267,13 +297,21 @@
                   </ng-template>
                 </div>
                 <app-highlight-search (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
+                                      *ngIf="!showMoreDrugBrands[r.conceptId] && !testReact" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
                                       [searchTerm]="prevSearchText">
                 </app-highlight-search>
                 <app-highlight-search (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].join(', ')"
+                                      *ngIf="showMoreDrugBrands[r.conceptId] && !testReact" [text]="drugBrands[r.conceptId].join(', ')"
                                       [searchTerm]="prevSearchText">
                 </app-highlight-search>
+                <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
+                                      *ngIf="!showMoreDrugBrands[r.conceptId] && testReact" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
+                                      [searchTerm]="prevSearchText">
+                </app-highlight-react>
+                <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
+                                      *ngIf="showMoreDrugBrands[r.conceptId] && testReact" [text]="drugBrands[r.conceptId].join(', ')"
+                                      [searchTerm]="prevSearchText">
+                </app-highlight-react>
               </div>
               <div class="row-expansion"
                    *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
@@ -282,7 +320,9 @@
                   <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':r.graphToShow === g}" tabindex="0"
                        (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
                     <span>{{g}}</span>
-                    <app-tooltip [toolTipText1]="showToolTip(g)" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                    <app-tooltip-react *ngIf="testReact" [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                       [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
+                    <app-tooltip *ngIf="!testReact" [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                                  [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip>
                   </div>
                 </div>
@@ -325,4 +365,5 @@
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText" [measurementTestFilter]="testFilter" [measurementOrderFilter]="orderFilter"></app-db-no-results>
 </div>
-<app-pop-up [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (closed)="showStatement = false" *ngIf="showStatement"></app-pop-up>
+<app-popup-react *ngIf="showStatement && testReact" [helpText]="'EhrViewPopUp'" [onClose]="closePopUp"></app-popup-react>
+<app-pop-up [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>

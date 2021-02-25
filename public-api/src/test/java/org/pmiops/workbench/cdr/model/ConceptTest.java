@@ -7,24 +7,24 @@ public class ConceptTest {
 
   @Test
   public void testSetSynonymStrIdAndCodeOnly() {
-    Concept concept = new Concept();
-    concept.setSynonymsStr("123|");
-    assertThat(concept.getSynonyms()).isEmpty();
+    DbConcept dbConcept = new DbConcept();
+    dbConcept.setSynonymsStr("123|");
+    assertThat(dbConcept.getSynonyms()).isEmpty();
   }
 
   @Test
   public void testSetSynonymStrIdAndCodeOneSynonym() {
-    Concept concept = new Concept();
-    concept.setSynonymsStr("123|foo bar");
-    assertThat(concept.getSynonyms()).containsExactly("foo bar")
+    DbConcept dbConcept = new DbConcept();
+    dbConcept.setSynonymsStr("123|foo bar");
+    assertThat(dbConcept.getSynonyms()).containsExactly("foo bar")
         .inOrder();
   }
 
   @Test
   public void testSetSynonymStrIdAndCodeTwoSynonymsOneEscaped() {
-    Concept concept = new Concept();
-    concept.setSynonymsStr("123|foo bar|baz || blah");
-    assertThat(concept.getSynonyms()).containsExactly("foo bar",
+    DbConcept dbConcept = new DbConcept();
+    dbConcept.setSynonymsStr("123|foo bar|baz || blah");
+    assertThat(dbConcept.getSynonyms()).containsExactly("foo bar",
         "baz | blah")
         .inOrder();
   }

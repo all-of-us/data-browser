@@ -556,9 +556,6 @@ definitions:
         type: "array"
         items:
           type: "string"
-      graphToShow:
-        description: graph to show when first expanded
-        type: "string"
 
   ConceptListResponse:
     type: object
@@ -1089,6 +1086,14 @@ definitions:
     type: string
     description: filter on whether standard, non-standard, or all concepts should be returned\
     enum: &STANDARD_CONCEPT_FILTER [ALL_CONCEPTS, STANDARD_CONCEPTS, NON_STANDARD_CONCEPTS, STANDARD_OR_CODE_ID_MATCH]
+  TestFilter:
+    type: string
+    description: filter to toggle lab measurement tests
+    enum: &TEST_FILTER [SELECTED, UNSELECTED]
+  OrderFilter:
+    type: string
+    description: filter to toggle lab measurement orders
+    enum: &ORDER_FILTER [SELECTED, UNSELECTED]
   Domain:
     type: string
     description: a domain for concepts corresponding to a table in the OMOP schema

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { MatchType } from '../../../../publicGenerated';
 import { Concept } from '../../../../publicGenerated/model/concept';
 import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
@@ -12,7 +13,7 @@ import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchC
 import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
@@ -70,6 +71,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   testFilter = 0;
   orderFilter = 0;
   showStatement: boolean;
+  testReact: boolean;
   dataStatement = `The <i>All of Us</i> Research Program includes a demographically, geographically, and
   medically diverse group of participants, however, it is not a representative sample of the
   population of the United States. Enrollment in the <i>All of Us</i> Research program is open to all who
@@ -80,12 +82,14 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private router: Router,
     private elm: ElementRef,
     private api: DataBrowserService,
-    private tooltipText: TooltipService,
+    private tooltipService: TooltipService,
     public dbc: DbConfigService,
   ) {
+    this.closePopUp = this.closePopUp.bind(this);
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
@@ -99,8 +103,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.searchText.setValue(this.prevSearchText);
         if (params['explore'] && params['explore'] === 'true') {
             this.loadPage();
-        } else {
-            console.log('did i change here ?');
         }
       } else {
         this.router.navigate(
@@ -317,7 +319,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       return this.graphButtons;
   }
 
-  public checkIfExpanded(concept: Concept, event: any, sources?: boolean) {
+  public checkIfExpanded(concept: any, event: any, sources?: boolean) {
       const classList = event.target.classList;
       for (let i = 0; i < classList.length; i++) {
         const item = classList[i];
@@ -382,6 +384,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         } else if (sources) {
           concept.graphToShow = GraphType.Sources;
         }
+      } else {
+        concept.graphToShow = GraphType.BiologicalSex;
       }
     }
 
@@ -658,30 +662,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         }
     }
 
-    public showToolTip(g: string) {
-        if (g === 'Sex Assigned at Birth') {
-          return this.tooltipText.biologicalSexChartHelpText + '\n' +
-            this.tooltipText.ehrBSCountChartHelpText + '\n';
-        }
-        if (g === 'Gender Identity') {
-          return this.tooltipText.genderIdentityChartHelpText;
-        }
-        if (g === 'Race / Ethnicity') {
-          return this.tooltipText.raceEthnicityChartHelpText;
-        }
-        if (g === 'Age') {
-
-          return this.tooltipText.ehrAgeChartHelpText + '\n' +
-            this.tooltipText.ehrAgeCountChartHelpText + '\n';
-        }
-        if (g === 'Sources') {
-          return this.tooltipText.sourcesChartHelpText;
-        }
-        if (g === 'Values') {
-          return this.tooltipText.valueChartHelpText;
-        }
-    }
-
     public filterMeasurementDataTypes() {
         if (this.selectedFilterGrid) {
           this.selectedFilterGrid = false;
@@ -708,4 +688,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     public resetSelectedGraphs(concept: any) {
         concept.graphToShow = GraphType.None;
     }
+
+    closePopUp() {
+        this.showStatement = false;
+   }
 }

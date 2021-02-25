@@ -1,36 +1,34 @@
 import {
     AfterViewInit,
-    Component,
+    Directive,
     ElementRef,
-    Injector,
     OnChanges,
     OnDestroy,
-    SimpleChanges,
     ViewChild,
-    ViewEncapsulation
 } from '@angular/core';
+import * as fp from 'lodash/fp';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-const containerElementName = 'myReactComponentContainer';
 
-@Component({
-    // tslint:disable-next-line: component-selector
-    selector: 'base-react-wrapper',
-    template: `<span #${containerElementName}></span>`,
-    styleUrls: ['../../styles/template.css'],
-    encapsulation: ViewEncapsulation.None,
-})
-  // tslint:disable-next-line: component-class-suffix
+// Add empty directive decorator to base class per Angular docs:
+// https://angular.io/guide/migration-undecorated-classes
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
-    @ViewChild(containerElementName, { static: false }) containerRef: ElementRef;
+    @ViewChild('root') containerRef: ElementRef;
+    initialized = false;
 
-    constructor(public injector: Injector) {}
+    constructor(private WrappedComponent: React.ComponentType, private propNames: string[]) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.render();
+    ngOnChanges(): void {
+        // If not initialized, don't render. Prevents error caused by containerRef being undefined
+        if (this.initialized) {
+            this.render();
+        }
     }
 
     ngAfterViewInit(): void {
+        this.initialized = true;
         this.render();
     }
 
@@ -39,7 +37,10 @@ export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
     }
 
     render() {
-        // this will be overwritten by the extended wrapper
+        const {WrappedComponent, propNames} = this;
+        ReactDOM.render(
+          <WrappedComponent {...fp.fromPairs(propNames.map(name => [name, this[name]]))}/>,
+          this.containerRef.nativeElement
+        );
     }
 }
-
