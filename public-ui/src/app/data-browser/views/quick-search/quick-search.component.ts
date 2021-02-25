@@ -61,7 +61,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   creationTime: any;
   cdrName: any;
   allOfUsUrl: string;
-  testReact: boolean;
   showStatement: boolean;
   cope: boolean;
   testReact: boolean;
