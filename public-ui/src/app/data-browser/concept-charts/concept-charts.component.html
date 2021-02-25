@@ -10,8 +10,7 @@
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
     (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
-  <app-tooltip-react *ngIf="testReact" [tooltipKey]="'histogramUnitChartText'" [shape]="'info-standard'"
-                     [className]="'is-solid info-icon'"></app-tooltip-react>
+  <app-tooltip-react *ngIf="testReact" [tooltipKey]="'histogramUnitChartText'"></app-tooltip-react>
   <app-tooltip [tooltipKey]="'histogramUnitChartText'" *ngIf="!testReact"></app-tooltip>
   <div *ngIf="mixtureOfValues">
     <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"

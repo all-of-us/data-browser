@@ -52,9 +52,7 @@
           concepts for this domain
           <app-tooltip-react *ngIf="testReact" [tooltipKey]="'matchingConceptsHelpText'"
                              [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                             [action]="'Matching medical concepts tooltip hover'"
-                                     [shape]="'info-standard'"
-                                     [className]="'is-solid info-icon'"></app-tooltip-react>
+                             [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
           <app-tooltip [tooltipKey]="'matchingConceptsHelpText'"
                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                        [action]="'Matching medical concepts tooltip hover'" *ngIf="!testReact"></app-tooltip>
@@ -65,9 +63,7 @@
           matching medical concepts
                     <app-tooltip-react *ngIf="testReact" [tooltipKey]="'matchingConceptsHelpText'"
                                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                       [action]="'Matching medical concepts tooltip hover'"
-                                       [shape]="'info-standard'"
-                                       [className]="'is-solid info-icon'"></app-tooltip-react>
+                                       [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
           <app-tooltip [tooltipKey]="'matchingConceptsHelpText'"
                        [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                        [action]="'Matching medical concepts tooltip hover'" *ngIf="!testReact"></app-tooltip>
@@ -77,9 +73,7 @@
           <span *ngIf="displayConceptErrorMessage">
       <h5 id="domain-name" class="primary-display">Showing top 50 concepts for this domain</h5>
                       <app-tooltip-react *ngIf="testReact" [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
-                                         [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"
-                                         [shape]="'info-standard'"
-                                         [className]="'is-solid info-icon'"></app-tooltip-react>
+                                         [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
       <app-tooltip [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
                    [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'" *ngIf="!testReact"></app-tooltip>
     </span>
@@ -103,18 +97,14 @@
             <div class="tbl-d body-lead"> {{ehrDomain.name}}
               <app-tooltip-react *ngIf="testReact" [tooltipKey]="ehrDomain.domain.toLowerCase()"
                                  [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                 [action]="'Domain name tooltip hover in matching concepts table'"
-                                 [shape]="'info-standard'"
-                                 [className]="'is-solid info-icon'"></app-tooltip-react>
+                                 [action]="'Domain name tooltip hover in matching concepts table'"></app-tooltip-react>
               <app-tooltip [tooltipKey]="ehrDomain.domain.toLowerCase()"
                            [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                            [action]="'Domain name tooltip hover in matching concepts table'" *ngIf="!testReact"></app-tooltip>
             </div>
             <div class="tbl-d body-lead"> Participants of {{totalParticipants | number}}
               <app-tooltip-react *ngIf="testReact" [tooltipKey]="'participantCountHelpText'" [label]="'EHR Tooltip Hover'"
-                                 [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'"
-                                 [shape]="'info-standard'"
-                                 [className]="'is-solid info-icon'"></app-tooltip-react>
+                                 [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'"></app-tooltip-react>
               <app-tooltip [tooltipKey]="'participantCountHelpText'" [label]="'EHR Tooltip Hover'"
                            [searchTerm]="searchText.value" [action]="'Participant count tooltip hover'" *ngIf="!testReact"></app-tooltip>
             </div>
@@ -122,9 +112,7 @@
               {{totalParticipants | number}}
               <app-tooltip-react *ngIf="testReact" [tooltipKey]="'percentageOfParticipants'"
                                  [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                 [action]="'Percentage of participant count tooltip hover'"
-                                 [shape]="'info-standard'"
-                                 [className]="'is-solid info-icon'"></app-tooltip-react>
+                                 [action]="'Percentage of participant count tooltip hover'"></app-tooltip-react>
               <app-tooltip *ngIf="!testReact"
                       [tooltipKey]="'percentageOfParticipants'"
                       [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
@@ -205,18 +193,14 @@
             <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder"
                   class="vial-span">
               <i class="fas fa-vial fa-rotate-45"></i>
-                        <app-tooltip-react *ngIf="testReact" [tooltipKey]="'valueFilter'"
-                                           [shape]="'info-standard'"
-                                           [className]="'is-solid info-icon'"></app-tooltip-react>
+                        <app-tooltip-react *ngIf="testReact" [tooltipKey]="'valueFilter'"></app-tooltip-react>
               <app-tooltip *ngIf="!testReact"
                       [tooltipKey]="'valueFilter'">
               </app-tooltip>
             </span>
                   <ng-template #labOrder><span class="order-span">
                 <i class="far fa-file-signature"></i>
-                              <app-tooltip-react *ngIf="testReact" [tooltipKey]="'orderFilter'"
-                                                 [shape]="'info-standard'"
-                                                 [className]="'is-solid info-icon'"></app-tooltip-react>
+                              <app-tooltip-react *ngIf="testReact" [tooltipKey]="'orderFilter'"></app-tooltip-react>
                 <app-tooltip *ngIf="!testReact"
                         [tooltipKey]="'orderFilter'">
                 </app-tooltip>
@@ -253,9 +237,7 @@
                   <span>Also Known As</span>
                   <app-tooltip-react *ngIf="testReact" [tooltipKey]="'conceptSynonyms'"
                                      [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                     [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"
-                                     [shape]="'info-standard'"
-                                     [className]="'is-solid info-icon'"></app-tooltip-react>
+                                     [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
                   <app-tooltip *ngIf="!testReact"
                           [tooltipKey]="'conceptSynonyms'"
                           [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
@@ -319,9 +301,7 @@
                        (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
                     <span>{{g}}</span>
                     <app-tooltip-react *ngIf="testReact" [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                       [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"
-                                       [shape]="'info-standard'"
-                                       [className]="'is-solid info-icon'"></app-tooltip-react>
+                                       [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
                     <app-tooltip *ngIf="!testReact" [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
                                  [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip>
                   </div>

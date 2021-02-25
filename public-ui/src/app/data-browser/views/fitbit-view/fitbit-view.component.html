@@ -8,8 +8,7 @@
             [ngClass]="{'active': selectedItem == menuItem.displayName}"> <i class="fas {{menuItem.icon}}"></i>
             <div class="fm-menu-item-display"><span>{{menuItem.displayName}}</span>
               <app-tooltip-react *ngIf="testReact"
-                                 [tooltipKey]="menuItem.tooltipKey" [shape]="'info-standard'"
-                                 [className]="'is-solid info-icon'"></app-tooltip-react>
+                                 [tooltipKey]="menuItem.tooltipKey"></app-tooltip-react>
               <app-tooltip [tooltipKey]="menuItem.tooltipKey" *ngIf="!testReact"></app-tooltip>
             </div>
           </div>

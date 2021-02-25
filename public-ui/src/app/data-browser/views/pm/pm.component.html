@@ -16,8 +16,7 @@
             <app-tooltip-react *ngIf="testReact"
                                [tooltipKey]="pmValueChartHelpText"
                                [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
-                               [action]="'Hover on pm biological sex chart of concept' + selectedGroup" [shape]="'info-standard'"
-                               [className]="'is-solid info-icon'"></app-tooltip-react>
+                               [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip-react>
             <app-tooltip [tooltipKey]="pmValueChartHelpText"
                          [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                          [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip>
@@ -77,8 +76,7 @@
               <app-tooltip-react *ngIf="testReact"
                                  [tooltipKey]="pmAgeChartHelpText"
                                  [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
-                                 [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName" [shape]="'info-standard'"
-                                 [className]="'is-solid info-icon'"></app-tooltip-react>
+                                 [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip-react>
               <app-tooltip *ngIf="!testReact" [tooltipKey]="pmAgeChartHelpText"
               [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                            [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>

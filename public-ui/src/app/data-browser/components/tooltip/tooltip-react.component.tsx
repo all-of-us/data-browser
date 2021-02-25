@@ -12,22 +12,17 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
+import{ ClrIcon } from '../../../utils/clr-icon';
 import { triggerEvent } from '../../../utils/google_analytics';
 import { getTooltip, tooltips } from '../../services/tooltip.service';
 
 const containerElementName = 'root';
-
-const ClrIcon = ({className = '', ...props}) => {
-    return React.createElement('clr-icon', {class: className, ...props});
-};
 
 interface Props {
   label: string;
   searchTerm: string;
   action: string;
   tooltipKey: string;
-  shape: string;
-  className: string;
 }
 
 export class TooltipReactComponent extends React.Component<Props, {}> {
@@ -43,9 +38,11 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
 
   render() {
     const tabIndex = 0;
+    const iconShape = 'info-standard';
+    const iconClass = 'is-solid info-icon';
     return <div tabIndex={tabIndex} className='tooltip' onFocus={() => this.tooltipHover()}
         onMouseEnter={() => this.tooltipHover()}>
-            <ClrIcon shape={this.props.shape} className={this.props.className}
+            <ClrIcon shape={iconShape} className={iconClass}
                 style={{width: 18, height: 18}} />
                 <span className='tooltiptext'>
                     {
@@ -73,10 +70,8 @@ export class TooltipWrapperComponent extends BaseReactWrapper {
   @Input() public searchTerm: string;
   @Input() public action: string;
   @Input() public tooltipKey: string;
-  @Input() public shape: string;
-  @Input() public className: string;
 
   constructor() {
-    super(TooltipReactComponent, ['label', 'searchTerm', 'action', 'tooltipKey', 'shape', 'className', 'onHover']);
+    super(TooltipReactComponent, ['label', 'searchTerm', 'action', 'tooltipKey', 'onHover']);
   }
 }
