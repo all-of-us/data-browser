@@ -7,13 +7,18 @@ import { environment } from 'environments/environment';
 
 interface State {
   menuOpen: boolean;
+  searchTerms: string;
   submenusOpen: Array<string>;
 }
 
 export class RhHeader extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = {menuOpen: false, submenusOpen: []};
+    this.state = {
+      menuOpen: false,
+      searchTerms: '',
+      submenusOpen: []
+    };
   }
 
   toggleMobileSubmenu(title: string) {
@@ -25,7 +30,7 @@ export class RhHeader extends React.Component<{}, State> {
   }
 
   render() {
-    const {menuOpen, submenusOpen} = this.state;
+    const {menuOpen, searchTerms, submenusOpen} = this.state;
     return <React.Fragment>
       <div className='cta-bar'>
         <a href='https://workbench.researchallofus.org/login' className='login-btn'>
@@ -70,14 +75,23 @@ export class RhHeader extends React.Component<{}, State> {
                       </li>)}
                     </ul>}
                   </li>)}
-                  <li className='icon_search main-menu-item menu-item-has-children'>
+                  <li tabIndex={0} className='icon_search main-menu-item menu-item-has-children'>
                     <a><svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'
-                        fill-rule='evenodd' stroke='#262262' stroke-linejoin='round' stroke-width='3'>
+                        fillRule='evenodd' stroke='#262262' strokeLinejoin='round' strokeWidth='3'>
                         <path fill='none' d='M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z' />
-                        <path stroke-linecap='round' d='M13.848 13.848l5.84 5.84' /></svg></a>
+                        <path strokeLinecap='round' d='M13.848 13.848l5.84 5.84' /></svg></a>
                     <ul className='sub-menu'>
                       <li className='menu-item'>
-                        <input type='text' value='' />
+                        <form name='searchText' id='searchform'
+                              action={environment.researchAllOfUsUrl}>
+                          <input aria-label='Help Search'
+                                 type='text' name='s' id='s'
+                                 placeholder='Search...'
+                                 autoComplete='off'
+                                 onChange={(e) => this.setState({searchTerms: e.target.value})}
+                                 value={searchTerms}/>
+                          <input type='submit' id='searchsubmit' value='' />
+                        </form>
                       </li>
                     </ul>
                   </li>
@@ -102,16 +116,25 @@ export class RhHeader extends React.Component<{}, State> {
           {menuItems.map((menu, m) =>
             <li className={`main-menu-item menu-item-has-children ${menu.title} ${submenusOpen.includes(menu.title) ? 'flip' : ''}`}
                 onClick={() => this.toggleMobileSubmenu(menu.title)}>
-              <a href={menu.url}>{menu.title}</a>
+              <a href={menu.url} style={{color: '#2b266d'}}>{menu.title}</a>
               {submenusOpen.includes(menu.title) && menu.submenu.length > 0 && <ul className='sub-menu'>
                 {menu.submenu.map((sub, s) => <li key={s} className='menu-item'>
-                  <a href={sub.url}>{sub.title}</a>
+                  <a href={sub.url} style={{color: '#2b266d'}}>{sub.title}</a>
                 </li>)}
               </ul>}
             </li>
           )}
           <li className='main-menu-item search'>
-            <input type='submit' id='searchsubmit' value='' />
+            <form name='searchText' id='searchform'
+                  action={environment.researchAllOfUsUrl}>
+              <input aria-label='Help Search'
+                     type='text' name='s' id='s'
+                     placeholder='Search...'
+                     autoComplete='off'
+                     onChange={(e) => this.setState({searchTerms: e.target.value})}
+                     value={searchTerms}/>
+              <input type='submit' id='searchsubmit' value=''/>
+            </form>
           </li>
           <li className='nav_apply'>
             <a href='https://www.researchallofus.org/apply/'>APPLY</a>
