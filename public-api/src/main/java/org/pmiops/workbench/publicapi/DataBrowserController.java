@@ -5,12 +5,9 @@ import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.model.Analysis;
@@ -20,8 +17,6 @@ import org.pmiops.workbench.service.CriteriaService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
-import org.pmiops.workbench.model.Criteria;
-import org.pmiops.workbench.cdr.model.DbCriteria;
 import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.model.AchillesResult;
@@ -44,10 +39,7 @@ import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import org.pmiops.workbench.exceptions.ServerErrorException;
-import org.pmiops.workbench.exceptions.DataNotFoundException;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {

@@ -9,22 +9,10 @@ import java.util.Optional;
 import org.pmiops.workbench.cdr.CriteriaMapper;
 import org.pmiops.workbench.model.CriteriaParentResponse;
 import org.pmiops.workbench.exceptions.DataNotFoundException;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Multimap;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.stream.Collectors;
-import java.util.Collections;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Comparator;
-import com.google.common.base.Strings;
-import org.pmiops.workbench.model.CommonStorageEnums;
 
 @Service
 public class CriteriaService {
@@ -47,9 +35,9 @@ public class CriteriaService {
             DbCriteria standardParent = null;
             DbCriteria sourceParent = null;
             if (parentList.size() > 1) {
-                List<DbCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList());
+                List<DbCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard()).collect(Collectors.toList());
                 standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
-                List<DbCriteria> sourceParentList = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList());
+                List<DbCriteria> sourceParentList = parentList.stream().filter(p -> !p.getStandard()).collect(Collectors.toList());
                 sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
                 if (standardParent != null) {
                     if (sourceParent != null) {
@@ -67,8 +55,6 @@ public class CriteriaService {
             }
             Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
             response.setParent(criteriaMapper.dbModelToClient(parent));
-            Multimap<Long, DbCriteria> parentCriteria = Multimaps
-                    .index(criteriaList, DbCriteria::getParentId);
         }
         return response;
     }
