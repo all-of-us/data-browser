@@ -19,13 +19,13 @@ import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
-import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.DomainInfoService;
+import org.pmiops.workbench.service.CriteriaService;
 import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.AchillesMapperImpl;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -410,8 +410,6 @@ public class DataBrowserControllerTest {
     @Autowired
     private ConceptDao conceptDao;
     @Autowired
-    private CBCriteriaDao criteriaDao;
-    @Autowired
     private CdrVersionDao cdrVersionDao;
     @Autowired
     ConceptRelationshipDao conceptRelationshipDao;
@@ -429,6 +427,7 @@ public class DataBrowserControllerTest {
     @Mock private SurveyModuleService surveyModuleService;
     @Mock private DomainInfoService domainInfoService;
     @Mock private AchillesResultService achillesResultService;
+    @Mock private CriteriaService criteriaService;
 
     private DataBrowserController dataBrowserController;
     private ConceptService conceptService;
@@ -440,7 +439,7 @@ public class DataBrowserControllerTest {
         ConceptMapper conceptMapper = new ConceptMapperImpl();
         conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
-        dataBrowserController = new DataBrowserController(conceptService, criteriaDao, cdrVersionService, domainInfoService, surveyMetadataService,
+        dataBrowserController = new DataBrowserController(conceptService, criteriaService, cdrVersionService, domainInfoService, surveyMetadataService,
                 surveyModuleService, achillesResultService, achillesAnalysisService);
     }
 
