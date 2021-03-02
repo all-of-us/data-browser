@@ -35,10 +35,8 @@ public class CriteriaService {
             DbCriteria standardParent = null;
             DbCriteria sourceParent = null;
             if (parentList.size() > 1) {
-                List<DbCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard()).collect(Collectors.toList());
-                standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
-                List<DbCriteria> sourceParentList = parentList.stream().filter(p -> !p.getStandard()).collect(Collectors.toList());
-                sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
+                standardParent = Optional.ofNullable(parentList.stream().filter(p -> p.getStandard()).collect(Collectors.toList()).get(0)).orElse(null);
+                sourceParent = Optional.ofNullable(parentList.stream().filter(p -> !p.getStandard()).collect(Collectors.toList()).get(0)).orElse(null);
                 if (standardParent != null) {
                     if (sourceParent != null) {
                         standardParent.setSourceCount(sourceParent.getCount());
@@ -49,9 +47,6 @@ public class CriteriaService {
                 }
             } else {
                 parent = parentList.get(0);
-            }
-            if (criteriaList.size() >= 1) {
-                criteriaList.remove(parent);
             }
             Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
             response.setParent(criteriaMapper.dbModelToClient(parent));

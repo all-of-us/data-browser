@@ -5,8 +5,6 @@ import static com.google.common.truth.Truth.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.junit.runner.RunWith;
 import org.pmiops.workbench.cdr.model.DbCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
