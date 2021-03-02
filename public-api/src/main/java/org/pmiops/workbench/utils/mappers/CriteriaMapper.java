@@ -11,8 +11,4 @@ import org.pmiops.workbench.utils.mappers.MapStructConfig;
         uses = {CommonMappers.class})
 public interface CriteriaMapper {
     Criteria dbModelToClient(DbCriteria db);
-
-    default boolean isNonEmpty(String s) {
-        return s != null && !s.isEmpty();
-    }
 }
