@@ -75,7 +75,7 @@ render() {
 }
 
 @Component({
-selector: 'survey-version-table-react',
+selector: 'app-survey-version-table-react',
 template: `<span #${containerElementName}></span>`,
 styleUrls: ['./survey-version-table.component.css', '../../../styles/template.css'],
 encapsulation: ViewEncapsulation.None,
