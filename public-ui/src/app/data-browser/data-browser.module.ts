@@ -19,6 +19,7 @@ import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
+import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
@@ -72,6 +73,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
+    SurveyVersionWrapperComponent,
     HighlightWrapperComponent
   ],
   exports: [
@@ -94,6 +96,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
+    SurveyVersionWrapperComponent,
     HighlightWrapperComponent
   ],
   providers: [

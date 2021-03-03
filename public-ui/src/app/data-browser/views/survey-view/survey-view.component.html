@@ -62,8 +62,7 @@
               </div>
             </div>
             <div *ngIf="isCopeSurvey && surveyVersions.length > 0" class="version-table">
-              <app-survey-version-table [surveys]="surveyVersions">
-              </app-survey-version-table>
+              <survey-version-table-react [surveys]="surveyVersions"></survey-version-table-react>
             </div>
             <div class="pdf-link" (click)="downloadPdf()" *ngIf="!isCopeSurvey">
               <a href="{{surveyPdfUrl}}" download>
