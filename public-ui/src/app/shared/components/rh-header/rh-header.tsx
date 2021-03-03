@@ -33,7 +33,9 @@ export class RhHeader extends React.Component<{}, State> {
     const {menuOpen, searchTerms, submenusOpen} = this.state;
     return <React.Fragment>
       <div className='cta-bar'>
-        <a href='https://workbench.researchallofus.org/login' className='login-btn'>
+        <a className='login-btn'
+           href='https://workbench.researchallofus.org/login'
+           style={{width: 'auto'}}>
           RESEARCHER LOGIN
         </a>
       </div>

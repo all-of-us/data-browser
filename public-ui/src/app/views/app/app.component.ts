@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
   private baseTitle: string;
   private overriddenPublicUrl: string = null;
   public noHeaderMenu = false;
-  testReact: boolean;
 
 
   constructor(
@@ -46,7 +45,6 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('treeHighlight');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
     this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
-    this.testReact = environment.testReact;
 
 
     window['setPublicApiUrl'] = (url: string) => {
