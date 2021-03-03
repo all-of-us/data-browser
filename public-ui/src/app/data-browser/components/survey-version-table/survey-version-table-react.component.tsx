@@ -11,8 +11,8 @@ import {
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
-import { ClrIcon } from '../../../utils/clr-icon';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
+import { ClrIcon } from '../../../utils/clr-icon';
 
 const containerElementName = 'root';
 
@@ -37,32 +37,32 @@ processSurveys() {
         return 0;
     });
 this.props.surveys.forEach((survey, i) => {
-    let pdfName = '/assets/surveys/' + survey.monthName.replace('/', '_') + '_COPE_COVID_English_Explorer.pdf';
-    survey['pdfLink'] = pdfName;
+    survey['pdfLink'] = '/assets/surveys/' + survey.monthName.replace('/', '_') + '_COPE_COVID_English_Explorer.pdf';
 });
 }
 
 render() {
-    return <div className="version-box-container">
+    return <div className='version-box-container'>
             <h5><strong>Survey versions</strong></h5>
                 <br />
             <div className="version-box">
-                <div className="version-box-header">
-                <div className="version-box-item">Month</div>
-                <div className="version-box-item">Participants</div>
-                <div className="version-box-item">Number of Questions</div>
-                <div className="version-box-item">Download PDF</div>
+                <div className='version-box-header'>
+                <div className='version-box-item'>Month</div>
+                <div className='version-box-item'>Participants</div>
+                <div className='version-box-item'>Number of Questions</div>
+                <div className='version-box-item'>Download PDF</div>
             </div>
-            <div className="version-box-body">
+            <div className='version-box-body'>
             {
                 this.props.surveys.map((survey, index) => {
                     return (
-                        <div className="version-box-row" key={survey.monthName}>
-                            <span className="version-box-item">{survey.monthName}</span>
-                            <span className="version-box-item">{survey.participants}</span>
-                            <span className="version-box-item">{survey.numberOfQuestion}</span>
-                            <span className="version-box-item"><a href={survey.pdfLink} download>
-                            <ClrIcon shape="file" className="is-solid"  style={{width: 18, height: 18}} /> Survey as PDF</a>
+                        <div className='version-box-row' key={survey.monthName}>
+                            <span className='version-box-item'>{survey.monthName}</span>
+                            <span className='version-box-item'>{survey.participants}</span>
+                            <span className='version-box-item'>{survey.numberOfQuestion}</span>
+                            <span className='version-box-item'><a href={survey.pdfLink} download>
+                            <ClrIcon shape='file' className='is-solid'  style={{width: 18, height: 18}} />
+                                Survey as PDF</a>
                             </span>
                         </div>
                     );
