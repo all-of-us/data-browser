@@ -18,8 +18,8 @@ import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-r
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
-import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
+import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';

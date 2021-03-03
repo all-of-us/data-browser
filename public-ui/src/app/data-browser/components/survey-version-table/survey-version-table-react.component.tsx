@@ -45,7 +45,7 @@ render() {
     return <div className='version-box-container'>
             <h5><strong>Survey versions</strong></h5>
                 <br />
-            <div className="version-box">
+            <div className='version-box'>
                 <div className='version-box-header'>
                 <div className='version-box-item'>Month</div>
                 <div className='version-box-item'>Participants</div>
@@ -61,9 +61,9 @@ render() {
                             <span className='version-box-item'>{survey.participants}</span>
                             <span className='version-box-item'>{survey.numberOfQuestion}</span>
                             <span className='version-box-item'><a href={survey.pdfLink} download>
-                            <ClrIcon shape='file' className='is-solid'  style={{width: 18, height: 18}} />
-                                Survey as PDF</a>
-                            </span>
+                            <ClrIcon shape='file' className='is-solid'
+                                     style={{width: 18, height: 18}} />
+                                    Survey as PDF</a> </span>
                         </div>
                     );
                 })
