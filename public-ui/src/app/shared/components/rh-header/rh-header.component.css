@@ -562,7 +562,11 @@ li.active-menu:before {
     display: none;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
-    display: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-block-end: 0;
+    width: 100%;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu,
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
@@ -601,18 +605,8 @@ li.active-menu:before {
   .cta-bar aside p {
     white-space: nowrap;
   }
-  .mobile-nav {
-    display: none;
-  }
   .cta-bar .login-btn {
     display: block;
-  }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-block-end: 0;
-    width: 100%;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li {
     border: none;
