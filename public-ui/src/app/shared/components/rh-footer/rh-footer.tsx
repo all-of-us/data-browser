@@ -5,7 +5,7 @@ import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper
 import { menuItems, socialLinks } from 'app/shared/services/header-footer.service';
 import { environment } from 'environments/environment';
 
-const RhFooter: React.FunctionComponent = () => {
+export const RhFooter: React.FunctionComponent = () => {
   return <footer>
     <div className='db-container'>
       <div className='site-branding-container'>

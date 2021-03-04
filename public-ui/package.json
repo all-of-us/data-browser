@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --sourcemaps=false",
+    "test-react": "jest",
     "lint": "ng lint --type-check",
     "e2e": "ng e2e",
     "codegen": "yarn run codegen-clean && yarn run public-codegen-swagger && yarn run public-codegen-swagger-fetch && yarn run public-post-codegen",
@@ -16,6 +17,35 @@
     "public-post-codegen": "sed -i.bak -e 's/OpaqueToken/InjectionToken/' src/publicGenerated/variables.ts",
     "public-codegen-swagger-fetch": "java -jar ../aou-utils/swagger-codegen-cli.jar generate --lang typescript-fetch --input-spec ../public-api/src/main/resources/public-api.yaml --output src/publicGenerated/fetch/ --additional-properties ngVersion=10.2.4",
     "coverage": "ng test --sourcemaps=false --watch=false --code-coverage"
+  },
+  "jest": {
+    "clearMocks": true,
+    "setupFiles": [
+      "./test-shim.js",
+      "./test-setup.js"
+    ],
+    "setupTestFrameworkScriptFile": "./test-setup-script.js",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "spec.ts"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.spec.tsx"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "src/tsconfig.jest.json"
+      }
+    }
   },
   "private": true,
   "dependencies": {
@@ -56,6 +86,7 @@
     "rxjs-compat": "^6.0.0-rc.0",
     "stackdriver-errors-js": "^0.4.0",
     "stacktrace-js": "^2.0.0",
+    "ts-jest": "^25.3.0",
     "yarn": "^1.22.10",
     "zone.js": "0.10.3"
   },
@@ -66,15 +97,20 @@
     "@angular/cli": "^10.2.1",
     "@angular/compiler-cli": "^10.2.4",
     "@angular/language-service": "^10.2.4",
+    "@types/enzyme": "^3.10.8",
     "@types/google.analytics": "0.0.36",
     "@types/jasmine": "^2.8.6",
     "@types/jasminewd2": "^2.0.3",
+    "@types/jest": "^23.3.11",
     "@types/node": "^ 7.0.0",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "codelyzer": "^6.0.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
+    "jest": "^26.6.3",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "~2.1.1",
     "karma-cli": "~1.0.1",
@@ -83,6 +119,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-webdriver-launcher": "^1.0.5",
     "protractor": "~5.1.2",
+    "react-test-renderer": "^17.0.1",
     "ts-node": "~3.0.4",
     "tslint": "^5.9.1",
     "typescript": "^3.9.5"
