@@ -54,7 +54,7 @@ def build(cmd_name, args)
   # See https://github.com/angular/angular-cli/wiki/build#--dev-vs---prod-builds.
   optimize = "--aot"
   if Set['staging', 'stable', 'prod'].include?(options.env)
-    optimize = "--prod"
+    optimize = "--optimization"
   end
   common.run_inline %W{yarn run build
       #{optimize} --configuration=#{options.env} --no-watch --no-progress}
