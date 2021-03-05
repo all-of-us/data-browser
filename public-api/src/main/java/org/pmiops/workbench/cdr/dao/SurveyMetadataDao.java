@@ -14,7 +14,7 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
     List<DbSurveyMetadata> getMatchingSurveyQuestions(Long survey_concept_id, String search_word);
 
     @Query(nativeQuery = true, value="select distinct b.* from survey_metadata a \n" +
-            "LEFT JOIN survey_metadata b\n" +
+            "JOIN survey_metadata b\n" +
             "    ON b.id =\n" +
             "       ( SELECT c.id\n" +
             "         FROM survey_metadata c\n" +
