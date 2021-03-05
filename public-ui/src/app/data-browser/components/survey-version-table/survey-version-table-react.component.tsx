@@ -9,8 +9,6 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
 import { ClrIcon } from '../../../utils/clr-icon';
 
@@ -20,25 +18,36 @@ interface Props {
     surveys: any;
 }
 
-export class SurveyVersionTableReactComponent extends React.Component<Props, {}> {
+interface State {
+    surveys: Array<any>;
+}
+
+export class SurveyVersionTableReactComponent extends React.Component<Props, State> {
 constructor(props: Props) {
     super(props);
+    this.state = {
+        surveys: []
+    };
+}
+
+componentDidMount() {
     this.processSurveys();
 }
 
 processSurveys() {
-    this.props.surveys.sort((a1, a2) => {
-        if (a1.monthNum.split('/')[0] < a2.monthNum.split('/')[0]) {
-            return -1;
-        }
-        if (a1.monthNum.split('/')[0] > a2.monthNum.split('/')[0]) {
-            return 1;
-        }
-        return 0;
+    const sortedSurveys = [...this.props.surveys].sort((a1, a2) => {
+    if (a1.monthNum.split('/')[0] < a2.monthNum.split('/')[0]) {
+        return -1;
+    }
+    if (a1.monthNum.split('/')[0] > a2.monthNum.split('/')[0]) {
+        return 1;
+    }
+    return 0;
     });
-this.props.surveys.forEach((survey, i) => {
-    survey['pdfLink'] = '/assets/surveys/' + survey.monthName.replace('/', '_') + '_COPE_COVID_English_Explorer.pdf';
-});
+    sortedSurveys.forEach((survey) => {
+        survey['pdfLink'] = '/assets/surveys/' + survey.monthName.replace('/', '_') + '_COPE_COVID_English_Explorer.pdf';
+    });
+    this.setState({surveys: sortedSurveys});
 }
 
 render() {
@@ -54,7 +63,7 @@ render() {
             </div>
             <div className='version-box-body'>
             {
-                this.props.surveys.map((survey, index) => {
+                !!this.state.surveys && this.state.surveys.map((survey) => {
                     return (
                         <div className='version-box-row' key={survey.monthName}>
                             <span className='version-box-item'>{survey.monthName}</span>
