@@ -738,6 +738,7 @@ li.active-menu:before {
     height: 32px;
     background: #262262;
     margin: 0 1rem;
+    margin-top: 1rem;
   }
   .site-branding-container .site-branding .logo .nih-logo {
     display: flex;
