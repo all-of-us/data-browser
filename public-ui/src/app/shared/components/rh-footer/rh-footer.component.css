@@ -22,10 +22,20 @@ footer {
     /* width: calc(100%/1); */
     width: 100%;
 }
+
+.site-branding-container .site-branding {
+    background: transparent;
+}
+
 .logo {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
     width: 90%;
+}
+
+.site-logo {
+    margin-right: 1rem;
+    margin-left: -1rem;
 }
 
 .site-logo,
