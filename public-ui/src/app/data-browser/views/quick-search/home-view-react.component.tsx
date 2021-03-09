@@ -11,10 +11,13 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
+import { ClrIcon } from '../../../utils/clr-icon';
+import { SearchComponent } from '../../search/home-search.component';
+import { TooltipReactComponent } from '../../components/tooltip/tooltip-react.component';
+import _ from 'lodash';
+
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-
-
 
 export const ResultLinksComponent: FunctionComponent<any> =
     ({
@@ -57,6 +60,7 @@ interface State {
     surveyInfo: Array<any>;
     domainInfo: Array<any>;
     physicalMesurmentsInfo: Array<any>;
+    searchWord: string;
 }
 
 export const dBHomeComponent = (
@@ -66,7 +70,8 @@ export const dBHomeComponent = (
             this.state = {
                 surveyInfo: [],
                 domainInfo: [],
-                physicalMesurmentsInfo: []
+                physicalMesurmentsInfo: [],
+                searchWord: ''
             };
         }
 
@@ -77,8 +82,9 @@ export const dBHomeComponent = (
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
-            return api.getDomainTotals('', 1, 1).then(
+            return api.getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
+                    result.domainInfos = result.domainInfos.filter(domain => domain.standardConceptCount > 0);
                     const domainInfo = result.domainInfos.filter(
                         domain => domain.name.toLowerCase() !== 'physical measurements' &&
                             domain.name.toLowerCase() !== 'fitbit');
@@ -93,8 +99,16 @@ export const dBHomeComponent = (
             );
         }
 
+        search = _.debounce((val) => {
+                    this.setState({searchWord: val});
+                    this.getDomainInfos();
+                    },
+                1000);
+
         render() {
-            return <section className='results'>
+            return <React.Fragment>
+            <SearchComponent value={this.state.searchWord} onChang={(val) => { this.search(val); }} onClear={(val) => { this.search(''); }} />
+            <section className='results'>
                 <h5 className='result-heading secondary-display'> EHR Domains:</h5>
                 <div id='survey' className='result-boxes'>
                     {
@@ -126,12 +140,10 @@ export const dBHomeComponent = (
                         })
                     }
                 </div>
-            </section>;
+            </section></React.Fragment>;
         }
     }
 );
-
-
 
 @Component({
     // tslint:disable-next-line: component-selector
