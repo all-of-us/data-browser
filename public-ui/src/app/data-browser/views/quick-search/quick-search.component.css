@@ -133,6 +133,7 @@ app-spinner {
     padding: 18px;
     padding-bottom: 3px;
     margin: 0;
+    font-size: 16px;;
 }
 
 .result-box:last-of-type {
