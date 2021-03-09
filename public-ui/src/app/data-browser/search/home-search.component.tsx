@@ -136,10 +136,10 @@ export const SearchComponent = (class extends React.Component<SearchProps, Searc
             </div>
             <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />
-            <input type='text' aria-label='Main Search' id='search-db' placeholder="Keyword Search" name="searchText"
+            <input type='text' aria-label='Main Search' id='search-db' placeholder='Keyword Search' name='searchText'
             onChange={this._handleChange} value={this.state.searchWord}/>
             <div className='clear-icon' onClick={this.clearSearch}>
-            <i className="far fa-times fa-1x clear-search-icon"></i></div>
+            <i className='far fa-times fa-1x clear-search-icon'></i></div>
             </div>
             </React.Fragment>
         );

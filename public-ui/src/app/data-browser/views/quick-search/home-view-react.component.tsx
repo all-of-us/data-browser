@@ -7,14 +7,14 @@ import {
 
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
+import _ from 'lodash';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
-import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
 import { ClrIcon } from '../../../utils/clr-icon';
-import { SearchComponent } from '../../search/home-search.component';
+import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
 import { TooltipReactComponent } from '../../components/tooltip/tooltip-react.component';
-import _ from 'lodash';
+import { SearchComponent } from '../../search/home-search.component';
 
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
@@ -80,11 +80,18 @@ export const dBHomeComponent = (
             this.getDomainInfos();
         }
 
+        search = _.debounce((val) => {
+            this.setState({searchWord: val});
+            this.getDomainInfos();
+            },
+        1000);
+
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
             return api.getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
-                    result.domainInfos = result.domainInfos.filter(domain => domain.standardConceptCount > 0);
+                    result.domainInfos = result.domainInfos.filter(domain =>
+                    domain.standardConceptCount > 0);
                     const domainInfo = result.domainInfos.filter(
                         domain => domain.name.toLowerCase() !== 'physical measurements' &&
                             domain.name.toLowerCase() !== 'fitbit');
@@ -99,15 +106,10 @@ export const dBHomeComponent = (
             );
         }
 
-        search = _.debounce((val) => {
-                    this.setState({searchWord: val});
-                    this.getDomainInfos();
-                    },
-                1000);
-
         render() {
             return <React.Fragment>
-            <SearchComponent value={this.state.searchWord} onChang={(val) => { this.search(val); }} onClear={(val) => { this.search(''); }} />
+            <SearchComponent value={this.state.searchWord} onChang={(val) => { this.search(val); }}
+            onClear={(val) => { this.search(''); }} />
             <section className='results'>
                 <h5 className='result-heading secondary-display'> EHR Domains:</h5>
                 <div id='survey' className='result-boxes'>
