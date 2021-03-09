@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 
 import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import _ from 'lodash';
+import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
@@ -75,16 +75,16 @@ export const dBHomeComponent = (
             };
         }
 
-        // life cycle hook
-        componentWillMount() {
-            this.getDomainInfos();
-        }
-
         search = _.debounce((val) => {
             this.setState({searchWord: val});
             this.getDomainInfos();
             },
         1000);
+
+        // life cycle hook
+        componentWillMount() {
+            this.getDomainInfos();
+        }
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
