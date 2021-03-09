@@ -240,10 +240,10 @@
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-9.0.0.tgz#227dc53e1ac81824f998c6e76000b7efc522641e"
   integrity sha512-6Pxgsrf0qF9iFFqmIcWmjJGkkCaCm6V5QNnxMy2KloO3SDq6QuMVRbN9RtC8Urmo25LP+eZ6ZgYqFYpdD8Hd9w==
 
-"@angular/core@^10.2.4":
-  version "10.2.4"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-10.2.4.tgz#1124061f8232d79fcff7508c9243ec5ec3fc00f3"
-  integrity sha512-5xpAvmZwD9nZ8eWx10urjibqEeePGEiFXVMEn3IaJWgfdOcMmeSoioW9JUllT3w85+DlNVWbRbhz0YfE9a4jyw==
+"@angular/core@^11.0.5":
+  version "11.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-11.2.4.tgz#f655f05ebb245ff83c49f563193a8496afc9a36a"
+  integrity sha512-MU2DxGJOMLS6rqrakzEKJ2s+CYamM5ETBInqx4uTBJYsek3byF9gbjM6221lv8tal5dMAibigB0UuhXr23rhcQ==
   dependencies:
     tslib "^2.0.0"
 
@@ -4860,10 +4860,10 @@ highcharts-angular@^2.9.0:
   dependencies:
     tslib "^2.0.0"
 
-highcharts@^8.2.2:
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-8.2.2.tgz#3eb1a694cff013d3385c3ca8e58e69a27be52cab"
-  integrity sha512-F63TXO7RxsvTcpO/KOubQZWualYpCMyCTuKtoWbt7KCsfQ3Kl7Fr6HEyyJdjkYl+XlnmnKlSRi9d3HjLK9Q0wg==
+highcharts@^9.0.0:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-9.0.1.tgz#49ec994a7897a96fc3e0880f49a0eca34adff6a2"
+  integrity sha512-0UmcCz2RmFuqfT/Igu3h5sGnkeSqqZwfuYrTzJ/htptmJAo5SSxH62NFcTjVRk+3WstoBJmoXR0v5FVGQUzK5A==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
