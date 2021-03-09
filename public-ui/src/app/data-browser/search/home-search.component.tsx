@@ -97,13 +97,13 @@ const searchStyle = `
 `;
 
 interface SearchProps {
-    value: string,
-    onChang: Function,
-    onClear: Function
+    value: string;
+    onChang: Function;
+    onClear: Function;
 }
 
 interface SearchState {
-    searchWord: string
+    searchWord: string;
 }
 
 export const SearchComponent = (class extends React.Component<SearchProps, SearchState> {
@@ -116,26 +116,28 @@ export const SearchComponent = (class extends React.Component<SearchProps, Searc
     _handleChange = (event) => {
         this.setState({searchWord: event.target.value});
         this.props.onChang(event.target.value);
-    };
+    }
 
     clearSearch = (event) => {
         this.setState({searchWord: ''});
         this.props.onClear(event.target.value);
-   };
+    }
 
     render() {
-        const iconShape="search";
-        const iconClass="is-info search-icon";
+        const iconShape = 'search';
+        const iconClass = 'is-info search-icon';
         return (
             <React.Fragment>
             <style>{searchStyle}</style>
-            <div className="search-title">
-                <span className="secondary-display">Search Across Data Types</span>
-                <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={this.props.value} action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>
+            <div className='search-title'>
+                <span className='secondary-display'>Search Across Data Types</span>
+                <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={this.props.value}
+                action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>
             </div>
-            <div id="db-search-bar">
+            <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />
-            <input type="text" aria-label="Main Search" id="search-db" placeholder="Keyword Search" name="searchText" onChange={this._handleChange} value={this.state.searchWord}/>
+            <input type='text' aria-label='Main Search' id='search-db' placeholder="Keyword Search" name="searchText"
+            onChange={this._handleChange} value={this.state.searchWord}/>
             <div className='clear-icon' onClick={this.clearSearch}>
             <i className="far fa-times fa-1x clear-search-icon"></i></div>
             </div>

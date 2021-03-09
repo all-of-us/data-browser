@@ -15,8 +15,6 @@ import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wr
 import { ClrIcon } from '../../../utils/clr-icon';
 import { triggerEvent } from '../../../utils/google_analytics';
 import { getTooltip, tooltips } from '../../services/tooltip.service';
-import './tooltip.component.css';
-import '../../../styles/page.css';
 
 const containerElementName = 'root';
 
@@ -90,7 +88,8 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
     const tabIndex = 0;
     const iconShape = 'info-standard';
     const iconClass = 'is-solid info-icon';
-    return <React.Fragment><style>{tooltipCss}</style><div tabIndex={tabIndex} className='tooltip' onFocus={() => this.tooltipHover()}
+    return <React.Fragment><style>{tooltipCss}</style><div tabIndex={tabIndex}
+        className='tooltip' onFocus={() => this.tooltipHover()}
         onMouseEnter={() => this.tooltipHover()}>
             <ClrIcon shape={iconShape} className={iconClass}
                 style={{width: 18, height: 18}} />
