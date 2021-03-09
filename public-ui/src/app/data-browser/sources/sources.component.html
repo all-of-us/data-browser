@@ -28,7 +28,9 @@
   </aside>
   <div class="tree-view">
     <p class="tree-heading">Count Breakdown ({{concept.vocabularyId}})
-      <app-tooltip toolTipText1="{{tooltipText.rolledUpConceptsHelpText}}"></app-tooltip>
+      <app-tooltip-react *ngIf="testReact"
+                         [tooltipKey]="'rolledUpConceptsHelpText'"></app-tooltip-react>
+      <app-tooltip [tooltipKey]="'rolledUpConceptsHelpText'" *ngIf="!testReact"></app-tooltip>
     </p>
     <div class="tree">
       <app-spinner [loading]="treeLoading" [dots]="true"></app-spinner>

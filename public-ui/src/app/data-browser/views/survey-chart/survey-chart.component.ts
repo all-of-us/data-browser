@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { environment } from '../../../../environments/environment';
 import { AchillesResult, DataBrowserService } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-survey-chart',
@@ -28,14 +29,15 @@ export class SurveyChartComponent implements OnInit {
   private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
   selectedChartAnalysis: any;
-
-  constructor(private tooltipText: TooltipService,
+  testReact: boolean;
+  constructor(private tooltipService: TooltipService,
     public dbc: DbConfigService,
     private api: DataBrowserService) {
 
   }
 
   ngOnInit() {
+    this.testReact = environment.testReact;
     if (this.isCopeSurvey) {
       this.graphToShow = GraphType.SurveyVersion;
     } else {
@@ -86,25 +88,15 @@ export class SurveyChartComponent implements OnInit {
       ' - ' + this.graphToShow, this.searchTerm, null);
   }
 
-  public showToolTip(g: string) {
+  public getTooltipKey(g: string) {
     if (g === 'Sex Assigned at Birth') {
-      return this.tooltipText.biologicalSexChartHelpText + '\n' +
-        this.tooltipText.surveyBSCountChartHelpText + '\n';
-    }
-    if (g === 'Gender Identity') {
-      return this.tooltipText.genderIdentityChartHelpText;
-    }
-    if (g === 'Race / Ethnicity') {
-      return this.tooltipText.raceEthnicityChartHelpText;
-    }
-    if (g === 'Age When Survey Was Taken') {
-      return this.tooltipText.surveyAgeChartHelpText;
-    }
-    if (g === 'Sources') {
-      return this.tooltipText.sourcesChartHelpText;
-    }
-    if (g === 'Survey Versions') {
-      return this.tooltipText.versionChartHelpText;
+      return 'surveyBSChart';
+    } else if (g === 'Survey Versions') {
+      return 'versionChartHelpText';
+    } else if (g === 'Age When Survey Was Taken') {
+      return 'surveyAgeChartHelpText';
+    } else {
+      return g;
     }
   }
 

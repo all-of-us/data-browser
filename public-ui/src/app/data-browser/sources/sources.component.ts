@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataBrowserService } from 'publicGenerated';
+import { environment } from '../../../environments/environment';
 import { Concept } from '../../../publicGenerated';
-import { TooltipService } from '../../utils/tooltip.service';
+import { TooltipService } from '../services/tooltip.service';
 @Component({
   selector: 'app-sources',
   templateUrl: './sources.component.html',
@@ -15,12 +16,15 @@ export class SourcesComponent {
   @Input() graphToShow: string;
   @Input() ehrDomain: any;
   treeConcept: any;
+  testReact: boolean;
 
   constructor(
     public tooltipText: TooltipService,
     private api: DataBrowserService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) {
+    this.testReact = environment.testReact;
+    }
 
 
   public conceptTreeClick(node) {

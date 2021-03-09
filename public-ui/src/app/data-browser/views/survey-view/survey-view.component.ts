@@ -11,7 +11,7 @@ import {
 } from '../../../../publicGenerated';
 import { DbConfigService } from '../../../utils/db-config.service';
 import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../../utils/tooltip.service';
+import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-survey-view',
@@ -207,7 +207,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       }));
-
     this.subscriptions.push(this.api.getCountAnalysis(this.surveyConceptId, 'survey').subscribe(
       results => {
         this.surveyCountAnalysis = results;
@@ -368,6 +367,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.surveyPdfUrl = '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
       }
       this.getSurveyResults();
+    } else {
+        this.getThisSurvey();
     }
   }
 
@@ -378,9 +379,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         (data: DomainInfosAndSurveyModulesResponse) => {
           data.surveyModules.forEach(survey => {
             const surveyRoute = survey.name.split(' ').join('-').toLowerCase();
-            if (surveyRoute === this.domainId) {
-              localStorage.setItem('surveyModule', JSON.stringify(survey));
-              this.setSurvey();
+            if (surveyRoute.indexOf('(cope)') > -1) {
+                if (this.domainId && surveyRoute.indexOf(this.domainId) > -1) {
+                    localStorage.setItem('surveyModule', JSON.stringify(survey));
+                    this.setSurvey();
+                }
+            } else {
+                if (surveyRoute === this.domainId) {
+                    localStorage.setItem('surveyModule', JSON.stringify(survey));
+                    this.setSurvey();
+                }
             }
           });
           if (data.surveyModules.filter(x => x.conceptId === this.surveyConceptId).length > 0) {

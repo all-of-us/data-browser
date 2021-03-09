@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import org.junit.After;
 import java.util.List;
+import org.pmiops.workbench.model.MatchType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.Before;
@@ -18,13 +19,13 @@ import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
 import org.pmiops.workbench.cdr.dao.ConceptDao;
-import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptRelationshipDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.DomainInfoService;
+import org.pmiops.workbench.service.CriteriaService;
 import org.pmiops.workbench.cdr.AchillesMapper;
 import org.pmiops.workbench.cdr.AchillesMapperImpl;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
@@ -32,6 +33,7 @@ import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
+import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.model.Concept;
 import org.pmiops.workbench.model.MeasurementConceptInfo;
@@ -58,6 +60,8 @@ import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.AchillesResultDistService;
+import org.pmiops.workbench.cdr.ConceptMapper;
+import org.pmiops.workbench.cdr.ConceptMapperImpl;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -77,8 +81,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.2F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_2 = new Concept()
             .conceptId(456L)
@@ -92,8 +95,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.3F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_3 = new Concept()
             .conceptId(789L)
@@ -108,8 +110,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.4F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_4 = new Concept()
             .conceptId(1234L)
@@ -124,8 +125,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.5F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_5 = new Concept()
             .conceptId(7890L)
@@ -140,8 +140,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.9F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final Concept CLIENT_CONCEPT_6 = new Concept()
             .conceptId(7891L)
@@ -156,8 +155,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.1F)
             .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
   private static final Concept CLIENT_CONCEPT_7 = new Concept()
             .conceptId(7892L)
@@ -172,8 +170,7 @@ public class DataBrowserControllerTest {
             .prevalence(0.0F)
             .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
             .canSelect(1)
-            .drugBrands(new ArrayList<String>())
-            .graphToShow("Sex Assigned at Birth");
+            .drugBrands(new ArrayList<String>());
 
     private static final DbAchillesAnalysis CLIENT_ANALYSIS_1 = new DbAchillesAnalysis()
             .analysisId(1900L)
@@ -395,25 +392,23 @@ public class DataBrowserControllerTest {
     private static final DbAchillesResult ACHILLES_RESULT_12 = makeAchillesResult(CLIENT_RESULT_12);
     private static final DbAchillesResult ACHILLES_RESULT_13 = makeAchillesResult(CLIENT_RESULT_13);
 
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_1 =
+    private static final DbConcept CONCEPT_1 =
             makeConcept(CLIENT_CONCEPT_1);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_2 =
+    private static final DbConcept CONCEPT_2 =
             makeConcept(CLIENT_CONCEPT_2);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_3 =
+    private static final DbConcept CONCEPT_3 =
             makeConcept(CLIENT_CONCEPT_3);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_4 =
+    private static final DbConcept CONCEPT_4 =
             makeConcept(CLIENT_CONCEPT_4);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_5 =
+    private static final DbConcept CONCEPT_5 =
             makeConcept(CLIENT_CONCEPT_5);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_6 =
+    private static final DbConcept CONCEPT_6 =
             makeConcept(CLIENT_CONCEPT_6);
-    private static final org.pmiops.workbench.cdr.model.Concept CONCEPT_7 =
+    private static final DbConcept CONCEPT_7 =
             makeConcept(CLIENT_CONCEPT_7);
 
     @Autowired
     private ConceptDao conceptDao;
-    @Autowired
-    private CBCriteriaDao criteriaDao;
     @Autowired
     private CdrVersionDao cdrVersionDao;
     @Autowired
@@ -432,19 +427,20 @@ public class DataBrowserControllerTest {
     @Mock private SurveyModuleService surveyModuleService;
     @Mock private DomainInfoService domainInfoService;
     @Mock private AchillesResultService achillesResultService;
+    @Mock private CriteriaService criteriaService;
 
     private DataBrowserController dataBrowserController;
+    private ConceptService conceptService;
 
     @Before
     public void setUp() {
         saveData();
-        ConceptService conceptService = new ConceptService(entityManager, conceptDao);
         AchillesMapper achillesMapper = new AchillesMapperImpl();
+        ConceptMapper conceptMapper = new ConceptMapperImpl();
+        conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
-        dataBrowserController = new DataBrowserController(conceptService, conceptDao,
-                criteriaDao,
-            cdrVersionService, domainInfoService, surveyMetadataService, surveyModuleService,
-                achillesResultService, achillesAnalysisService);
+        dataBrowserController = new DataBrowserController(conceptService, criteriaService, cdrVersionService, domainInfoService, surveyMetadataService,
+                surveyModuleService, achillesResultService, achillesAnalysisService);
     }
 
     @Test
@@ -458,8 +454,8 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .domain(Domain.CONDITION)
                 .minCount(0));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_5,
-          CLIENT_CONCEPT_6, CLIENT_CONCEPT_7);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_5,
+                CLIENT_CONCEPT_6, CLIENT_CONCEPT_7);
     }
 
 
@@ -469,7 +465,7 @@ public class DataBrowserControllerTest {
                 .domain(Domain.CONDITION)
                 .maxResults(1)
                 .minCount(0));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_5);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_5);
     }
 
     @Test
@@ -491,10 +487,10 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptSynonymSearch() throws Exception{
-      ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
-          .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
-      // CLIENT_CONCEPT_7 excluded because it has a zero count
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
+                .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
+        // CLIENT_CONCEPT_7 excluded because it has a zero count
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
     }
 
     @Test
@@ -502,7 +498,7 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_1, CLIENT_CONCEPT_4,
-            CLIENT_CONCEPT_5, CLIENT_CONCEPT_6);
+                CLIENT_CONCEPT_5, CLIENT_CONCEPT_6);
     }
 
     @Test
@@ -510,7 +506,7 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .query("")
                 .standardConceptFilter(StandardConceptFilter.NON_STANDARD_CONCEPTS));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2, CLIENT_CONCEPT_3);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2, CLIENT_CONCEPT_3);
     }
 
     @Test
@@ -534,24 +530,24 @@ public class DataBrowserControllerTest {
 
     @Test
     public void testConceptIdSearch() throws Exception{
-        ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("456")
-                .standardConceptFilter(StandardConceptFilter.ALL_CONCEPTS));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
+        ConceptListResponse response = conceptService.getConcepts(new SearchConceptsRequest().query("456")
+                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
+        assertThat(response.getSourceOfStandardConcepts()).isEqualTo(456L);
     }
+
 
     @Test
     public void testConceptSearchDomainFilter() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004").domain(Domain.CONDITION));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
     }
 
 
     @Test
     public void testConceptCodeMatch() throws Exception {
-      ResponseEntity<ConceptListResponse> response = dataBrowserController
-          .searchConcepts(new SearchConceptsRequest().query("002")
-              .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
-      assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_2);
+        ConceptListResponse response = conceptService.getConcepts(new SearchConceptsRequest().query("002")
+                .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
+        assertThat(response.getMatchType()).isEqualTo(MatchType.CODE);
     }
 
     @Test
@@ -594,8 +590,8 @@ public class DataBrowserControllerTest {
         }
     }
 
-  static org.pmiops.workbench.cdr.model.Concept makeConcept(Concept concept) {
-    org.pmiops.workbench.cdr.model.Concept result = new org.pmiops.workbench.cdr.model.Concept();
+    private static DbConcept makeConcept(Concept concept) {
+    DbConcept result = new DbConcept();
     result.setConceptId(concept.getConceptId());
     result.setConceptName(concept.getConceptName());
     result.setStandardConcept(concept.getStandardConcept());

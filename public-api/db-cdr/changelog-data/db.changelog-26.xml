@@ -12,6 +12,7 @@
     <loadData tableName="measurement_concept_info" file="csv/measurement_concept_info.csv" encoding="UTF-8" quotchar='"'>
       <column name="concept_id" type="NUMERIC"/>
       <column name="has_values" type="NUMERIC"/>
+      <column name="measurement_type" type="STRING"/>
     </loadData>
 
   </changeSet>

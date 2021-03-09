@@ -8,5 +8,10 @@
     "mode": "REQUIRED",
     "name": "has_values",
     "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "measurement_type",
+    "type": "STRING"
   }
 ]

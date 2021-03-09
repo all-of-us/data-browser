@@ -1,33 +1,22 @@
 package org.pmiops.workbench.publicapi;
 
 import java.util.logging.Logger;
-import java.util.*;
-import com.google.common.base.Strings;
-import org.pmiops.workbench.cdr.AchillesMapper;
 import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import org.pmiops.workbench.cdr.dao.ConceptDao;
-import org.pmiops.workbench.cdr.dao.CBCriteriaDao;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.DomainInfoService;
+import org.pmiops.workbench.service.CriteriaService;
 import org.pmiops.workbench.service.SurveyModuleService;
 import org.pmiops.workbench.service.AchillesResultService;
 import org.pmiops.workbench.service.AchillesAnalysisService;
-import org.pmiops.workbench.cdr.model.Concept;
-import org.pmiops.workbench.cdr.model.MeasurementConceptInfo;
-import org.pmiops.workbench.cdr.model.CBCriteria;
 import org.pmiops.workbench.model.SurveyModule;
 import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.model.AchillesResult;
@@ -37,33 +26,24 @@ import org.pmiops.workbench.model.ConceptListResponse;
 import org.pmiops.workbench.model.SurveyVersionCountResponse;
 import org.pmiops.workbench.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.model.SearchConceptsRequest;
-import org.pmiops.workbench.model.Domain;
 import org.pmiops.workbench.model.AnalysisIdConstant;
-import org.pmiops.workbench.model.MatchType;
 import org.pmiops.workbench.model.SurveyMetadataListResponse;
 import org.pmiops.workbench.model.ConceptAnalysisListResponse;
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.model.CountAnalysis;
 import org.pmiops.workbench.model.CriteriaParentResponse;
 import org.pmiops.workbench.model.CriteriaListResponse;
-import org.pmiops.workbench.model.StandardConceptFilter;
+import org.pmiops.workbench.model.TestFilter;
+import org.pmiops.workbench.model.OrderFilter;
 import org.pmiops.workbench.model.DomainInfosAndSurveyModulesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import org.pmiops.workbench.exceptions.ServerErrorException;
-import org.pmiops.workbench.exceptions.DataNotFoundException;
 
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
 
-    @Autowired
-    private ConceptDao conceptDao;
-    @Autowired
-    private CBCriteriaDao criteriaDao;
     @Autowired
     private AchillesResultService achillesResultService;
     @Autowired
@@ -75,11 +55,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     @Autowired
     private ConceptService conceptService;
     @Autowired
+    private CriteriaService criteriaService;
+    @Autowired
     private CdrVersionService cdrVersionService;
     @Autowired
     private SurveyMetadataService surveyMetadataService;
-    @Autowired
-    private AchillesMapper achillesMapper;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
@@ -90,14 +70,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     public DataBrowserController() {}
 
-    public DataBrowserController(ConceptService conceptService, ConceptDao conceptDao, CBCriteriaDao criteriaDao,
-                                 CdrVersionService cdrVersionService,
-                                 DomainInfoService domainInfoService,
+    public DataBrowserController(ConceptService conceptService, CriteriaService criteriaService,
+                                 CdrVersionService cdrVersionService, DomainInfoService domainInfoService,
                                  SurveyMetadataService surveyMetadataService, SurveyModuleService surveyModuleService,
                                  AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
         this.conceptService = conceptService;
-        this.conceptDao = conceptDao;
-        this.criteriaDao = criteriaDao;
+        this.criteriaService = criteriaService;
         this.cdrVersionService = cdrVersionService;
         this.surveyMetadataService = surveyMetadataService;
         this.surveyModuleService = surveyModuleService;
@@ -106,86 +84,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.achillesAnalysisService = achillesAnalysisService;
     }
 
-    /**
-     * Converter function from backend representation (used with Hibernate) to
-     * client representation (generated by Swagger).
-     */
-    private static final Function<Concept, org.pmiops.workbench.model.Concept>
-            TO_CLIENT_CONCEPT =
-            new Function<Concept, org.pmiops.workbench.model.Concept>() {
-                @Override
-                public org.pmiops.workbench.model.Concept apply(Concept concept) {
-                    org.pmiops.workbench.model.MeasurementConceptInfo measurementInfo = null;
-                    if(concept.getMeasurementConceptInfo() != null){
-                        measurementInfo = TO_CLIENT_MEASUREMENT_CONCEPT_INFO.apply(concept.getMeasurementConceptInfo());
-                    }
-                    String graphToShow = null;
-                    if (concept.getDomainId().equals("Measurement") && concept.getMeasurementConceptInfo() != null && concept.getMeasurementConceptInfo().getHasValues() == 1) {
-                        graphToShow = "Values";
-                    } else {
-                        graphToShow = "Sex Assigned at Birth";
-                    }
-                    return new org.pmiops.workbench.model.Concept()
-                            .conceptId(concept.getConceptId())
-                            .conceptName(concept.getConceptName())
-                            .standardConcept(concept.getStandardConcept())
-                            .conceptCode(concept.getConceptCode())
-                            .conceptClassId(concept.getConceptClassId())
-                            .vocabularyId(concept.getVocabularyId())
-                            .domainId(concept.getDomainId())
-                            .countValue(concept.getCountValue())
-                            .sourceCountValue(concept.getSourceCountValue())
-                            .prevalence(concept.getPrevalence())
-                            .conceptSynonyms(concept.getSynonyms())
-                            .canSelect(concept.getCanSelect())
-                            .measurementConceptInfo(measurementInfo)
-                            .drugBrands(concept.getDrugBrands())
-                            .graphToShow(graphToShow);
-                }
-            };
-
-    /**
-     * Converter function from backend representation (used with Hibernate) to
-     * client representation (generated by Swagger).
-     */
-    private static final Function<MeasurementConceptInfo, org.pmiops.workbench.model.MeasurementConceptInfo>
-            TO_CLIENT_MEASUREMENT_CONCEPT_INFO =
-            new Function<MeasurementConceptInfo, org.pmiops.workbench.model.MeasurementConceptInfo>() {
-                @Override
-                public org.pmiops.workbench.model.MeasurementConceptInfo apply(MeasurementConceptInfo measurementConceptInfo) {
-                    return new org.pmiops.workbench.model.MeasurementConceptInfo()
-                            .conceptId(measurementConceptInfo.getConceptId())
-                            .hasValues(measurementConceptInfo.getHasValues());
-                }
-            };
-
-    /**
-     * Converter function from backend representation (used with Hibernate) to
-     * client representation (generated by Swagger).
-     */
-    private static final Function<CBCriteria, org.pmiops.workbench.model.CBCriteria>
-            TO_CLIENT_CBCRITERIA =
-            new Function<CBCriteria, org.pmiops.workbench.model.CBCriteria>() {
-                @Override
-                public org.pmiops.workbench.model.CBCriteria apply(CBCriteria criteria) {
-                    return new org.pmiops.workbench.model.CBCriteria()
-                            .id(criteria.getId())
-                            .parentId(criteria.getParentId())
-                            .type(criteria.getType())
-                            .subtype(criteria.getType())
-                            .code(criteria.getCode())
-                            .name(criteria.getName())
-                            .group(criteria.getGroup())
-                            .selectable(criteria.getSelectable())
-                            .count(Long.valueOf(criteria.getCount()))
-                            .sourceCount(criteria.getSourceCount())
-                            .domainId(criteria.getDomainId())
-                            .conceptId(criteria.getConceptId())
-                            .path(criteria.getPath())
-                            .canSelect(criteria.getCanSelect());
-                }
-            };
-
     @Override
     public ResponseEntity<CriteriaParentResponse> getCriteriaRolledCounts(Long conceptId, String domainId) {
         try {
@@ -193,41 +91,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        List<CBCriteria> criteriaList = criteriaDao.findParentCounts(String.valueOf(conceptId), domainId.toUpperCase(), new String(domainId+"_rank1"));
-        Multimap<String, CBCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, CBCriteria::getConceptId);
-        CriteriaParentResponse response = new CriteriaParentResponse();
-        if (criteriaList.size() > 0) {
-            List<CBCriteria> parentList = criteriaRowsByConcept.get(String.valueOf(conceptId)).stream().collect(Collectors.toList());
-            CBCriteria parent = null;
-            CBCriteria standardParent = null;
-            CBCriteria sourceParent = null;
-            if (parentList.size() > 1) {
-                List<CBCriteria> standardParentList = parentList.stream().filter(p -> p.getStandard() == true).collect(Collectors.toList());
-                standardParent = (standardParentList != null && standardParentList.size() > 0) ? standardParentList.get(0) : null;
-                List<CBCriteria> sourceParentList = parentList.stream().filter(p -> p.getStandard() == false).collect(Collectors.toList());
-                sourceParent = (sourceParentList != null && sourceParentList.size() > 0) ? sourceParentList.get(0) : null;
-                if (standardParent != null) {
-                    if (sourceParent != null) {
-                        standardParent.setSourceCount(sourceParent.getCount());
-                    }
-                    parent = standardParent;
-                } else {
-                    parent = sourceParent;
-                }
-            } else {
-                parent = parentList.get(0);
-            }
-            if (criteriaList.size() >= 1) {
-                criteriaList.remove(parent);
-            }
-            Optional.ofNullable(parent).orElseThrow(() -> new DataNotFoundException("Cannot find rolled up counts of this concept"));
-            response.setParent(TO_CLIENT_CBCRITERIA.apply(parent));
-            Multimap<Long, CBCriteria> parentCriteria = Multimaps
-                    .index(criteriaList, CBCriteria::getParentId);
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.ok(response);
-        }
+        return ResponseEntity.ok(criteriaService.getRolledUpCounts(String.valueOf(conceptId), domainId));
     }
 
     @Override
@@ -237,9 +101,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        List<CBCriteria> criteriaList = criteriaDao.findCriteriaChildren(parentId);
         CriteriaListResponse criteriaListResponse = new CriteriaListResponse();
-        criteriaListResponse.setItems(criteriaList.stream().map(TO_CLIENT_CBCRITERIA).collect(Collectors.toList()));
+        criteriaListResponse.setItems(criteriaService.getCriteriaChildren(parentId));
         return ResponseEntity.ok(criteriaListResponse);
     }
 
@@ -250,94 +113,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        Integer maxResults = searchConceptsRequest.getMaxResults();
-        if(maxResults == null || maxResults == 0){
-            maxResults = Integer.MAX_VALUE;
-        }
-        List<Long> drugConcepts = new ArrayList<>();
-
-        if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            List<Long> drugMatchedConcepts = new ArrayList<>();
-            drugMatchedConcepts = conceptDao.findDrugIngredientsByBrand(searchConceptsRequest.getQuery());
-            if(drugMatchedConcepts.size() > 0) {
-                drugConcepts = drugMatchedConcepts;
-            }
-        }
-
-        Integer minCount = searchConceptsRequest.getMinCount();
-        if(minCount == null){
-            minCount = 1;
-        }
-
-        StandardConceptFilter standardConceptFilter = searchConceptsRequest.getStandardConceptFilter();
-
-
-        if(searchConceptsRequest.getQuery() == null || searchConceptsRequest.getQuery().isEmpty()){
-            if(standardConceptFilter == null || standardConceptFilter == StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH){
-                standardConceptFilter = StandardConceptFilter.STANDARD_CONCEPTS;
-            }
-        }else{
-            if(standardConceptFilter == null){
-                standardConceptFilter = StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH;
-            }
-        }
-
-        String domainId = null;
-        if (searchConceptsRequest.getDomain() != null) {
-            domainId = CommonStorageEnums.domainToDomainId(searchConceptsRequest.getDomain());
-        }
-
-        ConceptService.StandardConceptFilter convertedConceptFilter = ConceptService.StandardConceptFilter.valueOf(standardConceptFilter.name());
-
-        Slice<Concept> concepts = null;
-        int measurementTests = 1;
-        int measurementOrders = 1;
-
-        if (domainId != null && domainId.equals("Measurement")) {
-            if (searchConceptsRequest.getMeasurementTests() != null) {
-                measurementTests = searchConceptsRequest.getMeasurementTests();
-            }
-            if (searchConceptsRequest.getMeasurementOrders() != null) {
-                measurementOrders = searchConceptsRequest.getMeasurementOrders();
-            }
-        }
-        concepts = conceptService.searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
-                searchConceptsRequest.getVocabularyIds(), domainId, maxResults, minCount,
-                (searchConceptsRequest.getPageNumber() == null) ? 0 : searchConceptsRequest.getPageNumber(), measurementTests, measurementOrders);
-
-        ConceptListResponse response = new ConceptListResponse();
-
-        for(Concept con : concepts.getContent()){
-            String conceptCode = con.getConceptCode();
-            String conceptId = String.valueOf(con.getConceptId());
-
-            if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))){
-                List<Concept> stdConcepts = conceptDao.findStandardConcepts(con.getConceptId());
-                response.setStandardConcepts(stdConcepts.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-                response.setSourceOfStandardConcepts(con.getConceptId());
-            }
-
-            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && (searchConceptsRequest.getQuery().equals(conceptCode) || searchConceptsRequest.getQuery().equals(conceptId))) {
-                response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
-                response.setMatchedConceptName(con.getConceptName());
-            }
-        }
-
-        if(response.getMatchType() == null && response.getStandardConcepts() == null){
-            response.setMatchType(MatchType.NAME);
-        }
-
-        List<Concept> conceptList = new ArrayList<>();
-
-        if (concepts != null) {
-            conceptList = new ArrayList(concepts.getContent());
-            if(response.getStandardConcepts() != null) {
-                conceptList = conceptList.stream().filter(c -> Long.valueOf(c.getConceptId()) != Long.valueOf(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
-            }
-        }
-
-        response.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(conceptService.getConcepts(searchConceptsRequest));
     }
 
     @Override
@@ -364,49 +140,20 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             // TODO: consider parallelizing these lookups
             List<Long> toMatchConceptIds = new ArrayList<>();
             toMatchConceptIds.add(conceptId);
-            List<Long> drugMatchedConceptIds = conceptDao.findDrugIngredientsByBrand(query);
+            List<Long> drugMatchedConceptIds = conceptService.getDrugIngredientsByBrand(query);
             if (drugMatchedConceptIds.size() > 0) {
                 toMatchConceptIds.addAll(drugMatchedConceptIds);
             }
 
-            Integer getTests = null;
-            Integer getOrders = null;
+            // TODO change these inputs from api call in ehr component
+            List<String> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
-            if (testFilter == 1 && orderFilter == 1) {
-                getTests = 1;
-                getOrders = 0;
-            } else if (testFilter == 1 && orderFilter == 0) {
-                getTests = 1;
-                getOrders = 2;
-            } else if (testFilter == 0 && orderFilter == 1) {
-                getTests = 2;
-                getOrders = 0;
-            } else if (testFilter == 0 && orderFilter == 0) {
-                getTests = 2;
-                getOrders = 2;
-            }
-
-            domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, getTests, getOrders);
+            domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, filter);
             surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
         } else {
-            Integer getTests = null;
-            Integer getOrders = null;
+            List<String> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
-            if (testFilter == 1 && orderFilter == 1) {
-                getTests = 1;
-                getOrders = 0;
-            } else if (testFilter == 1 && orderFilter == 0) {
-                getTests = 1;
-                getOrders = 2;
-            } else if (testFilter == 0 && orderFilter == 1) {
-                getTests = 2;
-                getOrders = 0;
-            } else if (testFilter == 0 && orderFilter == 0) {
-                getTests = 2;
-                getOrders = 2;
-            }
-
-            domainInfoList =  ImmutableList.copyOf(domainInfoService.getDomainTotals(getTests, getOrders));
+            domainInfoList =  ImmutableList.copyOf(domainInfoService.getDomainTotals(filter));
             surveyModuleList = ImmutableList.copyOf(surveyModuleService.findSurveyModules());
         }
 
@@ -491,7 +238,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), questionIds);
 
         SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
-        questionResp.setItems(mapAnalysesToQuestions(surveyAnalysisList, questions));
+        questionResp.setItems(achillesAnalysisService.mapAnalysesToQuestions(surveyAnalysisList, questions));
 
         response.setQuestions(questionResp);
 
@@ -533,9 +280,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         SurveyMetadataListResponse resp = new SurveyMetadataListResponse();
-
         List<SurveyMetadata> subQuestions = surveyMetadataService.getSubQuestionsLevel1(conceptId, answerConceptId, "43528698");
-
         List<String> conceptIds = new ArrayList<>();
 
         for(SurveyMetadata q: subQuestions) {
@@ -543,11 +288,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         List<Analysis> analyses = achillesAnalysisService.findSurveyAnalysisResults("43528698", conceptIds);
-
-        List<SurveyMetadata> mappedQuestions = mapAnalysesToQuestions(analyses, subQuestions);
-
+        List<SurveyMetadata> mappedQuestions = achillesAnalysisService.mapAnalysesToQuestions(analyses, subQuestions);
         resp.setItems(mappedQuestions);
-
         return ResponseEntity.ok(resp);
     }
 
@@ -656,9 +398,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         if(count == null){
             count = 0;
         }
-        List<Concept> conceptList = conceptDao.findSourceConcepts(conceptId,count);
         ConceptListResponse resp = new ConceptListResponse();
-        resp.setItems(conceptList.stream().map(TO_CLIENT_CONCEPT).collect(Collectors.toList()));
+        resp.setItems(conceptService.getSourceConcepts(conceptId, count));
         return ResponseEntity.ok(resp);
     }
 
@@ -670,109 +411,5 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_ANALYSIS_ID)));
-    }
-
-    public List<SurveyMetadata> mapAnalysesToQuestions(List<Analysis> analyses, List<SurveyMetadata> questions) {
-        Map<Long, List<AchillesResult>> countAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> genderAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> ageAnalysisResultsByQuestion = new HashMap<>();
-        Map<Long, List<AchillesResult>> versionAnalysisResultsByQuestion = new HashMap<>();
-
-        Analysis countAnalysis = null;
-        Analysis genderAnalysis = null;
-        Analysis ageAnalysis = null;
-        Analysis versionAnalysis = null;
-
-        for (Analysis aa: analyses) {
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID))) {
-                countAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (countAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = countAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        countAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID))) {
-                genderAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (genderAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = genderAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        genderAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID))) {
-                ageAnalysis = aa;
-                for (AchillesResult ar : aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (validAgeDeciles.contains(ar.getStratum5())) {
-                        if (ageAnalysisResultsByQuestion.containsKey(questionId)) {
-                            List<AchillesResult> tempResults = ageAnalysisResultsByQuestion.get(questionId);
-                            tempResults.add(ar);
-                        } else {
-                            List<AchillesResult> tempResults = new ArrayList<>();
-                            tempResults.add(ar);
-                            ageAnalysisResultsByQuestion.put(questionId, tempResults);
-                        }
-                    }
-                }
-            }
-            if (aa.getAnalysisId().equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID))) {
-
-                versionAnalysis = aa;
-                for(AchillesResult ar: aa.getResults()) {
-                    Long questionId = Long.valueOf(ar.getStratum2());
-
-                    if (versionAnalysisResultsByQuestion.containsKey(questionId)) {
-                        List<AchillesResult> tempResults = versionAnalysisResultsByQuestion.get(questionId);
-                        tempResults.add(ar);
-                    } else {
-                        List<AchillesResult> tempResults = new ArrayList<>();
-                        tempResults.add(ar);
-                        versionAnalysisResultsByQuestion.put(questionId, tempResults);
-                    }
-                }
-            }
-
-        }
-
-        for(SurveyMetadata q: questions) {
-            if (countAnalysis != null) {
-                Analysis ca = achillesMapper.makeCopyAnalysis(countAnalysis);
-                ca.setResults(countAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setCountAnalysis(ca);
-            }
-            if (genderAnalysis != null) {
-                Analysis ga = achillesMapper.makeCopyAnalysis(genderAnalysis);
-                ga.setResults(genderAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setGenderAnalysis(ga);
-            }
-            if (ageAnalysis != null) {
-                Analysis aa = achillesMapper.makeCopyAnalysis(ageAnalysis);
-                aa.setResults(ageAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setAgeAnalysis(aa);
-            }
-            if (versionAnalysis != null) {
-                Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
-                aa.setResults(versionAnalysisResultsByQuestion.get(q.getConceptId()));
-                q.setVersionAnalysis(aa);
-            }
-        }
-
-        return questions;
     }
 }
