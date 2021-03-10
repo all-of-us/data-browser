@@ -28,6 +28,7 @@ import { TooltipService } from './services/tooltip.service';
 import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
+import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
@@ -76,7 +77,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     PopUpWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
-    HighlightWrapperComponent
+    HighlightWrapperComponent,
+    CdrVersionWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -100,7 +102,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     PopUpWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
-    HighlightWrapperComponent
+    HighlightWrapperComponent,
+    CdrVersionWrapperComponent
   ],
   providers: [
     ChartService,
