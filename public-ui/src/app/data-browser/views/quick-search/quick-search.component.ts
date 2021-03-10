@@ -90,7 +90,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.testReact = environment.testReact;
     this.reactHomeView = environment.reactHomeView;
-    console.log(this.reactHomeView);
     localStorage.removeItem('ehrDomain');
     localStorage.removeItem('surveyModule');
     this.allOfUsUrl = environment.researchAllOfUsUrl;
