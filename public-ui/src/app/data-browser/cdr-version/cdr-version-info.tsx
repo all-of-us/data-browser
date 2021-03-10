@@ -64,7 +64,7 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
     <span className='result-body-item cdr-info'>
       Data includes {Number(this.state.numParticipants).toLocaleString()}
       participants and is current as
-      of {this.state.creationTime.getMonth()+1}/{this.state.creationTime.getDate()}/
+      of {this.state.creationTime.getMonth()+1} / {this.state.creationTime.getDate()} /
       {this.state.creationTime.getFullYear()}.
            </span></React.Fragment>;
   }
