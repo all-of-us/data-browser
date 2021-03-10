@@ -8,6 +8,7 @@ import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.
 import { HighlightWrapperComponent } from '../shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from '../shared/shared.module';
+import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
@@ -28,7 +29,6 @@ import { TooltipService } from './services/tooltip.service';
 import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
-import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';

@@ -8,12 +8,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { environment } from 'environments/environment';
+import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../data-browser/base-react/base-react.wrapper';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
-import { environment } from 'environments/environment';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 const containerElementName = 'root';
@@ -54,7 +54,7 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
             this.setState({
             numParticipants: result.numParticipants,
             creationTime: new Date(result.creationTime),
-            cdrName: result.name})
+            cdrName: result.name});
           });
   }
 
@@ -62,8 +62,10 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
     return !!this.state.creationTime && <React.Fragment>
     <style>{style}</style>
     <span className='result-body-item cdr-info'>
-      Data includes {Number(this.state.numParticipants).toLocaleString()} participants and is current as
-      of {this.state.creationTime.getMonth()+1}/{this.state.creationTime.getDate()}/{this.state.creationTime.getFullYear()}.
+      Data includes {Number(this.state.numParticipants).toLocaleString()}
+      participants and is current as
+      of {this.state.creationTime.getMonth()+1}/{this.state.creationTime.getDate()}/
+      {this.state.creationTime.getFullYear()}.
            </span></React.Fragment>;
   }
 }
