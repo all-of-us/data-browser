@@ -103,18 +103,12 @@ interface SearchProps {
 }
 
 export const SearchComponent = (class extends React.Component<SearchProps, {}> {
-     constructor(props) {
-            super(props);
-     }
-    _handleChange = (event) => {
-        this.props.onChange(event.target.value);
-    }
-
-    clearSearch = (event) => {
-        this.props.onClear();
+    constructor(props) {
+        super(props);
     }
 
     render() {
+        const {onChange, onClear, value} = this.props;
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
         return (
@@ -122,15 +116,14 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
             <style>{searchStyle}</style>
             <div className='search-title'>
                 <span className='secondary-display'>Search Across Data Types</span>
-                <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={this.props.value}
+                <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
                 action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>
             </div>
             <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />
             <input type='text' aria-label='Main Search' id='search-db'
-            placeholder='Keyword Search' name='searchText'
-            onChange={this._handleChange} value={this.props.value}/>
-            <div className='clear-icon' onClick={this.clearSearch}>
+            placeholder='Keyword Search' name='searchText' onChange={(e) => {onChange(e.target.value); }} value={value}/>
+            <div className='clear-icon' onClick={(e) => {onClear(); }}>
             <i className='far fa-times fa-1x clear-search-icon'></i></div>
             </div>
             </React.Fragment>
