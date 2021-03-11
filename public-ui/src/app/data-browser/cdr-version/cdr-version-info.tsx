@@ -68,9 +68,6 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
   }
 }
 
-<input type="checkbox" id="" name="" value="">
-<label for=""> Trainee</label>
-
 @Component({
   selector: 'app-cdr-version-react',
   template: `<span #${containerElementName}></span>`,
