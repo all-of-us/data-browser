@@ -28,9 +28,8 @@ export const style = `
 `;
 
 interface State {
-    numParticipants: any;
-    creationTime: any;
-    cdrName: any;
+    numParticipants: string;
+    creationTime: string;
 }
 
 export class CdrVersionReactComponent extends React.Component<{}, State> {
@@ -40,7 +39,6 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
     this.state = {
         numParticipants: '',
         creationTime: '',
-        cdrName: ''
     };
   }
 
@@ -53,19 +51,19 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
           (result) => {
             this.setState({
             numParticipants: result.numParticipants,
-            creationTime: new Date(result.creationTime),
-            cdrName: result.name});
+            creationTime: new Date(result.creationTime)});
           });
   }
 
   render() {
-    return !!this.state.creationTime && <React.Fragment>
+    const {numParticipants, creationTime} = this.state;
+    return !!creationTime && <React.Fragment>
     <style>{style}</style>
     <span className='result-body-item cdr-info'>
-      Data includes {Number(this.state.numParticipants).toLocaleString()}
+      Data includes {Number(numParticipants).toLocaleString()}&nbsp;
       participants and is current as
-      of { this.state.creationTime.getMonth() + 1 }/{ this.state.creationTime.getDate() }/
-      {this.state.creationTime.getFullYear()}.
+      of { creationTime.getMonth() + 1 }/{ creationTime.getDate() }/
+      {creationTime.getFullYear()}.
            </span></React.Fragment>;
   }
 }
