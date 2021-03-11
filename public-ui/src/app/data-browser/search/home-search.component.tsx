@@ -122,7 +122,8 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
             <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />
             <input type='text' aria-label='Main Search' id='search-db'
-            placeholder='Keyword Search' name='searchText' onChange={(e) => {onChange(e.target.value); }} value={value}/>
+            placeholder='Keyword Search' name='searchText'
+            onChange={(e) => {onChange(e.target.value); }} value={value}/>
             <div className='clear-icon' onClick={(e) => {onClear(); }}>
             <i className='far fa-times fa-1x clear-search-icon'></i></div>
             </div>
