@@ -108,8 +108,8 @@ export const dBHomeComponent = (
 
         render() {
             return <React.Fragment>
-            <SearchComponent value={this.state.searchWord} onChange={(val) =>
-            { this.handleChange(val); }}
+            <SearchComponent value={this.state.searchWord} onChange={(val) => {
+            this.handleChange(val); }}
             onClear={() => { this.handleChange(''); }} />
             <section className='results'>
                 <h5 className='result-heading secondary-display'> EHR Domains:</h5>
