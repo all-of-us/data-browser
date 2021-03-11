@@ -28,8 +28,8 @@ export const style = `
 `;
 
 interface State {
-    numParticipants: string;
-    creationTime: string;
+    numParticipants: number;
+    creationTime: Date;
 }
 
 export class CdrVersionReactComponent extends React.Component<{}, State> {
