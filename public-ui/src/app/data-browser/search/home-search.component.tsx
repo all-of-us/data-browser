@@ -98,29 +98,20 @@ const searchStyle = `
 
 interface SearchProps {
     value: string;
-    onChang: Function;
+    onChange: Function;
     onClear: Function;
 }
 
-interface SearchState {
-    searchWord: string;
-}
-
-export const SearchComponent = (class extends React.Component<SearchProps, SearchState> {
+export const SearchComponent = (class extends React.Component<SearchProps, {}> {
      constructor(props) {
             super(props);
-            this.state = {
-                searchWord : ''
-            };
      }
     _handleChange = (event) => {
-        this.setState({searchWord: event.target.value});
-        this.props.onChang(event.target.value);
+        this.props.onChange(event.target.value);
     }
 
     clearSearch = (event) => {
-        this.setState({searchWord: ''});
-        this.props.onClear(event.target.value);
+        this.props.onClear();
     }
 
     render() {
@@ -138,7 +129,7 @@ export const SearchComponent = (class extends React.Component<SearchProps, Searc
             <ClrIcon shape={iconShape} className={iconClass} />
             <input type='text' aria-label='Main Search' id='search-db'
             placeholder='Keyword Search' name='searchText'
-            onChange={this._handleChange} value={this.state.searchWord}/>
+            onChange={this._handleChange} value={this.props.value}/>
             <div className='clear-icon' onClick={this.clearSearch}>
             <i className='far fa-times fa-1x clear-search-icon'></i></div>
             </div>
