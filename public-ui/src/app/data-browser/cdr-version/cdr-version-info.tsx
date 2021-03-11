@@ -37,8 +37,8 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
-        numParticipants: '',
-        creationTime: '',
+        numParticipants: null,
+        creationTime: null,
     };
   }
 
@@ -67,6 +67,9 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
            </span></React.Fragment>;
   }
 }
+
+<input type="checkbox" id="" name="" value="">
+<label for=""> Trainee</label>
 
 @Component({
   selector: 'app-cdr-version-react',
