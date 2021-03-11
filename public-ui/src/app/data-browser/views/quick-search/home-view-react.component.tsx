@@ -75,12 +75,12 @@ export const dBHomeComponent = (
             };
         }
 
+        search = _.debounce((val) => this.getDomainInfos(), 1000);
+
         handleChange(val) {
           this.setState({searchWord: val});
           this.search(val);
         }
-
-        search = _.debounce((val) => this.getDomainInfos(), 1000);
 
         // life cycle hook
         componentWillMount() {
@@ -100,14 +100,16 @@ export const dBHomeComponent = (
                         return domain.name.toLowerCase() === 'physical measurements'
                             || domain.name.toLowerCase() === 'fitbit';
                     });
-                    this.setState({ domainInfo: domainInfo, surveyInfo: result.surveyModules, physicalMeasurementsInfo: physicalMeasurementsInfo });
+                    this.setState({ domainInfo: domainInfo, surveyInfo: result.surveyModules,
+                    physicalMeasurementsInfo: physicalMeasurementsInfo });
                 }
             );
         }
 
         render() {
             return <React.Fragment>
-            <SearchComponent value={this.state.searchWord} onChange={(val) => { this.handleChange(val); }}
+            <SearchComponent value={this.state.searchWord} onChange={(val) =>
+            { this.handleChange(val); }}
             onClear={() => { this.handleChange(''); }} />
             <section className='results'>
                 <h5 className='result-heading secondary-display'> EHR Domains:</h5>
