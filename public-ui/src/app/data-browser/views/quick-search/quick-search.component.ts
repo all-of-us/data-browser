@@ -58,8 +58,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   physicalMeasurementsFound: number;
   fitbitMeasurementsFound: number;
   numParticipants: any;
-  creationTime: any;
-  cdrName: any;
   allOfUsUrl: string;
   showStatement: boolean;
   cope: boolean;
@@ -134,13 +132,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
       this.api.getParticipantCount().subscribe(
         result => this.totalParticipants = result.countValue)
     );
-
-    this.api.getCdrVersionUsed().subscribe(
-      (result: CdrVersion) => {
-        this.numParticipants = result.numParticipants;
-        this.creationTime = new Date(result.creationTime);
-        this.cdrName = result.name;
-      });
     // Do initial search if we have search text
     if (this.prevSearchText) {
       this.subscriptions.push(

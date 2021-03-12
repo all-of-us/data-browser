@@ -8,6 +8,7 @@ import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.
 import { HighlightWrapperComponent } from '../shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from '../shared/shared.module';
+import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
@@ -76,7 +77,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     PopUpWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
-    HighlightWrapperComponent
+    HighlightWrapperComponent,
+    CdrVersionWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -100,7 +102,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     PopUpWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
-    HighlightWrapperComponent
+    HighlightWrapperComponent,
+    CdrVersionWrapperComponent
   ],
   providers: [
     ChartService,
