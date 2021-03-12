@@ -22,6 +22,7 @@ import { SourceTreeComponent } from './components/source-tree/source-tree.compon
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
+import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';
@@ -76,6 +77,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
+    BioSexWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent
@@ -100,6 +102,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
