@@ -6,15 +6,18 @@ import {
 } from '@angular/core';
 
 import { environment } from 'environments/environment';
+import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
+import { ClrIcon } from '../../../utils/clr-icon';
 import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
+import { TooltipReactComponent } from '../../components/tooltip/tooltip-react.component';
+import { SearchComponent } from '../../search/home-search.component';
+
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-
-
 
 export const ResultLinksComponent: FunctionComponent<any> =
     ({
@@ -56,7 +59,8 @@ export const ResultLinksComponent: FunctionComponent<any> =
 interface State {
     surveyInfo: Array<any>;
     domainInfo: Array<any>;
-    physicalMesurmentsInfo: Array<any>;
+    physicalMeasurementsInfo: Array<any>;
+    searchWord: string;
 }
 
 export const dBHomeComponent = (
@@ -66,8 +70,16 @@ export const dBHomeComponent = (
             this.state = {
                 surveyInfo: [],
                 domainInfo: [],
-                physicalMesurmentsInfo: []
+                physicalMeasurementsInfo: [],
+                searchWord: ''
             };
+        }
+
+        search = _.debounce((val) => this.getDomainInfos(), 1000);
+
+        handleChange(val) {
+          this.setState({searchWord: val});
+          this.search(val);
         }
 
         // life cycle hook
@@ -77,24 +89,29 @@ export const dBHomeComponent = (
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
-            return api.getDomainTotals('', 1, 1).then(
+            return api.getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
+                    result.domainInfos = result.domainInfos.filter(domain =>
+                    domain.standardConceptCount > 0);
                     const domainInfo = result.domainInfos.filter(
                         domain => domain.name.toLowerCase() !== 'physical measurements' &&
                             domain.name.toLowerCase() !== 'fitbit');
-                    const physicalMesurmentsInfo = result.domainInfos.filter(domain => {
+                    const physicalMeasurementsInfo = result.domainInfos.filter(domain => {
                         return domain.name.toLowerCase() === 'physical measurements'
                             || domain.name.toLowerCase() === 'fitbit';
                     });
-                    this.setState({ domainInfo: domainInfo });
-                    this.setState({ surveyInfo: result.surveyModules });
-                    this.setState({ physicalMesurmentsInfo: physicalMesurmentsInfo });
+                    this.setState({ domainInfo: domainInfo, surveyInfo: result.surveyModules,
+                    physicalMeasurementsInfo: physicalMeasurementsInfo });
                 }
             );
         }
 
         render() {
-            return <section className='results'>
+            return <React.Fragment>
+            <SearchComponent value={this.state.searchWord} onChange={(val) => {
+            this.handleChange(val); }}
+            onClear={() => { this.handleChange(''); }} />
+            <section className='results'>
                 <h5 className='result-heading secondary-display'> EHR Domains:</h5>
                 <div id='survey' className='result-boxes'>
                     {
@@ -120,18 +137,16 @@ export const dBHomeComponent = (
                     Physical Measurements and Wearables:</h5>
                 <div className='result-boxes'>
                     {
-                        this.state.physicalMesurmentsInfo.map((phyMeasurements, index) => {
+                        this.state.physicalMeasurementsInfo.map((phyMeasurements, index) => {
                             const key = 'phyMeasurements' + index;
                             return <ResultLinksComponent key={key} {...phyMeasurements} />;
                         })
                     }
                 </div>
-            </section>;
+            </section></React.Fragment>;
         }
     }
 );
-
-
 
 @Component({
     // tslint:disable-next-line: component-selector
