@@ -78,6 +78,11 @@ export const menuItems = [
         submenu: []
       },
       {
+        title: 'Spotlight',
+        url: 'https://www.researchallofus.org/spotlight/',
+        submenu: []
+      },
+      {
         title: 'Publications',
         url: 'https://www.researchallofus.org/publications',
         submenu: []

@@ -51,12 +51,10 @@ footer {
 
 .main-menu {
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
-    /* justify-content: space-between; */
+    grid-template-columns: repeat(auto-fill, minmax(10%, 25%));
     width: 100%;
     margin-top: 0.5rem;
     padding-right: 1rem;
-    /* flex-wrap: wrap; */
 }
 
 .main-menu-item {
@@ -71,6 +69,8 @@ footer {
 .main-menu-item * {
     color: white;
     font-size: 0.9rem;
+    width: 100%;
+    padding-bottom: .25rem;
 }
 
 .sub-menu {
@@ -145,6 +145,7 @@ footer {
         flex-direction: column;
     }
     .main-menu {
+        display: flex;
         flex-direction: column;
         margin: 0;
         margin-top: 0.5rem;
