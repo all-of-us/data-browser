@@ -26,7 +26,7 @@ export const baseOptions = {
                 'Participant Count: <b>&le; 20 </b>');
           }
         }
-        return '<div class="tooltip-container" style="position: absolute; z-index: 220;">'
+        return '<div class="tooltip-container" style="position: absolute; z-index: 520;">'
           + this.point.toolTipHelpText + '</div>';
       },
       positioner: function(width, height, point) {
