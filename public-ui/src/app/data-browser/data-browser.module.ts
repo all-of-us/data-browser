@@ -10,10 +10,10 @@ import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactCom
 import { SharedModule } from '../shared/shared.module';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
-import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
+import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
 import { ChartSurveyAnswersComponent } from './charts/chart-survey-answers/chart-survey-answers.component';
 import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
