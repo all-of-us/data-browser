@@ -1,7 +1,7 @@
 import * as highCharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import HighchartsReact from 'highcharts-react-official';
 
 export const baseOptions = {
   style: {

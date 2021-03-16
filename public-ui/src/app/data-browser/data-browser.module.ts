@@ -8,8 +8,8 @@ import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.
 import { HighlightWrapperComponent } from '../shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from '../shared/shared.module';
-import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
+import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
