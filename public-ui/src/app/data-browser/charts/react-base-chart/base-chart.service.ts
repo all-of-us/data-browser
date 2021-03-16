@@ -1,6 +1,6 @@
+import * as highCharts from 'highcharts';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 export const baseOptions = {
@@ -20,7 +20,8 @@ export const baseOptions = {
             this.point.toolTipHelpText =
               this.point.toolTipHelpText.replace('Medical Concept, Count:</b> 20',
                 'Medical Concept, Count:</b> &le; 20');
-          } else if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
+          } else if (this.point.analysisId === 'topConcepts' ||
+            this.point.analysisId === 'sources') {
             this.point.toolTipHelpText =
               this.point.toolTipHelpText.replace('Participant Count: <b>20',
                 'Participant Count: <b>&le; 20 </b>');

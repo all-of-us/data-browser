@@ -8,6 +8,7 @@ import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.
 import { HighlightWrapperComponent } from '../shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from '../shared/shared.module';
+import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
@@ -22,7 +23,6 @@ import { SourceTreeComponent } from './components/source-tree/source-tree.compon
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
-import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
 import { DataBrowserRoutingModule } from './databrowser-routing.module';

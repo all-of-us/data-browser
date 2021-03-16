@@ -9,11 +9,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { environment } from 'environments/environment';
+import * as highCharts from 'highcharts';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { baseOptions } from '/w/public-ui/src/app/data-browser/charts/react-base-chart/base-chart.service';
 
@@ -65,7 +65,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           let genderCountTooltip = '';
           let percentage;
           if (genderCountResults && genderCountResults.length > 0) {
-                percentage = ((concept.countValue / genderCountResults[0].countValue) * 100).toFixed();
+                percentage = ((concept.countValue /
+                genderCountResults[0].countValue) * 100).toFixed();
                 if (percentage < 1) {
                     percentage =
                     ((concept.countValue / genderCountResults[0].countValue) * 100)
