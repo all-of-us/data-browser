@@ -72,8 +72,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.yAxis.gridLineColor = '#ECF1F4';
     baseOptions.title.style = {
         color: '#262262',
-        fontSize: '22px',
-        fontWeight: 'normal'
+        fontSize: '22px'
     };
     baseOptions.color = '#2691D0';
     baseOptions.xAxis.title.text = this.props.genderAnalysis.analysisName;
@@ -89,6 +88,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                 return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
                 + this.point.toolTipHelpText + '</div>';
               },
+              positioner: '',
               useHTML: true,
               enabled: true,
               borderColor: '#262262',

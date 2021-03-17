@@ -68,6 +68,7 @@ export const baseOptions = {
                  color: '#666',
                  fontSize: '12px',
                  fontFamily: 'GothamBook',
+                 fontWeight: 'normal'
                }
     },
     xAxis: {
