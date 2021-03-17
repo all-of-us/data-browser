@@ -161,8 +161,9 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                       toolTipHelpText = '<div class="chart-tooltip">' +
                         '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
                         ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
-                        percentage + '% </strong>' + 'of the total count of ' + analysisStratumName +
-                        ' as sex assigned at birth that answered this survey question (total count ' +
+                        percentage + '% </strong>' + 'of the total count of ' +
+                        analysisStratumName + ' as sex assigned at birth that answered this ' +
+                        'survey question (total count ' +
                         '= <strong> ' + totalCount + '</strong>) </div>';
           data.push({
             name: a.analysisStratumName
