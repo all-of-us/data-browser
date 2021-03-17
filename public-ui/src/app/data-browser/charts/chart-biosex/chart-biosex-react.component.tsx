@@ -83,6 +83,21 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
               r => r.stratum4 === this.props.selectedResult.stratum4);
     const {categories, series} = this.prepSurveyCategoriesAndData();
     baseOptions.xAxis.categories = categories;
+    baseOptions.tooltip = {
+              followPointer: true,
+              outside: true,
+              formatter: function () {
+                return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
+                + this.point.toolTipHelpText + '</div>';
+              },
+              useHTML: true,
+              enabled: true,
+              borderColor: '#262262',
+              borderRadius: '1px',
+              backgroundColor: '#FFFFFF',
+              style: {
+                color: '#302C71',
+              }};
     if ('dataOnlyLT20' in series[0]) {
         baseOptions.yAxis.min = series[0].dataOnlyLT20.length > 0 ? 0 : 20;
         baseOptions.yAxis.labels = {
