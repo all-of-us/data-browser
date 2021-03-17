@@ -26,7 +26,6 @@ export const baseOptions = {
         backgroundColor: 'transparent'
   },
   color: '',
-  title: '',
   tooltip: {
       followPointer: true,
       outside: true,
