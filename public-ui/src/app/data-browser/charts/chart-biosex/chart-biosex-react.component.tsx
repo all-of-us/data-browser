@@ -71,7 +71,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.plotOptions.series.pointWidth = '50';
     baseOptions.legend.enabled = true;
     baseOptions.yAxis.gridLineWidth = 1;
-    baseOptions.yAxis.gridLineColor = "#ECF1F4";
+    baseOptions.yAxis.gridLineColor = '#ECF1F4';
     baseOptions.title.style = {
         'color': '#262262', 'font-family': 'GothamBook', 'font-size': '22px', 'font-weight': 'normal'
     };
@@ -127,7 +127,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                           return label;
                         },
                         useHTML: true,
-        }
+        };
     }
     baseOptions.series = series;
     this.setState({options: baseOptions});
@@ -140,11 +140,11 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of this.props.genderAnalysis.results) {
           // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
-          let analysisId = this.props.genderAnalysis.analysisId;
+          const analysisId = this.props.genderAnalysis.analysisId;
           let analysisStratumName = null;
           let toolTipHelpText = null;
           let bsResult = null;
-          let color = '#2691D0';
+          const color = '#2691D0';
           let percentage = null;
           let count;
           let totalCount;
@@ -162,8 +162,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                         '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
                         ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
                         percentage + '% </strong>' + 'of the total count of ' + analysisStratumName +
-                        ' as sex assigned at birth that answered this survey question (total count = <strong> '
-                        + totalCount + '</strong>) </div>';
+                        ' as sex assigned at birth that answered this survey question (total count ' +
+                        '= <strong> ' + totalCount + '</strong>) </div>';
           data.push({
             name: a.analysisStratumName
             , y: a.countValue, color: color, sliced: true,
