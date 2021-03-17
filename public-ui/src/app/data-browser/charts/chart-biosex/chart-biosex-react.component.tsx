@@ -70,10 +70,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.plotOptions.series.pointWidth = 50;
     baseOptions.legend.enabled = true;
     baseOptions.yAxis.gridLineColor = '#ECF1F4';
-    baseOptions.title.style = {
-        color: '#262262',
-        fontSize: '22px'
-    };
+    baseOptions.title.style.color = '#262262';
+    baseOptions.title.style.fontSize = '22px';
     baseOptions.color = '#2691D0';
     baseOptions.xAxis.title.text = this.props.genderAnalysis.analysisName;
     baseOptions.yAxis.title.text = 'Participant Count';
