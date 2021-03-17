@@ -26,6 +26,7 @@ export const baseOptions = {
         backgroundColor: 'transparent'
   },
   color: '',
+  title: '',
   tooltip: {
       followPointer: true,
       outside: true,
@@ -117,6 +118,7 @@ export const baseOptions = {
                      }
                    },
           min: 20,
+          gridLineWidth: 1,
           tickLength: 0,
           lineWidth: 1,
           lineColor: '#979797',

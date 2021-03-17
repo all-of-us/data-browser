@@ -57,7 +57,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.yAxis.title.style.fontSize = '14px';
     baseOptions.xAxis.title.style.fontSize = '14px';
     baseOptions.yAxis.title.style.color = '#262262';
-    baseOptions.yAxis.gridLineWidth = 1;
     baseOptions.yAxis.gridLineColor = '#F0F0F0';
     const {categories, data} = this.prepFitbitCategoriesAndData();
     baseOptions.xAxis.categories = categories;
@@ -68,9 +67,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   getSurveyChartOptions() {
     baseOptions.chart.type = 'column';
     baseOptions.plotOptions.column.groupPadding = 0.40;
-    baseOptions.plotOptions.series.pointWidth = '50';
+    baseOptions.plotOptions.series.pointWidth = 50;
     baseOptions.legend.enabled = true;
-    baseOptions.yAxis.gridLineWidth = 1;
     baseOptions.yAxis.gridLineColor = '#ECF1F4';
     baseOptions.title.style = {
         'color': '#262262', 'font-family': 'GothamBook', 'font-size': '22px', 'font-weight': 'normal'
@@ -85,7 +83,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.tooltip = {
               followPointer: true,
               outside: true,
-              formatter: function (tooltip) {
+              formatter: function () {
                 return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
                 + this.point.toolTipHelpText + '</div>';
               },
@@ -103,7 +101,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             style: {
                    fontSize: '14px',
                    whiteSpace: 'wrap',
-                   textOverflow: 'ellipsis'
+                   textOverflow: 'ellipsis',
+                   color: '#262262'
             },
             formatter: function () {
                    const label = this.axis.defaultLabelFormatter.call(this);
@@ -121,6 +120,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                           fontSize: '12px',
                           whiteSpace: 'wrap',
                           textOverflow: 'ellipsis'
+                          color: '#262262'
                         },
                         formatter: function () {
                           const label = this.axis.defaultLabelFormatter.call(this);
