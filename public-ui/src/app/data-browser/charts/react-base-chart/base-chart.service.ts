@@ -25,7 +25,6 @@ export const baseOptions = {
         type: '',
         backgroundColor: 'transparent'
   },
-  title: {},
   color: '',
   tooltip: {
       followPointer: true,
@@ -115,8 +114,6 @@ export const baseOptions = {
                        textTransform: 'capitalize',
                        whiteSpace: 'wrap',
                        textOverflow: 'ellipsis',
-                       whiteSpace: 'wrap',
-                       textOverflow: 'ellipsis'
                      }
                    },
           min: 20,

@@ -15,7 +15,7 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import { baseOptions, GENDER_STRATUM_MAP } from '/w/public-ui/src/app/data-browser/charts/react-base-chart/base-chart.service';
+import { baseOptions, GENDER_STRATUM_MAP } from '../../../data-browser/charts/react-base-chart/base-chart.service';
 
 const containerElementName = 'root';
 
@@ -82,7 +82,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
               r => r.stratum4 === this.props.selectedResult.stratum4);
     const {categories, series} = this.prepSurveyCategoriesAndData();
     baseOptions.xAxis.categories = categories;
-    baseOptions.yAxis.min = series[0].dataOnlyLT20 && series[0].dataOnlyLT20.length > 0 ? 0 : 20;
     baseOptions.tooltip = {
               followPointer: true,
               outside: true,
@@ -99,6 +98,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                 color: '#302C71',
               }};
     if ('dataOnlyLT20' in series[0]) {
+        baseOptions.yAxis.min = series[0].dataOnlyLT20.length > 0 ? 0 : 20;
         baseOptions.yAxis.labels = {
             style: {
                    fontSize: '14px',
