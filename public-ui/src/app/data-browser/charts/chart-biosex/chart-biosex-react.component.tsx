@@ -72,7 +72,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.yAxis.gridLineColor = '#ECF1F4';
     baseOptions.title.style = {
         color: '#262262',
-        fontFamily: 'GothamBook',
         fontSize: '22px',
         fontWeight: 'normal'
     };
@@ -99,7 +98,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                 color: '#302C71',
               }};
     if ('dataOnlyLT20' in series[0]) {
-        baseOptions.yAxis.min = series[0].dataOnlyLT20.length > 0 ? 0 : 20;
+        baseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
         baseOptions.yAxis.labels = {
             style: {
                    fontSize: '14px',
@@ -117,20 +116,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                    },
                    useHTML: true
             };
-    } else {
-        baseOptions.yAxis.labels = {
-            style: {
-                          fontSize: '12px',
-                          whiteSpace: 'wrap',
-                          textOverflow: 'ellipsis',
-                          color: '#262262'
-                        },
-                        formatter: function () {
-                          const label = this.axis.defaultLabelFormatter.call(this);
-                          return label;
-                        },
-                        useHTML: true,
-        };
     }
     baseOptions.series = series;
     this.setState({options: baseOptions});

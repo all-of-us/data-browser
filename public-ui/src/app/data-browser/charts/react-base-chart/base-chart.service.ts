@@ -67,6 +67,7 @@ export const baseOptions = {
                style: {
                  color: '#666',
                  fontSize: '12px',
+                 fontFamily: 'GothamBook',
                }
     },
     xAxis: {
@@ -129,6 +130,11 @@ export const baseOptions = {
               textOverflow: 'ellipsis',
               color: '#262262'
             },
+            formatter: function () {
+                const label = this.axis.defaultLabelFormatter.call(this);
+                return label;
+            },
+            useHTML: true
           }
   },
   zAxis: {},
