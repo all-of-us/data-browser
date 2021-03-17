@@ -119,7 +119,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             style: {
                           fontSize: '12px',
                           whiteSpace: 'wrap',
-                          textOverflow: 'ellipsis'
+                          textOverflow: 'ellipsis',
                           color: '#262262'
                         },
                         formatter: function () {
