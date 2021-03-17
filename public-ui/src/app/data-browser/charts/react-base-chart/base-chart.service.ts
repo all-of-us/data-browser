@@ -3,7 +3,20 @@ import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+export const GENDER_STRATUM_MAP = {
+     '8507': 'Male',
+     '8532': 'Female',
+     '8521': 'Other',
+     '0': 'Other',
+     '8551': 'Unknown',
+     '8570': 'Ambiguous',
+     '1585849': 'None of these describe me',
+     '1585848': 'Intersex',
+};
+
+
 export const baseOptions = {
+  lang: { thousandsSep: ',' },
   style: {
         fontFamily: 'GothamBook, Arial, sans-serif',
         fontSize: '14px',
@@ -12,8 +25,11 @@ export const baseOptions = {
         type: '',
         backgroundColor: 'transparent'
   },
+  title: {},
+  color: '',
   tooltip: {
       followPointer: true,
+      outside: true,
       formatter: function () {
         if (this.point.y <= 20) {
           if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
@@ -57,21 +73,32 @@ export const baseOptions = {
     xAxis: {
         categories: [],
         labels: {
-        style: {
-            fontSize: '12px',
+          reserveSpace: true,
+          style: {
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis',
-            color: '#262262'
+            width: '80px',
+            fontSize: '14px'
+          },
+          formatter: function () {
+            const label = this.axis.defaultLabelFormatter.call(this);
+            // Change <= 20 count to display '<= 20'
+            if (label && label.indexOf('>=') > -1) {
+              return '&#8805; ' + label.replace('>=', '');
+            }
+            return label;
+          },
+          useHTML: true,
         },
-    },
     title: {
                text: '',
                style: {
                  color: '#262262',
-                 fontWeight: 'bold',
                  whiteSpace: 'wrap',
                  textOverflow: 'ellipsis',
-                 fontSize: ''
+                 fontWeight: 'bold',
+                 textTransform: 'capitalize',
+                 fontSize: '14px'
                }
              },
     tickLength: 0,
@@ -83,16 +110,20 @@ export const baseOptions = {
                      text: '',
                      style: {
                        color: '#262262',
-                       fontSize: '12px',
+                       fontSize: '14px',
+                       fontWeight: 'bold',
+                       textTransform: 'capitalize',
+                       whiteSpace: 'wrap',
+                       textOverflow: 'ellipsis',
                        whiteSpace: 'wrap',
                        textOverflow: 'ellipsis'
                      }
                    },
+          min: 20,
           tickLength: 0,
           lineWidth: 1,
           lineColor: '#979797',
           gridLineColor: 'transparent',
-          gridLineWidth: 0,
           labels: {
             style: {
               fontSize: '12px',
@@ -102,6 +133,7 @@ export const baseOptions = {
             },
           }
   },
+  zAxis: {},
   legend: { enabled: false },
   credits: { enabled: false },
   plotOptions: {
@@ -109,12 +141,34 @@ export const baseOptions = {
             animation: {
               duration: 100,
             },
-            pointWidth: 0
+            pointWidth: 0,
+            minPointLength: 3,
+            events: {
+            },
           },
           bar: {
-                   shadow: false,
-                   borderColor: null,
-                 }
+                 shadow: false,
+                 borderColor: null,
+                 colorByPoint: true,
+                 groupPadding: 0,
+                 pointPadding: 0,
+                 dataLabels: {
+                   enabled: false,
+                 },
+                 events: {}
+          },
+        column: {
+                  shadow: false,
+                  borderColor: null,
+                  colorByPoint: true,
+                  groupPadding: 0,
+                  pointPadding: 0,
+                  borderWidth: 0,
+                  dataLabels: {
+                    enabled: false,
+                  },
+                  events: {},
+            }
         },
   series: [{ data: [] }]
 };

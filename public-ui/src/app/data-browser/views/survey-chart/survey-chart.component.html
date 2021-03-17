@@ -17,6 +17,7 @@
   </div>
 </div>
 <div class="chart" *ngIf="!displayGraphErrorMessage">
+  <app-biosex-chart-react *ngIf="isBioSexChart()" (click)="$event.stopPropagation()" [domain]="'survey'" [genderAnalysis]="selectedChartAnalysis" [genderCountAnalysis]="surveyCountAnalysis.genderCountAnalysis" [selectedResult]="selectedResult"></app-biosex-chart-react>
   <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedChartAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
              [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow" [surveyVersionAnalysis]="versionAnalysis"></app-chart>
 </div>

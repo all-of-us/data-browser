@@ -15,7 +15,7 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import { baseOptions } from '/w/public-ui/src/app/data-browser/charts/react-base-chart/base-chart.service';
+import { baseOptions, GENDER_STRATUM_MAP } from '/w/public-ui/src/app/data-browser/charts/react-base-chart/base-chart.service';
 
 const containerElementName = 'root';
 
@@ -26,6 +26,8 @@ interface State {
 interface Props {
     genderAnalysis: any;
     genderCountAnalysis: any;
+    selectedResult: any;
+    domain: string;
 }
 
 export class BioSexChartReactComponent extends React.Component<Props, State> {
@@ -40,6 +42,14 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   getChartOptions() {
+    if (this.props.domain === 'fitbit') {
+        this.getFitbitChartOptions();
+    } else {
+        this.getSurveyChartOptions();
+    }
+  }
+
+  getFitbitChartOptions() {
     baseOptions.chart.type = 'bar';
     baseOptions.plotOptions.series.pointWidth = 50;
     baseOptions.yAxis.title.text = 'Participant Count';
@@ -49,13 +59,150 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.yAxis.title.style.color = '#262262';
     baseOptions.yAxis.gridLineWidth = 1;
     baseOptions.yAxis.gridLineColor = '#F0F0F0';
-    const {categories, data} = this.prepCategoriesAndData();
+    const {categories, data} = this.prepFitbitCategoriesAndData();
     baseOptions.xAxis.categories = categories;
     baseOptions.series[0].data = data;
     this.setState({options: baseOptions});
   }
 
-  prepCategoriesAndData() {
+  getSurveyChartOptions() {
+    baseOptions.chart.type = 'column';
+    baseOptions.plotOptions.column.groupPadding = 0.40;
+    baseOptions.plotOptions.series.pointWidth = '50';
+    baseOptions.legend.enabled = true;
+    baseOptions.yAxis.gridLineWidth = 1;
+    baseOptions.yAxis.gridLineColor = "#ECF1F4";
+    baseOptions.title.style = {
+        'color': '#262262', 'font-family': 'GothamBook', 'font-size': '22px', 'font-weight': 'normal'
+    };
+    baseOptions.color = '#2691D0';
+    baseOptions.xAxis.title.text = this.props.genderAnalysis.analysisName;
+    baseOptions.yAxis.title.text = 'Participant Count';
+    this.props.genderAnalysis.results = this.props.genderAnalysis.results.filter(
+              r => r.stratum4 === this.props.selectedResult.stratum4);
+    const {categories, series} = this.prepSurveyCategoriesAndData();
+    baseOptions.xAxis.categories = categories;
+    baseOptions.yAxis.min = series[0].dataOnlyLT20 && series[0].dataOnlyLT20.length > 0 ? 0 : 20;
+    baseOptions.tooltip = {
+              followPointer: true,
+              outside: true,
+              formatter: function (tooltip) {
+                return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
+                + this.point.toolTipHelpText + '</div>';
+              },
+              useHTML: true,
+              enabled: true,
+              borderColor: '#262262',
+              borderRadius: '1px',
+              backgroundColor: '#FFFFFF',
+              style: {
+                color: '#302C71',
+              }};
+    if ('dataOnlyLT20' in series[0]) {
+        baseOptions.yAxis.labels = {
+            style: {
+                   fontSize: '14px',
+                   whiteSpace: 'wrap',
+                   textOverflow: 'ellipsis'
+            },
+            formatter: function () {
+                   const label = this.axis.defaultLabelFormatter.call(this);
+                   // Change <= 20 count to display '<= 20'
+                   if (label <= 20) {
+                    return '&#8804; 20';
+                   }
+                   return label;
+                   },
+                   useHTML: true
+            };
+    } else {
+        baseOptions.yAxis.labels = {
+            style: {
+                          fontSize: '12px',
+                          whiteSpace: 'wrap',
+                          textOverflow: 'ellipsis'
+                        },
+                        formatter: function () {
+                          const label = this.axis.defaultLabelFormatter.call(this);
+                          return label;
+                        },
+                        useHTML: true,
+        }
+    }
+    baseOptions.series = series;
+    this.setState({options: baseOptions});
+  }
+
+  prepSurveyCategoriesAndData() {
+    let data = [];
+    let cats = [];
+    let legendText = null;
+    // LOOP CREATES DYNAMIC CHART VARS
+    for (const a of this.props.genderAnalysis.results) {
+          // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
+          let analysisId = this.props.genderAnalysis.analysisId;
+          let analysisStratumName = null;
+          let toolTipHelpText = null;
+          let bsResult = null;
+          let color = '#2691D0';
+          let percentage = null;
+          let count;
+          let totalCount;
+          count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+          if (a.analysisStratumName === null) {
+            a.analysisStratumName = GENDER_STRATUM_MAP[a.stratum5];
+          }
+          analysisStratumName = a.analysisStratumName;
+          legendText = 'Sex Assigned At Birth, Selected Answered Count';
+          bsResult = this.props.genderCountAnalysis.results.
+                        filter(x => x.stratum2 === a.stratum5)[0];
+          totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
+                      percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
+                      toolTipHelpText = '<div class="chart-tooltip">' +
+                        '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
+                        ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
+                        percentage + '% </strong>' + 'of the total count of ' + analysisStratumName +
+                        ' as sex assigned at birth that answered this survey question (total count = <strong> '
+                        + totalCount + '</strong>) </div>';
+          data.push({
+            name: a.analysisStratumName
+            , y: a.countValue, color: color, sliced: true,
+            toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage,
+            analysisId: analysisId
+          });
+          cats.push(a.analysisStratumName);
+        }
+        data = data.sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          return 0;
+        }
+        );
+        cats = cats.sort((a, b) => {
+          if (a > b) {
+            return 1;
+          }
+          if (a < b) {
+            return -1;
+          }
+          return 0;
+        });
+        const temp = data.filter(x => x.y > 20);
+        const dataOnlyLT20 = temp.length > 0 ? false : true;
+        const series = [
+          {
+            color: '#2691D0',
+            legendColor: '#2691D0',
+            name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+          }];
+        return { categories: cats, series: series};
+  }
+
+  prepFitbitCategoriesAndData() {
     let pointData = [];
     let categoryArr = [];
     for (const concept of this.props.genderAnalysis.results) {
@@ -129,8 +276,10 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 export class BioSexWrapperComponent extends BaseReactWrapper {
   @Input() genderAnalysis: any;
   @Input() genderCountAnalysis: any;
+  @Input() selectedResult: any = null;
+  @Input() domain: string;
 
   constructor() {
-    super(BioSexChartReactComponent, ['genderAnalysis', 'genderCountAnalysis']);
+    super(BioSexChartReactComponent, ['genderAnalysis', 'genderCountAnalysis', 'selectedResult', 'domain']);
   }
 }
