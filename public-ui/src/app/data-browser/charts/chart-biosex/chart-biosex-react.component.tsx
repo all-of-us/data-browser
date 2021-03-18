@@ -54,6 +54,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.plotOptions.series.pointWidth = 50;
     baseOptions.yAxis.title.text = 'Participant Count';
     baseOptions.xAxis.title.text = '';
+    baseOptions.yAxis.title.style.fontSize = '14px';
     baseOptions.xAxis.title.style.fontSize = '14px';
     baseOptions.yAxis.title.style.color = '#262262';
     baseOptions.yAxis.gridLineColor = '#F0F0F0';
@@ -78,10 +79,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
               r => r.stratum4 === this.props.selectedResult.stratum4);
     const {categories, series} = this.prepSurveyCategoriesAndData();
     baseOptions.xAxis.categories = categories;
-    baseOptions.tooltip.formatter = function () {
-                return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
-                + this.point.toolTipHelpText + '</div>';
-              };
     if ('dataOnlyLT20' in series[0]) {
         baseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
         baseOptions.yAxis.labels = {
@@ -103,6 +100,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             };
     }
     baseOptions.series = series;
+    console.log(baseOptions);
     this.setState({options: baseOptions});
   }
 

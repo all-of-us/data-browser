@@ -27,40 +27,20 @@ export const baseOptions = {
   },
   color: '',
   tooltip: {
-      followPointer: true,
-      outside: true,
-      formatter: function () {
-        if (this.point.y <= 20) {
-          if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
-            this.point.toolTipHelpText =
-              this.point.toolTipHelpText.replace('Medical Concept, Count:</b> 20',
-                'Medical Concept, Count:</b> &le; 20');
-          } else if (this.point.analysisId === 'topConcepts' ||
-            this.point.analysisId === 'sources') {
-            this.point.toolTipHelpText =
-              this.point.toolTipHelpText.replace('Participant Count: <b>20',
-                'Participant Count: <b>&le; 20 </b>');
-          }
+        followPointer: true,
+        formatter: function (tooltip) {
+            return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
+            + this.point.toolTipHelpText + '</div>';
+        },
+        useHTML: true,
+        enabled: true,
+        borderColor: '#262262',
+        borderRadius: '1px',
+        backgroundColor: '#FFFFFF',
+        style: {
+            color: '#302C71',
         }
-        return '<div class="tooltip-container" style="position: absolute; z-index: 520;">'
-          + this.point.toolTipHelpText + '</div>';
       },
-      positioner: function(width, height, point) {
-        const columnWidth = this.chart.series[0].options.pointWidth;
-        return {
-          x: point.plotX + this.chart.plotLeft,
-          y: point.plotY - columnWidth / 2 + this.chart.plotTop - height
-        };
-      },
-      useHTML: true,
-      enabled: true,
-      borderColor: '#262262',
-      borderRadius: '1px',
-      backgroundColor: '#FFFFFF',
-      style: {
-        color: '#302C71',
-      }
-    },
     colors: ['#2691D0'],
     title: {
                text: '',
