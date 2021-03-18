@@ -10,8 +10,7 @@
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
   <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
     (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
-  <app-tooltip-react *ngIf="testReact" [tooltipKey]="'histogramUnitChartText'"></app-tooltip-react>
-  <app-tooltip [tooltipKey]="'histogramUnitChartText'" *ngIf="!testReact"></app-tooltip>
+  <app-tooltip-react [tooltipKey]="'histogramUnitChartText'"></app-tooltip-react>
   <div *ngIf="mixtureOfValues">
     <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"
          (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link measurement-filter-choice">{{su}}</div>
@@ -60,20 +59,6 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
     </div>
   </ng-container>
   <!-- IDENTITY COLUMN CHART -->
-  <ng-container *ngIf="showGraph === graphType.GenderIdentity">
-    <div class="chart" *ngIf="showGraph === graphType.GenderIdentity && analyses.genderIdentityAnalysis">
-      <app-chart [analysis]="analyses.genderIdentityAnalysis" [backgroundColor]="backgroundColor"
-        [chartTitle]="'Gender Identity'" [conceptName]="conceptName"> </app-chart>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="showGraph === graphType.RaceEthnicity">
-    <div class="chart" *ngIf="showGraph === graphType.RaceEthnicity && analyses.raceEthnicityAnalysis">
-      <app-chart [analysis]="analyses.raceEthnicityAnalysis" [backgroundColor]="backgroundColor"
-        [chartTitle]="'Race Ethnicity'" [conceptName]="conceptName"> </app-chart>
-    </div>
-  </ng-container>
-
   <!-- show age totals  if we want -->
   <!-- AGE COLUMN CHART -->
   <ng-container *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">

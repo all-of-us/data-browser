@@ -82,18 +82,12 @@
                   <app-highlight-react style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
                                         (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="testReact">
                   </app-highlight-react>
-                  <app-tooltip-react *ngIf="q.conceptId === 1586140 && testReact" [tooltipKey]="'raceEthnicityQuestionHelpText'"
+                  <app-tooltip-react *ngIf="q.conceptId === 1586140" [tooltipKey]="'raceEthnicityQuestionHelpText'"
                                      [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
                                      [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                  <app-tooltip-react *ngIf="q.conceptId === 1585838 && testReact" [tooltipKey]="'genderIdentityQuestionHelpText'"
+                  <app-tooltip-react *ngIf="q.conceptId === 1585838" [tooltipKey]="'genderIdentityQuestionHelpText'"
                                      [label]="getLabel(q,'Gender Identity Question Help Text')" [searchTerm]="searchText.value"
                                      [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                  <app-tooltip  *ngIf="q.conceptId === 1586140 && !testReact" [tooltipKey]="'raceEthnicityQuestionHelpText'"
-                               [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
-                               [action]="'Survey Page Tooltip'"></app-tooltip>
-                  <app-tooltip *ngIf="q.conceptId === 1585838 && !testReact" [tooltipKey]="'genderIdentityQuestionHelpText'"
-                               [label]="getLabel(q,'Gender Identity Question Help Text')" [searchTerm]="searchText.value"
-                               [action]="'Survey Page Tooltip'"></app-tooltip>
                 </div>
               </div>
                 <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
@@ -115,10 +109,8 @@
                         </ng-container>
                         <ng-container *ngIf="!isCopeSurvey">
                           Concept Code
-                          <app-tooltip-react *ngIf="testReact" [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
+                          <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
                                              [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                          <app-tooltip [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-                            [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'" *ngIf="!testReact"></app-tooltip>
                         </ng-container>
                       </div>
                       <div class=" info-text survey-tbl-d display-body">
@@ -128,19 +120,14 @@
                           Participant Count
                           <app-tooltip-react [tooltipKey]="'surveyParticipantCountHelpText'"
                                              [label]="getLabel(q,'Multiple Answers for this survey question help text')"
-                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'" *ngIf="testReact"></app-tooltip-react>
-                          <app-tooltip [tooltipKey]="'surveyParticipantCountHelpText'"
-                            [label]="getLabel(q,'Multiple Answers for this survey question help text')"
-                            [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'" *ngIf="!testReact"></app-tooltip>
+                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
                         </ng-container>
                       </div>
                       <div class=" info-text survey-tbl-d display-body">
                         <ng-container *ngIf="isCopeSurvey">
                           Concept Code
                           <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'" *ngIf="testReact"></app-tooltip-react>
-                          <app-tooltip [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-                            [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'" *ngIf="!testReact"></app-tooltip>
+                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
                         </ng-container>
                         <ng-container *ngIf="!isCopeSurvey">
                           % Answered
@@ -163,14 +150,10 @@
                           </app-highlight-search>
                           <app-highlight-react [text]="a.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
                           </app-highlight-react>
-                          <app-tooltip-react *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && testReact"
+                          <app-tooltip-react *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
                                              [tooltipKey]="'q2RolledCategoriesHelpText'"
                                              [label]="getLabel(q,'Other category Help Text')" [searchTerm]="searchText.value"
                                              [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                          <app-tooltip *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070' && !testReact"
-                            [tooltipKey]="'q2RolledCategoriesHelpText'"
-                            [label]="getLabel(q,'Other category Help Text')" [searchTerm]="searchText.value"
-                            [action]="'Survey Page Tooltip'"></app-tooltip>
                         </div>
                       </div>
                       <div class="survey-tbl-r-group">
@@ -254,14 +237,10 @@
                                 </ng-container>
                                 <ng-container *ngIf="!isCopeSurvey">
                                   <label class="participant-count">Participant Count</label>
-                                  <app-tooltip-react *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion.conceptId) > -1 && testReact"
+                                  <app-tooltip-react *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion.conceptId) > -1"
                                                      [tooltipKey]="'surveyParticipantCountHelpText'"
                                                      [label]="getLabel(subQuestion,'Multiple Answers for this survey question help text')"
                                                      [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                                  <app-tooltip *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion.conceptId) > -1 && !testReact"
-                                    [tooltipKey]="'surveyParticipantCountHelpText'"
-                                    [label]="getLabel(subQuestion,'Multiple Answers for this survey question help text')"
-                                    [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip>
                                 </ng-container>
                               </div>
                               <div class="survey-tbl-d display-body info-text">
@@ -269,10 +248,7 @@
                                   Concept Code
                                   <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'"
                                                      [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                                                     [action]="'Survey Page Tooltip'" *ngIf="testReact"></app-tooltip-react>
-                                  <app-tooltip [tooltipKey]="'conceptCodeHelpText'"
-                                    [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                                    [action]="'Survey Page Tooltip'" *ngIf="!testReact"></app-tooltip>
+                                                     [action]="'Survey Page Tooltip'"></app-tooltip-react>
                                 </ng-container>
                                 <ng-container *ngIf="!isCopeSurvey">
                                   <span>% Answered out of {{a.countValue}}</span>
@@ -377,16 +353,10 @@
                                         </ng-container>
                                         <ng-container *ngIf="!isCopeSurvey">
                                           <label class="participant-count">Participant Count</label>
-                                          <app-tooltip-react *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1 && testReact"
+                                          <app-tooltip-react *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1"
                                                              [tooltipKey]="'surveyParticipantCountHelpText'"
                                                              [label]="getLabel(q,'Multiple Answers for this survey question help text')"
                                                              [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                                          <app-tooltip
-                                            *ngIf="multipleAnswerSurveyQuestions.indexOf(subQuestion2.conceptId) > -1 && !testReact"
-                                            [tooltipKey]="'surveyParticipantCountHelpText'"
-                                            [label]="getLabel(q,'Multiple Answers for this survey question help text')"
-                                            [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'">
-                                          </app-tooltip>
                                         </ng-container>
                                       </div>
                                       <div class=" info-text survey-tbl-d display-body">
@@ -394,10 +364,7 @@
                                           Concept Code
                                           <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'"
                                                              [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                                                             [action]="'Survey Page Tooltip'" *ngIf="testReact"></app-tooltip-react>
-                                          <app-tooltip [tooltipKey]="'conceptCodeHelpText'"
-                                            [label]="getLabel(q,'Concept Code')" [searchTerm]="searchText.value"
-                                            [action]="'Survey Page Tooltip'" *ngIf="!testReact"></app-tooltip>
+                                                             [action]="'Survey Page Tooltip'"></app-tooltip-react>
                                         </ng-container>
                                         <ng-container *ngIf="!isCopeSurvey">
                                           <span>% Answered out of {{sqa.countValue}}</span>
