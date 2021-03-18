@@ -29,6 +29,17 @@ export const baseOptions = {
   tooltip: {
         followPointer: true,
         formatter: function (tooltip) {
+          if (this.point.y <= 20) {
+            if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
+              this.point.toolTipHelpText =
+                this.point.toolTipHelpText.replace('Medical Concept, Count:</b> 20',
+                  'Medical Concept, Count:</b> &le; 20');
+            } else if (this.point.analysisId === 'topConcepts' || this.point.analysisId === 'sources') {
+              this.point.toolTipHelpText =
+                this.point.toolTipHelpText.replace('Participant Count: <b>20',
+                  'Participant Count: <b>&le; 20 </b>');
+            }
+          }
             return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
             + this.point.toolTipHelpText + '</div>';
         },
