@@ -1,23 +1,13 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
-  EventEmitter,
   Input,
-  Output,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { environment } from 'environments/environment';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-import * as ReactDOM from 'react-dom';
-import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import { baseOptions, GENDER_STRATUM_MAP } from '../../../data-browser/charts/react-base-chart/base-chart.service';
-
-const containerElementName = 'root';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { baseOptions, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 
 interface State {
     options: any;
@@ -65,6 +55,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   getSurveyChartOptions() {
+    const {genderAnalysis: {analysisName, results}, selectedResult} = this.props;
     baseOptions.chart.type = 'column';
     baseOptions.plotOptions.column.groupPadding = 0.40;
     baseOptions.plotOptions.series.pointWidth = 50;
@@ -73,11 +64,11 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     baseOptions.title.style.color = '#262262';
     baseOptions.title.style.fontSize = '22px';
     baseOptions.color = '#2691D0';
-    baseOptions.xAxis.title.text = this.props.genderAnalysis.analysisName;
+    baseOptions.xAxis.title.text = analysisName;
     baseOptions.yAxis.title.text = 'Participant Count';
-    this.props.genderAnalysis.results = this.props.genderAnalysis.results.filter(
-              r => r.stratum4 === this.props.selectedResult.stratum4);
-    const {categories, series} = this.prepSurveyCategoriesAndData();
+    const filteredResults = results.filter(
+              r => r.stratum4 === selectedResult.stratum4);
+    const {categories, series} = this.prepSurveyCategoriesAndData(filteredResults);
     baseOptions.xAxis.categories = categories;
     if ('dataOnlyLT20' in series[0]) {
         baseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
@@ -100,85 +91,65 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             };
     }
     baseOptions.series = series;
-    console.log(baseOptions);
     this.setState({options: baseOptions});
   }
 
-  prepSurveyCategoriesAndData() {
+  prepSurveyCategoriesAndData(genderAnalysisResults) {
+    const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}} = this.props;
     let data = [];
     let cats = [];
-    let legendText = null;
+    const color = '#2691D0';
     // LOOP CREATES DYNAMIC CHART VARS
-    for (const a of this.props.genderAnalysis.results) {
+    for (const a of genderAnalysisResults) {
           // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
-          const analysisId = this.props.genderAnalysis.analysisId;
-          let analysisStratumName = null;
-          let toolTipHelpText = null;
-          let bsResult = null;
-          const color = '#2691D0';
-          let percentage = null;
-          let count;
-          let totalCount;
-          count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+          const bsResult = results.filter(x => x.stratum2 === a.stratum5)[0];
+          const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+          console.log(bsResult);
+          const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
           if (a.analysisStratumName === null) {
-            a.analysisStratumName = GENDER_STRATUM_MAP[a.stratum5];
+           a.analysisStratumName = GENDER_STRATUM_MAP[a.stratum5];
           }
-          analysisStratumName = a.analysisStratumName;
-          legendText = 'Sex Assigned At Birth, Selected Answered Count';
-          bsResult = this.props.genderCountAnalysis.results.
-                        filter(x => x.stratum2 === a.stratum5)[0];
-          totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
-                      percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-                      toolTipHelpText = '<div class="chart-tooltip">' +
-                        '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
-                        ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
-                        percentage + '% </strong>' + 'of the total count of ' +
-                        analysisStratumName + ' as sex assigned at birth that answered this ' +
-                        'survey question (total count ' +
-                        '= <strong> ' + totalCount + '</strong>) </div>';
+          const analysisStratumName = a.analysisStratumName;
+          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
+          const toolTipHelpText = '<div class="chart-tooltip">' +
+                  '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
+                  ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
+                  percentage + '% </strong>' + 'of the total count of ' +
+                  analysisStratumName + ' as sex assigned at birth that answered this ' +
+                  'survey question (total count ' +
+                  '= <strong> ' + totalCount + '</strong>) </div>';
           data.push({
-            name: a.analysisStratumName
-            , y: a.countValue, color: color, sliced: true,
-            toolTipHelpText: toolTipHelpText, medicalConceptPercentage: percentage,
+            name: a.analysisStratumName,
+            y: a.countValue,
+            color: color,
+            sliced: true,
+            toolTipHelpText: toolTipHelpText,
+            medicalConceptPercentage: percentage,
             analysisId: analysisId
           });
           cats.push(a.analysisStratumName);
         }
-        data = data.sort((a, b) => {
-          if (a.name > b.name) {
-            return 1;
-          }
-          if (a.name < b.name) {
-            return -1;
-          }
-          return 0;
-        }
-        );
-        cats = cats.sort((a, b) => {
-          if (a > b) {
-            return 1;
-          }
-          if (a < b) {
-            return -1;
-          }
-          return 0;
-        });
-        const temp = data.filter(x => x.y > 20);
-        const dataOnlyLT20 = temp.length > 0 ? false : true;
+        data.sort((a, b) => a.name.localeCompare(b.name));
+        cats.sort();
+        const dataOnlyLT20 = data.filter(x => x.y > 20).length === 0;
         const series = [
           {
-            color: '#2691D0',
-            legendColor: '#2691D0',
-            name: legendText, colorByPoint: false, data: data, dataOnlyLT20: dataOnlyLT20
+          color: color,
+          legendColor: color,
+          name: 'Sex Assigned At Birth, Selected Answered Count',
+          colorByPoint: false,
+          data: data,
+          dataOnlyLT20: dataOnlyLT20
           }];
         return { categories: cats, series: series};
   }
 
   prepFitbitCategoriesAndData() {
+    const {genderAnalysis: {results}} = this.props;
     let pointData = [];
     let categoryArr = [];
-    for (const concept of this.props.genderAnalysis.results) {
-          const genderCountResults = this.props.genderCountAnalysis.results.filter(r =>
+    for (const concept of results) {
+          const genderCountResults = results.filter(r =>
           r.stratum4 === concept.stratum2);
           let genderCountTooltip = '';
           let percentage;
@@ -209,25 +180,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           });
           categoryArr.push(concept.analysisStratumName);
         }
-        pointData = pointData.sort((a, b) => {
-          if (a.name > b.name) {
-            return 1;
-          }
-          if (a.name < b.name) {
-            return -1;
-          }
-          return 0;
-        }
-        );
-        categoryArr = categoryArr.sort((a, b) => {
-          if (a > b) {
-            return 1;
-          }
-          if (a < b) {
-            return -1;
-          }
-          return 0;
-        });
+        pointData.sort((a, b) => a.name.localeCompare(b.name));
+        categoryArr.sort();
         return { categories: categoryArr, data: pointData};
   }
 
@@ -241,7 +195,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
 @Component({
   selector: 'app-biosex-chart-react',
-  template: `<span #${containerElementName}></span>`,
+  template: `<span #root></span>`,
   styleUrls: ['./chart-biosex.component.css'],
   encapsulation: ViewEncapsulation.None,
 })

@@ -1,8 +1,3 @@
-import * as highCharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-
 export const GENDER_STRATUM_MAP = {
      '8507': 'Male',
      '8532': 'Female',
