@@ -29,7 +29,7 @@
           </div>
           <div class="fm-chart">
             <div class="display-body">Sex assigned at birth</div>
-            <chart-biosex [concepts]='selectedAnalyses.genderAnalysis' [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"></chart-biosex>
+            <app-biosex-chart-react [genderAnalysis]='selectedAnalyses.genderAnalysis' [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis" [domain]="'fitbit'"></app-biosex-chart-react>
           </div>
         </div>
         <div class="fm-body-bottom">

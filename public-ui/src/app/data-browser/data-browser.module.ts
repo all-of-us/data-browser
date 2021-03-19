@@ -12,6 +12,7 @@ import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
+import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
 import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
 import { ChartSurveyAnswersComponent } from './charts/chart-survey-answers/chart-survey-answers.component';
@@ -76,6 +77,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
+    BioSexWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent
@@ -100,6 +102,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
