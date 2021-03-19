@@ -3,11 +3,11 @@ import {
   Input,
   ViewEncapsulation
 } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { baseOptions, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { baseOptions, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 
 interface State {
     options: any;
@@ -96,8 +96,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
   prepSurveyCategoriesAndData(genderAnalysisResults) {
     const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}} = this.props;
-    let data = [];
-    let cats = [];
+    const data = [];
+    const cats = [];
     const color = '#2691D0';
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of genderAnalysisResults) {
@@ -146,8 +146,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
   prepFitbitCategoriesAndData() {
     const {genderAnalysis: {results}} = this.props;
-    let pointData = [];
-    let categoryArr = [];
+    const pointData = [];
+    const categoryArr = [];
     for (const concept of results) {
           const genderCountResults = results.filter(r =>
           r.stratum4 === concept.stratum2);
