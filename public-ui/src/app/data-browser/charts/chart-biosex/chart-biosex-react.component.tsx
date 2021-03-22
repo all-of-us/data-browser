@@ -116,9 +116,11 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of genderAnalysisResults) {
           // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
-          const bsResult = results.filter(x => x.stratum2 === (domain === 'ehr' ? a.stratum2 : a.stratum5))[0];
+          const bsResult = results.filter(x => x.stratum2 ===
+          (domain === 'ehr' ? a.stratum2 : a.stratum5))[0];
           const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
-          const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue.toLocaleString();
+          const totalCount = (bsResult.countValue <= 20) ? '&le; 20'
+          : bsResult.countValue.toLocaleString();
           if (a.analysisStratumName === null) {
            a.analysisStratumName = GENDER_STRATUM_MAP[(domain === 'ehr' ? a.stratum2 : a.stratum5)];
           }
@@ -129,7 +131,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             y: a.countValue,
             color: color,
             sliced: true,
-            toolTipHelpText: this.getTooltipHelpText(count, analysisStratumName, percentage, totalCount, domain),
+            toolTipHelpText: this.getTooltipHelpText(count, analysisStratumName, percentage,
+            totalCount, domain),
             medicalConceptPercentage: percentage,
             analysisId: analysisId
           });
