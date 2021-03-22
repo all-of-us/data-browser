@@ -78,8 +78,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   getEhrChartOptions() {
-    const {genderAnalysis: {analysisName, results}, genderCountAnalysis} = this.props;
-    const {categories, series} = this.prepEhrCategoriesAndData(results);
+    const {genderAnalysis: {analysisName, results}} = this.props;
+    const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(results);
     this.setCommonBioSexOptions(analysisName, categories, series);
     this.setState({options: baseOptions});
   }
@@ -103,89 +103,33 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     const {genderAnalysis: {analysisName, results}, selectedResult} = this.props;
     const filteredResults = results.filter(
               r => r.stratum4 === selectedResult.stratum4);
-    const {categories, series} = this.prepSurveyCategoriesAndData(filteredResults);
+    const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(filteredResults);
     this.setCommonBioSexOptions(analysisName, categories, series);
     this.setState({options: baseOptions});
   }
 
-  prepEhrCategoriesAndData(genderAnalysisResults) {
-    const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}} = this.props;
-    const data = [];
-    const cats = [];
-    const color = '#2691D0';
-// LOOP CREATES DYNAMIC CHART VARS
-    for (const a of genderAnalysisResults) {
-          // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
-          const bsResult = results.filter(x => x.stratum4 === a.stratum2)[0];
-          const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
-          const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
-          if (a.analysisStratumName === null) {
-           a.analysisStratumName = GENDER_STRATUM_MAP[a.stratum2];
-          }
-          const analysisStratumName = a.analysisStratumName;
-          const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-          const toolTipHelpText = '<div class="chart-tooltip">' +
-                '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
-                ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<strong>' + percentage +
-                '% </strong>' + 'of the total count of ' + analysisStratumName +
-                ' as sex assigned at birth that have EHR data (total count = <strong> '
-                + totalCount + '</strong>)' + '</div>';
-          data.push({
-            name: a.analysisStratumName,
-            y: a.countValue,
-            color: color,
-            sliced: true,
-            toolTipHelpText: toolTipHelpText,
-            medicalConceptPercentage: percentage,
-            analysisId: analysisId
-          });
-          cats.push(a.analysisStratumName);
-        }
-        data.sort((a, b) => a.name.localeCompare(b.name));
-        cats.sort();
-        const dataOnlyLT20 = data.filter(x => x.y > 20).length === 0;
-        const series = [
-          {
-          color: color,
-          legendColor: color,
-          name: 'Sex Assigned At Birth, Selected Answered Count',
-          colorByPoint: false,
-          data: data,
-          dataOnlyLT20: dataOnlyLT20
-          }];
-        return { categories: cats, series: series};
-  }
-
-  prepSurveyCategoriesAndData(genderAnalysisResults) {
-    const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}} = this.props;
+  prepEhrOrSurveyCategoriesAndData(genderAnalysisResults) {
+    const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}, domain} = this.props;
     const data = [];
     const cats = [];
     const color = '#2691D0';
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of genderAnalysisResults) {
           // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
-          const bsResult = results.filter(x => x.stratum2 === a.stratum5)[0];
+          const bsResult = results.filter(x => x.stratum2 === (domain === 'ehr' ? a.stratum2 : a.stratum5))[0];
           const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
-          console.log(bsResult);
-          const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
+          const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue.toLocaleString();
           if (a.analysisStratumName === null) {
-           a.analysisStratumName = GENDER_STRATUM_MAP[a.stratum5];
+           a.analysisStratumName = GENDER_STRATUM_MAP[(domain === 'ehr' ? a.stratum2 : a.stratum5)];
           }
           const analysisStratumName = a.analysisStratumName;
           const percentage = Number(((a.countValue / bsResult.countValue) * 100).toFixed());
-          const toolTipHelpText = '<div class="chart-tooltip">' +
-                  '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
-                  ' as sex assigned at birth with this survey answer and that is ' + '<strong>' +
-                  percentage + '% </strong>' + 'of the total count of ' +
-                  analysisStratumName + ' as sex assigned at birth that answered this ' +
-                  'survey question (total count ' +
-                  '= <strong> ' + totalCount + '</strong>) </div>';
           data.push({
             name: a.analysisStratumName,
             y: a.countValue,
             color: color,
             sliced: true,
-            toolTipHelpText: toolTipHelpText,
+            toolTipHelpText: this.getTooltipHelpText(count, analysisStratumName, percentage, totalCount, domain),
             medicalConceptPercentage: percentage,
             analysisId: analysisId
           });
@@ -204,6 +148,18 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           dataOnlyLT20: dataOnlyLT20
           }];
         return { categories: cats, series: series};
+  }
+
+  getTooltipHelpText(count, analysisStratumName, percentage, totalCount, domain) {
+    const toolTipHelpText = '<div class="chart-tooltip">' +
+        '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
+        ' as sex assigned at birth with this ' +
+        (domain === 'ehr' ? 'medical concept mentioned in their Electronic Health Record (EHR)' : 'survey answer') + ' and that is ' +
+        '<strong>' + percentage +
+        '% </strong>' + 'of the total count of ' + analysisStratumName +
+        ' as sex assigned at birth that ' + (domain === 'ehr' ? 'have EHR data' : 'answered this survey question') +
+        ' (total count = <strong> ' + totalCount + '</strong>)' + '</div>';
+    return toolTipHelpText;
   }
 
   prepFitbitCategoriesAndData() {
