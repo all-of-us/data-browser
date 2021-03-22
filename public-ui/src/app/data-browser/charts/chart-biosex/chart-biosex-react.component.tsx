@@ -11,6 +11,8 @@ import * as React from 'react';
 
 interface State {
     options: any;
+    genderAnalysis: any;
+    genderCountAnalysis: any;
 }
 
 interface Props {
@@ -24,11 +26,18 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {options: null};
+    this.state = {options: null, genderAnalysis: props.genderAnalysis, genderCountAnalysis: props.genderCountAnalysis};
   }
 
   componentDidMount() {
       this.getChartOptions();
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const newAnalysis = this.props.genderAnalysis;
+    if (newAnalysis !== this.state.genderAnalysis) {
+        this.setState({ genderAnalysis: newAnalysis }, this.getChartOptions);
+    }
   }
 
   getChartOptions() {
@@ -55,7 +64,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   getSurveyChartOptions() {
-    const {genderAnalysis: {analysisName, results}, selectedResult} = this.props;
+    const {genderAnalysis: {analysisName, results}} = this.state;
+    const {selectedResult} = this.props;
     baseOptions.chart.type = 'column';
     baseOptions.plotOptions.column.groupPadding = 0.40;
     baseOptions.plotOptions.series.pointWidth = 50;
@@ -95,7 +105,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   prepSurveyCategoriesAndData(genderAnalysisResults) {
-    const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}} = this.props;
+    const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}} = this.state;
     const data = [];
     const cats = [];
     const color = '#2691D0';
@@ -104,7 +114,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
           const bsResult = results.filter(x => x.stratum2 === a.stratum5)[0];
           const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
-          console.log(bsResult);
           const totalCount = (bsResult.countValue <= 20) ? '&le; 20' : bsResult.countValue;
           if (a.analysisStratumName === null) {
            a.analysisStratumName = GENDER_STRATUM_MAP[a.stratum5];
@@ -145,11 +154,11 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   prepFitbitCategoriesAndData() {
-    const {genderAnalysis: {results}} = this.props;
+    const {genderAnalysis: {results}, genderCountAnalysis} = this.state;
     const pointData = [];
     const categoryArr = [];
     for (const concept of results) {
-          const genderCountResults = results.filter(r =>
+          const genderCountResults = genderCountAnalysis.results.filter(r =>
           r.stratum4 === concept.stratum2);
           let genderCountTooltip = '';
           let percentage;
@@ -188,7 +197,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   render() {
       const {options} = this.state;
       return <div>
-        {options && <HighchartsReact highcharts={highCharts} options={options} />}
+        {options && <HighchartsReact highcharts={highCharts} options={options} updateArgs={[true]}/>}
       </div>;
     }
 }

@@ -106,6 +106,7 @@ export class FitbitViewComponent implements OnInit {
   }
 
   setGraphs(conceptObj) {
+    console.log('am i called abcc');
     this.analyses.forEach(concept => {
       if (conceptObj.conceptName === concept.conceptId) {
         this.selectedAnalyses = concept;
