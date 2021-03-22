@@ -26,7 +26,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {options: null, genderAnalysis: props.genderAnalysis, genderCountAnalysis: props.genderCountAnalysis};
+    this.state = {options: null, genderAnalysis: props.genderAnalysis,
+    genderCountAnalysis: props.genderCountAnalysis};
   }
 
   componentDidMount() {
@@ -197,7 +198,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   render() {
       const {options} = this.state;
       return <div>
-        {options && <HighchartsReact highcharts={highCharts} options={options} updateArgs={[true]}/>}
+        {options && <HighchartsReact highcharts={highCharts} options={options}
+        updateArgs={[true]}/>}
       </div>;
     }
 }

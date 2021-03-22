@@ -26,7 +26,8 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {options: null, ageAnalysis: props.ageAnalysis, ageCountAnalysis: props.ageCountAnalysis};
+    this.state = {options: null, ageAnalysis: props.ageAnalysis,
+    ageCountAnalysis: props.ageCountAnalysis};
   }
 
   componentDidMount() {
@@ -85,7 +86,8 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
             toolTipHelpText: '<div class="age-tooltip"><strong>' + count
                 + '</strong> participants were ages within range of <strong>' +
                 concept.analysisStratumName + '</strong> and that is <strong>' +
-                percentage + '% </strong> of all participants with the same criteria. (' + ageCountTooltip + ')</div>',
+                percentage + '% </strong> of all participants with the same criteria. (' +
+                ageCountTooltip + ')</div>',
             name: concept.analysisStratumName,
             y: concept.countValue,
             concept: '',
@@ -101,7 +103,8 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   render() {
     const {options} = this.state;
     return <div>
-          {options && <HighchartsReact highcharts={highCharts} options={options} updateArgs={[true]}/>}
+          {options && <HighchartsReact highcharts={highCharts} options={options}
+          updateArgs={[true]}/>}
     </div>;
   }
 }
