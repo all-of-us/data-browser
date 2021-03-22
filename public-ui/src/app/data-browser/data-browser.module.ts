@@ -10,8 +10,8 @@ import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactCom
 import { SharedModule } from '../shared/shared.module';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
-import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';
+import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
