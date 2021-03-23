@@ -11,8 +11,6 @@ import * as React from 'react';
 
 interface State {
     options: any;
-    genderAnalysis: any;
-    genderCountAnalysis: any;
 }
 
 interface Props {
