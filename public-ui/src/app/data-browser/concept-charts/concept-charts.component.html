@@ -54,9 +54,13 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- BIOLOGICAL P CHART -->
   <ng-container *ngIf="showGraph === graphType.BiologicalSex && analyses.genderAnalysis">
     <div class="chart">
-      <app-chart [analysis]="toDisplayGenderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
-        [chartTitle]="'Sex Assigned at Birth'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName">
-      </app-chart>
+      <app-biosex-chart-react *ngIf="reactChart; else angBSChart" [domain]="'ehr'" [genderAnalysis]="toDisplayGenderAnalysis"
+                              [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"></app-biosex-chart-react>
+      <ng-template #angBSChart>
+        <app-chart [analysis]="toDisplayGenderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
+                   [chartTitle]="'Sex Assigned at Birth'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName">
+        </app-chart>
+      </ng-template>
     </div>
   </ng-container>
   <!-- IDENTITY COLUMN CHART -->
