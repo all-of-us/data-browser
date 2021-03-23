@@ -35,7 +35,7 @@
         <div class="fm-body-bottom">
           <div class="fm-chart">
             <div class="display-body">Age when physical measurement taken</div>
-            <chart-age [concepts]='selectedAnalyses.ageAnalysis' [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis"></chart-age>
+            <app-age-chart-react [ageAnalysis]='selectedAnalyses.ageAnalysis' [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'fitbit'"></app-age-chart-react>
           </div>
         </div>
       </ng-container>

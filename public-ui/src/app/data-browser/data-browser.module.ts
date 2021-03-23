@@ -10,6 +10,7 @@ import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactCom
 import { SharedModule } from '../shared/shared.module';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
+import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
 import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
@@ -77,6 +78,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
+    AgeWrapperComponent,
     BioSexWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
@@ -102,6 +104,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    AgeWrapperComponent,
     BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,

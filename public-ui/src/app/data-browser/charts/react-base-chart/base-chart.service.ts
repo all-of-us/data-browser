@@ -91,6 +91,8 @@ export const baseOptions = {
     tickLength: 0,
     lineWidth: 1,
     lineColor: '#979797',
+    gridLineWidth: 1,
+    gridLineColor: 'transparent'
   },
   yAxis: {
           title: {

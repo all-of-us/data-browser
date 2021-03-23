@@ -31,6 +31,12 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
       this.getChartOptions();
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    if (prevProps.genderAnalysis !== this.props.genderAnalysis) {
+        this.getChartOptions();
+    }
+  }
+
   getChartOptions() {
     const {domain} = this.props;
     if (domain === 'fitbit') {
@@ -166,11 +172,11 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   prepFitbitCategoriesAndData() {
-    const {genderAnalysis: {results}} = this.props;
+    const {genderAnalysis: {results}, genderCountAnalysis} = this.props;
     const pointData = [];
     const categoryArr = [];
     for (const concept of results) {
-          const genderCountResults = results.filter(r =>
+          const genderCountResults = genderCountAnalysis.results.filter(r =>
           r.stratum4 === concept.stratum2);
           let genderCountTooltip = '';
           let percentage;
@@ -209,7 +215,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   render() {
       const {options} = this.state;
       return <div>
-        {options && <HighchartsReact highcharts={highCharts} options={options} />}
+        {options && <HighchartsReact highcharts={highCharts} options={options}
+        updateArgs={[true]}/>}
       </div>;
     }
 }
