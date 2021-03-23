@@ -7,14 +7,14 @@ const containerElementName = 'root';
 
 export const SurveyAnswerReactComponent = (class extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
     render(): any {
-        return <React.Fragment>tgus us</React.Fragment>
+        return <React.Fragment>tgus us</React.Fragment>;
 
     }
 }
-)
+);
 
 
 @Component({

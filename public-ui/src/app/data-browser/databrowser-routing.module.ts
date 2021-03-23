@@ -88,7 +88,7 @@ const routes: Routes = [
         },
         {
           path: 'introductory-videos',
-          component: IntroVidsWrapperComponent,          
+          component: IntroVidsWrapperComponent,
           data: {
             title: 'Introductory Videos',
             breadcrumb: {

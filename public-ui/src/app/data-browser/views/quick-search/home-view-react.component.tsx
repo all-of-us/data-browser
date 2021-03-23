@@ -151,7 +151,7 @@ export const dBHomeComponent = (
 @Component({
     // tslint:disable-next-line: component-selector
     selector: 'react-db-home',
-    template: `<span #${containerElementName}></span>`,
+    template: `<span class="db-container" #${containerElementName}></span>`,
     styleUrls: ['../../../styles/template.css', './quick-search.component.css'],
     encapsulation: ViewEncapsulation.None,
 })
