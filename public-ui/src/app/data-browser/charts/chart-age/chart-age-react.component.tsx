@@ -11,8 +11,6 @@ import * as React from 'react';
 
 interface State {
     options: any;
-    ageAnalysis: any;
-    ageCountAnalysis: any;
 }
 
 interface Props {
