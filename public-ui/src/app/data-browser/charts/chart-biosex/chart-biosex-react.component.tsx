@@ -26,8 +26,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {options: null, genderAnalysis: props.genderAnalysis,
-    genderCountAnalysis: props.genderCountAnalysis};
+    this.state = {options: null};
   }
 
   componentDidMount() {
@@ -35,9 +34,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const newAnalysis = this.props.genderAnalysis;
-    if (newAnalysis !== this.state.genderAnalysis) {
-        this.setState({ genderAnalysis: newAnalysis }, this.getChartOptions);
+    if (prevProps.genderAnalysis !== this.props.genderAnalysis) {
+        this.getChartOptions();
     }
   }
 
@@ -65,7 +63,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   getSurveyChartOptions() {
-    const {genderAnalysis: {analysisName, results}} = this.state;
+    const {genderAnalysis: {analysisName, results}} = this.props;
     const {selectedResult} = this.props;
     baseOptions.chart.type = 'column';
     baseOptions.plotOptions.column.groupPadding = 0.40;
@@ -155,7 +153,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   prepFitbitCategoriesAndData() {
-    const {genderAnalysis: {results}, genderCountAnalysis} = this.state;
+    const {genderAnalysis: {results}, genderCountAnalysis} = this.props;
     const pointData = [];
     const categoryArr = [];
     for (const concept of results) {

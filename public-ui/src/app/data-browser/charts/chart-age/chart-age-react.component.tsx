@@ -26,8 +26,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {options: null, ageAnalysis: props.ageAnalysis,
-    ageCountAnalysis: props.ageCountAnalysis};
+    this.state = {options: null};
   }
 
   componentDidMount() {
@@ -35,9 +34,8 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const newAnalysis = this.props.ageAnalysis;
-    if (newAnalysis !== this.state.ageAnalysis) {
-        this.setState({ ageAnalysis: newAnalysis }, this.getChartOptions);
+    if (prevProps.ageAnalysis !== this.props.ageAnalysis) {
+        this.getChartOptions();
     }
   }
 
