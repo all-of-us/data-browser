@@ -40,6 +40,7 @@ import { DbHomeWrapperComponent } from './views/quick-search/home-view-react.com
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { SurveyAnswerWrapperComponent } from './components/survey-answer/survey-answer-react.component'
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -78,7 +79,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
-    CdrVersionWrapperComponent
+    CdrVersionWrapperComponent,
+    SurveyAnswerWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -103,7 +105,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
-    CdrVersionWrapperComponent
+    CdrVersionWrapperComponent,
+    SurveyAnswerWrapperComponent
   ],
   providers: [
     ChartService,

@@ -88,9 +88,7 @@ const routes: Routes = [
         },
         {
           path: 'introductory-videos',
-          component:  environment.testReact ?
-                      IntroVidsWrapperComponent : /* else */
-                      IntroVidsComponent,
+          component: IntroVidsWrapperComponent,          
           data: {
             title: 'Introductory Videos',
             breadcrumb: {
