@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { baseOptions, AGE_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { AGE_STRATUM_MAP, baseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -43,7 +43,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
         this.getFitbitChartOptions();
     } else if (domain === 'ehr') {
         this.getEhrChartOptions();
-    } else if (domain === 'survey'){
+    } else if (domain === 'survey') {
         this.getSurveyChartOptions();
     } else {
         this.getPMChartOptions();
@@ -66,7 +66,8 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   getEhrChartOptions() {
       const {ageAnalysis: {analysisName, results}} = this.props;
       const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(results);
-      this.setCommonAgeChartOptions('Age at First Occurrence in Participant Record', categories, series);
+      this.setCommonAgeChartOptions('Age at First Occurrence in Participant Record',
+      categories, series);
       this.setState({options: baseOptions});
   }
 
@@ -127,10 +128,10 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
     const data = [];
     const cats = [];
     const color = '#2691D0';
-    var seriesName = '';
+    let seriesName = '';
     if (domain === 'ehr') {
         seriesName = 'Age at First Occurrence in Participant Record';
-    } else if (domain === 'survey'){
+    } else if (domain === 'survey') {
         seriesName = 'Age When Survey Was Taken';
     } else {
         seriesName = 'Age When Physical Measurement Was Taken';
@@ -180,7 +181,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
                       '<strong>' + count + '</strong>' + ' participants were ages within range ' +
                       analysisStratumName + ' when' + (domain === 'pm' ? ' physical measurement with' : '') +
                       ' this medical concept first occurred and that is <strong>' +
-                      percentage + '</strong>' + '% of all participants with the same criteria. (total count = <strong> '
+                      percentage + '</strong>' + '% of all participants with the same criteria. (Total Count = <strong> '
                       + totalCount + '</strong>) </div>';
       return toolTipHelpText;
   }

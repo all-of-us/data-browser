@@ -169,7 +169,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
         '<strong>' + percentage +
         '% </strong>' + 'of the total count of ' + analysisStratumName +
         ' as sex assigned at birth that ' + (domain === 'ehr' ? 'have EHR data' : 'answered this survey question') +
-        ' (total count = <strong> ' + totalCount + '</strong>)' + '</div>';
+        ' (Total Count = <strong> ' + totalCount + '</strong>)' + '</div>';
     return toolTipHelpText;
   }
 
