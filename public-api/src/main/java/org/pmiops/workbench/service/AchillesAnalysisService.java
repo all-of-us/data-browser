@@ -247,46 +247,44 @@ public class AchillesAnalysisService {
                     List<Analysis> unitSeperateAnalysis = new ArrayList<>();
                     if (conceptDistResults != null) {
                         Multimap<String, DbAchillesResultDist> conceptDistResultsByUnit = Multimaps.index(conceptDistResults.get(conceptId), DbAchillesResultDist::getStratum2);
-                        if (conceptDistResultsByUnit.keySet().size() > 0) {
-                            for (String unit : conceptDistResultsByUnit.keySet()) {
-                                if (results.containsKey(unit)) {
-                                    Analysis unitGenderAnalysis = achillesMapper.makeCopyAnalysis(aa);
+                        for (String unit : conceptDistResultsByUnit.keySet()) {
+                            if (results.containsKey(unit)) {
+                                Analysis unitGenderAnalysis = achillesMapper.makeCopyAnalysis(aa);
+                                unitGenderAnalysis.setResults(results.get(unit));
+                                unitGenderAnalysis.setUnitName(unit);
+                                if (!unit.equalsIgnoreCase("no unit")) {
+                                    processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, unit, new ArrayList<>(conceptDistResultsByUnit.get(unit)), "numeric");
+                                } else {
+                                    //Seperate text and numeric values
+                                    ArrayList<AchillesResult> textValues = new ArrayList<>();
+                                    ArrayList<AchillesResult> numericValues = new ArrayList<>();
+                                    // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
+                                    for (AchillesResult result : unitGenderAnalysis.getResults()) {
+                                        if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
+                                            result.setMeasurementValueType("numeric");
+                                            numericValues.add(result);
+                                        } else {
+                                            result.setMeasurementValueType("text");
+                                            textValues.add(result);
+                                        }
+                                    }
+
+                                    if (textValues.size() > 0) {
+                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "text");
+                                    }
+                                    if (numericValues.size() > 0) {
+                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "numeric");
+                                    }
                                     unitGenderAnalysis.setResults(results.get(unit));
                                     unitGenderAnalysis.setUnitName(unit);
-                                    if (!unit.equalsIgnoreCase("no unit")) {
-                                        processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, unit, new ArrayList<>(conceptDistResultsByUnit.get(unit)), "numeric");
-                                    } else {
-                                        //Seperate text and numeric values
-                                        ArrayList<AchillesResult> textValues = new ArrayList<>();
-                                        ArrayList<AchillesResult> numericValues = new ArrayList<>();
-                                        // In case no unit has a mix of text and numeric values, only display text values as mix does not make sense to user.
-                                        for (AchillesResult result : unitGenderAnalysis.getResults()) {
-                                            if (result.getStratum5() == null || result.getStratum5().trim().isEmpty()) {
-                                                result.setMeasurementValueType("numeric");
-                                                numericValues.add(result);
-                                            } else {
-                                                result.setMeasurementValueType("text");
-                                                textValues.add(result);
-                                            }
-                                        }
 
-                                        if (textValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "text");
-                                        }
-                                        if (numericValues.size() > 0) {
-                                            processMeasurementGenderMissingBins(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), unitGenderAnalysis, conceptId, null, null, "numeric");
-                                        }
-                                        unitGenderAnalysis.setResults(results.get(unit));
-                                        unitGenderAnalysis.setUnitName(unit);
-
-                                    }
-                                    unitSeperateAnalysis.add(unitGenderAnalysis);
                                 }
+                                unitSeperateAnalysis.add(unitGenderAnalysis);
                             }
-                        } else {
-                            unitSeperateAnalysis.add(aa);
                         }
-                    } 
+                    } else {
+                        unitSeperateAnalysis.add(aa);
+                    }
                     addGenderStratum(aa, 3, conceptId, null);
                     isMeasurement = true;
                     conceptAnalysis.setMeasurementValueGenderAnalysis(unitSeperateAnalysis);
@@ -740,7 +738,7 @@ public class AchillesAnalysisService {
         return binWidth;
     }
 
-    public List<SurveyMetadata> mapAnalysesToQuestions(List<Analysis> analyses, List<SurveyMetadata> questions, Long surveyConceptId) {
+    public List<SurveyMetadata> mapAnalysesToQuestions(List<Analysis> analyses, List<SurveyMetadata> questions) {
         Map<Long, Analysis> analysisMap = analyses.stream().collect(Collectors.toMap(Analysis::getAnalysisId, Analysis -> Analysis));
         Multimap<String, AchillesResult> countAnalysisResultsByQuestion = Multimaps.index(
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
@@ -748,6 +746,8 @@ public class AchillesAnalysisService {
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
         Multimap<String, AchillesResult> ageAnalysisResultsByQuestion = Multimaps.index(
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> versionAnalysisResultsByQuestion = Multimaps.index(
+                analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
 
         for(SurveyMetadata q: questions) {
             Analysis countAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID));
@@ -771,16 +771,12 @@ public class AchillesAnalysisService {
                         ageAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setAgeAnalysis(aa);
             }
-            if (surveyConceptId == 1333342L) {
-                Multimap<String, AchillesResult> versionAnalysisResultsByQuestion = Multimaps.index(
-                        analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
-                Analysis versionAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID));
-                if (versionAnalysis != null) {
-                    Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
-                    aa.setResults(new ArrayList<>(
-                            versionAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
-                    q.setVersionAnalysis(aa);
-                }
+            Analysis versionAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID));
+            if (versionAnalysis != null) {
+                Analysis aa = achillesMapper.makeCopyAnalysis(versionAnalysis);
+                aa.setResults(new ArrayList<>(
+                        versionAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
+                q.setVersionAnalysis(aa);
             }
         }
         return questions;
