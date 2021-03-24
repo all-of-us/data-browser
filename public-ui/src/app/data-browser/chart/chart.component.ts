@@ -40,11 +40,14 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   }
   // Render new chart on changes
   ngOnChanges(changes) {
+    console.log('changed changed changed');
+    console.log(this.analysis);
     if ((this.analysis && this.analysis.results && this.analysis.results.length) ||
       (this.concepts && this.concepts.length) ||
       (this.surveyAnalysis && this.surveyAnalysis.results &&
         this.surveyAnalysis.results.length)) {
       // HC automatically redraws when changing chart options
+      console.log('changed changed changed changed changed');
       this.chartOptions = this.hcChartOptions();
     }
   }

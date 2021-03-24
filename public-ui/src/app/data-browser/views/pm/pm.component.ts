@@ -23,6 +23,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   bsChartTitle = 'Sex Assigned At Birth';
   domainCountAnalysis: any;
   testReact: boolean;
+  reactChart: boolean;
   // Todo put constants in a class for use in other views
   chartType = 'bar';
 
@@ -63,6 +64,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.testReact = environment.testReact;
+    this.reactChart = environment.reactChart;
     this.searchText = localStorage.getItem('searchText');
     this.pmGroups = this.dbc.pmGroups;
 
@@ -127,6 +129,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   showMeasurement(group: any, concept: any) {
     this.selectedGroup = group;
     this.selectedConcept = concept;
+    console.log(this.selectedConcept);
     if (this.selectedConcept && this.selectedConcept.analyses &&
       this.selectedConcept.analyses.measurementGenderCountAnalysis) {
       this.unitNames = [];
@@ -145,6 +148,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
         this.setAnalysis();
       }
     }
+    console.log(this.selectedConcept);
     this.dbc.triggerEvent('conceptClick', 'Physical Measurement', 'Click',
       concept.conceptName + ' - ' + 'Physical Measurements', this.searchText, null);
   }

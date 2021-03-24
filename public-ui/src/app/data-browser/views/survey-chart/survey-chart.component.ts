@@ -129,4 +129,9 @@ export class SurveyChartComponent implements OnInit {
   public isBioSexChart() {
     return this.reactChart && this.selectedChartAnalysis.analysisId === 3111;
   }
+
+  public isAgeChart() {
+   return this.reactChart && this.selectedChartAnalysis.analysisId === 3112;
+  }
+
 }
