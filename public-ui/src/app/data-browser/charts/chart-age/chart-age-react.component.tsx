@@ -64,7 +64,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   }
 
   getEhrChartOptions() {
-      const {ageAnalysis: {analysisName, results}} = this.props;
+      const {ageAnalysis: {results}} = this.props;
       const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(results);
       this.setCommonAgeChartOptions('Age at First Occurrence in Participant Record',
       categories, series);
@@ -72,14 +72,14 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   }
 
   getPMChartOptions() {
-      const {ageAnalysis: {analysisName, results}} = this.props;
+      const {ageAnalysis: {results}} = this.props;
       const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(results);
       this.setCommonAgeChartOptions('Age When Physical Measurement Was Taken', categories, series);
       this.setState({options: baseOptions});
   }
 
   getSurveyChartOptions() {
-      const {ageAnalysis: {analysisName, results}, selectedResult} = this.props;
+      const {ageAnalysis: {results}, selectedResult} = this.props;
       const filteredResults = results.filter(
                 r => r.stratum4 === selectedResult.stratum4);
       const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(filteredResults);
@@ -141,7 +141,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
           // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
           const ageResult = results.filter(x => (domain === 'survey' ? x.stratum2 : x.stratum4) ===
           (domain === 'survey' ? a.stratum5 : a.stratum2))[0];
-          const count = (a.countValue <= 20) ? '&le; 20' : a.countValue;
+          const count = (a.countValue <= 20) ? '&le; 20' : a.countValue.toLocaleString();
           const totalCount = (ageResult.countValue <= 20) ? '&le; 20'
           : ageResult.countValue.toLocaleString();
           if (a.analysisStratumName === null) {
@@ -177,13 +177,12 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipHelpText(count, analysisStratumName, percentage, totalCount, domain) {
-      const toolTipHelpText = '<div class="chart-tooltip">' +
+      return '<div class="chart-tooltip">' +
                       '<strong>' + count + '</strong>' + ' participants were ages within range ' +
                       analysisStratumName + ' when' + (domain === 'pm' ? ' physical measurement with' : '') +
                       ' this medical concept first occurred and that is <strong>' +
                       percentage + '</strong>' + '% of all participants with the same criteria. (Total Count = <strong> '
                       + totalCount + '</strong>) </div>';
-      return toolTipHelpText;
   }
 
   prepFitbitCategoriesAndData() {

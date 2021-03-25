@@ -72,11 +72,9 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             formatter: function () {
                    const label = this.axis.defaultLabelFormatter.call(this);
                    // Change <= 20 count to display '<= 20'
-                   if (series[0].dataOnlyLT20) {
-                    if (label <= 20) {
-                        return '&#8804; 20';
-                    }
-                    }
+                   if (series[0].dataOnlyLT20 && label <= 20) {
+                    return '&#8804; 20';
+                   }
                    return label;
                    },
                    useHTML: true
