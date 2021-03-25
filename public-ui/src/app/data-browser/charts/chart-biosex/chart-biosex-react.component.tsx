@@ -72,7 +72,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             formatter: function () {
                    const label = this.axis.defaultLabelFormatter.call(this);
                    // Change <= 20 count to display '<= 20'
-                   if (label <= 20) {
+                   if (series[0].dataOnlyLT20 && label <= 20) {
                     return '&#8804; 20';
                    }
                    return label;
@@ -167,7 +167,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
         '<strong>' + percentage +
         '% </strong>' + 'of the total count of ' + analysisStratumName +
         ' as sex assigned at birth that ' + (domain === 'ehr' ? 'have EHR data' : 'answered this survey question') +
-        ' (total count = <strong> ' + totalCount + '</strong>)' + '</div>';
+        ' (Total Count = <strong> ' + totalCount + '</strong>)' + '</div>';
     return toolTipHelpText;
   }
 

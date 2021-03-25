@@ -9,6 +9,17 @@ export const GENDER_STRATUM_MAP = {
      '1585848': 'Intersex',
 };
 
+export const AGE_STRATUM_MAP = {
+    '2': '18-29',
+    '3': '30-39',
+    '4': '40-49',
+    '5': '50-59',
+    '6': '60-69',
+    '7': '70-79',
+    '8': '80-89',
+    '9': '89+'
+};
+
 
 export const baseOptions = {
   lang: { thousandsSep: ',' },

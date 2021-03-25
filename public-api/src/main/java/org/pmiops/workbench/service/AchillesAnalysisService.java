@@ -375,11 +375,11 @@ public class AchillesAnalysisService {
             String analysisStratumName=ar.getAnalysisStratumName();
             if (analysisStratumName == null || analysisStratumName.equals("")) {
                 if (stratum == 2 && ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
-                        uniqueAgeDeciles.add(ar.getStratum2());
-                        ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum2()));
+                    uniqueAgeDeciles.add(ar.getStratum2());
+                    ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum2()));
                 } else if (stratum == 4 && ar.getStratum4() != null && !ar.getStratum4().equals("0")) {
-                        uniqueAgeDeciles.add(ar.getStratum4());
-                        ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum4()));
+                    uniqueAgeDeciles.add(ar.getStratum4());
+                    ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum4()));
                 }
             }
         }
