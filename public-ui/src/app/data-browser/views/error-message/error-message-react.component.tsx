@@ -6,7 +6,6 @@ import {
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { ClrIcon } from 'app/utils/clr-icon';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 interface Props {
     dataType: string;
