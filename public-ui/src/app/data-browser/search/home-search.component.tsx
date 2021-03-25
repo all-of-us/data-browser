@@ -4,7 +4,7 @@ import { TooltipReactComponent } from '../components/tooltip/tooltip-react.compo
 
 const searchStyle = `
 .search-title {
-    margin: 0.6em 0.5em 0.1em;
+    margin-bottom: 0.5em;
     display: flex;
     flex-direction: row;
 }
@@ -109,6 +109,8 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
 
     render() {
         const {onChange, onClear, value} = this.props;
+        console.log(value,'value');
+        
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
         return (

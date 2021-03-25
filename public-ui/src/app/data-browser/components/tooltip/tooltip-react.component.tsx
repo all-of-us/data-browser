@@ -82,6 +82,8 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
   tooltipHover() {
     triggerEvent('tooltipsHover', 'Tooltips', 'Hover', this.props.label,
         this.props.searchTerm, this.props.action);
+        console.log(this.props,'son');
+        
   }
 
   render() {

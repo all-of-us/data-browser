@@ -107,12 +107,13 @@ export const dBHomeComponent = (
         }
 
         render() {
-            return <React.Fragment>
+            return <React.Fragment> <div style={{margin: "0 1em"}}>
             <SearchComponent value={this.state.searchWord} onChange={(val) => {
             this.handleChange(val); }}
             onClear={() => { this.handleChange(''); }} />
+            </div>
             <section className='results'>
-                <h5 className='result-heading secondary-display'> EHR Domains:</h5>
+                <h5 className='result-heading secondary-display'> EHR Domains:</h5> <TooltipReactComponent label="'Homepage Tooltip Hover'" searchTerm={this.state.searchWord} action="'Tooltip Home Page EHR Domains'" tooltipKey="'ehrDomainHelpText'" />
                 <div id='survey' className='result-boxes'>
                     {
                         this.state.domainInfo.map((domain, index) => {
@@ -151,7 +152,7 @@ export const dBHomeComponent = (
 @Component({
     // tslint:disable-next-line: component-selector
     selector: 'react-db-home',
-    template: `<span class="db-container" #${containerElementName}></span>`,
+    template: `<span #${containerElementName}></span>`,
     styleUrls: ['../../../styles/template.css', './quick-search.component.css'],
     encapsulation: ViewEncapsulation.None,
 })
