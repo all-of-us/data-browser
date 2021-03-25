@@ -3,10 +3,10 @@ import {
   Input,
   ViewEncapsulation
 } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { ClrIcon } from 'app/utils/clr-icon';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ClrIcon } from 'app/utils/clr-icon';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 
 interface Props {
     dataType: string;
