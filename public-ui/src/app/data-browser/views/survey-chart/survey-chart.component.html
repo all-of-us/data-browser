@@ -3,12 +3,9 @@
        [ngClass]="{'active':graphToShow === g}" tabindex="0" (keydown.enter)="selectGraphType(g,question,answer)"  (click)="$event.stopPropagation();selectGraphType(g,question,answer)"
        class="survey-chart-choice">
     <span>{{g}}</span>
-    <app-tooltip-react *ngIf="testReact" [tooltipKey]="getTooltipKey(g)"
+    <app-tooltip-react [tooltipKey]="getTooltipKey(g)"
                        [label]="surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g"
                        [searchTerm]="searchTerm" [action]="'Survey Chart Tooltip'"></app-tooltip-react>
-    <app-tooltip *ngIf="!testReact" [tooltipKey]="getTooltipKey(g)"
-    [label]="surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g"
-    [searchTerm]="searchTerm" [action]="'Survey Chart Tooltip'"></app-tooltip>
   </div>
 </div>
 <div *ngIf="displayGraphErrorMessage">
