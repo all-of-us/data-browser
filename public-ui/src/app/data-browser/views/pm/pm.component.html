@@ -13,9 +13,13 @@
         <div class="db-card-header">
           <div class="group-name">{{selectedGroup.groupName}}</div>
           <div class="bs-title" *ngIf="this.selectedConcept && this.selectedConcept.analyses && this.selectedConcept.analyses.measurementValueGenderAnalysis">{{bsChartTitle}}
-            <app-tooltip-react [tooltipKey]="pmValueChartHelpText"
+            <app-tooltip-react *ngIf="testReact"
+                               [tooltipKey]="'pmValueChartHelpText'"
                                [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                                [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip-react>
+            <app-tooltip [tooltipKey]="'pmValueChartHelpText'"
+                         [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
+                         [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip>
           </div>
           <div class="group-option" *ngIf="selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1">
             <button *ngFor="let c of selectedGroup.concepts" [ngClass]="{active:selectedConcept === c}"
@@ -69,13 +73,20 @@
           <!-- show Age totals -->
           <div class="chart-item age-chart" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
             <div>{{ageChartTitle}}
-              <app-tooltip-react [tooltipKey]="pmAgeChartHelpText"
+              <app-tooltip-react *ngIf="testReact"
+                                 [tooltipKey]="'pmAgeChartHelpText'"
                                  [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                                  [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip-react>
+              <app-tooltip *ngIf="!testReact" [tooltipKey]="'pmAgeChartHelpText'"
+              [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
+                           [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>
             </div>
-            <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
-              [backgroundColor]="backgroundColor" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis">
-            </app-chart>
+            <app-age-chart-react *ngIf="reactChart; else angAgeChart" [ageAnalysis]="selectedConcept.analyses.ageAnalysis" [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'pm'"></app-age-chart-react>
+            <ng-template #angAgeChart>
+              <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
+                         [backgroundColor]="backgroundColor" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis">
+              </app-chart>
+            </ng-template>
           </div>
 
           <!-- Todo wait on design for further dev -->

@@ -53,9 +53,13 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- BIOLOGICAL P CHART -->
   <ng-container *ngIf="showGraph === graphType.BiologicalSex && analyses.genderAnalysis">
     <div class="chart">
-      <app-chart [analysis]="toDisplayGenderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
-        [chartTitle]="'Sex Assigned at Birth'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName">
-      </app-chart>
+      <app-biosex-chart-react *ngIf="reactChart; else angBSChart" [domain]="'ehr'" [genderAnalysis]="toDisplayGenderAnalysis"
+                              [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"></app-biosex-chart-react>
+      <ng-template #angBSChart>
+        <app-chart [analysis]="toDisplayGenderAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
+                   [chartTitle]="'Sex Assigned at Birth'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName">
+        </app-chart>
+      </ng-template>
     </div>
   </ng-container>
   <!-- IDENTITY COLUMN CHART -->
@@ -63,8 +67,12 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- AGE COLUMN CHART -->
   <ng-container *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">
     <div class="chart">
+      <app-age-chart-react *ngIf="reactChart; else angAgeChart" [domain]="'ehr'" [ageAnalysis]="toDisplayAgeAnalysis"
+                           [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis"></app-age-chart-react>
+      <ng-template #angAgeChart>
       <app-chart [analysis]="toDisplayAgeAnalysis" [pointWidth]="30" [backgroundColor]="backgroundColor"
         [domainType]="'ehr'" [domainCountAnalysis]="domainCountAnalysis" [conceptName]="conceptName"> </app-chart>
+      </ng-template>
     </div>
   </ng-container>
 

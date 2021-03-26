@@ -55,9 +55,11 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   domainCountAnalysis: any;
   conceptName: string;
   testReact: boolean;
+  reactChart: boolean;
 
   constructor(private api: DataBrowserService, public dbc: DbConfigService) {
     this.testReact = environment.testReact;
+    this.reactChart = environment.reactChart;
   }
 
   loading() {
