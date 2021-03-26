@@ -99,8 +99,8 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
             y: a.countValue,
             color: color,
             sliced: true,
-            toolTipHelpText: this.getTooltipHelpText(a.stratum4, count, analysisStratumName, percentage,
-            version),
+            toolTipHelpText: this.getTooltipHelpText(a.stratum4, count,
+            analysisStratumName, percentage, version),
             version: a.analysisStratumName,
             analysisId: analysisId
           });
@@ -126,7 +126,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
                        '<span><strong>' + percentage + '</strong>' +
                        '% of all participants that took this version of survey</span>' +
                        '<span> Total Count = <strong> ' + version.participants +
-                       ' </strong></span></div>';;
+                       ' </strong></span></div>';
   }
 
   render() {
