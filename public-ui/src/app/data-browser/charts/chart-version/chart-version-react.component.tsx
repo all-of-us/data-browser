@@ -150,6 +150,7 @@ export class VersionChartWrapperComponent extends BaseReactWrapper {
   @Input() selectedResult: any = null;
 
   constructor() {
-    super(VersionChartReactComponent, ['versionAnalysis', 'surveyVersionAnalysis', 'selectedResult']);
+    super(VersionChartReactComponent, ['versionAnalysis', 'surveyVersionAnalysis',
+    'selectedResult']);
   }
 }
