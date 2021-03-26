@@ -133,4 +133,9 @@ export class SurveyChartComponent implements OnInit {
   public isVersionChart() {
     return this.reactChart && this.selectedChartAnalysis.analysisId === 3113;
   }
+
+  public isAgeChart() {
+   return this.reactChart && this.selectedChartAnalysis.analysisId === 3112;
+  }
+
 }
