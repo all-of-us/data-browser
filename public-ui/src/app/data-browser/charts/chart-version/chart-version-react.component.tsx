@@ -111,10 +111,10 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           {
           color: color,
           legendColor: color,
-          name: 'Survey Version Count',
           colorByPoint: false,
           data: data,
-          dataOnlyLT20: dataOnlyLT20
+          dataOnlyLT20: dataOnlyLT20,
+          showInLegend: false
           }];
         return { categories: cats, series: series};
   }
