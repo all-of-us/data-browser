@@ -3,8 +3,9 @@ import {
   Input,
   ViewEncapsulation
 } from '@angular/core';
-import * as React from 'react';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import * as React from 'react';
+
 const containerElementName = 'root';
 
 export function highlightSearchTerm(searchTerm: string, text: string, highlightColor: string) {
