@@ -1,14 +1,13 @@
 
 import { DOCUMENT, Location } from '@angular/common';
-import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
   ActivatedRoute,
   Event as RouterEvent,
-  NavigationEnd, NavigationStart,
+  NavigationEnd,
   Router,
 } from '@angular/router';
-import {ServerConfigService} from 'app/services/server-config.service';
 import {initializeAnalytics} from 'app/utils/google_analytics';
 import { environment } from 'environments/environment';
 import {filter} from 'rxjs/operators';
@@ -34,9 +33,7 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) private doc: any,
     /* Angular's */
     private activatedRoute: ActivatedRoute,
-    private locationService: Location,
     private router: Router,
-    private serverConfigService: ServerConfigService,
     private titleService: Title
   ) { }
 
@@ -100,39 +97,6 @@ export class AppComponent implements OnInit {
       currentRoute.data.subscribe(value =>
         this.titleService.setTitle(`${value.title} | ${this.baseTitle}`));
     }
-  }
-
-  /**
-   * Setting the Google Analytics ID here.
-   * This first injects Google's gtm script via iife.
-   */
-  private setTagManager() {
-    const s = this.doc.createElement('script');
-    s.type = 'text/javascript';
-    s.innerHTML =
-      '(function(w,d,s,l,i){' +
-      'w[l]=w[l]||[];' +
-      'w[l].push({\'gtm.start\':new Date().getTime(),event:\'gtm.js\'});' +
-      'var f=d.getElementsByTagName(s)[0];' +
-      'var j=d.createElement(s);' +
-      'var dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';' +
-      'j.async=true;' +
-      'j.src=\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl+ ' +
-      '\'&gtm_auth=' + environment.gtmAuth + '&gtm_preview=' + environment.gtmPreview +
-      '&gtm_cookies_win=x\';' +
-      'f.parentNode.insertBefore(j,f);' +
-      '})' +
-      '(window, document, \'script\', \'dataLayer\', \'' + environment.gtmId + '\');';
-    const head = this.doc.getElementsByTagName('head')[0];
-    head.appendChild(s);
-    // Set gtag manager in body in case script in head is not activated
-    const script = this.doc.createElement('noscript');
-    script.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=`
-      + environment.gtmId + '&gtm_auth=' + environment.gtmAuth +
-      `&gtm_preview=` + environment.gtmPreview + `&gtm_cookies_win=x"` +
-      `height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
-    const body = this.doc.getElementsByTagName('body')[0];
-    body.appendChild(script);
   }
 
   onActivate() {

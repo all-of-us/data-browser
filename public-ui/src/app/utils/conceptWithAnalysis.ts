@@ -1,4 +1,4 @@
-import {ConceptAnalysis} from '../../publicGenerated/model/conceptAnalysis';
+import {ConceptAnalysis} from 'publicGenerated/model/conceptAnalysis';
 
 export class ConceptWithAnalysis {
   conceptId: string;
