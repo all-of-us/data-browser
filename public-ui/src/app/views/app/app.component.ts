@@ -22,7 +22,6 @@ export const overriddenPublicUrlKey = 'publicApiUrlOverride';
 export class AppComponent implements OnInit {
   overriddenUrl: string = null;
   private baseTitle: string;
-  private overriddenPublicUrl: string = null;
   public noHeaderMenu = false;
 
 
@@ -37,7 +36,6 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('searchText');
     localStorage.removeItem('treeHighlight');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
-    this.overriddenPublicUrl = localStorage.getItem(overriddenPublicUrlKey);
 
 
     window['setPublicApiUrl'] = (url: string) => {
@@ -45,10 +43,8 @@ export class AppComponent implements OnInit {
         if (!url.match(/^https?:[/][/][a-z0-9.:-]+$/)) {
           throw new Error('URL should be of the form "http[s]://host.example.com[:port]"');
         }
-        this.overriddenPublicUrl = url;
         localStorage.setItem(overriddenPublicUrlKey, url);
       } else {
-        this.overriddenPublicUrl = null;
         localStorage.removeItem(overriddenPublicUrlKey);
       }
       window.location.reload();
