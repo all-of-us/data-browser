@@ -3,9 +3,9 @@ import {
     Input,
     ViewEncapsulation
 } from '@angular/core';
-import * as React from 'react';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { ClrIcon } from '.app/utils/clr-icon';
+import { ClrIcon } from 'app/utils/clr-icon';
+import * as React from 'react';
 
 const containerElementName = 'root';
 

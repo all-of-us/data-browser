@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
-import { HighchartsChartModule } from 'highcharts-angular';
-import 'highcharts/highcharts-more';
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from 'app/shared/shared.module';
+import { HighchartsChartModule } from 'highcharts-angular';
+import 'highcharts/highcharts-more';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';

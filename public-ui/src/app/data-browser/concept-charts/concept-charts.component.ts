@@ -1,13 +1,13 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { DbConfigService } from 'app/utils/db-config.service';
+import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { DataBrowserService } from 'publicGenerated/api/dataBrowser.service';
 import { AchillesResult } from 'publicGenerated/model/achillesResult';
 import { Analysis } from 'publicGenerated/model/analysis';
 import { Concept } from 'publicGenerated/model/concept';
 import { ConceptAnalysis } from 'publicGenerated/model/conceptAnalysis';
-import { DbConfigService } from 'app/utils/db-config.service';
-import { GraphType } from 'app/utils/enum-defs';
 
 @Component({
   selector: 'app-concept-charts',
