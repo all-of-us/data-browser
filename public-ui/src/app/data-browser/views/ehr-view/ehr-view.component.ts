@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TooltipService } from 'app/data-browser/services/tooltip.service';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
