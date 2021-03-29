@@ -32,6 +32,7 @@ import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
+import { ErrorMessageWrapperComponent } from './views/error-message/error-message-react.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
@@ -82,7 +83,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     BioSexWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
-    CdrVersionWrapperComponent
+    CdrVersionWrapperComponent,
+    ErrorMessageWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -109,7 +111,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
-    CdrVersionWrapperComponent
+    CdrVersionWrapperComponent,
+    ErrorMessageWrapperComponent
   ],
   providers: [
     ChartService,

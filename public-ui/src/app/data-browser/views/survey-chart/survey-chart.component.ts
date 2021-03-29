@@ -82,7 +82,9 @@ export class SurveyChartComponent implements OnInit {
         break;
     }
     this.selectedChartAnalysis = q.selectedAnalysis;
-    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined ||
+        (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
+        answer.stratum3).length === 0);
     // sends information to google analyitics
     this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
       'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
