@@ -2,10 +2,10 @@ import {
   Component,
   ViewEncapsulation
 } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 const containerElementName = 'root';

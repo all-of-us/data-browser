@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { DbConfigService } from 'app/utils/db-config.service';
 import * as Highcharts from 'highcharts';
 import { Analysis } from 'publicGenerated/model/analysis';
 import { Concept } from 'publicGenerated/model/concept';
-import { DbConfigService } from 'app/utils/db-config.service';
 import { DomainType } from 'app/utils/enum-defs';
 
 @Component({
@@ -75,8 +75,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       options.title.text = this.chartTitle;
     }
     const maxYAxis = options.series.length > 1 ?
-      Math.max.apply(Math, options.series[1]['data'].map(function(o) { return o.y; })) :
-      Math.max.apply(Math, options.series[0]['data'].map(function(o) { return o.y; }));
+      Math.max.apply(Math, options.series[1]['data'].map((o) => { return o.y; })) :
+      Math.max.apply(Math, options.series[0]['data'].map((o) => { return o.y; }));
     return {
       chart: options.chart,
       style: {
@@ -496,7 +496,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         analysisStratumName = a.analysisStratumName;
         toolTipHelpText = '<div class="chart-tooltip">' +
           '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
-          ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<strong>' + percentage +
+          ' as sex assigned at birth with this medical concept mentioned in their Electronic' +
+          ' Health Record (EHR) and that is ' + '<strong>' + percentage +
           '% </strong>' + 'of the total count of ' + analysisStratumName +
           ' as sex assigned at birth that have EHR data (total count = <strong> '
           + totalCount + '</strong>)' + '</div>';
@@ -936,7 +937,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const cats = [];
     const color = this.dbc.COLUMN_COLOR;
     const order = ['8507', '8532', '0'];
-    this.analysis.results.sort(function(a, b) {
+    this.analysis.results.sort((a, b) => {
       return order.indexOf(a.stratum3) - order.indexOf(b.stratum3);
     });
     for (const a of this.analysis.results) {
