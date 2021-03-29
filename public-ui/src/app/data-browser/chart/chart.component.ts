@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DbConfigService } from 'app/utils/db-config.service';
+import { DomainType } from 'app/utils/enum-defs';
 import * as Highcharts from 'highcharts';
 import { Analysis } from 'publicGenerated/model/analysis';
 import { Concept } from 'publicGenerated/model/concept';
-import { DomainType } from 'app/utils/enum-defs';
 
 @Component({
   selector: 'app-chart',
@@ -75,8 +75,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       options.title.text = this.chartTitle;
     }
     const maxYAxis = options.series.length > 1 ?
-      Math.max.apply(Math, options.series[1]['data'].map((o) => { return o.y; })) :
-      Math.max.apply(Math, options.series[0]['data'].map((o) => { return o.y; }));
+      Math.max.apply(Math, options.series[1]['data'].map((o) => { o.y })) :
+      Math.max.apply(Math, options.series[0]['data'].map((o) => { o.y }));
     return {
       chart: options.chart,
       style: {
@@ -871,13 +871,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const d of data) {
       cats.push(d.name);
     }
-    // Todo we will use this later in drill downs and such
-    const seriesClick = event => {
-      const thisCtrl = event.point.options.thisCtrl;
-      // Todo handle click events
-      // console.log('Histogram plot Clicked point :',  event.point);
-      // thisCtrl.resultClicked.emit(event.point.result);
-    };
     // Unit for measurements is in stratum5
     if (this.analysis.unitName === 'cm') {
       this.analysis.unitName = 'centimeter';
