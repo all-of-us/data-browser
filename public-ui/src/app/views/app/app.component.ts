@@ -1,5 +1,4 @@
-
-import { DOCUMENT, Location } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
@@ -29,8 +28,6 @@ export class AppComponent implements OnInit {
 
 
   constructor(
-    /* Ours */
-    @Inject(DOCUMENT) private doc: any,
     /* Angular's */
     private activatedRoute: ActivatedRoute,
     private router: Router,

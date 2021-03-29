@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
-import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-survey-chart',
