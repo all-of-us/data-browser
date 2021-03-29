@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TooltipService } from 'app/data-browser/services/tooltip.service';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
-import { DataBrowserService } from 'publicGenerated';
-import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-survey-chart',
