@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DbConfigService} from '../../../utils/db-config.service';
-import {TooltipService} from '../../services/tooltip.service';
+import {DbConfigService} from 'app/utils/db-config.service';
+import {TooltipService} from 'app/data-browser/services/tooltip.service';
 
 @Component({
   selector: 'app-tooltip',

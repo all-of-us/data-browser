@@ -1,16 +1,11 @@
 import {
-    AfterViewInit,
     Component,
-    ElementRef,
-    EventEmitter,
     Input,
-    Output,
-    ViewChild,
     ViewEncapsulation
 } from '@angular/core';
 import * as React from 'react';
-import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import { ClrIcon } from '../../../utils/clr-icon';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { ClrIcon } from '.app/utils/clr-icon';
 
 const containerElementName = 'root';
 
