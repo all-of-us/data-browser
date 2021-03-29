@@ -1,12 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TooltipService } from 'app/data-browser/services/tooltip.service';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
+import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { environment } from 'environments/environment';
+import { AchillesResult, DataBrowserService } from 'publicGenerated';
 
 @Component({
   selector: 'app-survey-chart',
   templateUrl: './survey-chart.component.html',
-  styleUrls: ['./survey-chart.component.css', 'app/styles/template.css', 'app/styles/page.css']
+  styleUrls: ['./survey-chart.component.css', '../../../styles/template.css', '../../../styles/page.css']
 })
 export class SurveyChartComponent implements OnInit {
   @Input() graphButtons: string[];
@@ -23,11 +26,14 @@ export class SurveyChartComponent implements OnInit {
   displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   graphToShow: string;
+  private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
   selectedChartAnalysis: any;
   testReact: boolean;
   reactChart: boolean;
-  constructor(public dbc: DbConfigService) {
+  constructor(private tooltipService: TooltipService,
+    public dbc: DbConfigService,
+    private api: DataBrowserService) {
 
   }
 
