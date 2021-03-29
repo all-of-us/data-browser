@@ -1,18 +1,10 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
-  EventEmitter,
   Input,
-  Output,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import * as fp from 'lodash/fp';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-import * as ReactDOM from 'react-dom';
-import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 const containerElementName = 'root';
 
 export function highlightSearchTerm(searchTerm: string, text: string, highlightColor: string) {
