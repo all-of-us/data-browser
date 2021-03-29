@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TooltipService } from 'app/data-browser/services/tooltip.service';
-import { ConceptGroup } from 'app/utils/conceptGroup';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { environment } from 'environments/environment';
 import {
