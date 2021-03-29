@@ -1,6 +1,6 @@
 import { Component, Injector, Input, } from '@angular/core';
-import * as Highcharts from 'highcharts';
 import { ChartService } from 'app/data-browser/charts/chart.service';
+import * as Highcharts from 'highcharts';
 
 @Component({
   selector: 'app-chart-base',

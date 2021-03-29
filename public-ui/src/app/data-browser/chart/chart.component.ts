@@ -75,8 +75,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       options.title.text = this.chartTitle;
     }
     const maxYAxis = options.series.length > 1 ?
-      Math.max.apply(Math, options.series[1]['data'].map((o) => { o.y })) :
-      Math.max.apply(Math, options.series[0]['data'].map((o) => { o.y }));
+      Math.max.apply(Math, options.series[1]['data'].map(o => o.y )) :
+      Math.max.apply(Math, options.series[0]['data'].map(o => o.y ));
     return {
       chart: options.chart,
       style: {
