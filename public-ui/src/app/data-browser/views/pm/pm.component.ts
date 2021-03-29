@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TooltipService } from 'app/data-browser/services/tooltip.service';
 import { ConceptGroup } from 'app/utils/conceptGroup';
 import { ConceptWithAnalysis } from 'app/utils/conceptWithAnalysis';
 import { DbConfigService } from 'app/utils/db-config.service';
