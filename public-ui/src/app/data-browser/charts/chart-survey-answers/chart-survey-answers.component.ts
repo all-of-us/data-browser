@@ -1,6 +1,6 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { ChartBaseComponent } from 'app/data-browser/charts/chart-base/chart-base.component';
 import * as Highcharts from 'highcharts';
-import { ChartBaseComponent } from '../chart-base/chart-base.component';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -91,7 +91,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       padding: 0,
       color: '#262262',
       shadow: false,
-      formatter: function () {
+      formatter: function() {
         const count = (this.point.y <= 20) ? '&le; 20' : this.point.y;
         const percentage = ((count / this.point.total) * 100).toFixed();
         this.point.toolTipHelpText = `
@@ -121,16 +121,9 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
   }
 
   public mapOrder(array: any[], order: any[], key: string) {
-    array.sort(function (a, b) {
-      const A = a[key], B = b[key];
-      if (order.indexOf(A) > order.indexOf(B)) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
-    return array;
-  }
+    array.sort((a, b) =>
+     order.indexOf(b[key]) - order.indexOf(a[key])
+    );
 
   public conceptDist(sortedAnswers: any) {
     let tempArr: any[] = [];
