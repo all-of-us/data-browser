@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TooltipService } from 'app/data-browser/services/tooltip.service';
+import { Router } from '@angular/router';
 import {DbConfigService} from 'app/utils/db-config.service';
 import {GraphType} from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
@@ -43,8 +42,7 @@ export class FmhViewComponent implements OnInit {
   domainId: string;
   private subscriptions: ISubscription[] = [];
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService,
-              private router: Router) {
+  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
   }
 
   ngOnInit() {
