@@ -4,7 +4,7 @@
   </span>
 </div>
 <div class="graph-error-message" *ngIf="displayGraphErrorMessage">
-  <app-error-message [dataType]="'chart'"></app-error-message>
+  <app-error-message-react [dataType]="'chart'"></app-error-message-react>
 </div>
 <ng-container *ngIf="!displayGraphErrorMessage">
 <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
