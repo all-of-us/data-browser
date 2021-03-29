@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ClrIcon } from '../../utils/clr-icon';
-import { TooltipReactComponent } from '../components/tooltip/tooltip-react.component';
+import { ClrIcon } from 'app/utils/clr-icon';
+import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 
 const searchStyle = `
 .search-title {

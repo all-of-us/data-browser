@@ -122,7 +122,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
 
   public mapOrder(array: any[], order: any[], key: string) {
     array.sort((a, b) =>
-     order.indexOf(b[key]) - order.indexOf(a[key])
+     order.indexOf(a[key]) - order.indexOf(b[key])
     );
   }
 
