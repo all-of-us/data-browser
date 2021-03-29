@@ -124,6 +124,7 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
     array.sort((a, b) =>
      order.indexOf(b[key]) - order.indexOf(a[key])
     );
+  }
 
   public conceptDist(sortedAnswers: any) {
     let tempArr: any[] = [];

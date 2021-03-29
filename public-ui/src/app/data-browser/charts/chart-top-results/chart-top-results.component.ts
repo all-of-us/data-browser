@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, OnChanges, Output } from '@angular/core';
-import { Concept } from '../../../../publicGenerated/model/concept';
-import { ChartBaseComponent } from '../chart-base/chart-base.component';
+import { Concept } from 'publicGenerated/model/concept';
+import { ChartBaseComponent } from 'app/data-browser/charts/chart-base/chart-base.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
