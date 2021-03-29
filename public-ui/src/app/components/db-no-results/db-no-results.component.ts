@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { DbConfigService } from 'app/utils/db-config.service';
 import {DataBrowserService} from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
-import { DbConfigService } from 'app/utils/db-config.service';
 
 @Component({
   selector: 'app-db-no-results',
