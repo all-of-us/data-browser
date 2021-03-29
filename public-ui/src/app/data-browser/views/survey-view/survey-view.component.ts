@@ -6,8 +6,7 @@ import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
 import {
-  AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, SurveyMetadata,
-  SurveyModule
+  DataBrowserService, DomainInfosAndSurveyModulesResponse, SurveyMetadata, SurveyModule
 } from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
