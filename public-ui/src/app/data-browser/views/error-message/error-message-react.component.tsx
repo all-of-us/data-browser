@@ -27,7 +27,7 @@ export class ErrorMessageReactComponent extends React.Component<Props, {}> {
                             style={{width: 26, height: 26}} />
           </div>
           <span className='alert-text'>
-          {dataType === 'data' ? 'Sorry, the data are currently unavailable. Please try refreshing the page or returning home'.
+          { dataType === 'data' ? 'Sorry, the data are currently unavailable. Please try refreshing the page or returning home.'
           : 'Sorry, the chart cannot be displayed. Please try refreshing the page'}
          </span>
         </div>
