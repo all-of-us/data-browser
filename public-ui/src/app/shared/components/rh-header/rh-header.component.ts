@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HeaderFooterService } from 'app/data-browser/services/header-footer.service';
+import { HeaderFooterService } from 'app/shared/services/header-footer.service';
 import { environment } from 'environments/environment';
 @Component({
   selector: 'app-rh-header',
