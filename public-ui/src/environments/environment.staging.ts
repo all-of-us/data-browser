@@ -9,5 +9,6 @@ export const environment = {
   gtmAuth: 'v5hD4oOWvct1sYdnaNp7yQ',
   gtmPreview: 'env-28',
   reactHomeView: false,
+  reactChart: false,
   testReact: false
 };

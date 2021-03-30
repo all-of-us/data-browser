@@ -30,6 +30,7 @@ export class SurveyChartComponent implements OnInit {
   genderPercentageAnalysis: any;
   selectedChartAnalysis: any;
   testReact: boolean;
+  reactChart: boolean;
   constructor(private tooltipService: TooltipService,
     public dbc: DbConfigService,
     private api: DataBrowserService) {
@@ -38,6 +39,7 @@ export class SurveyChartComponent implements OnInit {
 
   ngOnInit() {
     this.testReact = environment.testReact;
+    this.reactChart = environment.reactChart;
     if (this.isCopeSurvey) {
       this.graphToShow = GraphType.SurveyVersion;
     } else {
@@ -80,7 +82,9 @@ export class SurveyChartComponent implements OnInit {
         break;
     }
     this.selectedChartAnalysis = q.selectedAnalysis;
-    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined ||
+        (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
+        answer.stratum3).length === 0);
     // sends information to google analyitics
     this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
       'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'
@@ -123,4 +127,13 @@ export class SurveyChartComponent implements OnInit {
     }
     return false;
   }
+
+  public isBioSexChart() {
+    return this.reactChart && this.selectedChartAnalysis.analysisId === 3111;
+  }
+
+  public isAgeChart() {
+   return this.reactChart && this.selectedChartAnalysis.analysisId === 3112;
+  }
+
 }

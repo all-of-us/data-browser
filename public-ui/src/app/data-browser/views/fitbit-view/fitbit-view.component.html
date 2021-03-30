@@ -7,9 +7,7 @@
           <div tabindex="0" (keydown.enter)="setGraphs(menuItem)"  (click)="setGraphs(menuItem)" class="fm-menu-item"
             [ngClass]="{'active': selectedItem == menuItem.displayName}"> <i class="fas {{menuItem.icon}}"></i>
             <div class="fm-menu-item-display"><span>{{menuItem.displayName}}</span>
-              <app-tooltip-react *ngIf="testReact"
-                                 [tooltipKey]="menuItem.tooltipKey"></app-tooltip-react>
-              <app-tooltip [tooltipKey]="menuItem.tooltipKey" *ngIf="!testReact"></app-tooltip>
+              <app-tooltip-react [tooltipKey]="menuItem.tooltipKey"></app-tooltip-react>
             </div>
           </div>
         </div>
@@ -29,13 +27,13 @@
           </div>
           <div class="fm-chart">
             <div class="display-body">Sex assigned at birth</div>
-            <chart-biosex [concepts]='selectedAnalyses.genderAnalysis' [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"></chart-biosex>
+            <app-biosex-chart-react [genderAnalysis]='selectedAnalyses.genderAnalysis' [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis" [domain]="'fitbit'"></app-biosex-chart-react>
           </div>
         </div>
         <div class="fm-body-bottom">
           <div class="fm-chart">
             <div class="display-body">Age when physical measurement taken</div>
-            <chart-age [concepts]='selectedAnalyses.ageAnalysis' [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis"></chart-age>
+            <app-age-chart-react [ageAnalysis]='selectedAnalyses.ageAnalysis' [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'fitbit'"></app-age-chart-react>
           </div>
         </div>
       </ng-container>

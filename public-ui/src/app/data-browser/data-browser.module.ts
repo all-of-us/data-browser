@@ -10,8 +10,10 @@ import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactCom
 import { SharedModule } from '../shared/shared.module';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
+import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';
 import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
 import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
+import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
 import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
 import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
 import { ChartSurveyAnswersComponent } from './charts/chart-survey-answers/chart-survey-answers.component';
@@ -31,6 +33,7 @@ import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
+import { ErrorMessageWrapperComponent } from './views/error-message/error-message-react.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
@@ -77,10 +80,13 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
+    AgeWrapperComponent,
+    BioSexWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
-    SurveyAnswerWrapperComponent
+    SurveyAnswerWrapperComponent,
+    ErrorMessageWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -102,11 +108,14 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    AgeWrapperComponent,
+    BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
-    SurveyAnswerWrapperComponent
+    SurveyAnswerWrapperComponent,
+    ErrorMessageWrapperComponent
   ],
   providers: [
     ChartService,

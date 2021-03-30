@@ -83,13 +83,6 @@ app-spinner {
     flex-flow: column;
 }
 
-.search-icon {
-    margin-left: 3%;
-}
-.clear-icon {
-    margin-right: 3%;
-}
-
 .search-title .info-icon {
     margin: 0.6em 0.5em 0.1em;
 }

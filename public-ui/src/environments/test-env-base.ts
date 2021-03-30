@@ -5,6 +5,7 @@ export const testEnvironmentBase = {
   publicApiUrl: 'https://api-dot-aou-db-test.appspot.com',
   researchAllOfUsUrl: 'https://researchallofus.org',
   gaId: 'UA-116298798-4',
-  reactHomeView: true,
-  testReact: true
+  reactHomeView: false,
+  reactChart: true,
+  testReact: false
 };
