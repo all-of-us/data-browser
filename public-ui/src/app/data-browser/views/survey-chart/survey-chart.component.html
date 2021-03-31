@@ -14,10 +14,7 @@
   </div>
 </div>
 <div class="chart" *ngIf="!displayGraphErrorMessage">
-  <app-biosex-chart-react *ngIf="isBioSexChart(); else angChart" (click)="$event.stopPropagation()" [domain]="'survey'" [genderAnalysis]="selectedChartAnalysis" [genderCountAnalysis]="surveyCountAnalysis.genderCountAnalysis" [selectedResult]="selectedResult"></app-biosex-chart-react>
-  <app-age-chart-react *ngIf="isAgeChart(); else angChart" (click)="$event.stopPropagation()" [domain]="'survey'" [ageAnalysis]="selectedChartAnalysis" [ageCountAnalysis]="surveyCountAnalysis.ageCountAnalysis" [selectedResult]="selectedResult"></app-age-chart-react>
-  <ng-template #angChart>
-    <app-chart (click)="$event.stopPropagation()" [surveyAnalysis]="selectedChartAnalysis" [selectedResult]="selectedResult" [surveyCountAnalysis]="surveyCountAnalysis"
-               [backgroundColor]="'#ECF1F4'" [domainType]="'surveys'" [chartTitle]="question.graphToShow" [surveyVersionAnalysis]="versionAnalysis"></app-chart>
-  </ng-template>
+  <app-biosex-chart-react *ngIf="isBioSexChart()" (click)="$event.stopPropagation()" [domain]="'survey'" [genderAnalysis]="selectedChartAnalysis" [genderCountAnalysis]="surveyCountAnalysis.genderCountAnalysis" [selectedResult]="selectedResult"></app-biosex-chart-react>
+  <app-age-chart-react *ngIf="isAgeChart()" (click)="$event.stopPropagation()" [domain]="'survey'" [ageAnalysis]="selectedChartAnalysis" [ageCountAnalysis]="surveyCountAnalysis.ageCountAnalysis" [selectedResult]="selectedResult"></app-age-chart-react>
+  <app-version-chart-react *ngIf="isVersionChart()" (click)="$event.stopPropagation()" [versionAnalysis]="selectedChartAnalysis" [surveyVersionAnalysis]="versionAnalysis" [selectedResult]="selectedResult"></app-version-chart-react>
 </div>

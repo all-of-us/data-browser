@@ -18,6 +18,7 @@ import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.compone
 import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
 import { ChartSurveyAnswersComponent } from './charts/chart-survey-answers/chart-survey-answers.component';
 import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
+import { VersionChartWrapperComponent } from './charts/chart-version/chart-version-react.component';
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
@@ -84,6 +85,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
+    VersionChartWrapperComponent,
     ErrorMessageWrapperComponent
   ],
   exports: [
@@ -112,6 +114,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
+    VersionChartWrapperComponent,
     ErrorMessageWrapperComponent
   ],
   providers: [

@@ -26,13 +26,11 @@ export class SurveyChartComponent implements OnInit {
   genderPercentageAnalysis: any;
   selectedChartAnalysis: any;
   testReact: boolean;
-  reactChart: boolean;
   constructor(public dbc: DbConfigService) {
   }
 
   ngOnInit() {
     this.testReact = environment.testReact;
-    this.reactChart = environment.reactChart;
     if (this.isCopeSurvey) {
       this.graphToShow = GraphType.SurveyVersion;
     } else {
@@ -122,11 +120,15 @@ export class SurveyChartComponent implements OnInit {
   }
 
   public isBioSexChart() {
-    return this.reactChart && this.selectedChartAnalysis.analysisId === 3111;
+    return this.selectedChartAnalysis.analysisId === 3111;
+  }
+
+  public isVersionChart() {
+    return this.selectedChartAnalysis.analysisId === 3113;
   }
 
   public isAgeChart() {
-   return this.reactChart && this.selectedChartAnalysis.analysisId === 3112;
+   return this.selectedChartAnalysis.analysisId === 3112;
   }
 
 }

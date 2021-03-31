@@ -9,6 +9,20 @@ export const GENDER_STRATUM_MAP = {
      '1585848': 'Intersex',
 };
 
+export const VERSION_STRATUM_MAP = {
+    'January': '1',
+    'February': '2',
+    'March': '3',
+    'April': '4',
+    'May': '5',
+    'June': '6',
+    'July/August': '7',
+    'September': '9',
+    'October': '10',
+    'November': '11',
+    'December': '12'
+};
+
 export const AGE_STRATUM_MAP = {
     '2': '18-29',
     '3': '30-39',
