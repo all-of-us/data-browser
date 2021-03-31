@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { DbConfigService } from 'app/utils/db-config.service';
+import { DomainType } from 'app/utils/enum-defs';
 import * as Highcharts from 'highcharts';
-import { reduce } from 'rxjs/operators';
-import { Analysis } from '../../../publicGenerated/model/analysis';
-import { Concept } from '../../../publicGenerated/model/concept';
-import { DbConfigService } from '../../utils/db-config.service';
-import { DomainType } from '../../utils/enum-defs';
+import { Analysis } from 'publicGenerated/model/analysis';
+import { Concept } from 'publicGenerated/model/concept';
 
 @Component({
   selector: 'app-chart',
@@ -76,8 +75,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       options.title.text = this.chartTitle;
     }
     const maxYAxis = options.series.length > 1 ?
-      Math.max.apply(Math, options.series[1]['data'].map(function (o) { return o.y; })) :
-      Math.max.apply(Math, options.series[0]['data'].map(function (o) { return o.y; }));
+      Math.max.apply(Math, options.series[1]['data'].map(o => o.y )) :
+      Math.max.apply(Math, options.series[0]['data'].map(o => o.y ));
     return {
       chart: options.chart,
       style: {
@@ -90,7 +89,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: {
         followPointer: true,
         outside: true,
-        formatter: function (tooltip) {
+        formatter: function(tooltip) {
           return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
           + this.point.toolTipHelpText + '</div>';
         },
@@ -121,7 +120,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             enabled: true,
             style: this.dbc.DATA_LABEL_STYLE,
             distance: -50,
-            formatter: function () {
+            formatter: function() {
               if (this.percentage < 1) {
                 return this.point.name + ' ' + Number(this.percentage).toFixed(1) + '%';
               }
@@ -174,7 +173,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
               whiteSpace: 'wrap',
               textOverflow: 'ellipsis'
             },
-            formatter: function () {
+            formatter: function() {
               const label = this.axis.defaultLabelFormatter.call(this);
               // Change <= 20 count to display '<= 20'
               if (label <= 20) {
@@ -189,7 +188,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
               whiteSpace: 'wrap',
               textOverflow: 'ellipsis'
             },
-            formatter: function () {
+            formatter: function() {
               const label = this.axis.defaultLabelFormatter.call(this);
               return label;
             },
@@ -218,7 +217,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
             width: '80px',
             fontSize: '14px'
           },
-          formatter: function () {
+          formatter: function() {
             const label = this.axis.defaultLabelFormatter.call(this);
             // Change <= 20 count to display '<= 20'
             if (label && label.indexOf('>=') > -1) {
@@ -497,7 +496,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         analysisStratumName = a.analysisStratumName;
         toolTipHelpText = '<div class="chart-tooltip">' +
           '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
-          ' as sex assigned at birth with this medical concept mentioned in their Electronic Health Record (EHR) and that is ' + '<strong>' + percentage +
+          ' as sex assigned at birth with this medical concept mentioned in their Electronic' +
+          ' Health Record (EHR) and that is ' + '<strong>' + percentage +
           '% </strong>' + 'of the total count of ' + analysisStratumName +
           ' as sex assigned at birth that have EHR data (total count = <strong> '
           + totalCount + '</strong>)' + '</div>';
@@ -871,13 +871,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const d of data) {
       cats.push(d.name);
     }
-    // Todo we will use this later in drill downs and such
-    const seriesClick = event => {
-      const thisCtrl = event.point.options.thisCtrl;
-      // Todo handle click events
-      // console.log('Histogram plot Clicked point :',  event.point);
-      // thisCtrl.resultClicked.emit(event.point.result);
-    };
     // Unit for measurements is in stratum5
     if (this.analysis.unitName === 'cm') {
       this.analysis.unitName = 'centimeter';
@@ -937,7 +930,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     const cats = [];
     const color = this.dbc.COLUMN_COLOR;
     const order = ['8507', '8532', '0'];
-    this.analysis.results.sort(function (a, b) {
+    this.analysis.results.sort((a, b) => {
       return order.indexOf(a.stratum3) - order.indexOf(b.stratum3);
     });
     for (const a of this.analysis.results) {

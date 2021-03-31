@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
-import { environment } from '../../../../environments/environment';
-import { AchillesResult, DataBrowserService } from '../../../../publicGenerated';
-import { DbConfigService } from '../../../utils/db-config.service';
-import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../services/tooltip.service';
+import { DbConfigService } from 'app/utils/db-config.service';
+import { GraphType } from 'app/utils/enum-defs';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-survey-chart',
@@ -26,14 +23,10 @@ export class SurveyChartComponent implements OnInit {
   displayGraphErrorMessage = false;
   graphDataToShow = 'Count';
   graphToShow: string;
-  private subscriptions: ISubscription[] = [];
   genderPercentageAnalysis: any;
   selectedChartAnalysis: any;
   testReact: boolean;
-  constructor(private tooltipService: TooltipService,
-    public dbc: DbConfigService,
-    private api: DataBrowserService) {
-
+  constructor(public dbc: DbConfigService) {
   }
 
   ngOnInit() {
@@ -80,7 +73,9 @@ export class SurveyChartComponent implements OnInit {
         break;
     }
     this.selectedChartAnalysis = q.selectedAnalysis;
-    this.displayGraphErrorMessage = q.selectedAnalysis === undefined;
+    this.displayGraphErrorMessage = q.selectedAnalysis === undefined ||
+        (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
+        answer.stratum3).length === 0);
     // sends information to google analyitics
     this.dbc.triggerEvent('graphTabClick', 'Survey Graph',
       'Click', this.surveyName + ' - ' + q.graphToShow + ' - Q'

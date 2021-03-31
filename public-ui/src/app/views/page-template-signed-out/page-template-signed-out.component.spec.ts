@@ -1,15 +1,10 @@
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-
 import {ClarityModule} from '@clr/angular';
-
+import {ServerConfigService} from 'app/services/server-config.service';
 import {ServerConfigServiceStub} from 'testing/stubs/server-config-service-stub';
-
 import {
   updateAndTick
-} from '../../../testing/test-helpers';
-
-import {ServerConfigService} from '../../services/server-config.service';
-
+} from 'testing/test-helpers';
 import {PageTemplateSignedOutComponent} from './page-template-signed-out.component';
 
 describe('PageTemplateSignedOutComponent', () => {

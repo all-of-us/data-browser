@@ -15,14 +15,13 @@ import { TooltipService } from './data-browser/services/tooltip.service';
 import { ErrorReporterService } from './services/error-reporter.service';
 import { ServerConfigService } from './services/server-config.service';
 import { SharedModule } from './shared/shared.module';
-import { AppComponent, overriddenUrlKey } from './views/app/app.component';
+import { AppComponent } from './views/app/app.component';
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
-import { ConfigService, DataBrowserService } from 'publicGenerated';
+import { ConfigService } from 'publicGenerated';
 import { DbConfigService } from './utils/db-config.service';
-import { overriddenPublicUrlKey } from './views/app/app.component';
 
 function getPublicBasePath() {
   return  environment.publicApiUrl;

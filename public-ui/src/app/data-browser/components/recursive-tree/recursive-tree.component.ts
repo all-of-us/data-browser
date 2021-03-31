@@ -1,8 +1,8 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { TreeHighlightService } from 'app/data-browser/services/tree-highlight.service';
+import { DataBrowserService } from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
-import { Concept, DataBrowserService } from '../../../../publicGenerated';
-import { TreeHighlightService } from '../../services/tree-highlight.service';
 
 @Component({
   selector: 'app-recursive-tree',

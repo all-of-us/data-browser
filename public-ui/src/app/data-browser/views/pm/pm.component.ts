@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ConceptGroup } from 'app/utils/conceptGroup';
+import { ConceptWithAnalysis } from 'app/utils/conceptWithAnalysis';
+import { DbConfigService } from 'app/utils/db-config.service';
+import { DomainType } from 'app/utils/enum-defs';
+import { environment } from 'environments/environment';
+import { DataBrowserService } from 'publicGenerated/api/dataBrowser.service';
+import { Analysis } from 'publicGenerated/model/analysis';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
-import { environment } from '../../../../environments/environment';
-import { DataBrowserService } from '../../../../publicGenerated/api/dataBrowser.service';
-import { Analysis } from '../../../../publicGenerated/model/analysis';
-import { ConceptGroup } from '../../../utils/conceptGroup';
-import { ConceptWithAnalysis } from '../../../utils/conceptWithAnalysis';
-import { DbConfigService } from '../../../utils/db-config.service';
-import { DomainType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-physical-measurements',
@@ -53,8 +52,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   pmGroups: any;
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService,
-    private tooltipText: TooltipService) {
+  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
 
   }
 
@@ -134,10 +132,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
       this.unitNames = [];
       for (const r of this.selectedConcept.analyses.measurementGenderCountAnalysis) {
         let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
-        tempUnitNames = tempUnitNames.filter(
-          function (elem, index, self) {
-            return index === self.indexOf(elem);
-          });
+        tempUnitNames = tempUnitNames.filter((elem, index, self) => index === self.indexOf(elem));
         this.unitNames.push(...tempUnitNames);
       }
     }

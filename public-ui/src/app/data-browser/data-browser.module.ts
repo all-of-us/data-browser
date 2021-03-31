@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
+import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
+import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
+import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
+import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
-import { DbNoResultsComponent } from '../components/db-no-results/db-no-results.component';
-import { HighlightWrapperComponent } from '../shared/components/highlight-search/HighlightReactComponent';
-import { PopUpWrapperComponent } from '../shared/components/pop-up/PopUpReactComponent';
-import { SharedModule } from '../shared/shared.module';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';
@@ -33,6 +33,7 @@ import { TreeHighlightService } from './services/tree-highlight.service';
 import { VideoService } from './services/video.service';
 import { SourcesComponent } from './sources/sources.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
+import { ErrorMessageWrapperComponent } from './views/error-message/error-message-react.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
@@ -84,7 +85,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
-    VersionChartWrapperComponent
+    VersionChartWrapperComponent,
+    ErrorMessageWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -112,7 +114,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
-    VersionChartWrapperComponent
+    VersionChartWrapperComponent,
+    ErrorMessageWrapperComponent
   ],
   providers: [
     ChartService,

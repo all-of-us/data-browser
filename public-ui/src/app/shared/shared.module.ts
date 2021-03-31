@@ -3,11 +3,11 @@ import {HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgxPaginationModule } from 'ngx-pagination';
 //  components
-import { BetaBarComponent } from '../components/beta-bar/beta-bar.component';
-import { EmergencyComponent } from '../views/emergency/emergency.component';
-import { PageTemplateSignedOutComponent } from '../views/page-template-signed-out/page-template-signed-out.component';
+import { BetaBarComponent } from 'app/components/beta-bar/beta-bar.component';
+import { EmergencyComponent } from 'app/views/emergency/emergency.component';
+import { PageTemplateSignedOutComponent } from 'app/views/page-template-signed-out/page-template-signed-out.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { HighlightSearchComponent } from './components/highlight-search/highlight-search.component';
 import { PopUpComponent } from './components/pop-up/pop-up.component';
