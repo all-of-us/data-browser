@@ -2,16 +2,14 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DbConfigService } from 'app/utils/db-config.service';
+import { GraphType } from 'app/utils/enum-defs';
+import { environment } from 'environments/environment';
+import {
+  DataBrowserService, DomainInfosAndSurveyModulesResponse, SurveyMetadata, SurveyModule
+} from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
-import {
-  AchillesResult, DataBrowserService, DomainInfosAndSurveyModulesResponse, SurveyMetadata,
-  SurveyModule
-} from '../../../../publicGenerated';
-import { DbConfigService } from '../../../utils/db-config.service';
-import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-survey-view',
@@ -69,7 +67,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private api: DataBrowserService,
-    private tooltipText: TooltipService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();

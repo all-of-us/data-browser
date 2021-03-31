@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { ChartBaseComponent } from '../chart-base/chart-base.component';
+import { ChartBaseComponent } from 'app/data-browser/charts/chart-base/chart-base.component';
 
 @Component({
   // tslint:disable-next-line: component-selector

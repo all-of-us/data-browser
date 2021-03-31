@@ -4,9 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 
 import {ClarityModule} from '@clr/angular';
+import {DataBrowserModule} from 'app/data-browser/data-browser.module';
 import {DataBrowserService} from 'publicGenerated';
-import {DataBrowserModule} from '../../data-browser/data-browser.module';
-
 import {AppComponent} from './app.component';
 
 

@@ -1,7 +1,6 @@
 import { Component, Injector, Input, } from '@angular/core';
+import { ChartService } from 'app/data-browser/charts/chart.service';
 import * as Highcharts from 'highcharts';
-import { Concept } from '../../../../publicGenerated/model/concept';
-import { ChartService } from '../chart.service';
 
 @Component({
   selector: 'app-chart-base',
@@ -36,7 +35,7 @@ export class ChartBaseComponent {
       },
       tooltip: {
         followPointer: true,
-        formatter: function () {
+        formatter: function() {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
               this.point.toolTipHelpText =

@@ -34,7 +34,7 @@ export const baseOptions = {
   color: '',
   tooltip: {
         followPointer: true,
-        formatter: function (tooltip) {
+        formatter: function(tooltip) {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
               this.point.toolTipHelpText =
@@ -78,7 +78,7 @@ export const baseOptions = {
             width: '80px',
             fontSize: '14px'
           },
-          formatter: function () {
+          formatter: function() {
             const label = this.axis.defaultLabelFormatter.call(this);
             // Change <= 20 count to display '<= 20'
             if (label && label.indexOf('>=') > -1) {
@@ -130,7 +130,7 @@ export const baseOptions = {
               textOverflow: 'ellipsis',
               color: '#262262'
             },
-            formatter: function () {
+            formatter: function() {
                 const label = this.axis.defaultLabelFormatter.call(this);
                 return label;
             },

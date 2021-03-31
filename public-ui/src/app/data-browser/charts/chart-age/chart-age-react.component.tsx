@@ -108,7 +108,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
                    textOverflow: 'ellipsis',
                    color: '#262262'
             },
-            formatter: function () {
+            formatter: function() {
               const label = this.axis.defaultLabelFormatter.call(this);
               if (series[0].dataOnlyLT20) {
                 if (label <= 20) {

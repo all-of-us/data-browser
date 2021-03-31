@@ -1,9 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { Video, videos } from 'app/data-browser/services/video.service';
 import * as React from 'react';
-import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
-
 import { FunctionComponent } from 'react';
-import { Video, videos } from '../../services/video.service';
 
 const IntroVidReactComponent: FunctionComponent<Video> = () => <div className='db-container'>
     <h1 className='primary-display'> Introductory Videos </h1>
