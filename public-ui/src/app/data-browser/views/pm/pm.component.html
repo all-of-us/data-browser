@@ -81,12 +81,7 @@
               [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                            [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>
             </div>
-            <app-age-chart-react *ngIf="reactChart; else angAgeChart" [ageAnalysis]="selectedConcept.analyses.ageAnalysis" [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'pm'"></app-age-chart-react>
-            <ng-template #angAgeChart>
-              <app-chart [analysis]="selectedConcept.analyses.ageAnalysis" [pointWidth]="30" [chartTitle]="ageChartTitle"
-                         [backgroundColor]="backgroundColor" [domainType]="domainType" [domainCountAnalysis]="domainCountAnalysis">
-              </app-chart>
-            </ng-template>
+            <app-age-chart-react [ageAnalysis]="selectedConcept.analyses.ageAnalysis" [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'pm'"></app-age-chart-react>
           </div>
 
           <!-- Todo wait on design for further dev -->

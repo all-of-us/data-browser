@@ -57,7 +57,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
       baseOptions.title.style.color = '#262262';
       baseOptions.title.style.fontSize = '22px';
       baseOptions.color = '#2691D0';
-      baseOptions.xAxis.title.text = analysisName;
+      baseOptions.xAxis.title.text = 'Sex Assigned at Birth';
       baseOptions.yAxis.title.text = 'Participant Count';
       baseOptions.xAxis.categories = categories;
       if ('dataOnlyLT20' in series[0]) {
