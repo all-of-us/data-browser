@@ -29,7 +29,7 @@
           <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results"></chart-top-results>
         </div>
         <div *ngIf="showTopConcepts && displayConceptErrorMessage" class="col col-xs-7 error-message">
-          <app-error-message [dataType]="'data'"></app-error-message>
+          <app-error-message-react [dataType]="'data'"></app-error-message-react>
         </div>
       </section>
       <app-spinner [loading]="dataLoading()"></app-spinner>
@@ -313,7 +313,7 @@
           </div>
         </ng-container>
         <div *ngIf="displayConceptErrorMessage" class="col col-xs-7 alert-container error-message">
-          <app-error-message [dataType]="'data'"></app-error-message>
+          <app-error-message-react [dataType]="'data'"></app-error-message-react>
         </div>
       </div>
     </div>

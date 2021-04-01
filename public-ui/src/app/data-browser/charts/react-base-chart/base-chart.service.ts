@@ -9,6 +9,20 @@ export const GENDER_STRATUM_MAP = {
      '1585848': 'Intersex',
 };
 
+export const VERSION_STRATUM_MAP = {
+    'January': '1',
+    'February': '2',
+    'March': '3',
+    'April': '4',
+    'May': '5',
+    'June': '6',
+    'July/August': '7',
+    'September': '9',
+    'October': '10',
+    'November': '11',
+    'December': '12'
+};
+
 export const AGE_STRATUM_MAP = {
     '2': '18-29',
     '3': '30-39',
@@ -34,7 +48,7 @@ export const baseOptions = {
   color: '',
   tooltip: {
         followPointer: true,
-        formatter: function (tooltip) {
+        formatter: function(tooltip) {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
               this.point.toolTipHelpText =
@@ -78,7 +92,7 @@ export const baseOptions = {
             width: '80px',
             fontSize: '14px'
           },
-          formatter: function () {
+          formatter: function() {
             const label = this.axis.defaultLabelFormatter.call(this);
             // Change <= 20 count to display '<= 20'
             if (label && label.indexOf('>=') > -1) {
@@ -130,7 +144,7 @@ export const baseOptions = {
               textOverflow: 'ellipsis',
               color: '#262262'
             },
-            formatter: function () {
+            formatter: function() {
                 const label = this.axis.defaultLabelFormatter.call(this);
                 return label;
             },

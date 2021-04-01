@@ -1,19 +1,17 @@
-import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataBrowserService, DomainInfosAndSurveyModulesResponse } from 'publicGenerated';
+import { DbConfigService } from 'app/utils/db-config.service';
+import { GraphType } from 'app/utils/enum-defs';
+import { environment } from 'environments/environment';
+import { DataBrowserService, DomainInfosAndSurveyModulesResponse, MatchType } from 'publicGenerated';
+import { Concept } from 'publicGenerated/model/concept';
+import { ConceptListResponse } from 'publicGenerated/model/conceptListResponse';
+import { Domain } from 'publicGenerated/model/domain';
+import { SearchConceptsRequest } from 'publicGenerated/model/searchConceptsRequest';
+import { StandardConceptFilter } from 'publicGenerated/model/standardConceptFilter';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
-import { MatchType } from '../../../../publicGenerated';
-import { Concept } from '../../../../publicGenerated/model/concept';
-import { ConceptListResponse } from '../../../../publicGenerated/model/conceptListResponse';
-import { Domain } from '../../../../publicGenerated/model/domain';
-import { SearchConceptsRequest } from '../../../../publicGenerated/model/searchConceptsRequest';
-import { StandardConceptFilter } from '../../../../publicGenerated/model/standardConceptFilter';
-import { DbConfigService } from '../../../utils/db-config.service';
-import { GraphType } from '../../../utils/enum-defs';
-import { TooltipService } from '../../services/tooltip.service';
 
 /* This displays concept search for a Domain. */
 
@@ -82,7 +80,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     private router: Router,
     private elm: ElementRef,
     private api: DataBrowserService,
-    private tooltipService: TooltipService,
     public dbc: DbConfigService,
   ) {
     this.closePopUp = this.closePopUp.bind(this);
@@ -227,7 +224,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   private setDomain() {
     const obj = localStorage.getItem('ehrDomain');
-    const searchText = localStorage.getItem('searchText');
     if (obj) {
       this.ehrDomain = JSON.parse(obj);
       this.subTitle = 'Keyword: ' + this.searchText;

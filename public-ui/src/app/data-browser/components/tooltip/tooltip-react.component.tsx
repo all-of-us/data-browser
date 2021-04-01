@@ -1,20 +1,13 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
-  EventEmitter,
   Input,
-  Output,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { getTooltip } from 'app/data-browser/services/tooltip.service';
+import { ClrIcon } from 'app/utils/clr-icon';
+import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-import * as ReactDOM from 'react-dom';
-import { BaseReactWrapper } from '../../../data-browser/base-react/base-react.wrapper';
-import { ClrIcon } from '../../../utils/clr-icon';
-import { triggerEvent } from '../../../utils/google_analytics';
-import { getTooltip, tooltips } from '../../services/tooltip.service';
 
 const containerElementName = 'root';
 

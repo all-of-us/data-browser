@@ -17,14 +17,15 @@
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
       true,
       {
-        "limit": 100,
+        "limit": 140,
         "ignore-pattern": "^import |^export{(.*?)}"
       }
     ],
@@ -60,6 +61,7 @@
       true,
       "ignore-params"
     ],
+    "no-irregular-whitespace": true,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
@@ -69,12 +71,11 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    /* This just won't play nice with Angular 2+, there are way too many false
-     * positives, we're cluttering the codebase with exceptions to the linting
-     * rule, it is defeating its own purpose.  Do not enable until it works
-     * properly.
-     */
-    // "no-unused-variable": true,
+    "no-unused-variable": [true, {"ignore-pattern": "^_$"}],
+    "no-relative-imports": [
+      true,
+      "allow-siblings"
+    ],
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -85,6 +86,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "only-arrow-functions": [true, "allow-named-functions"],
     "ordered-imports": true,
     "prefer-const": [true, {"destructuring": "all"}],
     "quotemark": [
@@ -136,7 +138,7 @@
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
     "no-input-rename": false,
-    "no-output-rename": true,
+    "no-output-rename": false,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": [
@@ -146,11 +148,10 @@
       "Layout"
     ],
     "directive-class-suffix": true,
-    "no-access-missing-member": true,
-    "templates-use-public": true,
-    "invoke-injectable": true
+    "space-before-function-paren": [true, "never"]
   },
   "rulesDirectory": [
-    "../public-ui/node_modules/codelyzer"
+    "../public-ui/node_modules/codelyzer",
+    "../public-ui/node_modules/tslint-microsoft-contrib"
   ]
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DataBrowserService } from '../../publicGenerated/api/dataBrowser.service';
-import { Analysis } from '../../publicGenerated/model/analysis';
+import { DataBrowserService } from 'publicGenerated/api/dataBrowser.service';
+import { Analysis } from 'publicGenerated/model/analysis';
 import { ConceptGroup } from './conceptGroup';
 import { ConceptWithAnalysis } from './conceptWithAnalysis';
 
@@ -184,7 +184,7 @@ export class DbConfigService {
       style: {
         fontSize: '12px',
       },
-      formatter: function () {
+      formatter: function() {
         const label = this.axis.defaultLabelFormatter.call(this);
         // Change <= 20 count to display '<= 20'
         if (label <= 20) {

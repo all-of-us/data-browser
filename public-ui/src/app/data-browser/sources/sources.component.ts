@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TooltipService } from 'app/data-browser/services/tooltip.service';
+import { environment } from 'environments/environment';
+import { Concept } from 'publicGenerated';
 import { DataBrowserService } from 'publicGenerated';
-import { environment } from '../../../environments/environment';
-import { Concept } from '../../../publicGenerated';
-import { TooltipService } from '../services/tooltip.service';
+
 @Component({
   selector: 'app-sources',
   templateUrl: './sources.component.html',

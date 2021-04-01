@@ -1,12 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {DbConfigService} from 'app/utils/db-config.service';
+import {GraphType} from 'app/utils/enum-defs';
+import { environment } from 'environments/environment';
+import {DataBrowserService} from 'publicGenerated';
 import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
-import {DataBrowserService} from '../../../../publicGenerated';
-import {DbConfigService} from '../../../utils/db-config.service';
-import {GraphType} from '../../../utils/enum-defs';
-import { TooltipService } from '../../services/tooltip.service';
 
 @Component({
   selector: 'app-fmh-view',
@@ -43,9 +41,7 @@ export class FmhViewComponent implements OnInit {
   domainId: string;
   private subscriptions: ISubscription[] = [];
 
-  constructor(private api: DataBrowserService, public dbc: DbConfigService,
-              private tooltipText: TooltipService, private router: Router,
-              private route: ActivatedRoute) {
+  constructor(private api: DataBrowserService, public dbc: DbConfigService) {
   }
 
   ngOnInit() {

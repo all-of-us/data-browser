@@ -4,17 +4,13 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import * as ReactDOM from 'react-dom';
-import { ClrIcon } from '../../../utils/clr-icon';
-import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
-import { TooltipReactComponent } from '../../components/tooltip/tooltip-react.component';
-import { SearchComponent } from '../../search/home-search.component';
 
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));

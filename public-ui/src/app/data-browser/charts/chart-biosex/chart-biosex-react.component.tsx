@@ -57,7 +57,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
       baseOptions.title.style.color = '#262262';
       baseOptions.title.style.fontSize = '22px';
       baseOptions.color = '#2691D0';
-      baseOptions.xAxis.title.text = analysisName;
+      baseOptions.xAxis.title.text = 'Sex Assigned at Birth';
       baseOptions.yAxis.title.text = 'Participant Count';
       baseOptions.xAxis.categories = categories;
       if ('dataOnlyLT20' in series[0]) {
@@ -69,7 +69,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                    textOverflow: 'ellipsis',
                    color: '#262262'
             },
-            formatter: function () {
+            formatter: function() {
                    const label = this.axis.defaultLabelFormatter.call(this);
                    // Change <= 20 count to display '<= 20'
                    if (series[0].dataOnlyLT20 && label <= 20) {

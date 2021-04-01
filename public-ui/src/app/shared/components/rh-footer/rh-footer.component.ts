@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { HeaderFooterService } from '../../services/header-footer.service';
+import { HeaderFooterService } from 'app/shared/services/header-footer.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-rh-footer',
