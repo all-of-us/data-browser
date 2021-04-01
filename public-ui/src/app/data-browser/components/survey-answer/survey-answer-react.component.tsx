@@ -1,11 +1,15 @@
-import { Component, ViewEncapsulation, Input} from '@angular/core';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 import * as React from 'react';
 import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
+
+import { TooltipReactComponent } from '../tooltip/tooltip-react.component';
 
 
 const containerElementName = 'root';
 
-export const styleCss = `
+export const styleCss = 
+    `
+    @import ../../../page.css
     .survey-tbl {
         width: 100%;
     }
@@ -20,42 +24,54 @@ export const styleCss = `
     }`
 
 interface Props {
-    isCopeSurvey:boolean
+    isCopeSurvey: boolean
 }
 
-export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
-    constructor(props:Props) {
+
+
+export const SurveyAnswerReactComponent = (class extends React.Component<Props, State> {
+    constructor(props: Props, state: State) {
         console.log(props);
-        
+
         super(props);
     }
 
+
+    // <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
+    //                                          [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
+
     render(): any {
-        console.log(this.props.isCopeSurvey,'sdfsds');
         return <React.Fragment><style>{styleCss}</style>
             <div className="survey-tbl">
                 <div className="survey-tbl-r survey-tbl-head">
                     <div className="info-text first survey-tbl-d">
                         Answer
                     </div>
-                </div>
                     <div className="survey-tbl-r-group survey-tbl-r-group-style ">
-                    <div className="info-text survey-tbl-d display-body">
-                      
-                      {
-                      this.props.isCopeSurvey ? '<h1>testIs cope</h1>' : Concept Code
-                          <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                        </ng-container>}
-                    {/* <ng-container *ngIf="!isCopeSurvey">
-                      Concept Code
-                          <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                        </ng-container>
-                      </div>
-            <div className=" info-text survey-tbl-d display-body">
-                <ng-container *ngIf="isCopeSurvey">
-                        </ng-container>
+                        <div className="info-text survey-tbl-d display-body">
+                            {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <span><React.Fragment>Concept Code</React.Fragment>
+                                <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' /></span>
+                            }
+                        </div >
+                        <div className="info-text survey-tbl-d display-body">
+                            {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <span><React.Fragment>Participant Count</React.Fragment>
+                                <TooltipReactComponent tooltipKey='surveyParticipantCountHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' /></span>
+                            }
+                        </div >
+                        <div className="info-text survey-tbl-d display-body">
+                            {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <span><React.Fragment>% Answered</React.Fragment></span>
+                            }
+                        </div >
+                        <div className="info-text survey-tbl-d display-body">
+                            {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <React.Fragment></React.Fragment>
+                            }
+                        </div >
+                    </div >
+                </div >
+            </div >
+        </React.Fragment >;
+        {/* 
+            
             <ng-container * ngIf="!isCopeSurvey" >
                 Participant Count
                     < app - tooltip - react[tooltipKey]="'surveyParticipantCountHelpText'"
@@ -74,15 +90,12 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         </ng - container >
                       </div >
     <div className="survey-tbl-d display-body"></div>
-                    </div > */}
-            </div >
-            </div >
-            </div >
-            </React.Fragment>;
+                    </div > */
 
 
 
-        
+        }
+
 
     }
 }
@@ -99,8 +112,8 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
 export class SurveyAnswerWrapperComponent extends BaseReactWrapper {
     @Input() isCopeSurvey
     constructor() {
-        
-        super(SurveyAnswerReactComponent, []);
-        console.log(this.isCopeSurvey,'sup bennt');
+        super(SurveyAnswerReactComponent, ['isCopeSurvey']);
     }
+
+
 }

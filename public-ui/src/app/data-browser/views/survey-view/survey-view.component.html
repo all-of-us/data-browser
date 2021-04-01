@@ -97,8 +97,8 @@
                   <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
                 </a>
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
-                <app-survey-answer-react [isCopeSurvey]="isCopeSurvey"></app-survey-answer-react>
+                <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
+                <app-survey-answer-react  [isCopeSurvey]="isCopeSurvey"></app-survey-answer-react>
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
