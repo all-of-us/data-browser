@@ -28,7 +28,7 @@ const SurveyDescReactComponent =
                    href='https://www.researchallofus.org/data-sources/survey-explorer' rel='noopener noreferrer'>Survey
                    Explorer</a>
                </div>
-             </div>
+             </div>;
     };
 
 @Component({
