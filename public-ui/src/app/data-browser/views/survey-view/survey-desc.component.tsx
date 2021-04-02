@@ -1,14 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-
-interface Props {
-    surveyName: string;
-    isCopeSurvey: boolean;
-    surveyDescription: string;
-    click: Function;
-}
 
 const SurveyDescReactComponent =
     (props) => {
