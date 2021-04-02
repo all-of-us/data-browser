@@ -9,6 +9,7 @@ interface Props {
     surveyDescription: string;
 }
 
+// TODO this can be part of other survey react components
 const SurveyDescReactComponent: FunctionComponent<Props> = ({surveyName, isCopeSurvey, surveyDescription}) =>
   <div className='page-header'>
     <div className='title-container'>
