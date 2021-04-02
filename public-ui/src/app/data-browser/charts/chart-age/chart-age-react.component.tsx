@@ -25,6 +25,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {options: null};
+    console.log(this.props, '...');
   }
 
   componentDidMount() {
