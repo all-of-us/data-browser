@@ -1,24 +1,5 @@
 <div class="survey-view">
-  <div class="page-header">
-    <div class="title-container" *ngIf="surveyConceptId && surveyName && surveyDescription">
-      <h1> {{surveyName}} </h1>
-      <button *ngIf="isCopeSurvey" (click)="showStatement = true" class="disclaimer-btn">IMPORTANT CONSIDERATIONS FOR
-        COPE SURVEY - LEARN MORE</button>
-      <div class="desc-container">
-        <p class="body-default help-text survey-desc">{{surveyDescription}} Survey questions appear in the order in
-          which participants took the survey.</p>
-      </div>
-    </div>
-    <div class="survey-note"> <span class="bold-note-heading">Note</span>: The data on this page are:
-      <ul class="survey-note">
-        <li>Gathered directly from participants through electronic surveys</li>
-        <li>Grouped into bins of 20 to protect privacy</li>
-      </ul>
-      For more information about this survey, please visit the <a target="_blank"
-        href="https://www.researchallofus.org/data-sources/survey-explorer" rel="noopener noreferrer">Survey
-        Explorer</a>
-    </div>
-  </div>
+  <app-survey-desc [surveyName]="surveyName" [isCopeSurvey]="isCopeSurvey" [surveyDescription]="surveyDescription"></app-survey-desc>
   <div class="search-bar-container">
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
