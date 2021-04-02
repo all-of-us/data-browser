@@ -51,7 +51,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
                    textOverflow: 'ellipsis',
                    color: '#262262'
             },
-            formatter: function () {
+            formatter: function() {
                    const label = this.axis.defaultLabelFormatter.call(this);
                    // Change <= 20 count to display '<= 20'
                    if (series[0].dataOnlyLT20 && label <= 20) {

@@ -93,6 +93,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadPage();
+    this.showStatement = false;
     this.envDisplay = environment.displayTag;
     this.testReact = environment.testReact;
     if (this.surveyConceptId === 1333342) {
@@ -689,5 +690,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   closePopUp() {
     this.showStatement = false;
+  }
+
+  showCopeStatement() {
+    console.log('am i hereee');
+    console.log(this.showStatement);
+    this.showStatement = true;
   }
 }
