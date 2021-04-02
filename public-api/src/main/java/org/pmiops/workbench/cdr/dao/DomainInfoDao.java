@@ -48,7 +48,7 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
                   "    0 all_concept_count, case when c.count is not null then c.count else 0 end as standard_concept_count, d.participant_count participant_count \n" +
                   "    from domain_info d\n" +
                   "    left join (select c1.domain_id, count(*) as count \n" +
-                  "    from ((select domain_id, c.concept_id from concept c join measurement_concept_info m on c.concept_id=m.concept_id and m.has_values in (?4)\n" +
+                  "    from ((select domain_id, c.concept_id from concept c join measurement_concept_info m on c.concept_id=m.concept_id and m.measurement_type in (?4)\n" +
                   "    where has_counts > 0 and\n" +
                   "    match(concept_name, concept_code, vocabulary_id, synonyms) against (?1 in boolean mode) > 0 and \n" +
                   "    standard_concept IN ('S', 'C') and can_select=1)\n" +
@@ -110,7 +110,7 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
                 "union all " +
                 "select d.domain, d.domain_id, d.name, d.description, d.concept_id, 0 all_concept_count, " +
                 "(select count(*) from concept c join measurement_concept_info m where c.concept_id = m.concept_id " +
-                "and c.domain_id='Measurement' and c.standard_concept in ('S', 'C') and c.can_select=1 and m.has_values in (?1)) " +
+                "and c.domain_id='Measurement' and c.standard_concept in ('S', 'C') and c.can_select=1 and m.measurement_type in (?1)) " +
                 "standard_concept_count, d.participant_count participant_count from domain_info d where d.domain=4 " +
                 "order by domain")
   List<DbDomainInfo> findDomainTotals(List<String> filter);
