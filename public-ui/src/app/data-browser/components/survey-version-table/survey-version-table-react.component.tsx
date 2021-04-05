@@ -54,8 +54,8 @@ fetchAndProcessSurveys() {
             }
             ));
             surveyVersions.sort((a1, a2) => {
-                let const = new Date(a1.year, a1.monthNum.split('/')[0], 1);
-                let const = new Date(a2.year, a2.monthNum.split('/')[0], 1);
+                const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
+                const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
                 return a.valueOf() - b.valueOf();
             });
             this.setState({ surveys: surveyVersions });
