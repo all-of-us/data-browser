@@ -321,35 +321,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
-      if (this.isCopeSurvey) {
-        this.subscriptions.push(this.api.getSurveyVersionCounts(
-          this.surveyConceptId.toString()).subscribe({
-            next: x => {
-              x.analyses.items.forEach(item => {
-                item.results.forEach((result, i) => {
-                  if (item.analysisId === 3400) {
-                    this.surveyVersions.push(
-                      {
-                        monthName: result.stratum4,
-                        year: result.stratum5,
-                        monthNum: result.stratum3.split('/')[0],
-                        participants: result.countValue,
-                        numberOfQuestion: ''
-                      });
-                  } else if (item.analysisId === 3401) {
-                    this.surveyVersions[i].numberOfQuestion = result.countValue;
-                  }
-                });
-              });
-            },
-            error: err => {
-              console.error('Observer got an error: ' + err);
-              this.loading = false;
-            },
-            complete: () => { }
-          }));
-      }
-    }
   }
 
   public setSurvey() {
