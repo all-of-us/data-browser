@@ -331,6 +331,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
                     this.surveyVersions.push(
                       {
                         monthName: result.stratum4,
+                        year: result.stratum5,
                         monthNum: result.stratum3.split('/')[0],
                         participants: result.countValue,
                         numberOfQuestion: ''
