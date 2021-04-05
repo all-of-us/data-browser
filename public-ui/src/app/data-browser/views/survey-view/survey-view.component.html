@@ -74,33 +74,43 @@
             <ng-container *ngFor="let q of questions, let i = index">
               <ng-container *ngIf="q.type === 'QUESTION';else topic">
                 <div class="question-result">
-              <div class="secondary-display">
-                <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
-                  <app-highlight-search style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                  (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="!testReact">
-                  </app-highlight-search>
-                  <app-highlight-react style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                                        (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="testReact">
-                  </app-highlight-react>
-                  <app-tooltip-react *ngIf="q.conceptId === 1586140" [tooltipKey]="'raceEthnicityQuestionHelpText'"
-                                     [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
-                                     [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                  <app-tooltip-react *ngIf="q.conceptId === 1585838" [tooltipKey]="'genderIdentityQuestionHelpText'"
-                                     [label]="getLabel(q,'Gender Identity Question Help Text')" [searchTerm]="searchText.value"
-                                     [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                </div>
-              </div>
-                <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                   (click)="toggleAnswer(q, 'display', 0)">
-                  See Answers
-                  <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
-                  <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
-                </a>
-              <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
-                <app-survey-answer-react  [isCopeSurvey]="isCopeSurvey"></app-survey-answer-react>
-                <div class="survey-tbl">
-                  <!-- <div class="survey-tbl-r survey-tbl-head">
+                  <div class="secondary-display">
+                    <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
+                      <app-highlight-search style="cursor: pointer;" tabindex="0"
+                        (keydown.enter)="toggleAnswer(q, 'display', 0)" (click)="toggleAnswer(q, 'display', 0)"
+                        [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="!testReact">
+                      </app-highlight-search>
+                      <app-highlight-react style="cursor: pointer;" tabindex="0"
+                        (keydown.enter)="toggleAnswer(q, 'display', 0)" (click)="toggleAnswer(q, 'display', 0)"
+                        [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="testReact">
+                      </app-highlight-react>
+                      <app-tooltip-react *ngIf="q.conceptId === 1586140" [tooltipKey]="'raceEthnicityQuestionHelpText'"
+                        [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
+                        [action]="'Survey Page Tooltip'"></app-tooltip-react>
+                      <app-tooltip-react *ngIf="q.conceptId === 1585838" [tooltipKey]="'genderIdentityQuestionHelpText'"
+                        [label]="getLabel(q,'Gender Identity Question Help Text')" [searchTerm]="searchText.value"
+                        [action]="'Survey Page Tooltip'"></app-tooltip-react>
+                    </div>
+                  </div>
+                  <a class="see-answers body-lead" tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
+                    (click)="toggleAnswer(q, 'display', 0)">
+                    See Answers
+                    <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
+                    <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
+                  </a>
+                  <ng-container *ngIf="q.expanded && q.resultFetchComplete">
+                    <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="q.countAnalysis.results"
+                      [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
+
+                    <!-- react -->
+                    <!-- react -->
+                    <!-- react -->
+                    <app-survey-answer-react [question]="q" [survey]="survey" [isCopeSurvey]="isCopeSurvey">
+                    </app-survey-answer-react>
+
+
+                    <!--<div class="survey-tbl">
+                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
                       Answer
                     </div>
@@ -136,7 +146,7 @@
                       </div>
                       <div class="survey-tbl-d display-body"></div>
                     </div>
-                  </div> -->
+                  </div>
                   <div [ngClass]="a.expanded?'survey-tbl-r-state':''" class="survey-tbl-exp-r "
                     *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a,q,1)"
                     [hidden]="!showAnswer[q.conceptId]">
@@ -446,9 +456,10 @@
                         </div>
                       </ng-container>
                     </div>
-                  </div>
+                  </div> 
+                </div>-->
+                  </ng-container>
                 </div>
-              </ng-container></div>
               </ng-container>
               <ng-template #topic>
                 <h3 class="topic-text">{{q.questionString}}</h3>
@@ -490,4 +501,4 @@
 </div>
 <app-popup-react *ngIf="showStatement && testReact" [helpText]="'CopePopUp'" [onClose]="closePopUp"></app-popup-react>
 <app-pop-up [title]="'COvid-19 Participant Experience (COPE) survey'" [statement]="copeDisclaimer"
-(closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
+  (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>

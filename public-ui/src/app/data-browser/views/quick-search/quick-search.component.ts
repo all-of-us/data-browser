@@ -157,6 +157,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
           this.searchCallback(data);
           // Only set results to the totals if we don't have a searchText
           if (!this.searchText.value) {
+            console.log(data,"totalreuse");
+            
             this.totalResults = data;
           }
           this.displayDomainTotalsErrorMessage = false;
@@ -217,6 +219,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
+    console.log(results.domainInfos,'domainInfos');
+    
     this.domainResults = results.domainInfos.filter(
       domain => domain.name.toLowerCase() !== 'physical measurements' &&
       domain.name.toLowerCase() !== 'fitbit');

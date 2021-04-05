@@ -3,15 +3,22 @@ import * as React from 'react';
 import { BaseReactWrapper } from '../../base-react/base-react.wrapper';
 
 import { TooltipReactComponent } from '../tooltip/tooltip-react.component';
-
-
+import { FunctionComponent } from 'react';
+import { environment } from 'environments/environment';
+import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
+import { ClrIcon } from 'app/utils/clr-icon';
+export const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 const containerElementName = 'root';
 
 export const styleCss =
     `
-    @import ../../../page.css
+
     .survey-tbl {
         width: 100%;
+    }
+    .survey-tbl *{
+        font-family: "GothamBook", "Arial", sans-serif,
+        font-size: 1em
     }
     .survey-tbl-r.survey-tbl-head {
         /* padding-bottom: 0; */
@@ -23,23 +30,85 @@ export const styleCss =
         border-bottom: none;
     }`
 
-interface Props {
-    isCopeSurvey: boolean
+
+export const SurveyAnswerRowComponent = ({
+    // answer_concept_id
+    stratum3,
+    // answer_value_string
+    stratum4,
+    // hasSubQuestions
+    stratum7,
+    countValue,
+    countPercent
+}) => {
+
+    countPercent = countPercent.toFixed(2);
+    return <div className="survey-tbl-exp-r survey-tbl-r">
+        <div className="survey-tbl-d first display-body info-text survey-answer-level-1">
+            {stratum4}
+        </div>
+        <div className="survey-tbl-r-group">
+            <div className="survey-tbl-d display-body info-text survey-answer-level-1">
+                {stratum3}
+            </div>
+            <div className="survey-tbl-d display-body info-text survey-answer-level-1">
+                {countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </div>
+            <div className="survey-tbl-d display-body info-text survey-answer-level-1">
+                {countPercent}%
+                    </div>
+            <div className="survey-tbl-d display-body info-text survey-answer-level-1">
+                {stratum7 === "1" ?<ClrIcon shape="caret" dir="down" /> : <span>Graph</span> }
+
+
+            </div>
+        </div>
+    </div >
 }
+
+interface Props {
+    isCopeSurvey: boolean,
+    question: any,
+    survey: any
+}
+
+// interface State {
+//     // answer concept id
+//     stratum3: string
+//     // answer test
+//     stratum4: string,
+//     countValue: number,
+
+
+// }
 
 
 
 export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
     constructor(props: Props, ) {
         super(props);
+        console.log(props.survey, 'before');
     }
 
+    getQuestionResults() {
+        return api.getSurveyQuestionResults(this.props.question.surveyConceptId, this.props.question.conceptId, this.props.question.path)
+            .then(
+                results => {
+                    console.log(results);
+                    this.props.question.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
+                    this.props.question.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
+                    this.props.question.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+                    this.props.question.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
+                    this.props.question.resultFetchComplete = true;
+                })
+            .catch(err => {
+                console.log('Error searching: ', err);
+            })
+    };
 
-
-    ///////////
-    //Header//
-    //////////
     render(): any {
+        this.getQuestionResults();
+        console.log(this.props.question, 'after');
         return <React.Fragment><style>{styleCss}</style>
             <div className="survey-tbl">
                 <div className="survey-tbl-r survey-tbl-head">
@@ -67,41 +136,22 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         </div >
                     </div >
                 </div >
-                
-                <div className="survey-tbl-r">
-                        <div className="survey-tbl-d first display-body info-text survey-answer-level-1">
-SUP
-                  
+                {
+                    this.props.question.countAnalysis.results.map((answer, index) => {
+                        console.log(answer.stratum4, 'answer');
+                        if (answer.stratum4 !== 'Did not answer') {
+                            const key = 'answer' + index;
+                            return <SurveyAnswerRowComponent key={key} {...answer} />;
+                        }
+                    })
 
-                    </div >
-                </div>
+                }
+
+
+
             </div>
         </React.Fragment >;
-        {/* 
-            
-            <ng-container * ngIf="!isCopeSurvey" >
-                Participant Count
-                    < app - tooltip - react[tooltipKey]="'surveyParticipantCountHelpText'"
-                    [label] = "getLabel(q,'Multiple Answers for this survey question help text')"
-                    [searchTerm] = "searchText.value"[action] = "'Survey Page Tooltip'" ></app - tooltip - react >
-                        </ng - container >
-                      </div >
-    <div className=" info-text survey-tbl-d display-body">
-        <ng-container *ngIf="isCopeSurvey">
-          Concept Code
-                          <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-                                             [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
-                        </ng - container >
-    <ng-container * ngIf="!isCopeSurvey" >
-                          % Answered
-                        </ng - container >
-                      </div >
-    <div className="survey-tbl-d display-body"></div>
-                    </div > */
 
-
-
-        }
 
 
     }
@@ -118,8 +168,10 @@ SUP
 })
 export class SurveyAnswerWrapperComponent extends BaseReactWrapper {
     @Input() isCopeSurvey
+    @Input() survey
+    @Input() question
     constructor() {
-        super(SurveyAnswerReactComponent, ['isCopeSurvey']);
+        super(SurveyAnswerReactComponent, ['isCopeSurvey', 'survey', 'question']);
     }
 
 
