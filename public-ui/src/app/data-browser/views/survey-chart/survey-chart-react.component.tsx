@@ -44,7 +44,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   selectGraphType(g: any, q: any, answer: any) {
-  console.log('set props');
 const {surveyName, searchTerm} = this.props;
 const {graphToShow} = this.state;
 q.graphToShow = graphToShow;
@@ -65,12 +64,7 @@ switch (graphToShow) {
 this.setState({graphToShow: g, selectedChartAnalysis: q.selectedAnalysis, isLoaded: true,
 displayGraphErrorMessage: q.selectedAnalysis === undefined ||
         (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
-        answer.stratum3).length === 0) }, this.displayTest());
-  }
-
-  displayTest() {
-    console.log('updated');
-    console.log(this.state.selectedChartAnalysis);
+        answer.stratum3).length === 0) });
   }
 
   getTooltipKey(g: string) {
@@ -95,10 +89,6 @@ displayGraphErrorMessage: q.selectedAnalysis === undefined ||
       const {graphButtons, question, answer, searchTerm} = this.props;
       const { isLoaded } = this.state;
       const tabIndex = 0;
-      console.log('re-render ?');
-      console.log(this.state.graphToShow);
-      console.log(this.state.selectedChartAnalysis);
-      console.log('re-render ?');
       return <React.Fragment>
         <div className='survey-graph-menu'>
             {
