@@ -7,7 +7,7 @@ import { TooltipReactComponent } from '../tooltip/tooltip-react.component';
 
 const containerElementName = 'root';
 
-export const styleCss = 
+export const styleCss =
     `
     @import ../../../page.css
     .survey-tbl {
@@ -29,17 +29,16 @@ interface Props {
 
 
 
-export const SurveyAnswerReactComponent = (class extends React.Component<Props, State> {
-    constructor(props: Props, state: State) {
-        console.log(props);
-
+export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
+    constructor(props: Props, ) {
         super(props);
     }
 
 
-    // <app-tooltip-react [tooltipKey]="'conceptCodeHelpText'" [label]="getLabel(q,'Concept Code')"
-    //                                          [searchTerm]="searchText.value" [action]="'Survey Page Tooltip'"></app-tooltip-react>
 
+    ///////////
+    //Header//
+    //////////
     render(): any {
         return <React.Fragment><style>{styleCss}</style>
             <div className="survey-tbl">
@@ -68,7 +67,15 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         </div >
                     </div >
                 </div >
-            </div >
+                
+                <div className="survey-tbl-r">
+                        <div className="survey-tbl-d first display-body info-text survey-answer-level-1">
+SUP
+                  
+
+                    </div >
+                </div>
+            </div>
         </React.Fragment >;
         {/* 
             

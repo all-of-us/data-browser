@@ -12,6 +12,8 @@ import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 
+import { TooltipReactComponent } from "../../components/tooltip/tooltip-react.component";
+
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 

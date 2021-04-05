@@ -100,7 +100,7 @@
                 <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
                 <app-survey-answer-react  [isCopeSurvey]="isCopeSurvey"></app-survey-answer-react>
                 <div class="survey-tbl">
-                  <div class="survey-tbl-r survey-tbl-head">
+                  <!-- <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
                       Answer
                     </div>
@@ -136,7 +136,7 @@
                       </div>
                       <div class="survey-tbl-d display-body"></div>
                     </div>
-                  </div>
+                  </div> -->
                   <div [ngClass]="a.expanded?'survey-tbl-r-state':''" class="survey-tbl-exp-r "
                     *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a,q,1)"
                     [hidden]="!showAnswer[q.conceptId]">
