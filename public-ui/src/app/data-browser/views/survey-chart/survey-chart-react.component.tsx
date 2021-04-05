@@ -44,25 +44,25 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   selectGraphType(g: any, q: any, answer: any) {
-const {surveyName, searchTerm} = this.props;
-const {graphToShow} = this.state;
-q.graphToShow = graphToShow;
-if (q.graphDataToShow === null) {
-  q.graphDataToShow = 'Count';
-}
-switch (graphToShow) {
-  case GraphType.AgeWhenSurveyWasTaken:
-    q.selectedAnalysis = q.ageAnalysis;
-    break;
-  case GraphType.SurveyVersion:
-    q.selectedAnalysis = q.versionAnalysis;
-    break;
-  default:
-    q.selectedAnalysis = q.genderAnalysis;
-    break;
-}
-this.setState({graphToShow: g, selectedChartAnalysis: q.selectedAnalysis, isLoaded: true,
-displayGraphErrorMessage: q.selectedAnalysis === undefined ||
+    const {surveyName, searchTerm} = this.props;
+    const {graphToShow} = this.state;
+    q.graphToShow = graphToShow;
+    if (q.graphDataToShow === null) {
+        q.graphDataToShow = 'Count';
+    }
+    switch (graphToShow) {
+        case GraphType.AgeWhenSurveyWasTaken:
+            q.selectedAnalysis = q.ageAnalysis;
+            break;
+        case GraphType.SurveyVersion:
+            q.selectedAnalysis = q.versionAnalysis;
+            break;
+        default:
+            q.selectedAnalysis = q.genderAnalysis;
+            break;
+    }
+    this.setState({graphToShow: g, selectedChartAnalysis: q.selectedAnalysis, isLoaded: true,
+        displayGraphErrorMessage: q.selectedAnalysis === undefined ||
         (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
         answer.stratum3).length === 0) });
   }
@@ -94,7 +94,7 @@ displayGraphErrorMessage: q.selectedAnalysis === undefined ||
             {
               graphButtons.map((g, index) => {
                 return (
-                 <div onDoubleClick={() => this.selectGraphType(g, question, answer)}
+                 <div onClick={() => this.selectGraphType(g, question, answer)}
                  className={this.state.graphToShow === g ? 'active survey-chart-choice' : 'survey-chart-choice'}
                  tabIndex={tabIndex} key={index}>
                  <span>{g}</span>
