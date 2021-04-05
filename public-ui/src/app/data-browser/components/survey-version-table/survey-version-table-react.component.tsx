@@ -34,34 +34,32 @@ componentDidMount() {
 
 fetchAndProcessSurveys() {
     api.getSurveyVersionCounts(this.props.surveyConceptId).then(
-                result => {
-                    let surveyVersions = [];
-                    result.analyses.items.map(r =>
-                    r.results.map((item, i) => {
-                        if (item.analysisId === 3400) {
-                           surveyVersions.push({
-                            monthName: item.stratum4,
-                            year: item.stratum5,
-                            monthNum: item.stratum3.split('/')[0],
-                            participants: item.countValue,
-                            numberOfQuestion: ''
-                           });
-                        } else if (item.analysisId === 3401) {
-                            surveyVersions[i].numberOfQuestion = item.countValue;
-                        }
-                    }
-                    ));
-                    surveyVersions.sort((a1, a2) => {
-                            let a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
-                            let b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
-                        return a.valueOf() - b.valueOf();
-                        });
-                    surveyVersions.forEach((survey) => {
-                            survey['pdfLink'] = '/assets/surveys/' + survey.monthName.replace('/', '_') + '_COPE_COVID_English_Explorer.pdf';
-                        });
-                    this.setState({ surveys: surveyVersions });
+        result => {
+            const surveyVersions = [];
+            result.analyses.items.map(r =>
+            r.results.map((item, i) => {
+                if (item.analysisId === 3400) {
+                   surveyVersions.push({
+                    monthName: item.stratum4,
+                    year: item.stratum5,
+                    monthNum: item.stratum3.split('/')[0],
+                    participants: item.countValue,
+                    numberOfQuestion: '',
+                    pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
+                    '_COPE_COVID_English_Explorer.pdf'
+                   });
+                } else if (item.analysisId === 3401) {
+                    surveyVersions[i].numberOfQuestion = item.countValue;
                 }
-            );
+            }
+            ));
+            surveyVersions.sort((a1, a2) => {
+                let const = new Date(a1.year, a1.monthNum.split('/')[0], 1);
+                let const = new Date(a2.year, a2.monthNum.split('/')[0], 1);
+                return a.valueOf() - b.valueOf();
+            });
+            this.setState({ surveys: surveyVersions });
+        });
 }
 
 render() {
