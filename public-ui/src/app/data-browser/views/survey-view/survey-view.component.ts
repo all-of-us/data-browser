@@ -517,7 +517,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  public showAnswerGraphs(a: any, q: any, level?: number) {
+  public showAnswerGraphs(a: any, q: any, level?: number, event?: MouseEvent) {
+    if (event && this.chartEl && this.chartEl.nativeElement.contains(event.target)) {
+        return;
+    }
     if (a.stratum7 === '1' && level) {
       this.getSubQuestions(a, 'display', level);
     }

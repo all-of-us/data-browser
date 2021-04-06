@@ -8,6 +8,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
 import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
+import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { GraphType } from 'app/utils/enum-defs';
 import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
@@ -36,7 +37,8 @@ interface Props {
 export class SurveyChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {graphToShow: this.props.isCopeSurvey? GraphType.SurveyVersion: GraphType.BiologicalSex, displayGraphErrorMessage: false, isLoaded: false, selectedChartAnalysis: null};
+    this.state = {graphToShow: this.props.isCopeSurvey? GraphType.SurveyVersion: GraphType.BiologicalSex,
+    displayGraphErrorMessage: false, isLoaded: false, selectedChartAnalysis: null};
   }
 
   componentDidMount() {
@@ -45,12 +47,8 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
 
   selectGraphType(g: any, q: any, answer: any) {
     const {surveyName, searchTerm} = this.props;
-    const {graphToShow} = this.state;
-    q.graphToShow = graphToShow;
-    if (q.graphDataToShow === null) {
-        q.graphDataToShow = 'Count';
-    }
-    switch (graphToShow) {
+    q.graphToShow = g;
+    switch (g) {
         case GraphType.AgeWhenSurveyWasTaken:
             q.selectedAnalysis = q.ageAnalysis;
             break;
@@ -81,7 +79,8 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
 
   getLabel(g) {
     const {surveyName, question, answer} = this.props;
-    return surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g;
+    return surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +
+    question.conceptName + ' - ' + answer.stratum4 + ' - ' + g;
   }
 
 
@@ -99,7 +98,8 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
                  tabIndex={tabIndex} key={index}>
                  <span>{g}</span>
                  <TooltipReactComponent tooltipKey={this.getTooltipKey(g)}
-                 label={this.getLabel(g)} searchTerm={searchTerm} action='Survey Chart Tooltip'></TooltipReactComponent>
+                 label={this.getLabel(g)} searchTerm={searchTerm} action='Survey Chart Tooltip'>
+                 </TooltipReactComponent>
                  </div>
                  );
               })
@@ -123,7 +123,14 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
                                  domain='survey' ageAnalysis={this.state.selectedChartAnalysis}
                                  ageCountAnalysis={this.props.surveyCountAnalysis.ageCountAnalysis}
                                  selectedResult={this.props.selectedResult}></AgeChartReactComponent>
-                                </div>: null
+            </div> : [
+            isLoaded && this.state.selectedChartAnalysis.analysisId === 3113 ?
+            <div className="chart" key='age-chart'>
+            <VersionChartReactComponent versionAnalysis={this.state.selectedChartAnalysis}
+            surveyVersionAnalysis={this.props.versionAnalysis}
+            selectedResult={this.props.selectedResult}></VersionChartReactComponent>
+            </div> : null
+                                ]
             ]
     ]
 }
@@ -152,6 +159,8 @@ export class SurveyChartWrapperComponent extends BaseReactWrapper {
   @Input() versionAnalysis: any[];
 
   constructor() {
-    super(SurveyChartReactComponent, ['graphButtons', 'question', 'answer', 'selectedAnalysis', 'selectedResult', 'surveyName', 'searchTerm', 'surveyCountAnalysis', 'isCopeSurvey', 'versionAnalysis']);
+    super(SurveyChartReactComponent, ['graphButtons', 'question', 'answer', 'selectedAnalysis',
+    'selectedResult', 'surveyName', 'searchTerm', 'surveyCountAnalysis',
+    'isCopeSurvey', 'versionAnalysis']);
   }
 }
