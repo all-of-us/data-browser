@@ -4,11 +4,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
+import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
+import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
-import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
-import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
-import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { GraphType } from 'app/utils/enum-defs';
 import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
@@ -106,26 +106,26 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
             }
         </div>
 {this.state.displayGraphErrorMessage
-    ? <div className="graph-error-message">
+    ? <div className='graph-error-message'>
                   <ErrorMessageReactComponent dataType='chart'></ErrorMessageReactComponent>
                 </div>
     : [
         isLoaded && this.state.selectedChartAnalysis.analysisId === 3111 ?
-            <div className="chart" key='biosex-chart'>
+            <div className='chart' key='biosex-chart'>
              <BioSexChartReactComponent
              domain='survey' genderAnalysis={this.state.selectedChartAnalysis}
              genderCountAnalysis={this.props.surveyCountAnalysis.genderCountAnalysis}
              selectedResult={this.props.selectedResult}></BioSexChartReactComponent>
             </div> : [
             isLoaded && this.state.selectedChartAnalysis.analysisId === 3112 ?
-            <div className="chart" key='age-chart'>
+            <div className='chart' key='age-chart'>
                                  <AgeChartReactComponent
                                  domain='survey' ageAnalysis={this.state.selectedChartAnalysis}
                                  ageCountAnalysis={this.props.surveyCountAnalysis.ageCountAnalysis}
                                  selectedResult={this.props.selectedResult}></AgeChartReactComponent>
             </div> : [
             isLoaded && this.state.selectedChartAnalysis.analysisId === 3113 ?
-            <div className="chart" key='age-chart'>
+            <div className='chart' key='age-chart'>
             <VersionChartReactComponent versionAnalysis={this.state.selectedChartAnalysis}
             surveyVersionAnalysis={this.props.versionAnalysis}
             selectedResult={this.props.selectedResult}></VersionChartReactComponent>

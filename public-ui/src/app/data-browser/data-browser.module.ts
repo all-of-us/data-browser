@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
+import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from 'app/shared/shared.module';
@@ -22,7 +23,6 @@ import { VersionChartWrapperComponent } from './charts/chart-version/chart-versi
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
-import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
