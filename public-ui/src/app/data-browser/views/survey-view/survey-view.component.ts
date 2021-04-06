@@ -62,7 +62,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   showStatement: boolean;
   copeDisclaimer: string;
   isCopeSurvey = false;
-  surveyVersions: any[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -321,6 +320,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
+    }
   }
 
   public setSurvey() {
