@@ -36,7 +36,7 @@ interface Props {
 export class SurveyChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {graphToShow: this.props.isCopeSurvey? GraphType.SurveyVersion: GraphType.BiologicalSex,
+    this.state = {graphToShow: this.props.isCopeSurvey ? GraphType.SurveyVersion : GraphType.BiologicalSex,
     displayGraphErrorMessage: false, isLoaded: false, selectedChartAnalysis: null};
   }
 
@@ -92,7 +92,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
 
   getLabel(g) {
     const {surveyName, question, answer} = this.props;
-    return surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +
+    return surveyName + ' - Q' +  question.actualQuestionNumber + ' - ' +
     question.conceptName + ' - ' + answer.stratum4 + ' - ' + g;
   }
 
