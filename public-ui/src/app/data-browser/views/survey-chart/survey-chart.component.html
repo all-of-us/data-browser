@@ -1,7 +1,7 @@
 <div class="survey-graph-menu">
   <div *ngFor="let g of graphButtons"
        [ngClass]="{'active':graphToShow === g}" tabindex="0" (keydown.enter)="selectGraphType(g,question,answer)"  (click)="$event.stopPropagation();selectGraphType(g,question,answer)"
-       class="survey-chart-choice">
+         class="survey-chart-choice">
     <span>{{g}}</span>
     <app-tooltip-react [tooltipKey]="getTooltipKey(g)"
                        [label]="surveyName + ' - Q' +  question.actualQuestionNumber+ ' - ' +  question.conceptName + ' - ' + answer.stratum4 + ' - ' + g"
