@@ -66,6 +66,11 @@
   },
   {
     "mode": "REQUIRED",
+    "name": "showup_date",
+    "type": "TIMESTAMP"
+  },
+  {
+    "mode": "REQUIRED",
     "name": "type",
     "type": "STRING"
   }
