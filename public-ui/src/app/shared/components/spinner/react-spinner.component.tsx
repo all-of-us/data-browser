@@ -10,16 +10,16 @@ const SpinnerReactComponent: React.FunctionComponent<{loading: boolean, dots: bo
   ({loading, dots}) => {
   return <React.Fragment>
   {loading && !dots ?
-    <div className="spinner-container">
-        <span className="spinner"></span>
+    <div className='spinner-container'>
+        <span className='spinner'></span>
     </div>
   : [
     loading && dots ?
-        <div className="loading-dots">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
+        <div className='loading-dots'>
+            <div className='dot'></div>
+            <div className='dot'></div>
+            <div className='dot'></div>
+            <div className='dot'></div>
             </div> : null
     ]}
     </React.Fragment>;
