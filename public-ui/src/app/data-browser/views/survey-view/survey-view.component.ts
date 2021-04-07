@@ -521,6 +521,16 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     if (event && this.chartEl && this.chartEl.nativeElement.contains(event.target)) {
         return;
     }
+    if (event && this.subChartEl1 && this.subChartEl1.nativeElement.contains(event.target)) {
+        return;
+    }
+    if (event) {
+        event.stopPropagation();
+    }
+    if (event && this.subChartEl2 && this.subChartEl2.nativeElement.contains(event.target)) {
+        return;
+    }
+    console.log('test');
     if (a.stratum7 === '1' && level) {
       this.getSubQuestions(a, 'display', level);
     }
