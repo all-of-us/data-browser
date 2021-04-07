@@ -5,6 +5,7 @@ import { ClarityModule } from '@clr/angular';
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
+import { SpinnerWrapperComponent } from 'app/shared/components/spinner/react-spinner.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
@@ -79,6 +80,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    SpinnerWrapperComponent,
     TooltipWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
@@ -112,6 +114,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyVersionWrapperComponent,
+    SpinnerWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
     VersionChartWrapperComponent,

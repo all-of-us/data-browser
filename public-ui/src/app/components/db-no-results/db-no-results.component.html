@@ -1,6 +1,6 @@
 <div class="no-results">
     <p *ngIf="loading">Searching whole site for <strong>{{searchText.value}}</strong></p>
-    <app-spinner [loading]="loading" [dots]="true"></app-spinner>
+    <app-spinner-react [loading]="loading" [dots]="true"></app-spinner-react>
     <div *ngIf="results && results.domainInfos && results.domainInfos.length > 0">
         <div *ngFor="let domain of results.domainInfos ">
             <span *ngIf="domain.name.toLowerCase() !== 'physical measurements'" (click)="goToResult(domain)">{{domain.standardConceptCount}} results available in the domain:

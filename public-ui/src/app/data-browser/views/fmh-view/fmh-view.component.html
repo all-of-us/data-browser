@@ -84,7 +84,7 @@
                             </button>
                             <button class="icon-btn" *ngIf="a.stratum7 === '1'">
                                 <clr-icon *ngIf="!a.expanded" shape="caret" dir="right" (click)="getSubQuestions(a, 1)"></clr-icon>
-                                <app-spinner [loading]="a.loading" [dots]="a.dots"></app-spinner>
+                                <app-spinner-react [loading]="a.loading" [dots]="a.dots"></app-spinner-react>
                                 <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
                             </button>
                         </div>
@@ -237,7 +237,7 @@
                             </button>
                             <button class="icon-btn" *ngIf="a.stratum7 === '1'" (click)="getSubQuestions(a, 1)">
                                 <clr-icon *ngIf="!a.expanded" shape="caret" dir="right"></clr-icon>
-                                <app-spinner [loading]="a.loading" [dots]="a.dots"></app-spinner>
+                                <app-spinner-react [loading]="a.loading" [dots]="a.dots"></app-spinner-react>
                                 <clr-icon *ngIf="a.expanded" shape="caret" dir="down"></clr-icon>
                             </button>
                         </div>
@@ -286,7 +286,7 @@
                                         </button>
                                         <button class="icon-btn" *ngIf="sqa.stratum7 === '1'">
                                             <clr-icon *ngIf="!sqa.subExpanded" shape="caret" dir="right"></clr-icon>
-                                            <app-spinner [loading]="sqa.loading" [dots]="sqa.dots"></app-spinner>
+                                            <app-spinner-react [loading]="sqa.loading" [dots]="sqa.dots"></app-spinner-react>
                                             <clr-icon *ngIf="sqa.subExpanded" shape="caret" dir="down"></clr-icon>
                                         </button>
                                     </div>

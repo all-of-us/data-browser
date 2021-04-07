@@ -10,7 +10,7 @@
     <div tabindex="0" (keydown.enter)="conceptClick(node)" (click)="conceptClick(node); $event.stopPropagation()" >{{node.name}}<span class="count">{{node.count | number}}</span></div> 
   </div>
 
-  <app-spinner [loading]="node.group && loading && opened" [dots]="true"></app-spinner>
+  <app-spinner-react [loading]="node.group && loading && opened" [dots]="true"></app-spinner-react>
 
   <div class="children" *ngIf="node.children && opened">
     <div *ngFor="let child of node.children" class="child">

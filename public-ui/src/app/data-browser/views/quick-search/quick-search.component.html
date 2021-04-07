@@ -50,7 +50,7 @@
     </div>
   </div><!-- .iconlinks -->
 </div><!-- .search-icon-container -->
-<app-spinner [loading]="loading"></app-spinner>
+<app-spinner-react [loading]="loading"></app-spinner-react>
 <section class="results">
   <h5 class="result-heading secondary-display" style="display:block" *ngIf="showDataType(EHR_DATATYPE)"> EHR Domains:
     <app-tooltip-react [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Tooltip Home Page EHR Domains'" [tooltipKey]="'ehrDomainHelpText'"></app-tooltip-react>
