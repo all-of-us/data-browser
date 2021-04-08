@@ -15,7 +15,6 @@ import * as React from 'react';
 
 interface State {
     graphToShow: string;
-    selectedAnalysisId: number;
     selectedChartAnalysis: any;
     displayGraphErrorMessage: boolean;
     isLoaded: boolean;
