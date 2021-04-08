@@ -15,7 +15,7 @@
     </div>
 
     <div [ngClass]= "{'loading-layout': loading()}" class="fm-body db-card">
-      <app-spinner-react [loading]="loading()"></app-spinner-react>
+      <app-spinner [loading]="loading()"></app-spinner>
       <ng-container *ngIf="!loading()">
         <h2>{{selectedDisplay}} </h2>
         <div class="fm-body-top">

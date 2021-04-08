@@ -9,7 +9,7 @@
     <div *ngIf="searchText.value" class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
   </div>
 </div>
-<app-spinner-react [loading]="loading()"></app-spinner-react>
+<app-spinner [loading]="loading()"></app-spinner>
 <div class="results" *ngIf="canDisplayTable()">
   <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
     < Back to main search </a> <div class="result-list">
@@ -32,7 +32,7 @@
           <app-error-message-react [dataType]="'data'"></app-error-message-react>
         </div>
       </section>
-      <app-spinner-react [loading]="dataLoading()"></app-spinner-react>
+      <app-spinner [loading]="dataLoading()"></app-spinner>
       <div class="results-grid">
         <div class="domain-info-layout">
     <span *ngIf="!displayConceptErrorMessage && canDisplayTable()">
