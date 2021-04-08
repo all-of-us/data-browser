@@ -693,8 +693,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   showCopeStatement() {
-    console.log('am i hereee');
-    console.log(this.showStatement);
     this.showStatement = true;
   }
 }
