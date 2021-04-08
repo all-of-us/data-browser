@@ -24,7 +24,6 @@ interface Props {
     graphButtons: any;
     question: any;
     answer: any;
-    selectedAnalysis: any;
     selectedResult: any;
     surveyName: any;
     searchTerm: any;
@@ -36,8 +35,12 @@ interface Props {
 export class SurveyChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {graphToShow: this.props.isCopeSurvey ? GraphType.SurveyVersion : GraphType.BiologicalSex,
-    displayGraphErrorMessage: false, isLoaded: false, selectedChartAnalysis: null};
+    this.state = {
+        graphToShow: this.props.isCopeSurvey ? GraphType.SurveyVersion : GraphType.BiologicalSex,
+        displayGraphErrorMessage: false,
+        isLoaded: false,
+        selectedChartAnalysis: null
+    };
   }
 
   componentDidMount() {
@@ -120,32 +123,28 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         </div>
 {displayGraphErrorMessage
     ? <div className='graph-error-message'>
-                  <ErrorMessageReactComponent dataType='chart'></ErrorMessageReactComponent>
+                  <ErrorMessageReactComponent dataType='chart'/>
                 </div>
-    : [
-        isLoaded && selectedChartAnalysis.analysisId === 3111 ?
+    : isLoaded && selectedChartAnalysis.analysisId === 3111 ?
             <div className='chart' key='biosex-chart'>
              <BioSexChartReactComponent
              domain='survey' genderAnalysis={selectedChartAnalysis}
              genderCountAnalysis={surveyCountAnalysis.genderCountAnalysis}
-             selectedResult={selectedResult}></BioSexChartReactComponent>
-            </div> : [
+             selectedResult={selectedResult}/>
+            </div> :
             isLoaded && selectedChartAnalysis.analysisId === 3112 ?
             <div className='chart' key='age-chart'>
                                  <AgeChartReactComponent
                                  domain='survey' ageAnalysis={selectedChartAnalysis}
                                  ageCountAnalysis={surveyCountAnalysis.ageCountAnalysis}
-                                 selectedResult={selectedResult}></AgeChartReactComponent>
-            </div> : [
+                                 selectedResult={selectedResult}/>
+            </div> :
             isLoaded && selectedChartAnalysis.analysisId === 3113 ?
             <div className='chart' key='age-chart'>
             <VersionChartReactComponent versionAnalysis={selectedChartAnalysis}
             surveyVersionAnalysis={versionAnalysis}
-            selectedResult={selectedResult}></VersionChartReactComponent>
+            selectedResult={selectedResult}/>
             </div> : null
-                                ]
-            ]
-    ]
 }
 
       </React.Fragment>;
