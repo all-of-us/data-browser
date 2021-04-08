@@ -61,24 +61,25 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + answer.stratum4 +
       ' - ' + g, searchTerm, null);
     q.graphToShow = g;
+    let selectedAnalysis;
     switch (g) {
         case GraphType.AgeWhenSurveyWasTaken:
-            q.selectedAnalysis = q.ageAnalysis;
-            break;
+             selectedAnalysis = q.ageAnalysis;
+             break;
         case GraphType.SurveyVersion:
-            q.selectedAnalysis = q.versionAnalysis;
-            break;
+             selectedAnalysis = q.versionAnalysis;
+             break;
         default:
-            q.selectedAnalysis = q.genderAnalysis;
-            break;
+             selectedAnalysis = q.genderAnalysis;
+             break;
     }
     this.setState({
         graphToShow: g,
-        selectedChartAnalysis: q.selectedAnalysis,
+        selectedChartAnalysis: selectedAnalysis,
         isLoaded: true,
-        displayGraphErrorMessage: q.selectedAnalysis === undefined ||
-        (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
-        answer.stratum3).length === 0) });
+        displayGraphErrorMessage: selectedAnalysis === undefined ||
+            (selectedAnalysis && selectedAnalysis.results.filter(a => a.stratum3 ===
+            answer.stratum3).length === 0) });
     triggerEvent('graphTabClick', 'Survey Graph',
       'Click', surveyName + ' - ' + q.graphToShow + ' - Q'
       + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + answer.stratum4 +
