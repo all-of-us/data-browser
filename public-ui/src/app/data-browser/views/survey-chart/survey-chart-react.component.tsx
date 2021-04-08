@@ -15,6 +15,7 @@ import * as React from 'react';
 
 interface State {
     graphToShow: string;
+    selectedAnalysisId: number;
     selectedChartAnalysis: any;
     displayGraphErrorMessage: boolean;
     isLoaded: boolean;
@@ -39,7 +40,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         graphToShow: this.props.isCopeSurvey ? GraphType.SurveyVersion : GraphType.BiologicalSex,
         displayGraphErrorMessage: false,
         isLoaded: false,
-        selectedChartAnalysis: null
+        selectedChartAnalysis: null,
     };
   }
 
@@ -71,7 +72,10 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
             q.selectedAnalysis = q.genderAnalysis;
             break;
     }
-    this.setState({graphToShow: g, selectedChartAnalysis: q.selectedAnalysis, isLoaded: true,
+    this.setState({
+        graphToShow: g,
+        selectedChartAnalysis: q.selectedAnalysis,
+        isLoaded: true,
         displayGraphErrorMessage: q.selectedAnalysis === undefined ||
         (q.selectedAnalysis && q.selectedAnalysis.results.filter(a => a.stratum3 ===
         answer.stratum3).length === 0) });
