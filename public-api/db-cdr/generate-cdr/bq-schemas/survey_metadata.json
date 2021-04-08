@@ -66,12 +66,12 @@
   },
   {
     "mode": "REQUIRED",
-    "name": "showup_date",
-    "type": "TIMESTAMP"
+    "name": "type",
+    "type": "STRING"
   },
   {
     "mode": "REQUIRED",
-    "name": "type",
-    "type": "STRING"
+    "name": "showup_date",
+    "type": "TIMESTAMP"
   }
 ]
