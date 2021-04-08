@@ -104,7 +104,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
 
 
   render() {
-      const {graphButtons, question, answer, searchTerm, surveyCountAnalysis, selectedResult, versionAnalysis} = this.props;
+      const {graphButtons, searchTerm, surveyCountAnalysis, selectedResult, versionAnalysis} = this.props;
       const { isLoaded, graphToShow, displayGraphErrorMessage, selectedChartAnalysis } = this.state;
       const tabIndex = 0;
       return <React.Fragment>
