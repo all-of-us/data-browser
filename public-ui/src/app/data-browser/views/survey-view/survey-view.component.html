@@ -202,7 +202,7 @@
                       *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'"
                       #chartElement>
                       <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="q" [answer]="a"
-                                              [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a"
+                                              [selectedResult]="a"
                                               [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                               [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
 
@@ -318,8 +318,7 @@
                             </div>
                             <div class="row-expansion"
                               *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7" #subChartElement1>
-                              <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion" [answer]="sqa"
-                                                      [selectedAnalysis]="subQuestion.selectedAnalysis" [selectedResult]="sqa"
+                              <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion" [answer]="sqa" [selectedResult]="sqa"
                                                       [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                                       [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
                             </div>
@@ -431,7 +430,7 @@
                                     <div class="row-expansion"
                                       *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7" #subChartElement1>
                                       <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion2" [answer]="sqa2"
-                                                              [selectedAnalysis]="subQuestion2.selectedAnalysis" [selectedResult]="sqa2"
+                                                              [selectedResult]="sqa2"
                                                               [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                                               [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
                                     </div>
