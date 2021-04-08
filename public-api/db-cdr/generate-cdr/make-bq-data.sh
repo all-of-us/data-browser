@@ -198,7 +198,7 @@ fi
 # Add survey participant count by question addition date
 ##################################################################
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` set sd = sdate from
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` set showup_date = sdate from
 (select observation_source_concept_id, min(observation_datetime) sdate from
 \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
 on observation_source_concept_id = concept_id
@@ -209,18 +209,18 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value)
 with survey_dates as
-(select distinct survey_concept_id, sd from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where first_showup_date is not null group by 1,2),
+(select distinct survey_concept_id, showup_date from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where showup_date is not null group by 1,2),
 survey_rows as
 (select ob.*, a.survey_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` a
 on observation_source_concept_id = a.concept_id),
 survey_row_counts as
-(select b.survey_concept_id, b.sd, count(distinct person_id) pc from survey_rows a join survey_dates b on a.survey_concept_id = b.survey_concept_id
-and a.observation_datetime >= b.sd
+(select b.survey_concept_id, b.showup_date, count(distinct person_id) pc from survey_rows a join survey_dates b on a.survey_concept_id = b.survey_concept_id
+and a.observation_datetime >= b.showup_date
 group by 1,2
 order by 1)
 select 0 as id, 3203 as analysis_id, cast(a.survey_concept_id as STRING) as stratum_1, cast(a.concept_id as STRING) as stratum_2, cast(a.path as STRING) as stratum_3, b.pc as count_value
 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` a
-join survey_row_counts b on a.survey_concept_id = b.survey_concept_id and a.sd = b.sd;"
+join survey_row_counts b on a.survey_concept_id = b.survey_concept_id and a.showup_date = b.showup_date;"
 
 ##################################################################
 #Add sub questions flag in stratum_7 in survey response count rows
