@@ -70,7 +70,7 @@
     "type": "STRING"
   },
   {
-    "mode": "Nullable",
+    "mode": "NULLABLE",
     "name": "showup_date",
     "type": "TIMESTAMP"
   }
