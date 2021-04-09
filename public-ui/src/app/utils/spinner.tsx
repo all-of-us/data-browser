@@ -54,7 +54,7 @@ export const Spinner = () => {
             <span className='spinner'></span>
            </div>
            </React.Fragment>;
-}
+};
 
 export const LoadingDots = () => {
     return <React.Fragment>
@@ -66,7 +66,7 @@ export const LoadingDots = () => {
                 <div className='dot'></div>
            </div>
            </React.Fragment>;
-}
+};
 
 export const SpinnerContainer = ({loading, dots}) => {
     return <React.Fragment>
