@@ -287,7 +287,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.addMissingResults(q, aCount, totalCount);
     });
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
-      totalCount));
+      totalCount, q.participantCountAnalysis.results));
 
   }
 
@@ -440,6 +440,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
           q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
           q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+          q.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
@@ -541,8 +542,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     return q.conceptName;
   }
 
-  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number) {
+  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number, participantCountResults: any[]) {
     let didNotAnswerCount = participantCount;
+    if (participantCountResults) {
+        didNotAnswerCount = participantCountResults[0].countValue;
+    }
     for (const r of results) {
       didNotAnswerCount = didNotAnswerCount - r.countValue;
     }
