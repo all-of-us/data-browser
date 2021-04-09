@@ -109,8 +109,6 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
 
     render() {
         const {onChange, onClear, value} = this.props;
-        console.log(value,'value');
-        
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
         return (
