@@ -105,11 +105,11 @@
                     <!-- react -->
                     <!-- react -->
                     <!-- react -->
-                    <app-survey-answer-react [isCopeSurvey]="isCopeSurvey" [question]="q" [totalPartcipants]="survey.participantCount">
+                    <app-survey-answer-react *ngIF="testReact" [isCopeSurvey]="isCopeSurvey" [question]="q" [totalPartcipants]="survey.participantCount">
                     </app-survey-answer-react>
 
 
-                    <!--<div class="survey-tbl">
+                    <div class="survey-tbl">
                    <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
                       Answer
@@ -458,7 +458,7 @@
                       </ng-container>
                     </div>
                   </div> 
-                </div>-->
+                </div>
                   </ng-container>
                 </div>
               </ng-container>
