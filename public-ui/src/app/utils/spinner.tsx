@@ -67,11 +67,3 @@ export const LoadingDots = () => {
            </div>
            </React.Fragment>;
 };
-
-export const SpinnerContainer = ({loading, dots}) => {
-    return <React.Fragment>
-            <style>{spinnerContainerCss}</style>
-            {loading && !dots && <Spinner/>}
-            {loading && dots && <LoadingDots/>}
-           </React.Fragment>;
-};
