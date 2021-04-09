@@ -61,8 +61,8 @@
                 </p>
               </div>
             </div>
-            <div *ngIf="isCopeSurvey && surveyVersions.length > 0" class="version-table">
-              <app-survey-version-table-react [surveys]="surveyVersions"></app-survey-version-table-react>
+            <div *ngIf="isCopeSurvey" class="version-table">
+              <app-survey-version-table-react [surveyConceptId]="surveyConceptId"></app-survey-version-table-react>
             </div>
             <div class="pdf-link" (click)="downloadPdf()" *ngIf="!isCopeSurvey">
               <a href="{{surveyPdfUrl}}" download>
@@ -102,10 +102,7 @@
                     <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="q.countAnalysis.results"
                       [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
 
-                    <!-- react -->
-                    <!-- react -->
-                    <!-- react -->
-                    <app-survey-answer-react *ngIF="testReact" [isCopeSurvey]="isCopeSurvey" [question]="q" [totalPartcipants]="survey.participantCount">
+                    <app-survey-answer-react *ngIf="testReact" [isCopeSurvey]="isCopeSurvey" [question]="q" [totalPartcipants]="survey.participantCount">
                     </app-survey-answer-react>
 
 
@@ -213,7 +210,7 @@
                       *ngIf="a.expanded && a.stratum4.toLowerCase() != 'did not answer' && a.stratum7 !== '1'"
                       #chartElement>
                       <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="q" [answer]="a"
-                                              [selectedAnalysis]="q.selectedAnalysis" [selectedResult]="a"
+                                              [selectedResult]="a"
                                               [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                               [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
 
@@ -272,7 +269,7 @@
                             </div>
                           </div>
                           <div class="survey-tbl-exp-r" *ngFor="let sqa of subQuestion.countAnalysis.results"
-                            (click)="$event.stopPropagation();showAnswerGraphs(sqa, subQuestion, 2, $event)">
+                            (click)="showAnswerGraphs(sqa, subQuestion, 2, $event)" #subTable1>
                             <div class="survey-tbl-r">
                               <div class="survey-tbl-d first display-body info-text sub-1-que survey-answer-level-1"
                                 [ngClass]="{'active':a.expanded && sqa.expanded}">
@@ -328,13 +325,10 @@
                               </div>
                             </div>
                             <div class="row-expansion"
-                              *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7">
-                              <app-survey-chart [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey"
-                                [question]="subQuestion" [selectedAnalysis]="subQuestion.selectedAnalysis" [versionAnalysis]='surveyVersions'
-                                [selectedResult]="sqa" [surveyName]="survey.name"
-                                [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
-                                [answer]="sqa">
-                              </app-survey-chart>
+                              *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7" #subChartElement1>
+                              <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion" [answer]="sqa" [selectedResult]="sqa"
+                                                      [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
+                                                      [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
                             </div>
                             <div class="row-expansion sub-table-2" *ngIf="sqa.expanded && sqa.stratum7 === '1'">
                               <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
@@ -388,7 +382,7 @@
                                     </div>
                                   </div>
                                   <div class="survey-tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.results"
-                                    (click)="$event.stopPropagation();showAnswerGraphs(sqa2, subQuestion2, 2, $event)">
+                                    (click)="showAnswerGraphs(sqa2, subQuestion2, 2, $event)" #subTable2>
                                     <div class="survey-tbl-r">
                                       <div class="survey-tbl-d first display-body info-text">
                                         <div>
@@ -442,12 +436,11 @@
                                       </div>
                                     </div>
                                     <div class="row-expansion"
-                                      *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7">
-                                      <app-survey-chart [isCopeSurvey]="isCopeSurvey" [graphButtons]="graphButtons"
-                                        [question]="subQuestion2" [selectedAnalysis]="subQuestion2.selectedAnalysis"
-                                        [selectedResult]="sqa2" [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
-                                        [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"
-                                        [answer]="sqa2"></app-survey-chart>
+                                      *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7" #subChartElement1>
+                                      <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion2" [answer]="sqa2"
+                                                              [selectedResult]="sqa2"
+                                                              [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
+                                                              [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
                                     </div>
                                   </div>
                                 </div>

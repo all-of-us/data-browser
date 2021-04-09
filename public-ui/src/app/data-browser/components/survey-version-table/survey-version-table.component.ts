@@ -7,7 +7,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 })
 export class SurveyVersionTableComponent implements OnChanges {
   @Input() surveys: any;
-  pdfFiles = ['May_COPE_COVID_English_Explorer.pdf', 'June_COPE_COVID_English_Explorer.pdf', 'July_August_COPE_COVID_English_Explorer.pdf'];
+  pdfFiles = ['COPE_survey_May_2020_English.pdf', 'COPE_survey_June_2020_English.pdf', 'COPE_survey_July_2020_English.pdf'];
   constructor() { }
 
   ngOnChanges() {
