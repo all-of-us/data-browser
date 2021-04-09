@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -55,9 +55,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
   envDisplay: string;
-  @ViewChild('chartElement') chartEl: ElementRef;
-  @ViewChild('subChartElement1') subChartEl1: ElementRef;
-  @ViewChild('subChartElement2') subChartEl2: ElementRef;
+  @ViewChildren('chartElement') chartEl: QueryList<ElementRef>;
+  @ViewChildren('subChartElement1') subChartEl1: QueryList<ElementRef>;
+  @ViewChildren('subChartElement2') subChartEl2: QueryList<ElementRef>;
   fmhResultCount = 0;
   showStatement: boolean;
   copeDisclaimer: string;
@@ -490,7 +490,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  public showAnswerGraphs(a: any, q: any, level?: number) {
+  public showAnswerGraphs(a: any, q: any, level?: number, event?: MouseEvent) {
+    if (event && this.chartEl && this.chartEl.some(el => el.nativeElement.contains(event.target))) {
+        return;
+    }
+    if (event && this.subChartEl1 && this.subChartEl1.some(el => el.nativeElement.contains(event.target))) {
+        return;
+    }
+    if (event) {
+        event.stopPropagation();
+    }
+    if (event && this.subChartEl2 && this.subChartEl2.some(el => el.nativeElement.contains(event.target))) {
+        return;
+    }
     if (a.stratum7 === '1' && level) {
       this.getSubQuestions(a, 'display', level);
     }
