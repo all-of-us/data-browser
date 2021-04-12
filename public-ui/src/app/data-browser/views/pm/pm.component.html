@@ -13,13 +13,9 @@
         <div class="db-card-header">
           <div class="group-name">{{selectedGroup.groupName}}</div>
           <div class="bs-title" *ngIf="this.selectedConcept && this.selectedConcept.analyses && this.selectedConcept.analyses.measurementValueGenderAnalysis">{{bsChartTitle}}
-            <app-tooltip-react *ngIf="testReact"
-                               [tooltipKey]="'pmValueChartHelpText'"
+            <app-tooltip-react [tooltipKey]="'pmValueChartHelpText'"
                                [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                                [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip-react>
-            <app-tooltip [tooltipKey]="'pmValueChartHelpText'"
-                         [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
-                         [action]="'Hover on pm biological sex chart of concept' + selectedGroup"></app-tooltip>
           </div>
           <div class="group-option" *ngIf="selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1">
             <button *ngFor="let c of selectedGroup.concepts" [ngClass]="{active:selectedConcept === c}"
@@ -63,23 +59,19 @@
           </ng-container>
           <ng-template #stackedChart>
             <div class="chart-item stacked-chart-item">
-              <app-chart *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [conceptId]="selectedConcept.conceptId"
-                         [analysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
-              [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue"
-              [domainCountAnalysis]="domainCountAnalysis">
-              </app-chart>
+              <app-value-chart-react *ngIf="selectedConcept.analyses.measurementValueGenderAnalysis" [conceptId]="selectedConcept.conceptId"
+                                     [valueAnalysis]="selectedConcept.analyses.measurementValueGenderAnalysis[0]"
+                                     [participantCount]="selectedConcept.analyses.countAnalysis.results[0].countValue"
+                                     [domainCountAnalysis]="domainCountAnalysis">
+              </app-value-chart-react>
             </div>
           </ng-template>
           <!-- show Age totals -->
           <div class="chart-item age-chart" *ngIf="selectedConcept.analyses && selectedConcept.analyses.ageAnalysis">
             <div>{{ageChartTitle}}
-              <app-tooltip-react *ngIf="testReact"
-                                 [tooltipKey]="'pmAgeChartHelpText'"
+              <app-tooltip-react [tooltipKey]="'pmAgeChartHelpText'"
                                  [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
                                  [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip-react>
-              <app-tooltip *ngIf="!testReact" [tooltipKey]="'pmAgeChartHelpText'"
-              [label]="'Physical Measurements tooltip hover'" [searchTerm]="searchText"
-                           [action]="'Hover on pm age chart of concept' + selectedConcept.conceptName"></app-tooltip>
             </div>
             <app-age-chart-react [ageAnalysis]="selectedConcept.analyses.ageAnalysis" [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'pm'"></app-age-chart-react>
           </div>
