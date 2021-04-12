@@ -132,9 +132,7 @@
                      *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
                   <div class="code-tooltip">
                     <b>Exact Source Match:</b> <br />
-                    <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="!testReact">
-                    </app-highlight-search>
-                    <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="testReact"></app-highlight-react>
+                    <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
                   </div>
                 </div>
                 <ng-template #code_match_standard>
@@ -143,9 +141,7 @@
                     <div class="code-tooltip"
                          *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
                       <b>Standard concept match:</b> <br />
-                      <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="!testReact">
-                      </app-highlight-search>
-                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="testReact"></app-highlight-react>
+                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
                     </div>
                   </div>
                 </ng-template>
@@ -156,9 +152,7 @@
                   {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
                 </span>
                       <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
-                      <app-highlight-search [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="!testReact">
-                      </app-highlight-search>
-                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText" *ngIf="testReact"></app-highlight-react>
+                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
                     </div>
                   </div>
                 </ng-template>
@@ -222,19 +216,12 @@
                                      [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
                 </div>
 
-                <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreSynonyms[r.conceptId] && !testReact" [text]="synonymString[r.conceptId].substring(0,100)"
-                                      [searchTerm]="prevSearchText">
-                </app-highlight-search>
-                <app-highlight-search (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreSynonyms[r.conceptId] && !testReact" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
-                </app-highlight-search>
                 <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreSynonyms[r.conceptId] && testReact" [text]="synonymString[r.conceptId].substring(0,100)"
+                                      *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
                                       [searchTerm]="prevSearchText">
                 </app-highlight-react>
                 <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreSynonyms[r.conceptId] && testReact" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
+                                      *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
                 </app-highlight-react>
                 <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"
                    (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
@@ -269,20 +256,12 @@
                     </a>
                   </ng-template>
                 </div>
-                <app-highlight-search (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreDrugBrands[r.conceptId] && !testReact" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
-                                      [searchTerm]="prevSearchText">
-                </app-highlight-search>
-                <app-highlight-search (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreDrugBrands[r.conceptId] && !testReact" [text]="drugBrands[r.conceptId].join(', ')"
-                                      [searchTerm]="prevSearchText">
-                </app-highlight-search>
                 <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreDrugBrands[r.conceptId] && testReact" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
+                                      *ngIf="!showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
                                       [searchTerm]="prevSearchText">
                 </app-highlight-react>
                 <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreDrugBrands[r.conceptId] && testReact" [text]="drugBrands[r.conceptId].join(', ')"
+                                      *ngIf="showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].join(', ')"
                                       [searchTerm]="prevSearchText">
                 </app-highlight-react>
               </div>
@@ -330,5 +309,4 @@
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText" [measurementTestFilter]="testFilter" [measurementOrderFilter]="orderFilter"></app-db-no-results>
 </div>
-<app-popup-react *ngIf="showStatement && testReact" [helpText]="'EhrViewPopUp'" [onClose]="closePopUp"></app-popup-react>
-<app-pop-up [title]="'DATA DISCLAIMER'" [statement]="dataStatement" (closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
+<app-popup-react *ngIf="showStatement" [helpText]="'EhrViewPopUp'" [onClose]="closePopUp"></app-popup-react>

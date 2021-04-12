@@ -92,6 +92,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadPage();
+    this.showStatement = false;
     this.envDisplay = environment.displayTag;
     this.testReact = environment.testReact;
     if (this.surveyConceptId === 1333342) {
@@ -139,17 +140,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       );
     }
-    // Filter when text value changes
-    this.subscriptions.push(
-      this.searchText.valueChanges.pipe(
-        debounceTime(1000),
-        distinctUntilChanged(), )
-        .subscribe((query) => {
-          // this.router.navigate(
-          // ['survey/' + this.domainId.toLowerCase() + '/' + query]
-          // );
-          // this.resetExpansion();
-        }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
@@ -650,32 +640,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     return this.surveyResultCount;
   }
 
-  public resetExpansion() {
-    for (const q of this.questions) {
-      q.expanded = false;
-      q.resultFetchComplete = false;
-      for (const r of q.countAnalysis.results) {
-        r.expanded = false;
-        if (r.hasSubQuestions === 1) {
-          for (const sq of r.subQuestions) {
-            sq.subExpanded = false;
-
-            for (const sr of sq.countAnalysis.results) {
-              sr.expanded = false;
-
-              if (sr.hasSubQuestions === 1) {
-                for (const sq2 of sr.subQuestions) {
-                  sq2.subExpanded = false;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   closePopUp() {
     this.showStatement = false;
+  }
+
+  showCopeStatement() {
+    this.showStatement = true;
   }
 }

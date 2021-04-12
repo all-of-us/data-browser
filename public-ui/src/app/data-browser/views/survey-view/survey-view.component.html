@@ -1,24 +1,5 @@
 <div class="survey-view">
-  <div class="page-header">
-    <div class="title-container" *ngIf="surveyConceptId && surveyName && surveyDescription">
-      <h1> {{surveyName}} </h1>
-      <button *ngIf="isCopeSurvey" (click)="showStatement = true" class="disclaimer-btn">IMPORTANT CONSIDERATIONS FOR
-        COPE SURVEY - LEARN MORE</button>
-      <div class="desc-container">
-        <p class="body-default help-text survey-desc">{{surveyDescription}} Survey questions appear in the order in
-          which participants took the survey.</p>
-      </div>
-    </div>
-    <div class="survey-note"> <span class="bold-note-heading">Note</span>: The data on this page are:
-      <ul class="survey-note">
-        <li>Gathered directly from participants through electronic surveys</li>
-        <li>Grouped into bins of 20 to protect privacy</li>
-      </ul>
-      For more information about this survey, please visit the <a target="_blank"
-        href="https://www.researchallofus.org/data-sources/survey-explorer" rel="noopener noreferrer">Survey
-        Explorer</a>
-    </div>
-  </div>
+  <app-survey-desc [surveyName]="surveyName" [isCopeSurvey]="isCopeSurvey" [surveyDescription]="surveyDescription" [click]="showCopeStatement"></app-survey-desc>
   <div class="search-bar-container">
     <div id="db-search-bar">
       <clr-icon shape="search" class="is-info search-icon"></clr-icon>
@@ -76,11 +57,8 @@
                 <div class="question-result">
               <div class="secondary-display">
                 <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
-                  <app-highlight-search style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                  (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="!testReact">
-                  </app-highlight-search>
                   <app-highlight-react style="cursor: pointer;"  tabindex="0" (keydown.enter)="toggleAnswer(q, 'display', 0)"
-                                        (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value" *ngIf="testReact">
+                                        (click)="toggleAnswer(q, 'display', 0)" [text]="changeAutoInsertText(q)" [searchTerm]="searchText.value">
                   </app-highlight-react>
                   <app-tooltip-react *ngIf="q.conceptId === 1586140" [tooltipKey]="'raceEthnicityQuestionHelpText'"
                                      [label]="getLabel(q, 'Race Ethnicity Question Help Text')" [searchTerm]="searchText.value"
@@ -146,9 +124,7 @@
                           <ng-container *ngIf="isCopeSurvey">
                             <i [ngStyle]="{'color': a.color }" class="cope-legend-item fas fa-2x fa-circle"></i>
                           </ng-container>
-                          <app-highlight-search [text]="a.stratum4" [searchTerm]="searchText.value" *ngIf="!testReact">
-                          </app-highlight-search>
-                          <app-highlight-react [text]="a.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
+                          <app-highlight-react [text]="a.stratum4" [searchTerm]="searchText.value">
                           </app-highlight-react>
                           <app-tooltip-react *ngIf="q.conceptId === 1586140 && a.stratum3 === '903070'"
                                              [tooltipKey]="'q2RolledCategoriesHelpText'"
@@ -213,11 +189,8 @@
                         <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="subQuestion.countAnalysis.results" [versionAnalysis]='subQuestion.versionAnalysis.results'></chart-survey-answers>
                         <h6 class="sub-question-text">
                           <clr-icon shape="child-arrow" size="25"></clr-icon>
-                          <app-highlight-search [text]="changeAutoInsertText(subQuestion)"
-                          [searchTerm]="searchText.value" *ngIf="!testReact">
-                        </app-highlight-search>
                           <app-highlight-react [text]="changeAutoInsertText(subQuestion)"
-                                                [searchTerm]="searchText.value" *ngIf="testReact">
+                                                [searchTerm]="searchText.value">
                           </app-highlight-react>
                       </h6>
                       <div class="survey-sub-tbl">
@@ -266,9 +239,7 @@
                               <div class="survey-tbl-d first display-body info-text sub-1-que survey-answer-level-1"
                                 [ngClass]="{'active':a.expanded && sqa.expanded}">
                                 <div>
-                                  <app-highlight-search [text]="sqa.stratum4" [searchTerm]="searchText.value" *ngIf="!testReact">
-                                  </app-highlight-search>
-                                  <app-highlight-react [text]="sqa.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
+                                  <app-highlight-react [text]="sqa.stratum4" [searchTerm]="searchText.value">
                                   </app-highlight-react>
                                 </div>
                               </div>
@@ -326,11 +297,8 @@
                               <ng-container *ngFor="let subQuestion2 of sqa.subQuestions">
                                 <h6 class="sub-question-text" *ngIf="sqa.stratum4 !== subQuestion2.conceptName">
                                   <clr-icon shape="child-arrow" size="25"></clr-icon>
-                                  <app-highlight-search [text]="changeAutoInsertText(subQuestion2)"
-                                    [searchTerm]="searchText.value" *ngIf="!testReact">
-                                  </app-highlight-search>
                                   <app-highlight-react [text]="changeAutoInsertText(subQuestion2)"
-                                                        [searchTerm]="searchText.value" *ngIf="testReact">
+                                                        [searchTerm]="searchText.value">
                                   </app-highlight-react>
                                 </h6>
                                 <div class="survey-sub-tbl">
@@ -378,9 +346,7 @@
                                     <div class="survey-tbl-r">
                                       <div class="survey-tbl-d first display-body info-text">
                                         <div>
-                                          <app-highlight-search [text]="sqa2.stratum4" [searchTerm]="searchText.value" *ngIf="!testReact">
-                                          </app-highlight-search>
-                                          <app-highlight-react [text]="sqa2.stratum4" [searchTerm]="searchText.value" *ngIf="testReact">
+                                          <app-highlight-react [text]="sqa2.stratum4" [searchTerm]="searchText.value">
                                           </app-highlight-react>
                                         </div>
                                       </div>
@@ -484,6 +450,4 @@
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
 </div>
-<app-popup-react *ngIf="showStatement && testReact" [helpText]="'CopePopUp'" [onClose]="closePopUp"></app-popup-react>
-<app-pop-up [title]="'COvid-19 Participant Experience (COPE) survey'" [statement]="copeDisclaimer"
-(closed)="showStatement = false" *ngIf="showStatement && !testReact"></app-pop-up>
+<app-popup-react *ngIf="showStatement" [helpText]="'CopePopUp'" [onClose]="closePopUp"></app-popup-react>
