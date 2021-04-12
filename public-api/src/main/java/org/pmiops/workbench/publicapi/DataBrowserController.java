@@ -302,7 +302,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), String.valueOf(surveyConceptId), String.valueOf(conceptId), questionPath);
+        System.out.println("Am i here at all");
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L), String.valueOf(surveyConceptId), String.valueOf(conceptId), questionPath);
         analysisListResponse.setItems(surveyAnalysisList);
 
         return ResponseEntity.ok(analysisListResponse);

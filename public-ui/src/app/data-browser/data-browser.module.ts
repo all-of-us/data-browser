@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
+import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
+import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
-import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
@@ -83,6 +84,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     TooltipWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
+    SurveyChartWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
@@ -113,6 +115,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     AgeWrapperComponent,
     BioSexWrapperComponent,
     TooltipWrapperComponent,
+    SurveyChartWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,

@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -55,14 +55,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   multipleAnswerSurveyQuestions = this.dbc.MULTIPLE_ANSWER_SURVEY_QUESTIONS;
   searchFromUrl: string;
   envDisplay: string;
-  @ViewChild('chartElement') chartEl: ElementRef;
-  @ViewChild('subChartElement1') subChartEl1: ElementRef;
-  @ViewChild('subChartElement2') subChartEl2: ElementRef;
+  @ViewChildren('chartElement') chartEl: QueryList<ElementRef>;
+  @ViewChildren('subChartElement1') subChartEl1: QueryList<ElementRef>;
+  @ViewChildren('subChartElement2') subChartEl2: QueryList<ElementRef>;
   fmhResultCount = 0;
   showStatement: boolean;
   copeDisclaimer: string;
   isCopeSurvey = false;
-  surveyVersions: any[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -278,7 +277,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.addMissingResults(q, aCount, totalCount);
     });
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
-      totalCount));
+      totalCount, q.participantCountAnalysis.results));
 
   }
 
@@ -311,33 +310,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
-      if (this.isCopeSurvey) {
-        this.subscriptions.push(this.api.getSurveyVersionCounts(
-          this.surveyConceptId.toString()).subscribe({
-            next: x => {
-              x.analyses.items.forEach(item => {
-                item.results.forEach((result, i) => {
-                  if (item.analysisId === 3400) {
-                    this.surveyVersions.push(
-                      {
-                        monthName: result.stratum4,
-                        monthNum: result.stratum3.split('/')[0],
-                        participants: result.countValue,
-                        numberOfQuestion: ''
-                      });
-                  } else if (item.analysisId === 3401) {
-                    this.surveyVersions[i].numberOfQuestion = result.countValue;
-                  }
-                });
-              });
-            },
-            error: err => {
-              console.error('Observer got an error: ' + err);
-              this.loading = false;
-            },
-            complete: () => { }
-          }));
-      }
     }
   }
 
@@ -458,6 +430,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
           q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
           q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+          q.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
@@ -507,7 +480,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  public showAnswerGraphs(a: any, q: any, level?: number) {
+  public showAnswerGraphs(a: any, q: any, level?: number, event?: MouseEvent) {
+    if (event && this.chartEl && this.chartEl.some(el => el.nativeElement.contains(event.target))) {
+        return;
+    }
+    if (event && this.subChartEl1 && this.subChartEl1.some(el => el.nativeElement.contains(event.target))) {
+        return;
+    }
+    if (event) {
+        event.stopPropagation();
+    }
+    if (event && this.subChartEl2 && this.subChartEl2.some(el => el.nativeElement.contains(event.target))) {
+        return;
+    }
     if (a.stratum7 === '1' && level) {
       this.getSubQuestions(a, 'display', level);
     }
@@ -547,8 +532,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     return q.conceptName;
   }
 
-  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number) {
+  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number, participantCountResults: any[]) {
     let didNotAnswerCount = participantCount;
+    if (participantCountResults) {
+        didNotAnswerCount = participantCountResults[0].countValue;
+    }
     for (const r of results) {
       didNotAnswerCount = didNotAnswerCount - r.countValue;
     }
