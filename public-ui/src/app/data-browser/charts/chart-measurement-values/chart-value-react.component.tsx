@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { baseOptions, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { baseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -92,7 +92,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   }
 
   prepStackedCatsAndData(valueAnalysisResults) {
-    const {valueAnalysis: {analysisId}, domainCountAnalysis: {results}, domain} = this.props;
+    const {valueAnalysis: {analysisId}} = this.props;
     const data = [];
     const cats = [];
     const color = '#2691D0';
