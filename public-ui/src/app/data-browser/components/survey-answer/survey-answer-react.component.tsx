@@ -118,6 +118,8 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
         return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, 1)
             .then(
                 results => {
+                    console.log(results);
+
                     // this.props.SubQuestion.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
                     // console.log(results.questions.items[0].countAnalysis.results);
                     this.setState({
@@ -125,7 +127,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                         subAnswers: results.questions.items[0].countAnalysis.results,
                         subTitle: results.questions.items[0].conceptName
                     });
-                    // console.log(this.state.subAnswers, 'subAnswers');
+                    console.log(this.state.subAnswers, 'subAnswers');
                     // console.log(this.state.subQuestion, 'Sub question');
 
                 });
@@ -165,7 +167,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                     </div>
                 </React.Fragment> :
                     <h5>graph-component</h5>
-                    }
+                }
             </div> : undefined}
         </React.Fragment>;
     }
@@ -216,16 +218,18 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                 </div >
 
                 {
+                   this.props.question.countAnalysis ? 
                     this.props.question.countAnalysis.results.map((answer, index) => {
 
                         if (answer.stratum4 !== 'Did not answer') {
                             const key = 'answer' + index;
                             return <SurveyAnswerRowComponent partcipantCount={this.props.particpantCount}
-                                                             key={key}
-                                                             isCopeSurvey={this.props.isCopeSurvey}{...answer} />;
+                                key={key}
+                                isCopeSurvey={this.props.isCopeSurvey}{...answer} />;
                         }
-                    })
-                }
+                    }) : undefined
+                
+                } 
             </div>
         </React.Fragment >;
     }
