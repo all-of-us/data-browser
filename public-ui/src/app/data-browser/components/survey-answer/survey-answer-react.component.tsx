@@ -164,7 +164,8 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                             question={this.state.subQuestion} isCopeSurvey={this.props.isCopeSurvey} />
                     </div>
                 </React.Fragment> :
-                    <h5>graph-component</h5>}
+                    <h5>graph-component</h5>
+                    }
             </div> : undefined}
         </React.Fragment>;
     }
