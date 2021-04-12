@@ -74,9 +74,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
 
   tooltipHover() {
     triggerEvent('tooltipsHover', 'Tooltips', 'Hover', this.props.label,
-        this.props.searchTerm, this.props.action);
-        console.log(this.props,'son');
-        
+      this.props.searchTerm, this.props.action);
   }
 
   render() {
@@ -84,22 +82,22 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
     const iconShape = 'info-standard';
     const iconClass = 'is-solid info-icon';
     return <React.Fragment><style>{tooltipCss}</style><div tabIndex={tabIndex}
-        className='tooltip' onFocus={() => this.tooltipHover()}
-        onMouseEnter={() => this.tooltipHover()}>
-            <ClrIcon shape={iconShape} className={iconClass}
-                style={{width: 18, height: 18}} />
-                <span className='tooltiptext'>
-                    {
-                        getTooltip(this.props.tooltipKey).map((tooltip, index) => {
-                          if (index === 1 || index === 3) {
-                            return <span className='allofus-italics' key={index}> {tooltip} </span>;
-                          }  else {
-                            return tooltip;
-                          }
-                        })
-                    }
-                    </span>
-            </div></React.Fragment>;
+      className='tooltip' onFocus={() => this.tooltipHover()}
+      onMouseEnter={() => this.tooltipHover()}>
+      <ClrIcon shape={iconShape} className={iconClass}
+        style={{ width: 18, height: 18 }} />
+      <span className='tooltiptext'>
+        {
+          getTooltip(this.props.tooltipKey).map((tooltip, index) => {
+            if (index === 1 || index === 3) {
+              return <span className='allofus-italics' key={index}> {tooltip} </span>;
+            } else {
+              return tooltip;
+            }
+          })
+        }
+      </span>
+    </div></React.Fragment>;
   }
 }
 

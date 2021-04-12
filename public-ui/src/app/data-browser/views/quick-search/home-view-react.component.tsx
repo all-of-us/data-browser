@@ -12,7 +12,7 @@ import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 
-import { TooltipReactComponent } from "../../components/tooltip/tooltip-react.component";
+import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 
 const containerElementName = 'myReactComponentContainer';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
@@ -105,13 +105,18 @@ export const dBHomeComponent = (
         }
 
         render() {
-            return <React.Fragment> <div style={{margin: "0 1em"}}>
+            return <React.Fragment> <div style={{margin: '0 1em'}}>
             <SearchComponent value={this.state.searchWord} onChange={(val) => {
             this.handleChange(val); }}
             onClear={() => { this.handleChange(''); }} />
             </div>
             <section className='results'>
-                <h5 className='result-heading secondary-display'> EHR Domains:</h5> <TooltipReactComponent label="'Homepage Tooltip Hover'" searchTerm={this.state.searchWord} action="'Tooltip Home Page EHR Domains'" tooltipKey="'ehrDomainHelpText'" />
+                <h5 className='result-heading secondary-display'> EHR Domains:</h5>
+                <TooltipReactComponent
+                    label='Homepage Tooltip Hover'
+                    searchTerm={this.state.searchWord}
+                    action='Tooltip Home Page EHR Domains'
+                    tooltipKey='ehrDomainHelpText' />
                 <div id='survey' className='result-boxes'>
                     {
                         this.state.domainInfo.map((domain, index) => {
