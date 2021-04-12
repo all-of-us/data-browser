@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
+import { SurveyChartReactComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 export const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 const containerElementName = 'root';
 
@@ -81,6 +82,12 @@ interface SurveyRowProps {
     countPercent: number;
     isCopeSurvey: boolean;
     partcipantCount: number;
+    question: any;
+    answer: any;
+    surveyName: string;
+    searchTerm: string;
+    versionAnalysis: any;
+    surveyCountAnalysis: any;
 }
 
 interface SurveyRowState {
@@ -114,12 +121,11 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             this.getSubQuestions(1);
         }
     }
+
     getSubQuestions(level: number) {
         return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, 1)
             .then(
                 results => {
-                    console.log(results);
-
                     // this.props.SubQuestion.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
                     // console.log(results.questions.items[0].countAnalysis.results);
                     this.setState({
@@ -166,7 +172,15 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                             question={this.state.subQuestion} isCopeSurvey={this.props.isCopeSurvey} />
                     </div>
                 </React.Fragment> :
-                    <h5>graph-component</h5>
+                          <SurveyChartReactComponent graphButtons={this.props.graphButtons}
+                           isCopeSurvey={this.props.isCopeSurvey}
+                           question={this.props.question}
+                           answer={this.props.answer}
+                           selectedResult={this.props.answer}
+                           surveyName={this.props.surveyName}
+                           versionAnalysis={this.props.versionAnalysis}
+                           surveyCountAnalysis={this.props.surveyCountAnalysis}
+                           searchTerm={this.props.searchTerm}></SurveyChartReactComponent>
                 }
             </div> : undefined}
         </React.Fragment>;
@@ -176,7 +190,13 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
 interface Props {
     isCopeSurvey: boolean;
     question: any;
+    answer: any;
     particpantCount: any;
+    graphButtons: any;
+    searchTerm: string;
+    surveyName: string;
+    versionAnalysis: any;
+    surveyCountAnalysis: any;
 }
 
 export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
@@ -224,7 +244,12 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         if (answer.stratum4 !== 'Did not answer') {
                             const key = 'answer' + index;
                             return <SurveyAnswerRowComponent partcipantCount={this.props.particpantCount}
-                                key={key}
+                                key={key} graphButtons={this.props.graphButtons}
+                                question={this.props.question} answer={this.props.answer}
+                                surveyName={this.props.surveyName}
+                                searchTerm={this.props.searchTerm}
+                                versionAnalysis={this.props.versionAnalysis}
+                                surveyCountAnalysis={this.props.surveyCountAnalysis}
                                 isCopeSurvey={this.props.isCopeSurvey}{...answer} />;
                         }
                     }) : undefined
@@ -247,8 +272,15 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
 export class SurveyAnswerWrapperComponent extends BaseReactWrapper {
     @Input() isCopeSurvey;
     @Input() question;
+    @Input() answer;
+    @Input() graphButtons;
+    @Input() surveyName;
+    @Input() searchTerm;
+    @Input() versionAnalysis;
+    @Input() surveyCountAnalysis;
+
     constructor() {
-        super(SurveyAnswerReactComponent, ['isCopeSurvey', 'question']);
+        super(SurveyAnswerReactComponent, ['isCopeSurvey', 'question', 'answer', 'graphButtons', 'surveyName', 'searchTerm', 'versionAnalysis', 'surveyCountAnalysis']);
     }
 
 
