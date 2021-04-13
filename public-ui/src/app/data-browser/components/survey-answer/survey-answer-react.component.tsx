@@ -89,7 +89,7 @@ interface SurveyRowState {
     subQuestions: Array<any>;
     subAnswers: object;
     subTitle: string;
-    level: number;
+    nextLevel: number;
 }
 
 
@@ -102,22 +102,19 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             subQuestions: [],
             subAnswers: {},
             subTitle: '',
-            level: 0
+            nextLevel: 0
         };
     }
     surveyConceptId = this.props.stratum1;
     hasSubQuestions = this.props.stratum7;
-    level: number;
-
-
 
     openDrawer(e) {
         this.setState({
             drawerOpen: !this.state.drawerOpen
         });
         if (this.hasSubQuestions === '1') {
-            this.level = this.props.level + 1;
-            this.getSubQuestions(this.level);
+            this.setState({ nextLevel: this.props.level + 1 });
+            this.getSubQuestions(this.state.nextLevel);
 
         }
     }
@@ -165,10 +162,11 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                         return <React.Fragment key={index + 'subquestion'}>
                             <h6 className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
                             <div className='survey-sub-table'>
-                                <SurveyAnswerReactComponent level={this.level}
+                             {/* tslint:disable-next-line: no-use-before-declare */}
+                                <SurveyAnswerReactComponent level={this.state.nextLevel}
                                     particpantCount={this.props.countValue}
                                     question={question} isCopeSurvey={this.props.isCopeSurvey} />
-                            </div>
+                            </div>;
                         </React.Fragment>
                     })
                     : <h5>graph-component</h5>
