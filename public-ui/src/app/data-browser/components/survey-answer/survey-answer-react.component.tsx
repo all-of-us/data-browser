@@ -1,13 +1,12 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
-import { DbConfigService } from 'app/utils/db-config.service';
 import * as React from 'react';
 
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
+
 export const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 // const dbc = new DbConfigService(api);
 const eightColors = [
@@ -72,23 +71,12 @@ export const styleCss =
     .sub-table-1 .sub-question-text, .sub-table-2 .sub-question-text {
         padding-top: 1rem;
     }
-    .survey-sub-tbl {
-        border-bottom: #cccccc 1px solid;
-    }
-    .survey-sub-tbl .survey-tbl-exp-r:last-of-type {
-        border-bottom: none;
-    }
 
     .survey-sub-table {
-        margin-left: 2%;
+        padding-left: 2em;
         width: 98%;
     }
-
-    .survey-sub-table-2 {
-        padding-top: 1rem;
-        margin-left: 2%;
-        width: 98%;
-    }`;
+`;
 
 
 interface SurveyRowProps {
@@ -130,7 +118,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
         this.setState({
             drawerOpen: !this.state.drawerOpen
         });
-        if (this.props.hasSubQuestions == '1') {
+        if (this.props.hasSubQuestions === '1') {
             this.nextLevel = this.props.level + 1;
             this.getSubQuestions(this.nextLevel);
         }
@@ -177,7 +165,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                     } else if (answerCount <= 14) {
                         aCount['color'] = fourteenColors[i];
                     } else if (answerCount <= 18) {
-                        aCount['color'] = fourteenColors[i];
+                        aCount['color'] = eightteenColors[i];
                     } else if (answerCount > 18) {
                         aCount['color'] = twentyFiveColors[i];
                     }
@@ -185,15 +173,15 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                         aCount.subQuestionFetchComplete = false;
                     }
                 }
+                return aCount;
                 //   this.addMissingResults(q, aCount, totalCount);
             });
             q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
                 totalCount));
-            return q
+            return q;
 
         });
-
-        return questions
+        return questions;
     }
 
     public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number) {
@@ -262,8 +250,8 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                                 <SurveyAnswerReactComponent level={this.nextLevel}
                                     particpantCount={this.props.countValue}
                                     question={question} isCopeSurvey={this.props.isCopeSurvey} />
-                            </div>;
-                        </React.Fragment>
+                            </div>
+                        </React.Fragment>;
                     })
                     : <h5>graph-component</h5>
                 }
@@ -289,9 +277,8 @@ interface Props {
 export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
-        console.log(props, 'big props');
-
     }
+    
     isSubTable = this.props.particpantCount ? true : false;
 
     render(): any {
@@ -314,7 +301,7 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {this.props.isCopeSurvey ? <h1>testIs cope</h1> :
-                                <span>{this.isSubTable ? <React.Fragment>% Answered out of {this.props.particpantCount}</React.Fragment> :
+                                <span>{this.props.particpantCount ? <React.Fragment>% Answered out of {this.props.particpantCount}</React.Fragment> :
                                     <React.Fragment>% Answered </React.Fragment>}</span>
                             }
                         </div >
@@ -336,7 +323,7 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                                 hasSubQuestions: answer.stratum7,
                                 countValue: answer.countValue,
                                 countPercent: answer.countPercent
-                            }
+                            };
                                 const key = 'answer' + index;
                                 return <SurveyAnswerRowComponent level={this.props.level} participantCount={this.props.particpantCount}
                                     key={key}
