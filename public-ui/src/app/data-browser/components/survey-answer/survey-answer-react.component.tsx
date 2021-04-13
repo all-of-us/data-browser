@@ -85,7 +85,7 @@ interface SurveyRowProps {
 
 interface SurveyRowState {
     drawerOpen: boolean;
-    subQuestion: object;
+    subQuestions: Array<any>;
     subAnswers: object;
     subTitle: string;
 }
@@ -97,13 +97,14 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
 
         this.state = {
             drawerOpen: false,
-            subQuestion: {},
+            subQuestions: [],
             subAnswers: {},
             subTitle: ''
         };
     }
     surveyConceptId = this.props.stratum1;
     hasSubQuestions = this.props.stratum7;
+    level = 1;
 
 
     openDrawer(e) {
@@ -111,31 +112,35 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             drawerOpen: !this.state.drawerOpen
         });
         if (this.hasSubQuestions === '1') {
-            this.getSubQuestions(1);
+            this.getSubQuestions();
+            console.log(this.level);
+            
         }
     }
-    getSubQuestions(level: number) {
-        return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, 1)
-            .then(
+    
+    getSubQuestions() {
+        console.log(this.level,'inside');
+        
+        return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, this.level)
+            .then(                
                 results => {
-                    console.log(results);
-
                     // this.props.SubQuestion.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
                     // console.log(results.questions.items[0].countAnalysis.results);
                     this.setState({
-                        subQuestion: results.questions.items[0],
-                        subAnswers: results.questions.items[0].countAnalysis.results,
-                        subTitle: results.questions.items[0].conceptName
+                        subQuestions: results.questions.items,
                     });
-                    console.log(this.state.subAnswers, 'subAnswers');
-                    // console.log(this.state.subQuestion, 'Sub question');
-
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.level = this.level + 1;
+                    this.getSubQuestions();
                 });
     }
 
     render() {
+        
         const parcipantPercentage = this.props.countValue / this.props.partcipantCount;
-        return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
+       return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                 {this.props.stratum4}
             </div>
@@ -157,16 +162,18 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             </div>
         </div >
             {this.state.drawerOpen ? <div className='survey-row-expansion'>
-                {(this.hasSubQuestions === '1' && this.state.subQuestion) ? <React.Fragment>
-                    <h6 className='sub-question-text'><ClrIcon shape='child-arrow' />{this.state.subTitle}</h6>
+                {(this.hasSubQuestions === '1' && this.state.subQuestions) ?   
+                this.state.subQuestions.map((question,index) => {
+                    return <React.Fragment key={index + 'subquestion'}>
+                    <h6  className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
                     <div className='survey-sub-table'>
-                        {/* tslint:disable-next-line: no-use-before-declare  */}
                         <SurveyAnswerReactComponent
                             particpantCount={this.props.countValue}
-                            question={this.state.subQuestion} isCopeSurvey={this.props.isCopeSurvey} />
+                            question={question} isCopeSurvey={this.props.isCopeSurvey} />
                     </div>
-                </React.Fragment> :
-                    <h5>graph-component</h5>
+                </React.Fragment>
+                })
+                 :  <h5>graph-component</h5>
                 }
             </div> : undefined}
         </React.Fragment>;
@@ -220,7 +227,6 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                 {
                    this.props.question.countAnalysis ? 
                     this.props.question.countAnalysis.results.map((answer, index) => {
-
                         if (answer.stratum4 !== 'Did not answer') {
                             const key = 'answer' + index;
                             return <SurveyAnswerRowComponent partcipantCount={this.props.particpantCount}
