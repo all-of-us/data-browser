@@ -80,7 +80,8 @@ interface SurveyRowProps {
     drawerOpen: boolean;
     countPercent: number;
     isCopeSurvey: boolean;
-    partcipantCount: number;
+    participantCount: number;
+    level: number;
 }
 
 interface SurveyRowState {
@@ -88,6 +89,7 @@ interface SurveyRowState {
     subQuestions: Array<any>;
     subAnswers: object;
     subTitle: string;
+    level: number;
 }
 
 
@@ -99,12 +101,14 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             drawerOpen: false,
             subQuestions: [],
             subAnswers: {},
-            subTitle: ''
+            subTitle: '',
+            level: 0
         };
     }
     surveyConceptId = this.props.stratum1;
     hasSubQuestions = this.props.stratum7;
-    level = 1;
+    level: number;
+
 
 
     openDrawer(e) {
@@ -112,35 +116,29 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             drawerOpen: !this.state.drawerOpen
         });
         if (this.hasSubQuestions === '1') {
-            this.getSubQuestions();
-            console.log(this.level);
-            
+            this.level = this.props.level + 1;
+            this.getSubQuestions(this.level);
+
         }
     }
-    
-    getSubQuestions() {
-        console.log(this.level,'inside');
-        
-        return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, this.level)
-            .then(                
+
+    getSubQuestions(level: number) {
+        return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, level)
+            .then(
                 results => {
-                    // this.props.SubQuestion.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
-                    // console.log(results.questions.items[0].countAnalysis.results);
                     this.setState({
                         subQuestions: results.questions.items,
                     });
                 })
-                .catch((error) => {
-                    console.log(error);
-                    this.level = this.level + 1;
-                    this.getSubQuestions();
-                });
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {
-        
+
         const parcipantPercentage = this.props.countValue / this.props.partcipantCount;
-       return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
+        return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                 {this.props.stratum4}
             </div>
@@ -162,35 +160,42 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             </div>
         </div >
             {this.state.drawerOpen ? <div className='survey-row-expansion'>
-                {(this.hasSubQuestions === '1' && this.state.subQuestions) ?   
-                this.state.subQuestions.map((question,index) => {
-                    return <React.Fragment key={index + 'subquestion'}>
-                    <h6  className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
-                    <div className='survey-sub-table'>
-                        <SurveyAnswerReactComponent
-                            particpantCount={this.props.countValue}
-                            question={question} isCopeSurvey={this.props.isCopeSurvey} />
-                    </div>
-                </React.Fragment>
-                })
-                 :  <h5>graph-component</h5>
+                {(this.hasSubQuestions === '1' && this.state.subQuestions) ?
+                    this.state.subQuestions.map((question, index) => {
+                        return <React.Fragment key={index + 'subquestion'}>
+                            <h6 className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
+                            <div className='survey-sub-table'>
+                                <SurveyAnswerReactComponent level={this.level}
+                                    particpantCount={this.props.countValue}
+                                    question={question} isCopeSurvey={this.props.isCopeSurvey} />
+                            </div>
+                        </React.Fragment>
+                    })
+                    : <h5>graph-component</h5>
                 }
             </div> : undefined}
         </React.Fragment>;
     }
 });
 
+
+
+
+
+
+
+
 interface Props {
     isCopeSurvey: boolean;
     question: any;
-    particpantCount: any;
+    particpantCount: number;
+    level: number;
 }
 
 export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
     }
-
     isSubTable = this.props.particpantCount ? true : false;
 
     render(): any {
@@ -225,17 +230,17 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                 </div >
 
                 {
-                   this.props.question.countAnalysis ? 
-                    this.props.question.countAnalysis.results.map((answer, index) => {
-                        if (answer.stratum4 !== 'Did not answer') {
-                            const key = 'answer' + index;
-                            return <SurveyAnswerRowComponent partcipantCount={this.props.particpantCount}
-                                key={key}
-                                isCopeSurvey={this.props.isCopeSurvey}{...answer} />;
-                        }
-                    }) : undefined
-                
-                } 
+                    this.props.question.countAnalysis ?
+                        this.props.question.countAnalysis.results.map((answer, index) => {
+                            if (answer.stratum4 !== 'Did not answer') {
+                                const key = 'answer' + index;
+                                return <SurveyAnswerRowComponent level={this.props.level} participantCount={this.props.particpantCount}
+                                    key={key}
+                                    isCopeSurvey={this.props.isCopeSurvey}{...answer} />;
+                            }
+                        }) : undefined
+
+                }
             </div>
         </React.Fragment >;
     }
@@ -253,8 +258,9 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
 export class SurveyAnswerWrapperComponent extends BaseReactWrapper {
     @Input() isCopeSurvey;
     @Input() question;
+    @Input() level;
     constructor() {
-        super(SurveyAnswerReactComponent, ['isCopeSurvey', 'question']);
+        super(SurveyAnswerReactComponent, ['isCopeSurvey', 'question', 'level']);
     }
 
 
