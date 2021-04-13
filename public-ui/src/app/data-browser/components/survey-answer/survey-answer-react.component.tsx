@@ -64,7 +64,8 @@ export const styleCss =
         margin-left: 1em;
         font-family: GothamBold, Arial, Helvetica, sans-serif;
     }
-    .survey-row-expansion {
+    .survey-row-expanded {
+        margin-top: -1em;
         border-left: #cccccc 1px solid;
         border-right: #cccccc 1px solid;
     }
@@ -74,6 +75,7 @@ export const styleCss =
 
     .survey-sub-table {
         padding-left: 2em;
+        padding-bottom: 1em;
         width: 98%;
     }
 `;
@@ -236,11 +238,11 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                     {this.props.hasSubQuestions === '1' ?
                         <ClrIcon shape='caret' className='survey-row-icon' style={{ color: '#216fb4' }} dir={this.state.drawerOpen ? 'down'
-                            : 'right'} /> : <ClrIcon className='survey-row-icon' shape='bar-chart' />}
+                            : 'right'} /> : <ClrIcon className={ this.state.drawerOpen ? 'is-solid survey-row-icon':'survey-row-icon'}  shape='bar-chart' />}
                 </div>
             </div>
         </div >
-            {this.state.drawerOpen ? <div className='survey-row-expansion'>
+            {this.state.drawerOpen ? <div className='survey-row-expanded'>
                 {(this.props.hasSubQuestions === '1' && this.state.subQuestions) ?
                     this.state.subQuestions.map((question, index) => {
                         return <React.Fragment key={index + 'subquestion'}>
