@@ -8,7 +8,6 @@ import * as React from 'react';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 export const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-const containerElementName = 'root';
 
 export const styleCss =
     `
@@ -66,18 +65,12 @@ export const styleCss =
 
 
 interface SurveyRowProps {
-    // survey_concept_id
-    stratum1: number;
-    // question_concept_id
-    stratum2: number;
-    // answer_concept_id
-    stratum3: number;
-    // answer_value_string
-    stratum4: string;
-    // hasSubQuestions
-    stratum7: string;
+    surveyConceptId: number;
+    questionConceptId: number;
+    answerConceptId: number;
+    answerValueString: string;
+    hasSubQuestions: string;
     countValue: number;
-    drawerOpen: boolean;
     countPercent: number;
     isCopeSurvey: boolean;
     participantCount: number;
@@ -89,7 +82,6 @@ interface SurveyRowState {
     subQuestions: Array<any>;
     subAnswers: object;
     subTitle: string;
-    nextLevel: number;
 }
 
 
@@ -101,26 +93,24 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             drawerOpen: false,
             subQuestions: [],
             subAnswers: {},
-            subTitle: '',
-            nextLevel: 0
+            subTitle: ''
         };
     }
-    surveyConceptId = this.props.stratum1;
-    hasSubQuestions = this.props.stratum7;
+    nextLevel: number;
+    
 
     openDrawer(e) {
         this.setState({
             drawerOpen: !this.state.drawerOpen
         });
-        if (this.hasSubQuestions === '1') {
-            this.setState({ nextLevel: this.props.level + 1 });
-            this.getSubQuestions(this.state.nextLevel);
-
+        if (this.props.hasSubQuestions == '1') {
+            this.nextLevel = this.props.level + 1;
+            this.getSubQuestions(this.nextLevel);
         }
     }
 
     getSubQuestions(level: number) {
-        return api.getSubQuestions(this.surveyConceptId, this.props.stratum2, this.props.stratum3, level)
+        return api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, level)
             .then(
                 results => {
                     this.setState({
@@ -134,14 +124,14 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
 
     render() {
 
-        const parcipantPercentage = this.props.countValue / this.props.partcipantCount;
+        const parcipantPercentage = this.props.countValue / this.props.participantCount;
         return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
-                {this.props.stratum4}
+                {this.props.answerValueString}
             </div>
             <div className='survey-tbl-r-group'>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {this.props.stratum3}
+                    {this.props.answerConceptId}
                 </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                     {this.props.countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -150,20 +140,20 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                     {this.props.countPercent ? this.props.countPercent.toFixed(2) : parcipantPercentage.toFixed(2)}%
                     </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {this.hasSubQuestions === '1' ?
+                    {this.props.hasSubQuestions === '1' ?
                         <ClrIcon shape='caret' className='survey-row-icon' style={{ color: '#216fb4' }} dir={this.state.drawerOpen ? 'down'
                             : 'right'} /> : <ClrIcon className='survey-row-icon' shape='bar-chart' />}
                 </div>
             </div>
         </div >
             {this.state.drawerOpen ? <div className='survey-row-expansion'>
-                {(this.hasSubQuestions === '1' && this.state.subQuestions) ?
+                {(this.props.hasSubQuestions === '1' && this.state.subQuestions) ?
                     this.state.subQuestions.map((question, index) => {
                         return <React.Fragment key={index + 'subquestion'}>
                             <h6 className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
                             <div className='survey-sub-table'>
                              {/* tslint:disable-next-line: no-use-before-declare */}
-                                <SurveyAnswerReactComponent level={this.state.nextLevel}
+                                <SurveyAnswerReactComponent level={this.nextLevel}
                                     particpantCount={this.props.countValue}
                                     question={question} isCopeSurvey={this.props.isCopeSurvey} />
                             </div>;
@@ -230,11 +220,20 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                 {
                     this.props.question.countAnalysis ?
                         this.props.question.countAnalysis.results.map((answer, index) => {
+                            const answerCleaned = {
+                                surveyConceptId: answer.stratum1,
+                                questionConceptId: answer.stratum2,
+                                answerConceptId: answer.stratum3,
+                                answerValueString: answer.stratum4,
+                                hasSubQuestions: answer.stratum7,
+                                countValue: answer.countValue,
+                                countPercent: answer.countPercent
+                            }
                             if (answer.stratum4 !== 'Did not answer') {
                                 const key = 'answer' + index;
                                 return <SurveyAnswerRowComponent level={this.props.level} participantCount={this.props.particpantCount}
                                     key={key}
-                                    isCopeSurvey={this.props.isCopeSurvey}{...answer} />;
+                                    isCopeSurvey={this.props.isCopeSurvey}{...answerCleaned} />;
                             }
                         }) : undefined
 
@@ -249,14 +248,14 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
 @Component({
     // tslint:disable-next-line: component-selector
     selector: 'app-survey-answer-react',
-    template: `<span #${containerElementName}></span>`,
+    template: `<span #root></span>`,
     styleUrls: ['../../../styles/template.css'],
     encapsulation: ViewEncapsulation.None,
 })
 export class SurveyAnswerWrapperComponent extends BaseReactWrapper {
-    @Input() isCopeSurvey;
-    @Input() question;
-    @Input() level;
+    @Input() isCopeSurvey: boolean;
+    @Input() question: any;
+    @Input() level: number;
     constructor() {
         super(SurveyAnswerReactComponent, ['isCopeSurvey', 'question', 'level']);
     }
