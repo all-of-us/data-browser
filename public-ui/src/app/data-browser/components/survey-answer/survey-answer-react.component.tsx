@@ -3,11 +3,38 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
+import { DbConfigService } from 'app/utils/db-config.service';
 import * as React from 'react';
 
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 export const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
+// const dbc = new DbConfigService(api);
+const eightColors = [
+    '#2F4B7C', '#F99059', '#496D91', '#E75955',
+    '#6790A2', '#93003A', '#BFE1C6', '#C5254A'
+];
+
+const tenColors = [
+    '#2F4B7C', '#FA9B58', '#44668D', '#BC1B48', '#769EA7',
+    '#F06F57', '#5B829C', '#93003A', '#BFE1C6', '#DB4451'
+];
+
+const fourteenColors = [
+    '#2F4B7C', '#FBA858', '#88AFAB', '#CB2D4C', '#3E5E88', '#F78858', '#719AA6', '#B11044', '#4D7294',
+    '#EE6857', '#5E869E', '#93003A', '#93003A', '#DF4A53'
+];
+
+const eightteenColors = [
+    '#2F4B7C', '#FA9659', '#BFE1C6', '#D2364F', '#AB0A42', '#6F98A0', '#3A5A86', '#93B8AC', '#FBAF57',
+    '#527997', '#F57D58', '#46698F', '#EC6556', '#C02049', '#60889F', '#80A8AA', '#E14D53', '#93003A',
+];
+
+const twentyFiveColors = [
+    '#00429D', '#93C4D2', '#6492C0', '#B61A49', '#E37B7E', '#FBAF57', '#73A2C6', '#FA9659', '#4771B2',
+    '#DF6772', '#A5D5D8', '#3761AB', '#D0CCB6', '#D95367', '#DAB8A7', '#D3F4E0', '#E38F8B', '#2451A4',
+    '#5681B9', '#A60841', '#BFE1C6', '#C42D52', '#82B3CD', '#F57D58', '#93003A'
+];
 
 export const styleCss =
     `
@@ -97,7 +124,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
         };
     }
     nextLevel: number;
-    
+
 
     openDrawer(e) {
         this.setState({
@@ -113,8 +140,9 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
         return api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, level)
             .then(
                 results => {
+
                     this.setState({
-                        subQuestions: results.questions.items,
+                        subQuestions: this.processResults(results.questions.items, this.props.countValue)
                     });
                 })
             .catch((error) => {
@@ -122,9 +150,87 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
             });
     }
 
+    processResults(questions: Array<any>, totalCount: number) {
+        questions.forEach(q => {
+            q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
+            q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
+            q.ageAnalysis.results = q.ageAnalysis.results.filter(a => a.stratum6 === q.path);
+            if (q.versionAnalysis && q.versionAnalysis.results) {
+                q.versionAnalysis.results = q.versionAnalysis.results.filter(a => a.stratum6 === q.path);
+            }
+            q.countAnalysis.results.sort((a1, a2) => {
+                if (a1.countValue > a2.countValue) {
+                    return -1;
+                }
+                if (a1.countValue < a2.countValue) {
+                    return 1;
+                }
+                return 0;
+            });
+            const answerCount = q.countAnalysis.results.length;
+            q.countAnalysis.results.forEach((aCount, i) => {
+                if (this.props.isCopeSurvey) {
+                    if (answerCount <= 8) {
+                        aCount['color'] = eightColors[i];
+                    } else if (answerCount > 8 && answerCount <= 10) {
+                        aCount['color'] = tenColors[i];
+                    } else if (answerCount <= 14) {
+                        aCount['color'] = fourteenColors[i];
+                    } else if (answerCount <= 18) {
+                        aCount['color'] = fourteenColors[i];
+                    } else if (answerCount > 18) {
+                        aCount['color'] = twentyFiveColors[i];
+                    }
+                    if (aCount.stratum7 && aCount.stratum7 === '1') {
+                        aCount.subQuestionFetchComplete = false;
+                    }
+                }
+                //   this.addMissingResults(q, aCount, totalCount);
+            });
+            q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
+                totalCount));
+            return q
+
+        });
+
+        return questions
+    }
+
+    public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number) {
+        let didNotAnswerCount = participantCount;
+        for (const r of results) {
+            didNotAnswerCount = didNotAnswerCount - r.countValue;
+        }
+        const result = results[0];
+        if (didNotAnswerCount <= 0) {
+            didNotAnswerCount = 20;
+        }
+        const notAnswerPercent = this.countPercentage(didNotAnswerCount, participantCount);
+        const didNotAnswerResult = {
+            analysisId: result.analysisId,
+            countValue: didNotAnswerCount,
+            countPercent: notAnswerPercent,
+            stratum1: result.stratum1,
+            stratum2: result.stratum2,
+            stratum3: '0',
+            stratum4: 'Did not answer',
+            stratum5: result.stratum5,
+            stratum6: result.stratum6,
+        };
+        return didNotAnswerResult;
+    }
+
+    countPercentage(countValue: number, totalCount: number) {
+        if (!countValue || countValue <= 0) { return 0; }
+        let percent: number = countValue / totalCount;
+        percent = parseFloat(percent.toFixed(4));
+        return percent * 100;
+    }
+
+
     render() {
 
-        const parcipantPercentage = this.props.countValue / this.props.participantCount;
+        const parcipantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
         return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                 {this.props.answerValueString}
@@ -137,7 +243,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                     {this.props.countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {this.props.countPercent ? this.props.countPercent.toFixed(2) : parcipantPercentage.toFixed(2)}%
+                    {this.props.countPercent ? this.props.countPercent.toFixed(2) : parcipantPercentage}%
                     </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                     {this.props.hasSubQuestions === '1' ?
@@ -152,7 +258,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                         return <React.Fragment key={index + 'subquestion'}>
                             <h6 className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
                             <div className='survey-sub-table'>
-                             {/* tslint:disable-next-line: no-use-before-declare */}
+                                {/* tslint:disable-next-line: no-use-before-declare */}
                                 <SurveyAnswerReactComponent level={this.nextLevel}
                                     particpantCount={this.props.countValue}
                                     question={question} isCopeSurvey={this.props.isCopeSurvey} />
@@ -183,6 +289,8 @@ interface Props {
 export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
+        console.log(props, 'big props');
+
     }
     isSubTable = this.props.particpantCount ? true : false;
 
@@ -229,12 +337,10 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                                 countValue: answer.countValue,
                                 countPercent: answer.countPercent
                             }
-                            if (answer.stratum4 !== 'Did not answer') {
                                 const key = 'answer' + index;
                                 return <SurveyAnswerRowComponent level={this.props.level} participantCount={this.props.particpantCount}
                                     key={key}
                                     isCopeSurvey={this.props.isCopeSurvey}{...answerCleaned} />;
-                            }
                         }) : undefined
 
                 }
