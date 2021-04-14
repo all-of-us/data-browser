@@ -101,7 +101,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
         },
         error: err => {
           this.loadingStack.pop();
-          console.log('Errorrr: ', err);
+          console.log('Error: ', err);
         }
       }));
     this.loadingStack.push(true);
