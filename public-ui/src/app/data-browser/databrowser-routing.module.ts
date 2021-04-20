@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
-import {NavStore} from 'app/utils/navigation';
+import {BreadcrumbType, NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
@@ -86,7 +86,7 @@ const routes: Routes = [
         },
         {
           path: 'introductory-videos',
-          component: IntroVidsWrapperComponent,
+          component:  IntroVidsWrapperComponent,
           data: {
             title: 'Introductory Videos',
             breadcrumb: {
