@@ -4,8 +4,6 @@ import * as fp from 'lodash/fp';
 import * as React from 'react';
 import { BrowserRouter, Link, Redirect, Route, Switch, useHistory, useLocation, useParams, useRouteMatch} from 'react-router-dom';
 
-const {Fragment} = React;
-
 export const usePath = () => {
   const {path} = useRouteMatch();
   return path;

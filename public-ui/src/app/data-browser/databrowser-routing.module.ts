@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
-import {BreadcrumbType, NavStore} from 'app/utils/navigation';
+import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';

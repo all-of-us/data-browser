@@ -4,12 +4,15 @@ import { Video, videos } from 'app/data-browser/services/video.service';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 
-const IntroVidReactComponent: FunctionComponent<Video> = () => <div className='db-container'>
-    <h1 className='primary-display'> Introductory Videos </h1>
+export const IntroVidReactComponent: FunctionComponent<Video> = () => <div className='db-container'>
+    <h1  className='primary-display'
+         style={{textAlign: 'center', padding: '1rem'}}> Introductory Videos </h1>
     {videos.map((video: Video, index) => <span key={index}>
         <h2 className='secondary-display'>{video.title}</h2>
-        <div className='vid-container'>
-            <video poster={video.poster} controls>
+        <div style={{width: '100%', textAlign: 'center', padding: '1rem', paddingBottom: '2rem'}}>
+            <video style={{width: 'calc((100%/12)*10)', height: 'auto', outline: 'none'}}
+                   poster={video.poster}
+                   controls>
                 {video.src.map((source) => <source key={source.url}
                                                    src={source.url}
                                                    type={source.type}/>)
@@ -30,7 +33,6 @@ const IntroVidReactComponent: FunctionComponent<Video> = () => <div className='d
 </div>;
 
 @Component({
-    // tslint:disable-next-line: component-selector
     template: `<div #root></div>`,
     styleUrls: ['../../../styles/template.css', './intro-vids.component.css'],
     encapsulation: ViewEncapsulation.None,

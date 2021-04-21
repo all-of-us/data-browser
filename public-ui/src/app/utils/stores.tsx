@@ -1,6 +1,5 @@
 import { BreadcrumbType } from 'app/utils/navigation';
-import {atom, Atom} from 'app/utils/subscribable';
-import * as React from 'react';
+import {atom} from 'app/utils/subscribable';
 
 export interface RouteDataStore {
   title?: string;
