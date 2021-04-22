@@ -41,7 +41,6 @@ import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageWrapperComponent } from './views/error-message/error-message-react.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
-import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { DbHomeWrapperComponent } from './views/quick-search/home-view-react.component';
@@ -81,7 +80,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
-    IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     TooltipWrapperComponent,
@@ -117,7 +115,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartBaseComponent,
     HighchartsChartModule,
     IntroVidsComponent,
-    IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     AgeWrapperComponent,

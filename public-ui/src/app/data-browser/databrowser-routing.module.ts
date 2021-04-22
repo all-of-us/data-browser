@@ -6,9 +6,10 @@ import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
-import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+
+import {AppRouting} from 'app/app-routing';
 
 const routes: Routes = [
   {
@@ -86,13 +87,8 @@ const routes: Routes = [
         },
         {
           path: 'introductory-videos',
-          component:  IntroVidsWrapperComponent,
-          data: {
-            title: 'Introductory Videos',
-            breadcrumb: {
-              value: 'introductory videos'
-            }
-          }
+          component:  AppRouting,
+          data: {}
         }]
       }
     ]

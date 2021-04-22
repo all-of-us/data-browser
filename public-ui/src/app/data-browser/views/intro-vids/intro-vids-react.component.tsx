@@ -1,11 +1,10 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { Video, videos } from 'app/data-browser/services/video.service';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 
-export const IntroVidReactComponent: FunctionComponent<Video> = () => <div className='db-container'>
-    <h1  className='primary-display'
+import {withRouteData} from 'app/components/app-router';
+import { Video, videos } from 'app/data-browser/services/video.service';
+
+export const IntroVidReactComponent: any = withRouteData(() => <div className='db-container'>
+    <h1 className='primary-display'
          style={{textAlign: 'center', padding: '1rem'}}> Introductory Videos </h1>
     {videos.map((video: Video, index) => <span key={index}>
         <h2 className='secondary-display'>{video.title}</h2>
@@ -30,15 +29,4 @@ export const IntroVidReactComponent: FunctionComponent<Video> = () => <div class
             </video>
         </div>
      </span>)}
-</div>;
-
-@Component({
-    template: `<div #root></div>`,
-    styleUrls: ['../../../styles/template.css', './intro-vids.component.css'],
-    encapsulation: ViewEncapsulation.None,
-})
-export class IntroVidsWrapperComponent extends BaseReactWrapper {
-    constructor() {
-        super(IntroVidReactComponent, []);
-    }
-}
+</div>);
