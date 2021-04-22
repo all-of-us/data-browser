@@ -102,7 +102,7 @@
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
                 <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
                 
-                <app-survey-answer-react [level]="0" [isCopeSurvey]="isCopeSurvey" [question]="q" [totalPartcipants]="survey.participantCount">
+                <app-survey-answer-react [level]="0" [isCopeSurvey]="isCopeSurvey" [question]="q">
                 </app-survey-answer-react>
 
                 <div class="survey-tbl">

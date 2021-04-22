@@ -7,7 +7,7 @@ import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 
-export const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
+const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 // const dbc = new DbConfigService(api);
 const eightColors = [
     '#2F4B7C', '#F99059', '#496D91', '#E75955',
@@ -35,7 +35,7 @@ const twentyFiveColors = [
     '#5681B9', '#A60841', '#BFE1C6', '#C42D52', '#82B3CD', '#F57D58', '#93003A'
 ];
 
-export const styleCss =
+const styleCss =
     `
     .survey-tbl {
         width: 100%;
@@ -68,6 +68,10 @@ export const styleCss =
         margin-top: -1em;
         border-left: #cccccc 1px solid;
         border-right: #cccccc 1px solid;
+        background: #f6f6f8;
+    }
+    .active-row {
+        background: #f6f6f8;
     }
     .sub-table-1 .sub-question-text, .sub-table-2 .sub-question-text {
         padding-top: 1rem;
@@ -102,7 +106,7 @@ interface SurveyRowState {
 }
 
 
-export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, SurveyRowState> {
+const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, SurveyRowState> {
     constructor(props: SurveyRowProps, state: SurveyRowState) {
         super(props);
 
@@ -221,7 +225,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
     render() {
 
         const parcipantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
-        return <React.Fragment> <div className='survey-tbl-exp-r survey-tbl-r' onClick={this.openDrawer.bind(this)}>
+        return <React.Fragment> <div className={this.state.drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'} onClick={this.openDrawer.bind(this)}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                 {this.props.answerValueString}
             </div>
@@ -237,12 +241,13 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                     </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                     {this.props.hasSubQuestions === '1' ?
-                        <ClrIcon shape='caret' className='survey-row-icon' style={{ color: '#216fb4' }} dir={this.state.drawerOpen ? 'down'
-                            : 'right'} /> : <ClrIcon className={ this.state.drawerOpen ? 'is-solid survey-row-icon':'survey-row-icon'}  shape='bar-chart' />}
+                        <ClrIcon shape='caret' className='survey-row-icon'
+                            style={{ color: '#216fb4' }} dir={this.state.drawerOpen ? 'down' : 'right'} /> :
+                        <ClrIcon className={this.state.drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' />}
                 </div>
             </div>
         </div >
-            {this.state.drawerOpen ? <div className='survey-row-expanded'>
+            {this.state.drawerOpen && <div className='survey-row-expanded'>
                 {(this.props.hasSubQuestions === '1' && this.state.subQuestions) ?
                     this.state.subQuestions.map((question, index) => {
                         return <React.Fragment key={index + 'subquestion'}>
@@ -257,7 +262,7 @@ export const SurveyAnswerRowComponent = (class extends React.Component<SurveyRow
                     })
                     : <h5>graph-component</h5>
                 }
-            </div> : undefined}
+            </div>}
         </React.Fragment>;
     }
 });
@@ -280,7 +285,7 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
     constructor(props: Props) {
         super(props);
     }
-    
+
     isSubTable = this.props.particpantCount ? true : false;
 
     render(): any {
@@ -303,7 +308,8 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {this.props.isCopeSurvey ? <h1>testIs cope</h1> :
-                                <span>{this.props.particpantCount ? <React.Fragment>% Answered out of {this.props.particpantCount}</React.Fragment> :
+                                <span>{this.props.particpantCount ? <React.Fragment>% Answered out of {this.props.particpantCount}
+                                </React.Fragment> :
                                     <React.Fragment>% Answered </React.Fragment>}</span>
                             }
                         </div >
@@ -315,22 +321,22 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                 </div >
 
                 {
-                    this.props.question.countAnalysis ?
-                        this.props.question.countAnalysis.results.map((answer, index) => {
-                            const answerCleaned = {
-                                surveyConceptId: answer.stratum1,
-                                questionConceptId: answer.stratum2,
-                                answerConceptId: answer.stratum3,
-                                answerValueString: answer.stratum4,
-                                hasSubQuestions: answer.stratum7,
-                                countValue: answer.countValue,
-                                countPercent: answer.countPercent
-                            };
-                                const key = 'answer' + index;
-                                return <SurveyAnswerRowComponent level={this.props.level} participantCount={this.props.particpantCount}
-                                    key={key}
-                                    isCopeSurvey={this.props.isCopeSurvey}{...answerCleaned} />;
-                        }) : undefined
+                    this.props.question.countAnalysis &&
+                    this.props.question.countAnalysis.results.map((answer, index) => {
+                        const answerCleaned = {
+                            surveyConceptId: answer.stratum1,
+                            questionConceptId: answer.stratum2,
+                            answerConceptId: answer.stratum3,
+                            answerValueString: answer.stratum4,
+                            hasSubQuestions: answer.stratum7,
+                            countValue: answer.countValue,
+                            countPercent: answer.countPercent
+                        };
+                        const key = 'answer' + index;
+                        return <SurveyAnswerRowComponent level={this.props.level} participantCount={this.props.particpantCount}
+                            key={key}
+                            isCopeSurvey={this.props.isCopeSurvey}{...answerCleaned} />;
+                    })
 
                 }
             </div>
