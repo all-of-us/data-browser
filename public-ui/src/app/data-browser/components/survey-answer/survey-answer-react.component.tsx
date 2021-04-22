@@ -314,8 +314,7 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                             }
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
-                            {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <React.Fragment></React.Fragment>
-                            }
+                            {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <React.Fragment></React.Fragment>}
                         </div >
                     </div >
                 </div >
