@@ -224,7 +224,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
     render() {
 
-        const parcipantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
+        const participantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
         return <React.Fragment> <div className={this.state.drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'} onClick={this.openDrawer.bind(this)}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                 {this.props.answerValueString}
@@ -237,7 +237,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                     {this.props.countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {this.props.countPercent ? this.props.countPercent.toFixed(2) : parcipantPercentage}%
+                    {this.props.countPercent ? this.props.countPercent.toFixed(2) : participantPercentage}%
                     </div>
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                     {this.props.hasSubQuestions === '1' ?
@@ -266,12 +266,6 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         </React.Fragment>;
     }
 });
-
-
-
-
-
-
 
 
 interface Props {
