@@ -276,6 +276,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           aCount.subQuestionFetchComplete = false;
         }
       }
+      console.log(q);
       this.addMissingResults(q, aCount, totalCount);
     });
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
