@@ -121,7 +121,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         this.setState({
             drawerOpen: !this.state.drawerOpen
         });
-        if (this.props.hasSubQuestions === '1') {
+        if (this.props.hasSubQuestions === '1' && !this.state.subQuestions.length) {
             this.getSubQuestions();
         }
     }
