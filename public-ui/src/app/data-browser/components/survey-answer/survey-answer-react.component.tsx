@@ -331,7 +331,6 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             key={key}
                             isCopeSurvey={isCopeSurvey}{...answerCleaned} />;
                     })
-
                 }
             </div>
         </React.Fragment >;
@@ -346,6 +345,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
     styleUrls: ['../../../styles/template.css'],
     encapsulation: ViewEncapsulation.None,
 })
+
 export class SurveyAnswerWrapperComponent extends BaseReactWrapper {
     @Input() isCopeSurvey: boolean;
     @Input() question: any;

@@ -10,5 +10,6 @@ export const environment = {
   gtmPreview: 'env-28',
   reactHomeView: false,
   reactChart: false,
+  reactSurveyTable: false,
   testReact: false
 };
