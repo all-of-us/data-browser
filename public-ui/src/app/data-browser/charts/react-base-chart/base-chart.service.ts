@@ -34,6 +34,9 @@ export const AGE_STRATUM_MAP = {
     '9': '89+'
 };
 
+export function getBaseOptions() {
+  return JSON.parse(JSON.stringify(baseOptions));
+}
 
 export const baseOptions = {
   lang: { thousandsSep: ',' },

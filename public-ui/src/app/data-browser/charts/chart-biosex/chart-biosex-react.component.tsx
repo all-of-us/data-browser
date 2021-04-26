@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { baseOptions, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { GENDER_STRATUM_MAP, getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -49,20 +49,21 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   setCommonBioSexOptions(analysisName: string, categories: any, series: any) {
-      baseOptions.chart.type = 'column';
-      baseOptions.plotOptions.column.groupPadding = 0.40;
-      baseOptions.plotOptions.series.pointWidth = 50;
-      baseOptions.legend.enabled = true;
-      baseOptions.yAxis.gridLineColor = '#ECF1F4';
-      baseOptions.title.style.color = '#262262';
-      baseOptions.title.style.fontSize = '22px';
-      baseOptions.color = '#2691D0';
-      baseOptions.xAxis.title.text = 'Sex Assigned at Birth';
-      baseOptions.yAxis.title.text = 'Participant Count';
-      baseOptions.xAxis.categories = categories;
+    const newBaseOptions = getBaseOptions();
+      newBaseOptions.chart.type = 'column';
+      newBaseOptions.plotOptions.column.groupPadding = 0.40;
+      newBaseOptions.plotOptions.series.pointWidth = 50;
+      newBaseOptions.legend.enabled = true;
+      newBaseOptions.yAxis.gridLineColor = '#ECF1F4';
+      newBaseOptions.title.style.color = '#262262';
+      newBaseOptions.title.style.fontSize = '22px';
+      newBaseOptions.color = '#2691D0';
+      newBaseOptions.xAxis.title.text = 'Sex Assigned at Birth';
+      newBaseOptions.yAxis.title.text = 'Participant Count';
+      newBaseOptions.xAxis.categories = categories;
       if ('dataOnlyLT20' in series[0]) {
-        baseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
-        baseOptions.yAxis.labels = {
+        newBaseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
+        newBaseOptions.yAxis.labels = {
             style: {
                    fontSize: '14px',
                    whiteSpace: 'wrap',
@@ -80,29 +81,30 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
                    useHTML: true
             };
       }
-      baseOptions.series = series;
+      newBaseOptions.series = series;
+    this.setState({options: newBaseOptions});
   }
 
   getEhrChartOptions() {
     const {genderAnalysis: {analysisName, results}} = this.props;
     const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(results);
     this.setCommonBioSexOptions(analysisName, categories, series);
-    this.setState({options: baseOptions});
   }
 
   getFitbitChartOptions() {
-    baseOptions.chart.type = 'bar';
-    baseOptions.plotOptions.series.pointWidth = 50;
-    baseOptions.yAxis.title.text = 'Participant Count';
-    baseOptions.xAxis.title.text = '';
-    baseOptions.yAxis.title.style.fontSize = '14px';
-    baseOptions.xAxis.title.style.fontSize = '14px';
-    baseOptions.yAxis.title.style.color = '#262262';
-    baseOptions.yAxis.gridLineColor = '#F0F0F0';
+    const newBaseOptions = getBaseOptions();
+    newBaseOptions.chart.type = 'bar';
+    newBaseOptions.plotOptions.series.pointWidth = 50;
+    newBaseOptions.yAxis.title.text = 'Participant Count';
+    newBaseOptions.xAxis.title.text = '';
+    newBaseOptions.yAxis.title.style.fontSize = '14px';
+    newBaseOptions.xAxis.title.style.fontSize = '14px';
+    newBaseOptions.yAxis.title.style.color = '#262262';
+    newBaseOptions.yAxis.gridLineColor = '#F0F0F0';
     const {categories, data} = this.prepFitbitCategoriesAndData();
-    baseOptions.xAxis.categories = categories;
-    baseOptions.series[0].data = data;
-    this.setState({options: baseOptions});
+    newBaseOptions.xAxis.categories = categories;
+    newBaseOptions.series[0].data = data;
+    this.setState({options: newBaseOptions});
   }
 
   getSurveyChartOptions() {
@@ -111,7 +113,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
               r => r.stratum4 === selectedResult.stratum4);
     const {categories, series} = this.prepEhrOrSurveyCategoriesAndData(filteredResults);
     this.setCommonBioSexOptions(analysisName, categories, series);
-    this.setState({options: baseOptions});
   }
 
   prepEhrOrSurveyCategoriesAndData(genderAnalysisResults) {
