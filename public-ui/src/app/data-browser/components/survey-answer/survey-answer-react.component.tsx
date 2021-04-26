@@ -138,7 +138,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                     this.setState({
                         subQuestions: this.processResults(results.questions.items, this.props.countValue)
                     });
-                })
+                });
     }
 
     processResults(questions: Array<any>, totalCount: number) {
@@ -220,32 +220,35 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
 
     render() {
-        const { answerConceptId, answerValueString, hasSubQuestions, countValue, countPercent, isCopeSurvey, participantCount, level } = this.props;
-        const { drawerOpen, subQuestions, subAnswers, subTitle } = this.state;
+        const { answerConceptId, answerValueString, hasSubQuestions,
+            countValue, countPercent, isCopeSurvey } = this.props;
+        const { drawerOpen, subQuestions } = this.state;
         const participantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
-        return <React.Fragment> <div className={drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'} onClick={() => this.openDrawer()}>
-            <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
-                {answerValueString}
-            </div>
-            <div className='survey-tbl-r-group'>
-                <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {answerConceptId}
+        return <React.Fragment>
+            <div className={drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'}
+                onClick={() => this.openDrawer()}>
+                <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
+                    {answerValueString}
                 </div>
-                <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                </div>
-                <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {countPercent ? countPercent.toFixed(2) : participantPercentage}%
+                <div className='survey-tbl-r-group'>
+                    <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
+                        {answerConceptId}
                     </div>
-                <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {hasSubQuestions === '1' ?
-                        <ClrIcon shape='caret' className='survey-row-icon'
-                            style={{ color: '#216fb4' }}
-                            dir={drawerOpen ? 'down' : 'right'} /> :
-                        <ClrIcon className={drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' />}
+                    <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
+                        {countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    </div>
+                    <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
+                        {countPercent ? countPercent.toFixed(2) : participantPercentage}%
+                    </div>
+                    <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
+                        {hasSubQuestions === '1' ?
+                            <ClrIcon shape='caret' className='survey-row-icon'
+                                style={{ color: '#216fb4' }}
+                                dir={drawerOpen ? 'down' : 'right'} /> :
+                            <ClrIcon className={drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' />}
+                    </div>
                 </div>
-            </div>
-        </div >
+            </div >
             {drawerOpen && <div className='survey-row-expanded'>
                 {(hasSubQuestions === '1' && subQuestions) ?
                     subQuestions.map((question, index) => {
@@ -283,7 +286,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
     isSubTable = this.props.particpantCount ? true : false;
 
     render() {
-        const { isCopeSurvey, question, particpantCount, level } = this.props
+        const { isCopeSurvey, question, particpantCount, level } = this.props;
         return <React.Fragment>
             <style>{styleCss}</style>
             <div className='survey-tbl'>
@@ -335,7 +338,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
             </div>
         </React.Fragment >;
     }
-};
+}
 
 
 @Component({

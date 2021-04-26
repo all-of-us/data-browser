@@ -95,7 +95,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.loadPage();
     this.envDisplay = environment.displayTag;
     this.testReact = environment.testReact;
-    this.reactSurveyTable = environment.reactSurveyTable
+    this.reactSurveyTable = environment.reactSurveyTable;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }
