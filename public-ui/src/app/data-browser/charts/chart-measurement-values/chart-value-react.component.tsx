@@ -39,7 +39,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   }
 
   getChartOptions() {
-    const {conceptId, valueAnalysis} = this.props;
+    const {conceptId} = this.props;
     if (conceptId === '903111' || conceptId === '903120') {
         this.getStackedChartOptions();
     } else {
@@ -259,10 +259,10 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
         cats.push(d.name);
     }
     // Unit for measurements is in stratum5
-    //if (this.analysis.unitName === 'cm') {
+    // if (this.analysis.unitName === 'cm') {
     //    this.analysis.unitName = 'centimeter';
-    //}
-    //const unit = this.analysis.unitName ? this.analysis.unitName : '';
+    // }
+    // const unit = this.analysis.unitName ? this.analysis.unitName : '';
     const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series: any = {
