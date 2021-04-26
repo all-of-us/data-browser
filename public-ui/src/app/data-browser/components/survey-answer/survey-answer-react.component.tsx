@@ -127,7 +127,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     }
 
     getSubQuestions() {
-        api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, this.nextLevel)
+        api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, this.state.nextLevel)
             .then(
                 results => {
 
@@ -252,7 +252,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                             <h6 className='sub-question-text'><ClrIcon shape='child-arrow' />{question.conceptName}</h6>
                             <div className='survey-sub-table'>
                                 {/* tslint:disable-next-line: no-use-before-declare */}
-                                <SurveyAnswerReactComponent level={this.nextLevel}
+                                <SurveyAnswerReactComponent level={this.state.nextLevel}
                                     particpantCount={countValue}
                                     question={question}
                                     isCopeSurvey={isCopeSurvey} />
