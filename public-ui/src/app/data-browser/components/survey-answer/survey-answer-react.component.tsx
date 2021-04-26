@@ -107,7 +107,7 @@ interface SurveyRowState {
 
 
 const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, SurveyRowState> {
-    constructor(props: SurveyRowProps, state: SurveyRowState) {
+    constructor(props: SurveyRowProps) {
         super(props);
 
         this.state = {
@@ -120,7 +120,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     nextLevel: number;
 
 
-    openDrawer(e) {
+    openDrawer() {
         this.setState({
             drawerOpen: !this.state.drawerOpen
         });
@@ -139,9 +139,6 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                         subQuestions: this.processResults(results.questions.items, this.props.countValue)
                     });
                 })
-            .catch((error) => {
-                console.log(error);
-            });
     }
 
     processResults(questions: Array<any>, totalCount: number) {
@@ -225,7 +222,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     render() {
 
         const participantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
-        return <React.Fragment> <div className={this.state.drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'} onClick={this.openDrawer.bind(this)}>
+        return <React.Fragment> <div className={this.state.drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'} onClick={() => this.openDrawer()}>
             <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                 {this.props.answerValueString}
             </div>
@@ -242,7 +239,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                 <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                     {this.props.hasSubQuestions === '1' ?
                         <ClrIcon shape='caret' className='survey-row-icon'
-                            style={{ color: '#216fb4' }} dir={this.state.drawerOpen ? 'down' : 'right'} /> :
+                            style={{ color: '#216fb4' }} 
+                            dir={this.state.drawerOpen ? 'down' : 'right'} /> :
                         <ClrIcon className={this.state.drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' />}
                 </div>
             </div>
@@ -256,7 +254,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                                 {/* tslint:disable-next-line: no-use-before-declare */}
                                 <SurveyAnswerReactComponent level={this.nextLevel}
                                     particpantCount={this.props.countValue}
-                                    question={question} isCopeSurvey={this.props.isCopeSurvey} />
+                                    question={question} 
+                                    isCopeSurvey={this.props.isCopeSurvey} />
                             </div>
                         </React.Fragment>;
                     })
@@ -275,15 +274,16 @@ interface Props {
     level: number;
 }
 
-export const SurveyAnswerReactComponent = (class extends React.Component<Props, {}> {
+export class SurveyAnswerReactComponent extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
 
     isSubTable = this.props.particpantCount ? true : false;
 
-    render(): any {
-        return <React.Fragment><style>{styleCss}</style>
+    render() {
+        return <React.Fragment>
+            <style>{styleCss}</style>
             <div className='survey-tbl'>
                 <div className='survey-tbl-r survey-tbl-head'>
                     <div className='info-text first survey-tbl-d'>
@@ -302,10 +302,9 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {this.props.isCopeSurvey ? <h1>testIs cope</h1> :
-                                <span>{this.props.particpantCount ? <React.Fragment>% Answered out of {this.props.particpantCount}
-                                </React.Fragment> :
-                                    <React.Fragment>% Answered </React.Fragment>}</span>
-                            }
+                                <span>
+                                    {!!this.props.particpantCount ? `% Answered out of ${this.props.particpantCount}` : '% Answered'}
+                                    </span>}
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {this.props.isCopeSurvey ? <h1>testIs cope</h1> : <React.Fragment></React.Fragment>}
@@ -335,8 +334,7 @@ export const SurveyAnswerReactComponent = (class extends React.Component<Props, 
             </div>
         </React.Fragment >;
     }
-}
-);
+};
 
 
 @Component({
