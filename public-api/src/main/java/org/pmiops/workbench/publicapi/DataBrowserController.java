@@ -235,7 +235,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionIds.add(String.valueOf(qc.getConceptId()));
         }
 
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L), questionIds);
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L), questionIds);
 
         SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
         questionResp.setItems(achillesAnalysisService.mapAnalysesToQuestions(surveyAnalysisList, questions, surveyConceptId));
