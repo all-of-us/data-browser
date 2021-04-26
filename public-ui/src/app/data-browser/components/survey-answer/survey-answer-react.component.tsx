@@ -101,8 +101,7 @@ interface SurveyRowProps {
 interface SurveyRowState {
     drawerOpen: boolean;
     subQuestions: Array<any>;
-    subAnswers: object;
-    subTitle: string;
+    nextLevel: number;
 }
 
 
@@ -113,11 +112,9 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         this.state = {
             drawerOpen: false,
             subQuestions: [],
-            subAnswers: {},
-            subTitle: ''
+            nextLevel: props.hasSubQuestions === '1' ? props.level + 1 : undefined
         };
     }
-    nextLevel: number;
 
 
     openDrawer() {
@@ -125,13 +122,12 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
             drawerOpen: !this.state.drawerOpen
         });
         if (this.props.hasSubQuestions === '1') {
-            this.nextLevel = this.props.level + 1;
             this.getSubQuestions();
         }
     }
 
     getSubQuestions() {
-        return api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, this.nextLevel)
+        api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, this.nextLevel)
             .then(
                 results => {
 
@@ -282,8 +278,6 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
-
-    isSubTable = this.props.particpantCount ? true : false;
 
     render() {
         const { isCopeSurvey, question, particpantCount, level } = this.props;
