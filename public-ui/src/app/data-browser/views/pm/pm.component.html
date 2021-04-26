@@ -55,6 +55,11 @@
                          [conceptId]="selectedConcept.conceptId"
                          [domainCountAnalysis]="domainCountAnalysis">
               </app-chart>
+              <app-value-chart-react [conceptId]="selectedConcept.conceptId"
+                                     [valueAnalysis]="getValueAnalysis()"
+                                     [domainCountAnalysis]="domainCountAnalysis"
+                                     [genderId]="gender.stratum3">
+              </app-value-chart-react>
             </div>
           </ng-container>
           <ng-template #stackedChart>
