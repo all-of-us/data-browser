@@ -140,7 +140,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      -run:
+      - run:
           name: set creds
           command: git config --global user.name "Morgan Higby-Flowers; git config --global user.email "mhigbyflowers@gmail.com"      "   
       - run:
