@@ -93,6 +93,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadPage();
+    this.showStatement = false;
     this.envDisplay = environment.displayTag;
     this.testReact = environment.testReact;
     this.reactSurveyTable = environment.reactSurveyTable;
@@ -141,17 +142,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       );
     }
-    // Filter when text value changes
-    this.subscriptions.push(
-      this.searchText.valueChanges.pipe(
-        debounceTime(1000),
-        distinctUntilChanged(), )
-        .subscribe((query) => {
-          // this.router.navigate(
-          // ['survey/' + this.domainId.toLowerCase() + '/' + query]
-          // );
-          // this.resetExpansion();
-        }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
@@ -289,7 +279,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.addMissingResults(q, aCount, totalCount);
     });
     q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results,
-      totalCount));
+      totalCount, q.participantCountAnalysis.results));
 
   }
 
@@ -442,6 +432,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           q.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
           q.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
           q.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+          q.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
           q.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
           q.resultFetchComplete = true;
           this.processResults(q, this.survey.participantCount);
@@ -543,8 +534,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     return q.conceptName;
   }
 
-  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number) {
+  public addDidNotAnswerResult(questionConceptId: any, results: any[], participantCount: number, participantCountResults: any[]) {
     let didNotAnswerCount = participantCount;
+    if (participantCountResults) {
+        didNotAnswerCount = participantCountResults[0].countValue;
+    }
     for (const r of results) {
       didNotAnswerCount = didNotAnswerCount - r.countValue;
     }
@@ -648,32 +642,11 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     return this.surveyResultCount;
   }
 
-  public resetExpansion() {
-    for (const q of this.questions) {
-      q.expanded = false;
-      q.resultFetchComplete = false;
-      for (const r of q.countAnalysis.results) {
-        r.expanded = false;
-        if (r.hasSubQuestions === 1) {
-          for (const sq of r.subQuestions) {
-            sq.subExpanded = false;
-
-            for (const sr of sq.countAnalysis.results) {
-              sr.expanded = false;
-
-              if (sr.hasSubQuestions === 1) {
-                for (const sq2 of sr.subQuestions) {
-                  sq2.subExpanded = false;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   closePopUp() {
     this.showStatement = false;
+  }
+
+  showCopeStatement() {
+    this.showStatement = true;
   }
 }
