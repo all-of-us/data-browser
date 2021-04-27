@@ -162,9 +162,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     return { categories: cats, series: series};
   }
 
-  setLabelFormatter(newBaseOptions) {
-  }
-
   prepValueCatsAndData(valueAnalysisResults, analysisName) {
     let data = [];
     const cats = [];
@@ -232,21 +229,13 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
             aVal = Number(aVal);
             bVal = Number(bVal);
           }
-          if (aVal > bVal) {
-            return -1;
-          }
-          if (aVal < bVal) {
-            return 1;
-          }
-          return 0;
+          return aVal - bVal;
         });
-    if (lessThanData.length > 0 && greaterThanData.length > 0) {
-      data.unshift(greaterThanData[0]);
-      data.push(lessThanData[0]);
-    } else if (lessThanData.length > 0) {
-      data.push(lessThanData[0]);
-    } else if (greaterThanData.length > 0) {
-      data.unshift(greaterThanData[0]);
+    if (greaterThanData.length > 0) {
+        data.unshift(greaterThanData[0]);
+    }
+    if (lessThanData.length > 0) {
+        data.push(lessThanData[0]);
     }
     if (data.length > 2) {
       if (greaterThanData.length === 0) {
@@ -267,11 +256,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     for (const d of data) {
         cats.push(d.name);
     }
-    // Unit for measurements is in stratum5
-    // if (this.analysis.unitName === 'cm') {
-    //    this.analysis.unitName = 'centimeter';
-    // }
-    // const unit = this.analysis.unitName ? this.analysis.unitName : '';
     const temp = data.filter(x => x.y > 20);
     const dataOnlyLT20 = temp.length > 0 ? false : true;
     const series: any = {
