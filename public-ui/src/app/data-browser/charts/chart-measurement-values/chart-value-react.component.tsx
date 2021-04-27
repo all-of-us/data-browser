@@ -19,6 +19,8 @@ interface Props {
     valueAnalysis: any;
     domainCountAnalysis: any;
     genderId: any;
+    chartTitle: any;
+    domain: string;
 }
 
 export class ValueReactChartComponent extends React.Component<Props, State> {
@@ -45,7 +47,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     } else {
         // Fetch rest of the value charts
         this.getValueChartOptions();
-        console.log(this.state.options);
     }
   }
 
@@ -56,10 +57,9 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   }
 
   getValueChartOptions() {
-     const {valueAnalysis: {analysisName, results}} = this.props;
-     const {categories, series} = this.prepValueCatsAndData(results, analysisName);
-     console.log(categories, series);
-     this.setValueChartOptions(analysisName, categories, series);
+     const {valueAnalysis: {analysisName, results, unitName}, genderId, chartTitle} = this.props;
+     const {categories, series} = this.prepValueCatsAndData(results.filter(r => r.stratum3 === genderId), analysisName);
+     this.setValueChartOptions(analysisName, categories, series, chartTitle, unitName);
   }
 
   setStackedChartOptions(analysisName: string, categories: any, series: any) {
@@ -102,15 +102,23 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       this.setState({options: newBaseOptions});
   }
 
-  setValueChartOptions(analysisName: string, categories: any, series: any) {
+  setValueChartOptions(analysisName: string, categories: any, series: any, chartTitle: any, unitName: any) {
+   const {domain} = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'bar';
     newBaseOptions.xAxis.categories = categories;
-    newBaseOptions.series = series;
-    console.log(newBaseOptions.chart);
-    console.log(newBaseOptions.xAxis.categories);
-    console.log(newBaseOptions.series);
-    console.log(newBaseOptions);
+    delete newBaseOptions.color;
+    newBaseOptions.series = [series];
+    newBaseOptions.tooltip.outside = true;
+    if (domain === 'pm') {
+        newBaseOptions.title.text = chartTitle;
+    }
+    newBaseOptions.legend.enabled = false;
+    newBaseOptions.title.style.color = '#262262';
+    newBaseOptions.title.style.fontSize = '18';
+    newBaseOptions.title.style.fontWeight = '400';
+    newBaseOptions.yAxis.title.text = 'Participant Count';
+    newBaseOptions.xAxis.title.text = unitName ? unitName: '';
     this.setState({options: newBaseOptions});
   }
 
@@ -156,10 +164,12 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     return { categories: cats, series: series};
   }
 
+  setLabelFormatter(newBaseOptions) {
+  }
+
   prepValueCatsAndData(valueAnalysisResults, analysisName) {
-    const data = [];
+    let data = [];
     const cats = [];
-    valueAnalysisResults.filter(r => r.stratum3 === this.props.genderId);
     for (const a of valueAnalysisResults) {
         let analysisStratumName = a.analysisStratumName;
         if (analysisStratumName === null) {
@@ -197,8 +207,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
           d => d.name != null && d.name.indexOf('< ') >= 0);
     const greaterThanData = data.filter(
           d => d.name != null && d.name.indexOf('>= ') >= 0);
-    data.filter(d => d.name != null &&
-          (d.name.indexOf('< ') === -1 || d.name.indexOf('>= ') === -1));
+    data = data.filter(
+           d => d.name != null && (d.name.indexOf('< ') === -1 && d.name.indexOf('>= ') === -1));
     data.sort((a, b) => {
           let aVal: any = a.name;
           let bVal: any = b.name;
@@ -276,7 +286,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     series.pointPadding = 0;
     series.borderWidth = 0;
     series.groupPadding = 0;
-    series.pointWidth = data.length >= 15 ? 15 : 18;
+    series.pointWidth = data.length >= 15 ? 15 : 19;
     series.shadow = false;
     return { categories: cats, series: series};
   }
@@ -302,8 +312,10 @@ export class ValueChartWrapperComponent extends BaseReactWrapper {
   @Input() valueAnalysis: any;
   @Input() domainCountAnalysis: any;
   @Input() genderId: any;
+  @Input() chartTitle: any;
+  @Input() domain: any;
 
   constructor() {
-    super(ValueReactChartComponent, ['conceptId', 'participantCount', 'valueAnalysis', 'domainCountAnalysis', 'genderId']);
+    super(ValueReactChartComponent, ['conceptId', 'participantCount', 'valueAnalysis', 'domainCountAnalysis', 'genderId', 'chartTitle', 'domain']);
   }
 }

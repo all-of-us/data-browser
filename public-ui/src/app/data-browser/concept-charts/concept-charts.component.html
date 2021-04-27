@@ -37,12 +37,13 @@
             {{gender.analysisStratumName}} - &le; {{fetchChartTitle(gender) | number}}
           </ng-template>
         </aside>
-        <app-chart
+        <app-value-chart-react
           *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) &&
 toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
           [genderId]="gender.stratum2" [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)"
-          [chartType]="'histogram'" [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"
-          [conceptName]="conceptName"></app-chart>
+          [valueAnalysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"
+          [domain]="'ehr'"
+          [conceptId]="conceptId"></app-value-chart-react>
       </div>
     </div>
     <div class="no-values" *ngIf="toDisplayMeasurementGenderAnalysis === undefined">

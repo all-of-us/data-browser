@@ -58,7 +58,9 @@
               <app-value-chart-react [conceptId]="selectedConcept.conceptId"
                                      [valueAnalysis]="getValueAnalysis()"
                                      [domainCountAnalysis]="domainCountAnalysis"
-                                     [genderId]="gender.stratum3">
+                                     [genderId]="gender.stratum3"
+                                     [domain]="'pm'"
+                                     [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()">
               </app-value-chart-react>
             </div>
           </ng-container>
