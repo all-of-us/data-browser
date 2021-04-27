@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
-import { environment } from 'environments/environment';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
-import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
@@ -87,9 +85,7 @@ const routes: Routes = [
         },
         {
           path: 'introductory-videos',
-          component:  environment.testReact ?
-                      IntroVidsWrapperComponent : /* else */
-                      IntroVidsComponent,
+          component: IntroVidsWrapperComponent,
           data: {
             title: 'Introductory Videos',
             breadcrumb: {

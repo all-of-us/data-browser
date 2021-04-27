@@ -4,7 +4,7 @@ import * as React from 'react';
 
 const searchStyle = `
 .search-title {
-    margin: 0.6em 0.5em 0.1em;
+    margin-bottom: 0.5em;
     display: flex;
     flex-direction: row;
 }

@@ -74,8 +74,15 @@
                   <clr-icon *ngIf="!showAnswer[q.conceptId]" shape="caret" dir="right"></clr-icon>
                   <clr-icon *ngIf="showAnswer[q.conceptId]" shape="caret" dir="down"></clr-icon>
                 </a>
+
+ 
+
               <ng-container *ngIf="q.expanded && q.resultFetchComplete">
                 <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="q.countAnalysis.results" [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
+                
+                <app-survey-answer-react *ngIf="reactSurveyTable" [level]="0" [isCopeSurvey]="isCopeSurvey" [question]="q">
+                </app-survey-answer-react>
+
                 <div class="survey-tbl">
                   <div class="survey-tbl-r survey-tbl-head">
                     <div class="info-text first survey-tbl-d">
@@ -115,7 +122,7 @@
                     </div>
                   </div>
                   <div [ngClass]="a.expanded?'survey-tbl-r-state':''" class="survey-tbl-exp-r "
-                    *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a, q, 1, $event)"
+                       *ngFor="let a of q.countAnalysis.results" (click)="showAnswerGraphs(a, q, 1, $event)"
                     [hidden]="!showAnswer[q.conceptId]">
                     <div class="survey-tbl-r">
                       <div class="survey-tbl-d first display-body info-text survey-answer-level-1"
@@ -181,12 +188,11 @@
                                               [selectedResult]="a"
                                               [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                               [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
-
                     </div>
                     <div class="survey-row-expansion sub-table-1"
                       *ngIf="a.expanded && a.stratum7 === '1' && a.subQuestionFetchComplete">
                       <ng-container *ngFor="let subQuestion of a.subQuestions, let j = index">
-                        <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="subQuestion.countAnalysis.results" [versionAnalysis]='subQuestion.versionAnalysis.results'></chart-survey-answers>
+                        <chart-survey-answers *ngIf="isCopeSurvey"[countAnalysis]="subQuestion.countAnalysis.results" [versionAnalysis]='subQuestion.versionAnalysis.results'></chart-survey-answers>
                         <h6 class="sub-question-text">
                           <clr-icon shape="child-arrow" size="25"></clr-icon>
                           <app-highlight-react [text]="changeAutoInsertText(subQuestion)"
@@ -234,7 +240,7 @@
                             </div>
                           </div>
                           <div class="survey-tbl-exp-r" *ngFor="let sqa of subQuestion.countAnalysis.results"
-                            (click)="showAnswerGraphs(sqa, subQuestion, 2, $event)" #subTable1>
+                               (click)="showAnswerGraphs(sqa, subQuestion, 2, $event)" #subTable1>
                             <div class="survey-tbl-r">
                               <div class="survey-tbl-d first display-body info-text sub-1-que survey-answer-level-1"
                                 [ngClass]="{'active':a.expanded && sqa.expanded}">
@@ -288,7 +294,7 @@
                               </div>
                             </div>
                             <div class="row-expansion"
-                              *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7" #subChartElement1>
+                                 *ngIf="sqa.expanded && sqa.stratum4.toLowerCase() != 'did not answer' && !sqa.stratum7" #subChartElement1>
                               <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion" [answer]="sqa" [selectedResult]="sqa"
                                                       [surveyName]="survey.name" [versionAnalysis]='surveyVersions'
                                                       [surveyCountAnalysis]="surveyCountAnalysis" [searchTerm]="prevSearchText"></app-survey-chart-react>
@@ -342,7 +348,7 @@
                                     </div>
                                   </div>
                                   <div class="survey-tbl-exp-r" *ngFor="let sqa2 of subQuestion2.countAnalysis.results"
-                                    (click)="showAnswerGraphs(sqa2, subQuestion2, 2, $event)" #subTable2>
+                                       (click)="showAnswerGraphs(sqa, subQuestion, 2, $event)" #subTable1>
                                     <div class="survey-tbl-r">
                                       <div class="survey-tbl-d first display-body info-text">
                                         <div>
@@ -394,7 +400,7 @@
                                       </div>
                                     </div>
                                     <div class="row-expansion"
-                                      *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7" #subChartElement1>
+                                         *ngIf="sqa2.expanded && sqa2.stratum4.toLowerCase() != 'did not answer' && !sqa2.stratum7" #subChartElement1>
                                       <app-survey-chart-react [graphButtons]="graphButtons" [isCopeSurvey]="isCopeSurvey" [question]="subQuestion2" [answer]="sqa2"
                                                               [selectedResult]="sqa2"
                                                               [surveyName]="survey.name" [versionAnalysis]='surveyVersions'

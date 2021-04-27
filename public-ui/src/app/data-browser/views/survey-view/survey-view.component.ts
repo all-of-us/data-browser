@@ -41,6 +41,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyDescription: string;
   conceptCodeTooltip: any;
   testReact: boolean;
+  reactSurveyTable: boolean;
   /* Have questions array for filtering and keep track of what answers the pick  */
   allQuestions: any = [];
   questions: any = [];
@@ -95,6 +96,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.showStatement = false;
     this.envDisplay = environment.displayTag;
     this.testReact = environment.testReact;
+    this.reactSurveyTable = environment.reactSurveyTable;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
     }

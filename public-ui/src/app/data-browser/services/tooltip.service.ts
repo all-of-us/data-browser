@@ -190,7 +190,7 @@ export const tooltips = {
 };
 
 export const getTooltip = (textKey) => {
-    if (typeof tooltips[textKey] === 'string') {
+        if (typeof tooltips[textKey] === 'string') {
             return [tooltips[textKey]];
     } else {
             return tooltips[textKey]['texts'];
