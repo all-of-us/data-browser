@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { baseOptions, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { GENDER_STRATUM_MAP, getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -53,7 +53,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       const {valueAnalysis: {analysisName, results}} = this.props;
       const {categories, series} = this.prepStackedCatsAndData(results);
       this.setStackedChartOptions(analysisName, categories, series);
-      this.setState({options: baseOptions});
   }
 
   getValueChartOptions() {
@@ -61,28 +60,27 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
      const {categories, series} = this.prepValueCatsAndData(results, analysisName);
      console.log(categories, series);
      this.setValueChartOptions(analysisName, categories, series);
-     console.log(baseOptions);
-     this.setState({options: baseOptions});
   }
 
   setStackedChartOptions(analysisName: string, categories: any, series: any) {
-      baseOptions.chart.type = 'column';
-      baseOptions.plotOptions.column.groupPadding = 0.40;
-      baseOptions.plotOptions.series.pointWidth = 50;
-      baseOptions.legend.enabled = false;
-      baseOptions.title.style.color = '#262262';
-      baseOptions.title.style.fontSize = '22px';
-      baseOptions.color = '#2691D0';
-      baseOptions.xAxis.title.text = this.props.conceptId;
-      baseOptions.yAxis.title.text = 'Participant Count';
-      baseOptions.yAxis.title.style.fontSize = '14px';
-      baseOptions.xAxis.title.style.fontSize = '14px';
-      baseOptions.yAxis.title.style.color = '#262262';
-      baseOptions.yAxis.gridLineColor = '#F0F0F0';
-      baseOptions.xAxis.categories = categories;
+      const newBaseOptions = getBaseOptions();
+      newBaseOptions.chart.type = 'column';
+      newBaseOptions.plotOptions.column.groupPadding = 0.40;
+      newBaseOptions.plotOptions.series.pointWidth = 50;
+      newBaseOptions.legend.enabled = false;
+      newBaseOptions.title.style.color = '#262262';
+      newBaseOptions.title.style.fontSize = '22px';
+      newBaseOptions.color = '#2691D0';
+      newBaseOptions.xAxis.title.text = this.props.conceptId;
+      newBaseOptions.yAxis.title.text = 'Participant Count';
+      newBaseOptions.yAxis.title.style.fontSize = '14px';
+      newBaseOptions.xAxis.title.style.fontSize = '14px';
+      newBaseOptions.yAxis.title.style.color = '#262262';
+      newBaseOptions.yAxis.gridLineColor = '#F0F0F0';
+      newBaseOptions.xAxis.categories = categories;
       if ('dataOnlyLT20' in series[0]) {
-        baseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
-        baseOptions.yAxis.labels = {
+        newBaseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
+        newBaseOptions.yAxis.labels = {
             style: {
                    fontSize: '14px',
                    whiteSpace: 'wrap',
@@ -100,17 +98,20 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
                    useHTML: true
             };
       }
-      baseOptions.series = series;
+      newBaseOptions.series = series;
+      this.setState({options: newBaseOptions});
   }
 
   setValueChartOptions(analysisName: string, categories: any, series: any) {
-    baseOptions.chart.type = 'bar';
-    baseOptions.xAxis.categories = categories;
-    baseOptions.series = series;
-    console.log(baseOptions.chart);
-    console.log(baseOptions.xAxis.categories);
-    console.log(baseOptions.series);
-    console.log(baseOptions);
+    const newBaseOptions = getBaseOptions();
+    newBaseOptions.chart.type = 'bar';
+    newBaseOptions.xAxis.categories = categories;
+    newBaseOptions.series = series;
+    console.log(newBaseOptions.chart);
+    console.log(newBaseOptions.xAxis.categories);
+    console.log(newBaseOptions.series);
+    console.log(newBaseOptions);
+    this.setState({options: newBaseOptions});
   }
 
   prepStackedCatsAndData(valueAnalysisResults) {
