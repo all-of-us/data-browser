@@ -34,7 +34,7 @@ const styles = reactStyles({
     maxWidth: '15rem'
   },
   siteLogo: {
-    margin: '1rem 1rem 0 -1rem',
+    margin: '1rem 1rem 0 0',
     maxWidth: '15rem'
   }
 });
@@ -45,19 +45,11 @@ const css = `
     margin-top: 1rem;
     text-align: center;
     background: #ffffff;
-    font-weight: 900;
     font-size: 19px;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-    line-height: 1.2;
+    padding: 8px 0;
+    line-height: 19px;
     font-family: GothamBold, "Helvetica Neue", sans-serif;
-    border-radius: 0;
     border: 1px solid #fff;
-    text-transform: uppercase;
-    width: 100%;
-    min-width: auto;
-    max-width: 100%;
-    color: #262262;
   }
   .foot-apply a:hover {
     background-color: rgba(190, 225, 255, 1);
@@ -90,6 +82,13 @@ const css = `
     grid-template-columns: 25% 25% 25% 25%;
     width: 90%;
   }
+  .main-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10%, 25%));
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-right: 1rem;
+  }
   .sub-menu {
     margin-top: 1rem;
     margin-left: 0;
@@ -109,6 +108,12 @@ const css = `
   @media only screen and (max-width: 770px) {
     .footer-layout {
         flex-direction: column;
+    }
+    .main-menu {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        margin-top: 0.5rem;
     }
     .main-menu li {
         padding: 0;
@@ -130,7 +135,7 @@ const css = `
 const RhFooter: React.FunctionComponent = () => {
   return <footer style={styles.footer}>
     <style>{css}</style>
-    <div>
+    <div className='db-container'>
       <div style={{width: '100%'}}>
         <div style={{background: 'transparent'}}>
           <div style={styles.logo}>
@@ -179,7 +184,7 @@ const RhFooter: React.FunctionComponent = () => {
       </div>
     </div>
     <div className='db-footer'>
-      <div>
+      <div className='db-container'>
         <div className='cta-layout'>
           <div className='cta-col'>
             <p>
@@ -238,8 +243,6 @@ const RhFooter: React.FunctionComponent = () => {
 @Component({
   selector: 'app-rh-footer-react',
   template: '<div #root></div>',
-  styleUrls: ['../../../styles/template.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class RhFooterReactComponent extends BaseReactWrapper {
   constructor() {
