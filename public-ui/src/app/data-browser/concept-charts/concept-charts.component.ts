@@ -72,7 +72,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
     this.unitNames = [];
-    let unitCounts = [];
+    const unitCounts = [];
     if (this.analyses && this.analyses.measurementValueGenderAnalysis
       && this.showGraph === GraphType.Values) {
       this.displayMeasurementGraphs = true;
