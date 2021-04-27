@@ -115,7 +115,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
           this.selectedMeasurementType = 'No unit (Text)';
           this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
           this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-          this.organizeGenders(this.analyses.genderAnalysis);
+          // this.organizeGenders(this.analyses.genderAnalysis);
           this.fetchMeasurementGenderResults();
           // Set this var to make template simpler.
           // We can just loop through the results and show bins
