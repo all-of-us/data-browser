@@ -63,6 +63,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   }
 
   setStackedChartOptions(analysisName: string, categories: any, series: any) {
+      const {conceptId} = this.props;
       const newBaseOptions = getBaseOptions();
       newBaseOptions.chart.type = 'column';
       newBaseOptions.plotOptions.column.groupPadding = 0.40;
