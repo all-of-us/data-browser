@@ -20,7 +20,6 @@ interface Props {
     domainCountAnalysis: any;
     genderId: any;
     chartTitle: any;
-    domain: string;
 }
 
 export class ValueReactChartComponent extends React.Component<Props, State> {
@@ -63,7 +62,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   }
 
   setStackedChartOptions(analysisName: string, categories: any, series: any) {
-      const {conceptId} = this.props;
       const newBaseOptions = getBaseOptions();
       newBaseOptions.chart.type = 'column';
       newBaseOptions.plotOptions.column.groupPadding = 0.40;
@@ -104,7 +102,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   }
 
   setValueChartOptions(analysisName: string, categories: any, series: any, chartTitle: any, unitName: any) {
-   const {domain} = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'bar';
     newBaseOptions.xAxis.categories = categories;
@@ -296,9 +293,8 @@ export class ValueChartWrapperComponent extends BaseReactWrapper {
   @Input() domainCountAnalysis: any;
   @Input() genderId: any;
   @Input() chartTitle: any;
-  @Input() domain: any;
 
   constructor() {
-    super(ValueReactChartComponent, ['conceptId', 'participantCount', 'valueAnalysis', 'domainCountAnalysis', 'genderId', 'chartTitle', 'domain']);
+    super(ValueReactChartComponent, ['conceptId', 'participantCount', 'valueAnalysis', 'domainCountAnalysis', 'genderId', 'chartTitle']);
   }
 }

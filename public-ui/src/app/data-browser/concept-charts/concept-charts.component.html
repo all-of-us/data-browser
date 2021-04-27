@@ -31,7 +31,6 @@
 toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
           [genderId]="gender.stratum2" [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)"
           [valueAnalysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"
-          [domain]="'ehr'"
           [chartTitle]="gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()"
           [conceptId]="conceptId"></app-value-chart-react>
       </div>
