@@ -286,7 +286,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     series.pointPadding = 0;
     series.borderWidth = 0;
     series.groupPadding = 0;
-    series.pointWidth = data.length >= 15 ? 15 : 19;
+    series.pointWidth = data.length >= 15 ? 13 : 15;
     series.shadow = false;
     return { categories: cats, series: series};
   }
