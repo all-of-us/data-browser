@@ -192,5 +192,5 @@ export const baseOptions = {
 };
 
 export function getBaseOptions() {
-  return Object.assign({}, baseOptions);;
+  return Object.assign({}, baseOptions);
 }
