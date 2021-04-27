@@ -42,18 +42,12 @@
           <!-- Loop through the genders we have results for showing the graph -->
           <ng-container *ngIf="['903120','903111'].indexOf(selectedConcept.conceptId) === -1; else stackedChart">
             <div class="bs-chart-item" *ngFor="let gender of getCountAnalysis(selectedConceptUnit)">
-              <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum3) && selectedConcept.analyses &&
-              selectedConcept.analyses.measurementGenderCountAnalysis" class="chart-title">
-                <span class="chart-title" *ngIf="gender.countValue > 20; else PmChartTitleLE20">
-                  {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</span>
-                <ng-template #PmChartTitleLE20>{{gender.analysisStratumName}} – &le; {{gender.countValue.toLocaleString()}}</ng-template>
-              </div>
               <app-value-chart-react [conceptId]="selectedConcept.conceptId"
                                      [valueAnalysis]="getValueAnalysis()"
                                      [domainCountAnalysis]="domainCountAnalysis"
                                      [genderId]="gender.stratum3"
                                      [domain]="'pm'"
-                                     [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()">
+                                     [chartTitle]="gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()">
               </app-value-chart-react>
             </div>
           </ng-container>
