@@ -45,8 +45,18 @@ export const baseOptions = {
         backgroundColor: 'transparent'
   },
   color: '',
+  title: {
+      text: '',
+      style: {
+        color: '#666',
+        fontSize: '12px',
+        fontFamily: 'GothamBook',
+        fontWeight: 'normal'
+      }
+  },
   tooltip: {
         followPointer: true,
+        outside: false,
         formatter: function(tooltip) {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
@@ -72,15 +82,6 @@ export const baseOptions = {
         }
       },
     colors: ['#2691D0'],
-    title: {
-               text: '',
-               style: {
-                 color: '#666',
-                 fontSize: '12px',
-                 fontFamily: 'GothamBook',
-                 fontWeight: 'normal'
-               }
-    },
     xAxis: {
         categories: [],
         labels: {
@@ -191,5 +192,5 @@ export const baseOptions = {
 };
 
 export function getBaseOptions() {
-  return JSON.parse(JSON.stringify(baseOptions));
+  return Object.assign({}, baseOptions);;
 }
