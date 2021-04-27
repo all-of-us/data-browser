@@ -26,6 +26,7 @@ public class DbSurveyMetadata {
     private DbAchillesAnalysis genderAnalysis;
     private DbAchillesAnalysis ageAnalysis;
     private DbAchillesAnalysis versionAnalysis;
+    private DbAchillesAnalysis participantCountAnalysis;
     private DbSurveyMetadataId dbSurveyMetadataId;
     private String type;
 
@@ -253,6 +254,20 @@ public class DbSurveyMetadata {
 
     public DbSurveyMetadata versionAnalysis(DbAchillesAnalysis analysis) {
         this.versionAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
+    public DbAchillesAnalysis getParticipantCountAnalysis() {
+        return this.participantCountAnalysis;
+    }
+
+    public void setParticipantCountAnalysis(DbAchillesAnalysis analysis) {
+        this.participantCountAnalysis = analysis;
+    }
+
+    public DbSurveyMetadata participantCountAnalysis(DbAchillesAnalysis analysis) {
+        this.participantCountAnalysis = analysis;
         return this;
     }
 }
