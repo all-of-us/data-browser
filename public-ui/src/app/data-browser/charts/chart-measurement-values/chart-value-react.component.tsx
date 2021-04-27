@@ -110,9 +110,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     delete newBaseOptions.color;
     newBaseOptions.series = [series];
     newBaseOptions.tooltip.outside = true;
-    if (domain === 'pm') {
-        newBaseOptions.title.text = chartTitle;
-    }
+    newBaseOptions.title.text = chartTitle;
     newBaseOptions.legend.enabled = false;
     newBaseOptions.title.style.color = '#262262';
     newBaseOptions.title.style.fontSize = '18';

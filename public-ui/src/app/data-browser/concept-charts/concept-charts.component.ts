@@ -223,14 +223,16 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   showMeasurementGenderHistogram(unit: string) {
     this.selectedUnit = unit;
     if (this.selectedUnit.toLowerCase() === 'no unit') {
-      const numericResults = this.analyses.measurementValueGenderAnalysis.find
-      (aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'numeric');
-      const textResults = this.analyses.measurementValueGenderAnalysis.find
-      (aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'text');
-      if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
-        this.mixtureOfValues = true;
-      } else {
-        this.mixtureOfValues = false;
+      const unitResults = this.analyses.measurementValueGenderAnalysis.find
+                                (aa => aa.unitName === unit);
+      if (unitResults && unitResults.results && unitResults.results.length > 0) {
+        const numericResults = unitResults.results.filter(r => r.measurementValueType === 'numeric');
+        const textResults = unitResults.results.filter(r => r.measurementValueType === 'text');
+        if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
+                this.mixtureOfValues = true;
+        } else {
+                this.mixtureOfValues = false;
+        }
       }
     } else {
       this.mixtureOfValues = false;
