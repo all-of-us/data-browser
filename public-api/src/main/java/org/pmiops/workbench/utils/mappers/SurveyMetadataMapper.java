@@ -18,6 +18,7 @@ public interface SurveyMetadataMapper {
     @Mapping(target = "genderAnalysis.distResults", source="db.genderAnalysis.achillesResultDistList")
     @Mapping(target = "ageAnalysis.distResults", source="db.ageAnalysis.achillesResultDistList")
     @Mapping(target = "versionAnalysis.distResults", source="db.versionAnalysis.achillesResultDistList")
+    @Mapping(target = "participantCountAnalysis.distResults", source="db.participantCountAnalysis.achillesResultDistList")
     SurveyMetadata dbModelToClient(DbSurveyMetadata db);
 
     default boolean isNonEmpty(String s) {

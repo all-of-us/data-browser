@@ -784,6 +784,9 @@ definitions:
       versionAnalysis:
         description: version analysis
         $ref: "#/definitions/Analysis"
+      participantCountAnalysis:
+        description: participant count analysis
+        $ref: "#/definitions/Analysis"
 
   SurveyMetadataListResponse:
     type: object
@@ -1122,6 +1125,7 @@ definitions:
       - COUNT_ANALYSIS_ID
       - SURVEY_GENDER_COUNT_ANALYSIS_ID
       - SURVEY_AGE_COUNT_ANALYSIS_ID
+      - SURVEY_PARTICIPANT_COUNT_ANALYSIS_ID
       - GENDER_ANALYSIS_ID
       - PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID
       - AGE_ANALYSIS_ID
