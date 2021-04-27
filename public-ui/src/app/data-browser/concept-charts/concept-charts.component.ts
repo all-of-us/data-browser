@@ -47,7 +47,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   graphType = GraphType;
   subUnitValuesFilter = ['No Unit (Text)', 'No Unit (Numeric)'];
   mixtureOfValues = false;
-  selectedSubGraph: string;
   selectedMeasurementType: string;
   toDisplayGenderAnalysis: Analysis;
   toDisplayAgeAnalysis: Analysis;
@@ -86,14 +85,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
           unitCounts.push({ name: aa.unitName, count : sumCount});
         }
       }
-      unitCounts = unitCounts.sort((a, b) => {
-          if (a.count < b.count) {
-            return 1;
-          }
-          if (a.count > b.count) {
-            return -1;
-          }
-          return 0;
+      unitCounts.sort((a, b) => {
+          return a.count - b.count;
         }
       );
       this.unitNames = unitCounts.map(d => d.name);
@@ -119,7 +112,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         next: results => {
           this.results = results.items;
           this.analyses = results.items[0];
-          this.selectedSubGraph = 'Count';
           this.selectedMeasurementType = 'No unit (Text)';
           this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
           this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
