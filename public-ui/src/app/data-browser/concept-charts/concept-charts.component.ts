@@ -71,7 +71,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     if (this.showGraph === GraphType.Values && this.analyses.genderAnalysis) {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
-    let chartGenderOrder = ['8507', '8532', '0'];
+    const chartGenderOrder = ['8507', '8532', '0'];
     this.genderResults.sort((a, b) => {
               return chartGenderOrder.indexOf(a.stratum2) - chartGenderOrder.indexOf(b.stratum2);
             }

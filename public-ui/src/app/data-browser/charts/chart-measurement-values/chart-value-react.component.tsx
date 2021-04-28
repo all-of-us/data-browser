@@ -115,7 +115,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.title.style.fontSize = '18';
     newBaseOptions.title.style.fontWeight = '400';
     newBaseOptions.yAxis.title.text = 'Participant Count';
-    newBaseOptions.xAxis.title.text = unitName ? unitName: '';
+    newBaseOptions.xAxis.title.text = unitName ? unitName : '';
     this.setState({options: newBaseOptions});
   }
 
