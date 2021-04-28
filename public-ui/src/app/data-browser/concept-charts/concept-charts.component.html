@@ -24,30 +24,20 @@
    This looping variable is set if showMeasurements is passed in to the component-->
 
   <ng-container class="chart-container" *ngIf="displayMeasurementGraphs">
-    <div class="chart" *ngFor="let gender of genderResults">
-      <div class="m-layout">
-        <aside
-          *ngIf="toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0">
-          <ng-container *ngIf="fetchChartTitle(gender) > 20;then mGE20;else mLE20">
-          </ng-container>
-          <ng-template #mGE20>
-            {{gender.analysisStratumName}} - {{fetchChartTitle(gender) | number}}
-          </ng-template>
-          <ng-template #mLE20>
-            {{gender.analysisStratumName}} - &le; {{fetchChartTitle(gender) | number}}
-          </ng-template>
-        </aside>
-        <app-chart
-          *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) &&
+      <div class="ehr-m-chart-layout">
+        <div class="ehr-m-chart-item" *ngFor="let gender of genderResults">
+          <app-value-chart-react
+                  *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) &&
 toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
-          [genderId]="gender.stratum2" [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)"
-          [chartType]="'histogram'" [analysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"
-          [conceptName]="conceptName"></app-chart>
+                  [genderId]="gender.stratum2" [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)"
+                  [valueAnalysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"
+                  [chartTitle]="gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()"
+                  [conceptId]="conceptId"></app-value-chart-react>
+        </div>
+        <div class="no-values" *ngIf="toDisplayMeasurementGenderAnalysis === undefined">
+          No Values Available
+        </div>
       </div>
-    </div>
-    <div class="no-values" *ngIf="toDisplayMeasurementGenderAnalysis === undefined">
-      No Values Available
-    </div>
   </ng-container>
   <!-- show gender totals  if we want -->
   <!-- BIOLOGICAL P CHART -->
