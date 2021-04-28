@@ -25,7 +25,8 @@ import { VersionChartWrapperComponent } from './charts/chart-version/chart-versi
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
-import { SurveyAnswerWrapperComponent } from './components/survey-answer/survey-answer-react.component';
+import { SurveyAnswerWrapperComponent } from './views/survey-view/components/survey-answer-react.component';
+import { SurveyQuestionWrapperComponent } from './views/survey-view/components/survey-question-react.component';
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
@@ -92,6 +93,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
     SurveyAnswerWrapperComponent,
+    SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent
@@ -125,6 +127,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
     SurveyAnswerWrapperComponent,
+    SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent
