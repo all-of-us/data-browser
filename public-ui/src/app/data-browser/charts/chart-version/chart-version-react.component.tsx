@@ -91,7 +91,6 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           if (analysisStratumName === null) {
            analysisStratumName = VERSION_STRATUM_MAP[a.stratum7];
           }
-
           const version = surveyVersionAnalysis.filter(va => va.monthName === a.stratum7)[0];
           const percentage = ((a.countValue / version.participants) * 100).toFixed();
           data.push({
