@@ -121,7 +121,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                 isCopeSurvey={isCopeSurvey}
                 question={question}
                 level={0}
-                participantCount={participantCount} />};
+                participantCount={participantCount} />}
         </div>;
     }
 }
