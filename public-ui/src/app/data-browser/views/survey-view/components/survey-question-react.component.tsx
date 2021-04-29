@@ -103,13 +103,22 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         const { showAnswers, fetchComplete } = this.state;
         return <div >
             <style>{styleCss}</style>
-            <span onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
+            <span style={{fontFamily: showAnswers && 'GothamBold', cursor: 'pointer'}} onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
                 <HighlightReactComponent searchTerm={searchTerm} text={question.conceptName} />
+                {(question.conceptId == 1586140 || question.conceptId == 1585838) && <TooltipReactComponent
+                    label='Gender Identity Question Help Text'
+                    searchTerm={searchTerm}
+                    action='Survey Page Tooltip'
+                    tooltipKey='genderIdentityQuestionHelpText' />}
                 <div className="see-answers body-lead" tabIndex={0}>
                     See Answers <ClrIcon shape='caret' dir={showAnswers ? 'down' : 'right'} />
                 </div>
             </span>
-            {(showAnswers && fetchComplete) && <SurveyAnswerReactComponent isCopeSurvey={isCopeSurvey} question={question} level={0} participantCount={participantCount} />}
+            {(showAnswers && fetchComplete) && <SurveyAnswerReactComponent 
+            isCopeSurvey={isCopeSurvey} 
+            question={question} 
+            level={0} 
+            participantCount={participantCount} />}
         </div>
     }
 }
