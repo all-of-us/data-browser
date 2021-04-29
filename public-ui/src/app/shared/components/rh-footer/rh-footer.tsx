@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import * as React from 'react';
 
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
