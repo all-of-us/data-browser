@@ -691,4 +691,12 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     closePopUp() {
         this.showStatement = false;
    }
+
+   getTestFilter() {
+    return this.valueFilterCheck.tests === true ? 1 : 0;
+   }
+
+   getOrderFilter() {
+    return this.valueFilterCheck.orders === true ? 1 : 0
+   }
 }

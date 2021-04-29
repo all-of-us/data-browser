@@ -4,7 +4,6 @@ import * as React from 'react';
 
 const SurveyDescReactComponent =
     (props) => {
-    console.log('test');
     return <div className='page-header'>
                <div className='title-container'>
                  <h1> {props.surveyName} </h1>
