@@ -1,7 +1,8 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
-import { HighlightReactComponent } from 'app/shared/components/highlight-search/HighlightReactComponent.tsx'
+import { HighlightReactComponent } from 'app/shared/components/highlight-search/HighlightReactComponent'
+import { SurveyAnswerReactComponent } from './survey-answer-react.component'
 import { ClrIcon } from 'app/utils/clr-icon';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
@@ -27,18 +28,17 @@ const styleCss =
 
 
 
-
-
 interface Props {
     isCopeSurvey: boolean;
-    question: object;
-    particpantCount: number;
-    level: number;
+    question: any;
+    participantCount: number;
+    surveyConceptId: number;
     searchTerm: string;
 }
 
 interface State {
     showAnswers: boolean;
+    fetchComplete: boolean
 
 }
 
@@ -46,28 +46,70 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
     constructor(props: Props, state: State) {
         super(props);
         this.state = {
-            showAnswers: false
+            showAnswers: false,
+            fetchComplete: false
         }
+        console.log(props);
+
     }
     showAnswers(e?) {
         if (e && e.key != 'Enter') {
             return
         }
-        this.setState({
-            showAnswers: !this.state.showAnswers
-        });
+        this.getAnalyis();
+        setTimeout(() => {
+            this.setState({
+                showAnswers: !this.state.showAnswers
+            });
+        }, 100);
+    }
+    componentDidMount() {
+        // this.getAnalyis();q
+    }
+
+    getAnalyis() {
+        api.getSurveyQuestionResults(this.props.surveyConceptId, this.props.question.conceptId, this.props.question.path)
+            .then(
+                results => {
+                    this.props.question.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
+                    this.props.question.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
+                    this.props.question.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+                    this.props.question.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
+                    this.props.question.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
+                    // this.props.question.resultFetchComplete = true;
+                    // this.processResults(q, this.survey.participantCount);
+                    this.props.question.countAnalysis.results.sort((a1, a2) => {
+                        if (a1.countValue > a2.countValue) {
+                            return -1;
+                        }
+                        if (a1.countValue < a2.countValue) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                    this.setState({ fetchComplete: true })
+                    console.log(this.props.question.countAnalysis, 'thi');
+
+                }
+            )
+            .catch(err => {
+                console.log('Error searching: ', err);
+            });
+
     }
 
     render() {
-        const { question, searchTerm } = this.props;
-        const { showAnswers } = this.state;
-        return <div>
+        const { question, searchTerm, isCopeSurvey, participantCount } = this.props;
+        const { showAnswers, fetchComplete } = this.state;
+        return <div >
             <style>{styleCss}</style>
-            <HighlightReactComponent searchTerm={searchTerm} text={question.conceptName} />
-            <div className="see-answers body-lead" tabIndex="0" onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
-                See Answers <ClrIcon shape='caret' dir={showAnswers ? 'down' : 'right'} />
-
-            </div>
+            <span onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
+                <HighlightReactComponent searchTerm={searchTerm} text={question.conceptName} />
+                <div className="see-answers body-lead" tabIndex={0}>
+                    See Answers <ClrIcon shape='caret' dir={showAnswers ? 'down' : 'right'} />
+                </div>
+            </span>
+            {(showAnswers && fetchComplete) && <SurveyAnswerReactComponent isCopeSurvey={isCopeSurvey} question={question} level={0} participantCount={participantCount} />}
         </div>
     }
 }
@@ -83,10 +125,12 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
 export class SurveyQuestionWrapperComponent extends BaseReactWrapper {
     @Input() isCopeSurvey: boolean;
     @Input() question: any;
-    @Input() level: number;
+    @Input() surveyConceptId: number;
+    @Input() participantCount: number;
     @Input() searchTerm: string;
+
     constructor() {
-        super(SurveyQuestionReactComponent, ['isCopeSurvey', 'question', 'level', 'searchTerm']);
+        super(SurveyQuestionReactComponent, ['isCopeSurvey', 'question', 'surveyConceptId', 'searchTerm', 'participantCount']);
     }
 
 

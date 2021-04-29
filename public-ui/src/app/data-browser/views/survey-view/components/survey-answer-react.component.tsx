@@ -59,6 +59,7 @@ const styleCss =
         color: #2691D0;
       }
     .sub-question-text {
+        margin-top: 1em;
         text-align: left;
         font-weight: bold;
         margin-left: 1em;
@@ -134,7 +135,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                     this.setState({
                         subQuestions: this.processResults(results.questions.items, this.props.countValue)
                     });
-                });
+                })
+            .catch(
+                e => console.log(e, 'error')
+            );
     }
 
     processResults(questions: Array<any>, totalCount: number) {
@@ -217,9 +221,9 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
     render() {
         const { answerConceptId, answerValueString, hasSubQuestions,
-            countValue, countPercent, isCopeSurvey } = this.props;
+            countValue, countPercent, isCopeSurvey ,participantCount } = this.props;
         const { drawerOpen, subQuestions } = this.state;
-        const participantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
+        const participantPercentage = ((countValue / participantCount) * 100).toFixed(2);
         return <React.Fragment>
             <div className={drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'}
                 onClick={() => this.openDrawer()}>
@@ -234,7 +238,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                         {countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                        {countPercent ? countPercent.toFixed(2) : participantPercentage}%
+                        {countPercent ? countPercent.toFixed(2) : participantPercentage }%
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                         {hasSubQuestions === '1' ?
@@ -253,7 +257,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                             <div className='survey-sub-table'>
                                 {/* tslint:disable-next-line: no-use-before-declare */}
                                 <SurveyAnswerReactComponent level={this.state.nextLevel}
-                                    particpantCount={countValue}
+                                    participantCount={countValue}
                                     question={question}
                                     isCopeSurvey={isCopeSurvey} />
                             </div>
@@ -270,7 +274,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 interface Props {
     isCopeSurvey: boolean;
     question: any;
-    particpantCount: number;
+    participantCount: number;
     level: number;
 }
 
@@ -280,7 +284,8 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
     }
 
     render() {
-        const { isCopeSurvey, question, particpantCount, level } = this.props;
+        const { isCopeSurvey, question, participantCount, level } = this.props;
+
         return <React.Fragment>
             <style>{styleCss}</style>
             <div className='survey-tbl'>
@@ -302,7 +307,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                         <div className='info-text survey-tbl-d display-body'>
                             {isCopeSurvey ? <h1>testIs cope</h1> :
                                 <span>
-                                    {!!particpantCount ? `% Answered out of ${particpantCount}` : '% Answered'}
+                                    {level > 0 ? `% Answered out of ${participantCount}` : '% Answered'}
                                 </span>}
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
@@ -324,7 +329,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             countPercent: answer.countPercent
                         };
                         const key = 'answer' + index;
-                        return <SurveyAnswerRowComponent level={level} participantCount={particpantCount}
+                        return <SurveyAnswerRowComponent level={level} participantCount={participantCount}
                             key={key}
                             isCopeSurvey={isCopeSurvey}{...answerCleaned} />;
                     })
