@@ -199,7 +199,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
-      if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+      if (this.ehrDomain.name.toLowerCase() === 'labs & measurements') {
         this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
       } else {
         this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
@@ -332,7 +332,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         // if already expanded than just change the graph
         if (sources) {
           concept.graphToShow = GraphType.Sources;
-        } else if (!sources && this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+        } else if (!sources && this.ehrDomain.name.toLowerCase() === 'labs & measurements') {
           concept.graphToShow = GraphType.Values;
         } else {
           concept.graphToShow = GraphType.BiologicalSex;
@@ -342,7 +342,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.loadSourceTree(concept);
         this.expandRow(concept, false, true);
       } else {
-        concept.graphToShow = GraphType.BiologicalSex;
+        if (this.ehrDomain.name.toLowerCase() === 'labs & measurements') {
+            concept.graphToShow = GraphType.Values;
+        } else {
+            concept.graphToShow = GraphType.BiologicalSex;
+        }
         this.expandRow(concept);
       }
     }
@@ -370,7 +374,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
           this.scrollTo('#c' + this.selectedConcept.conceptId);
         }, 1);
       }
-      if (this.ehrDomain.name.toLowerCase() === 'labs and measurements') {
+      if (this.ehrDomain.name.toLowerCase() === 'labs & measurements') {
         if (concept.measurementConceptInfo !== null &&
           concept.measurementConceptInfo.hasValues === 1 && !sources) {
           concept.graphToShow = GraphType.Values;
@@ -648,7 +652,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     public scrollTo(id: string) {
-        console.log(id);
         const el = this.elm.nativeElement.querySelector(id);
         if (el !== null) {
           el.scrollIntoView(true);

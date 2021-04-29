@@ -4,7 +4,7 @@
     <aside>
       <div *ngFor="let item of conceptGroups;" class="button-item">
         <button (click)="showMeasurement(item, item.concepts[0])" [ngClass]="{active:selectedGroup === item}"
-          class="btn btn-link"> {{item.groupName}} </button>
+                class="btn btn-link"> {{item.groupName}} </button>
       </div>
     </aside>
     <app-spinner [loading]="loading()"></app-spinner>
@@ -19,7 +19,7 @@
           </div>
           <div class="group-option" *ngIf="selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1">
             <button *ngFor="let c of selectedGroup.concepts" [ngClass]="{active:selectedConcept === c}"
-              (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
+                    (click)="showMeasurement(selectedGroup, c)" class="btn btn-link">{{c.conceptName}} </button>
           </div>
         </div>
         <ng-container *ngIf="unitNames && unitNames.length > 1">
@@ -38,23 +38,16 @@
           </ng-template>
         </div>
         <div class="chart-layout"
-          *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis">
+             *ngIf="selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis">
           <!-- Loop through the genders we have results for showing the graph -->
           <ng-container *ngIf="['903120','903111'].indexOf(selectedConcept.conceptId) === -1; else stackedChart">
             <div class="bs-chart-item" *ngFor="let gender of getCountAnalysis(selectedConceptUnit)">
-              <div *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum3) && selectedConcept.analyses &&
-              selectedConcept.analyses.measurementGenderCountAnalysis" class="chart-title">
-                <span class="chart-title" *ngIf="gender.countValue > 20; else PmChartTitleLE20">
-                  {{gender.analysisStratumName}} – {{gender.countValue.toLocaleString()}}</span>
-                <ng-template #PmChartTitleLE20>{{gender.analysisStratumName}} – &le; {{gender.countValue.toLocaleString()}}</ng-template>
-              </div>
-              <app-chart [genderId]="gender.stratum3"
-                         [chartTitle]="gender.analysisStratumName + ' - ' + gender.countValue.toLocaleString()"
-                         [chartType]="selectedConcept.chartType"
-                         [analysis]="getValueAnalysis()"
-                         [conceptId]="selectedConcept.conceptId"
-                         [domainCountAnalysis]="domainCountAnalysis">
-              </app-chart>
+              <app-value-chart-react [conceptId]="selectedConcept.conceptId"
+                                     [valueAnalysis]="getValueAnalysis()"
+                                     [domainCountAnalysis]="domainCountAnalysis"
+                                     [genderId]="gender.stratum3"
+                                     [chartTitle]="gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()">
+              </app-value-chart-react>
             </div>
           </ng-container>
           <ng-template #stackedChart>
