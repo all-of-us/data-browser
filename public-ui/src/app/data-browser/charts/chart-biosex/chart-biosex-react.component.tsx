@@ -115,7 +115,6 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   prepEhrOrSurveyCategoriesAndData(genderAnalysisResults) {
-    console.log(this.props);
     const {genderAnalysis: {analysisId}, genderCountAnalysis: {results}, domain} = this.props;
     const data = [];
     const cats = [];
