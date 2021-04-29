@@ -298,9 +298,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
     render() {
         const { answerConceptId, answerValueString, hasSubQuestions,
-            countValue, countPercent, isCopeSurvey, question, answer, surveyName, surveyVersions, surveyCountAnalysis, searchTerm } = this.props;
+            countValue, countPercent, isCopeSurvey, question, answer, surveyName,
+            surveyVersions, surveyCountAnalysis, searchTerm } = this.props;
         const { drawerOpen, subQuestions } = this.state;
-        let graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
+        const graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
         if (isCopeSurvey) {
             graphButtons.unshift('Survey Versions');
         }
@@ -406,11 +407,11 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                         <div className='info-text survey-tbl-d display-body'>
                             {isCopeSurvey ?
                              <span><React.Fragment>Concept Code</React.Fragment>
-                                                             <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' /></span>
-                                                             :
-                                <span>
+                             <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' /></span>
+                             :
+                             <span>
                                     {!!particpantCount ? `% Answered out of ${particpantCount}` : '% Answered'}
-                                </span>}
+                             </span>}
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {isCopeSurvey ? null : <React.Fragment></React.Fragment>}
