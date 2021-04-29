@@ -50,7 +50,7 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
 
 export const HighlightReactComponent: React.FunctionComponent<{searchTerm: string, text: string}> =
   ({searchTerm, text}) => {
-    
+
   return highlightSearchTerm(searchTerm, text, 'yellow');
 };
 

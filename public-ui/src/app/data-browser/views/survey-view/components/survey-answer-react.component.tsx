@@ -221,7 +221,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
     render() {
         const { answerConceptId, answerValueString, hasSubQuestions,
-            countValue, countPercent, isCopeSurvey ,participantCount } = this.props;
+            countValue, countPercent, isCopeSurvey, participantCount } = this.props;
         const { drawerOpen, subQuestions } = this.state;
         const participantPercentage = ((countValue / participantCount) * 100).toFixed(2);
         return <React.Fragment>
