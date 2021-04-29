@@ -120,6 +120,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.prevSearchText = '';
         }
       }
+    } else {
+        if (localStorage.getItem('searchText') && this.prevSearchText !== localStorage.getItem('searchText')) {
+            this.prevSearchText = localStorage.getItem('searchText');
+        }
     }
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
@@ -524,6 +528,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public changeResults(e) {
+    localStorage.setItem('searchText', e.searchText);
+    this.loadPage();
+  }
+
+  public changeResultsReact(val) {
+    localStorage.setItem('searchText', val);
     this.loadPage();
   }
 
