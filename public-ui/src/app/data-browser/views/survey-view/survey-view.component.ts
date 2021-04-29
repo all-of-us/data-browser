@@ -49,7 +49,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionResults: any = [];
   subQuestions: any = [];
   searchText: FormControl = new FormControl();
-  searchMethod = 'or';
   /* Show answers toggle */
   showAnswer = {};
   surveyResultCount: any;

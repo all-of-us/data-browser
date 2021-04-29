@@ -102,26 +102,10 @@
 </div>
 <div class="no-results" *ngIf="hasResults() && !loading && searchText.value">
   <p class="results-heading no-results">
-    <span *ngIf="searchMethod === 'and'"> No questions match *ALL* keywords: <strong>
+    <span> No questions match any of the keywords: <strong>
         {{searchText.value}}</strong>.
-      <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or')">Match any
-          keyword</button> </span>
-    </span>
-    <span *ngIf="searchMethod === 'or'"> No questions match any of the keywords: <strong>
-        {{searchText.value}}</strong>.
-      <span class="search-extra"> <button class="btn btn-link" (click)="setSearchMethod('or', true)">Reset
+      <span class="search-extra"> <button class="btn btn-link" (click)="clearSearch()">Reset
           search</button></span>
-    </span>
-  </p>
-  <p class="results-heading body-default" *ngIf="questions.length > 0 && !loading">
-    <span *ngIf="searchMethod==='or'">
-      <b> {{questions.length}} </b> questions match <b>*ANY*</b> keyword: <strong>{{searchText.value}}</strong>.
-      <button class="btn btn-link" (click)="setSearchMethod('and')">Match all keywords</button>
-    </span>
-    <span *ngIf="searchMethod==='and'">
-      <span> <b> {{questions.length}} </b> questions match <b>*ALL*</b> keywords:
-        <strong>{{searchText.value}}</strong>.</span>
-      <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
     </span>
   </p>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText"></app-db-no-results>
