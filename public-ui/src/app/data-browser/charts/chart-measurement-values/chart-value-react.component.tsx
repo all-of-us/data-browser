@@ -256,7 +256,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
         cats.push(d.name);
     }
     const temp = data.filter(x => x.y > 20);
-    const dataOnlyLT20 = temp.length > 0 ? false : true;
+    const dataOnlyLT20 = temp.length <= 0;
     const series: any = {
           name: analysisName,
           colorByPoint: true,
