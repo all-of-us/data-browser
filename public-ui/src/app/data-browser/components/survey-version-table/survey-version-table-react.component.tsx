@@ -5,12 +5,9 @@ import {
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 const containerElementName = 'root';
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 interface Props {
     surveyVersions: Array<any>;
