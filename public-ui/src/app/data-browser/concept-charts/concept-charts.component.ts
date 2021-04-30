@@ -47,7 +47,6 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   graphType = GraphType;
   subUnitValuesFilter = ['No Unit (Text)', 'No Unit (Numeric)'];
   mixtureOfValues = false;
-  selectedSubGraph: string;
   selectedMeasurementType: string;
   toDisplayGenderAnalysis: Analysis;
   toDisplayAgeAnalysis: Analysis;
@@ -72,8 +71,13 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     if (this.showGraph === GraphType.Values && this.analyses.genderAnalysis) {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
+    const chartGenderOrder = ['8507', '8532', '0'];
+    this.genderResults.sort((a, b) => {
+              return chartGenderOrder.indexOf(a.stratum2) - chartGenderOrder.indexOf(b.stratum2);
+            }
+    );
     this.unitNames = [];
-    let unitCounts = [];
+    const unitCounts = [];
     if (this.analyses && this.analyses.measurementValueGenderAnalysis
       && this.showGraph === GraphType.Values) {
       this.displayMeasurementGraphs = true;
@@ -86,14 +90,8 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
           unitCounts.push({ name: aa.unitName, count : sumCount});
         }
       }
-      unitCounts = unitCounts.sort((a, b) => {
-          if (a.count < b.count) {
-            return 1;
-          }
-          if (a.count > b.count) {
-            return -1;
-          }
-          return 0;
+      unitCounts.sort((a, b) => {
+          return a.count - b.count;
         }
       );
       this.unitNames = unitCounts.map(d => d.name);
@@ -119,11 +117,10 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
         next: results => {
           this.results = results.items;
           this.analyses = results.items[0];
-          this.selectedSubGraph = 'Count';
           this.selectedMeasurementType = 'No unit (Text)';
           this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
           this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-          this.organizeGenders(this.analyses.genderAnalysis);
+          // this.organizeGenders(this.analyses.genderAnalysis);
           this.fetchMeasurementGenderResults();
           // Set this var to make template simpler.
           // We can just loop through the results and show bins
@@ -223,14 +220,16 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   showMeasurementGenderHistogram(unit: string) {
     this.selectedUnit = unit;
     if (this.selectedUnit.toLowerCase() === 'no unit') {
-      const numericResults = this.analyses.measurementValueGenderAnalysis.find
-      (aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'numeric');
-      const textResults = this.analyses.measurementValueGenderAnalysis.find
-      (aa => aa.unitName === unit).results.filter(r => r.measurementValueType === 'text');
-      if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
-        this.mixtureOfValues = true;
-      } else {
-        this.mixtureOfValues = false;
+      const unitResults = this.analyses.measurementValueGenderAnalysis.find
+                                (aa => aa.unitName === unit);
+      if (unitResults && unitResults.results && unitResults.results.length > 0) {
+        const numericResults = unitResults.results.filter(r => r.measurementValueType === 'numeric');
+        const textResults = unitResults.results.filter(r => r.measurementValueType === 'text');
+        if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
+                this.mixtureOfValues = true;
+        } else {
+                this.mixtureOfValues = false;
+        }
       }
     } else {
       this.mixtureOfValues = false;

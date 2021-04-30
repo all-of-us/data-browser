@@ -1,27 +1,150 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import * as React from 'react';
 
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { menuItems, socialLinks } from 'app/shared/services/header-footer.service';
+import { reactStyles } from 'app/utils';
 import { environment } from 'environments/environment';
 
+const styles = reactStyles({
+  footer: {
+    background: 'rgba(38, 34, 98, 1)',
+    width: '100vw',
+    padding: '14px'
+  },
+  mainMenuItem: {
+    color: 'white',
+    fontSize: '0.9rem',
+    width: '100%',
+    marginTop: '0.5rem',
+    paddingBottom: '0.25rem'
+  },
+  mainMenuItemLink: {
+    color: 'white',
+    fontFamily: 'GothamBold, Helvetica Neue, sans-serif',
+    textTransform: 'uppercase'
+  },
+  nihLogo: {
+    marginTop: '1rem',
+    maxWidth: '15rem'
+  },
+  siteLogo: {
+    margin: '1rem 1rem 0 0',
+    maxWidth: '15rem'
+  }
+});
+
+const css = `
+  .foot-apply a {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    background: #ffffff;
+    font-size: 19px;
+    padding: 8px 0;
+    line-height: 19px;
+    font-family: GothamBold, "Helvetica Neue", sans-serif;
+    border: 1px solid #fff;
+  }
+  .foot-apply a:hover {
+    background-color: rgba(190, 225, 255, 1);
+  }
+  .footer-layout * {
+    font-family: "Gotham A", "Gotham B", "Helvetica Neue", sans-serif;
+    font-weight: normal;
+  }
+  .footer-layout {
+    display: flex;
+    justify-content: space-between;
+  }
+  .login-btn a {
+    display: block;
+    border: 1px white solid;
+    padding: 1em;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.7em;
+    color: white;
+    line-height: 1;
+    width: 100%;
+  }
+  .login-btn a:hover {
+    background-color: rgba(190, 225, 255, 1);
+    color: #262262;
+  }
+  .footer-logo {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    width: 90%;
+  }
+  .main-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10%, 25%));
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-right: 1rem;
+  }
+  .sub-menu {
+    margin-top: 1rem;
+    margin-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .sub-menu li > a {
+    color: rgba(190, 225, 255, 1);
+    padding-right: 0.5em;
+  }
+  .sub-menu li > a:hover {
+    color: white;
+  }
+  ul {
+    list-style: none;
+  }
+  @media only screen and (max-width: 770px) {
+    .footer-layout {
+        flex-direction: column;
+    }
+    .main-menu {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        margin-top: 0.5rem;
+    }
+    .main-menu li {
+        padding: 0;
+    }
+    .sub-menu {
+        display: block;
+        margin-top: 0;
+    }
+    .site-branding-container {
+        /* width: calc(100%/1); */
+        padding: 0;
+    }
+    .footer-logo {
+        display: block;
+    }
+  }
+`;
+
 const RhFooter: React.FunctionComponent = () => {
-  return <footer>
+  return <footer style={styles.footer}>
+    <style>{css}</style>
     <div className='db-container'>
-      <div className='site-branding-container'>
-        <div className='site-branding'>
-          <div className='logo'>
-            <div className='site-logo'>
+      <div style={{width: '100%'}}>
+        <div style={{background: 'transparent'}}>
+          <div className='footer-logo'>
+            <div style={styles.siteLogo}>
               <a href={environment.researchAllOfUsUrl} className='custom-logo-link'>
                 <img src='/assets/db-images/allofus_research-hub_white.png'
-                     className='custom-logo'
+                     style={{minWidth: '10rem'}}
                      alt='All of Us Research Hub'/>
               </a>
             </div>
-            <div className='nih-logo'>
+            <div style={styles.nihLogo}>
               <a href='https://allofus.nih.gov/' target='_blank'>
                 <img alt='National Institute of Health All of Us Research Program'
-                     className='nih_header'
+                     style={{minWidth: '10rem'}}
                      src='/assets/db-images/nih_allofus_white.png'/>
               </a>
             </div>
@@ -30,9 +153,9 @@ const RhFooter: React.FunctionComponent = () => {
       </div>
       <div className='footer-layout'>
         <ul className='main-menu'>
-          {menuItems.map((menu, m) => <li key={m} className='main-menu-item menu-item-has-children'>
-            <a href={menu.url} style={{color: '#FFFFFF'}}>{menu.title}</a>
-            {menu.submenu.length > 0 && <ul  className='sub-menu'>
+          {menuItems.map((menu, m) => <li key={m} style={styles.mainMenuItem}>
+            <a href={menu.url} style={styles.mainMenuItemLink}>{menu.title}</a>
+            {menu.submenu.length > 0 && <ul className='sub-menu'>
               {menu.submenu.map((sub, s) => <li key={s} className={'menu-item-has-children: sub.submenu, flip: showSub1'}>
                 <a href={sub.url}>{sub.title}</a>
                 {sub.submenu.length > 0 && <ul>
@@ -44,7 +167,7 @@ const RhFooter: React.FunctionComponent = () => {
             </ul>}
           </li>)}
         </ul>
-        <ul className='footer-menu'>
+        <ul>
           <li className='foot-apply'>
             <a href='https://www.researchallofus.org/apply/'>APPLY</a>
           </li>
@@ -85,28 +208,24 @@ const RhFooter: React.FunctionComponent = () => {
             </ul>
           </div>
           <div className='cta-col'>
-            <button className='sub-btn mailchimpbutton'>SUBSCRIBE TO UPDATES</button>
+            <button className='sub-btn'>SUBSCRIBE TO UPDATES</button>
           </div>
         </div>
         <div className='footer-boiler'>
           <section>
             <p>Precision Medicine Initiative, PMI,&nbsp;
-               <span className='allofus-italics'>All of Us</span>, the&nbsp;
-               <span className='allofus-italics'>All of Us</span> logo, and &#8220;The
+               <i>All of Us</i>, the <i>All of Us</i> logo, and &#8220;The
                Future of Health Begins With You&#8221; are service marks of the&nbsp;
               <a href='https://www.hhs.gov/' target='_blank' rel='noopener noreferrer'>
                 U.S. Department of Health and Human Services
-              </a>. The&nbsp;
-              <span className='allofus-italics'>All of Us</span>&nbsp;
-              platform is for research only and does not provide medical advice,
-              diagnosis, or treatment.
+              </a>. The <i>All of Us</i> platform is for research only and does not&nbsp;
+              provide medical advice, diagnosis, or treatment.
             </p>
           </section>
         </div>
         <div className='site-info'><br/>
           Copyright 2020 |&nbsp;
-          <a className='privacy-policy-link'
-             href='https://www.researchallofus.org/privacy-policy/'>
+          <a href='https://www.researchallofus.org/privacy-policy/'>
             Privacy Policy
           </a>
           <span role='separator' aria-hidden='true'/>
@@ -119,8 +238,6 @@ const RhFooter: React.FunctionComponent = () => {
 @Component({
   selector: 'app-rh-footer-react',
   template: '<div #root></div>',
-  styleUrls: ['./rh-footer.component.css', '../../../styles/template.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class RhFooterReactComponent extends BaseReactWrapper {
   constructor() {

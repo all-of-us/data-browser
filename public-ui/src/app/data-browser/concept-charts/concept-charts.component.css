@@ -1,14 +1,14 @@
-.m-layout{
-    display:flex;
+.ehr-m-chart-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    widows: 100%;
+    padding-top: 1em;
 }
-.m-layout aside {
-    transform: rotate(-90deg);
-    width: calc((100%/3)*0.75);
-}
-.m-layout app-chart {
-    width: calc((100%/12)*11);
+.ehr-m-chart-item {
+    width: calc((33.3%) - 18px);
+    height: auto;
+    flex-grow: 1;
 }
 .no-source-concepts, .no-values{
     margin-top:1rem;
