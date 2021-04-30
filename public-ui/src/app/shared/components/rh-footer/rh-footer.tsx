@@ -12,11 +12,6 @@ const styles = reactStyles({
     width: '100vw',
     padding: '14px'
   },
-  logo: {
-    display: 'grid',
-    gridTemplateColumns: '25% 25% 25% 25%',
-    width: '90%'
-  },
   mainMenuItem: {
     color: 'white',
     fontSize: '0.9rem',
@@ -77,7 +72,7 @@ const css = `
     background-color: rgba(190, 225, 255, 1);
     color: #262262;
   }
-  .logo {
+  .footer-logo {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
     width: 90%;
@@ -126,7 +121,7 @@ const css = `
         /* width: calc(100%/1); */
         padding: 0;
     }
-    .logo {
+    .footer-logo {
         display: block;
     }
   }
@@ -138,7 +133,7 @@ const RhFooter: React.FunctionComponent = () => {
     <div className='db-container'>
       <div style={{width: '100%'}}>
         <div style={{background: 'transparent'}}>
-          <div style={styles.logo}>
+          <div className='footer-logo'>
             <div style={styles.siteLogo}>
               <a href={environment.researchAllOfUsUrl} className='custom-logo-link'>
                 <img src='/assets/db-images/allofus_research-hub_white.png'
