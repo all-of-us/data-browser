@@ -1,7 +1,8 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { HighlightReactComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
+import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
@@ -10,22 +11,19 @@ import { SurveyAnswerReactComponent } from './survey-answer-react.component';
 
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-// const dbc = new DbConfigService(api);
-const css =
-    `
-    .see-answers {
-        font-size: 14px;
-        cursor: pointer;
-        color: #216fb4;
-    }
 
-    .see-answers clr-icon {
-        width: 1.3em;
-        height: 1.3em;
-        color: #216fb4;
+const styles = reactStyles({
+    seeAnswers: {
+        fontSize: '14px',
+        cursor: 'pointer',
+        color: '#216fb4',
+    },
+    clIcon: {
+        width: '1.3em',
+        height: '1.3em',
+        color: '#216fb4'
     }
-`;
-
+});
 
 
 interface Props {
@@ -62,9 +60,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
             });
         }, 100);
     }
-    componentDidMount() {
-        // this.getAnalyis();q
-    }
 
     getAnalyis() {
         api.getSurveyQuestionResults(this.props.surveyConceptId, this.props.question.conceptId, this.props.question.path)
@@ -75,7 +70,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                     this.props.question.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
                     this.props.question.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
                     this.props.question.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
-                    // this.props.question.resultFetchComplete = true;
                     // this.processResults(q, this.survey.participantCount);
                     this.props.question.countAnalysis.results.sort((a1, a2) => {
                         if (a1.countValue > a2.countValue) {
@@ -87,8 +81,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         return 0;
                     });
                     this.setState({ fetchComplete: true });
-                    console.log(this.props.question.countAnalysis, 'thi');
-
                 }
             )
             .catch(err => {
@@ -101,7 +93,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         const { question, searchTerm, isCopeSurvey, participantCount } = this.props;
         const { showAnswers, fetchComplete } = this.state;
         return <div >
-            <style>{css}</style>
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
                 <HighlightReactComponent searchTerm={searchTerm} text={question.conceptName} />
@@ -110,7 +101,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                     searchTerm={searchTerm}
                     action='Survey Page Tooltip'
                     tooltipKey='genderIdentityQuestionHelpText' />}
-                <div className='see-answers body-lead' tabIndex={0}>
+                <div style={styles.seeAnswers} tabIndex={0}>
                     See Answers
                     <ClrIcon
                         shape='caret'
@@ -130,8 +121,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
     // tslint:disable-next-line: component-selector
     selector: 'app-survey-question-react',
     template: `<span #root></span>`,
-    styleUrls: ['../../../../styles/template.css'],
-    encapsulation: ViewEncapsulation.None,
 })
 
 export class SurveyQuestionWrapperComponent extends BaseReactWrapper {
