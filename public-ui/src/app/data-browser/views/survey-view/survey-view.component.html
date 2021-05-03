@@ -454,7 +454,7 @@
       <button class="btn btn-link" (click)="setSearchMethod('or')">Match any keyword</button>
     </span>
   </p>
-  <app-domain-results-match [searchValue]="searchText"></app-domain-results-match>
+  <app-domain-results-match [searchValue]="searchText.value" [measurementTestFilter]="1" [measurementOrderFilter]="1"></app-domain-results-match>
   <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText" [measurementTestFilter]="1" [measurementOrderFilter]="1"></app-db-no-results>
 </div>
 <app-popup-react *ngIf="showStatement" [helpText]="'CopePopUp'" [onClose]="closePopUp"></app-popup-react>
