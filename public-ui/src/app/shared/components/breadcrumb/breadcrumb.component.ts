@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {routeDataStore, RouteDataStore} from 'app/utils/stores';
 import { environment } from 'environments/environment';
 import {filter} from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
@@ -22,6 +23,7 @@ export interface Breadcrumb {
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   breadcrumbs: Breadcrumb[];
+  routeData: RouteDataStore;
   allOfUs = environment.researchAllOfUsUrl;
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -82,6 +84,11 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         this.breadcrumbs = BreadcrumbComponent.filterBreadcrumbs(
           this.buildBreadcrumbs(this.activatedRoute.root));
       });
+    this.subscription.add(routeDataStore.subscribe(routeData => {
+      console.log(routeData);
+      this.routeData = routeData;
+      this.buildBreadcrumbs(this.activatedRoute.root);
+    }));
   }
 
   ngOnDestroy() {
@@ -93,7 +100,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
    * Derived from current route in conjunction with the overall route structure.
    */
   private buildBreadcrumbs(route: ActivatedRoute,
-    url: string = '',
+    breadcrumbUrl: string = '',
     breadcrumbs: Breadcrumb[] = []): Array<Breadcrumb> {
     const children: ActivatedRoute[] = route.children;
     const routeDataBreadcrumb = 'breadcrumb';
@@ -101,21 +108,26 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       return breadcrumbs;
     }
     for (const child of children) {
-      if (!child.snapshot.data.hasOwnProperty(routeDataBreadcrumb)) {
-        return this.buildBreadcrumbs(child, url, breadcrumbs);
+      const {snapshot: {routeConfig, url}} = child;
+      if (!routeConfig.data || !routeConfig.data.hasOwnProperty(routeDataBreadcrumb)) {
+        if (!this.routeData) {
+          return this.buildBreadcrumbs(child, breadcrumbUrl, breadcrumbs);
+        } else {
+          routeConfig.data = this.routeData;
+        }
       }
-      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+      const routeURL: string = url.map(segment => segment.path).join('/');
       if (routeURL.length > 0) {
-        url += `/${routeURL}`;
+        breadcrumbUrl += `/${routeURL}`;
       }
-      const label = child.snapshot.data[routeDataBreadcrumb].value;
-      const isIntermediate = child.snapshot.data[routeDataBreadcrumb].intermediate;
+      const label = routeConfig.data[routeDataBreadcrumb].value;
+      const isIntermediate = routeConfig.data[routeDataBreadcrumb].intermediate;
 
-      if (!breadcrumbs.some(b => b.url === url)) {
-        const breadcrumb = BreadcrumbComponent.makeBreadcrumb(label, isIntermediate, url, child);
+      if (!breadcrumbs.some(b => b.url === breadcrumbUrl)) {
+        const breadcrumb = BreadcrumbComponent.makeBreadcrumb(label, isIntermediate, breadcrumbUrl, child);
         breadcrumbs.push(breadcrumb);
       }
-      return this.buildBreadcrumbs(child, url, breadcrumbs);
+      return this.buildBreadcrumbs(child, breadcrumbUrl, breadcrumbs);
     }
   }
 
