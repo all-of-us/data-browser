@@ -65,13 +65,15 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         api.getSurveyQuestionResults(this.props.surveyConceptId, this.props.question.conceptId, this.props.question.path)
             .then(
                 results => {
-                    this.props.question.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
-                    this.props.question.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
-                    this.props.question.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
-                    this.props.question.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
-                    this.props.question.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
-                    // this.processResults(q, this.survey.participantCount);
-                    this.props.question.countAnalysis.results.sort((a1, a2) => {
+                  const questionWithResults = {
+                        countAnalysis: results.items.filter(a => a.analysisId === 3110)[0],
+                        genderAnalysis: results.items.filter(a => a.analysisId === 3111)[0],
+                        ageAnalysis: results.items.filter(a => a.analysisId === 3112)[0],
+                        participantCountAnalysis: results.items.filter(a => a.analysisId === 3203)[0],
+                        versionAnalysis: results.items.filter(a => a.analysisId === 3113)[0]
+                        // this.processResults(q, this.survey.participantCount);
+                    };
+                    questionWithResults.countAnalysis.results.sort((a1, a2) => {
                         if (a1.countValue > a2.countValue) {
                             return -1;
                         }
@@ -80,7 +82,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         }
                         return 0;
                     });
-                    this.setState({ fetchComplete: true });
+                    this.setState({questionWithResults: questionWithResults, showAnswers: true});
                 }
             )
             .catch(err => {
