@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
+import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
@@ -109,7 +110,8 @@ const routes: Routes = [
 export class DataBrowserRoutingModule {
 
   constructor(public router: Router) {
-    this.router.events.subscribe(event => {
-    });
+    NavStore.navigate = (commands, extras) => this.router.navigate(commands, extras);
+    NavStore.navigateByUrl = (url, extras) => this.router.navigateByUrl(url, extras);
+    this.router.events.subscribe(event => {});
   }
 }
