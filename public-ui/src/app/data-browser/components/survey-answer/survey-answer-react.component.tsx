@@ -373,7 +373,8 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             {isCopeSurvey ? null :
                                 <span>
                                     Participant Count
-                                    <TooltipReactComponent tooltipKey='surveyParticipantCountHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
+                                    <TooltipReactComponent tooltipKey='surveyParticipantCountHelpText' label='test'
+                                    searchTerm='test' action='Survey Page Tooltip' />
                                 </span>
                             }
                         </div >
