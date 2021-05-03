@@ -59,6 +59,23 @@ const styles = reactStyles({
         fontWeight: 400,
         fontSize: '35px',
         lineHeight: '1em'
+    },
+    dBtitle: {
+        textAlign: 'center',
+        margin: 0,
+        padding: '18px'
+    },
+    dBDesc: {
+        padding: '18px',
+        paddingBottom: '63px',
+        margin: '0 auto',
+        lineHeight: '2',
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontSize: '20px'
+    },
+    dbSubDesc: {
+        padding: '2rem',
+        textAlign: 'center'
     }
 });
 
