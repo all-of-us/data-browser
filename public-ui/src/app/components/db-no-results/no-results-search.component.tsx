@@ -4,7 +4,6 @@ import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-import {useHistory} from 'react-router-dom';
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
@@ -106,14 +105,7 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                     pmResults: result.domainInfos.filter(
                     domain => domain.name.toLowerCase() !== 'physical measurements')});
                     this.setState({loading: false});
-                    console.log(result);
                 });
-    }
-
-    handleOnClick() {
-        // const history = useHistory();
-        // useCallback(() => history.push('/ehr/conditions'), [history]);
-        console.log('handle on click');
     }
 
     render() {
@@ -132,7 +124,7 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 {
                  this.state.domainInfoResults.map((domainInfo, index) => {
                     const key = domainInfo.name + index;
-                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain: <a onClick={handleOnClick}>{domainInfo.name}</a></div>;
+                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain: <a>{domainInfo.name}</a></div>;
                  })
                 }
                 {
