@@ -36,6 +36,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   surveyCountAnalysis: any;
   private subscriptions: ISubscription[] = [];
   loading = false;
+  surveyVersions: any[] = [];
   surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
   surveyName: string;
   surveyDescription: string;
@@ -48,7 +49,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionResults: any = [];
   subQuestions: any = [];
   searchText: FormControl = new FormControl();
-  searchMethod = 'or';
   /* Show answers toggle */
   showAnswer = {};
   surveyResultCount: any;
@@ -312,6 +312,40 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           },
           complete: () => { this.questionFetchComplete = true; }
         }));
+        if (this.isCopeSurvey) {
+                this.subscriptions.push(this.api.getSurveyVersionCounts(
+                  this.surveyConceptId.toString()).subscribe({
+                    next: result => {
+                      result.analyses.items.map(r =>
+                                  r.results.map((item, i) => {
+                                      if (item.analysisId === 3400) {
+                                         this.surveyVersions.push({
+                                          monthName: item.stratum4,
+                                          year: item.stratum5,
+                                          monthNum: item.stratum3.split('/')[0],
+                                          participants: item.countValue,
+                                          numberOfQuestion: '',
+                                          pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
+                                          '_COPE_COVID_English_Explorer.pdf'
+                                         });
+                                      } else if (item.analysisId === 3401) {
+                                          this.surveyVersions[i].numberOfQuestion = item.countValue;
+                                      }
+                                  }
+                                  ));
+                                  this.surveyVersions.sort((a1, a2) => {
+                                      const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
+                                      const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
+                                      return a.valueOf() - b.valueOf();
+                                  });
+                    },
+                    error: err => {
+                      console.error('Observer got an error: ' + err);
+                      this.loading = false;
+                    },
+                    complete: () => { }
+                  }));
+              }
     }
   }
 
