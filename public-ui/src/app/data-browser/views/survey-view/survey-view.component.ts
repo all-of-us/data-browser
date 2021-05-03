@@ -68,6 +68,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: DataBrowserService,
     public dbc: DbConfigService) {
+    this.changeResults = this.changeResults.bind(this);
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
@@ -92,6 +93,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    console.log('did i navigate here pretty easy');
     this.loadPage();
     this.showStatement = false;
     this.envDisplay = environment.displayTag;
@@ -111,7 +113,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public loadPage() {
     if (!this.prevSearchText) {
       if (this.searchFromUrl) {
+        console.log(this.searchFromUrl);
         this.prevSearchText = this.searchFromUrl;
+        console.log('aaaaa');
         localStorage.setItem('searchText', this.searchFromUrl);
       } else {
         if (localStorage.getItem('searchText')) {
@@ -127,6 +131,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
+    console.log('here ??? here ??? here ??? here ???');
+    console.log(surveyObj);
     if (surveyObj) {
       this.surveyConceptId = surveyObj.conceptId;
       if (this.surveyConceptId === 1333342) { this.isCopeSurvey = true; }
@@ -176,7 +182,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }));
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
-      (query) => localStorage.setItem('searchText', query)));
+      (query) => {
+      localStorage.setItem('searchText', query);
+      }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
@@ -393,7 +401,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
     }
+    console.log('bbbbb');
     localStorage.setItem('searchText', this.searchText.value);
+    console.log(localStorage.getItem('searchText'));
     this.loading = true;
     if (this.surveyResult) {
       this.questions = this.surveyResult.questions.items;
@@ -527,13 +537,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
   }
 
-  public changeResults(e) {
-    localStorage.setItem('searchText', e.searchText);
-    this.loadPage();
-  }
-
-  public changeResultsReact(val) {
-    localStorage.setItem('searchText', val);
+  public changeResults() {
+    console.log('am i here');
     this.loadPage();
   }
 

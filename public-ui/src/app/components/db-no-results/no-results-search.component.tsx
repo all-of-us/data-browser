@@ -2,21 +2,19 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
+import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
+import {navigate, navigateByUrl} from 'app/utils/navigation';
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 const styleCss =
 `
-.no-results {
-  margin-top:-1rem;
-  padding:1em;
-}
 h5{
   padding-bottom:1em;
 }
-p {
+.loading-text {
   font-family: "GothamBook", "Arial", sans-serif;
   font-weight: normal;
   font-style: normal;
@@ -26,47 +24,64 @@ p {
   letter-spacing: normal;
   text-align: left;
   color: #262262;
+  padding-left: 0;
+}
+.spinner-div {
+    margin-top: 1em;
+    margin-bottom: 0.2em;
+    margin-left: 0.5em;
+}
+.loading-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1em;
+}
+.no-results {
+  margin-top:-1rem;
+  padding:1em;
 }
 .loading-dots {
     width:2rem;
     display:flex;
     height:auto;
     justify-content:space-between;
-  }
-  .loading-dots .dot {
+}
+.loading-dots .dot {
     width:.25rem;
     height:.25rem;
     background:transparent;
     border-radius: 50%;
     animation:load 1s linear infinite alternate;
-  }
-  .loading-dots .dot:first-of-type{
+}
+.loading-dots .dot:first-of-type{
     animation-delay: .25s;
-  }
-  .loading-dots .dot:nth-of-type(2){
+}
+.loading-dots .dot:nth-of-type(2){
     animation-delay: .5s;
-  }
-  .loading-dots .dot:nth-of-type(3){
+}
+.loading-dots .dot:nth-of-type(3){
     animation-delay: .75s;
-  }
-  .loading-dots .dot:nth-of-type(4){
+}
+.loading-dots .dot:nth-of-type(4){
     animation-delay: 1s;
-  }
-  a:link,a:visited,a{
+}
+a:link,a:visited,a{
     color:#2aa3d8;
-  }
+}
 
-  @keyframes load {
+@keyframes load {
     from{background:transparent}
     to{background:#302c70}
-  }
+}
 `;
 
 interface Props {
     searchValue: string;
     measurementTestFilter: number;
     measurementOrderFilter: number;
-    // domainMatch: Function;
+    domainMatch: Function;
 }
 
 interface State {
@@ -79,6 +94,7 @@ interface State {
 export const NoResultSearchComponent = (class extends React.Component<Props, State> {
     constructor(props) {
         super(props);
+        this.handleOnClick = this.handleOnClick.bind(this);
         this.state = {
             domainInfoResults: [],
             surveyModuleResults: [],
@@ -108,6 +124,21 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 });
     }
 
+    handleOnClick(domainInfo: any, type: string) {
+        const {searchValue} = this.props;
+        let url = '';
+        if (type === 'ehr') {
+            localStorage.setItem('ehrDomain', JSON.stringify(domainInfo));
+            url += 'ehr/' + domainToRoute[domainInfo.domain.toLowerCase()];
+        } else if (type === 'survey') {
+            localStorage.setItem('surveyModule', JSON.stringify(domainInfo));
+            url += 'survey/' + surveyIdToRoute[domainInfo.conceptId];
+        }
+        url += '?search=' + searchValue;
+        this.props.domainMatch();
+        navigateByUrl(url);
+    }
+
     render() {
         const {searchValue} = this.props;
         return (
@@ -115,22 +146,22 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
             <style>{styleCss}</style>
             <div className='no-results'>
                 { this.state.loading ?
-                <div>
-                    <p>Searching whole site for <strong>{searchValue}</strong></p>
-                    <LoadingDots />
+                <div className='loading-div'>
+                    <p className='loading-text'>Searching whole site for <strong>{searchValue} </strong></p>
+                    <div className='spinner-div'><LoadingDots /></div>
                 </div>
                 : null
                 }
                 {
                  this.state.domainInfoResults.map((domainInfo, index) => {
                     const key = domainInfo.name + index;
-                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain: <a>{domainInfo.name}</a></div>;
+                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(domainInfo, 'ehr')}>{domainInfo.name}</a></div>;
                  })
                 }
                 {
                 this.state.surveyModuleResults.map((surveyInfo, index) => {
                     const key = surveyInfo.name + index;
-                    return <div key={key}>{surveyInfo.questionCount} related questions in survey: <a>{surveyInfo.name}</a></div>;
+                    return <div key={key}>{surveyInfo.questionCount} related questions in survey: <a onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a></div>;
                 })
                 }
             </div>
@@ -149,9 +180,9 @@ export class NoResultSearchWrapperComponent extends BaseReactWrapper {
   @Input() public searchValue: string;
   @Input() public measurementTestFilter: number;
   @Input() public measurementOrderFilter: number;
-  // @Input() public domainMatch: function;
+  @Input() public domainMatch: Function;
 
   constructor() {
-    super(NoResultSearchComponent, ['searchValue', 'measurementTestFilter', 'measurementOrderFilter']);
+    super(NoResultSearchComponent, ['searchValue', 'measurementTestFilter', 'measurementOrderFilter', 'domainMatch']);
   }
 }

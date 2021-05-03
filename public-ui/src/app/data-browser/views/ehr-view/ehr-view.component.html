@@ -9,7 +9,7 @@
     <div *ngIf="searchText.value" class="clear-icon" (click)="clearSearch()"><i class="far fa-times fa-1x clear-search-icon"></i></div>
   </div>
 </div>
-<app-spinner [loading]="loading()"></app-spinner>
+<app-spinner [loading]="loadingCheck"></app-spinner>
 <div class="results" *ngIf="canDisplayTable()">
   <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
     < Back to main search </a> <div class="result-list">
@@ -32,7 +32,7 @@
           <app-error-message-react [dataType]="'data'"></app-error-message-react>
         </div>
       </section>
-      <app-spinner [loading]="dataLoading()"></app-spinner>
+      <app-spinner [loading]="loadingCheck"></app-spinner>
       <div class="results-grid">
         <div class="domain-info-layout">
     <span *ngIf="!displayConceptErrorMessage && canDisplayTable()">
@@ -305,8 +305,8 @@
   </div>
 </div>
 </div>
-<div *ngIf="!loading && items.length === 0 && searchText.value && !displayConceptErrorMessage">
+<div *ngIf="!loadingCheck && items.length === 0 && searchText.value && !displayConceptErrorMessage">
   <h5 class="secondary-display"> No results in this domain that match your search.</h5>
-  <app-db-no-results (newDomain)="changeResults($event)" [searchText]="searchText" [measurementTestFilter]="getTestFilter()" [measurementOrderFilter]="getOrderFilter()"></app-db-no-results>
+  <app-domain-results-match [domainMatch]="changeResults" [searchValue]="searchText.value" [measurementTestFilter]="1" [measurementOrderFilter]="1"></app-domain-results-match>
 </div>
 <app-popup-react *ngIf="showStatement" [helpText]="'EhrViewPopUp'" [onClose]="closePopUp"></app-popup-react>

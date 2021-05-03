@@ -38,9 +38,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
   graphButtons: any = [];
-  loadingStack: any = [];
-    selectedFilterGrid = false;
-  dataLoadingStack: any = [];
+  loadingCheck = false;
+  selectedFilterGrid = false;
   totalParticipants: number;
   displayConceptErrorMessage = false;
   top10Results: any[] = []; // We graph top10 results
@@ -83,6 +82,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     public dbc: DbConfigService,
   ) {
     this.closePopUp = this.closePopUp.bind(this);
+    this.changeResults = this.changeResults.bind(this);
   }
 
   ngOnInit() {
@@ -98,6 +98,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         this.searchFromUrl = params.search;
         this.prevSearchText = params.search;
         this.searchText.setValue(this.prevSearchText);
+        localStorage.setItem('searchText', this.prevSearchText);
         if (params['explore'] && params['explore'] === 'true') {
             this.loadPage();
         }
@@ -144,6 +145,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   public loadPage() {
     this.items = [];
         // Get search text from localStorage
+    this.loadingCheck = true;
     if (!this.prevSearchText) {
           if (this.searchFromUrl) {
             this.prevSearchText = this.searchFromUrl;
@@ -162,12 +164,14 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             this.displayConceptErrorMessage = false;
             localStorage.setItem('searchText', this.searchText.value === null ?
             '' : this.searchText.value);
+            this.loadingCheck = false;
           },
           error: err => {
             console.log('Error searching: ', err);
             const errorBody = JSON.parse(err._body);
             this.displayConceptErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
+            this.loadingCheck = false;
             this.toggleTopConcepts();
           }
     });
@@ -193,6 +197,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   private domainSetup(domain) {
     if (domain) {
+      this.loadingCheck = true;
       // Set the graphs we want to show for this domain
       // Run search initially to filter to domain,
       // a empty search returns top ordered by count_value desc
@@ -209,6 +214,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
           next: results => {
             this.searchCallback(results);
             this.displayConceptErrorMessage = false;
+            this.loadingCheck = false;
             if (this.selectedConcept && localStorage.getItem('fromDifferentPage') === 'true') {
                 this.expandRow(this.selectedConcept, true);
             }
@@ -217,6 +223,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             const errorBody = JSON.parse(err._body);
             this.displayConceptErrorMessage = true;
             console.log('Error searching: ', errorBody.message);
+            this.loadingCheck = false;
           }
         });
     }
@@ -238,19 +245,27 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   // get the current ehr domain by its route
   public getThisDomain() {
     this.subscriptions.push(
-          this.api.getDomainTotals(
-            this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0,
-            this.valueFilterCheck.orders === true ? 1 : 0).subscribe(
-              (data: DomainInfosAndSurveyModulesResponse) => {
-                data.domainInfos.forEach(domain => {
-                  const thisDomain = Domain[domain.domain];
-                  if (thisDomain && thisDomain.toLowerCase() === this.domainId) {
-                    localStorage.setItem('ehrDomain', JSON.stringify(domain));
-                    this.setDomain();
-                  }
-                });
-              })
-        );
+           this.api.getDomainTotals(this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0,
+                                                this.valueFilterCheck.orders === true ? 1 : 0).subscribe({
+                       next: (data: DomainInfosAndSurveyModulesResponse)  => {
+                                         let domainCheck = false;
+                                         this.loadingCheck = false;
+                                         data.domainInfos.forEach(domain => {
+                                           const thisDomain = Domain[domain.domain];
+                                           if (thisDomain && thisDomain.toLowerCase() === this.domainId) {
+                                             localStorage.setItem('ehrDomain', JSON.stringify(domain));
+                                             domainCheck = true;
+                                             this.setDomain();
+                                           }
+                                         });
+                       },
+                       error: err => {
+                         const errorBody = JSON.parse(err._body);
+                         this.displayConceptErrorMessage = true;
+                         console.log('Error searching: ', errorBody.message);
+                         this.loadingCheck = false;
+                       }
+                 }));
   }
 
   public getNumberOfPages(query: string) {
@@ -281,7 +296,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       this.searchRequest.pageNumber = 0;
       this.searchRequest.measurementTests = this.valueFilterCheck.tests === true ? 1 : 0;
       this.searchRequest.measurementOrders = this.valueFilterCheck.orders === true ? 1 : 0;
-      this.dataLoadingStack.push(true);
       this.api.searchConcepts(this.searchRequest).subscribe({
         next: res => {
           if (res.items && res.items.length > 0) {
@@ -290,13 +304,13 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             this.dbc.triggerEvent('domainPageSearch', 'Search (No Results)',
               'Search Inside Domain ' + this.ehrDomain.name, null, this.prevSearchText, null);
           }
-          this.dataLoadingStack.pop();
           this.displayConceptErrorMessage = false;
+          this.loadingCheck = false;
         },
         error: err => {
           const errorBody = JSON.parse(err._body);
           this.displayConceptErrorMessage = true;
-          this.dataLoadingStack.pop();
+          this.loadingCheck = false;
           console.log('Error searching: ', errorBody.message);
         }
       });
@@ -506,7 +520,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.showTopConcepts = !this.showTopConcepts;
   }
 
-  public changeResults(e) {
+  public changeResults() {
     this.selectedConcept = undefined;
     this.loadPage();
   }
@@ -553,14 +567,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.searchText.setValue('');
   }
 
-  loading() {
-      return this.loadingStack.length > 0;
-  }
-
-  dataLoading() {
-      return this.dataLoadingStack.length > 0;
-  }
-
   public canDisplayTable() {
     if (this.ehrDomain && this.ehrDomain.domain.toLowerCase() === 'measurement') {
         return (this.items && this.items.length > 0) ||
@@ -585,7 +591,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       return percent * 100;
   }
 
-    public filterMeasurements(box: string, value: boolean) {
+  public filterMeasurements(box: string, value: boolean) {
       localStorage.setItem('measurementTestsChecked',
       this.valueFilterCheck.tests === true ? 'true' : 'false');
       localStorage.setItem('measurementOrdersChecked',
@@ -600,33 +606,31 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
             measurementTests: this.valueFilterCheck.tests === true ? 1 : 0,
             measurementOrders: this.valueFilterCheck.orders === true ? 1 : 0
       };
-      this.dataLoadingStack.push(true);
       this.api.searchConcepts(searchRequest).subscribe({
             next: results => {
               this.items = results.items;
               this.top10Results = results.items.slice(0, 10);
-              this.dataLoadingStack.pop();
+              this.loadingCheck = false;
             },
             error: err => {
               const errorBody = JSON.parse(err._body);
               this.displayConceptErrorMessage = true;
               console.log('Error searching: ', errorBody.message);
-              this.dataLoadingStack.pop();
+              this.loadingCheck = false;
             }
       });
-      this.dataLoadingStack.push(true);
       this.api.getDomainTotals(this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0,
       this.valueFilterCheck.orders === true ? 1 : 0).subscribe({
             next: results => {
               const domainResults = results.domainInfos.filter(d => d.domainConceptId === 21);
               this.totalResults = domainResults[0].standardConceptCount;
-              this.dataLoadingStack.pop();
+              this.loadingCheck = false;
             },
             error: err => {
               const errorBody = JSON.parse(err._body);
               this.displayConceptErrorMessage = true;
+              this.loadingCheck = false;
               console.log('Error searching: ', errorBody.message);
-              this.dataLoadingStack.pop();
             }
           });
     }
