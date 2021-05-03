@@ -36,8 +36,7 @@ interface Props {
 
 interface State {
     showAnswers: boolean;
-    fetchComplete: boolean;
-
+    questionWithResults: any;
 }
 
 export class SurveyQuestionReactComponent extends React.Component<Props, State> {
@@ -45,7 +44,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         super(props);
         this.state = {
             showAnswers: false,
-            fetchComplete: false
+            questionWithResults: {}
         };
     }
 
@@ -53,19 +52,18 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         if (e && e.key !== 'Enter') {
             return;
         }
-        this.getAnalyis();
-        setTimeout(() => {
-            this.setState({
-                showAnswers: !this.state.showAnswers
-            });
-        }, 100);
+        this.getAnalysis();
+
+        this.setState({
+            showAnswers: !this.state.showAnswers
+        });
     }
 
-    getAnalyis() {
+    getAnalysis() {
         api.getSurveyQuestionResults(this.props.surveyConceptId, this.props.question.conceptId, this.props.question.path)
             .then(
                 results => {
-                  const questionWithResults = {
+                    const questionWithResults = {
                         countAnalysis: results.items.filter(a => a.analysisId === 3110)[0],
                         genderAnalysis: results.items.filter(a => a.analysisId === 3111)[0],
                         ageAnalysis: results.items.filter(a => a.analysisId === 3112)[0],
@@ -82,18 +80,19 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         }
                         return 0;
                     });
-                    this.setState({questionWithResults: questionWithResults, showAnswers: true});
+                    this.setState({ questionWithResults: questionWithResults });
                 }
             )
             .catch(err => {
                 console.log('Error searching: ', err);
             });
-
     }
 
     render() {
+
+
         const { question, searchTerm, isCopeSurvey, participantCount } = this.props;
-        const { showAnswers, fetchComplete } = this.state;
+        const { showAnswers, questionWithResults } = this.state;
         return <div >
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
@@ -110,9 +109,9 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         dir={showAnswers ? 'down' : 'right'} />
                 </div>
             </span>
-            {(showAnswers && fetchComplete) && <SurveyAnswerReactComponent
+            {(showAnswers && questionWithResults.countAnalysis) && <SurveyAnswerReactComponent
                 isCopeSurvey={isCopeSurvey}
-                question={question}
+                question={questionWithResults}
                 level={0}
                 participantCount={participantCount} />}
         </div>;
@@ -135,6 +134,4 @@ export class SurveyQuestionWrapperComponent extends BaseReactWrapper {
     constructor() {
         super(SurveyQuestionReactComponent, ['isCopeSurvey', 'question', 'surveyConceptId', 'searchTerm', 'participantCount']);
     }
-
-
 }
