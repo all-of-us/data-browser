@@ -88,6 +88,7 @@ interface State {
     domainInfoResults: Array<any>;
     surveyModuleResults: Array<any>;
     pmResults: Array<any>;
+    fitbitResults: Array<any>;
     loading: boolean;
 }
 
@@ -99,6 +100,7 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
             domainInfoResults: [],
             surveyModuleResults: [],
             pmResults: [],
+            fitbitResults: [],
             loading: false
         };
     }
@@ -121,7 +123,9 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                     domain.name.toLowerCase() !== 'fitbit'),
                     surveyModuleResults: result.surveyModules,
                     pmResults: result.domainInfos.filter(
-                    domain => domain.name.toLowerCase() === 'physical measurements')});
+                    domain => domain.name.toLowerCase() === 'physical measurements'),
+                    fitbitResults: result.domainInfos.filter(
+                    domain => domain.name.toLowerCase() === 'fitbit')});
                     this.setState({loading: false});
                 });
     }
@@ -145,6 +149,10 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
         } else if (type === 'pm') {
             url += 'physical-measurements/' + '/' + searchValue;
             console.log(url);
+            navigateByUrl(url);
+        } else if (type === 'fitbit') {
+            url += 'fitbit';
+            localStorage.setItem('searchText', searchValue);
             navigateByUrl(url);
         }
     }
@@ -178,6 +186,12 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 this.state.pmResults.map((pmInfo, index) => {
                    const key = pmInfo.name + index;
                    return <div key={key}>{pmInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a></div>;
+                })
+                }
+                {
+                this.state.fitbitResults.map((fitbitInfo, index) => {
+                   const key = fitbitInfo.name + index;
+                   return <div key={key}>{fitbitInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a></div>;
                 })
                 }
             </div>
