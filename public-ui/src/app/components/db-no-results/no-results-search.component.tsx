@@ -99,19 +99,19 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
     }
 
     handleOnClick(domainInfo: any, type: string) {
-        const {searchValue} = this.props;
+        const {searchValue, domainMatch} = this.props;
         let url = '';
         if (type === 'ehr') {
             localStorage.setItem('ehrDomain', JSON.stringify(domainInfo));
             url += 'ehr/' + domainToRoute[domainInfo.domain.toLowerCase()];
             url += '?search=' + searchValue;
-            this.props.domainMatch();
+            domainMatch();
             navigateByUrl(url);
         } else if (type === 'survey') {
             localStorage.setItem('surveyModule', JSON.stringify(domainInfo));
             url += 'survey/' + surveyIdToRoute[domainInfo.conceptId];
             url += '?search=' + searchValue;
-            this.props.domainMatch();
+            domainMatch();
             navigateByUrl(url);
         } else if (type === 'pm') {
             url += 'physical-measurements/' + '/' + searchValue;
@@ -125,11 +125,12 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
 
     render() {
         const {searchValue} = this.props;
+        const {loading, domainInfoResults, surveyModuleResults, pmResults, fitbitResults} = this.state;
         return (
             <React.Fragment>
             <style>{styleCss}</style>
             <div style={styles.noResults}>
-                { this.state.loading ?
+                { loading ?
                 <div style={styles.loadingDiv}>
                     <p style={styles.loadingText}>Searching whole site for <strong>{searchValue} </strong></p>
                     <div style={styles.spinnerDiv}><LoadingDots /></div>
@@ -137,25 +138,25 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 : null
                 }
                 {
-                 this.state.domainInfoResults.map((domainInfo, index) => {
+                 domainInfoResults.map((domainInfo, index) => {
                     const key = domainInfo.name + index;
                     return <div key={key}>{domainInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(domainInfo, 'ehr')}>{domainInfo.name}</a></div>;
                  })
                 }
                 {
-                this.state.surveyModuleResults.map((surveyInfo, index) => {
+                surveyModuleResults.map((surveyInfo, index) => {
                     const key = surveyInfo.name + index;
                     return <div key={key}>{surveyInfo.questionCount} related questions in survey: <a onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a></div>;
                 })
                 }
                 {
-                this.state.pmResults.map((pmInfo, index) => {
+                pmResults.map((pmInfo, index) => {
                    const key = pmInfo.name + index;
                    return <div key={key}>{pmInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a></div>;
                 })
                 }
                 {
-                this.state.fitbitResults.map((fitbitInfo, index) => {
+                fitbitResults.map((fitbitInfo, index) => {
                    const key = fitbitInfo.name + index;
                    return <div key={key}>{fitbitInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a></div>;
                 })
