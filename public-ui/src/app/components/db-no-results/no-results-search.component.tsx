@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
-import { reactStyles } from 'app/utils/index';
+import { reactStyles } from 'app/utils';
 import { navigateByUrl } from 'app/utils/navigation';
 import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -24,20 +24,23 @@ const styles = reactStyles({
         paddingLeft: '0'
   },
   noResults: {
-    marginTop: '-1rem',
-    padding: '1em'
+        marginTop: '-1rem',
+        padding: '1em'
+  },
+  domainResult: {
+        paddingLeft: '0.2em'
   },
   loadingDiv: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      marginBottom: '1em'
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginBottom: '1em'
   },
   spinnerDiv: {
-      marginTop: '1em',
-      marginBottom: '0.2em',
-      marginLeft: '0.5em'
+        marginTop: '1em',
+        marginBottom: '0.2em',
+        marginLeft: '0.5em'
   }
 });
 
@@ -63,10 +66,9 @@ interface State {
     loading: boolean;
 }
 
-export const NoResultSearchComponent = (class extends React.Component<Props, State> {
+export class NoResultSearchComponent extends React.Component<Props, State> {
     constructor(props) {
         super(props);
-        this.handleOnClick = this.handleOnClick.bind(this);
         this.state = {
             domainInfoResults: [],
             surveyModuleResults: [],
@@ -82,20 +84,17 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
 
     fetchDomainTotals() {
         const {searchValue, measurementTestFilter, measurementOrderFilter} = this.props;
-        api.getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(
-                result => {
-                    result.domainInfos = result.domainInfos.filter(domain =>
-                                        domain.standardConceptCount > 0);
-                    this.setState({domainInfoResults: result.domainInfos.filter(
-                    domain => domain.name.toLowerCase() !== 'physical measurements' &&
-                    domain.name.toLowerCase() !== 'fitbit'),
-                    surveyModuleResults: result.surveyModules,
-                    pmResults: result.domainInfos.filter(
-                    domain => domain.name.toLowerCase() === 'physical measurements'),
-                    fitbitResults: result.domainInfos.filter(
-                    domain => domain.name.toLowerCase() === 'fitbit')});
-                    this.setState({loading: false});
-                });
+        api.getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(result => {
+            result.domainInfos = result.domainInfos.filter(domain => domain.standardConceptCount > 0);
+            this.setState({
+                domainInfoResults: result.domainInfos.filter(domain =>
+                  domain.name.toLowerCase() !== 'physical measurements' && domain.name.toLowerCase() !== 'fitbit'),
+                surveyModuleResults: result.surveyModules,
+                pmResults: result.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements'),
+                fitbitResults: result.domainInfos.filter(domain => domain.name.toLowerCase() === 'fitbit'),
+                loading: false
+            });
+        });
     }
 
     handleOnClick(domainInfo: any, type: string) {
@@ -126,8 +125,7 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
     render() {
         const {searchValue} = this.props;
         const {loading, domainInfoResults, surveyModuleResults, pmResults, fitbitResults} = this.state;
-        return (
-            <React.Fragment>
+        return <React.Fragment>
             <style>{styleCss}</style>
             <div style={styles.noResults}>
                 { loading ?
@@ -138,38 +136,45 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 : null
                 }
                 {
-                 domainInfoResults.map((domainInfo, index) => {
-                    const key = domainInfo.name + index;
-                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain:
-                    <a onClick={() => this.handleOnClick(domainInfo, 'ehr')}>{domainInfo.name}</a></div>;
-                 })
+                     domainInfoResults.map((domainInfo, index) => {
+                        const key = domainInfo.name + index;
+                        return <div key={key}>
+                            {domainInfo.standardConceptCount} results available in the domain:
+                            <a style={styles.domainResult} onClick={() => this.handleOnClick(domainInfo, 'ehr')}>{domainInfo.name}</a>
+                        </div>;
+                     })
                 }
                 {
-                surveyModuleResults.map((surveyInfo, index) => {
-                    const key = surveyInfo.name + index;
-                    return <div key={key}>{surveyInfo.questionCount} related questions in survey:
-                    <a onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a></div>;
-                })
+                    surveyModuleResults.map((surveyInfo, index) => {
+                        const key = surveyInfo.name + index;
+                        return <div key={key}>
+                            {surveyInfo.questionCount} related questions in survey:
+                            <a style={styles.domainResult} onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a>
+                        </div>;
+                    })
                 }
                 {
-                pmResults.map((pmInfo, index) => {
-                   const key = pmInfo.name + index;
-                   return <div key={key}>{pmInfo.standardConceptCount} results available in the domain:
-                   <a onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a></div>;
-                })
+                    pmResults.map((pmInfo, index) => {
+                       const key = pmInfo.name + index;
+                       return <div key={key}>
+                          {pmInfo.standardConceptCount} results available in the domain:
+                          <a style={styles.domainResult} onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a>
+                       </div>;
+                    })
                 }
                 {
-                fitbitResults.map((fitbitInfo, index) => {
-                   const key = fitbitInfo.name + index;
-                   return <div key={key}>{fitbitInfo.standardConceptCount} results available in the domain:
-                   <a onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a></div>;
-                })
+                    fitbitResults.map((fitbitInfo, index) => {
+                       const key = fitbitInfo.name + index;
+                       return <div key={key}>
+                          {fitbitInfo.standardConceptCount} results available in the domain:
+                          <a style={styles.domainResult} onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a>
+                       </div>;
+                    })
                 }
             </div>
-            </React.Fragment>
-        );
-      }
-});
+        </React.Fragment>;
+    }
+};
 
 @Component({
   selector: 'app-domain-results-match',
