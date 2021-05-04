@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { reactStyles } from 'app/utils/index';
-import {navigate, navigateByUrl} from 'app/utils/navigation';
+import { navigateByUrl } from 'app/utils/navigation';
 import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
