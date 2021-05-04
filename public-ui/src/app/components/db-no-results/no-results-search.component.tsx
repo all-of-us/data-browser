@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -6,74 +6,45 @@ import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import {navigate, navigateByUrl} from 'app/utils/navigation';
+import { reactStyles } from 'app/utils/index';
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
+const styles = reactStyles({
+    loadingText: {
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontWeight: 'normal',
+        fontStyle: 'normal',
+        fontStretch: 'normal',
+        lineHeight: '1.5',
+        fontSize: '16px',
+        letterSpacing: 'normal',
+        textAlign: 'left',
+        color: '#262262',
+        paddingLeft: '0'
+  },
+  noResults: {
+    marginTop: '-1rem',
+    padding: '1em'
+  },
+  loadingDiv: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      marginBottom: '1em'
+  },
+  spinnerDiv: {
+      marginTop: '1em',
+      marginBottom: '0.2em',
+      marginLeft: '0.5em'
+  }
+});
+
 const styleCss =
 `
-h5{
-  padding-bottom:1em;
-}
-.loading-text {
-  font-family: "GothamBook", "Arial", sans-serif;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.5;
-  font-size: 16px;
-  letter-spacing: normal;
-  text-align: left;
-  color: #262262;
-  padding-left: 0;
-}
-.spinner-div {
-    margin-top: 1em;
-    margin-bottom: 0.2em;
-    margin-left: 0.5em;
-}
-.loading-div {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 1em;
-}
-.no-results {
-  margin-top:-1rem;
-  padding:1em;
-}
-.loading-dots {
-    width:2rem;
-    display:flex;
-    height:auto;
-    justify-content:space-between;
-}
-.loading-dots .dot {
-    width:.25rem;
-    height:.25rem;
-    background:transparent;
-    border-radius: 50%;
-    animation:load 1s linear infinite alternate;
-}
-.loading-dots .dot:first-of-type{
-    animation-delay: .25s;
-}
-.loading-dots .dot:nth-of-type(2){
-    animation-delay: .5s;
-}
-.loading-dots .dot:nth-of-type(3){
-    animation-delay: .75s;
-}
-.loading-dots .dot:nth-of-type(4){
-    animation-delay: 1s;
-}
 a:link,a:visited,a{
     color:#2aa3d8;
-}
-
-@keyframes load {
-    from{background:transparent}
-    to{background:#302c70}
 }
 `;
 
@@ -101,7 +72,7 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
             surveyModuleResults: [],
             pmResults: [],
             fitbitResults: [],
-            loading: false
+            loading: true
         };
     }
 
@@ -111,7 +82,6 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
 
     fetchDomainTotals() {
         const {searchValue, measurementTestFilter, measurementOrderFilter} = this.props;
-        this.setState({loading: true});
         api.getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
@@ -158,11 +128,11 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
         return (
             <React.Fragment>
             <style>{styleCss}</style>
-            <div className='no-results'>
+            <div style={styles.noResults}>
                 { this.state.loading ?
-                <div className='loading-div'>
-                    <p className='loading-text'>Searching whole site for <strong>{searchValue} </strong></p>
-                    <div className='spinner-div'><LoadingDots /></div>
+                <div style={styles.loadingDiv}>
+                    <p style={styles.loadingText}>Searching whole site for <strong>{searchValue} </strong></p>
+                    <div style={styles.spinnerDiv}><LoadingDots /></div>
                 </div>
                 : null
                 }
@@ -199,7 +169,6 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
 @Component({
   selector: 'app-domain-results-match',
   template: `<span #root></span>`,
-  encapsulation: ViewEncapsulation.None,
 })
 
 export class NoResultSearchWrapperComponent extends BaseReactWrapper {
