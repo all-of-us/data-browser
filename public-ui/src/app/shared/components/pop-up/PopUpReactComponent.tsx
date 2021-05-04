@@ -7,7 +7,7 @@ import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper
 import * as React from 'react';
 const containerElementName = 'root';
 
-const helptexts = { 'QuickSearchPopup': {
+const helptexts = { 'HomeViewPopup': {
     title: 'PUBLIC DATA USE STATEMENT',
     statement: <div className='card-body'>
                <i>All of Us</i> Research Program data are not representative of the population
@@ -47,7 +47,7 @@ const helptexts = { 'QuickSearchPopup': {
   }};
 
 
-const PopUpReactComponent =
+export const PopUpReactComponent =
     (props) => {
     return <div className='data-statement'>
             <div className='card'>

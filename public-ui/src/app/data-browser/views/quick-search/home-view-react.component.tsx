@@ -8,7 +8,8 @@ import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-
+import { globalStyles } from 'app/utils/global-styles'
+import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent'
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
@@ -60,7 +61,7 @@ const styles = reactStyles({
         fontSize: '35px',
         lineHeight: '1em'
     },
-    dBtitle: {
+    dBTitle: {
         textAlign: 'center',
         margin: 0,
         padding: '18px'
@@ -77,6 +78,7 @@ const styles = reactStyles({
         padding: '2rem',
         textAlign: 'center'
     }
+    
 });
 
 export const ResultLinksComponent: FunctionComponent<any> =
@@ -147,6 +149,10 @@ export const dBHomeComponent = (
             this.getDomainInfos();
         }
 
+        closePopUp () {
+            alert();
+        }
+
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
             return api.getDomainTotals(this.state.searchWord, 1, 1).then(
@@ -170,17 +176,17 @@ export const dBHomeComponent = (
 
         render() {
             return <React.Fragment>
-                <h1>Data Browser</h1>
-                The Data Browser provides interactive views of the publicly available <i>All of Us</i>
+                <h1  style={{...globalStyles.primaryDisplay, ...styles.dBTitle}}>Data Browser</h1>
+                <p style={{...styles.dBDesc,...globalStyles.bodyLead}}>The Data Browser provides interactive views of the publicly available <i>All of Us </i>
                 Research Program participant data. Currently, participant provided information, including surveys and physical measurements
                 taken at the time of participant enrollment, as well as electronic health record data (EHR) are available.
-                EHR data are reported by health care providers and are not participant reported. The <i>All of Us</i>
+                EHR data are reported by health care providers and are not participant reported. The <i>All of Us </i>
                 Research Program data will include more data types over time.<br></br><br></br>
                 In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of
                 20, and summary demographic information. For more information, please visit our FAQ page.<br></br><br></br>
                 Please read the public data use statement available below for additional information about our unique dataset and how to
-                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br></br><br></br>
-                <div>
+                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br></br><br></br></p>
+                <div style={{paddingLeft: '1em'}}>
                     <SearchComponent value={this.state.searchWord} onChange={(val) => {
                         this.handleChange(val);
                     }}
@@ -224,7 +230,9 @@ export const dBHomeComponent = (
                             })
                         }
                     </div>
-                </section></React.Fragment>;
+                </section>
+                <PopUpReactComponent helpText='HomeViewPopup' onClose='closePopUp'/>
+                </React.Fragment>;
         }
     }
 );
