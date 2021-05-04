@@ -114,10 +114,8 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
         this.setState({loading: true});
         api.getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(
                 result => {
-                    console.log(result.domainInfos);
                     result.domainInfos = result.domainInfos.filter(domain =>
                                         domain.standardConceptCount > 0);
-                    console.log(result.domainInfos);
                     this.setState({domainInfoResults: result.domainInfos.filter(
                     domain => domain.name.toLowerCase() !== 'physical measurements' &&
                     domain.name.toLowerCase() !== 'fitbit'),
@@ -133,7 +131,6 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
     handleOnClick(domainInfo: any, type: string) {
         const {searchValue} = this.props;
         let url = '';
-        console.log(type);
         if (type === 'ehr') {
             localStorage.setItem('ehrDomain', JSON.stringify(domainInfo));
             url += 'ehr/' + domainToRoute[domainInfo.domain.toLowerCase()];
@@ -148,7 +145,6 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
             navigateByUrl(url);
         } else if (type === 'pm') {
             url += 'physical-measurements/' + '/' + searchValue;
-            console.log(url);
             navigateByUrl(url);
         } else if (type === 'fitbit') {
             url += 'fitbit';
