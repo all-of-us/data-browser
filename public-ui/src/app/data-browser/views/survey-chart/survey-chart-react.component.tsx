@@ -32,6 +32,43 @@ interface Props {
     versionAnalysis: any;
 }
 
+const chartStyleCss = `
+.survey-graph-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 9px;
+    padding-top: 9px;
+    margin-top: 3px;
+}
+
+.survey-chart-choice, .survey-sub-chart-choice {
+    padding: 9px;
+    color: #216fb4;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+}
+
+.survey-chart-choice:hover {
+    color: #262262;
+}
+
+.graph-error-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 10vh;
+}
+
+.chart {
+  width: calc((100% / 12) * 10);
+  margin: 0 auto;
+}
+`;
+
 export class SurveyChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
@@ -108,6 +145,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       const { isLoaded, graphToShow, displayGraphErrorMessage, selectedChartAnalysis } = this.state;
       const tabIndex = 0;
       return <React.Fragment>
+        <style>{chartStyleCss}</style>
         <div className='survey-graph-menu'>
             {
               graphButtons.map((g, index) => {
