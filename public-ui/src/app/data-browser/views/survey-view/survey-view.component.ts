@@ -93,7 +93,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log('did i navigate here pretty easy');
     this.loadPage();
     this.showStatement = false;
     this.envDisplay = environment.displayTag;
@@ -113,9 +112,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public loadPage() {
     if (!this.prevSearchText) {
       if (this.searchFromUrl) {
-        console.log(this.searchFromUrl);
         this.prevSearchText = this.searchFromUrl;
-        console.log('aaaaa');
         localStorage.setItem('searchText', this.searchFromUrl);
       } else {
         if (localStorage.getItem('searchText')) {
@@ -131,8 +128,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
-    console.log('here ??? here ??? here ??? here ???');
-    console.log(surveyObj);
     if (surveyObj) {
       this.surveyConceptId = surveyObj.conceptId;
       if (this.surveyConceptId === 1333342) { this.isCopeSurvey = true; }
@@ -401,9 +396,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
     }
-    console.log('bbbbb');
     localStorage.setItem('searchText', this.searchText.value);
-    console.log(localStorage.getItem('searchText'));
     this.loading = true;
     if (this.surveyResult) {
       this.questions = this.surveyResult.questions.items;
@@ -538,7 +531,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public changeResults() {
-    console.log('am i here');
     this.loadPage();
   }
 

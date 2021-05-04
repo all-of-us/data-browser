@@ -112,14 +112,16 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
         this.setState({loading: true});
         api.getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(
                 result => {
+                    console.log(result.domainInfos);
                     result.domainInfos = result.domainInfos.filter(domain =>
                                         domain.standardConceptCount > 0);
+                    console.log(result.domainInfos);
                     this.setState({domainInfoResults: result.domainInfos.filter(
                     domain => domain.name.toLowerCase() !== 'physical measurements' &&
                     domain.name.toLowerCase() !== 'fitbit'),
                     surveyModuleResults: result.surveyModules,
                     pmResults: result.domainInfos.filter(
-                    domain => domain.name.toLowerCase() !== 'physical measurements')});
+                    domain => domain.name.toLowerCase() === 'physical measurements')});
                     this.setState({loading: false});
                 });
     }
@@ -127,16 +129,24 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
     handleOnClick(domainInfo: any, type: string) {
         const {searchValue} = this.props;
         let url = '';
+        console.log(type);
         if (type === 'ehr') {
             localStorage.setItem('ehrDomain', JSON.stringify(domainInfo));
             url += 'ehr/' + domainToRoute[domainInfo.domain.toLowerCase()];
+            url += '?search=' + searchValue;
+            this.props.domainMatch();
+            navigateByUrl(url);
         } else if (type === 'survey') {
             localStorage.setItem('surveyModule', JSON.stringify(domainInfo));
             url += 'survey/' + surveyIdToRoute[domainInfo.conceptId];
+            url += '?search=' + searchValue;
+            this.props.domainMatch();
+            navigateByUrl(url);
+        } else if (type === 'pm') {
+            url += 'physical-measurements/' + '/' + searchValue;
+            console.log(url);
+            navigateByUrl(url);
         }
-        url += '?search=' + searchValue;
-        this.props.domainMatch();
-        navigateByUrl(url);
     }
 
     render() {
@@ -162,6 +172,12 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 this.state.surveyModuleResults.map((surveyInfo, index) => {
                     const key = surveyInfo.name + index;
                     return <div key={key}>{surveyInfo.questionCount} related questions in survey: <a onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a></div>;
+                })
+                }
+                {
+                this.state.pmResults.map((pmInfo, index) => {
+                   const key = pmInfo.name + index;
+                   return <div key={key}>{pmInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a></div>;
                 })
                 }
             </div>
