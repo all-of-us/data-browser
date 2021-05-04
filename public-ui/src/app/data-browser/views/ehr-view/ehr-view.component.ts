@@ -248,13 +248,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
            this.api.getDomainTotals(this.searchText.value, this.valueFilterCheck.tests === true ? 1 : 0,
                                                 this.valueFilterCheck.orders === true ? 1 : 0).subscribe({
                        next: (data: DomainInfosAndSurveyModulesResponse)  => {
-                                         let domainCheck = false;
                                          this.loadingCheck = false;
                                          data.domainInfos.forEach(domain => {
                                            const thisDomain = Domain[domain.domain];
                                            if (thisDomain && thisDomain.toLowerCase() === this.domainId) {
                                              localStorage.setItem('ehrDomain', JSON.stringify(domain));
-                                             domainCheck = true;
                                              this.setDomain();
                                            }
                                          });
@@ -701,6 +699,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
    }
 
    getOrderFilter() {
-    return this.valueFilterCheck.orders === true ? 1 : 0
+    return this.valueFilterCheck.orders === true ? 1 : 0;
    }
 }

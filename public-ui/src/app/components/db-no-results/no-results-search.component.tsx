@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
+import { reactStyles } from 'app/utils/index';
+import {navigate, navigateByUrl} from 'app/utils/navigation';
 import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
-import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-import {navigate, navigateByUrl} from 'app/utils/navigation';
-import { reactStyles } from 'app/utils/index';
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
@@ -140,25 +140,29 @@ export const NoResultSearchComponent = (class extends React.Component<Props, Sta
                 {
                  domainInfoResults.map((domainInfo, index) => {
                     const key = domainInfo.name + index;
-                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(domainInfo, 'ehr')}>{domainInfo.name}</a></div>;
+                    return <div key={key}>{domainInfo.standardConceptCount} results available in the domain:
+                    <a onClick={() => this.handleOnClick(domainInfo, 'ehr')}>{domainInfo.name}</a></div>;
                  })
                 }
                 {
                 surveyModuleResults.map((surveyInfo, index) => {
                     const key = surveyInfo.name + index;
-                    return <div key={key}>{surveyInfo.questionCount} related questions in survey: <a onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a></div>;
+                    return <div key={key}>{surveyInfo.questionCount} related questions in survey:
+                    <a onClick={() => this.handleOnClick(surveyInfo, 'survey')}>{surveyInfo.name}</a></div>;
                 })
                 }
                 {
                 pmResults.map((pmInfo, index) => {
                    const key = pmInfo.name + index;
-                   return <div key={key}>{pmInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a></div>;
+                   return <div key={key}>{pmInfo.standardConceptCount} results available in the domain:
+                   <a onClick={() => this.handleOnClick(pmInfo, 'pm')}>{pmInfo.name}</a></div>;
                 })
                 }
                 {
                 fitbitResults.map((fitbitInfo, index) => {
                    const key = fitbitInfo.name + index;
-                   return <div key={key}>{fitbitInfo.standardConceptCount} results available in the domain: <a onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a></div>;
+                   return <div key={key}>{fitbitInfo.standardConceptCount} results available in the domain:
+                   <a onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a></div>;
                 })
                 }
             </div>

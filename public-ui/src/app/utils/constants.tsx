@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export const domainToRoute = {
     'condition': 'conditions',
     'drug': 'drug-exposures',
