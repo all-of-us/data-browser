@@ -6,6 +6,7 @@ import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results
 import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
+import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from 'app/shared/shared.module';
@@ -94,7 +95,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyAnswerWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent
+    SurveyDescWrapperComponent,
+    PhysicalMeasurementsWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -127,7 +129,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyAnswerWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent
+    SurveyDescWrapperComponent,
+    PhysicalMeasurementsWrapperComponent
   ],
   providers: [
     ChartService,
