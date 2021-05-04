@@ -5,64 +5,21 @@ import {
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 const containerElementName = 'root';
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 interface Props {
-    surveyConceptId: any;
+    surveyVersions: Array<any>;
 }
 
-interface State {
-    surveys: Array<any>;
-}
-
-export class SurveyVersionTableReactComponent extends React.Component<Props, State> {
+export class SurveyVersionTableReactComponent extends React.Component<Props, {}> {
 constructor(props: Props) {
     super(props);
-    this.state = {
-        surveys: []
-    };
-}
-
-componentDidMount() {
-    this.fetchAndProcessSurveys();
-}
-
-fetchAndProcessSurveys() {
-    api.getSurveyVersionCounts(this.props.surveyConceptId).then(
-        result => {
-            const surveyVersions = [];
-            result.analyses.items.map(r =>
-            r.results.map((item, i) => {
-                if (item.analysisId === 3400) {
-                   surveyVersions.push({
-                    monthName: item.stratum4,
-                    year: item.stratum5,
-                    monthNum: item.stratum3.split('/')[0],
-                    participants: item.countValue,
-                    numberOfQuestion: '',
-                    pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
-                    '_COPE_COVID_English_Explorer.pdf'
-                   });
-                } else if (item.analysisId === 3401) {
-                    surveyVersions[i].numberOfQuestion = item.countValue;
-                }
-            }
-            ));
-            surveyVersions.sort((a1, a2) => {
-                const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
-                const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
-                return a.valueOf() - b.valueOf();
-            });
-            this.setState({ surveys: surveyVersions });
-        });
 }
 
 render() {
+    const {surveyVersions} = this.props;
     return <div className='version-box-container'>
             <h5><strong>Survey versions</strong></h5>
                 <br />
@@ -76,7 +33,7 @@ render() {
             </div>
             <div className='version-box-body'>
             {
-                !!this.state.surveys && this.state.surveys.map((survey) => {
+                !!surveyVersions && surveyVersions.map((survey) => {
                     return (
                         <div className='version-box-row' key={survey.monthName}>
                             <span className='version-box-item'>{survey.monthName}</span>
@@ -104,8 +61,8 @@ styleUrls: ['./survey-version-table.component.css', '../../../styles/template.cs
 encapsulation: ViewEncapsulation.None,
 })
 export class SurveyVersionWrapperComponent extends BaseReactWrapper {
-    @Input() public surveyConceptId;
+    @Input() public surveyVersions;
     constructor() {
-        super(SurveyVersionTableReactComponent, ['surveyConceptId']);
+        super(SurveyVersionTableReactComponent, ['surveyVersions']);
     }
 }
