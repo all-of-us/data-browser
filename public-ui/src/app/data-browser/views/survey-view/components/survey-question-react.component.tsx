@@ -40,11 +40,11 @@ interface State {
 }
 
 export class SurveyQuestionReactComponent extends React.Component<Props, State> {
-    constructor(props: Props, state: State) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             showAnswers: false,
-            questionWithResults: {}
+            questionWithResults: null
         };
     }
 
@@ -52,11 +52,13 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         if (e && e.key !== 'Enter') {
             return;
         }
-        this.getAnalysis();
-
-        this.setState({
-            showAnswers: !this.state.showAnswers
-        });
+        if (!this.state.questionWithResults.countAnalysis) {
+            this.getAnalysis();
+        } else {
+            this.setState({
+                showAnswers: !this.state.showAnswers
+            });
+        }
     }
 
     getAnalysis() {
@@ -89,8 +91,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
     }
 
     render() {
-
-
         const { question, searchTerm, isCopeSurvey, participantCount } = this.props;
         const { showAnswers, questionWithResults } = this.state;
         return <div >
@@ -109,7 +109,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         dir={showAnswers ? 'down' : 'right'} />
                 </div>
             </span>
-            {(showAnswers && questionWithResults.countAnalysis) && <SurveyAnswerReactComponent
+            {(showAnswers && questionWithResults) && <SurveyAnswerReactComponent
                 isCopeSurvey={isCopeSurvey}
                 question={questionWithResults}
                 level={0}
