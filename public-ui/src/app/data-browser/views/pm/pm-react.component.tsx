@@ -359,9 +359,10 @@ export class pmReactComponent extends React.Component<Props, State> {
   }
 
   getCountAnalysis(conceptUnit: any) {
+    const {selectedConcept, selectedConceptUnit} = this.state;
     const genderSort = ['Male', 'Female', 'Other'];
-    return this.state.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
-      r => r.unitName === this.state.selectedConceptUnit)[0].results
+    return selectedConcept.analyses.measurementGenderCountAnalysis.filter(
+      r => r.unitName === selectedConceptUnit)[0].results
       .sort((a, b) => {
         return genderSort.indexOf(a.analysisStratumName) -
           genderSort.indexOf(b.analysisStratumName);
@@ -374,16 +375,17 @@ export class pmReactComponent extends React.Component<Props, State> {
 
 
   render() {
+      const {loading, selectedGroup, selectedConcept, selectedConceptUnit, unitNames, domainCountAnalysis} = this.state;
       return <React.Fragment>
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
         <h1>Browse Program Physical Measurements</h1>
-        { this.state.loading ? <Spinner /> :
+        { loading ? <Spinner /> :
         <div className='pm-layout'>
             <aside>
                 {
                     PMGroups.map((pmConceptGroup, index) => {
-                        let buttonClass = this.state.selectedGroup === pmConceptGroup ? 'btn btn-link group-button active' : 'btn btn-link group-button';
+                        let buttonClass = selectedGroup === pmConceptGroup ? 'btn btn-link group-button active' : 'btn btn-link group-button';
                         return <div className='button-item' key={index}>
                         <button className={buttonClass} onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName} </button></div>
                     })
@@ -392,22 +394,22 @@ export class pmReactComponent extends React.Component<Props, State> {
             <div className='db-card'>
                 <div className='db-card-inner'>
                     <div className='db-card-header'>
-                        <div className='group-name'>{this.state.selectedGroup.groupName}</div>
-                        {   this.state.selectedConcept && this.state.selectedConcept.analyses && this.state.selectedConcept.analyses.measurementValueGenderAnalysis ?
+                        <div className='group-name'>{selectedGroup.groupName}</div>
+                        {   selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis ?
                         <div className='bs-title'>
                         Sex Assigned At Birth <TooltipReactComponent tooltipKey='pmValueChartHelpText'
                                                label='Physical Measurements tooltip hover' searchTerm='TODO replace search text in here'
-                                               action={'Hover on pm biological sex chart of concept' + this.state.selectedConcept.conceptName}>
+                                               action={'Hover on pm biological sex chart of concept' + selectedConcept.conceptName}>
                                                </TooltipReactComponent>
                         </div>
                         : null
                         }
-                        { this.state.selectedGroup && this.state.selectedGroup.concepts && this.state.selectedGroup.concepts.length > 1 ?
+                        { selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1 ?
                             <div className='group-option'>
                             {
-                            this.state.selectedGroup.concepts.map((concept, index) => {
-                                const btnClass = this.state.selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
-                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(this.state.selectedGroup, concept)}>{concept.conceptName}</button>
+                            selectedGroup.concepts.map((concept, index) => {
+                                const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
+                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)}>{concept.conceptName}</button>
                             })
                             }
                             </div>
@@ -415,48 +417,48 @@ export class pmReactComponent extends React.Component<Props, State> {
                         }
                         </div>
                         {
-                            this.state.unitNames && this.state.unitNames.length > 1 ?
+                            unitNames && unitNames.length > 1 ?
                             <div className='group-unit'>
                             {
-                                this.state.unitNames.map((unit, index) => {
-                                    const btnClass = this.state.selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
+                                unitNames.map((unit, index) => {
+                                    const btnClass = selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
                                     return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)}>{unit}</button>
                                 })
                             }
                             </div> : null
                         }
                         {
-                            this.state.selectedConcept && (this.state.selectedConcept.conceptId === '903111' || this.state.selectedConcept.conceptId === '903120') ?
-                            this.state.selectedConcept.analyses.countAnalysis.results[0].countValue > 20 ?
+                            selectedConcept && (selectedConcept.conceptId === '903111' || selectedConcept.conceptId === '903120') ?
+                            selectedConcept.analyses.countAnalysis.results[0].countValue > 20 ?
                             <div className='participant-count'>
-                            Total Participant count: {this.state.selectedConcept.analyses.countAnalysis.results[0].countValue}
+                            Total Participant count: {selectedConcept.analyses.countAnalysis.results[0].countValue}
                             </div> :
                             <div className='participant-count'>
-                            Total Participant count: &le; {this.state.selectedConcept.analyses.countAnalysis.results[0].countValue}
+                            Total Participant count: &le; {selectedConcept.analyses.countAnalysis.results[0].countValue}
                             </div> : null
                         }
                         <div className='chart-layout'>
                         {
-                            this.state.selectedConcept && this.state.selectedConcept.analyses && this.state.selectedConcept.analyses.measurementGenderCountAnalysis ?
-                            this.state.selectedConcept.conceptId !== '903111' && this.state.selectedConcept.conceptId !== '903120' && this.state.selectedConceptUnit ?
+                            selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis ?
+                            selectedConcept.conceptId !== '903111' && selectedConcept.conceptId !== '903120' && selectedConceptUnit ?
                             <React.Fragment>
                             {
-                                this.getCountAnalysis(this.state.selectedConceptUnit).map((gender, index) => {
+                                this.getCountAnalysis(selectedConceptUnit).map((gender, index) => {
                                     const chartKey = gender.stratum3 + '-' + index;
                                     return <div className='bs-chart-item' key={chartKey}>
-                                    <ValueReactChartComponent conceptId={this.state.selectedConcept.conceptId}
+                                    <ValueReactChartComponent conceptId={selectedConcept.conceptId}
                                     valueAnalysis={this.getValueAnalysis()}
-                                    domainCountAnalysis={this.state.domainCountAnalysis}
+                                    domainCountAnalysis={domainCountAnalysis}
                                     genderId={gender.stratum3}
                                     chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()} key={chartKey}></ValueReactChartComponent></div>
                                 })
                             }
                             </React.Fragment>
-                            : this.state.selectedConcept.analyses.measurementValueGenderAnalysis ?
+                            : selectedConcept.analyses.measurementValueGenderAnalysis ?
                                 <div className='chart-item stacked-chart-item'>
-                                <ValueReactChartComponent conceptId={this.state.selectedConcept.conceptId}
-                                                          valueAnalysis={this.state.selectedConcept.analyses.measurementValueGenderAnalysis[0]}
-                                                          domainCountAnalysis={this.state.domainCountAnalysis}
+                                <ValueReactChartComponent conceptId={selectedConcept.conceptId}
+                                                          valueAnalysis={selectedConcept.analyses.measurementValueGenderAnalysis[0]}
+                                                          domainCountAnalysis={domainCountAnalysis}
                                                           genderId='stacked gender'
                                                           chartTitle='stacked chart'>
                                 </ValueReactChartComponent>
@@ -464,15 +466,15 @@ export class pmReactComponent extends React.Component<Props, State> {
                             : null
                         }
                         {
-                            this.state.selectedConcept.analyses && this.state.selectedConcept.analyses.ageAnalysis ?
+                            selectedConcept.analyses && selectedConcept.analyses.ageAnalysis ?
                             <div className='chart-item age-chart'>
                                 <div className='bs-title'>Age When Physical Measurement Was Taken <TooltipReactComponent tooltipKey='pmAgeChartHelpText'
                                     label='Physical Measurements tooltip hover'
                                     searchTerm='TODO replace search text in here'
-                                    action={'Hover on pm age chart of concept ' + this.state.selectedConcept.conceptName}>
+                                    action={'Hover on pm age chart of concept ' + selectedConcept.conceptName}>
                                 </TooltipReactComponent>
                                 </div>
-                                <AgeChartReactComponent ageAnalysis={this.state.selectedConcept.analyses.ageAnalysis} ageCountAnalysis={this.state.domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
+                                <AgeChartReactComponent ageAnalysis={selectedConcept.analyses.ageAnalysis} ageCountAnalysis={domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
                                 </AgeChartReactComponent>
                             </div>
                              : null
