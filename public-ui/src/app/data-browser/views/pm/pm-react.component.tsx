@@ -190,8 +190,8 @@ export class PMReactComponent extends React.Component<{}, State> {
     api.getConceptAnalysisResults(PM_CONCEPTS).then(
         (result) => {
             const items = result.items;
-            for(const group of PMGroups) {
-                for(const concept of group.concepts) {
+            for (const group of PMGroups) {
+                for (const concept of group.concepts) {
                     concept.analyses = items.filter(item => item.conceptId === concept.conceptId)[0];
                     if (concept.conceptId === '903133') {
                     const sortOrder = ['centimeter', 'inch (us)'];
@@ -212,7 +212,7 @@ export class PMReactComponent extends React.Component<{}, State> {
             } else {
                 this.setState({selectedGroup: PMGroups[0]});
             }
-            this.setUnit(PMGroups[0].concepts[0])
+            this.setUnit(PMGroups[0].concepts[0]);
     });
   }
 
@@ -366,7 +366,10 @@ export class PMReactComponent extends React.Component<{}, State> {
                     PMGroups.map((pmConceptGroup, index) => {
                         const buttonClass = (selectedGroup === pmConceptGroup) ? 'btn btn-link group-button active' : 'btn btn-link group-button';
                         return <div className='button-item' key={index}>
-                        <button className={buttonClass} style={styles.btnLink} onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName} </button></div>
+                        <button className={buttonClass} style={styles.btnLink}
+                        onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName}
+                        </button>
+                        </div>
                     })
                 }
             </aside>
