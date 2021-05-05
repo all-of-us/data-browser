@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { SearchComponent } from 'app/data-browser/search/home-search.component';
+import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
+import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
+import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
+import { reactStyles } from 'app/utils/index';
+import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-import { reactStyles } from 'app/utils/index';
-import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
-import { FunctionComponent } from 'react';
-import { Spinner } from 'app/utils/spinner';
-import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
-import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
-
-import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 
 const styles = reactStyles({
     pmContainer : {
@@ -22,19 +19,6 @@ const styles = reactStyles({
         fontWeight: 900
     }
 });
-
-const PMConcept = {
-    conceptId: '',
-    conceptName: '',
-    analyses: null,
-    chartType: ''
-}
-
-const PMConceptGroups = {
-    group: '',
-    groupName: '',
-    concepts: []
-}
 
 let PMGroups = [];
 
