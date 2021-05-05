@@ -68,6 +68,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: DataBrowserService,
     public dbc: DbConfigService) {
+    this.changeResults = this.changeResults.bind(this);
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
     });
@@ -120,6 +121,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           this.prevSearchText = '';
         }
       }
+    } else {
+        if (localStorage.getItem('searchText') && this.prevSearchText !== localStorage.getItem('searchText')) {
+            this.prevSearchText = localStorage.getItem('searchText');
+        }
     }
     this.loading = true;
     const surveyObj = JSON.parse(localStorage.getItem('surveyModule'));
@@ -172,7 +177,9 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }));
     // Set to loading as long as they are typing
     this.subscriptions.push(this.searchText.valueChanges.subscribe(
-      (query) => localStorage.setItem('searchText', query)));
+      (query) => {
+      localStorage.setItem('searchText', query);
+      }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
@@ -557,7 +564,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       }
   }
 
-  public changeResults(e) {
+  public changeResults() {
     this.loadPage();
   }
 

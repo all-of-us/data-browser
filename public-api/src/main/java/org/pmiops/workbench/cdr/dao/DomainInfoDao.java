@@ -43,6 +43,10 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
                   "    select domain,domain_id,name,description,concept_id,8 as all_concept_count," +
                   "    (select count(*) from achilles_results where analysis_id=100 and stratum_2 like CONCAT('%', ?2, '%')) as standard_concept_count,participant_count" +
                   "    from domain_info where domain=8" +
+                  "    UNION DISTINCT " +
+                  "    select domain,domain_id,name,description,concept_id,4 as all_concept_count," +
+                  "    (select count(distinct stratum_1) from achilles_results where analysis_id=3101 and stratum_3='Fitbit' and stratum_1 like CONCAT('%', ?2, '%')) as standard_concept_count,participant_count" +
+                  "    from domain_info where domain=10" +
                   "    UNION DISTINCT\n" +
                   "    select d.domain, d.domain_id, d.name, d.description, d.concept_id,\n" +
                   "    0 all_concept_count, case when c.count is not null then c.count else 0 end as standard_concept_count, d.participant_count participant_count \n" +

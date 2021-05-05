@@ -26,12 +26,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    this.prevSearchText = localStorage.getItem('searchText');
-    if (!this.prevSearchText) {
-      this.prevSearchText = '';
-    } else {
-      this.searchText.setValue(this.prevSearchText);
-    }
+    localStorage.setItem('searchText', this.searchText);
     if (this.searchText) {
       this.loading = true;
       this.searchDomains(this.searchText.value);
@@ -45,7 +40,6 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
   }
 
   public goToResult(r) {
-    console.log(this.results);
     if (this.results && this.results.domainInfos) {
       this.results.domainInfos.forEach(domain => {
         if (r.domain === domain.domain) {
