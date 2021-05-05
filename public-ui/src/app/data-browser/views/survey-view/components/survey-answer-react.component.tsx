@@ -272,8 +272,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         const { answerConceptId, answerValueString, hasSubQuestions,
             countValue, countPercent, isCopeSurvey, question, answer, surveyName,
             surveyVersions, surveyCountAnalysis, searchTerm } = this.props;
-        const { drawerOpen, subQuestions } = this.state;
-        const graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
+            const { drawerOpen, subQuestions } = this.state;
+            const graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
         if (isCopeSurvey) {
             graphButtons.unshift('Survey Versions');
         }
@@ -312,7 +312,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                             <div className='survey-sub-table'>
                                 {/* tslint:disable-next-line: no-use-before-declare */}
                                 <SurveyAnswerReactComponent level={this.state.nextLevel}
-                                    particpantCount={countValue}
+                                    participantCount={countValue}
                                     question={sq}
                                     isCopeSurvey={isCopeSurvey}
                                     surveyName={surveyName}
@@ -390,7 +390,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                              </span>
                              :
                              <span>
-                                    {!!particpantCount ? `% Answered out of ${particpantCount}` : '% Answered'}
+                                    {!!participantCount ? `% Answered out of ${participantCount}` : '% Answered'}
                              </span>}
                         </div >
                         <div className='info-text survey-tbl-d display-body'>

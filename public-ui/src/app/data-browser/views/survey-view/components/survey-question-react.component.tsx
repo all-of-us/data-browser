@@ -37,14 +37,19 @@ interface Props {
 interface State {
     showAnswers: boolean;
     questionWithResults: any;
+    surveyCountAnalysis: object;
+    versionAnalysis: object;
 }
 
 export class SurveyQuestionReactComponent extends React.Component<Props, State> {
+    versionAnalysis: any[] = [];
     constructor(props: Props) {
         super(props);
         this.state = {
             showAnswers: false,
-            questionWithResults: null
+            questionWithResults: null,
+            surveyCountAnalysis: null,
+            versionAnalysis: null
         };
     }
 
@@ -52,8 +57,15 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         if (e && e.key !== 'Enter') {
             return;
         }
-        if (!this.state.questionWithResults.countAnalysis) {
+        if (!this.state.questionWithResults) {
             this.getAnalysis();
+            this.getCountAnalysis();
+            if (this.props.isCopeSurvey) {
+                this.getSurveyVersionAnalysis();
+            }
+            this.setState({
+                showAnswers: !this.state.showAnswers
+            });
         } else {
             this.setState({
                 showAnswers: !this.state.showAnswers
@@ -70,7 +82,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         genderAnalysis: results.items.filter(a => a.analysisId === 3111)[0],
                         ageAnalysis: results.items.filter(a => a.analysisId === 3112)[0],
                         participantCountAnalysis: results.items.filter(a => a.analysisId === 3203)[0],
-                        versionAnalysis: results.items.filter(a => a.analysisId === 3113)[0]
                         // this.processResults(q, this.survey.participantCount);
                     };
                     questionWithResults.countAnalysis.results.sort((a1, a2) => {
@@ -82,6 +93,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         }
                         return 0;
                     });
+
+
                     this.setState({ questionWithResults: questionWithResults });
                 }
             )
@@ -89,10 +102,57 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                 console.log('Error searching: ', err);
             });
     }
+    getCountAnalysis() {
+        api.getCountAnalysis(this.props.surveyConceptId.toString(), 'survey').then(
+            results => {
+                console.log(results, 'results');
+                this.setState({ surveyCountAnalysis: results });
+                // if (this.surveyCountAnalysis) {
+                //     localStorage.setItem('surveyCountAnalysis', JSON.stringify(results));
+                // }
+            });
+    }
+
+    getSurveyVersionAnalysis(): any {
+        api.getSurveyVersionCounts(this.props.surveyConceptId)
+            .then(
+                result => {
+                    const versionAnalysis: any[] = [];
+                    result.analyses.items.map(r =>
+                        r.results.map((item, i) => {
+                            if (item.analysisId === 3400) {
+                                versionAnalysis.push({
+                                    monthName: item.stratum4,
+                                    year: item.stratum5,
+                                    monthNum: item.stratum3.split('/')[0],
+                                    participants: item.countValue,
+                                    numberOfQuestion: '',
+                                    pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
+                                        '_COPE_COVID_English_Explorer.pdf'
+                                });
+                            } else if (item.analysisId === 3401) {
+                                versionAnalysis[i].numberOfQuestion = item.countValue;
+                            }
+                        }
+                        ));
+                    versionAnalysis.sort((a1, a2) => {
+                        const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
+                        const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
+                        return a.valueOf() - b.valueOf();
+                    });
+                    this.setState({
+                        versionAnalysis: versionAnalysis
+                    });
+                }
+            );
+
+    }
+
+
 
     render() {
         const { question, searchTerm, isCopeSurvey, participantCount } = this.props;
-        const { showAnswers, questionWithResults } = this.state;
+        const { showAnswers, questionWithResults, surveyCountAnalysis, versionAnalysis } = this.state;
         return <div >
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
@@ -112,6 +172,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
             {(showAnswers && questionWithResults) && <SurveyAnswerReactComponent
                 isCopeSurvey={isCopeSurvey}
                 question={questionWithResults}
+                surveyCountAnalysis={surveyCountAnalysis}
+                surveyVersions={isCopeSurvey && versionAnalysis}
                 level={0}
                 participantCount={participantCount} />}
         </div>;
