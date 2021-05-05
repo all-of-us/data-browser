@@ -28,3 +28,4 @@ type ReactStyles<T> = {
 export function reactStyles<T extends {[key: string]: React.CSSProperties }>(t: T): ReactStyles<T> {
   return t;
 }
+

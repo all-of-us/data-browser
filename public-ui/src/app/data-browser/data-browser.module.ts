@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
+import { NoResultSearchWrapperComponent } from 'app/components/db-no-results/no-results-search.component';
 import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
@@ -87,6 +88,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     AgeWrapperComponent,
     BioSexWrapperComponent,
     SurveyChartWrapperComponent,
+    NoResultSearchWrapperComponent,
     ValueChartWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
@@ -120,6 +122,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyChartWrapperComponent,
+    NoResultSearchWrapperComponent,
     ValueChartWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
