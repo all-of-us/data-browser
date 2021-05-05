@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 export const GENDER_STRATUM_MAP = {
      '8507': 'Male',
      '8532': 'Female',
@@ -47,9 +49,10 @@ export const baseOptions = {
   color: '',
   title: {
       text: '',
+      useHTML: true,
       style: {
         color: '#666',
-        fontSize: '12px',
+        fontSize: '14px',
         fontFamily: 'GothamBook',
         fontWeight: 'normal'
       }
@@ -192,5 +195,6 @@ export const baseOptions = {
 };
 
 export function getBaseOptions() {
-  return Object.assign({}, baseOptions);
+  // return Object.assign({}, baseOptions);
+  return cloneDeep(baseOptions);
 }

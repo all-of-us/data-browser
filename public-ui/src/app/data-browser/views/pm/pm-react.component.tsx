@@ -9,12 +9,17 @@ import { reactStyles } from 'app/utils/index';
 import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { FunctionComponent } from 'react';
 import { Spinner } from 'app/utils/spinner';
+import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
+import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
 
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 
 const styles = reactStyles({
     pmContainer : {
         margin: '1.2em'
+    },
+    active: {
+        fontWeight: 900
     }
 });
 
@@ -31,7 +36,7 @@ const PMConceptGroups = {
     concepts: []
 }
 
-const PMGroups = [];
+let PMGroups = [];
 
 const styleCss = `
 aside {
@@ -43,6 +48,49 @@ aside {
 }
 .pm-layout {
     display: flex;
+}
+.btn-link {
+    font-size: 14px;
+    color: #0077b7;
+}
+.active {
+    font-weight: 900;
+}
+.chart-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1em;
+}
+.bs-chart-item {
+    width: calc((33.3%) - 18px);
+    height: auto;
+    flex-grow: 1;
+}
+.group-option {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.group-unit {
+    display: flex;
+    justify-content: center;
+}
+.unit-button {
+    padding-right: 0.5em;
+}
+.unit-button.active, .concept-button.active {
+    border-bottom: 4px solid #216fb4;
+}
+.group-button.active {
+    font-weight: 3em;
+    border: 2px solid #216fb4;
+}
+.participant-count {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 18px
 }
 aside .button-item button {
     font-size: 0.8em;
@@ -60,8 +108,27 @@ aside .button-item button {
     padding-top: .5em;
 }
 .bs-title {
+    padding-top: 1em;
     padding-left: 1.5em;
 }
+
+.chart-item {
+    width: calc((50%) - 18px);
+    height: auto;
+    flex-grow: 1;
+}
+.age-chart {
+    padding: 1em;
+    padding-left: 1.5em;
+    margin: 0;
+}
+
+.chart-item:last-of-type {
+    width: 100%;
+    max-width: calc((100%) - 18px);
+    min-width: 20rem;
+}
+
 @media (max-width: 978px) {
     .pm-layout {
         flex-direction: column;
@@ -93,6 +160,9 @@ interface State {
     selectedConceptUnit: any;
     selectedConceptValueAnalysis: any;
     selectedConceptValueCountAnalysis: any;
+    domainCountAnalysis: any;
+    searchText: any;
+    unitNames: Array<String>;
 }
 
 interface Props {
@@ -101,6 +171,7 @@ interface Props {
 export class pmReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
+    PMGroups = [];
     PMGroups.push({group: 'blood-pressure', groupName: 'Mean Blood Pressure', concepts: [
     {conceptId: '903118', conceptName: 'Systolic', chartType: 'histogram', analyses: []},
     {conceptId: '903115', conceptName: 'Diastolic', chartType: 'histogram', analyses: []}
@@ -126,14 +197,16 @@ export class pmReactComponent extends React.Component<Props, State> {
     PMGroups.push({group: 'pregnancy', groupName: 'Pregnancy', concepts: [
     {conceptId: '903120', conceptName: 'Pregnancy', chartType: 'column', analyses: []}
     ]});
-    this.state = {loading: true, selectedGroup: PMGroups[0], selectedConcept: PMGroups[0].concepts[0], selectedConceptUnit: this.setUnit(PMGroups[0].concepts[0]), selectedConceptValueAnalysis: null, selectedConceptValueCountAnalysis: null};
+    this.state = {loading: true, searchText: localStorage.getItem('searchText'), selectedGroup: PMGroups[0], selectedConcept: PMGroups[0].concepts[0], selectedConceptUnit: null, domainCountAnalysis: null, selectedConceptValueAnalysis: null, selectedConceptValueCountAnalysis: null, unitNames: []};
   }
 
   componentDidMount() {
         this.getPMData();
+        this.getPMCountData();
   }
 
   getPMData() {
+    const {searchText} = this.state;
     const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
     api.getConceptAnalysisResults(PM_CONCEPTS).then(
         (result) => {
@@ -141,10 +214,33 @@ export class pmReactComponent extends React.Component<Props, State> {
             for(let group of PMGroups) {
                 for(let concept of group.concepts) {
                     concept.analyses = items.filter(item => item.conceptId === concept.conceptId)[0];
+                    if (concept.conceptId === '903133') {
+                    const sortOrder = ['centimeter', 'inch (us)'];
+                    concept.analyses.measurementGenderCountAnalysis
+                        .sort((a, b) => {
+                            return sortOrder.indexOf(a.unitName.toLowerCase()) -
+                                sortOrder.indexOf(b.unitName.toLowerCase());
+                        });
+                    }
                     this.arrangeConceptAnalyses(concept);
                     this.setState({loading: false});
                 }
             }
+            if (searchText) {
+                this.setState({selectedGroup: PMGroups.filter(conceptgroup =>
+                          conceptgroup.groupName.toLowerCase().
+                            includes(searchText.toLowerCase()))[0]});
+            } else {
+                this.setState({selectedGroup: PMGroups[0]});
+            }
+            this.setUnit(PMGroups[0].concepts[0])
+    });
+  }
+
+  getPMCountData() {
+    api.getCountAnalysis('Physical Measurements', 'pm').then(
+        (result) => {
+            this.setState({domainCountAnalysis: result});
     });
   }
 
@@ -210,12 +306,13 @@ export class pmReactComponent extends React.Component<Props, State> {
   }
 
   showMeasurement(pmConceptGroup: any, concept: any) {
+    this.setUnit(concept);
     this.setState({selectedGroup: pmConceptGroup, selectedConcept: concept});
   }
 
   setUnit(concept: any) {
     let unitNames = [];
-    if (concept && concept.analyses && concept.analyses.measurementGenderCountAnalysis) {
+    if (concept.analyses && concept.analyses.measurementGenderCountAnalysis) {
           for (const r of concept.analyses.measurementGenderCountAnalysis) {
             let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
             tempUnitNames = tempUnitNames.filter((elem, index, self) => index === self.indexOf(elem));
@@ -223,13 +320,18 @@ export class pmReactComponent extends React.Component<Props, State> {
           }
     }
     if (unitNames.length > 0) {
-        this.setState({selectedConceptUnit: unitNames[0]}, () => {
+        this.setState({selectedConceptUnit: unitNames[0], unitNames: unitNames}, () => {
             this.setAnalysis();
         });
-        console.log(unitNames[0]);
         return unitNames[0];
     }
     return null;
+  }
+
+  setConceptUnit(unit) {
+    this.setState({selectedConceptUnit: unit}, () => {
+        this.setAnalysis();
+    });
   }
 
 
@@ -256,6 +358,19 @@ export class pmReactComponent extends React.Component<Props, State> {
     return selectedConceptValueAnalysis;
   }
 
+  getCountAnalysis(conceptUnit: any) {
+    const genderSort = ['Male', 'Female', 'Other'];
+    return this.state.selectedConcept.analyses.measurementGenderCountAnalysis.filter(
+      r => r.unitName === this.state.selectedConceptUnit)[0].results
+      .sort((a, b) => {
+        return genderSort.indexOf(a.analysisStratumName) -
+          genderSort.indexOf(b.analysisStratumName);
+      });
+  }
+
+  getChartTitle(gender) {
+    return gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString();
+  }
 
 
   render() {
@@ -263,12 +378,12 @@ export class pmReactComponent extends React.Component<Props, State> {
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
         <h1>Browse Program Physical Measurements</h1>
-        { this.state.loading ? <Spinner /> : null}
+        { this.state.loading ? <Spinner /> :
         <div className='pm-layout'>
             <aside>
                 {
                     PMGroups.map((pmConceptGroup, index) => {
-                        let buttonClass = this.state.selectedGroup === pmConceptGroup ? 'btn btn-link active' : 'btn btn-link';
+                        let buttonClass = this.state.selectedGroup === pmConceptGroup ? 'btn btn-link group-button active' : 'btn btn-link group-button';
                         return <div className='button-item' key={index}>
                         <button className={buttonClass} onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName} </button></div>
                     })
@@ -282,16 +397,91 @@ export class pmReactComponent extends React.Component<Props, State> {
                         <div className='bs-title'>
                         Sex Assigned At Birth <TooltipReactComponent tooltipKey='pmValueChartHelpText'
                                                label='Physical Measurements tooltip hover' searchTerm='TODO replace search text in here'
-                                               action='Hover on pm biological sex chart of concept'>
+                                               action={'Hover on pm biological sex chart of concept' + this.state.selectedConcept.conceptName}>
                                                </TooltipReactComponent>
                         </div>
                         : null
                         }
-
+                        { this.state.selectedGroup && this.state.selectedGroup.concepts && this.state.selectedGroup.concepts.length > 1 ?
+                            <div className='group-option'>
+                            {
+                            this.state.selectedGroup.concepts.map((concept, index) => {
+                                const btnClass = this.state.selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
+                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(this.state.selectedGroup, concept)}>{concept.conceptName}</button>
+                            })
+                            }
+                            </div>
+                        : null
+                        }
+                        </div>
+                        {
+                            this.state.unitNames && this.state.unitNames.length > 1 ?
+                            <div className='group-unit'>
+                            {
+                                this.state.unitNames.map((unit, index) => {
+                                    const btnClass = this.state.selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
+                                    return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)}>{unit}</button>
+                                })
+                            }
+                            </div> : null
+                        }
+                        {
+                            this.state.selectedConcept && (this.state.selectedConcept.conceptId === '903111' || this.state.selectedConcept.conceptId === '903120') ?
+                            this.state.selectedConcept.analyses.countAnalysis.results[0].countValue > 20 ?
+                            <div className='participant-count'>
+                            Total Participant count: {this.state.selectedConcept.analyses.countAnalysis.results[0].countValue}
+                            </div> :
+                            <div className='participant-count'>
+                            Total Participant count: &le; {this.state.selectedConcept.analyses.countAnalysis.results[0].countValue}
+                            </div> : null
+                        }
+                        <div className='chart-layout'>
+                        {
+                            this.state.selectedConcept && this.state.selectedConcept.analyses && this.state.selectedConcept.analyses.measurementGenderCountAnalysis ?
+                            this.state.selectedConcept.conceptId !== '903111' && this.state.selectedConcept.conceptId !== '903120' && this.state.selectedConceptUnit ?
+                            <React.Fragment>
+                            {
+                                this.getCountAnalysis(this.state.selectedConceptUnit).map((gender, index) => {
+                                    const chartKey = gender.stratum3 + '-' + index;
+                                    return <div className='bs-chart-item' key={chartKey}>
+                                    <ValueReactChartComponent conceptId={this.state.selectedConcept.conceptId}
+                                    valueAnalysis={this.getValueAnalysis()}
+                                    domainCountAnalysis={this.state.domainCountAnalysis}
+                                    genderId={gender.stratum3}
+                                    chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()} key={chartKey}></ValueReactChartComponent></div>
+                                })
+                            }
+                            </React.Fragment>
+                            : this.state.selectedConcept.analyses.measurementValueGenderAnalysis ?
+                                <div className='chart-item stacked-chart-item'>
+                                <ValueReactChartComponent conceptId={this.state.selectedConcept.conceptId}
+                                                          valueAnalysis={this.state.selectedConcept.analyses.measurementValueGenderAnalysis[0]}
+                                                          domainCountAnalysis={this.state.domainCountAnalysis}
+                                                          genderId='stacked gender'
+                                                          chartTitle='stacked chart'>
+                                </ValueReactChartComponent>
+                              </div> : null
+                            : null
+                        }
+                        {
+                            this.state.selectedConcept.analyses && this.state.selectedConcept.analyses.ageAnalysis ?
+                            <div className='chart-item age-chart'>
+                                <div className='bs-title'>Age When Physical Measurement Was Taken <TooltipReactComponent tooltipKey='pmAgeChartHelpText'
+                                    label='Physical Measurements tooltip hover'
+                                    searchTerm='TODO replace search text in here'
+                                    action={'Hover on pm age chart of concept ' + this.state.selectedConcept.conceptName}>
+                                </TooltipReactComponent>
+                                </div>
+                                <AgeChartReactComponent ageAnalysis={this.state.selectedConcept.analyses.ageAnalysis} ageCountAnalysis={this.state.domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
+                                </AgeChartReactComponent>
+                            </div>
+                             : null
+                        }
                         </div>
                 </div>
             </div>
         </div>
+        }
       </div>
       </React.Fragment>;
     }

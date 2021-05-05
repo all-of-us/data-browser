@@ -84,7 +84,7 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
                     sortOrder.indexOf(b.unitName.toLowerCase());
                 });
               }
-              const matchedItem = items.filter(i => i.conceptId === c.conceptId);
+              const matchedItem = items.filter(i => i.conceptId =   == c.conceptId);
               c.analyses = matchedItem.length > 0 ? matchedItem[0] : null;
               this.arrangeConceptAnalyses(c);
             }
