@@ -66,6 +66,7 @@ const styleCss = `
     padding-right: 0.5em;
 }
 .unit-button.active, .concept-button.active {
+    font-weight: 900;
     border-bottom: 4px solid #216fb4;
 }
 .group-button.active {
@@ -481,6 +482,6 @@ export class PMReactComponent extends React.Component<{}, State> {
 
 export class PhysicalMeasurementsWrapperComponent extends BaseReactWrapper {
     constructor() {
-        super(pmReactComponent, []);
+        super(PMReactComponent, []);
     }
 }
