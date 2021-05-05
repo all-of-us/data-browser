@@ -59,7 +59,12 @@
                   <div class="secondary-display">
                     <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
 
-                      <app-survey-question-react *ngIf="reactSurveyTable" [searchTerm]="searchText.value" [surveyConceptId]="surveyConceptId" [isCopeSurvey]="isCopeSurvey" [question]="q" [participantCount]= "survey.participantCount">
+                      <app-survey-question-react *ngIf="reactSurveyTable"
+                      [searchTerm]="searchText.value"
+                      [surveyConceptId]="surveyConceptId"
+                      [isCopeSurvey]="isCopeSurvey" [question]="q"
+                      [participantCount]= "survey.participantCount"
+                      [versionAnalysis]="versionAnalysis">
                       </app-survey-question-react>
 
                       <app-highlight-react style="cursor: pointer;" tabindex="0"

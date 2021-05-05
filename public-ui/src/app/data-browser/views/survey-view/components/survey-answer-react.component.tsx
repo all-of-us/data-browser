@@ -357,6 +357,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
 
     render() {
         const { isCopeSurvey, question, participantCount, level, surveyName, surveyVersions, surveyCountAnalysis, searchTerm } = this.props;
+        
         return <React.Fragment>
             <style>{styleCss}</style>
             <div className='survey-tbl'>
