@@ -15,37 +15,38 @@ const styles = reactStyles({
     pmContainer : {
         margin: '1.2em'
     },
-    active: {
-        fontWeight: 900
+    aside: {
+        paddingRight: '18px',
+        display: 'block'
+    },
+    dbCard: {
+        width: '100vw'
+    },
+    pmLayout: {
+        display: 'flex'
+    },
+    btnLink: {
+        fontSize: '14px',
+        color: '#0077b7'
+    },
+    bsTitle: {
+        paddingTop: '1em',
+        paddingLeft: '1.5em'
+    },
+    chartLayout: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: '1em'
     }
 });
 
 let PMGroups = [];
 
 const styleCss = `
-aside {
-    padding-right: 18px;
-    display: block;
-}
-.db-card {
-    width: 100%;
-}
-.pm-layout {
-    display: flex;
-}
-.btn-link {
-    font-size: 14px;
-    color: #0077b7;
-}
 .active {
     font-weight: 900;
-}
-.chart-layout {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1em;
 }
 .bs-chart-item {
     width: calc((33.3%) - 18px);
@@ -91,11 +92,6 @@ aside .button-item button {
     padding: 1em;
     padding-top: .5em;
 }
-.bs-title {
-    padding-top: 1em;
-    padding-left: 1.5em;
-}
-
 .chart-item {
     width: calc((50%) - 18px);
     height: auto;
@@ -149,10 +145,7 @@ interface State {
     unitNames: Array<String>;
 }
 
-interface Props {
-}
-
-export class pmReactComponent extends React.Component<Props, State> {
+export class PMReactComponent extends React.Component<{}, State> {
   constructor(props) {
     super(props);
     PMGroups = [];
@@ -181,7 +174,9 @@ export class pmReactComponent extends React.Component<Props, State> {
     PMGroups.push({group: 'pregnancy', groupName: 'Pregnancy', concepts: [
     {conceptId: '903120', conceptName: 'Pregnancy', chartType: 'column', analyses: []}
     ]});
-    this.state = {loading: true, searchText: localStorage.getItem('searchText'), selectedGroup: PMGroups[0], selectedConcept: PMGroups[0].concepts[0], selectedConceptUnit: null, domainCountAnalysis: null, selectedConceptValueAnalysis: null, selectedConceptValueCountAnalysis: null, unitNames: []};
+    this.state = {loading: true, searchText: localStorage.getItem('searchText'), selectedGroup: PMGroups[0],
+    selectedConcept: PMGroups[0].concepts[0], selectedConceptUnit: null, domainCountAnalysis: null, selectedConceptValueAnalysis: null,
+    selectedConceptValueCountAnalysis: null, unitNames: []};
   }
 
   componentDidMount() {
@@ -195,8 +190,8 @@ export class pmReactComponent extends React.Component<Props, State> {
     api.getConceptAnalysisResults(PM_CONCEPTS).then(
         (result) => {
             const items = result.items;
-            for(let group of PMGroups) {
-                for(let concept of group.concepts) {
+            for(const group of PMGroups) {
+                for(const concept of group.concepts) {
                     concept.analyses = items.filter(item => item.conceptId === concept.conceptId)[0];
                     if (concept.conceptId === '903133') {
                     const sortOrder = ['centimeter', 'inch (us)'];
@@ -295,7 +290,7 @@ export class pmReactComponent extends React.Component<Props, State> {
   }
 
   setUnit(concept: any) {
-    let unitNames = [];
+    const unitNames = [];
     if (concept.analyses && concept.analyses.measurementGenderCountAnalysis) {
           for (const r of concept.analyses.measurementGenderCountAnalysis) {
             let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
@@ -365,22 +360,22 @@ export class pmReactComponent extends React.Component<Props, State> {
       <div style={styles.pmContainer}>
         <h1>Browse Program Physical Measurements</h1>
         { loading ? <Spinner /> :
-        <div className='pm-layout'>
-            <aside>
+        <div className='pm-layout' style={styles.pmLayout}>
+            <aside style={styles.aside}>
                 {
                     PMGroups.map((pmConceptGroup, index) => {
-                        let buttonClass = selectedGroup === pmConceptGroup ? 'btn btn-link group-button active' : 'btn btn-link group-button';
+                        const buttonClass = (selectedGroup === pmConceptGroup) ? 'btn btn-link group-button active' : 'btn btn-link group-button';
                         return <div className='button-item' key={index}>
-                        <button className={buttonClass} onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName} </button></div>
+                        <button className={buttonClass} style={styles.btnLink} onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName} </button></div>
                     })
                 }
             </aside>
-            <div className='db-card'>
+            <div className='db-card' style={styles.dbCard}>
                 <div className='db-card-inner'>
                     <div className='db-card-header'>
                         <div className='group-name'>{selectedGroup.groupName}</div>
                         {   selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis ?
-                        <div className='bs-title'>
+                        <div className='bs-title' style={styles.bsTitle}>
                         Sex Assigned At Birth <TooltipReactComponent tooltipKey='pmValueChartHelpText'
                                                label='Physical Measurements tooltip hover' searchTerm='TODO replace search text in here'
                                                action={'Hover on pm biological sex chart of concept' + selectedConcept.conceptName}>
@@ -393,7 +388,7 @@ export class pmReactComponent extends React.Component<Props, State> {
                             {
                             selectedGroup.concepts.map((concept, index) => {
                                 const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
-                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)}>{concept.conceptName}</button>
+                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)} style={styles.btnLink}>{concept.conceptName}</button>
                             })
                             }
                             </div>
@@ -406,7 +401,7 @@ export class pmReactComponent extends React.Component<Props, State> {
                             {
                                 unitNames.map((unit, index) => {
                                     const btnClass = selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
-                                    return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)}>{unit}</button>
+                                    return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)} style={styles.btnLink}>{unit}</button>
                                 })
                             }
                             </div> : null
@@ -421,7 +416,7 @@ export class pmReactComponent extends React.Component<Props, State> {
                             Total Participant count: &le; {selectedConcept.analyses.countAnalysis.results[0].countValue}
                             </div> : null
                         }
-                        <div className='chart-layout'>
+                        <div className='chart-layout' style={styles.chartLayout}>
                         {
                             selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis ?
                             selectedConcept.conceptId !== '903111' && selectedConcept.conceptId !== '903120' && selectedConceptUnit ?
@@ -452,7 +447,7 @@ export class pmReactComponent extends React.Component<Props, State> {
                         {
                             selectedConcept.analyses && selectedConcept.analyses.ageAnalysis ?
                             <div className='chart-item age-chart'>
-                                <div className='bs-title'>Age When Physical Measurement Was Taken <TooltipReactComponent tooltipKey='pmAgeChartHelpText'
+                                <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken <TooltipReactComponent tooltipKey='pmAgeChartHelpText'
                                     label='Physical Measurements tooltip hover'
                                     searchTerm='TODO replace search text in here'
                                     action={'Hover on pm age chart of concept ' + selectedConcept.conceptName}>
