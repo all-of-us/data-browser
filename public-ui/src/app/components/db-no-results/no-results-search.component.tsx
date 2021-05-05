@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { reactStyles } from 'app/utils';
+import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { navigateByUrl } from 'app/utils/navigation';
 import { LoadingDots } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -174,7 +174,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
             </div>
         </React.Fragment>;
     }
-};
+}
 
 @Component({
   selector: 'app-domain-results-match',
