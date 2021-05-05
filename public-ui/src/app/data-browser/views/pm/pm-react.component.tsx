@@ -370,8 +370,8 @@ export class PMReactComponent extends React.Component<{}, State> {
                         <button className={buttonClass} style={styles.btnLink}
                         onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName}
                         </button>
-                        </div>
-                    });
+                        </div>;
+                    })
                 }
             </aside>
             <div className='db-card' style={styles.dbCard}>
@@ -393,8 +393,8 @@ export class PMReactComponent extends React.Component<{}, State> {
                             selectedGroup.concepts.map((concept, index) => {
                                 const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
                                 return <button className={btnClass} key={index}
-                                onClick={() => this.showMeasurement(selectedGroup, concept)} style={styles.btnLink}>{concept.conceptName}</button>
-                            });
+                                onClick={() => this.showMeasurement(selectedGroup, concept)} style={styles.btnLink}>{concept.conceptName}</button>;
+                            })
                             }
                             </div>
                         : null
@@ -406,9 +406,9 @@ export class PMReactComponent extends React.Component<{}, State> {
                             {
                                 unitNames.map((unit, index) => {
                                     const btnClass = selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
-                                    return <button className={btnClass} key={index}
-                                    onClick={() => this.setConceptUnit(unit)} style={styles.btnLink}>{unit}</button>
-                                });
+                                    return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)}
+                                    style={styles.btnLink}>{unit}</button>;
+                                })
                             }
                             </div> : null
                         }
@@ -435,7 +435,8 @@ export class PMReactComponent extends React.Component<{}, State> {
                                     valueAnalysis={this.getValueAnalysis()}
                                     domainCountAnalysis={domainCountAnalysis}
                                     genderId={gender.stratum3}
-                                    chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()} key={chartKey}></ValueReactChartComponent></div>
+                                    chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') +
+                                    gender.countValue.toLocaleString()} key={chartKey}></ValueReactChartComponent></div>;
                                 })
                             }
                             </React.Fragment>
