@@ -61,6 +61,7 @@
 
                       <app-survey-question-react *ngIf="reactSurveyTable"
                       [searchTerm]="searchText.value"
+                      [surveyName]="survey.name"
                       [surveyConceptId]="surveyConceptId"
                       [isCopeSurvey]="isCopeSurvey" [question]="q"
                       [participantCount]= "survey.participantCount"

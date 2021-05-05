@@ -33,6 +33,7 @@ interface Props {
     surveyConceptId: number;
     searchTerm: string;
     versionAnalysis: object;
+    surveyName: string;
 }
 
 interface State {
@@ -111,8 +112,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
             });
     }
     render() {
-        const { question, searchTerm, isCopeSurvey, participantCount, versionAnalysis} = this.props;
-        const { showAnswers, questionWithResults, surveyCountAnalysis} = this.state;
+        const { question, searchTerm, isCopeSurvey, participantCount, versionAnalysis, surveyName } = this.props;
+        const { showAnswers, questionWithResults, surveyCountAnalysis } = this.state;
         return <div >
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
@@ -130,6 +131,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                 </div>
             </span>
             {(showAnswers && questionWithResults) && <SurveyAnswerReactComponent
+                surveyName={surveyName}
+                searchTerm={searchTerm}
                 isCopeSurvey={isCopeSurvey}
                 question={questionWithResults}
                 surveyCountAnalysis={surveyCountAnalysis}
@@ -153,8 +156,9 @@ export class SurveyQuestionWrapperComponent extends BaseReactWrapper {
     @Input() participantCount: number;
     @Input() searchTerm: string;
     @Input() versionAnalysis: object;
+    @Input() surveyName: string;
 
     constructor() {
-        super(SurveyQuestionReactComponent, ['isCopeSurvey', 'question', 'surveyConceptId', 'searchTerm', 'participantCount','versionAnalysis']);
+        super(SurveyQuestionReactComponent, ['isCopeSurvey', 'question', 'surveyConceptId', 'searchTerm', 'participantCount', 'versionAnalysis', 'surveyName']);
     }
 }
