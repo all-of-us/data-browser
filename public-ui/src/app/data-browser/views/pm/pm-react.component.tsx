@@ -371,7 +371,7 @@ export class PMReactComponent extends React.Component<{}, State> {
                         onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName}
                         </button>
                         </div>
-                    })
+                    });
                 }
             </aside>
             <div className='db-card' style={styles.dbCard}>
@@ -392,8 +392,9 @@ export class PMReactComponent extends React.Component<{}, State> {
                             {
                             selectedGroup.concepts.map((concept, index) => {
                                 const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
-                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)} style={styles.btnLink}>{concept.conceptName}</button>
-                            })
+                                return <button className={btnClass} key={index}
+                                onClick={() => this.showMeasurement(selectedGroup, concept)} style={styles.btnLink}>{concept.conceptName}</button>
+                            });
                             }
                             </div>
                         : null
@@ -405,8 +406,9 @@ export class PMReactComponent extends React.Component<{}, State> {
                             {
                                 unitNames.map((unit, index) => {
                                     const btnClass = selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
-                                    return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)} style={styles.btnLink}>{unit}</button>
-                                })
+                                    return <button className={btnClass} key={index}
+                                    onClick={() => this.setConceptUnit(unit)} style={styles.btnLink}>{unit}</button>
+                                });
                             }
                             </div> : null
                         }
@@ -451,13 +453,15 @@ export class PMReactComponent extends React.Component<{}, State> {
                         {
                             selectedConcept.analyses && selectedConcept.analyses.ageAnalysis ?
                             <div className='chart-item age-chart'>
-                                <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken <TooltipReactComponent tooltipKey='pmAgeChartHelpText'
+                                <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken <TooltipReactComponent
+                                    tooltipKey='pmAgeChartHelpText'
                                     label='Physical Measurements tooltip hover'
                                     searchTerm='TODO replace search text in here'
                                     action={'Hover on pm age chart of concept ' + selectedConcept.conceptName}>
                                 </TooltipReactComponent>
                                 </div>
-                                <AgeChartReactComponent ageAnalysis={selectedConcept.analyses.ageAnalysis} ageCountAnalysis={domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
+                                <AgeChartReactComponent ageAnalysis={selectedConcept.analyses.ageAnalysis}
+                                ageCountAnalysis={domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
                                 </AgeChartReactComponent>
                             </div>
                              : null
