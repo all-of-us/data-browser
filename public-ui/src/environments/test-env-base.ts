@@ -7,6 +7,6 @@ export const testEnvironmentBase = {
   gaId: 'UA-116298798-4',
   reactHomeView: true,
   reactChart: true,
-  reactSurveyTable: true,
+  reactSurveyTable: false,
   testReact: false
 };
