@@ -392,8 +392,8 @@ export class PMReactComponent extends React.Component<{}, State> {
                             {
                             selectedGroup.concepts.map((concept, index) => {
                                 const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
-                                return <button className={btnClass} key={index}
-                                onClick={() => this.showMeasurement(selectedGroup, concept)} style={styles.btnLink}>{concept.conceptName}</button>;
+                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)}
+                                style={styles.btnLink}>{concept.conceptName}</button>;
                             })
                             }
                             </div>
@@ -454,7 +454,8 @@ export class PMReactComponent extends React.Component<{}, State> {
                         {
                             selectedConcept.analyses && selectedConcept.analyses.ageAnalysis ?
                             <div className='chart-item age-chart'>
-                                <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken <TooltipReactComponent
+                                <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken
+                                <TooltipReactComponent
                                     tooltipKey='pmAgeChartHelpText'
                                     label='Physical Measurements tooltip hover'
                                     searchTerm='TODO replace search text in here'
