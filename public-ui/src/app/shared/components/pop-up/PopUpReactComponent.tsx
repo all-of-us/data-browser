@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import * as React from 'react';
-const containerElementName = 'root';
 
 const helptexts = { 'HomeViewPopup': {
     title: 'PUBLIC DATA USE STATEMENT',
@@ -63,7 +62,7 @@ export const PopUpReactComponent =
 
 @Component({
   selector: 'app-popup-react',
-  template: `<span #${containerElementName}></span>`,
+  template: `<span #root></span>`,
   styleUrls: ['../../../styles/template.css', './pop-up.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
