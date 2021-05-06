@@ -9,6 +9,7 @@ import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.c
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
+import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 
 const routes: Routes = [
   {
@@ -66,7 +67,7 @@ const routes: Routes = [
         },
         {
           path: 'physical-measurements',
-          component: PhysicalMeasurementsComponent,
+          component: PhysicalMeasurementsWrapperComponent,
           data: {
             title: 'Physical Measurements from Enrollment',
             breadcrumb: {
