@@ -118,10 +118,11 @@ export const ResultLinksComponent: FunctionComponent<any> =
     };
 
 interface State {
-    surveyInfo: Array<any>;
-    domainInfo: Array<any>;
-    physicalMeasurementsInfo: Array<any>;
+    surveyInfo: any[]
+    domainInfo: any[];
+    physicalMeasurementsInfo: any[];
     searchWord: string;
+    popUp: boolean;
 }
 
 export const dBHomeComponent = (
@@ -132,7 +133,8 @@ export const dBHomeComponent = (
                 surveyInfo: [],
                 domainInfo: [],
                 physicalMeasurementsInfo: [],
-                searchWord: ''
+                searchWord: '',
+                popUp: false
             };
         }
 
@@ -168,8 +170,14 @@ export const dBHomeComponent = (
                 }
             );
         }
+        closePopUp() {
+            this.setState({
+                popUp: !this.state.popUp
+            })
+        }
 
         render() {
+            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp } = this.state;
             return <React.Fragment>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
@@ -182,8 +190,9 @@ export const dBHomeComponent = (
                 20, and summary demographic information. For more information, please visit our FAQ page.<br></br><br></br>
                     Please read the public data use statement available below for additional information about our unique dataset and how to
                 acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br></br><br></br></p>
+                <button onClick={() => this.closePopUp()} className="disclaimer-btn">public data use statement</button>
                 <div style={{ paddingLeft: '1em' }}>
-                    <SearchComponent value={this.state.searchWord} onChange={(val) => {
+                    <SearchComponent value={searchWord} onChange={(val) => {
                         this.handleChange(val);
                     }}
                         onClear={() => { this.handleChange(''); }} />
@@ -192,13 +201,13 @@ export const dBHomeComponent = (
                     <h5 className='result-heading secondary-display'>
                         EHR Domains:<TooltipReactComponent
                             label='Homepage Tooltip Hover'
-                            searchTerm={this.state.searchWord}
+                            searchTerm={searchWord}
                             action='Tooltip Home Page EHR Domains'
                             tooltipKey='ehrDomainHelpText' /></h5>
 
                     <div id='survey' className='result-boxes'>
                         {
-                            this.state.domainInfo.map((domain, index) => {
+                            domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
                                 return <ResultLinksComponent key={key} {...domain} />;
 
@@ -209,7 +218,7 @@ export const dBHomeComponent = (
                     <h5 className='result-heading secondary-display'>Survey Questions:</h5>
                     <div className='result-boxes'>
                         {
-                            this.state.surveyInfo.map((survey, index) => {
+                            surveyInfo.map((survey, index) => {
                                 const key = 'survey' + index;
                                 return <ResultLinksComponent key={key} {...survey} />;
                             })
@@ -220,14 +229,14 @@ export const dBHomeComponent = (
                         Physical Measurements and Wearables:</h5>
                     <div className='result-boxes'>
                         {
-                            this.state.physicalMeasurementsInfo.map((phyMeasurements, index) => {
+                            physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
                                 return <ResultLinksComponent key={key} {...phyMeasurements} />;
                             })
                         }
                     </div>
                 </section>
-                <PopUpReactComponent helpText='HomeViewPopup' onClose='closePopUp' />
+                {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
             </React.Fragment>;
         }
     }
