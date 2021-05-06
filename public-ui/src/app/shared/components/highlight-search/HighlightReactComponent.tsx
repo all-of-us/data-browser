@@ -48,7 +48,7 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
     </span>)}</React.Fragment>;
 }
 
-const HighlightReactComponent: React.FunctionComponent<{searchTerm: string, text: string}> =
+export const HighlightReactComponent: React.FunctionComponent<{searchTerm: string, text: string}> =
   ({searchTerm, text}) => {
   return highlightSearchTerm(searchTerm, text, 'yellow');
 };
