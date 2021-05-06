@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 /* Components */
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
+import { NoResultSearchWrapperComponent } from 'app/components/db-no-results/no-results-search.component';
 import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
@@ -26,7 +27,6 @@ import { VersionChartWrapperComponent } from './charts/chart-version/chart-versi
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
-import { SurveyAnswerWrapperComponent } from './components/survey-answer/survey-answer-react.component';
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
 import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
@@ -48,6 +48,8 @@ import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { DbHomeWrapperComponent } from './views/quick-search/home-view-react.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
+import { SurveyAnswerWrapperComponent } from './views/survey-view/components/survey-answer-react.component';
+import { SurveyQuestionWrapperComponent } from './views/survey-view/components/survey-question-react.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 @NgModule({
   imports: [
@@ -88,11 +90,13 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     AgeWrapperComponent,
     BioSexWrapperComponent,
     SurveyChartWrapperComponent,
+    NoResultSearchWrapperComponent,
     ValueChartWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
     SurveyAnswerWrapperComponent,
+    SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent,
@@ -122,11 +126,13 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     BioSexWrapperComponent,
     TooltipWrapperComponent,
     SurveyChartWrapperComponent,
+    NoResultSearchWrapperComponent,
     ValueChartWrapperComponent,
     SurveyVersionWrapperComponent,
     HighlightWrapperComponent,
     CdrVersionWrapperComponent,
     SurveyAnswerWrapperComponent,
+    SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent,

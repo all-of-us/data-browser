@@ -62,6 +62,7 @@ const styleCss =
         color: #2691D0;
       }
     .sub-question-text {
+        margin-top: 1em;
         text-align: left;
         font-weight: bold;
         margin-left: 1em;
@@ -143,7 +144,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                     this.setState({
                         subQuestions: this.processResults(results.questions.items)
                     });
-                });
+                })
+            .catch(
+                e => console.log(e, 'error')
+            );
     }
 
     processResults(questions: Array<any>) {
@@ -191,49 +195,49 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         return questions;
     }
 
-  public addMissingResults(q: any, a: any) {
-    a.countPercent = this.countPercentage(a.countValue);
-    if (q.genderAnalysis) {
-      this.addMissingAnalysisResults(q.genderAnalysis,
-        q.genderAnalysis.results.
-          filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
-    }
-    if (q.ageAnalysis) {
-      this.addMissingAnalysisResults(q.ageAnalysis,
-        q.ageAnalysis.results.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
-    }
-  }
-
-  public addMissingAnalysisResults(analysis: any, results: any) {
-      const uniqueStratums: string[] = [];
-      const fullStratums = analysis.analysisId === 3111 ? ['8507', '8532', '0'] : ['2', '3', '4', '5', '6', '7', '8', '9'];
-      for (const result of results) {
-        if (uniqueStratums.indexOf(result.stratum5) <= -1) {
-          uniqueStratums.push(result.stratum5);
+    public addMissingResults(q: any, a: any) {
+        a.countPercent = this.countPercentage(a.countValue);
+        if (q.genderAnalysis) {
+            this.addMissingAnalysisResults(q.genderAnalysis,
+                q.genderAnalysis.results.
+                    filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
         }
-      }
-      const missingStratums = fullStratums.
-        filter(item => uniqueStratums.indexOf(item) < 0);
-      for (const missingStratum of missingStratums) {
-        if (results.length > 0) {
-          const missingResult = {
-            analysisId: analysis.analysisId,
-            countValue: 20,
-            countPercent: this.countPercentage(20),
-            stratum1: results[0].stratum1,
-            stratum2: results[0].stratum2,
-            stratum3: results[0].stratum3,
-            stratum4: results[0].stratum4,
-            stratum5: missingStratum,
-            stratum6: results[0].stratum6,
-            analysisStratumName: analysis.analysisId === 3111 ? GENDER_STRATUM_MAP[missingStratum] : AGE_STRATUM_MAP[missingStratum]
-          };
-          analysis.results.push(missingResult);
+        if (q.ageAnalysis) {
+            this.addMissingAnalysisResults(q.ageAnalysis,
+                q.ageAnalysis.results.filter(r => r.stratum3 !== null && r.stratum3 === a.stratum3));
         }
-      }
-  }
+    }
 
-  public addDidNotAnswerResult(questionConceptId: any, results: any[]) {
+    public addMissingAnalysisResults(analysis: any, results: any) {
+        const uniqueStratums: string[] = [];
+        const fullStratums = analysis.analysisId === 3111 ? ['8507', '8532', '0'] : ['2', '3', '4', '5', '6', '7', '8', '9'];
+        for (const result of results) {
+            if (uniqueStratums.indexOf(result.stratum5) <= -1) {
+                uniqueStratums.push(result.stratum5);
+            }
+        }
+        const missingStratums = fullStratums.
+            filter(item => uniqueStratums.indexOf(item) < 0);
+        for (const missingStratum of missingStratums) {
+            if (results.length > 0) {
+                const missingResult = {
+                    analysisId: analysis.analysisId,
+                    countValue: 20,
+                    countPercent: this.countPercentage(20),
+                    stratum1: results[0].stratum1,
+                    stratum2: results[0].stratum2,
+                    stratum3: results[0].stratum3,
+                    stratum4: results[0].stratum4,
+                    stratum5: missingStratum,
+                    stratum6: results[0].stratum6,
+                    analysisStratumName: analysis.analysisId === 3111 ? GENDER_STRATUM_MAP[missingStratum] : AGE_STRATUM_MAP[missingStratum]
+                };
+                analysis.results.push(missingResult);
+            }
+        }
+    }
+
+    public addDidNotAnswerResult(questionConceptId: any, results: any[]) {
         let didNotAnswerCount = this.props.countValue;
         for (const r of results) {
             didNotAnswerCount = didNotAnswerCount - r.countValue;
@@ -286,7 +290,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                         {isCopeSurvey ? <React.Fragment></React.Fragment> : answerConceptId}
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                    {isCopeSurvey ? <React.Fragment></React.Fragment> : countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        {isCopeSurvey ? <React.Fragment></React.Fragment> : countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                         {isCopeSurvey ? answerConceptId : countPercent ? countPercent.toFixed(2) : participantPercentage}
@@ -309,26 +313,26 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                             <div className='survey-sub-table'>
                                 {/* tslint:disable-next-line: no-use-before-declare */}
                                 <SurveyAnswerReactComponent level={this.state.nextLevel}
-                                    particpantCount={countValue}
+                                    participantCount={countValue}
                                     question={sq}
                                     isCopeSurvey={isCopeSurvey}
                                     surveyName={surveyName}
                                     surveyVersions={surveyVersions}
                                     surveyCountAnalysis={surveyCountAnalysis}
-                                    searchTerm={searchTerm}/>
+                                    searchTerm={searchTerm} />
                             </div>
                         </React.Fragment>;
                     })
                     : <SurveyChartReactComponent graphButtons={graphButtons}
-                                                 isCopeSurvey={isCopeSurvey}
-                                                 question={question}
-                                                 answer={answer}
-                                                 selectedResult={answer}
-                                                 surveyName={surveyName}
-                                                 versionAnalysis={surveyVersions}
-                                                 surveyCountAnalysis={surveyCountAnalysis}
-                                                 searchTerm={searchTerm}>
-                      </SurveyChartReactComponent>
+                        isCopeSurvey={isCopeSurvey}
+                        question={question}
+                        answer={answer}
+                        selectedResult={answer}
+                        surveyName={surveyName}
+                        versionAnalysis={surveyVersions}
+                        surveyCountAnalysis={surveyCountAnalysis}
+                        searchTerm={searchTerm}>
+                    </SurveyChartReactComponent>
                 }
             </div>}
         </React.Fragment>;
@@ -339,7 +343,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 interface Props {
     isCopeSurvey: boolean;
     question: any;
-    particpantCount: number;
+    participantCount: number;
     level: number;
     surveyName: string;
     surveyVersions: any;
@@ -353,7 +357,14 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
     }
 
     render() {
-        const { isCopeSurvey, question, particpantCount, level, surveyName, surveyVersions, surveyCountAnalysis, searchTerm } = this.props;
+        const { isCopeSurvey,
+            question,
+            participantCount,
+            level,
+            surveyName,
+            surveyVersions,
+            surveyCountAnalysis,
+            searchTerm } = this.props;
         return <React.Fragment>
             <style>{styleCss}</style>
             <div className='survey-tbl'>
@@ -363,32 +374,32 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                     </div>
                     <div className='survey-tbl-r-group survey-tbl-r-group-style '>
                         <div className='info-text survey-tbl-d display-body'>
-                        {isCopeSurvey ? null :
-                            <span>
-                                Concept Code
+                            {isCopeSurvey ? null :
+                                <span>
+                                    Concept Code
                                 <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
-                            </span>
-                        }
+                                </span>
+                            }
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {isCopeSurvey ? null :
                                 <span>
                                     Participant Count
                                     <TooltipReactComponent tooltipKey='surveyParticipantCountHelpText' label='test'
-                                    searchTerm='test' action='Survey Page Tooltip' />
+                                        searchTerm='test' action='Survey Page Tooltip' />
                                 </span>
                             }
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {isCopeSurvey ?
-                             <span>
-                                Concept Code
+                                <span>
+                                    Concept Code
                                 <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
-                             </span>
-                             :
-                             <span>
-                                    {!!particpantCount ? `% Answered out of ${particpantCount}` : '% Answered'}
-                             </span>}
+                                </span>
+                                :
+                                <span>
+                                    {!!participantCount ? `% Answered out of ${participantCount}` : '% Answered'}
+                                </span>}
                         </div >
                         <div className='info-text survey-tbl-d display-body'>
                             {isCopeSurvey ? null : <React.Fragment></React.Fragment>}
@@ -409,7 +420,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             countPercent: answer.countPercent
                         };
                         const key = 'answer' + index;
-                        return <SurveyAnswerRowComponent level={level} participantCount={particpantCount}
+                        return <SurveyAnswerRowComponent level={level} participantCount={participantCount}
                             key={key}
                             question={question}
                             answer={answer}
@@ -418,7 +429,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             surveyVersions={surveyVersions}
                             surveyCountAnalysis={surveyCountAnalysis}
                             searchTerm={searchTerm}
-                            {...answerCleaned}/>;
+                            {...answerCleaned} />;
                     })
                 }
             </div>
@@ -431,7 +442,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
     // tslint:disable-next-line: component-selector
     selector: 'app-survey-answer-react',
     template: `<span #root></span>`,
-    styleUrls: ['../../../styles/template.css'],
+    styleUrls: ['../../../../styles/template.css'],
     encapsulation: ViewEncapsulation.None,
 })
 

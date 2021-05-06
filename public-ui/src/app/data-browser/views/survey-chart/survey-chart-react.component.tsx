@@ -14,22 +14,22 @@ import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
 
 interface State {
-    graphToShow: string;
-    selectedChartAnalysis: any;
-    displayGraphErrorMessage: boolean;
-    isLoaded: boolean;
+  graphToShow: string;
+  selectedChartAnalysis: any;
+  displayGraphErrorMessage: boolean;
+  isLoaded: boolean;
 }
 
 interface Props {
-    graphButtons: any;
-    question: any;
-    answer: any;
-    selectedResult: any;
-    surveyName: any;
-    searchTerm: any;
-    surveyCountAnalysis: any;
-    isCopeSurvey: any;
-    versionAnalysis: any;
+  graphButtons: any;
+  question: any;
+  answer: any;
+  selectedResult: any;
+  surveyName: any;
+  searchTerm: any;
+  surveyCountAnalysis: any;
+  isCopeSurvey: any;
+  versionAnalysis: any;
 }
 
 const chartStyleCss = `
@@ -73,10 +73,10 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-        graphToShow: this.props.isCopeSurvey ? GraphType.SurveyVersion : GraphType.BiologicalSex,
-        displayGraphErrorMessage: false,
-        isLoaded: false,
-        selectedChartAnalysis: null,
+      graphToShow: this.props.isCopeSurvey ? GraphType.SurveyVersion : GraphType.BiologicalSex,
+      displayGraphErrorMessage: false,
+      isLoaded: false,
+      selectedChartAnalysis: null,
     };
   }
 
@@ -85,7 +85,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   selectGraphType(g: any) {
-    const {surveyName, searchTerm, question, answer} = this.props;
+    const { surveyName, searchTerm, question, answer } = this.props;
     if (answer.stratum4.toLowerCase().indexOf('more than one race') > -1) {
       triggerEvent('conceptClick', 'More than one race /ethncitiy graph view',
         'Expand to see graphs', surveyName + ' - Q'
@@ -98,23 +98,25 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       ' - ' + g, searchTerm, null);
     let selectedAnalysis;
     switch (g) {
-        case GraphType.AgeWhenSurveyWasTaken:
-             selectedAnalysis = question.ageAnalysis;
-             break;
-        case GraphType.SurveyVersion:
-             selectedAnalysis = question.versionAnalysis;
-             break;
-        default:
-             selectedAnalysis = question.genderAnalysis;
-             break;
+      case GraphType.AgeWhenSurveyWasTaken:
+        selectedAnalysis = question.ageAnalysis;
+        break;
+      case GraphType.SurveyVersion:
+        selectedAnalysis = question.versionAnalysis;
+        break;
+      default:
+        selectedAnalysis = question.genderAnalysis;
+        break;
     }
+
     this.setState({
-        graphToShow: g,
-        selectedChartAnalysis: selectedAnalysis,
-        isLoaded: true,
-        displayGraphErrorMessage: selectedAnalysis === undefined ||
-            (selectedAnalysis && selectedAnalysis.results.filter(a => a.stratum3 ===
-            answer.stratum3).length === 0) });
+      graphToShow: g,
+      selectedChartAnalysis: selectedAnalysis,
+      isLoaded: true,
+      displayGraphErrorMessage: selectedAnalysis === undefined ||
+        (selectedAnalysis && selectedAnalysis.results.filter(a => a.stratum3 ===
+          answer.stratum3).length === 0)
+    });
     triggerEvent('graphTabClick', 'Survey Graph',
       'Click', surveyName + ' - ' + g + ' - Q'
       + question.actualQuestionNumber + ' - ' + question.conceptName + ' - ' + answer.stratum4 +
@@ -122,73 +124,72 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipKey(g: string) {
-      if (g === 'Sex Assigned at Birth') {
-        return 'surveyBSChart';
-      } else if (g === 'Survey Versions') {
-        return 'versionChartHelpText';
-      } else if (g === 'Age When Survey Was Taken') {
-        return 'surveyAgeChartHelpText';
-      } else {
-        return g;
-      }
+    if (g === 'Sex Assigned at Birth') {
+      return 'surveyBSChart';
+    } else if (g === 'Survey Versions') {
+      return 'versionChartHelpText';
+    } else if (g === 'Age When Survey Was Taken') {
+      return 'surveyAgeChartHelpText';
+    } else {
+      return g;
+    }
   }
 
   getLabel(g) {
-    const {surveyName, question, answer} = this.props;
-    return surveyName + ' - Q' +  question.actualQuestionNumber + ' - ' +
-    question.conceptName + ' - ' + answer.stratum4 + ' - ' + g;
+    const { surveyName, question, answer } = this.props;
+    return surveyName + ' - Q' + question.actualQuestionNumber + ' - ' +
+      question.conceptName + ' - ' + answer.stratum4 + ' - ' + g;
   }
 
-
   render() {
-      const {graphButtons, searchTerm, surveyCountAnalysis, selectedResult, versionAnalysis} = this.props;
-      const { isLoaded, graphToShow, displayGraphErrorMessage, selectedChartAnalysis } = this.state;
-      const tabIndex = 0;
-      return <React.Fragment>
-        <style>{chartStyleCss}</style>
-        <div className='survey-graph-menu'>
-            {
-              graphButtons.map((g, index) => {
-                return (
-                 <div onClick={() => this.selectGraphType(g)}
-                 className={graphToShow === g ? 'active survey-chart-choice' : 'survey-chart-choice'}
-                 tabIndex={tabIndex} key={index}>
-                 <span>{g}</span>
-                 <TooltipReactComponent tooltipKey={this.getTooltipKey(g)}
-                 label={this.getLabel(g)} searchTerm={searchTerm} action='Survey Chart Tooltip'>
-                 </TooltipReactComponent>
-                 </div>
-                 );
-              })
-            }
+    const { graphButtons, searchTerm, surveyCountAnalysis, selectedResult, versionAnalysis } = this.props;
+    const { isLoaded, graphToShow, displayGraphErrorMessage, selectedChartAnalysis } = this.state;
+    const tabIndex = 0;
+    return <React.Fragment>
+      <style>{chartStyleCss}</style>
+      <div className='survey-graph-menu'>
+        {
+          graphButtons.map((g, index) => {
+            return (
+              <div onClick={() => this.selectGraphType(g)}
+                className={graphToShow === g ? 'active survey-chart-choice' : 'survey-chart-choice'}
+                tabIndex={tabIndex} key={index}>
+                <span>{g}</span>
+                <TooltipReactComponent tooltipKey={this.getTooltipKey(g)}
+                  label={this.getLabel(g)} searchTerm={searchTerm} action='Survey Chart Tooltip'>
+                </TooltipReactComponent>
+              </div>
+            );
+          })
+        }
+      </div>
+      {displayGraphErrorMessage
+        ? <div className='graph-error-message'>
+          <ErrorMessageReactComponent dataType='chart' />
         </div>
-{displayGraphErrorMessage
-    ? <div className='graph-error-message'>
-                  <ErrorMessageReactComponent dataType='chart'/>
-                </div>
-    : isLoaded && selectedChartAnalysis.analysisId === 3111 ?
-            <div className='chart' key='biosex-chart'>
-             <BioSexChartReactComponent
-             domain='survey' genderAnalysis={selectedChartAnalysis}
-             genderCountAnalysis={surveyCountAnalysis.genderCountAnalysis}
-             selectedResult={selectedResult}/>
-            </div> :
-            isLoaded && selectedChartAnalysis.analysisId === 3112 ?
+        : isLoaded && selectedChartAnalysis.analysisId === 3111 ?
+          <div className='chart' key='biosex-chart'>
+            <BioSexChartReactComponent
+              domain='survey' genderAnalysis={selectedChartAnalysis}
+              genderCountAnalysis={surveyCountAnalysis.genderCountAnalysis}
+              selectedResult={selectedResult} />
+          </div> :
+          isLoaded && selectedChartAnalysis.analysisId === 3112 ?
             <div className='chart' key='age-chart'>
-                                 <AgeChartReactComponent
-                                 domain='survey' ageAnalysis={selectedChartAnalysis}
-                                 ageCountAnalysis={surveyCountAnalysis.ageCountAnalysis}
-                                 selectedResult={selectedResult}/>
+              <AgeChartReactComponent
+                domain='survey' ageAnalysis={selectedChartAnalysis}
+                ageCountAnalysis={surveyCountAnalysis.ageCountAnalysis}
+                selectedResult={selectedResult} />
             </div> :
             isLoaded && selectedChartAnalysis.analysisId === 3113 ?
-            <div className='chart' key='age-chart'>
-            <VersionChartReactComponent versionAnalysis={selectedChartAnalysis}
-            surveyVersionAnalysis={versionAnalysis}
-            selectedResult={selectedResult}/>
-            </div> : null
-}
+              <div className='chart' key='age-chart'>
+                <VersionChartReactComponent versionAnalysis={selectedChartAnalysis}
+                  surveyVersionAnalysis={versionAnalysis}
+                  selectedResult={selectedResult} />
+              </div> : null
+      }
 
-      </React.Fragment>;
+    </React.Fragment>;
   }
 }
 
@@ -212,7 +213,7 @@ export class SurveyChartWrapperComponent extends BaseReactWrapper {
 
   constructor() {
     super(SurveyChartReactComponent, ['graphButtons', 'question', 'answer',
-    'selectedResult', 'surveyName', 'searchTerm', 'surveyCountAnalysis',
-    'isCopeSurvey', 'versionAnalysis']);
+      'selectedResult', 'surveyName', 'searchTerm', 'surveyCountAnalysis',
+      'isCopeSurvey', 'versionAnalysis']);
   }
 }
