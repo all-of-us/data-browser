@@ -159,7 +159,7 @@ aside .button-item button {
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 interface State {
-  PMGroups: any;
+  pmGroups: any;
   loading: boolean;
   selectedGroup: any;
   selectedConcept: any;
@@ -174,7 +174,7 @@ interface State {
 export class PMReactComponent extends React.Component<{}, State> {
   constructor(props) {
     super(props);
-    this.state = {PMGroups: PMGroups, loading: true, searchText: localStorage.getItem('searchText'), selectedGroup: PMGroups[0],
+    this.state = {pmGroups: PMGroups, loading: true, searchText: localStorage.getItem('searchText'), selectedGroup: PMGroups[0],
     selectedConcept: PMGroups[0].concepts[0], selectedConceptUnit: null, domainCountAnalysis: null, selectedConceptValueAnalysis: null,
     selectedConceptValueCountAnalysis: null, unitNames: []};
   }
@@ -185,12 +185,12 @@ export class PMReactComponent extends React.Component<{}, State> {
   }
 
   getPMData() {
-    const {searchText, PMGroups} = this.state;
+    const {searchText, pmGroups} = this.state;
     const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
     api.getConceptAnalysisResults(PM_CONCEPTS).then(
       (result) => {
         const items = result.items;
-        for (const group of PMGroups) {
+        for (const group of pmGroups) {
           for (const concept of group.concepts) {
             concept.analyses = items.filter(item => item.conceptId === concept.conceptId)[0];
             if (concept.conceptId === '903133') {
@@ -206,13 +206,13 @@ export class PMReactComponent extends React.Component<{}, State> {
             }
           }
           if (searchText) {
-            this.setState({selectedGroup: PMGroups.filter(conceptgroup =>
+            this.setState({selectedGroup: pmGroups.filter(conceptgroup =>
               conceptgroup.groupName.toLowerCase().
               includes(searchText.toLowerCase()))[0]});
           } else {
-            this.setState({selectedGroup: PMGroups[0]});
+            this.setState({selectedGroup: pmGroups[0]});
           }
-          this.setUnit(PMGroups[0].concepts[0]);
+          this.setUnit(pmGroups[0].concepts[0]);
     });
   }
 
@@ -343,7 +343,7 @@ export class PMReactComponent extends React.Component<{}, State> {
   }
 
   render() {
-    const {loading, selectedGroup, selectedConcept, selectedConceptUnit, unitNames, domainCountAnalysis, PMGroups} = this.state;
+    const {loading, selectedGroup, selectedConcept, selectedConceptUnit, unitNames, domainCountAnalysis, pmGroups} = this.state;
     return <React.Fragment>
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
@@ -352,7 +352,7 @@ export class PMReactComponent extends React.Component<{}, State> {
         <div className='pm-layout' style={styles.pmLayout}>
           <aside style={styles.aside}>
             {
-              PMGroups.map((pmConceptGroup, index) => {
+              pmGroups.map((pmConceptGroup, index) => {
                 const buttonClass = (selectedGroup === pmConceptGroup) ? 'btn btn-link group-button active' : 'btn btn-link group-button';
                 return <div className='button-item' key={index}>
                   <button className={buttonClass} style={styles.btnLink}
