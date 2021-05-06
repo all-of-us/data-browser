@@ -17,6 +17,9 @@ const styles = reactStyles({
         fontSize: '14px',
         cursor: 'pointer',
         color: '#216fb4',
+        border: 'none',
+        textDecoration: 'underline',
+        outline: 'none'
     },
     clIcon: {
         width: '1.3em',
@@ -81,8 +84,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         countAnalysis: results.items.filter(a => a.analysisId === 3110)[0],
                         genderAnalysis: results.items.filter(a => a.analysisId === 3111)[0],
                         ageAnalysis: results.items.filter(a => a.analysisId === 3112)[0],
+                        versionAnalysis: results.items.filter(a => a.analysisId === 3113)[0],
                         participantCountAnalysis: results.items.filter(a => a.analysisId === 3203)[0],
-                        // this.processResults(q, this.survey.participantCount);
                     };
                     questionWithResults.countAnalysis.results.sort((a1, a2) => {
                         if (a1.countValue > a2.countValue) {

@@ -1,6 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { SurveyAnswerChartReactComponent } from 'app/data-browser/charts/chart-survey-answers/react-survey-answer-chart.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SurveyChartReactComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -139,7 +140,6 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, this.state.nextLevel)
             .then(
                 results => {
-
                     this.setState({
                         subQuestions: this.processResults(results.questions.items)
                     });
@@ -366,6 +366,9 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
             searchTerm } = this.props;
         return <React.Fragment>
             <style>{styleCss}</style>
+            {(isCopeSurvey) && <SurveyAnswerChartReactComponent
+                            countAnalysis={question.countAnalysis.results}
+                            versionAnalysis={question.versionAnalysis.results} />}
             <div className='survey-tbl'>
                 <div className='survey-tbl-r survey-tbl-head'>
                     <div className='info-text first survey-tbl-d'>
