@@ -69,11 +69,6 @@
                       </app-survey-question-react>
                     </div>
                   </div>
-
-                  <ng-container *ngIf="q.expanded && q.resultFetchComplete">
-                    <chart-survey-answers *ngIf="isCopeSurvey" [countAnalysis]="q.countAnalysis.results"
-                      [versionAnalysis]='q.versionAnalysis.results'></chart-survey-answers>
-                  </ng-container>
                 </div>
               </ng-container>
               <ng-template #topic>
