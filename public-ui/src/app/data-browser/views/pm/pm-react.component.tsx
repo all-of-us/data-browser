@@ -356,7 +356,7 @@ export class PMReactComponent extends React.Component<{}, State> {
 
   render() {
     const {loading, selectedGroup, selectedConcept, selectedConceptUnit, unitNames, domainCountAnalysis} = this.state;
-    return ∂<React.Fragment>
+    return <React.Fragment>
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
         <h1>Browse Program Physical Measurements</h1>
