@@ -6,7 +6,6 @@ import {
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import * as React from 'react';
 
-const containerElementName = 'root';
 
 export function highlightSearchTerm(searchTerm: string, text: string, highlightColor: string) {
   let words = [];
@@ -48,14 +47,24 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
     </span>)}</React.Fragment>;
 }
 
-export const HighlightReactComponent: React.FunctionComponent<{searchTerm: string, text: string}> =
-  ({searchTerm, text}) => {
-  return highlightSearchTerm(searchTerm, text, 'yellow');
-};
+interface Props {
+  searchTerm:string,
+  text: string
+}
+
+export const HighlightReactComponent = class extends React.Component<Props, []> {
+  constructor(props:Props){
+    super(props);
+  }
+  render() {
+    const {searchTerm, text} = this.props;
+    return highlightSearchTerm(searchTerm, text, 'yellow');
+  }
+}
 
 @Component({
   selector: 'app-highlight-react',
-  template: `<span #${containerElementName}></span>`,
+  template: `<span #root></span>`,
   styleUrls: ['./highlight-search.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
