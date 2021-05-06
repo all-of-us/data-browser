@@ -4,12 +4,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { getBaseOptions, VERSION_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
 
-const cssStyle= `
+const cssStyle = `
 :host {
     display: block;
     padding:1rem 3rem;
@@ -106,8 +106,8 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
   prepChartData() {
     const { countAnalysis } = this.props;
     const answerCount = countAnalysis.length;
-    let answerChartInfo = [];
-    let colors = [];
+    const answerChartInfo = [];
+    const colors = [];
     countAnalysis.forEach((aCount, i) => {
         if (answerCount <= 8) {
             aCount['color'] = eightColors[i];
@@ -128,7 +128,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
         });
         colors.push(aCount.color);
     });
-    console.log(colors);
     this.setState({answerChartInfo: answerChartInfo, colors: colors}, () => {
     this.sortAnswers()});
   }
@@ -156,7 +155,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
 
   public conceptDist(sortedAnswers: any) {
     let tempArr: any[] = [];
-    let categoryArr = [];
+    const categoryArr = [];
     const { answerChartInfo } = this.state;
     for (const prop in sortedAnswers) {
       if (sortedAnswers.hasOwnProperty(prop)) {
