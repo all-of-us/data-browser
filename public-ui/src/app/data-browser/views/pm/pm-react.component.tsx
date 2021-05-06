@@ -181,8 +181,8 @@ export class PMReactComponent extends React.Component<{}, State> {
   }
 
   componentDidMount() {
-        this.getPMData();
-        this.getPMCountData();
+    this.getPMData();
+    this.getPMCountData();
   }
 
   getPMData() {
@@ -293,24 +293,24 @@ export class PMReactComponent extends React.Component<{}, State> {
   setUnit(concept: any) {
     const unitNames = [];
     if (concept.analyses && concept.analyses.measurementGenderCountAnalysis) {
-          for (const r of concept.analyses.measurementGenderCountAnalysis) {
-            let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
-            tempUnitNames = tempUnitNames.filter((elem, index, self) => index === self.indexOf(elem));
-            unitNames.push(...tempUnitNames);
-          }
+      for (const r of concept.analyses.measurementGenderCountAnalysis) {
+        let tempUnitNames = r.results.map(({ stratum2 }) => stratum2);
+        tempUnitNames = tempUnitNames.filter((elem, index, self) => index === self.indexOf(elem));
+        unitNames.push(...tempUnitNames);
+      }
     }
     if (unitNames.length > 0) {
-        this.setState({selectedConceptUnit: unitNames[0], unitNames: unitNames}, () => {
-            this.setAnalysis();
-        });
-        return unitNames[0];
+      this.setState({selectedConceptUnit: unitNames[0], unitNames: unitNames}, () => {
+        this.setAnalysis();
+      });
+      return unitNames[0];
     }
     return null;
   }
 
   setConceptUnit(unit) {
     this.setState({selectedConceptUnit: unit}, () => {
-        this.setAnalysis();
+      this.setAnalysis();
     });
   }
 
@@ -346,7 +346,7 @@ export class PMReactComponent extends React.Component<{}, State> {
       .sort((a, b) => {
         return genderSort.indexOf(a.analysisStratumName) -
           genderSort.indexOf(b.analysisStratumName);
-      });
+    });
   }
 
   getChartTitle(gender) {
@@ -355,120 +355,115 @@ export class PMReactComponent extends React.Component<{}, State> {
 
 
   render() {
-      const {loading, selectedGroup, selectedConcept, selectedConceptUnit, unitNames, domainCountAnalysis} = this.state;
-      return <React.Fragment>
+    const {loading, selectedGroup, selectedConcept, selectedConceptUnit, unitNames, domainCountAnalysis} = this.state;
+    return ∂<React.Fragment>
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
         <h1>Browse Program Physical Measurements</h1>
         { loading ? <Spinner /> :
         <div className='pm-layout' style={styles.pmLayout}>
-            <aside style={styles.aside}>
-                {
-                    PMGroups.map((pmConceptGroup, index) => {
-                        const buttonClass = (selectedGroup === pmConceptGroup) ? 'btn btn-link group-button active' : 'btn btn-link group-button';
-                        return <div className='button-item' key={index}>
-                        <button className={buttonClass} style={styles.btnLink}
-                        onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName}
-                        </button>
-                        </div>;
-                    })
+          <aside style={styles.aside}>
+            {
+              PMGroups.map((pmConceptGroup, index) => {
+                const buttonClass = (selectedGroup === pmConceptGroup) ? 'btn btn-link group-button active' : 'btn btn-link group-button';
+                return <div className='button-item' key={index}>
+                  <button className={buttonClass} style={styles.btnLink}
+                  onClick={() => this.showMeasurement(pmConceptGroup, pmConceptGroup.concepts[0])}> {pmConceptGroup.groupName}
+                  </button>
+                  </div>;
+                })
+            }
+          </aside>
+          <div className='db-card' style={styles.dbCard}>
+            <div className='db-card-inner'>
+              <div className='db-card-header'>
+                <div className='group-name'>{selectedGroup.groupName}</div>
+                { selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis ?
+                  <div className='bs-title' style={styles.bsTitle}>
+                    Sex Assigned At Birth
+                    <TooltipReactComponent tooltipKey='pmValueChartHelpText'
+                      label='Physical Measurements tooltip hover' searchTerm='TODO replace search text in here'
+                      action={'Hover on pm biological sex chart of concept' + selectedConcept.conceptName}>
+                    </TooltipReactComponent>
+                  </div>
+                  : null
                 }
-            </aside>
-            <div className='db-card' style={styles.dbCard}>
-                <div className='db-card-inner'>
-                    <div className='db-card-header'>
-                        <div className='group-name'>{selectedGroup.groupName}</div>
-                        {   selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementValueGenderAnalysis ?
-                        <div className='bs-title' style={styles.bsTitle}>
-                        Sex Assigned At Birth <TooltipReactComponent tooltipKey='pmValueChartHelpText'
-                                               label='Physical Measurements tooltip hover' searchTerm='TODO replace search text in here'
-                                               action={'Hover on pm biological sex chart of concept' + selectedConcept.conceptName}>
-                                               </TooltipReactComponent>
-                        </div>
-                        : null
-                        }
-                        { selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1 ?
-                            <div className='group-option'>
-                            {
-                            selectedGroup.concepts.map((concept, index) => {
-                                const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
-                                return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)}
-                                style={styles.btnLink}>{concept.conceptName}</button>;
-                            })
-                            }
-                            </div>
-                        : null
-                        }
-                        </div>
-                        {
-                            unitNames && unitNames.length > 1 ?
-                            <div className='group-unit'>
-                            {
-                                unitNames.map((unit, index) => {
-                                    const btnClass = selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
-                                    return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)}
-                                    style={styles.btnLink}>{unit}</button>;
-                                })
-                            }
+                {  selectedGroup && selectedGroup.concepts && selectedGroup.concepts.length > 1 ?
+                   <div className='group-option'>
+                   {
+                     selectedGroup.concepts.map((concept, index) => {
+                     const btnClass = selectedConcept === concept ? 'btn btn-link concept-button active' : 'btn-link btn concept-button';
+                     return <button className={btnClass} key={index} onClick={() => this.showMeasurement(selectedGroup, concept)}
+                       style={styles.btnLink}>{concept.conceptName}</button>;
+                     })
+                   }
+                   </div>
+                   : null
+                }
+                </div>
+                {  unitNames && unitNames.length > 1 ?
+                     <div className='group-unit'>
+                     {  unitNames.map((unit, index) => {
+                          const btnClass = selectedConceptUnit === unit ? 'btn btn-link unit-button active' : 'btn btn-link unit-button';
+                          return <button className={btnClass} key={index} onClick={() => this.setConceptUnit(unit)}
+                            style={styles.btnLink}>{unit}</button>;
+                          })
+                     }
+                     </div> : null
+                     }
+                     {  selectedConcept && (selectedConcept.conceptId === '903111' || selectedConcept.conceptId === '903120') ?
+                        selectedConcept.analyses.countAnalysis.results[0].countValue > 20 ?
+                        <div className='participant-count'>
+                          Total Participant count: {selectedConcept.analyses.countAnalysis.results[0].countValue}
+                        </div> :
+                        <div className='participant-count'>
+                          Total Participant count: &le; {selectedConcept.analyses.countAnalysis.results[0].countValue}
+                        </div> : null
+                     }
+                     <div className='chart-layout' style={styles.chartLayout}>
+                       {  selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis ?
+                          selectedConcept.conceptId !== '903111' && selectedConcept.conceptId !== '903120' && selectedConceptUnit ?
+                          <React.Fragment>
+                          {  this.getCountAnalysis(selectedConceptUnit).map((gender, index) => {
+                               const chartKey = gender.stratum3 + '-' + index;
+                               return <div className='bs-chart-item' key={chartKey}>
+                                 <ValueReactChartComponent conceptId={selectedConcept.conceptId}
+                                   valueAnalysis={this.getValueAnalysis()}
+                                   domainCountAnalysis={domainCountAnalysis}
+                                   genderId={gender.stratum3}
+                                   chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') +
+                                   gender.countValue.toLocaleString()} key={chartKey}></ValueReactChartComponent></div>;
+                               })
+                          }
+                          </React.Fragment>
+                          : selectedConcept.analyses.measurementValueGenderAnalysis ?
+                            <div className='chart-item stacked-chart-item'>
+                              <ValueReactChartComponent conceptId={selectedConcept.conceptId}
+                                valueAnalysis={selectedConcept.analyses.measurementValueGenderAnalysis[0]}
+                                domainCountAnalysis={domainCountAnalysis}
+                                genderId='stacked gender'
+                                chartTitle='stacked chart'>
+                              </ValueReactChartComponent>
                             </div> : null
-                        }
-                        {
-                            selectedConcept && (selectedConcept.conceptId === '903111' || selectedConcept.conceptId === '903120') ?
-                            selectedConcept.analyses.countAnalysis.results[0].countValue > 20 ?
-                            <div className='participant-count'>
-                            Total Participant count: {selectedConcept.analyses.countAnalysis.results[0].countValue}
-                            </div> :
-                            <div className='participant-count'>
-                            Total Participant count: &le; {selectedConcept.analyses.countAnalysis.results[0].countValue}
-                            </div> : null
-                        }
-                        <div className='chart-layout' style={styles.chartLayout}>
-                        {
-                            selectedConcept && selectedConcept.analyses && selectedConcept.analyses.measurementGenderCountAnalysis ?
-                            selectedConcept.conceptId !== '903111' && selectedConcept.conceptId !== '903120' && selectedConceptUnit ?
-                            <React.Fragment>
-                            {
-                                this.getCountAnalysis(selectedConceptUnit).map((gender, index) => {
-                                    const chartKey = gender.stratum3 + '-' + index;
-                                    return <div className='bs-chart-item' key={chartKey}>
-                                    <ValueReactChartComponent conceptId={selectedConcept.conceptId}
-                                    valueAnalysis={this.getValueAnalysis()}
-                                    domainCountAnalysis={domainCountAnalysis}
-                                    genderId={gender.stratum3}
-                                    chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') +
-                                    gender.countValue.toLocaleString()} key={chartKey}></ValueReactChartComponent></div>;
-                                })
-                            }
-                            </React.Fragment>
-                            : selectedConcept.analyses.measurementValueGenderAnalysis ?
-                                <div className='chart-item stacked-chart-item'>
-                                <ValueReactChartComponent conceptId={selectedConcept.conceptId}
-                                                          valueAnalysis={selectedConcept.analyses.measurementValueGenderAnalysis[0]}
-                                                          domainCountAnalysis={domainCountAnalysis}
-                                                          genderId='stacked gender'
-                                                          chartTitle='stacked chart'>
-                                </ValueReactChartComponent>
-                              </div> : null
-                            : null
-                        }
-                        {
-                            selectedConcept.analyses && selectedConcept.analyses.ageAnalysis ?
-                            <div className='chart-item age-chart'>
-                                <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken
-                                <TooltipReactComponent
-                                    tooltipKey='pmAgeChartHelpText'
-                                    label='Physical Measurements tooltip hover'
-                                    searchTerm='TODO replace search text in here'
-                                    action={'Hover on pm age chart of concept ' + selectedConcept.conceptName}>
-                                </TooltipReactComponent>
-                                </div>
-                                <AgeChartReactComponent ageAnalysis={selectedConcept.analyses.ageAnalysis}
-                                ageCountAnalysis={domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
-                                </AgeChartReactComponent>
+                          : null
+                       }
+                       {  selectedConcept.analyses && selectedConcept.analyses.ageAnalysis ?
+                          <div className='chart-item age-chart'>
+                            <div className='bs-title' style={styles.bsTitle}>Age When Physical Measurement Was Taken
+                              <TooltipReactComponent
+                                tooltipKey='pmAgeChartHelpText'
+                                label='Physical Measurements tooltip hover'
+                                searchTerm='TODO replace search text in here'
+                                action={'Hover on pm age chart of concept ' + selectedConcept.conceptName}>
+                              </TooltipReactComponent>
                             </div>
-                             : null
-                        }
-                        </div>
+                            <AgeChartReactComponent ageAnalysis={selectedConcept.analyses.ageAnalysis}
+                              ageCountAnalysis={domainCountAnalysis.ageCountAnalysis} domain='pm' selectedResult=''>
+                            </AgeChartReactComponent>
+                          </div>
+                          : null
+                       }
+                       </div>
                 </div>
             </div>
         </div>
