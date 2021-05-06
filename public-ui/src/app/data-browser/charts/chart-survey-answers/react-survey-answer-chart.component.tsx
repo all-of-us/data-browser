@@ -5,50 +5,51 @@ import {
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { reactStyles } from 'app/utils';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
+
+const styles = reactStyles({
+    answerChartLayout: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    legend: {
+        padding: '1rem',
+        paddingBottom: '2rem',
+        maxWidth: '15rem',
+    },
+    legendInner: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        overflowY: 'auto',
+        maxHeight: '20rem'
+    },
+    legendItem: {
+        display: 'grid',
+        gridTemplateColumns: '1rem 1fr',
+        fontSize: '.8em',
+        paddingBottom: '.5em'
+    },
+    standardChart: {
+        display: 'block',
+        backgroundSize: 'contain',
+        height: 'auto',
+        width: '75%',
+        padding: '1rem 3rem'
+    }
+});
 
 const cssStyle = `
 :host {
     display: block;
     padding:1rem 3rem;
 }
-.answer-chart-layout {
-    display:flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-.legend {
-    padding:1rem;
-    padding-bottom: 2rem;
-    max-width: 15rem;
-}
-
-.legend-inner {
-    display:flex;
-    flex-direction: column;
-    align-items: flex-start;
-    overflow-y: auto;
-    max-height: 20rem;
-}
-.legend-item {
-    display: grid;
-    grid-template-columns: 1rem 1fr;
-    font-size:.8em;
-    padding-bottom: .5em;
-}
-
 .legend-item span {
     text-align: left;
-}
-
-.standard-chart {
-    display: block;
-    background-size: contain;
-    height: auto;
-    width: 75%;
-    padding: 1rem 3rem;
 }
 `;
 
@@ -237,15 +238,15 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
       const {options, answerChartInfo} = this.state;
       return <React.Fragment>
         <style>{cssStyle}</style>
-        <div className='answer-chart-layout'>
-        {options && <HighchartsReact highcharts={highCharts} options={options} className='standard-chart'
+        <div className='answer-chart-layout' style={styles.answerChartLayout}>
+        {options && <HighchartsReact highcharts={highCharts} options={options} className='standard-chart' style={styles.standardChart}
         updateArgs={[true]}/>}
-        <div className='legend'>
-                <div className='legend-inner'>
+        <div className='legend' style={styles.legend}>
+                <div className='legend-inner' style={styles.legendInner}>
                     {
                         answerChartInfo.map((answer, index) => {
                         const colorStyle = {color : answer.color};
-                        return <div className='legend-item' key={index}>
+                        return <div className='legend-item' key={index} style={styles.legendItem}>
                         <span><i className='fas fa-circle' style={colorStyle}></i></span>
                                             <span> {answer.answerValue}</span>
                         </div>;
