@@ -135,15 +135,15 @@ aside .button-item button {
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 interface State {
-    loading: boolean;
-    selectedGroup: any;
-    selectedConcept: any;
-    selectedConceptUnit: any;
-    selectedConceptValueAnalysis: any;
-    selectedConceptValueCountAnalysis: any;
-    domainCountAnalysis: any;
-    searchText: any;
-    unitNames: Array<String>;
+  loading: boolean;
+  selectedGroup: any;
+  selectedConcept: any;
+  selectedConceptUnit: any;
+  selectedConceptValueAnalysis: any;
+  selectedConceptValueCountAnalysis: any;
+  domainCountAnalysis: any;
+  searchText: any;
+  unitNames: Array<String>;
 }
 
 export class PMReactComponent extends React.Component<{}, State> {
@@ -189,31 +189,31 @@ export class PMReactComponent extends React.Component<{}, State> {
     const {searchText} = this.state;
     const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
     api.getConceptAnalysisResults(PM_CONCEPTS).then(
-        (result) => {
-            const items = result.items;
-            for (const group of PMGroups) {
-                for (const concept of group.concepts) {
-                    concept.analyses = items.filter(item => item.conceptId === concept.conceptId)[0];
-                    if (concept.conceptId === '903133') {
-                    const sortOrder = ['centimeter', 'inch (us)'];
-                    concept.analyses.measurementGenderCountAnalysis
-                        .sort((a, b) => {
-                            return sortOrder.indexOf(a.unitName.toLowerCase()) -
-                                sortOrder.indexOf(b.unitName.toLowerCase());
-                        });
-                    }
-                    this.arrangeConceptAnalyses(concept);
-                    this.setState({loading: false});
+      (result) => {
+        const items = result.items;
+        for (const group of PMGroups) {
+          for (const concept of group.concepts) {
+            concept.analyses = items.filter(item => item.conceptId === concept.conceptId)[0];
+            if (concept.conceptId === '903133') {
+              const sortOrder = ['centimeter', 'inch (us)'];
+              concept.analyses.measurementGenderCountAnalysis
+                .sort((a, b) => {
+                  return sortOrder.indexOf(a.unitName.toLowerCase()) -
+                    sortOrder.indexOf(b.unitName.toLowerCase());
+                  });
                 }
+                this.arrangeConceptAnalyses(concept);
+                this.setState({loading: false});
             }
-            if (searchText) {
-                this.setState({selectedGroup: PMGroups.filter(conceptgroup =>
-                          conceptgroup.groupName.toLowerCase().
-                            includes(searchText.toLowerCase()))[0]});
-            } else {
-                this.setState({selectedGroup: PMGroups[0]});
-            }
-            this.setUnit(PMGroups[0].concepts[0]);
+          }
+          if (searchText) {
+            this.setState({selectedGroup: PMGroups.filter(conceptgroup =>
+              conceptgroup.groupName.toLowerCase().
+              includes(searchText.toLowerCase()))[0]});
+          } else {
+            this.setState({selectedGroup: PMGroups[0]});
+          }
+          this.setUnit(PMGroups[0].concepts[0]);
     });
   }
 
