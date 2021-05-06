@@ -296,6 +296,7 @@ export class PMReactComponent extends React.Component<{}, State> {
     if (concept.analyses && concept.analyses.measurementGenderCountAnalysis) {
       for (const r of concept.analyses.measurementGenderCountAnalysis) {
         const tempUnitNames = r.results.map(({ stratum2 }) => stratum2).filter((elem, index, self) => index === self.indexOf(elem));
+        unitNames.push(...tempUnitNames);
       }
     }
     if (unitNames.length > 0) {
