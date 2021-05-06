@@ -129,7 +129,8 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
         colors.push(aCount.color);
     });
     this.setState({answerChartInfo: answerChartInfo, colors: colors}, () => {
-    this.sortAnswers();});
+        this.sortAnswers();
+    });
   }
 
   public sortAnswers() {
