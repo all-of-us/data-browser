@@ -129,7 +129,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
         colors.push(aCount.color);
     });
     this.setState({answerChartInfo: answerChartInfo, colors: colors}, () => {
-    this.sortAnswers()});
+    this.sortAnswers();});
   }
 
   public sortAnswers() {
@@ -187,7 +187,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
       }
     }
     this.setState({chartSeries: tempArr, categoryArr: categoryArr}, () => {
-        this.buildChartData()
+        this.buildChartData();
     });
   }
 
@@ -241,11 +241,11 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
                 <div className='legend-inner'>
                     {
                         this.state.answerChartInfo.map((answer, index) => {
-                        const colorStyle={color: answer.color}
+                        const colorStyle = {color : answer.color};
                         return <div className='legend-item' key={index}>
                         <span><i className='fas fa-circle' style={colorStyle}></i></span>
                                             <span> {answer.answerValue}</span>
-                        </div>
+                        </div>;
                         })
                     }
                 </div>
