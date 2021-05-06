@@ -139,7 +139,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                 isCopeSurvey={isCopeSurvey}
                 question={questionWithResults}
                 surveyCountAnalysis={surveyCountAnalysis}
-                surveyVersions={isCopeSurvey && versionAnalysis}
+                surveyVersions={versionAnalysis}
                 level={0}
                 participantCount={participantCount} />}
         </div>;

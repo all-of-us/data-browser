@@ -104,6 +104,9 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
       }
     };
     this.chartOptions.colors = this.colors;
+    console.log('flash flash flash flash');
+    console.log(this.chartOptions);
+    console.log('flash flash flash flash');
   }
 
   public sortAnswers(answers: any[]) {

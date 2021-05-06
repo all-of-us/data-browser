@@ -48,6 +48,7 @@ const cssStyle = `
     background-size: contain;
     height: auto;
     width: 75%;
+    padding: 1rem 3rem;
 }
 `;
 
@@ -193,16 +194,18 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
   }
 
   buildChartData() {
+    const { categoryArr, chartSeries, colors } = this.state;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'column';
-    newBaseOptions.xAxis.categories = this.state.categoryArr;
-    newBaseOptions.series = this.state.chartSeries;
+    newBaseOptions.xAxis.categories = categoryArr;
+    newBaseOptions.series = chartSeries;
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.yAxis.title.style.fontSize = '16px';
-    newBaseOptions.xAxis.labels.style.fontSize = '16px';
+    newBaseOptions.xAxis.labels.style.fontSize = '14px';
     newBaseOptions.yAxis.labels.style.fontSize = '16px';
     newBaseOptions.yAxis.title.style.padding = '1rem';
     newBaseOptions.plotOptions.column.stacking = 'normal';
+    newBaseOptions.plotOptions.column.colorByPoint = false;
     newBaseOptions.plotOptions.column.pointWidth = 50;
     newBaseOptions.plotOptions.column.borderWidth = 0;
     newBaseOptions.plotOptions.series.animation = {
@@ -226,22 +229,21 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
             <span>${this.point.total} Total </div></span>`;
         return this.point.toolTipHelpText;
     };
-    newBaseOptions.colors = this.state.colors;
-    console.log(newBaseOptions);
+    newBaseOptions.colors = colors;
     this.setState({options: newBaseOptions});
   }
 
   render() {
-      const {options} = this.state;
+      const {options, answerChartInfo} = this.state;
       return <React.Fragment>
         <style>{cssStyle}</style>
         <div className='answer-chart-layout'>
-        {options && <HighchartsReact highcharts={highCharts} options={options}
+        {options && <HighchartsReact highcharts={highCharts} options={options} className='standard-chart'
         updateArgs={[true]}/>}
         <div className='legend'>
                 <div className='legend-inner'>
                     {
-                        this.state.answerChartInfo.map((answer, index) => {
+                        answerChartInfo.map((answer, index) => {
                         const colorStyle = {color : answer.color};
                         return <div className='legend-item' key={index}>
                         <span><i className='fas fa-circle' style={colorStyle}></i></span>

@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 export const GENDER_STRATUM_MAP = {
      '8507': 'Male',
      '8532': 'Female',
@@ -91,6 +93,7 @@ export const baseOptions = {
             textOverflow: 'ellipsis',
             width: '80px',
             fontSize: '14px',
+            color: '#262262',
           },
           formatter: function() {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -196,5 +199,5 @@ export const baseOptions = {
 };
 
 export function getBaseOptions() {
-  return Object.assign({}, baseOptions);
+  return cloneDeep(baseOptions);
 }

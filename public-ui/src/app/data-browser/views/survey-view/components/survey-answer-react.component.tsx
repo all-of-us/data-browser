@@ -364,6 +364,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
             surveyVersions,
             surveyCountAnalysis,
             searchTerm } = this.props;
+
         return <React.Fragment>
             <style>{styleCss}</style>
             {(isCopeSurvey) && <SurveyAnswerChartReactComponent
