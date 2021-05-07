@@ -14,7 +14,20 @@ import { FunctionComponent } from 'react';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 
+const css = `
+.disclaimer-btn {
+    padding: 1rem 2rem;
+    color: #f9f9fa;
+    text-transform: uppercase;
+    border-radius: 0.3rem;
+    background: #816492;
+}
 
+.disclaimer-btn:hover {
+    background: #262262;
+    color: #fff;
+  }
+    `
 const styles = reactStyles({
     results: {
         padding: '18px'
@@ -25,7 +38,7 @@ const styles = reactStyles({
         justifyContent: 'flex-start',
         marginBottom: '48px',
         flexGrow: 1
-    },    
+    },
     resultBox: {
         cursor: 'pointer',
         display: 'flex',
@@ -93,7 +106,9 @@ const styles = reactStyles({
     dbSubDesc: {
         padding: '2rem',
         textAlign: 'center'
-    }
+    },
+
+
 });
 
 export const ResultLinksComponent: FunctionComponent<any> =
@@ -195,6 +210,7 @@ export const dBHomeComponent = (
         render() {
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp } = this.state;
             return <React.Fragment>
+                <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
                     The Data Browser provides interactive views of the publicly available<i>All of Us </i>
@@ -214,7 +230,7 @@ export const dBHomeComponent = (
                         onClear={() => { this.handleChange(''); }} />
                 </div>
                 <section style={styles.results}>
-                    <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading}}>
+                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
                         EHR Domains:<TooltipReactComponent
                             label='Homepage Tooltip Hover'
                             searchTerm={searchWord}
@@ -231,7 +247,7 @@ export const dBHomeComponent = (
 
                         }
                     </div>
-                    <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading}}>Survey Questions:</h5>
+                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
                     <div style={styles.resultBoxes}>
                         {
                             surveyInfo.map((survey, index) => {
@@ -241,9 +257,9 @@ export const dBHomeComponent = (
 
                         }
                     </div>
-                    <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading}}>
+                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
                         Physical Measurements and Wearables:</h5>
-                        <div style={styles.resultBoxes}>
+                    <div style={styles.resultBoxes}>
                         {
                             physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
@@ -261,9 +277,7 @@ export const dBHomeComponent = (
 @Component({
     // tslint:disable-next-line: component-selector
     selector: 'react-db-home',
-    template: `<span #root></span>`,
-    styleUrls: ['../../../styles/template.css', './quick-search.component.css'],
-    encapsulation: ViewEncapsulation.None,
+    template: `<span #root></span>`
 })
 
 export class DbHomeWrapperComponent extends BaseReactWrapper {

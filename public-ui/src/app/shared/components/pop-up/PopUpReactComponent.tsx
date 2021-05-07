@@ -6,6 +6,23 @@ import {
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
+
+const css = `
+.disclaimer-btn {
+    padding: 1rem 2rem;
+    color: #f9f9fa;
+    text-transform: uppercase;
+    border-radius: 0.3rem;
+    background: #816492;
+    float: right;
+}
+
+.disclaimer-btn:hover {
+    background: #262262;
+    color: #fff;
+  }
+    `
+    
 const styles = reactStyles({
   dataStatement: {
     width: '100%',
@@ -181,16 +198,19 @@ Registered Tier dataset (i.e., data describing COVID positive status will not be
 
 export const PopUpReactComponent =
   (props) => {
-    return <div style={styles.dataStatement}>
+    return <React.Fragment>
+      <style>{css}</style>
+      <div style={styles.dataStatement}>
       <div style={styles.card}>
         <div onClick={props.onClose} style={styles.close}>x</div>
         <h2 style={styles.cardTitle}>{helptexts[props.helpText].title}</h2>
         <div style={styles.cardBody}>{helptexts[props.helpText].statement}</div>
         <div style={styles.btnContainer}>
-          <button onClick={props.onClose} style={styles.disclaimerBtn}>OK</button>
+          <button onClick={props.onClose} className="disclaimer-btn">OK</button>
         </div>
       </div>
-    </div>;
+    </div>
+    </React.Fragment>;
   };
 
 @Component({
