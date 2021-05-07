@@ -235,16 +235,3 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     </React.Fragment>;
   }
 }
-
-@Component({
-  selector: 'app-survey-answer-chart-react',
-  template: `<span #root></span>`
-})
-export class SurveyAnswerChartWrapperComponent extends BaseReactWrapper {
-  @Input() versionAnalysis: any;
-  @Input() countAnalysis: any;
-
-  constructor() {
-    super(SurveyAnswerChartReactComponent, ['versionAnalysis', 'countAnalysis']);
-  }
-}
