@@ -185,7 +185,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId, String searchWord) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId, String searchWord, List<String> conceptIds) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -202,10 +202,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         if (searchWord == null || searchWord.isEmpty()) {
             // Get all the questions
-            questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId));
+            if (surveyConceptId == 43528698L) {
+                questionResp.setItems(surveyMetadataService.getFMHQuestions(conceptIds));
+            } else {
+                questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId));
+            }
         } else {
             // TODO Get only the matching questions
-            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword));
+            if (surveyConceptId == 43528698L) {
+                questionResp.setItems(surveyMetadataService.getMatchingFMHQuestions(conceptIds, searchWord));
+            } else {
+                questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword));
+            }
         }
 
         response.setQuestions(questionResp);
