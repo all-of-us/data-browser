@@ -49,9 +49,10 @@ export const baseOptions = {
   color: '',
   title: {
       text: '',
+      useHTML: true,
       style: {
         color: '#666',
-        fontSize: '12px',
+        fontSize: '14px',
         fontFamily: 'GothamBook',
         fontWeight: 'normal'
       }
