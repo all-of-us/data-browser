@@ -1,7 +1,6 @@
 import {
   Component,
   Input,
-  ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { reactStyles } from 'app/utils';
@@ -21,8 +20,8 @@ const css = `
     background: #262262;
     color: #fff;
   }
-    `
-    
+    `;
+
 const styles = reactStyles({
   dataStatement: {
     width: '100%',
@@ -49,12 +48,9 @@ const styles = reactStyles({
     width: 'contain',
     height: 'contain',
     margin: '15%',
-    background:'white',
+    background: 'white',
     position: 'relative',
     padding: '1rem'
-  },
-  cardBody:{
-
   },
   close: {
     position: 'absolute',
@@ -71,10 +67,10 @@ const styles = reactStyles({
   disclaimerBtn: {
     position: 'absolute',
     right: '0',
-    color:'white',
-    padding:'1em 2.5em',
+    color: 'white',
+    padding: '1em 2.5em',
     background: '#262262',
-    border:'none'
+    border: 'none'
   },
   /* covid disclaimer */
   copeStatement: {
@@ -90,12 +86,12 @@ const styles = reactStyles({
     borderRadius: '3px',
     padding: '1rem'
   }
-})
+});
 
 const helptexts = {
   'HomeViewPopup': {
     title: 'PUBLIC DATA USE STATEMENT',
-    statement: <div style={styles.cardBody}>
+    statement: <div>
       <i>All of Us</i> Research Program data are not representative of the population
                of the United States. If you present, publish, or distribute <i>All of Us</i> data,
                please include the following disclaimer:<br /> "The <i>All of Us</i> Research Program
@@ -108,7 +104,7 @@ participation of minority groups that are historically underrepresented in biome
   },
   'EhrViewPopUp': {
     title: 'DATA DISCLAIMER',
-    statement: <div style={styles.cardBody}>
+    statement: <div>
       The <i>All of Us</i> Research Program includes a demographically, geographically, and
       medically diverse group of participants, however, it is not a representative sample
                of the population of the United States. Enrollment in the <i>All of Us</i> Research
@@ -118,7 +114,7 @@ engaging with and encouraging participation of minority groups that are historic
   },
   'CopePopUp': {
     title: 'COvid-19 Participant Experience (COPE) survey',
-    statement: <div style={styles.cardBody}>
+    statement: <div>
       <div style={styles.copeStatement}>
         <span style={styles.copeStatementBody}>This optional survey was released to
         participants for completion at multiple time points during the COVID-19 pandemic.
@@ -139,15 +135,15 @@ export const PopUpReactComponent =
     return <React.Fragment>
       <style>{css}</style>
       <div style={styles.dataStatement}>
-      <div style={styles.card}>
-        <div onClick={props.onClose} style={styles.close}>x</div>
-        <h2 style={styles.cardTitle}>{helptexts[props.helpText].title}</h2>
-        <div style={styles.cardBody}>{helptexts[props.helpText].statement}</div>
-        <div style={styles.btnContainer}>
-          <button onClick={props.onClose} className="disclaimer-btn">OK</button>
+        <div style={styles.card}>
+          <div onClick={props.onClose} style={styles.close}>x</div>
+          <h2 style={styles.cardTitle}>{helptexts[props.helpText].title}</h2>
+          <div>{helptexts[props.helpText].statement}</div>
+          <div style={styles.btnContainer}>
+            <button onClick={props.onClose} className='disclaimer-btn'>OK</button>
+          </div>
         </div>
       </div>
-    </div>
     </React.Fragment>;
   };
 

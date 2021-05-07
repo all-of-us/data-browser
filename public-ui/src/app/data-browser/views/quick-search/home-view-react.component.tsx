@@ -1,5 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
@@ -10,9 +11,9 @@ import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info'
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
+
 
 
 const css = `
@@ -29,16 +30,36 @@ const css = `
     color: #fff;
   }
 
-@media only screen and (min-width: 768px) {
-    .search-icon-container {
-        flex-flow: row;
-    }
+  .icons img {
+    width: 100px;
 }
-    `
+
+.icons:first-of-type {
+    margin-left: 0;
+}
+.icons {
+    width: 100px;
+    margin-left: 1.5rem;
+    text-align: center;
+}
+.icons img {
+    text-align: center;
+}
+.result-bottom-link {
+    font-size: 15px;
+    color: #337ab7;
+    cursor: pointer;
+}
+
+.result-bottom-link:hover {
+    color: #262262;
+}
+    `;
 const styles = reactStyles({
     searchIconLayout: {
         display: 'grid',
-        gridTemplateColumns: '50% 50%'
+        gridTemplateColumns: '50% 50%',
+        padding: '1em'
     },
     results: {
         padding: '18px'
@@ -118,6 +139,14 @@ const styles = reactStyles({
         padding: '2rem',
         textAlign: 'center'
     },
+    iconlinks: {
+        position: 'relative',
+        top: '2rem',
+        display: 'flex',
+        alignItems: 'baseline',
+        justifyContent: 'center',
+        width: '100%'
+    }
 
 
 });
@@ -151,8 +180,8 @@ export const ResultLinksComponent: FunctionComponent<any> =
                 </span>
             </div>
             <div style={styles.resultBoxLink}>
-                {(questionCount ? <a style={styles.resultBoxLink}>View Complete Survey</a> :
-                    <a style={styles.resultBoxLink}>View {name}</a>)}
+                {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
+                    <a className='result-bottom-link'>View {name}</a>)}
             </div>
         </div>;
 
@@ -160,7 +189,7 @@ export const ResultLinksComponent: FunctionComponent<any> =
     };
 
 interface State {
-    surveyInfo: any[]
+    surveyInfo: any[];
     domainInfo: any[];
     physicalMeasurementsInfo: any[];
     searchWord: string;
@@ -185,6 +214,10 @@ export const dBHomeComponent = (
         handleChange(val) {
             this.setState({ searchWord: val });
             this.search(val);
+        }
+        iconClickEvent(iconString: string) {
+            // dbc.triggerEvent('HelpEvent', 'Help', 'Click',
+            //     iconString, null, null);
         }
 
         // life cycle hook
@@ -215,7 +248,7 @@ export const dBHomeComponent = (
         closePopUp() {
             this.setState({
                 popUp: !this.state.popUp
-            })
+            });
         }
 
         render() {
@@ -234,7 +267,7 @@ export const dBHomeComponent = (
                     Please read the public data use statement available below for additional information about our unique dataset and how to
                 acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br></br><br></br>
 
-                    <button onClick={() => this.closePopUp()} className="disclaimer-btn">public data use statement</button>
+                    <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
                 <div style={styles.searchIconLayout}>
                     <div>
@@ -242,9 +275,28 @@ export const dBHomeComponent = (
                             this.handleChange(val);
                         }}
                             onClear={() => { this.handleChange(''); }} />
-                            <CdrVersionReactComponent />
+                        <CdrVersionReactComponent />
                     </div>
-                    <div>icons set</div>
+                    <div style={styles.iconlinks}>
+                        <div className='icons' onClick={() => this.iconClickEvent('FAQ')}>
+                            <a href={environment.researchAllOfUsUrl + '/frequently-asked-questions/#data-browser-faqs'}>
+                                <img alt='FAQs'
+                                    src='/assets/icons/icons_faqs.png' />
+                                <span className='icon-link'>FAQs</span>
+                            </a>
+                        </div>
+                        <div className='icons' onClick={() => this.iconClickEvent('Intro-Videos')}>
+                            <a>
+                                <img alt='Introductory Videos'
+                                    src='/assets/icons/icons_introductoryvideo.png' /><span className='icon-link'>Introductory Videos</span>
+                            </a>
+                        </div>
+                        <div className='icons' onClick={() => this.iconClickEvent('User-Guide')}>
+                            <a href='../../../assets/pdf/Databrowser_User_Guide_in_RH 5_18_20.pdf' target='_blank' ><img
+                                alt='User Guide' src='/assets/icons/icons_userguide.png' /><span
+                                    className='icon-link'>User Guide</span></a>
+                        </div>
+                    </div>
                 </div>
 
                 <section style={styles.results}>
@@ -287,7 +339,7 @@ export const dBHomeComponent = (
                     </div>
                 </section>
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
-            </React.Fragment>;
+            </React.Fragment >;
         }
     }
 );
