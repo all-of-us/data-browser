@@ -1,7 +1,3 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import { eightColors, eighteenColors, fourteenColors, tenColors, twentyFiveColors } from 'app/utils/colors';
