@@ -2,7 +2,6 @@ import {
   Component,
   Input
 } from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import { eightColors, eighteenColors, fourteenColors, tenColors, twentyFiveColors } from 'app/utils/colors';
