@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
+import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
-import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
@@ -66,7 +66,7 @@ const routes: Routes = [
         },
         {
           path: 'physical-measurements',
-          component: PhysicalMeasurementsComponent,
+          component: PhysicalMeasurementsWrapperComponent,
           data: {
             title: 'Physical Measurements from Enrollment',
             breadcrumb: {

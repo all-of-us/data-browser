@@ -5,6 +5,7 @@ import { ClarityModule } from '@clr/angular';
 import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
 import { NoResultSearchWrapperComponent } from 'app/components/db-no-results/no-results-search.component';
 import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
+import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
@@ -98,7 +99,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent
+    SurveyDescWrapperComponent,
+    PhysicalMeasurementsWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -133,7 +135,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent
+    SurveyDescWrapperComponent,
+    PhysicalMeasurementsWrapperComponent
   ],
   providers: [
     ChartService,

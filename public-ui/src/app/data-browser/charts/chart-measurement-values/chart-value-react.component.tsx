@@ -15,7 +15,6 @@ interface State {
 
 interface Props {
     conceptId: any;
-    participantCount: any;
     valueAnalysis: any;
     domainCountAnalysis: any;
     genderId: any;
@@ -70,7 +69,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       newBaseOptions.title.style.color = '#262262';
       newBaseOptions.title.style.fontSize = '22px';
       newBaseOptions.color = '#2691D0';
-      newBaseOptions.xAxis.title.text = this.props.conceptId;
       newBaseOptions.yAxis.title.text = 'Participant Count';
       newBaseOptions.yAxis.title.style.fontSize = '14px';
       newBaseOptions.xAxis.title.style.fontSize = '14px';
@@ -112,7 +110,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.legend.enabled = false;
     newBaseOptions.yAxis.gridLineColor = 'transparent';
     newBaseOptions.title.style.color = '#262262';
-    newBaseOptions.title.style.fontSize = '18';
+    newBaseOptions.title.style.fontSize = '18px';
     newBaseOptions.title.style.fontWeight = '400';
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.xAxis.title.text = unitName ? unitName : '';
@@ -289,13 +287,12 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
 })
 export class ValueChartWrapperComponent extends BaseReactWrapper {
   @Input() conceptId: any;
-  @Input() participantCount: number;
   @Input() valueAnalysis: any;
   @Input() domainCountAnalysis: any;
   @Input() genderId: any;
   @Input() chartTitle: any;
 
   constructor() {
-    super(ValueReactChartComponent, ['conceptId', 'participantCount', 'valueAnalysis', 'domainCountAnalysis', 'genderId', 'chartTitle']);
+    super(ValueReactChartComponent, ['conceptId', 'valueAnalysis', 'domainCountAnalysis', 'genderId', 'chartTitle']);
   }
 }

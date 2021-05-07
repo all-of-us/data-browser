@@ -12,6 +12,7 @@ import * as React from 'react';
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 // const dbc = new DbConfigService(api);
 const eightColors = [
+
     '#2F4B7C', '#F99059', '#496D91', '#E75955',
     '#6790A2', '#93003A', '#BFE1C6', '#C5254A'
 ];
