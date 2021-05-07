@@ -16,6 +16,16 @@ const api = new DataBrowserApi(new Configuration({ basePath: environment.publicA
 
 
 const styles = reactStyles({
+    results: {
+        padding: '18px'
+    },
+    resultBoxes: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        marginBottom: '48px',
+        flexGrow: 1
+    },    
     resultBox: {
         cursor: 'pointer',
         display: 'flex',
@@ -49,6 +59,12 @@ const styles = reactStyles({
     resultBoxLink: {
         padding: '18px',
         paddingTop: '0'
+    },
+    resultHeading: {
+        fontSize: '23px',
+        margin: '0',
+        padding: '9px',
+        paddingLeft: '0'
     },
     resultBodyItem: {
         padding: '6px 0'
@@ -197,15 +213,15 @@ export const dBHomeComponent = (
                     }}
                         onClear={() => { this.handleChange(''); }} />
                 </div>
-                <section className='results'>
-                    <h5 className='result-heading secondary-display'>
+                <section style={styles.results}>
+                    <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading}}>
                         EHR Domains:<TooltipReactComponent
                             label='Homepage Tooltip Hover'
                             searchTerm={searchWord}
                             action='Tooltip Home Page EHR Domains'
                             tooltipKey='ehrDomainHelpText' /></h5>
 
-                    <div id='survey' className='result-boxes'>
+                    <div style={styles.resultBoxes}>
                         {
                             domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
@@ -215,8 +231,8 @@ export const dBHomeComponent = (
 
                         }
                     </div>
-                    <h5 className='result-heading secondary-display'>Survey Questions:</h5>
-                    <div className='result-boxes'>
+                    <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading}}>Survey Questions:</h5>
+                    <div style={styles.resultBoxes}>
                         {
                             surveyInfo.map((survey, index) => {
                                 const key = 'survey' + index;
@@ -225,9 +241,9 @@ export const dBHomeComponent = (
 
                         }
                     </div>
-                    <h5 className='result-heading secondary-display'>
+                    <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading}}>
                         Physical Measurements and Wearables:</h5>
-                    <div className='result-boxes'>
+                        <div style={styles.resultBoxes}>
                         {
                             physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
