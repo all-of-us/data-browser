@@ -41,32 +41,33 @@ const styles = reactStyles({
     }
 });
 
-const PMGroups = [];
-PMGroups.push({group: 'blood-pressure', groupName: 'Mean Blood Pressure', concepts: [
+const PMGroups = [
+  {group: 'blood-pressure', groupName: 'Mean Blood Pressure', concepts: [
     {conceptId: '903118', conceptName: 'Systolic', chartType: 'histogram', analyses: []},
     {conceptId: '903115', conceptName: 'Diastolic', chartType: 'histogram', analyses: []}
-]});
-PMGroups.push({group: 'height', groupName: 'Height', concepts: [
+  ]},
+  {group: 'height', groupName: 'Height', concepts: [
     {conceptId: '903133', conceptName: 'Height', chartType: 'histogram', analyses: []}
-]});
-PMGroups.push({group: 'weight', groupName: 'Weight', concepts: [
+  ]},
+  {group: 'weight', groupName: 'Weight', concepts: [
     {conceptId: '903121', conceptName: 'Weight', chartType: 'histogram', analyses: []}
-]});
-PMGroups.push({group: 'mean-waist', groupName: 'Mean waist circumference', concepts: [
+  ]},
+  {group: 'mean-waist', groupName: 'Mean waist circumference', concepts: [
     {conceptId: '903135', conceptName: 'Mean waist circumference', chartType: 'histogram', analyses: []}
-]});
-PMGroups.push({group: 'mean-hip', groupName: 'Mean hip circumference', concepts: [
+  ]},
+  {group: 'mean-hip', groupName: 'Mean hip circumference', concepts: [
     {conceptId: '903136', conceptName: 'Mean hip circumference', chartType: 'histogram', analyses: []}
-]});
-PMGroups.push({group: 'mean-heart-rate', groupName: 'Mean heart rate', concepts: [
+  ]},
+  {group: 'mean-heart-rate', groupName: 'Mean heart rate', concepts: [
     {conceptId: '903126', conceptName: 'Mean heart rate', chartType: 'histogram', analyses: []}
-]});
-PMGroups.push({group: 'wheel-chair', groupName: 'Wheel chair use', concepts: [
+  ]},
+  {group: 'wheel-chair', groupName: 'Wheel chair use', concepts: [
     {conceptId: '903111', conceptName: 'Wheel chair use', chartType: 'column', analyses: []}
-]});
-PMGroups.push({group: 'pregnancy', groupName: 'Pregnancy', concepts: [
+  ]},
+  {group: 'pregnancy', groupName: 'Pregnancy', concepts: [
     {conceptId: '903120', conceptName: 'Pregnancy', chartType: 'column', analyses: []}
-]});
+  ]}
+];
 
 const styleCss = `
 .active {
