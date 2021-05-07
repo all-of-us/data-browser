@@ -91,68 +91,6 @@ const styles = reactStyles({
     padding: '1rem'
   }
 })
-// const css = `
-// .data-statement {
-//   width: 100%;
-//   height: 100%;
-//   z-index: 10;
-//   position: fixed;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   top: 0;
-//   left: 0;
-//   background: rgba(0, 0, 0, 0.5);
-//   z-index: 115;
-//   font-weight: 700;
-//   color: #302c71;
-// }
-
-// .card-title {
-//   font-size: 1em;
-//   text-align: left;
-//   padding-bottom: 1em;
-//   font-weight: bold;
-//   color: #302c71;
-// }
-
-// .data-statement > .card {
-//   width: contain;
-//   height: contain;
-//   margin: 15%;
-//   padding: 1rem;
-// }
-
-// .data-statement > .card > .close {
-//   position: absolute;
-//   right: 1rem;
-//   top: .5rem;
-//   font-size: 1.5em;
-// }
-// .btn-container {
-//   width: 100%;
-//   position: relative;
-//   padding: 1rem;
-//   margin-top:1.5rem;
-// }
-// .data-statement > .card > .btn-container > .disclaimer-btn {
-//   position: absolute;
-//   right:0;
-//   background: #262262;
-// }
-
-// @media (max-width: 900px){
-//   .data-statement > .card {
-//       margin:10%;
-//   }
-// }
-
-// @media (min-width: 1400px){
-//   .data-statement > .card {
-//       margin:25%;
-//   }
-// }
-// `
 
 const helptexts = {
   'HomeViewPopup': {
