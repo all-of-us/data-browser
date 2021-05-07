@@ -1,11 +1,11 @@
 import {
   Component,
-  Input,
-  ViewEncapsulation
+  Input
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
+import { eightColors, tenColors, fourteenColors, eighteenColors, twentyFiveColors } from 'app/utils/colors';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -48,36 +48,7 @@ const cssStyle = `
     display: block;
     padding:1rem 3rem;
 }
-.legend-item span {
-    text-align: left;
-}
 `;
-
-const eightColors = [
-    '#2F4B7C', '#F99059', '#496D91', '#E75955',
-    '#6790A2', '#93003A', '#BFE1C6', '#C5254A'
-];
-
-const tenColors = [
-    '#2F4B7C', '#FA9B58', '#44668D', '#BC1B48', '#769EA7',
-    '#F06F57', '#5B829C', '#93003A', '#BFE1C6', '#DB4451'
-];
-
-const fourteenColors = [
-    '#2F4B7C', '#FBA858', '#88AFAB', '#CB2D4C', '#3E5E88', '#F78858', '#719AA6', '#B11044', '#4D7294',
-    '#EE6857', '#5E869E', '#93003A', '#93003A', '#DF4A53'
-];
-
-const eightteenColors = [
-    '#2F4B7C', '#FA9659', '#BFE1C6', '#D2364F', '#AB0A42', '#6F98A0', '#3A5A86', '#93B8AC', '#FBAF57',
-    '#527997', '#F57D58', '#46698F', '#EC6556', '#C02049', '#60889F', '#80A8AA', '#E14D53', '#93003A',
-];
-
-const twentyFiveColors = [
-    '#00429D', '#93C4D2', '#6492C0', '#B61A49', '#E37B7E', '#FBAF57', '#73A2C6', '#FA9659', '#4771B2',
-    '#DF6772', '#A5D5D8', '#3761AB', '#D0CCB6', '#D95367', '#DAB8A7', '#D3F4E0', '#E38F8B', '#2451A4',
-    '#5681B9', '#A60841', '#BFE1C6', '#C42D52', '#82B3CD', '#F57D58', '#93003A'
-];
 
 const monthOrder = ['May', 'June', 'July/August'];
 
@@ -118,7 +89,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
         } else if (answerCount <= 14) {
             aCount['color'] = fourteenColors[i];
         } else if (answerCount <= 18) {
-            aCount['color'] = eightteenColors[i];
+            aCount['color'] = eighteenColors[i];
         } else if (answerCount > 18) {
             aCount['color'] = twentyFiveColors[i];
         }
@@ -224,10 +195,11 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
         const percentage = ((count / this.point.total) * 100).toFixed();
         this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
-            <strong>${this.point.series.name}</strong>
-            <span>${count} Participants </span>
-            <span>${percentage}% of all participants who took this version of survey</span>
-            <span>${this.point.total} Total </div></span>`;
+              <strong>${this.point.series.name}</strong>
+              <span>${count} Participants </span>
+              <span>${percentage}% of all participants who took this version of survey</span>
+              <span>${this.point.total} Total </span>
+            </div>`;
         return this.point.toolTipHelpText;
     };
     newBaseOptions.colors = colors;
@@ -235,35 +207,38 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
   }
 
   render() {
-      const {options, answerChartInfo} = this.state;
-      return <React.Fragment>
-        <style>{cssStyle}</style>
-        <div className='answer-chart-layout' style={styles.answerChartLayout}>
-        {options && <HighchartsReact highcharts={highCharts} options={options} className='standard-chart' style={styles.standardChart}
-        updateArgs={[true]}/>}
+    const {options, answerChartInfo} = this.state;
+    return <React.Fragment>
+      <style>{cssStyle}</style>
+      <div className='answer-chart-layout' style={styles.answerChartLayout}>
+        {options && <HighchartsReact highcharts={highCharts}
+                                     options={options}
+                                     className='standard-chart'
+                                     style={styles.standardChart}
+                                     updateArgs={[true]}/>}
         <div className='legend' style={styles.legend}>
-                <div className='legend-inner' style={styles.legendInner}>
-                    {
-                        answerChartInfo.map((answer, index) => {
-                        const colorStyle = {color : answer.color};
-                        return <div className='legend-item' key={index} style={styles.legendItem}>
-                        <span><i className='fas fa-circle' style={colorStyle}></i></span>
-                                            <span> {answer.answerValue}</span>
-                        </div>;
-                        })
-                    }
-                </div>
-            </div>
+          <div className='legend-inner' style={styles.legendInner}>
+            {answerChartInfo.map((answer, index) => {
+              const colorStyle = {color : answer.color};
+              return <div className='legend-item'
+                          key={index}
+                          style={styles.legendItem}>
+                <span>
+                  <i className='fas fa-circle' style={colorStyle}/>
+                </span>
+                <span> {answer.answerValue}</span>
+              </div>;
+            })}
+          </div>
         </div>
-      </React.Fragment>;
-    }
+      </div>
+    </React.Fragment>;
+  }
 }
 
 @Component({
   selector: 'app-survey-answer-chart-react',
-  template: `<span #root></span>`,
-  styleUrls: ['./chart-survey-answers.component.css'],
-  encapsulation: ViewEncapsulation.None,
+  template: `<span #root></span>`
 })
 export class SurveyAnswerChartWrapperComponent extends BaseReactWrapper {
   @Input() versionAnalysis: any;
