@@ -10,6 +10,7 @@ import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
+import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info'
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
@@ -27,8 +28,18 @@ const css = `
     background: #262262;
     color: #fff;
   }
+
+@media only screen and (min-width: 768px) {
+    .search-icon-container {
+        flex-flow: row;
+    }
+}
     `
 const styles = reactStyles({
+    searchIconLayout: {
+        display: 'grid',
+        gridTemplateColumns: '50% 50%'
+    },
     results: {
         padding: '18px'
     },
@@ -221,14 +232,21 @@ export const dBHomeComponent = (
                     In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of
                 20, and summary demographic information. For more information, please visit our FAQ page.<br></br><br></br>
                     Please read the public data use statement available below for additional information about our unique dataset and how to
-                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br></br><br></br></p>
-                <button onClick={() => this.closePopUp()} className="disclaimer-btn">public data use statement</button>
-                <div style={{ paddingLeft: '1em' }}>
-                    <SearchComponent value={searchWord} onChange={(val) => {
-                        this.handleChange(val);
-                    }}
-                        onClear={() => { this.handleChange(''); }} />
+                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br></br><br></br>
+
+                    <button onClick={() => this.closePopUp()} className="disclaimer-btn">public data use statement</button>
+                </p>
+                <div style={styles.searchIconLayout}>
+                    <div>
+                        <SearchComponent value={searchWord} onChange={(val) => {
+                            this.handleChange(val);
+                        }}
+                            onClear={() => { this.handleChange(''); }} />
+                            <CdrVersionReactComponent />
+                    </div>
+                    <div>icons set</div>
                 </div>
+
                 <section style={styles.results}>
                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
                         EHR Domains:<TooltipReactComponent
