@@ -205,7 +205,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId));
         } else {
             // TODO Get only the matching questions
-            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, surveyKeyword));
+            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, searchWord));
         }
 
         response.setQuestions(questionResp);
