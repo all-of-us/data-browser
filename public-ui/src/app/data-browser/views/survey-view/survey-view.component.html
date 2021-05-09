@@ -75,10 +75,6 @@
                 <h3 class="topic-text">{{q.questionString}}</h3>
               </ng-template>
             </ng-container>
-            <hr *ngIf="questions.length > 0 && surveyConceptId === 43528698">
-            <app-fmh-view [searchText]="searchText" *ngIf="surveyConceptId === 43528698"
-              [participantCount]="survey.participantCount" [surveyName]="survey.name"
-              [surveyCountAnalysis]="surveyCountAnalysis"></app-fmh-view>
           </div>
         </div>
   </section>
