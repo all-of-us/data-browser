@@ -185,7 +185,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId, String searchWord) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId, String searchWord, List<String> conceptIds) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -202,10 +202,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         if (searchWord == null || searchWord.isEmpty()) {
             // Get all the questions
-            questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId));
+            questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId, conceptIds));
         } else {
             // TODO Get only the matching questions
-            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, searchWord));
+            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, searchWord, conceptIds));
         }
 
         response.setQuestions(questionResp);

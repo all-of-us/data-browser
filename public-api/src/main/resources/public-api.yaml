@@ -342,6 +342,13 @@ paths:
           type: string
           required: false
           description: search word in surveys page
+        - in: query
+          name: question-concept-ids
+          type: array
+          items:
+            type: string
+          required: false
+          description: concept id
       responses:
         200:
           description: survey question fetch
