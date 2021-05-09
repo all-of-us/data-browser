@@ -164,7 +164,7 @@ export const baseOptions = {
             animation: {
               duration: 100,
             },
-            pointWidth: 0,
+            pointWidth: 50,
             fontSize: '',
             minPointLength: 3,
             events: {
@@ -188,7 +188,7 @@ export const baseOptions = {
                   groupPadding: 0,
                   pointPadding: 0,
                   borderWidth: 0,
-                  pointWidth: 0,
+                  pointWidth: 50,
                   dataLabels: {
                     enabled: false,
                   },
