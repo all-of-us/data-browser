@@ -6,12 +6,11 @@ import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
-import { environment } from 'environments/environment';
 import { NavStore } from 'app/utils/navigation';
+import { environment } from 'environments/environment';
 import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
@@ -186,20 +185,20 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     break;
 
             }
-        } else if (info.conceptId)
+        } else if (info.conceptId) {
             switch (info.conceptId) {
                 case 1333342:
                     NavStore.navigateByUrl('survey/covid-19-participant-experience');
                     break;
                 default:
-                    const url = 'survey/' + info.name.replace(" ", "-").toLowerCase();
+                    const url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
-
             }
+        }
     }
     render() {
-        const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
+        const { name, description, questionCount, standardConceptCount, participantCount } = this.props;
         return <div
             onClick={() => this.resultClick(this.props)}
             style={styles.resultBox}>
@@ -258,7 +257,7 @@ export const dBHomeComponent = (
             this.search(val);
         }
         iconClickEvent(iconString: string) {
-            if (iconString === 'introductory-videos') NavStore.navigateByUrl('/' + iconString);
+            if (iconString === 'introductory-videos') { NavStore.navigateByUrl('/' + iconString); }
         }
 
         // life cycle hook
