@@ -7,6 +7,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import { environment } from 'environments/environment';
+import { NavStore } from 'app/utils/navigation';
 import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
@@ -147,19 +148,61 @@ const styles = reactStyles({
         justifyContent: 'center',
         width: '100%'
     }
-
-
 });
 
-export const ResultLinksComponent: FunctionComponent<any> =
-    ({
-        name,
-        description,
-        questionCount,
-        standardConceptCount,
-        participantCount
-    }): any => {
-        return <div style={styles.resultBox}>
+interface ResultLinkProps {
+    name: string;
+    description: string;
+    questionCount: number;
+    standardConceptCount: number;
+    domain: string;
+    participantCount: number;
+}
+
+export const ResultLinksComponent = (class extends React.Component<ResultLinkProps> {
+    constructor(props: ResultLinkProps) {
+        super(props);
+    }
+
+    resultClick(info) {
+        console.log(info, 'infffooo');
+        if (info.domainConceptId) {
+            switch (info.domainConceptId) {
+                // condition
+                case 19:
+                    NavStore.navigateByUrl('ehr/conditions');
+                    break;
+                // drugs
+                case 13:
+                    NavStore.navigateByUrl('ehr/drug-exposures');
+                    break;
+                // MEASUREMENT
+                case 21:
+                    NavStore.navigateByUrl('ehr/labs-and-measurements');
+                    break;
+                // PROCEDURE
+                case 10:
+                    NavStore.navigateByUrl('ehr/procedures');
+                    break;
+
+            }
+        } else if (info.conceptId)
+            switch (info.conceptId) {
+                case 1333342:
+                    NavStore.navigateByUrl('survey/covid-19-participant-experience');
+                    break;
+                default:
+                    const url = 'survey/' + info.name.replace(" ", "-").toLowerCase();
+                    NavStore.navigateByUrl(url);
+                    break;
+
+            }
+    }
+    render() {
+        const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
+        return <div
+            onClick={() => this.resultClick(this.props)}
+            style={styles.resultBox}>
             <p style={styles.resultBoxTitle}>{name}</p>
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
@@ -184,9 +227,8 @@ export const ResultLinksComponent: FunctionComponent<any> =
                     <a className='result-bottom-link'>View {name}</a>)}
             </div>
         </div>;
-
-
-    };
+    }
+});
 
 interface State {
     surveyInfo: any[];
@@ -216,8 +258,7 @@ export const dBHomeComponent = (
             this.search(val);
         }
         iconClickEvent(iconString: string) {
-            // dbc.triggerEvent('HelpEvent', 'Help', 'Click',
-            //     iconString, null, null);
+            if (iconString === 'introductory-videos') NavStore.navigateByUrl('/' + iconString);
         }
 
         // life cycle hook
@@ -229,6 +270,8 @@ export const dBHomeComponent = (
             // http get the domain info to populate the cards on the homepage
             return api.getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
+                    console.log(result, 'domain results');
+
                     result.domainInfos = result.domainInfos.filter(domain =>
                         domain.standardConceptCount > 0);
                     const domainInfo = result.domainInfos.filter(
@@ -251,6 +294,7 @@ export const dBHomeComponent = (
             });
         }
 
+
         render() {
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp } = this.state;
             return <React.Fragment>
@@ -261,19 +305,19 @@ export const dBHomeComponent = (
                     Research Program participant data. Currently, participant provided information, including surveys and physical
                     measurements taken at the time of participant enrollment, as well as electronic health record data (EHR) are available.
                 EHR data are reported by health care providers and are not participant reported. The <i>All of Us </i>
-                    Research Program data will include more data types over time.<br/><br/>
+                    Research Program data will include more data types over time.<br /><br />
                     In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of
-                20, and summary demographic information. For more information, please visit our FAQ page.<br/><br/>
+                20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
                     Please read the public data use statement available below for additional information about our unique dataset and how to
-                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br/><br/>
+                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
 
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
                 <div style={styles.searchIconLayout}>
                     <div>
-                        <SearchComponent value={searchWord} 
-                                                           onChange={(val) => this.handleChange(val)}
-                                                           onClear={() => this.handleChange('')} />
+                        <SearchComponent value={searchWord}
+                            onChange={(val) => this.handleChange(val)}
+                            onClear={() => this.handleChange('')} />
                         <CdrVersionReactComponent />
                     </div>
                     <div style={styles.iconLinks}>
@@ -284,7 +328,7 @@ export const dBHomeComponent = (
                                 <span className='icon-link'>FAQs</span>
                             </a>
                         </div>
-                        <div className='icons' onClick={() => this.iconClickEvent('Intro-Videos')}>
+                        <div className='icons' onClick={() => this.iconClickEvent('introductory-videos')}>
                             <a>
                                 <img alt='Introductory Videos'
                                     src='/assets/icons/icons_introductoryvideo.png' />
@@ -295,7 +339,7 @@ export const dBHomeComponent = (
                             <a href='/assets/pdf/Databrowser_User_Guide_in_RH 5_18_20.pdf' target='_blank' ><img
                                 alt='User Guide' src='/assets/icons/icons_userguide.png' /><span
                                     className='icon-link'>User Guide</span>
-                                </a>
+                            </a>
                         </div>
                     </div>
                 </div>
