@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 export const GENDER_STRATUM_MAP = {
      '8507': 'Male',
      '8532': 'Female',
@@ -47,9 +49,10 @@ export const baseOptions = {
   color: '',
   title: {
       text: '',
+      useHTML: true,
       style: {
         color: '#666',
-        fontSize: '12px',
+        fontSize: '14px',
         fontFamily: 'GothamBook',
         fontWeight: 'normal'
       }
@@ -90,7 +93,8 @@ export const baseOptions = {
             whiteSpace: 'wrap',
             textOverflow: 'ellipsis',
             width: '80px',
-            fontSize: '14px'
+            fontSize: '14px',
+            color: '#262262',
           },
           formatter: function() {
             const label = this.axis.defaultLabelFormatter.call(this);
@@ -129,6 +133,7 @@ export const baseOptions = {
                        textTransform: 'capitalize',
                        whiteSpace: 'wrap',
                        textOverflow: 'ellipsis',
+                       padding: ''
                      }
                    },
           min: 20,
@@ -160,6 +165,7 @@ export const baseOptions = {
               duration: 100,
             },
             pointWidth: 0,
+            fontSize: '',
             minPointLength: 3,
             events: {
             },
@@ -182,9 +188,11 @@ export const baseOptions = {
                   groupPadding: 0,
                   pointPadding: 0,
                   borderWidth: 0,
+                  pointWidth: 0,
                   dataLabels: {
                     enabled: false,
                   },
+                  stacking: '',
                   events: {},
             }
         },
@@ -192,5 +200,5 @@ export const baseOptions = {
 };
 
 export function getBaseOptions() {
-  return Object.assign({}, baseOptions);
+  return cloneDeep(baseOptions);
 }

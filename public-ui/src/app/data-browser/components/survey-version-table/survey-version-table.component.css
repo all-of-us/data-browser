@@ -14,7 +14,7 @@ strong {
 
 .version-box-header,.version-box-row {
     display: grid;
-    grid-template-columns: 15% 15% 25% 20% 25%;
+    grid-template-columns: 20% 15% 25% 15% 25%;
     /* justify-content: space-around; */
     width:100%;
 }
