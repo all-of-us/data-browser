@@ -292,7 +292,7 @@ export const dBHomeComponent = (
                             </a>
                         </div>
                         <div className='icons' onClick={() => this.iconClickEvent('User-Guide')}>
-                            <a href='../../../assets/pdf/Databrowser_User_Guide_in_RH 5_18_20.pdf' target='_blank' ><img
+                            <a href='/assets/pdf/Databrowser_User_Guide_in_RH 5_18_20.pdf' target='_blank' ><img
                                 alt='User Guide' src='/assets/icons/icons_userguide.png' /><span
                                     className='icon-link'>User Guide</span></a>
                         </div>
