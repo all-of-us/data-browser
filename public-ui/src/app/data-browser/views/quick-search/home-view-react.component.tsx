@@ -271,10 +271,9 @@ export const dBHomeComponent = (
                 </p>
                 <div style={styles.searchIconLayout}>
                     <div>
-                        <SearchComponent value={searchWord} onChange={(val) => {
-                            this.handleChange(val);
-                        }}
-                            onClear={() => { this.handleChange(''); }} />
+                        <SearchComponent value={searchWord} 
+                                                           onChange={(val) => this.handleChange(val)}
+                                                           onClear={() => this.handleChange('')} />
                         <CdrVersionReactComponent />
                     </div>
                     <div style={styles.iconlinks}>
