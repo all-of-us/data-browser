@@ -139,7 +139,7 @@ const styles = reactStyles({
         padding: '2rem',
         textAlign: 'center'
     },
-    iconlinks: {
+    iconLinks: {
         position: 'relative',
         top: '2rem',
         display: 'flex',
@@ -277,7 +277,7 @@ export const dBHomeComponent = (
                             onClear={() => { this.handleChange(''); }} />
                         <CdrVersionReactComponent />
                     </div>
-                    <div style={styles.iconlinks}>
+                    <div style={styles.iconLinks}>
                         <div className='icons' onClick={() => this.iconClickEvent('FAQ')}>
                             <a href={environment.researchAllOfUsUrl + '/frequently-asked-questions/#data-browser-faqs'}>
                                 <img alt='FAQs'
