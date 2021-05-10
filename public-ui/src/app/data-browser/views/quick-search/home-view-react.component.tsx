@@ -293,7 +293,6 @@ export const dBHomeComponent = (
             });
         }
 
-
         render() {
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp } = this.state;
             return <React.Fragment>
