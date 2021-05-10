@@ -288,7 +288,8 @@ export const dBHomeComponent = (
                         <div className='icons' onClick={() => this.iconClickEvent('Intro-Videos')}>
                             <a>
                                 <img alt='Introductory Videos'
-                                    src='/assets/icons/icons_introductoryvideo.png' /><span className='icon-link'>Introductory Videos</span>
+                                    src='/assets/icons/icons_introductoryvideo.png' />
+                                <span className='icon-link'>Introductory Videos</span>
                             </a>
                         </div>
                         <div className='icons' onClick={() => this.iconClickEvent('User-Guide')}>
