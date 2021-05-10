@@ -269,8 +269,6 @@ export const dBHomeComponent = (
             // http get the domain info to populate the cards on the homepage
             return api.getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
-                    console.log(result, 'domain results');
-
                     result.domainInfos = result.domainInfos.filter(domain =>
                         domain.standardConceptCount > 0);
                     const domainInfo = result.domainInfos.filter(
