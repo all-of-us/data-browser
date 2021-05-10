@@ -261,7 +261,7 @@ export const dBHomeComponent = (
                     Research Program participant data. Currently, participant provided information, including surveys and physical
                     measurements taken at the time of participant enrollment, as well as electronic health record data (EHR) are available.
                 EHR data are reported by health care providers and are not participant reported. The <i>All of Us </i>
-                    Research Program data will include more data types over time.<br></br><br></br>
+                    Research Program data will include more data types over time.<br/><br/>
                     In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of
                 20, and summary demographic information. For more information, please visit our FAQ page.<br/><br/>
                     Please read the public data use statement available below for additional information about our unique dataset and how to
