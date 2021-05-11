@@ -148,41 +148,6 @@ public class DataBrowserApiTest {
     /**
      * 
      *
-     * Get survey questions
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getFMHQuestionsTest() throws ApiException {
-        Long surveyConceptId = null;
-        List<String> questionConceptIds = null;
-        String searchWord = null;
-        SurveyQuestionFetchResponse response = api.getFMHQuestions(surveyConceptId, questionConceptIds, searchWord);
-
-        // TODO: test validations
-    }
-    
-    /**
-     * 
-     *
-     * Get the results &amp; sub questions with results for fmh condition / family member group
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getFMHSurveyQuestionResultsTest() throws ApiException {
-        String questionConceptId = null;
-        String answerConceptId = null;
-        SurveyMetadataListResponse response = api.getFMHSurveyQuestionResults(questionConceptId, answerConceptId);
-
-        // TODO: test validations
-    }
-    
-    /**
-     * 
-     *
      * Gets analysis results of fitbit
      *
      * @throws ApiException
