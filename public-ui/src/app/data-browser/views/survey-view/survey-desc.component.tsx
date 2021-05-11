@@ -2,7 +2,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import * as React from 'react';
 
-const SurveyDescReactComponent =
+export const SurveyDescReactComponent =
     (props) => {
     return <div className='page-header'>
                <div className='title-container'>

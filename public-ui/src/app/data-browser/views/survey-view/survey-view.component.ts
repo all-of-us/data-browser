@@ -63,7 +63,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   @ViewChildren('subChartElement2') subChartEl2: QueryList<ElementRef>;
   fmhResultCount = 0;
   showStatement: boolean;
-  copeDisclaimer: string;
   isCopeSurvey = false;
   constructor(
     private route: ActivatedRoute,
@@ -75,6 +74,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       this.domainId = params.id.toLowerCase();
     });
     this.closePopUp = this.closePopUp.bind(this);
+    this.showCopeStatement = this.showCopeStatement.bind(this);
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
@@ -83,13 +83,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = '';
       }
     });
-    this.copeDisclaimer = `<div class="cope-statement"><span class='cope-statement-body'>This optional survey was released to participants for completion
-    at multiple time points during the COVID-19 pandemic. As a result, a participant may have
-    multiple data points if they completed more than one survey.</span>
-    <span class='cope-statement-body'>This survey has multiple versions. Even though most of the content is consistent between
-    versions, some questions were modified.</span> <span class='cope-statement-box'><strong>Please Note:</strong><br> While these aggregate data are available
-    in the Data Browser tool, to protect participant privacy, only select data will be available in the Registered Tier dataset (i.e., data describing COVID
-    positive status will not be made available)</span></div>`;
   }
 
 
@@ -503,72 +496,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.survey.name + ' - Q' + q.actualQuestionNumber + ' - '
         + q.conceptName, this.prevSearchText, null);
     }
-  }
-
-  public getSubQuestions(a: any, source: any, level: number) {
-    if (!a.subQuestions) {
-      a.loading = true;
-      a.dots = true;
-    }
-    this.api.getSubQuestions(this.surveyConceptId, a.stratum2, a.stratum3, level)
-      .subscribe({
-        next: results => {
-          a.subQuestions = results.questions.items;
-          for (const q of a.subQuestions) {
-            this.processResults(q, a.countValue);
-          }
-          this.setDefaults(a.subQuestions, level);
-        },
-        error: err => {
-          console.log('Error searching: ', err);
-        },
-        complete: () => {
-          a.subQuestionFetchComplete = true;
-          a.loading = false;
-          a.dots = false;
-        }
-      });
-  }
-
-  public showAnswerGraphs(a: any, q: any, level?: number, event?: MouseEvent) {
-    if (event && this.chartEl && this.chartEl.some(el => el.nativeElement.contains(event.target))) {
-        return;
-    }
-    if (event && this.subChartEl1 && this.subChartEl1.some(el => el.nativeElement.contains(event.target))) {
-        return;
-    }
-    if (event) {
-        event.stopPropagation();
-    }
-    if (event && this.subChartEl2 && this.subChartEl2.some(el => el.nativeElement.contains(event.target))) {
-        return;
-    }
-    if (a.stratum7 === '1' && level) {
-      this.getSubQuestions(a, 'display', level);
-    }
-      q.selectedResult = a;
-      if (this.isCopeSurvey) {
-        q.selectedAnalysis = q.versionAnalysis;
-      } else {
-        q.selectedAnalysis = q.genderAnalysis;
-      }
-      a.expanded = !a.expanded;
-      if (a.expanded) {
-        if (a.stratum4.toLowerCase().indexOf('more than one race') > -1) {
-          this.dbc.triggerEvent('conceptClick', 'More than one race/ethnicity view graphs',
-            'Expand to see graphs', this.survey.name + ' - Q'
-            + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4
-            , this.prevSearchText, null);
-        }
-        this.dbc.triggerEvent('conceptClick', 'View Graphs',
-          'Expand to see graphs', this.survey.name + ' - Q'
-          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-          ' - ' + ' Icon', this.prevSearchText, null);
-        this.dbc.triggerEvent('conceptClick', 'View Graphs',
-          'Expand to see graphs', this.survey.name + ' - Q'
-          + q.actualQuestionNumber + ' - ' + q.conceptName + ' - ' + a.stratum4 +
-          ' - ' + 'Sex Assigned at Birth', this.prevSearchText, null);
-      }
   }
 
   public changeResults() {

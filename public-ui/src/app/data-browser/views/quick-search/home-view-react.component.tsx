@@ -311,7 +311,7 @@ export const dBHomeComponent = (
                 </p>
                 <div style={styles.searchIconLayout}>
                     <div>
-                        <SearchComponent value={searchWord}
+                        <SearchComponent value={searchWord} searchTitle='Search Across Data Types'
                             onChange={(val) => this.handleChange(val)}
                             onClear={() => this.handleChange('')} />
                         <CdrVersionReactComponent />

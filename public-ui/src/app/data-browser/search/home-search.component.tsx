@@ -77,15 +77,6 @@ const searchStyle = `
     .search-icon-container {
         flex-flow: row;
     }
-    #db-search-bar {
-        width: 36vw;
-    }
-}
-
-#db-search-bar input {
-    min-width: calc((100% / 12) * 10);
-    padding: 18px;
-    font-size: 18px;
 }
 
 .search-icon {
@@ -96,8 +87,16 @@ const searchStyle = `
 }
 `;
 
+const homeSearchStyle = `
+@media only screen and (min-width: 768px) {
+    #db-search-bar {
+        width: 36vw;
+    }
+}`;
+
 interface SearchProps {
     value: string;
+    searchTitle: string;
     onChange: Function;
     onClear: Function;
 }
@@ -108,16 +107,17 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
     }
 
     render() {
-        const {onChange, onClear, value} = this.props;
+        const {onChange, onClear, value, searchTitle} = this.props;
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
         return (
             <React.Fragment>
             <style>{searchStyle}</style>
+            {searchTitle && <style>{homeSearchStyle}</style>}
             <div className='search-title'>
-                <span className='secondary-display'>Search Across Data Types</span>
-                <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
-                action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>
+                <span className='secondary-display'>{searchTitle}</span>
+                {searchTitle && <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
+                                                action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>}
             </div>
             <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />
