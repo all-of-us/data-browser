@@ -207,7 +207,6 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     label='Homepage Tooltip Hover'
                     action={'Hover on ' + name + 'tile tooltip'}
                     tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()} /></div>
-            
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
                     <div style={styles.resultStat}>
