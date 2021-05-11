@@ -34,6 +34,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionFetchComplete = false;
   resultFetchComplete = false;
   surveyCountAnalysis: any;
+  surveyExtraQuestionConceptIds = [];
+  questionConceptIds = ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'];
   private subscriptions: ISubscription[] = [];
   loading = false;
   surveyVersions: any[] = [];
@@ -100,6 +102,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.reactSurveyTable = environment.reactSurveyTable;
     if (this.surveyConceptId === 1333342) {
       this.graphButtons.unshift('Survey Versions');
+    } else if (this.surveyConceptId === 43528698) {
+        this.surveyExtraQuestionConceptIds = this.questionConceptIds;
     }
   }
 
@@ -150,7 +154,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query)), )
+      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query, this.surveyExtraQuestionConceptIds)), )
       .subscribe({
         next: results => {
           this.processSurveyQuestions(results);
@@ -306,9 +310,12 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   private getSurveyResults() {
+    if (this.surveyConceptId === 43528698) {
+        this.surveyExtraQuestionConceptIds = this.questionConceptIds;
+    }
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
       this.subscriptions.push(this.api.getSurveyQuestions(
-        this.surveyConceptId.toString(), this.searchText.value).subscribe({
+        this.surveyConceptId.toString(), this.searchText.value, this.surveyExtraQuestionConceptIds).subscribe({
           next: x => {
             this.processSurveyQuestions(x);
             this.filterResults();

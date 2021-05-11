@@ -39,6 +39,19 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
             "and (match(ar2.concept_name) against(?2 in boolean mode) > 0 or match(ar2.question_string) against(?2 in boolean mode) > 0);")
     List<DbSurveyMetadata> getMatchingFMHQuestions(List<String> questionConceptIds, String search_word);
 
+    @Query(nativeQuery=true, value="select distinct b.* from survey_metadata a \n" +
+            "JOIN survey_metadata b\n" +
+            "    ON b.id =\n" +
+            "       ( SELECT c.id\n" +
+            "         FROM survey_metadata c\n" +
+            "         WHERE c.id < a.id and c.survey_concept_id = a.survey_concept_id and c.type='TOPIC'\n" +
+            "         ORDER BY c.id DESC\n" +
+            "         LIMIT 1\n" +
+            "       ) \n" +
+            "where a.concept_id in \n" +
+            "(?1) and a.generate_counts=0 order by b.id asc")
+    List<DbSurveyMetadata> getMatchingFMHTopics(List<Long> questionConceptIds);
+
     @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 1), '.', -1)=?1 and \n" +
             "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 2), '.', -1)=?2 and survey_concept_id=?3 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=2")
     List<DbSurveyMetadata> getSubQuestionsLevel1(String questionConceptId, String answerConceptId, String surveyConceptId);

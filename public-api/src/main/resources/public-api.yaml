@@ -342,6 +342,13 @@ paths:
           type: string
           required: false
           description: search word in surveys page
+        - in: query
+          name: question-concept-ids
+          type: array
+          items:
+            type: string
+          required: false
+          description: concept id
       responses:
         200:
           description: survey question fetch
@@ -384,29 +391,6 @@ paths:
           description: survey sub question fetch
           schema:
             $ref: "#/definitions/SurveyQuestionFetchResponse"
-
-  /v1/databrowser/fmh-survey-question-results:
-    get:
-      tags:
-        - dataBrowser
-      description: Get the results & sub questions with results for fmh condition / family member group
-      operationId: "getFMHSurveyQuestionResults"
-      parameters:
-        - in: query
-          name: question_concept_id
-          type: string
-          required: true
-          description: question concept id
-        - in: query
-          name: answer_concept_id
-          type: string
-          required: true
-          description: answer concept id
-      responses:
-        200:
-          description: A collection of questions
-          schema:
-            $ref: "#/definitions/SurveyMetadataListResponse"
 
   /v1/databrowser/survey-question-results:
     get:
@@ -455,38 +439,6 @@ paths:
           description: survey version counts
           schema:
             $ref: "#/definitions/SurveyVersionCountResponse"
-
-
-  /v1/databrowser/fmh-questions:
-    get:
-      tags:
-        - dataBrowser
-      description: Get survey questions
-      operationId: "getFMHQuestions"
-      parameters:
-        - in: query
-          name: survey_concept_id
-          type: integer
-          format: int64
-          required: true
-          description: survey concept id
-        - in: query
-          name: question-concept-ids
-          type: array
-          items:
-            type: string
-          required: false
-          description: concept id
-        - in: query
-          name: search-word
-          type: string
-          required: false
-          description: search word
-      responses:
-        200:
-          description: survey question fetch
-          schema:
-            $ref: "#/definitions/SurveyQuestionFetchResponse"
 
 ##########################################################################################
 ## DEFINITIONS
