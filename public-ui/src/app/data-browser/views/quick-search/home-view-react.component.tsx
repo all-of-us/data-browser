@@ -198,11 +198,16 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         }
     }
     render() {
-        const { name, description, questionCount, standardConceptCount, participantCount } = this.props;
+        const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
         return <div
             onClick={() => this.resultClick(this.props)}
             style={styles.resultBox}>
-            <p style={styles.resultBoxTitle}>{name}</p>
+            <div style={styles.resultBoxTitle}>{name}
+            <TooltipReactComponent
+                    label='Homepage Tooltip Hover'
+                    action={'Hover on ' + name + 'tile tooltip'}
+                    tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()} /></div>
+            
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
                     <div style={styles.resultStat}>
@@ -218,7 +223,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                         </div>)
                 }
                 <span style={styles.resultBodyItem} >
-                    <span><strong> {participantCount}</strong> participants in this domain</span>
+                    <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
                 </span>
             </div>
             <div style={styles.resultBoxLink}>
