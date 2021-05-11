@@ -41,7 +41,6 @@ import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { ErrorMessageWrapperComponent } from './views/error-message/error-message-react.component';
 import { ErrorMessageComponent } from './views/error-message/error-message.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
-import { FmhViewComponent } from './views/fmh-view/fmh-view.component';
 import { IntroVidsWrapperComponent } from './views/intro-vids/intro-vids-react.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
