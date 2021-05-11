@@ -246,54 +246,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getFMHQuestions(Long surveyConceptId, List<String> conceptIds, String searchWord) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-        SurveyQuestionFetchResponse response = new SurveyQuestionFetchResponse();
-
-        response.setSurvey(surveyModuleService.findByConceptId(surveyConceptId));
-
-        SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
-
-        if (searchWord == null || searchWord.isEmpty()) {
-            // Get all the questions\
-            questionResp.setItems(surveyMetadataService.getFMHQuestions(conceptIds));
-        } else {
-            // TODO Get only the matching questions
-            questionResp.setItems(surveyMetadataService.getMatchingFMHQuestions(conceptIds, searchWord));
-        }
-
-        response.setQuestions(questionResp);
-        return ResponseEntity.ok(response);
-
-    }
-
-    @Override
-    public ResponseEntity<SurveyMetadataListResponse> getFMHSurveyQuestionResults(String conceptId, String answerConceptId) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-
-        SurveyMetadataListResponse resp = new SurveyMetadataListResponse();
-        List<SurveyMetadata> subQuestions = surveyMetadataService.getSubQuestionsLevel1(conceptId, answerConceptId, "43528698");
-        List<String> conceptIds = new ArrayList<>();
-
-        for(SurveyMetadata q: subQuestions) {
-            conceptIds.add(String.valueOf(q.getConceptId()));
-        }
-
-        List<Analysis> analyses = achillesAnalysisService.findSurveyAnalysisResults("43528698", conceptIds);
-        List<SurveyMetadata> mappedQuestions = achillesAnalysisService.mapAnalysesToQuestions(analyses, subQuestions, 43528698L);
-        resp.setItems(mappedQuestions);
-        return ResponseEntity.ok(resp);
-    }
-
-    @Override
     public ResponseEntity<AnalysisListResponse> getSurveyQuestionResults(Long surveyConceptId, Long conceptId, String questionPath) {
         try {
             cdrVersionService.setDefaultCdrVersion();
