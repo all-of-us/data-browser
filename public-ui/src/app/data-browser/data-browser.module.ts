@@ -72,7 +72,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartTopResultsComponent,
     ChartBaseComponent,
     SourcesComponent,
-    FmhViewComponent,
     TooltipComponent,
     ErrorMessageComponent,
     SurveyVersionTableComponent,
