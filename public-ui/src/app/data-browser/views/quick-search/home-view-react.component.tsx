@@ -203,10 +203,11 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             onClick={() => this.resultClick(this.props)}
             style={styles.resultBox}>
             <div style={styles.resultBoxTitle}>{name}
-            <TooltipReactComponent
+                <TooltipReactComponent
                     label='Homepage Tooltip Hover'
                     action={'Hover on ' + name + 'tile tooltip'}
-                    tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()} /></div>
+                    tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()}
+                    searchTerm='' /></div>
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
                     <div style={styles.resultStat}>
