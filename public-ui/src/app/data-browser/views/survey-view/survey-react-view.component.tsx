@@ -182,6 +182,9 @@ interface State {
 }
 
 export class SurveyViewReactComponent extends React.Component<Props, State> {
+    search = _.debounce((val) => this.getSurvey(), 1000);
+    searchCount = _.debounce((val) => this.fetchSurvey(this.props.domainId), 1000);
+
     constructor(props) {
         super(props);
         this.state = {
@@ -293,9 +296,6 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             this.getSurvey(); });
     }
   }
-
-  search = _.debounce((val) => this.getSurvey(), 1000);
-  searchCount = _.debounce((val) => this.fetchSurvey(this.props.domainId), 1000);
 
   handleChange(val) {
         this.setState({ searchWord: val });
