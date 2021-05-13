@@ -8,9 +8,9 @@ import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measur
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
+import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
-import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
