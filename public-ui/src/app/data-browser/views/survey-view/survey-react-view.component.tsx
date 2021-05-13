@@ -240,13 +240,13 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                         }
                     }
                   });
-                })
+                });
     }
 
     setSurvey(surveyObj) {
         if (surveyObj) {
             const survey = JSON.parse(surveyObj);
-            let surveyConceptId = survey.conceptId;
+            const surveyConceptId = survey.conceptId;
             let surveyPdfUrl = '';
             if (surveyConceptId === 43528895) {
                 surveyPdfUrl = '/assets/surveys/' +
@@ -258,9 +258,9 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             if (surveyConceptId === 43528698) {
                 extraConcepts = ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'];
             }
-            let copeFlag = surveyConceptId === 1333342 ? true: false;
+            const copeFlag = surveyConceptId === 1333342 ? true : false;
             if (surveyConceptId === 1333342) {
-                let surveyVersions = [];
+                const surveyVersions = [];
                 api.getSurveyVersionCounts(surveyConceptId.toString()).then(
                         result => {
                             result.analyses.items.map(r =>
@@ -290,9 +290,12 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                 );
             }
         this.setState({survey: survey, surveyPdfUrl: surveyPdfUrl, isCopeSurvey: copeFlag, extraQuestionConceptIds: extraConcepts}, () => {
-            this.getSurvey()});
+            this.getSurvey(); });
     }
   }
+
+  search = _.debounce((val) => this.getSurvey(), 1000);
+  searchCount = _.debounce((val) => this.fetchSurvey(this.props.domainId), 1000);
 
   handleChange(val) {
         this.setState({ searchWord: val });
@@ -300,21 +303,17 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         this.search(val);
   }
 
-  search = _.debounce((val) => this.getSurvey(), 1000);
-  searchCount = _.debounce((val) => this.fetchSurvey(this.props.domainId), 1000);
-
   getSurvey() {
         const {survey, searchWord, extraQuestionConceptIds} = this.state;
         api.getSurveyQuestions(survey.conceptId.toString(), searchWord, extraQuestionConceptIds).then(
             (x: any) => {
                 this.processSurveyQuestions(x);
-        })
+        });
   }
 
   processSurveyQuestions(results: any) {
-        let survey = results.survey;
-        let surveyName = results.survey.name;
-        let questions = results.questions.items;
+        const survey = results.survey;
+        const questions = results.questions.items;
         this.setDefaults(questions, 0, survey);
   }
 
@@ -356,7 +355,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         return <React.Fragment>
         <style>{surveyStyle}</style>
         <div className='survey-view' style={styles.surveyView}>
-        {survey && <SurveyDescReactComponent surveyName={survey.name} isCopeSurvey={isCopeSurvey} surveyDescription={survey.description} click={this.showCopeStatement}/>
+        {survey && <SurveyDescReactComponent surveyName={survey.name} isCopeSurvey={isCopeSurvey} surveyDescription={survey.description}
+        click={this.showCopeStatement}/>
         }
         <div className='search-bar-container' style={styles.searchBarContainer}>
             <SearchComponent value={searchWord || ''} searchTitle=''
@@ -366,7 +366,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         {loading && <Spinner />}
         {survey &&
         <section className='results' style={styles.results}>
-        <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}> {'< '} Back to main search </a>
+        <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
+        {'< '} Back to main search </a>
             <div className='db-card' style={styles.dbCard}>
                 <div className='survey-head' style={styles.surveyHead}>
                     <div className={statClass} style={statStyle}>
