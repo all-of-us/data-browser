@@ -1,13 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
-import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
-import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
-import { SurveyVersionTableReactComponent } from 'app/data-browser/components/survey-version-table/survey-version-table-react.component';
-import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
-import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
 import { NoResultSearchComponent } from 'app/components/db-no-results/no-results-search.component';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { SurveyVersionTableReactComponent } from 'app/data-browser/components/survey-version-table/survey-version-table-react.component';
+import { SearchComponent } from 'app/data-browser/search/home-search.component';
+import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
+import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
+import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
@@ -230,19 +228,16 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         }
         api.getDomainTotals(searchWord, 1, 1).then(
                 (data: any) => {
-                  let surveyObj = null;
                   data.surveyModules.forEach(survey => {
                     const surveyRoute = survey.name.split(' ').join('-').toLowerCase();
                     if (surveyRoute.indexOf('(cope)') > -1) {
                         if (fetchDomain && surveyRoute.indexOf(fetchDomain) > -1) {
                             localStorage.setItem('surveyModule', JSON.stringify(survey));
-                            surveyObj = JSON.stringify(survey);
                             this.setSurvey(JSON.stringify(survey));
                         }
                     } else {
                         if (surveyRoute === fetchDomain) {
                             localStorage.setItem('surveyModule', JSON.stringify(survey));
-                            surveyObj = JSON.stringify(survey);
                             this.setSurvey(JSON.stringify(survey));
                         }
                     }
