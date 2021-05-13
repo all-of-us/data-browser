@@ -373,7 +373,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                     <div className={statClass} style={statStyle}>
                         <div className='stat-container' style={styles.statContainer}>
                             {isCopeSurvey ? <h5><strong style={styles.strong}>Total unique participants</strong></h5> : null}
-                            <h2 className='secondary-display' style={styles.secondaryDisplay}>{survey.participantCount.toLocaleString()}</h2>
+                            <h2 className='secondary-display' style={styles.secondaryDisplay}>
+                            {survey.participantCount.toLocaleString()}</h2>
                             <p className='info-text' style={styles.infoText}>Participants completed this survey</p>
                         </div>
                         {!searchWord && <div className='stat-container' style={styles.statContainer}>
@@ -390,13 +391,14 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                                   <span>{questions.length}</span>
                                 </h2>
                                 <p className='info-text' style={styles.infoText}>
-                                  matching of <span className='highlight' style={styles.highlight}>{survey.questionCount}</span> questions available
+                                  matching of <span className='highlight' style={styles.highlight}>
+                                  {survey.questionCount}</span> questions available
                                 </p>
                               </div> : null
                         }
                     </div>
                     {isCopeSurvey ?  surveyVersions && <div className='version-table' style={styles.versionTable}>
-                                        <SurveyVersionTableReactComponent surveyVersions={surveyVersions}></SurveyVersionTableReactComponent>
+                                        <SurveyVersionTableReactComponent surveyVersions={surveyVersions} />
                                      </div> :
                                      <div className='pdf-link' style={styles.pdfLink}>
                                         <a href={surveyPdfUrl} download>
@@ -417,13 +419,12 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                                                                   surveyConceptId={survey.conceptId}
                                                                   isCopeSurvey={isCopeSurvey} question={question}
                                                                   participantCount= {survey.participantCount}
-                                                                  versionAnalysis={surveyVersions}>
-                                            </SurveyQuestionReactComponent>
+                                                                  versionAnalysis={surveyVersions}/>
                                         </div>
                                      </div>
                             </div>;
                         } else {
-                            return <h3 className='topic-text' key={key}>{question.questionString} style={styles.topicText}</h3>
+                            return <h3 className='topic-text' key={key}>{question.questionString} style={styles.topicText}</h3>;
                         }
 
                     })
@@ -442,7 +443,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                       search</button></span>
             </span>
             </p>
-            <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord} measurementTestFilter={1} measurementOrderFilter={1} />
+            <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord}
+            measurementTestFilter={1} measurementOrderFilter={1} />
         </div> : null}
         {showStatement ? <PopUpReactComponent helpText='CopePopUp' onClose={this.closePopUp} /> : null}
         </React.Fragment>;
