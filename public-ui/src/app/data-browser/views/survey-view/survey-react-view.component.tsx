@@ -8,11 +8,9 @@ import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/sur
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { Spinner } from 'app/utils/spinner';
-import { navigateByUrl } from 'app/utils/navigation';
 import { GraphType } from 'app/utils/enum-metadata';
-import { globalStyles } from 'app/utils/global-styles';
-import { NavStore } from 'app/utils/navigation';
+import { navigateByUrl } from 'app/utils/navigation';
+import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
@@ -177,7 +175,7 @@ interface State {
     searchWord: string;
     extraQuestionConceptIds: Array<any>;
     surveyVersions: Array<any>;
-    showAnswer: {},
+    showAnswer: {};
     questions: Array<any>;
     loading: boolean;
     showStatement: boolean;
