@@ -12,7 +12,7 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
       component={() => IntroVidReactComponent(
         {routeData: {
             title: 'Introductory Videos',
-            breadcrumb: 'Introductory Videos'
+            breadcrumb: {value: 'Introductory Videos'}
           }})}
     />
   </AppRouter>;
