@@ -1,14 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { navigateByUrl } from 'app/utils/navigation';
 import { LoadingDots } from 'app/utils/spinner';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 const styles = reactStyles({
     loadingText: {
@@ -84,7 +81,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
 
     fetchDomainTotals() {
         const {searchValue, measurementTestFilter, measurementOrderFilter} = this.props;
-        api.getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(result => {
+        dataBrowserApi().getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(result => {
             result.domainInfos = result.domainInfos.filter(domain => domain.standardConceptCount > 0);
             this.setState({
                 domainInfoResults: result.domainInfos.filter(domain =>

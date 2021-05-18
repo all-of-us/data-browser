@@ -3,10 +3,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
+import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import * as React from 'react';
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
 const containerElementName = 'root';
 
@@ -39,12 +37,12 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
   }
 
   getCdrInfo() {
-    api.getCdrVersionUsed().then(
+    dataBrowserApi().getCdrVersionUsed().then(
           (result) => {
             this.setState({
-            numParticipants: result.numParticipants,
-            creationTime: new Date(result.creationTime)});
-          });
+              numParticipants: result.numParticipants,
+              creationTime: new Date(result.creationTime)});
+            });
   }
 
   render() {

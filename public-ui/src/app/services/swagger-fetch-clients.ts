@@ -7,15 +7,15 @@
  *
  * Example usage:
  *
- * import {runtimeApi} from 'app/services/swagger-fetch-clients';
+ * import {dataBrowserApi} from 'app/services/swagger-fetch-clients';
  *
  * ...
- * runtimeApi().listRuntimes();
+ * dataBrowserApi().getDomainTotals();
  *
  * Example test usage:
  *
  * beforeEach(() => {
- *   registerApiClient(ProfileApi, new ProfileApiStub());
+ *   registerApiClient(DataBrowserApi, new DataBrowserApiStub());
  *   ...
  * });
  */
@@ -66,7 +66,7 @@ function bindCtor<T extends BaseAPI>(ctor: new() => T): () => T {
 }
 
 // To add a new service, add a new entry below. Note that these properties are
-// getters for the API clients, e.g.: runtimeApi().listRuntimes();
+// getters for the API clients, e.g.: dataBrowserApi().getDomainTotals();
 export const dataBrowserApi = bindCtor(DataBrowserApi);
 
 /**

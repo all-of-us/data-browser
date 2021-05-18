@@ -3,18 +3,14 @@ import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper
 import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
+import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import { NavStore } from 'app/utils/navigation';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-
-
 
 const css = `
 .disclaimer-btn {
@@ -272,7 +268,7 @@ export const dBHomeComponent = (
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
-            return api.getDomainTotals(this.state.searchWord, 1, 1).then(
+            return dataBrowserApi().getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
                         domain.standardConceptCount > 0);
