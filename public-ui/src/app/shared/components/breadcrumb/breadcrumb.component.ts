@@ -86,6 +86,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       });
     this.subscription.add(routeDataStore.subscribe((newRoute) => {
       this.routeData = newRoute;
+      // If the React route data changes, we run buildBreadcrumbs again since it's not available when the route changes
       this.breadcrumbs = this.buildBreadcrumbs(this.activatedRoute.root);
     }));
   }
@@ -108,7 +109,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     if (!routeConfig.data || (!routeConfig.data.breadcrumb && !this.routeData)) {
       return this.buildBreadcrumbs(child, breadcrumbUrl, breadcrumbs);
     } else if (!routeConfig.data.breadcrumb && this.routeData && this.routeData.breadcrumb) {
-        routeConfig.data = this.routeData;
+      // If routeConfig.data is empty and React route data exists, we use it for routeConfig.data
+      routeConfig.data = this.routeData;
     }
     const routeURL: string = url.map(segment => segment.path).join('/');
     if (routeURL.length > 0) {
