@@ -182,8 +182,10 @@ interface State {
 }
 
 export class SurveyViewReactComponent extends React.Component<Props, State> {
-    search = _.debounce((val) => this.getSurvey(), 1000);
-    searchCount = _.debounce((val) => this.fetchSurvey(this.props.domainId), 1000);
+    search = _.debounce(() => {
+          this.getSurvey();
+          this.fetchSurvey(this.props.domainId)
+        }, 1000);
 
     constructor(props) {
         super(props);
@@ -199,25 +201,15 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             surveyVersions: [],
             showStatement: false,
         };
-        this.changeResults = this.changeResults.bind(this);
         this.closePopUp = this.closePopUp.bind(this);
-        this.showCopeStatement = this.showCopeStatement.bind(this);
     }
 
     componentDidMount() {
         this.fetchSurvey(this.props.domainId);
     }
 
-    changeResults(val) {
-        this.fetchSurvey(val);
-    }
-
     closePopUp() {
         this.setState({showStatement: false});
-    }
-
-    showCopeStatement() {
-        this.setState({showStatement: true});
     }
 
     fetchSurvey(domain) {
@@ -247,54 +239,47 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     }
 
     setSurvey(surveyObj) {
-        if (surveyObj) {
-            const survey = JSON.parse(surveyObj);
-            const surveyConceptId = survey.conceptId;
-            let surveyPdfUrl = '';
-            if (surveyConceptId === 43528895) {
-                surveyPdfUrl = '/assets/surveys/' +
-                'Health Care Access Utilization'.split(' ').join('_') + '.pdf';
-            } else {
-                surveyPdfUrl = '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
-            }
-            let extraConcepts = [];
-            if (surveyConceptId === 43528698) {
-                extraConcepts = ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'];
-            }
-            const copeFlag = surveyConceptId === 1333342 ? true : false;
-            if (surveyConceptId === 1333342) {
-                const surveyVersions = [];
-                api.getSurveyVersionCounts(surveyConceptId.toString()).then(
-                        result => {
-                            result.analyses.items.map(r =>
-                                  r.results.map((item, i) => {
-                                      if (item.analysisId === 3400) {
-                                         surveyVersions.push({
-                                          monthName: item.stratum4,
-                                          year: item.stratum5,
-                                          monthNum: item.stratum3.split('/')[0],
-                                          participants: item.countValue,
-                                          numberOfQuestion: '',
-                                          pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
-                                          '_COPE_COVID_English_Explorer.pdf'
-                                         });
-                                      } else if (item.analysisId === 3401) {
-                                          surveyVersions[i].numberOfQuestion = item.countValue;
-                                      }
+        const survey = JSON.parse(surveyObj);
+        const surveyConceptId = survey.conceptId;
+        const surveyPdfUrl = (surveyConceptId === 43528895) ?
+            '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
+            : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
+        const extraConcepts = surveyConceptId === 43528698 ?
+            ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638',
+            '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'] : [];
+        const copeFlag = surveyConceptId === 1333342;
+        if (surveyConceptId === 1333342) {
+            const surveyVersions = [];
+            api.getSurveyVersionCounts(surveyConceptId.toString()).then(
+                    result => {
+                        result.analyses.items.map(r =>
+                              r.results.map((item, i) => {
+                                  if (item.analysisId === 3400) {
+                                     surveyVersions.push({
+                                      monthName: item.stratum4,
+                                      year: item.stratum5,
+                                      monthNum: item.stratum3.split('/')[0],
+                                      participants: item.countValue,
+                                      numberOfQuestion: '',
+                                      pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
+                                      '_COPE_COVID_English_Explorer.pdf'
+                                     });
+                                  } else if (item.analysisId === 3401) {
+                                      surveyVersions[i].numberOfQuestion = item.countValue;
                                   }
-                                  ));
-                                  surveyVersions.sort((a1, a2) => {
-                                      const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
-                                      const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
-                                      return a.valueOf() - b.valueOf();
-                                  });
-                                  this.setState({surveyVersions: surveyVersions});
-                        }
-                );
-            }
-        this.setState({survey: survey, surveyPdfUrl: surveyPdfUrl, isCopeSurvey: copeFlag, extraQuestionConceptIds: extraConcepts}, () => {
-            this.getSurvey(); });
-    }
+                              }
+                              ));
+                              surveyVersions.sort((a1, a2) => {
+                                  const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
+                                  const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
+                                  return a.valueOf() - b.valueOf();
+                              });
+                              this.setState({surveyVersions: surveyVersions});
+                    }
+            );
+        }
+    this.setState({survey: survey, surveyPdfUrl: surveyPdfUrl, isCopeSurvey: copeFlag, extraQuestionConceptIds: extraConcepts}, () => {
+        this.getSurvey(); });
   }
 
   handleChange(val) {
@@ -356,7 +341,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         <style>{surveyStyle}</style>
         <div className='survey-view' style={styles.surveyView}>
         {survey && <SurveyDescReactComponent surveyName={survey.name} isCopeSurvey={isCopeSurvey} surveyDescription={survey.description}
-        click={this.showCopeStatement}/>
+        click={() => this.setState({showStatement: true})}/>
         }
         <div className='search-bar-container' style={styles.searchBarContainer}>
             <SearchComponent value={searchWord || ''} searchTitle=''
@@ -367,7 +352,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         {survey &&
         <section className='results' style={styles.results}>
         <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
-        {'< '} Back to main search </a>
+        &lt; Back to main search </a>
             <div className='db-card' style={styles.dbCard}>
                 <div className='survey-head' style={styles.surveyHead}>
                     <div className={statClass} style={statStyle}>
@@ -443,10 +428,10 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                       search</button></span>
             </span>
             </p>
-            <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord}
+            <NoResultSearchComponent domainMatch={(val) => this.fetchSurvey(val)} searchValue={searchWord}
             measurementTestFilter={1} measurementOrderFilter={1} />
         </div> : null}
-        {showStatement ? <PopUpReactComponent helpText='CopePopUp' onClose={this.closePopUp} /> : null}
+        {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={this.closePopUp} />}
         </React.Fragment>;
     }
 }
