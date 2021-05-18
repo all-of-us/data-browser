@@ -184,7 +184,7 @@ interface State {
 export class SurveyViewReactComponent extends React.Component<Props, State> {
     search = _.debounce(() => {
           this.getSurvey();
-          this.fetchSurvey(this.props.domainId)
+          this.fetchSurvey(this.props.domainId);
         }, 1000);
 
     constructor(props) {
@@ -245,8 +245,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
         const extraConcepts = surveyConceptId === 43528698 ?
-            ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638',
-            '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'] : [];
+            ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786',
+            '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'] : [];
         const copeFlag = surveyConceptId === 1333342;
         if (surveyConceptId === 1333342) {
             const surveyVersions = [];
