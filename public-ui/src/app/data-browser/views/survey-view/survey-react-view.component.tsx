@@ -201,15 +201,10 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             surveyVersions: [],
             showStatement: false,
         };
-        this.closePopUp = this.closePopUp.bind(this);
     }
 
     componentDidMount() {
         this.fetchSurvey(this.props.domainId);
-    }
-
-    closePopUp() {
-        this.setState({showStatement: false});
     }
 
     fetchSurvey(domain) {
@@ -284,7 +279,6 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
 
   handleChange(val) {
         this.setState({ searchWord: val });
-        this.searchCount(val);
         this.search(val);
   }
 
@@ -409,7 +403,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                                      </div>
                             </div>;
                         } else {
-                            return <h3 className='topic-text' key={key}>{question.questionString} style={styles.topicText}</h3>;
+                            return <h3 className='topic-text' key={key} style={styles.topicText}>{question.questionString}</h3>;
                         }
 
                     })
@@ -431,7 +425,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             <NoResultSearchComponent domainMatch={(val) => this.fetchSurvey(val)} searchValue={searchWord}
             measurementTestFilter={1} measurementOrderFilter={1} />
         </div> : null}
-        {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={this.closePopUp} />}
+        {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={() => this.setState({showStatement: false})} />}
         </React.Fragment>;
     }
 }
