@@ -8,6 +8,7 @@ import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measur
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
+import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from 'app/shared/shared.module';
@@ -84,6 +85,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    SurveyViewWrapperComponent,
     TooltipWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
@@ -120,6 +122,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsWrapperComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    SurveyViewWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
     TooltipWrapperComponent,

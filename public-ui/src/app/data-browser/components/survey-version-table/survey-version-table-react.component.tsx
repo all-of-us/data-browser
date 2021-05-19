@@ -1,11 +1,51 @@
 import {
     Component,
-    Input,
-    ViewEncapsulation
+    Input
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { ClrIcon } from 'app/utils/clr-icon';
 import * as React from 'react';
+
+const cssStyles = `
+strong {
+    font-family: GothamBook, Arial, sans-serif;
+}
+
+.version-box-container  {
+    width:100%;
+    font-size: .8em;
+}
+
+.version-box{
+    border:1px solid #cccccc;
+    border-radius: 3px;
+}
+
+.version-box-header,.version-box-row {
+    display: grid;
+    grid-template-columns: 20% 15% 25% 15% 25%;
+    /* justify-content: space-around; */
+    width:100%;
+}
+.version-box-row {
+    border-top: 1px solid #cccccc;
+}
+
+.version-box-header {
+    background: #dae6ed;
+}
+
+.version-box-header > .version-box-item {
+    font-family: GothamBold;
+}
+.version-box-body{
+    overflow-y: auto;
+}
+.version-box-item{
+    font-weight: bold;
+    padding:.5em;
+}
+`;
 
 const containerElementName = 'root';
 
@@ -21,6 +61,7 @@ constructor(props: Props) {
 render() {
     const {surveyVersions} = this.props;
     return <div className='version-box-container'>
+            <style>{cssStyles}</style>
             <h5><strong>Survey versions</strong></h5>
                 <br />
             <div className='version-box'>
@@ -57,8 +98,6 @@ render() {
 @Component({
 selector: 'app-survey-version-table-react',
 template: `<span #${containerElementName}></span>`,
-styleUrls: ['./survey-version-table.component.css', '../../../styles/template.css'],
-encapsulation: ViewEncapsulation.None,
 })
 export class SurveyVersionWrapperComponent extends BaseReactWrapper {
     @Input() public surveyVersions;

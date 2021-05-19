@@ -110,7 +110,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
             localStorage.setItem('surveyModule', JSON.stringify(domainInfo));
             url += 'survey/' + surveyIdToRoute[domainInfo.conceptId];
             url += '?search=' + searchValue;
-            domainMatch();
+            domainMatch(surveyIdToRoute[domainInfo.conceptId]);
             navigateByUrl(url);
         } else if (type === 'pm') {
             url += 'physical-measurements/' + '/' + searchValue;
