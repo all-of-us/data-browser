@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {routeDataStore, RouteDataStore} from 'app/utils/stores';
 import { environment } from 'environments/environment';
 import {filter} from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
@@ -22,6 +23,7 @@ export interface Breadcrumb {
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   breadcrumbs: Breadcrumb[];
+  routeData: RouteDataStore;
   allOfUs = environment.researchAllOfUsUrl;
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -82,6 +84,11 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         this.breadcrumbs = BreadcrumbComponent.filterBreadcrumbs(
           this.buildBreadcrumbs(this.activatedRoute.root));
       });
+    this.subscription.add(routeDataStore.subscribe((newRoute) => {
+      this.routeData = newRoute;
+      // If the React route data changes, we run buildBreadcrumbs again since it's not available when the route changes
+      this.breadcrumbs = this.buildBreadcrumbs(this.activatedRoute.root);
+    }));
   }
 
   ngOnDestroy() {
@@ -92,31 +99,31 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
    * Returns array of Breadcrumb objects that represent the breadcrumb trail.
    * Derived from current route in conjunction with the overall route structure.
    */
-  private buildBreadcrumbs(route: ActivatedRoute,
-    url: string = '',
-    breadcrumbs: Breadcrumb[] = []): Array<Breadcrumb> {
+  private buildBreadcrumbs(route: ActivatedRoute, breadcrumbUrl: string = '', breadcrumbs: Breadcrumb[] = []): Array<Breadcrumb> {
     const children: ActivatedRoute[] = route.children;
-    const routeDataBreadcrumb = 'breadcrumb';
     if (children.length === 0) {
       return breadcrumbs;
     }
-    for (const child of children) {
-      if (!child.snapshot.data.hasOwnProperty(routeDataBreadcrumb)) {
-        return this.buildBreadcrumbs(child, url, breadcrumbs);
-      }
-      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-      if (routeURL.length > 0) {
-        url += `/${routeURL}`;
-      }
-      const label = child.snapshot.data[routeDataBreadcrumb].value;
-      const isIntermediate = child.snapshot.data[routeDataBreadcrumb].intermediate;
-
-      if (!breadcrumbs.some(b => b.url === url)) {
-        const breadcrumb = BreadcrumbComponent.makeBreadcrumb(label, isIntermediate, url, child);
-        breadcrumbs.push(breadcrumb);
-      }
-      return this.buildBreadcrumbs(child, url, breadcrumbs);
+    const [child] = children;
+    const {snapshot: {routeConfig, url}} = child;
+    if (!routeConfig.data || (!routeConfig.data.breadcrumb && !this.routeData)) {
+      return this.buildBreadcrumbs(child, breadcrumbUrl, breadcrumbs);
+    } else if (!routeConfig.data.breadcrumb && this.routeData && this.routeData.breadcrumb) {
+      // If routeConfig.data is empty and React route data exists, we use it for routeConfig.data
+      routeConfig.data = this.routeData;
     }
+    const routeURL: string = url.map(segment => segment.path).join('/');
+    if (routeURL.length > 0) {
+      breadcrumbUrl += `/${routeURL}`;
+    }
+    const label = routeConfig.data.breadcrumb.value;
+    const isIntermediate = routeConfig.data.breadcrumb.intermediate;
+
+    if (!breadcrumbs.some(b => b.url === breadcrumbUrl)) {
+      const breadcrumb = BreadcrumbComponent.makeBreadcrumb(label, isIntermediate, breadcrumbUrl, child);
+      breadcrumbs.push(breadcrumb);
+    }
+    return this.buildBreadcrumbs(child, breadcrumbUrl, breadcrumbs);
   }
 
 }
