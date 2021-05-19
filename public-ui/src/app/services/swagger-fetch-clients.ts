@@ -20,13 +20,7 @@
  * });
  */
 
-import {environment} from 'environments/environment';
-import {
-  BaseAPI,
-  ConfigApi,
-  Configuration as FetchConfiguration,
-  DataBrowserApi
-} from 'publicGenerated/fetch';
+import {BaseAPI, Configuration, DataBrowserApi} from 'publicGenerated/fetch';
 
 import * as portableFetch from 'portable-fetch';
 
@@ -73,7 +67,7 @@ export const dataBrowserApi = bindCtor(DataBrowserApi);
  * Binds standard API clients. To be called at most once for production use,
  * e.g. during app initialization.
  */
-export function bindApiClients(conf: FetchConfiguration) {
+export function bindApiClients(conf: Configuration) {
   for (const ctor of apiCtors) {
     // We use an anonymous subclass here because Swagger's typescript-fetch
     // codegen creates API client subclasses which lack a public interface for
