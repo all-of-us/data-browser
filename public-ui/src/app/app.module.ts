@@ -13,6 +13,7 @@ import * as StackTrace from 'stacktrace-js';
 import { DataBrowserModule } from './data-browser/data-browser.module';
 import { TooltipService } from './data-browser/services/tooltip.service';
 import { ErrorReporterService } from './services/error-reporter.service';
+import { FetchModule} from './services/fetch.module';
 import { ServerConfigService } from './services/server-config.service';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './views/app/app.component';
@@ -48,6 +49,7 @@ export function getConfigService(http: HttpClient) {
     SharedModule,
     DataBrowserModule,
     HttpClientModule,
+    FetchModule,
   ],
   declarations: [
     AppComponent,

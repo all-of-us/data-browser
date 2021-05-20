@@ -4,14 +4,9 @@ import { SurveyAnswerChartReactComponent } from 'app/data-browser/charts/chart-s
 import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SurveyChartReactComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
+import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
-
-
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-// const dbc = new DbConfigService(api);
 
 const styleCss =
     `
@@ -112,16 +107,16 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     }
 
     getSubQuestions() {
-        api.getSubQuestions(this.props.surveyConceptId, this.props.questionConceptId, this.props.answerConceptId, this.state.nextLevel)
-            .then(
-                results => {
-                    this.setState({
-                        subQuestions: this.processResults(results.questions.items)
-                    });
-                })
-            .catch(
-                e => console.log(e, 'error')
-            );
+        dataBrowserApi().getSubQuestions(
+          this.props.surveyConceptId,
+          this.props.questionConceptId,
+          this.props.answerConceptId,
+          this.state.nextLevel
+        ).then(results => {
+            this.setState({
+                subQuestions: this.processResults(results.questions.items)
+            });
+        }).catch(e => console.log(e, 'error'));
     }
 
     processResults(questions: Array<any>) {

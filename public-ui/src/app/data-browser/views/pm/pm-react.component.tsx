@@ -4,10 +4,9 @@ import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-
 import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
+import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -157,8 +156,6 @@ aside .button-item button {
 }
 `;
 
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-
 interface State {
   pmGroups: any;
   loading: boolean;
@@ -188,7 +185,7 @@ export class PMReactComponent extends React.Component<{}, State> {
   getPMData() {
     const {searchText, pmGroups} = this.state;
     const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
-    api.getConceptAnalysisResults(PM_CONCEPTS).then(
+    dataBrowserApi().getConceptAnalysisResults(PM_CONCEPTS).then(
       (result) => {
         const items = result.items;
         for (const group of pmGroups) {
@@ -218,7 +215,7 @@ export class PMReactComponent extends React.Component<{}, State> {
   }
 
   getPMCountData() {
-    api.getCountAnalysis('Physical Measurements', 'pm').then(
+    dataBrowserApi().getCountAnalysis('Physical Measurements', 'pm').then(
         (result) => {
             this.setState({domainCountAnalysis: result});
     });
