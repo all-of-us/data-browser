@@ -44,7 +44,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.surveyAnalysis.results.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
-      console.log(this.chartOptions);
     }
   }
   // renderChart after 1ms to fill container
