@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { GENDER_STRATUM_MAP, getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -15,7 +15,6 @@ interface State {
 
 interface Props {
     concepts: any;
-    conceptName: any;
 }
 
 export class SourcesChartReactComponent extends React.Component<Props, State> {
@@ -107,9 +106,8 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
 })
 export class SourcesWrapperComponent extends BaseReactWrapper {
   @Input() concepts: any[];
-  @Input() conceptName: string;
 
   constructor() {
-    super(SourcesChartReactComponent, ['concepts', 'conceptName']);
+    super(SourcesChartReactComponent, ['concepts']);
   }
 }

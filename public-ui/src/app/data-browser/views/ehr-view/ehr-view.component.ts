@@ -5,7 +5,6 @@ import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse, MatchType } from 'publicGenerated';
-import { Concept } from 'publicGenerated/model/concept';
 import { ConceptListResponse } from 'publicGenerated/model/conceptListResponse';
 import { Domain } from 'publicGenerated/model/domain';
 import { SearchConceptsRequest } from 'publicGenerated/model/searchConceptsRequest';
