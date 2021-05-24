@@ -54,7 +54,6 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
       newBaseOptions.yAxis.title.text = 'Participant Count';
       newBaseOptions.xAxis.categories = categories;
       newBaseOptions.series = [series];
-      console.log(newBaseOptions);
       this.setState({options: newBaseOptions});
   }
 
