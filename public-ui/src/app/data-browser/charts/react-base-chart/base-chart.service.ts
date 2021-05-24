@@ -44,7 +44,8 @@ export const baseOptions = {
   },
   chart: {
         type: '',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        tooltip: {}
   },
   color: '',
   title: {

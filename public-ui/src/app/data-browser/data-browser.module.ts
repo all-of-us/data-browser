@@ -11,6 +11,7 @@ import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/s
 import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
+import { SourcesWrapperComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
@@ -83,6 +84,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    SourcesWrapperComponent,
     SurveyViewWrapperComponent,
     TooltipWrapperComponent,
     AgeWrapperComponent,
@@ -119,6 +121,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     IntroVidsComponent,
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
+    SourcesWrapperComponent,
     SurveyViewWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,

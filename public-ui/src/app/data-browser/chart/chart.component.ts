@@ -29,7 +29,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() domainCountAnalysis: any;
   @Input() surveyCountAnalysis: any;
   @Input() surveyVersionAnalysis: any;
-  @Input() conceptName: string;
   chartOptions: any = null;
   Highcharts = Highcharts;
   constructor(private dbc: DbConfigService) {
@@ -45,6 +44,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
         this.surveyAnalysis.results.length)) {
       // HC automatically redraws when changing chart options
       this.chartOptions = this.hcChartOptions();
+      console.log(this.chartOptions);
     }
   }
   // renderChart after 1ms to fill container
