@@ -1,7 +1,6 @@
 import {
   Component,
-  Input,
-  ViewEncapsulation
+  Input
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
@@ -124,8 +123,7 @@ export class TopResultsChartReactComponent extends React.Component<Props, State>
 
 @Component({
   selector: 'app-top-results-chart-react',
-  template: `<span #root></span>`,
-  encapsulation: ViewEncapsulation.None,
+  template: `<span #root></span>`
 })
 export class TopResultsChartWrapperComponent extends BaseReactWrapper {
   @Input() concepts: any;
