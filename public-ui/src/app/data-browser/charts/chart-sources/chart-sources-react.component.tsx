@@ -1,13 +1,22 @@
 import {
   Component,
-  Input,
-  ViewEncapsulation
+  Input
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { reactStyles } from 'app/utils';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
+
+const styles = reactStyles({
+    standardChart: {
+        display: 'block',
+        backgroundSize: 'contain',
+        height: '100%',
+        width: '100%',
+    }
+});
 
 interface State {
     options: any;
@@ -53,6 +62,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
       newBaseOptions.xAxis.title.text = 'Source Concepts';
       newBaseOptions.yAxis.title.text = 'Participant Count';
       newBaseOptions.xAxis.categories = categories;
+      newBaseOptions.tooltip.outside = true;
       newBaseOptions.series = [series];
       this.setState({options: newBaseOptions});
   }
@@ -61,14 +71,12 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
     const data = [];
     const cats = [];
     const COLUMN_COLOR = '#2691D0';
-    concepts = concepts.sort((a, b) => {
+    concepts.sort((a, b) => {
       return a.sourceCountValue < b.sourceCountValue;
     });
     for (const a of concepts) {
-      let toolTipText = '';
-      let count;
-      count = (a.sourceCountValue <= 20) ? '&le; 20' : a.sourceCountValue;
-              toolTipText = '<div class="chart-tooltip">' + a.conceptName +
+      const count = (a.sourceCountValue <= 20) ? '&le; 20' : a.sourceCountValue;
+      const toolTipText = '<div class="chart-tooltip" style="position: relative; white-space:normal;">' + a.conceptName +
               ' (' + a.vocabularyId + '-' + a.conceptCode + ') ' +
               '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong> </div>';
       data.push({
@@ -79,8 +87,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
       });
       cats.push(a.vocabularyId + '-' + a.conceptCode);
     }
-    const temp = data.filter(x => x.y > 20);
-    const dataOnlyLT20 = temp.length > 0 ? false : true;
+    const dataOnlyLT20 = data.filter(x => x.y > 20).length === 0;
     // Override tooltip and colors and such
     const series = {
       name: concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
@@ -92,7 +99,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
   render() {
       const {options} = this.state;
       return <div>
-        {options && <HighchartsReact highcharts={highCharts} options={options}
+        {options && <HighchartsReact highcharts={highCharts} options={options} style={styles.standardChart}
         updateArgs={[true]}/>}
       </div>;
     }
@@ -100,8 +107,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
 
 @Component({
   selector: 'app-sources-chart-react',
-  template: `<span #root></span>`,
-  encapsulation: ViewEncapsulation.None,
+  template: `<span #root></span>`
 })
 export class SourcesWrapperComponent extends BaseReactWrapper {
   @Input() concepts: any[];
