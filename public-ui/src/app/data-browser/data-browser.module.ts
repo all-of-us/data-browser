@@ -6,6 +6,7 @@ import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results
 import { NoResultSearchWrapperComponent } from 'app/components/db-no-results/no-results-search.component';
 import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { SourcesWrapperComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
+import { TopResultsChartWrapperComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
@@ -85,6 +86,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     SourcesWrapperComponent,
+    TopResultsChartWrapperComponent,
     SurveyViewWrapperComponent,
     TooltipWrapperComponent,
     AgeWrapperComponent,
@@ -122,6 +124,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     SourcesWrapperComponent,
+    TopResultsChartWrapperComponent,
     SurveyViewWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,

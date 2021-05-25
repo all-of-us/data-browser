@@ -82,6 +82,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   ) {
     this.closePopUp = this.closePopUp.bind(this);
     this.changeResults = this.changeResults.bind(this);
+    this.selectConcept = this.selectConcept.bind(this);
   }
 
   ngOnInit() {
