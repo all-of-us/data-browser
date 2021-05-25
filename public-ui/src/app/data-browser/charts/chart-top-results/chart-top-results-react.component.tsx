@@ -83,14 +83,13 @@ export class TopResultsChartReactComponent extends React.Component<Props, State>
   }
 
   public toolTip(concept: any) {
-    let toolTipText;
     let count = '';
     if (concept.countValue <= 20) {
         count = '&le; 20';
     } else {
         count = concept.countValue.toString();
     }
-    toolTipText = '<div class="chart-tooltip">' + concept.conceptName +
+    const toolTipText = '<div class="chart-tooltip">' + concept.conceptName +
       ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
       '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong>' + '</div>';
     return toolTipText;
