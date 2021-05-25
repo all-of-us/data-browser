@@ -62,11 +62,11 @@ export class TopResultsChartReactComponent extends React.Component<Props, State>
       newBaseOptions.yAxis.labels.style.fontSize = '12px';
       newBaseOptions.xAxis.labels.style.fontSize = '12px';
       newBaseOptions.xAxis.labels.style.width = '200px';
-      var longest = Math.max(...(categories.map(el => el.length)));
+      const longest = Math.max(...(categories.map(el => el.length)));
       if (longest > 200) {
         newBaseOptions.xAxis.labels.style.width = '300px';
       }
-      newBaseOptions.xAxis.labels.formatter = function () {
+      newBaseOptions.xAxis.labels.formatter = function() {
         return '<div style="text-overflow: ellipsis; overflow: hidden;">' + this.value + '</div>';
       };
       newBaseOptions.chart.type = 'bar';
@@ -99,7 +99,6 @@ export class TopResultsChartReactComponent extends React.Component<Props, State>
   prepCategoriesAndData(concepts) {
     const data = [];
     const cats = [];
-    const color = '#2691D0';
     for (const concept of concepts) {
           data.push({
             toolTipHelpText: this.toolTip(concept),
