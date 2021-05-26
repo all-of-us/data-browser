@@ -287,6 +287,9 @@
                     </app-concept-charts>
                   </div>
                 </ng-template>
+                <div class="concept-chart">
+                  <app-concept-chart-react [graphButtons]="getGraphButtons(r)" [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>
+                </div>
               </div>
             </div>
           </div>
