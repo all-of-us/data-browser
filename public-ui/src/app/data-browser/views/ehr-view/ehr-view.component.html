@@ -270,12 +270,6 @@
                    *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
                    #chartElement>
                 <div class="graph-menu">
-                  <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':r.graphToShow === g}" tabindex="0"
-                       (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
-                    <span>{{g}}</span>
-                    <app-tooltip-react [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                       [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
-                  </div>
                 </div>
                 <ng-container *ngIf="r.graphToShow === graphType.Sources; else NonSourceCharts">
                   <app-sources [ehrDomain]="ehrDomain"
@@ -283,10 +277,6 @@
                   </app-sources>
                 </ng-container>
                 <ng-template #NonSourceCharts>
-                  <div class="graph-item">
-                    <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
-                    </app-concept-charts>
-                  </div>
                 </ng-template>
                 <div class="concept-chart">
                   <app-concept-chart-react [graphButtons]="getGraphButtons(r)" [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>

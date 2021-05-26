@@ -17,6 +17,7 @@ interface State {
   graphToShow: string;
   selectedChartAnalysis: any;
   countAnalysis: any;
+  isAnalysisLoaded: boolean;
   displayGraphErrorMessage: boolean;
   measurementGenderCountAnalysis: any;
   selectedMeasurementType: string;
@@ -48,7 +49,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
           selectedUnit: null,
           selectedMeasurementType: null,
           toDisplayMeasurementGenderAnalysis: null,
-          toDisplayMeasurementGenderCountAnalysis: null
+          toDisplayMeasurementGenderCountAnalysis: null,
+          isAnalysisLoaded: false
         };
     }
 
@@ -60,12 +62,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
-                selectedChartAnalysis: results.items[0].genderAnalysis
+                selectedChartAnalysis: results.items[0].genderAnalysis,
+                isAnalysisLoaded: true
             });
         }).catch(e => {
             console.log(e, 'error');
             this.setState({
                 displayGraphErrorMessage: true,
+                isAnalysisLoaded: true
             });
         });
         dataBrowserApi().getCountAnalysis(concept.domainId, 'ehr')
@@ -80,7 +84,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         .then(results => {
             let sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
             this.setState({
-                sourceConcepts: sources
+                sourceConcepts: sources,
             });
         }).catch(e => {
             console.log(e, 'error');
@@ -181,7 +185,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
 
     render() {
         const {graphButtons, searchTerm, concept} = this.props;
-        const {graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts} = this.state;
+        const {graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts, isAnalysisLoaded} = this.state;
         const tabIndex = 0;
         // TODO Add in sources chart and sources tree in here
         return <React.Fragment>
@@ -207,7 +211,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                       </div>
                     : [
                     <React.Fragment key={concept.conceptId}>
-                    {(selectedChartAnalysis && countAnalysis) &&
+                    {(isAnalysisLoaded && selectedChartAnalysis && countAnalysis && countAnalysis.genderCountAnalysis) &&
                     graphToShow === 'Sex Assigned at Birth' ?
                     <div className='chart' key='biosex-chart'>
                         <BioSexChartReactComponent
@@ -216,7 +220,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     </div> :
                     graphToShow === 'Age' ?
                     <div className='chart' key='age-chart'>
-                        <p>Age Chart</p>
+                        <AgeChartReactComponent domain='ehr' ageAnalysis={selectedChartAnalysis}
+                        ageCountAnalysis={countAnalysis.ageCountAnalysis} selectedResult=''/>
                     </div> :
                     graphToShow === 'Values' ?
                     <div className='chart' key='values-chart'>
