@@ -28,6 +28,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+      console.log(this.props);
       this.getChartOptions();
   }
 
