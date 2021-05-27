@@ -11,5 +11,6 @@ export const environment = {
   reactHomeView: false,
   reactChart: false,
   reactSurveyTable: false,
+  reactSurvey: false,
   testReact: false
 };

@@ -1,1 +1,95 @@
-<survey-react-view [domainId]="domainId" [searchWord]="searchWord"></survey-react-view>
+<survey-react-view [domainId]="domainId" [searchWord]="searchWord" *ngIf="testSurvey;else angSurvey"></survey-react-view>
+<ng-template #angSurvey>
+<div class="survey-view">
+    <app-survey-desc [surveyName]="surveyName" [isCopeSurvey]="isCopeSurvey" [surveyDescription]="surveyDescription"
+                     [click]="showCopeStatement"></app-survey-desc>
+    <div class="search-bar-container">
+        <div id="db-search-bar">
+            <clr-icon shape="search" class="is-info search-icon"></clr-icon>
+            <input type="text" aria-label="Survey Search" id="search-db" placeholder="Keyword Search"
+                   [formControl]="searchText" style="height:auto" autofocus>
+            <div *ngIf="searchText.value" class="clear-icon" (click)="clearSearch()"><i
+                    class="far fa-times fa-1x clear-search-icon"></i></div>
+        </div>
+    </div>
+    <app-spinner [loading]="loading"></app-spinner>
+    <section *ngIf="!loading && surveyResultCount > 0" class="results">
+        <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
+            < Back to main search </a>
+        <div class="db-card">
+            <div class="survey-head">
+                <div [ngClass]="(isCopeSurvey)?'cope-stat-layout':'stat-layout'">
+                    <div class="stat-container">
+                        <h5 *ngIf="isCopeSurvey"><strong>Total unique participants</strong></h5>
+                        <h2 class="secondary-display">
+                            {{survey.participantCount | number }}
+                        </h2>
+                        <p class="info-text">
+                            Participants completed this survey
+                        </p>
+                    </div>
+                    <div class="stat-container" *ngIf="!searchText.value">
+                        <h2 class="secondary-display">
+                            <span>{{ survey.questionCount }} </span>
+                        </h2>
+                        <p class="info-text">
+                            Questions Available
+                        </p>
+                    </div>
+                    <div class="stat-container" *ngIf="searchText.value">
+                        <h2 class="secondary-display">
+                            <span>{{ getMatchingQuestionCount() }}</span>
+                        </h2>
+                        <p class="info-text">
+                            matching of <span class="highlight">{{survey.questionCount}}</span> questions available
+                        </p>
+                    </div>
+                </div>
+                <div *ngIf="isCopeSurvey" class="version-table">
+                    <app-survey-version-table-react [surveyVersions]="surveyVersions"></app-survey-version-table-react>
+                </div>
+                <div class="pdf-link" (click)="downloadPdf()" *ngIf="!isCopeSurvey">
+                    <a href="{{surveyPdfUrl}}" download>
+                        <clr-icon shape="file" class="is-solid"> </clr-icon> Download Survey as PDF
+                    </a>
+                </div>
+            </div>
+            <div class="survey-results" *ngIf="questionFetchComplete">
+                <ng-container *ngFor="let q of questions, let i = index">
+                    <ng-container *ngIf="q.type === 'QUESTION';else topic">
+                        <div class="question-result">
+                            <div class="secondary-display">
+                                <div class="body-default" [ngClass]="{'active-question':showAnswer[q.conceptId]}">
+
+                                    <app-survey-question-react *ngIf="reactSurveyTable"
+                                                               [searchTerm]="searchText.value"
+                                                               [surveyName]="survey.name"
+                                                               [surveyConceptId]="surveyConceptId"
+                                                               [isCopeSurvey]="isCopeSurvey" [question]="q"
+                                                               [participantCount]= "survey.participantCount"
+                                                               [versionAnalysis]="surveyVersions">
+                                    </app-survey-question-react>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #topic>
+                        <h3 class="topic-text">{{q.questionString}}</h3>
+                    </ng-template>
+                </ng-container>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="no-results" *ngIf="hasResults() && !loading && searchText.value">
+    <p class="results-heading no-results">
+    <span> No questions match any of the keywords: <strong>
+        {{searchText.value}}</strong>.
+     <span class="search-extra"> <button class="btn btn-link" (click)="clearSearch()">Reset
+          search</button></span>
+    </span>
+    </p>
+    <app-domain-results-match [domainMatch]="changeResults" [searchValue]="searchText.value" [measurementTestFilter]="1" [measurementOrderFilter]="1"></app-domain-results-match>
+</div>
+<app-popup-react *ngIf="showStatement" [helpText]="'CopePopUp'" [onClose]="closePopUp"></app-popup-react>
+</ng-template>

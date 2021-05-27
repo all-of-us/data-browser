@@ -103,6 +103,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         });
         if (this.props.hasSubQuestions === '1' && !this.state.subQuestions.length) {
             this.getSubQuestions();
+        } else {
+            this.processResults([this.props.question]);
         }
     }
 
