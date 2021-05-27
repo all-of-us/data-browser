@@ -80,7 +80,7 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         api.getSurveyQuestionResults(this.props.surveyConceptId, this.props.question.conceptId, this.props.question.path)
             .then(
                 results => {
-                    var questionWithResults = this.props.question;
+                    const questionWithResults = this.props.question;
                     questionWithResults.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
                     questionWithResults.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
                     questionWithResults.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
