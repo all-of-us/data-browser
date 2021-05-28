@@ -6,7 +6,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { SurveyChartReactComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { addDidNotAnswerResult } from 'app/utils/survey-utils';
+import { addDidNotAnswerResult, countPercentage } from 'app/utils/survey-utils';
 import * as React from 'react';
 
 const styleCss =
@@ -154,7 +154,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     }
 
     public addMissingResults(q: any, a: any) {
-        a.countPercent = this.countPercentage(a.countValue);
+        a.countPercent = countPercentage(a.countValue, this.props.countValue);
         if (q.genderAnalysis) {
             this.addMissingAnalysisResults(q.genderAnalysis,
                 q.genderAnalysis.results.
@@ -181,7 +181,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                 const missingResult = {
                     analysisId: analysis.analysisId,
                     countValue: 20,
-                    countPercent: this.countPercentage(20),
+                    countPercent: countPercentage(20, this.props.countValue),
                     stratum1: results[0].stratum1,
                     stratum2: results[0].stratum2,
                     stratum3: results[0].stratum3,
