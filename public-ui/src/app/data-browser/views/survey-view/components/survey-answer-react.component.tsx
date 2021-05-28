@@ -5,6 +5,7 @@ import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/rea
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SurveyChartReactComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { addDidNotAnswerResult } from 'app/utils/survey-utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import * as React from 'react';
 
@@ -97,9 +98,9 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     }
 
 
-    openDrawer() {
+    openDrawer(answerValueString) {
         this.setState({
-            drawerOpen: !this.state.drawerOpen
+            drawerOpen: (answerValueString !== 'Did not answer') ? !this.state.drawerOpen : false
         });
         if (this.props.hasSubQuestions === '1' && !this.state.subQuestions.length) {
             this.getSubQuestions();
@@ -122,6 +123,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     }
 
     processResults(questions: Array<any>) {
+        const {countValue} = this.props;
         questions.forEach(q => {
             q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
             q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
@@ -145,9 +147,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                 this.addMissingResults(q, aCount);
                 return aCount;
             });
-            q.countAnalysis.results.push(this.addDidNotAnswerResult(q.conceptId, q.countAnalysis.results));
+            q.countAnalysis.results.push(addDidNotAnswerResult(q.conceptId, q.countAnalysis.results, countValue));
             return q;
-
         });
         return questions;
     }
@@ -194,38 +195,6 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         }
     }
 
-    public addDidNotAnswerResult(questionConceptId: any, results: any[]) {
-        let didNotAnswerCount = this.props.countValue;
-        for (const r of results) {
-            didNotAnswerCount = didNotAnswerCount - r.countValue;
-        }
-        const result = results[0];
-        if (didNotAnswerCount <= 0) {
-            didNotAnswerCount = 20;
-        }
-        const notAnswerPercent = this.countPercentage(didNotAnswerCount);
-        const didNotAnswerResult = {
-            analysisId: result.analysisId,
-            countValue: didNotAnswerCount,
-            countPercent: notAnswerPercent,
-            stratum1: result.stratum1,
-            stratum2: result.stratum2,
-            stratum3: '0',
-            stratum4: 'Did not answer',
-            stratum5: result.stratum5,
-            stratum6: result.stratum6,
-        };
-        return didNotAnswerResult;
-    }
-
-    countPercentage(answerCount: number) {
-        if (!answerCount || answerCount <= 0) { return 0; }
-        let percent: number = answerCount / this.props.countValue;
-        percent = parseFloat(percent.toFixed(4));
-        return percent * 100;
-    }
-
-
     render() {
         const { answerConceptId, answerValueString, hasSubQuestions,
             countValue, countPercent, isCopeSurvey, question, answer, surveyName,
@@ -236,9 +205,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
             graphButtons.unshift('Survey Versions');
         }
         const participantPercentage = ((this.props.countValue / this.props.participantCount) * 100).toFixed(2);
+        const countString = countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return <React.Fragment>
             <div className={drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'}
-                onClick={() => this.openDrawer()}>
+                onClick={() => this.openDrawer(answerValueString)}>
                 <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                     {answerValueString}
                 </div>
@@ -247,7 +217,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                         {isCopeSurvey ? <React.Fragment></React.Fragment> : answerConceptId}
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
-                        {isCopeSurvey ? <React.Fragment></React.Fragment> : countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        {isCopeSurvey ? <React.Fragment></React.Fragment> :
+                        countValue > 20 ? countString : <React.Fragment>&le; {countString} </React.Fragment>}
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                         {isCopeSurvey ? answerConceptId : countPercent ? countPercent.toFixed(2) : participantPercentage}
@@ -258,7 +229,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                             <ClrIcon shape='caret' className='survey-row-icon'
                                 style={{ color: '#216fb4' }}
                                 dir={drawerOpen ? 'down' : 'right'} /> :
-                            <ClrIcon className={drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' />}
+                                answerValueString !== 'Did not answer' ?
+                            <ClrIcon className={drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' /> : null}
                     </div>
                 </div>
             </div >
