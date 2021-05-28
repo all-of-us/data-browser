@@ -5,8 +5,8 @@ import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/rea
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SurveyChartReactComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
-import { addDidNotAnswerResult } from 'app/utils/survey-utils';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { addDidNotAnswerResult } from 'app/utils/survey-utils';
 import * as React from 'react';
 
 const styleCss =

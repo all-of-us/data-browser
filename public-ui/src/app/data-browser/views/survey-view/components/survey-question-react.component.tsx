@@ -100,7 +100,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                     for (const result of questionWithResults.countAnalysis.results) {
                         questionCount += result.countValue;
                     }
-                    questionWithResults.countAnalysis.results.push(addDidNotAnswerResult(questionWithResults.conceptId, questionWithResults.countAnalysis.results, questionCount));
+                    questionWithResults.countAnalysis.results.push(addDidNotAnswerResult(questionWithResults.conceptId,
+                    questionWithResults.countAnalysis.results, questionCount));
                     this.setState({ questionWithResults: questionWithResults });
                 }
             )
