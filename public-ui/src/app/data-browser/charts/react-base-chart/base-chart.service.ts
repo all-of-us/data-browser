@@ -44,7 +44,8 @@ export const baseOptions = {
   },
   chart: {
         type: '',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        tooltip: {}
   },
   color: '',
   title: {
@@ -72,7 +73,7 @@ export const baseOptions = {
                   'Participant Count: <b>&le; 20 </b>');
             }
           }
-            return '<div class="tooltip-container" style="position: relative; z-index: 200;">'
+            return '<div class="tooltip-container" style="z-index: 200; width: auto; white-space: normal;">'
             + this.point.toolTipHelpText + '</div>';
         },
         useHTML: true,

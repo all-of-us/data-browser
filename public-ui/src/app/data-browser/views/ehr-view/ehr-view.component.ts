@@ -5,7 +5,6 @@ import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
 import { DataBrowserService, DomainInfosAndSurveyModulesResponse, MatchType } from 'publicGenerated';
-import { Concept } from 'publicGenerated/model/concept';
 import { ConceptListResponse } from 'publicGenerated/model/conceptListResponse';
 import { Domain } from 'publicGenerated/model/domain';
 import { SearchConceptsRequest } from 'publicGenerated/model/searchConceptsRequest';
@@ -56,6 +55,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts: boolean;
   medlinePlusLink: string;
+  reactChart: boolean;
   graphType = GraphType;
   treeData: any;
   expanded = true;
@@ -83,10 +83,12 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   ) {
     this.closePopUp = this.closePopUp.bind(this);
     this.changeResults = this.changeResults.bind(this);
+    this.selectConcept = this.selectConcept.bind(this);
   }
 
   ngOnInit() {
     this.testReact = environment.testReact;
+    this.reactChart = environment.reactChart;
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });
@@ -398,6 +400,9 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         }
       } else {
         concept.graphToShow = GraphType.BiologicalSex;
+        if (fromChart) {
+            this.selectGraph(concept.graphToShow, concept);
+        }
       }
     }
 
@@ -425,6 +430,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
       this.drugBrands[concept.conceptId] = concept.drugBrands;
+      if (this.ehrDomain.domain.toLowerCase() === 'measurement') {
+        concept.graphToShow = GraphType.Values;
+      } else {
+        concept.graphToShow = GraphType.BiologicalSex;
+      }
     }
     if (this.searchResult.standardConcepts) {
       this.standardConcepts = this.searchResult.standardConcepts;
@@ -548,7 +558,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.loadPage();
   }
 
-  public selectConcept(concept: Concept, fromChart?: boolean) {
+  public selectConcept(concept: any, fromChart?: boolean) {
     this.selectedConcept = concept;
     localStorage.setItem('selectedConceptCode', this.selectedConcept.conceptId.toString());
     if (fromChart && this.currentPage !== 1) {
@@ -633,7 +643,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
           });
     }
 
-    private loadSourceTree(concept: Concept) {
+    private loadSourceTree(concept: any) {
         // clear out treeData
         this.treeData = [];
         this.treeLoading = true;

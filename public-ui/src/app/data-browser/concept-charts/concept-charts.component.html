@@ -61,9 +61,9 @@ toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results
   <!-- SOURCE COLUMN CHART -->
   <ng-container class="chart-container" *ngIf="showGraph === graphType.Sources">
     <div class="source-chart" *ngIf="sourceConcepts && sourceConcepts.length > 0; else NoSourceConcepts;">
-      <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'"
-        [conceptName]="conceptName">
+      <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'" *ngIf="!reactChart">
       </app-chart>
+      <app-sources-chart-react [concepts]="sourceConcepts" *ngIf="reactChart"></app-sources-chart-react>
     </div>
     <ng-template #NoSourceConcepts>
       <div class="no-source-concepts">

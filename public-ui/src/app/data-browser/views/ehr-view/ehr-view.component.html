@@ -26,7 +26,8 @@
           </div>
         </h5>
         <div *ngIf="showTopConcepts && !displayConceptErrorMessage">
-          <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results"></chart-top-results>
+          <chart-top-results (topResultSelected)="selectConcept($event,true)" [concepts]="top10Results" *ngIf="!reactChart"></chart-top-results>
+          <app-top-results-chart-react [concepts]="top10Results" [onClick]="selectConcept" *ngIf="reactChart"></app-top-results-chart-react>
         </div>
         <div *ngIf="showTopConcepts && displayConceptErrorMessage" class="col col-xs-7 error-message">
           <app-error-message-react [dataType]="'data'"></app-error-message-react>

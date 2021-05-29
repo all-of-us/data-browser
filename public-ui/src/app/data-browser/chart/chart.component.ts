@@ -29,7 +29,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   @Input() domainCountAnalysis: any;
   @Input() surveyCountAnalysis: any;
   @Input() surveyVersionAnalysis: any;
-  @Input() conceptName: string;
   chartOptions: any = null;
   Highcharts = Highcharts;
   constructor(private dbc: DbConfigService) {
