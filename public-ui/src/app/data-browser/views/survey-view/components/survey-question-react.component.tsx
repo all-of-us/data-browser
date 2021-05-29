@@ -4,6 +4,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { HighlightReactComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { addDidNotAnswerResult } from 'app/utils/survey-utils';
 import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
@@ -80,13 +81,12 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
         api.getSurveyQuestionResults(this.props.surveyConceptId, this.props.question.conceptId, this.props.question.path)
             .then(
                 results => {
-                    const questionWithResults = {
-                        countAnalysis: results.items.filter(a => a.analysisId === 3110)[0],
-                        genderAnalysis: results.items.filter(a => a.analysisId === 3111)[0],
-                        ageAnalysis: results.items.filter(a => a.analysisId === 3112)[0],
-                        versionAnalysis: results.items.filter(a => a.analysisId === 3113)[0],
-                        participantCountAnalysis: results.items.filter(a => a.analysisId === 3203)[0],
-                    };
+                    const questionWithResults = this.props.question;
+                    questionWithResults.countAnalysis = results.items.filter(a => a.analysisId === 3110)[0];
+                    questionWithResults.genderAnalysis = results.items.filter(a => a.analysisId === 3111)[0];
+                    questionWithResults.ageAnalysis = results.items.filter(a => a.analysisId === 3112)[0];
+                    questionWithResults.versionAnalysis = results.items.filter(a => a.analysisId === 3113)[0];
+                    questionWithResults.participantCountAnalysis = results.items.filter(a => a.analysisId === 3203)[0];
                     questionWithResults.countAnalysis.results.sort((a1, a2) => {
                         if (a1.countValue > a2.countValue) {
                             return -1;
@@ -96,8 +96,12 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
                         }
                         return 0;
                     });
-
-
+                    let questionCount = 0;
+                    for (const result of questionWithResults.countAnalysis.results) {
+                        questionCount += result.countValue;
+                    }
+                    questionWithResults.countAnalysis.results.push(addDidNotAnswerResult(questionWithResults.conceptId,
+                    questionWithResults.countAnalysis.results, questionCount));
                     this.setState({ questionWithResults: questionWithResults });
                 }
             )
