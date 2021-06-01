@@ -229,6 +229,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         <p>Values Chart</p>
                     </div> : null
                     }
+                    {graphToShow === 'Sources' ?
+                    <p>Sources Chart</p> : null}
                     </React.Fragment>
                     ]
             }
