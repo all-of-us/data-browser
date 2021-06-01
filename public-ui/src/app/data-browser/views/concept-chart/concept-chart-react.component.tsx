@@ -4,12 +4,10 @@ import {
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { BasicChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-basic-react.component';
-import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { GraphType } from 'app/utils/enum-defs';
-import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
 
 interface State {
@@ -110,7 +108,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
   }
 
   selectGraphType(g: any) {
-    const {concept} = this.props;
     const {conceptAnalyses} = this.state;
     let selectedAnalysis;
     let measurementGenderCountAnalysis;
@@ -137,9 +134,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
   }
 
 prepMeasurementChartData() {
-    const {graphToShow, selectedChartAnalysis, measurementGenderCountAnalysis} = this.state;
+    const {graphToShow, measurementGenderCountAnalysis} = this.state;
     if (graphToShow === 'Values') {
-        let unitCounts = [];
+        const unitCounts = [];
         for (const aa of measurementGenderCountAnalysis) {
                   let sumCount = 0;
                   for (const ar of aa.results) {
@@ -150,7 +147,7 @@ prepMeasurementChartData() {
         unitCounts.sort((a, b) => {
             return a.count - b.count;
         });
-        let unitNames = unitCounts.map(d => d.name);
+        const unitNames = unitCounts.map(d => d.name);
         const noUnit = unitNames.filter(n => n.toLowerCase() === 'no unit');
         unitNames.filter(n => n.toLowerCase() !== 'no unit');
         if (noUnit.length > 0) {
@@ -180,7 +177,7 @@ showMeasurementGenderHistogram() {
             }
         }
     }
-    let toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === selectedUnit) };
+    const toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === selectedUnit) };
     let toDisplayMeasurementGenderCountAnalysis = null;
     if (measurementGenderCountAnalysis) {
         toDisplayMeasurementGenderCountAnalysis = measurementGenderCountAnalysis.find(aa => aa.unitName === selectedUnit);
