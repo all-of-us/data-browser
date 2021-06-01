@@ -3,8 +3,6 @@ import {
   Input
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
-import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
 import { BasicChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-basic-react.component';
 import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
