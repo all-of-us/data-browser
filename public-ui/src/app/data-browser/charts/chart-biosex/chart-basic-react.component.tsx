@@ -1,21 +1,12 @@
 import {
   Component,
-  Input,
-  ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { GENDER_STRATUM_MAP, getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
 
-interface State {
-}
-
-interface Props {
-}
-
-export class BasicChartReactComponent extends React.Component<Props, State> {
+export class BasicChartReactComponent extends React.Component<{}, {}> {
 
   constructor(props) {
     super(props);
@@ -23,12 +14,6 @@ export class BasicChartReactComponent extends React.Component<Props, State> {
 
   componentDidMount() {
       this.getChartOptions();
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>) {
-    console.log(prevProps, '... prev ...');
-    console.log(this.props, '... current ...');
-    console.log('am i here');
   }
 
   getChartOptions() {

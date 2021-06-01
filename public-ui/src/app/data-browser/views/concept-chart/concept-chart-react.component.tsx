@@ -111,12 +111,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     });
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>) {
-    console.log(prevProps, '... prev ...');
-    console.log(this.props, '... current ...');
-    console.log('am i here');
-  }
-
   selectGraphType(g: any) {
     const {concept} = this.props;
     const {conceptAnalyses} = this.state;
