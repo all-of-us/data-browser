@@ -14,6 +14,7 @@ import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
 
 interface State {
+  graphButtons: any;
   graphToShow: string;
   selectedChartAnalysis: any;
   countAnalysis: any;
@@ -29,7 +30,6 @@ interface State {
 }
 
 interface Props {
-    graphButtons: any;
     concept: any;
     domain: any;
     searchTerm: any;
@@ -39,6 +39,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
+          graphButtons: this.props.domain === 'labs & measurements' ? ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
           graphToShow: GraphType.BiologicalSex,
           displayGraphErrorMessage: false,
           selectedChartAnalysis: null,
@@ -184,8 +185,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {graphButtons, searchTerm, concept} = this.props;
-        const {graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts, isAnalysisLoaded} = this.state;
+        const {searchTerm, concept} = this.props;
+        const {graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts, isAnalysisLoaded} = this.state;
         const tabIndex = 0;
         // TODO Add in sources chart and sources tree in here
         return <React.Fragment>
@@ -240,12 +241,11 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
   template: `<span #root></span>`
 })
 export class ConceptChartWrapperComponent extends BaseReactWrapper {
-  @Input() graphButtons: string[];
   @Input() concept: any;
   @Input() domain: any;
   @Input() searchTerm: string;
 
   constructor() {
-    super(ConceptChartReactComponent, ['graphButtons', 'concept', 'domain', 'searchTerm']);
+    super(ConceptChartReactComponent, ['concept', 'domain', 'searchTerm']);
   }
 }
