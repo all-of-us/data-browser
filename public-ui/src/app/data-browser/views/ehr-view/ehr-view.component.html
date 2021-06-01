@@ -283,7 +283,7 @@
                   </app-sources>
                 </ng-container>
                 <ng-template #NonSourceCharts>
-                  <app-concept-chart-react [graphButtons]="getGraphButtons(r)" [searchTerm]="searchText.value"></app-concept-chart-react>
+                  <app-concept-chart-react [searchTerm]="searchText.value" [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>
                   <div class="graph-item">
                     <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
                     </app-concept-charts>

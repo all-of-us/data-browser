@@ -206,11 +206,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       // Note, we save this in its own subscription so we can unsubscribe when they start typing
       // and these results don't trump the search results in case they come back slower
       this.totalParticipants = this.ehrDomain.participantCount;
-      if (this.ehrDomain.name.toLowerCase() === 'labs & measurements') {
-        this.graphButtons = ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
-      } else {
-        this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
-      }
+      this.graphButtons = ['Sex Assigned at Birth', 'Age', 'Sources'];
       this.initSearchSubscription = this.searchDomain(this.prevSearchText)
         .subscribe({
           next: results => {
