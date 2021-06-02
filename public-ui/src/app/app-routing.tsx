@@ -2,8 +2,12 @@ import {Component as AComponent} from '@angular/core';
 import * as React from 'react';
 
 import {AppRoute, AppRouter} from 'app/components/app-router';
+import {withRouteData} from 'app/components/app-router';
 import {BaseReactWrapper} from 'app/data-browser/base-react/base-react.wrapper';
 import {IntroVidReactComponent} from './data-browser/views/intro-vids/intro-vids-react.component';
+import { SurveyViewReactComponent} from 'app/data-browser/views/survey-view/survey-react-view.component';
+
+const SurveyView = withRouteData(SurveyViewReactComponent);
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
   return <AppRouter>
@@ -15,6 +19,14 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
             breadcrumb: {value: 'Introductory Videos'}
           }})}
     />
+    <AppRoute
+          path='/react/survey/:id'
+          component={() => SurveyView(
+          {routeData: {
+            title: 'View Survey Questions and Answers',
+            breadcrumb: {value: ':id survey'}
+          }})}
+        />
   </AppRouter>;
 };
 

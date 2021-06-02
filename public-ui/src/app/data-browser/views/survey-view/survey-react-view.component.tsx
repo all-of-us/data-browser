@@ -15,6 +15,7 @@ import { environment } from 'environments/environment';
 import _ from 'lodash';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
+import { BrowserRouter, Link, Redirect, Route, Switch, useHistory, useLocation, useParams, useRouteMatch} from 'react-router-dom';
 
 const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
 
@@ -166,6 +167,7 @@ div {
 interface Props {
     domainId: string;
     searchWord: string;
+    routeData: any;
 }
 
 interface State {
@@ -204,6 +206,9 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
+        console.log('am i here to fetch');
+        let { id } = useParams();
+        console.log(id);
         this.fetchSurvey(this.props.domainId);
     }
 

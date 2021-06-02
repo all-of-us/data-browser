@@ -89,6 +89,11 @@ const routes: Routes = [
           path: 'introductory-videos',
           component:  AppRouting,
           data: {}
+        },
+        {
+          path: 'react/survey/:id',
+          component:  AppRouting,
+          data: {}
         }]
       }
     ]
