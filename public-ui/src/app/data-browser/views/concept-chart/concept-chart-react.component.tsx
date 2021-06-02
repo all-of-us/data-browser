@@ -7,12 +7,10 @@ import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-
 import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
 import { ValueReactChartComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { SourcesChartReactComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
-import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { GraphType } from 'app/utils/enum-defs';
-import { triggerEvent } from 'app/utils/google_analytics';
 import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
@@ -125,15 +123,16 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
 
     componentDidMount() {
         const {concept, domain} = this.props;
-        const {loadingStack} = this.state;
         dataBrowserApi().getConceptAnalysisResults(
           [concept.conceptId.toString()], concept.domainId
         ).then(results => {
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
-                selectedChartAnalysis: domain === 'labs & measurements' ? results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
-                measurementGenderCountAnalysis: domain === 'labs & measurements' ? results.items[0].measurementGenderCountAnalysis : null,
+                selectedChartAnalysis: domain === 'labs & measurements' ?
+                results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
+                measurementGenderCountAnalysis: domain === 'labs & measurements' ?
+                results.items[0].measurementGenderCountAnalysis : null,
                 isAnalysisLoaded: true,
                 loading: false
             }, () => {
@@ -156,7 +155,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         });
         dataBrowserApi().getSourceConcepts(concept.conceptId)
         .then(results => {
-            let sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
+            const sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
             this.setState({
                 sourceConcepts: sources
             });
@@ -166,7 +165,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     selectGraphType(g) {
-        const {concept} = this.props;
         const {conceptAnalyses} = this.state;
         let selectedAnalysis;
         let measurementGenderCountAnalysis;
@@ -197,14 +195,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     prepMeasurementChartData() {
-        const {graphToShow, selectedChartAnalysis, measurementGenderCountAnalysis, conceptAnalyses} = this.state;
+        const {graphToShow, measurementGenderCountAnalysis, conceptAnalyses} = this.state;
         if (graphToShow === 'Values') {
-            let genderResults = conceptAnalyses.genderAnalysis.results;
+            const genderResults = conceptAnalyses.genderAnalysis.results;
             const chartGenderOrder = ['8507', '8532', '0'];
             genderResults.sort((a, b) => {
                 return chartGenderOrder.indexOf(a.stratum2) - chartGenderOrder.indexOf(b.stratum2);
             });
-            let unitCounts = [];
+            const unitCounts = [];
             for (const aa of measurementGenderCountAnalysis) {
                       let sumCount = 0;
                       for (const ar of aa.results) {
