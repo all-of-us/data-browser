@@ -5,6 +5,7 @@ import {
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
 import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
+import { SourcesChartReactComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
 import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
@@ -12,6 +13,32 @@ import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { GraphType } from 'app/utils/enum-defs';
 import { triggerEvent } from 'app/utils/google_analytics';
 import * as React from 'react';
+
+const cssStyles = `
+.source-layout {
+    display: flex;
+    margin: 0 2rem;
+    height: 100%;
+    flex-direction: row;
+}
+
+.sources-chart {
+  width: 100%;
+  margin-left: -1rem;
+  background: white;
+}
+
+.concept-box-info {
+    padding: .5rem;
+    text-align: left;
+}
+.concept-box-info p {
+    font-size: 14px;
+    color: #262262;
+    margin-top: 0;
+    line-height: 1.5;
+}
+`;
 
 interface State {
   graphButtons: any;
@@ -185,13 +212,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {searchTerm, concept} = this.props;
+        const {searchTerm, concept, domain} = this.props;
         const {graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts, isAnalysisLoaded} = this.state;
         const tabIndex = 0;
         // TODO Add in sources chart and sources tree in here
         return <React.Fragment>
+            <style>{cssStyles}</style>
             <div className='graph-menu'>
-            {graphButtons.map((g, index) => {
+            {(selectedChartAnalysis || sourceConcepts) && graphButtons.map((g, index) => {
                 return (
                     <div onClick={() => this.selectGraphType(g)}
                     className={graphToShow === g ? 'active chart-choice' : 'chart-choice'}
@@ -229,8 +257,21 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         <p>Values Chart</p>
                     </div> : null
                     }
-                    {graphToShow === 'Sources' ?
-                    <p>Sources Chart</p> : null}
+                    {graphToShow === 'Sources' && sourceConcepts ?
+                    <div className='source-layout'>
+                        <div className='sources-chart' key='sources-chart'>
+                            <div className='concept-box-info'>
+                                <p><strong>{concept.conceptName}</strong></p>
+                                <p>{concept.vocabularyId} Code: {concept.conceptCode}</p>
+                                 <p>OMOP Concept Id: {concept.conceptId}</p>
+                            </div>
+                            <SourcesChartReactComponent concepts={sourceConcepts} />
+                        </div>
+                        {(domain === 'condition' || domain === 'procedure') ?
+                        <div className='tree-view'>
+                        <p>Sources Tree</p>
+                        </div> : null }
+                    </div> : null}
                     </React.Fragment>
                     ]
             }
