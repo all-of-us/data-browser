@@ -5,6 +5,7 @@ import {
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
 import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
+import { ValueReactChartComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { SourcesChartReactComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
 import { VersionChartReactComponent } from 'app/data-browser/charts/chart-version/chart-version-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
@@ -12,6 +13,7 @@ import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { GraphType } from 'app/utils/enum-defs';
 import { triggerEvent } from 'app/utils/google_analytics';
+import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
 const cssStyles = `
@@ -32,11 +34,40 @@ const cssStyles = `
     padding: .5rem;
     text-align: left;
 }
+
 .concept-box-info p {
     font-size: 14px;
     color: #262262;
     margin-top: 0;
     line-height: 1.5;
+}
+
+.unit-choice.active {
+  border-style: solid;
+  border-color: #bee1ff;
+  border-radius: 2px 2px 2px 2px;
+}
+
+.measurement-filter-choice.active {
+  text-decoration: underline;
+}
+
+.measurement-filter-choice {
+  color: #262262;
+}
+
+.ehr-m-chart-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1em;
+}
+
+.ehr-m-chart-item {
+    width: calc((33.3%) - 18px);
+    height: auto;
+    flex-grow: 1;
 }
 `;
 
@@ -49,10 +80,15 @@ interface State {
   displayGraphErrorMessage: boolean;
   measurementGenderCountAnalysis: any;
   selectedMeasurementType: string;
+  mixtureOfValues: boolean;
+  noUnitValueButtons: any;
   conceptAnalyses: any;
   selectedUnit: string;
   sourceConcepts: any;
+  unitNames: any;
+  genderResults: any;
   toDisplayMeasurementGenderAnalysis: any;
+  loading: boolean;
   toDisplayMeasurementGenderCountAnalysis: any;
 }
 
@@ -67,7 +103,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
           graphButtons: this.props.domain === 'labs & measurements' ? ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
-          graphToShow: GraphType.BiologicalSex,
+          graphToShow: this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
           displayGraphErrorMessage: false,
           selectedChartAnalysis: null,
           conceptAnalyses: null,
@@ -75,35 +111,45 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
           sourceConcepts: null,
           measurementGenderCountAnalysis: null,
           selectedUnit: null,
+          unitNames: [],
           selectedMeasurementType: null,
           toDisplayMeasurementGenderAnalysis: null,
           toDisplayMeasurementGenderCountAnalysis: null,
-          isAnalysisLoaded: false
+          isAnalysisLoaded: false,
+          mixtureOfValues: false,
+          noUnitValueButtons: ['No Unit (Text)', 'No Unit (Numeric)'],
+          genderResults: null,
+          loading: true
         };
     }
 
     componentDidMount() {
-        const {concept} = this.props;
+        const {concept, domain} = this.props;
+        const {loadingStack} = this.state;
         dataBrowserApi().getConceptAnalysisResults(
           [concept.conceptId.toString()], concept.domainId
         ).then(results => {
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
-                selectedChartAnalysis: results.items[0].genderAnalysis,
-                isAnalysisLoaded: true
+                selectedChartAnalysis: domain === 'labs & measurements' ? results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
+                measurementGenderCountAnalysis: domain === 'labs & measurements' ? results.items[0].measurementGenderCountAnalysis : null,
+                isAnalysisLoaded: true,
+                loading: false
+            }, () => {
+                this.prepMeasurementChartData();
             });
         }).catch(e => {
             console.log(e, 'error');
             this.setState({
                 displayGraphErrorMessage: true,
-                isAnalysisLoaded: true
+                isAnalysisLoaded: true,
             });
         });
         dataBrowserApi().getCountAnalysis(concept.domainId, 'ehr')
         .then(results => {
             this.setState({
-                countAnalysis: results
+                countAnalysis: results,
             });
         }).catch(e => {
             console.log(e, 'error');
@@ -112,7 +158,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         .then(results => {
             let sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
             this.setState({
-                sourceConcepts: sources,
+                sourceConcepts: sources
             });
         }).catch(e => {
             console.log(e, 'error');
@@ -151,8 +197,13 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     prepMeasurementChartData() {
-        const {graphToShow, selectedChartAnalysis, measurementGenderCountAnalysis} = this.state;
+        const {graphToShow, selectedChartAnalysis, measurementGenderCountAnalysis, conceptAnalyses} = this.state;
         if (graphToShow === 'Values') {
+            let genderResults = conceptAnalyses.genderAnalysis.results;
+            const chartGenderOrder = ['8507', '8532', '0'];
+            genderResults.sort((a, b) => {
+                return chartGenderOrder.indexOf(a.stratum2) - chartGenderOrder.indexOf(b.stratum2);
+            });
             let unitCounts = [];
             for (const aa of measurementGenderCountAnalysis) {
                       let sumCount = 0;
@@ -166,26 +217,28 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             });
             let unitNames = unitCounts.map(d => d.name);
             const noUnit = unitNames.filter(n => n.toLowerCase() === 'no unit');
-            unitNames.filter(n => n.toLowerCase() !== 'no unit');
+            unitNames = unitNames.filter(n => n.toLowerCase() !== 'no unit');
             if (noUnit.length > 0) {
                 unitNames.push(noUnit[0]);
             }
             if (unitNames.length > 0) {
                     this.setState({
-                        selectedUnit: unitNames[0]
+                        selectedUnit: unitNames[0],
+                        unitNames: unitNames,
+                        genderResults: genderResults
                     }, () => {
-                        this.showMeasurementGenderHistogram();
+                        this.showMeasurementGenderHistogram(unitNames[0]);
                     });
             }
         }
         return;
     }
 
-    showMeasurementGenderHistogram() {
-        const {selectedUnit, selectedChartAnalysis, measurementGenderCountAnalysis} = this.state;
+    showMeasurementGenderHistogram(unit: string) {
+        const {selectedChartAnalysis, measurementGenderCountAnalysis} = this.state;
         let mixtureOfValues = false;
-        if (selectedUnit.toLowerCase() === 'no unit') {
-            const unitResults = selectedChartAnalysis.find(aa => aa.unitName === selectedUnit);
+        if (unit.toLowerCase() === 'no unit') {
+            const unitResults = selectedChartAnalysis.find(aa => aa.unitName === unit);
             if (unitResults && unitResults.results && unitResults.results.length > 0) {
                 const numericResults = unitResults.results.filter(r => r.measurementValueType === 'numeric');
                 const textResults = unitResults.results.filter(r => r.measurementValueType === 'text');
@@ -194,10 +247,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                 }
             }
         }
-        let toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === selectedUnit) };
+        let toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === unit) };
         let toDisplayMeasurementGenderCountAnalysis = null;
         if (measurementGenderCountAnalysis) {
-            toDisplayMeasurementGenderCountAnalysis = measurementGenderCountAnalysis.find(aa => aa.unitName === selectedUnit);
+            toDisplayMeasurementGenderCountAnalysis = measurementGenderCountAnalysis.find(aa => aa.unitName === unit);
         }
         let selectedMeasurementType = null;
         if (mixtureOfValues) {
@@ -205,17 +258,53 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             selectedMeasurementType = 'No Unit (Text)';
         }
         this.setState({
+            selectedUnit: unit,
+            mixtureOfValues: mixtureOfValues,
             selectedMeasurementType: selectedMeasurementType,
             toDisplayMeasurementGenderAnalysis: toDisplayMeasurementGenderAnalysis,
             toDisplayMeasurementGenderCountAnalysis: toDisplayMeasurementGenderCountAnalysis
         });
     }
 
+    fetchChartTitle(gender: any) {
+        const {toDisplayMeasurementGenderCountAnalysis} = this.state;
+        if (toDisplayMeasurementGenderCountAnalysis) {
+            const genderResults = toDisplayMeasurementGenderCountAnalysis.results
+                .filter(r => r.stratum3 === gender.stratum2)[0];
+            if (genderResults && genderResults.countValue > 20) {
+                return gender.analysisStratumName + ' - ' + genderResults.countValue;
+            } else {
+                return gender.analysisStratumName + ' - &le; ' + 20;
+            }
+        } else {
+            return gender.analysisStratumName + ' - ' + gender.countValue;
+        }
+    }
+
+    showSpecificMeasurementTypeValues(su: any) {
+        const {toDisplayMeasurementGenderAnalysis, conceptAnalyses} = this.state;
+        let tempDisplayMeasurementGenderAnalysis = {...conceptAnalyses.measurementValueGenderAnalysis.find(
+                        aa => aa.unitName === 'No unit')};
+        if (su.toLowerCase().indexOf('text') >= 0) {
+            tempDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
+        } else {
+            tempDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'numeric');
+        }
+        let tempMeasurementCountAnalysis = conceptAnalyses.measurementGenderCountAnalysis.find(aa => aa.unitName === 'No unit');
+        this.setState({
+            selectedMeasurementType: su,
+            toDisplayMeasurementGenderAnalysis: tempDisplayMeasurementGenderAnalysis,
+            toDisplayMeasurementGenderCountAnalysis: tempMeasurementCountAnalysis
+        });
+    }
+
     render() {
         const {searchTerm, concept, domain} = this.props;
-        const {graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts, isAnalysisLoaded} = this.state;
+        const {graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
+         isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
+         genderResults, toDisplayMeasurementGenderAnalysis, loading} = this.state;
         const tabIndex = 0;
-        // TODO Add in sources chart and sources tree in here
+        // TODO Add in sources tree in here
         return <React.Fragment>
             <style>{cssStyles}</style>
             <div className='graph-menu'>
@@ -234,6 +323,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
           })
         }
             </div>
+            {loading ? <Spinner /> : null}
             {displayGraphErrorMessage
                     ? <div className='graph-error-message'>
                         <ErrorMessageReactComponent dataType='chart' />
@@ -254,7 +344,31 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     </div> :
                     graphToShow === 'Values' ?
                     <div className='chart' key='values-chart'>
-                        <p>Values Chart</p>
+                    {unitNames.map((unit, index) => {
+                        return (
+                            <div key={index} className={selectedUnit === unit ? 'active btn btn-link unit-choice' : 'btn btn-link unit-choice'}
+                            onClick={() => this.showMeasurementGenderHistogram(unit)}>{unit}</div>
+                        );
+                    })
+                    }
+                    <div>
+                    {mixtureOfValues ?
+                    noUnitValueButtons.map((noUnit, index) => {
+                        return <div key={index} className={selectedMeasurementType === noUnit ? 'active btn btn-link measurement-filter-choice' : 'btn btn-link measurement-filter-choice'}
+                        onClick={() => this.showSpecificMeasurementTypeValues(noUnit)}>{noUnit}</div>;
+                    }) : null
+                    }
+                    </div>
+                    <div className='chart-container'>
+                    <div className='ehr-m-chart-layout'>
+                    {(genderResults && toDisplayMeasurementGenderAnalysis) ?
+                    genderResults.map((gender, index) => {
+                        return <div key={index} className='ehr-m-chart-item'>
+                        <ValueReactChartComponent conceptId={concept.conceptId} valueAnalysis={toDisplayMeasurementGenderAnalysis} genderId={gender.stratum2} chartTitle={this.fetchChartTitle(gender)}/></div>;
+                    }) : null
+                    }
+                    </div>
+                    </div>
                     </div> : null
                     }
                     {graphToShow === 'Sources' && sourceConcepts ?
