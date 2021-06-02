@@ -288,7 +288,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         } else {
             tempDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'numeric');
         }
-        let tempMeasurementCountAnalysis = conceptAnalyses.measurementGenderCountAnalysis.find(aa => aa.unitName === 'No unit');
+        const tempMeasurementCountAnalysis = conceptAnalyses.measurementGenderCountAnalysis.find(aa => aa.unitName === 'No unit');
         this.setState({
             selectedMeasurementType: su,
             toDisplayMeasurementGenderAnalysis: tempDisplayMeasurementGenderAnalysis,
@@ -362,7 +362,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     {(genderResults && toDisplayMeasurementGenderAnalysis) ?
                     genderResults.map((gender, index) => {
                         return <div key={index} className='ehr-m-chart-item'>
-                        <ValueReactChartComponent conceptId={concept.conceptId} valueAnalysis={toDisplayMeasurementGenderAnalysis} genderId={gender.stratum2} chartTitle={this.fetchChartTitle(gender)}/></div>;
+                        <ValueReactChartComponent conceptId={concept.conceptId} valueAnalysis={toDisplayMeasurementGenderAnalysis}
+                        genderId={gender.stratum2} chartTitle={this.fetchChartTitle(gender)}/></div>;
                     }) : null
                     }
                     </div>
