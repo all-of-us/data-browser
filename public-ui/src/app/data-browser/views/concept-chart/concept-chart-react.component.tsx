@@ -245,7 +245,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                 }
             }
         }
-        let toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === unit) };
+        const toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === unit) };
         let toDisplayMeasurementGenderCountAnalysis = null;
         if (measurementGenderCountAnalysis) {
             toDisplayMeasurementGenderCountAnalysis = measurementGenderCountAnalysis.find(aa => aa.unitName === unit);
@@ -280,8 +280,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     showSpecificMeasurementTypeValues(su: any) {
-        const {toDisplayMeasurementGenderAnalysis, conceptAnalyses} = this.state;
-        let tempDisplayMeasurementGenderAnalysis = {...conceptAnalyses.measurementValueGenderAnalysis.find(
+        const {conceptAnalyses} = this.state;
+        const tempDisplayMeasurementGenderAnalysis = {...conceptAnalyses.measurementValueGenderAnalysis.find(
                         aa => aa.unitName === 'No unit')};
         if (su.toLowerCase().indexOf('text') >= 0) {
             tempDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
