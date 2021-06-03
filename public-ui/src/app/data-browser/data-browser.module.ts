@@ -29,6 +29,7 @@ import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-r
 import { VersionChartWrapperComponent } from './charts/chart-version/chart-version-react.component';
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
+import { SourceTreeWrapperComponent } from './components/source-tree/source-tree-react.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
@@ -51,7 +52,6 @@ import { QuickSearchComponent } from './views/quick-search/quick-search.componen
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyAnswerWrapperComponent } from './views/survey-view/components/survey-answer-react.component';
 import { SurveyQuestionWrapperComponent } from './views/survey-view/components/survey-question-react.component';
-import{ SourceTreeWrapperComponent } from './components/source-tree/source-tree-react.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 @NgModule({
   imports: [

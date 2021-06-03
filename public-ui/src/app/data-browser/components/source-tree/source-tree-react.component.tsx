@@ -1,9 +1,8 @@
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+
 import { Component, Input } from '@angular/core';
-import { reactStyles } from 'app/utils';
-import { NavStore } from 'app/utils/navigation';
-import { environment } from 'environments/environment';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import * as React from 'react';
 
@@ -61,13 +60,8 @@ const styles = reactStyles({
         marginTop: '0.1rem',
         left: '-.1rem'
     }
-})
+});
 
-const css = `
-.hasChildren.opened::before {
-    transition: .1s transform linear;
-    transform: rotate(45deg);
-}`
 
 interface ChildState {
     isChildSelected: boolean;
@@ -80,27 +74,27 @@ interface ChildProps {
 const ChildFetchingComponent = (
     class extends React.Component<ChildProps, ChildState> {
         constructor(props: ChildProps) {
-            super(props)
+            super(props);
             this.state = {
                 isChildSelected: false,
                 children: undefined
-            }
+            };
         }
 
         childClick() {
             this.getChildren();
             this.setState({
                 isChildSelected: !this.state.isChildSelected
-            })
+            });
         }
 
         getChildren() {
             return dataBrowserApi().getCriteriaChildren(this.props.id).then(
                 (data) => {
-                    this.setState({ children: data.items })
+                    this.setState({ children: data.items });
 
                 }
-            )
+            );
         }
 
         componentDidMount() {
@@ -111,16 +105,19 @@ const ChildFetchingComponent = (
             const { children } = this.state;
             return <React.Fragment>
                 {children && children.map((child, index) => {
-                    return <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>
+                    return <div key={index} style={styles.childNode}>
+                        {/* tslint:disable-next-line:no-use-before-declare */}
+                        <SourceTreeComponent node={child} />
+                    </div>;
                 })}
-            </React.Fragment>
+            </React.Fragment>;
         }
 
     });
 
 interface SourceTreeProps {
     node: any;
-    first?: boolean
+    first?: boolean;
 }
 
 interface SourceTreeState {
@@ -132,37 +129,37 @@ interface SourceTreeState {
 export const SourceTreeComponent = (
     class extends React.Component<SourceTreeProps, SourceTreeState> {
         constructor(props: SourceTreeProps) {
-            super(props)
+            super(props);
             this.state = {
                 isConceptSelected: false,
                 isHandelSelected: undefined,
                 highlightId: undefined
-            }
+            };
         }
         conceptClick() {
             localStorage.setItem('treeHighlight', this.props.node.id);
             this.setState({
                 isConceptSelected: !this.state.isConceptSelected
-            })
-            this.getTreeHighlight()
+            });
+            this.getTreeHighlight();
         }
-        getTreeHighlight(){
+        getTreeHighlight() {
             this.setState({
-                highlightId: parseInt(localStorage.getItem('treeHighlight'))
-            })
+                highlightId: parseInt(localStorage.getItem('treeHighlight') , 10)
+            });
         }
         handleClick() {
             this.setState({
                 isHandelSelected: !this.state.isHandelSelected
-            })
+            });
 
         }
         componentDidMount() {
             // this.getTreeHighlight();
             if (this.props.first) {
-                this.setState({ isHandelSelected: true })
+                this.setState({ isHandelSelected: true });
             } else {
-                this.setState({ isHandelSelected: false })
+                this.setState({ isHandelSelected: false });
 
             }
 
@@ -170,18 +167,21 @@ export const SourceTreeComponent = (
 
         render() {
             const { node } = this.props;
-            const { isHandelSelected, isConceptSelected , highlightId} = this.state;
+            const { isHandelSelected, isConceptSelected, highlightId } = this.state;
 
             return <React.Fragment>
                 <div style={styles.treeRow}>
-                    {node.group ? <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} /> : <span style={styles.childNode}></span>}
-                    <span onClick={() => this.conceptClick()} style={(isConceptSelected && highlightId === node.id) ? { ...styles.treeActive } : {}}>{node.name}</span> <span style={styles.count}>{node.count}</span>
+                    {node.group ? <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} /> :
+                    <span style={styles.childNode}></span>}
+                    <span onClick={() => this.conceptClick()} style={(isConceptSelected && highlightId === node.id) ?
+                         { ...styles.treeActive } : {}}>{node.name}</span>
+                    <span style={styles.count}>{node.count}</span>
                 </div>
                 {(isHandelSelected && node.group && node.children) && node.children.map((child, index) => {
-                    return <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>
+                    return <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>;
                 })}
                 {isHandelSelected && node.group && !node.children && <ChildFetchingComponent id={node.id} />}
-            </React.Fragment>
+            </React.Fragment>;
         }
     });
 
