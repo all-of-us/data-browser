@@ -113,6 +113,26 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.title.style.fontWeight = '400';
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.xAxis.title.text = unitName ? unitName : '';
+    if ('dataOnlyLT20' in series) {
+            newBaseOptions.yAxis.min = series.dataOnlyLT20 ? 20 : 0;
+            newBaseOptions.yAxis.labels = {
+                style: {
+                       fontSize: '14px',
+                       whiteSpace: 'wrap',
+                       textOverflow: 'ellipsis',
+                       color: '#262262'
+                },
+                formatter: function() {
+                       const label = this.axis.defaultLabelFormatter.call(this);
+                       // Change <= 20 count to display '<= 20'
+                       if (series.dataOnlyLT20 && label <= 20) {
+                        return '&#8804; 20';
+                       }
+                       return label;
+                       },
+                       useHTML: true
+                };
+          }
     this.setState({options: newBaseOptions});
   }
 
