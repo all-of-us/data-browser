@@ -109,7 +109,7 @@ const routes: Routes = [
 ];
 
 if (reactSurvey) {
-    for(var route of routes.filter(route => route.path === '')[0].children[0].children.filter(c => c.path.indexOf('survey') > -1)) {
+    for (const route of routes.filter(r => r.path === '')[0].children[0].children.filter(c => c.path.indexOf('survey') > -1)) {
         route.data = {};
         route.component = AppRouting;
     }
