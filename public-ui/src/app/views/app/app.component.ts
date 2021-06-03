@@ -7,6 +7,7 @@ import {
   Router,
 } from '@angular/router';
 import {initializeAnalytics} from 'app/utils/google_analytics';
+import {queryParamsStore, routeConfigDataStore, urlParamsStore} from 'app/utils/navigation';
 import { environment } from 'environments/environment';
 import {filter} from 'rxjs/operators';
 
@@ -71,10 +72,20 @@ export class AppComponent implements OnInit {
         if (event instanceof NavigationEnd && event.url === '/') {
           this.noHeaderMenu = true;
         }
+        if (event instanceof NavigationEnd) {
+          const {snapshot: {params, queryParams, routeConfig}} = this.getLeafRoute();
+          urlParamsStore.next(params);
+          queryParamsStore.next(queryParams);
+          routeConfigDataStore.next(routeConfig.data);
+        }
         this.setTitleFromRoute(event);
       });
 
     initializeAnalytics();
+  }
+
+  getLeafRoute(route = this.activatedRoute) {
+    return route.firstChild ? this.getLeafRoute(route.firstChild) : route;
   }
 
   /**
