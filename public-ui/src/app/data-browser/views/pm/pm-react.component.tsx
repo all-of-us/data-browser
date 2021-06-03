@@ -414,7 +414,6 @@ export class PMReactComponent extends React.Component<{}, State> {
                                return <div className='bs-chart-item' key={chartKey}>
                                  <ValueReactChartComponent conceptId={selectedConcept.conceptId}
                                    valueAnalysis={this.getValueAnalysis()}
-                                   domainCountAnalysis={domainCountAnalysis}
                                    genderId={gender.stratum3}
                                    chartTitle={gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') +
                                    gender.countValue.toLocaleString()} key={chartKey} /></div>;
@@ -425,7 +424,6 @@ export class PMReactComponent extends React.Component<{}, State> {
                             <div className='chart-item stacked-chart-item'>
                               <ValueReactChartComponent conceptId={selectedConcept.conceptId}
                                 valueAnalysis={selectedConcept.analyses.measurementValueGenderAnalysis[0]}
-                                domainCountAnalysis={domainCountAnalysis}
                                 genderId='stacked gender'
                                 chartTitle='stacked chart' />
                             </div> : null
