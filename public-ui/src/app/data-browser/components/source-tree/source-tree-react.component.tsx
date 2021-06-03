@@ -36,13 +36,8 @@ const styles = reactStyles({
     },
     handle: {
         color: '#2991cf',
-        transform: 'rotate(90deg)',
         transition: '.1s transform linear',
         marginTop: '0.1rem'
-    },
-    opened: {
-        transition: '.1s transform linear',
-        transform: 'rotate(180deg)'
     },
     treeRow: {
         alignItems: 'flex-start',
@@ -79,15 +74,10 @@ interface ChildState {
     children: any;
 }
 interface ChildProps {
-    count: number; any
-    group: boolean;
-    name: string;
-    parentId: number;
     id: number;
 }
 
-
-const ChildNodeComponent = (
+const ChildFetchingComponent = (
     class extends React.Component<ChildProps, ChildState> {
         constructor(props: ChildProps) {
             super(props)
@@ -118,62 +108,79 @@ const ChildNodeComponent = (
         }
 
         render() {
-            const { count, group, name, parentId } = this.props;
             const { children } = this.state;
             return <React.Fragment>
                 {children && children.map((child, index) => {
-                    return <div style={styles.childNode}><SourceTreeComponent node={child} /></div>
+                    return <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>
                 })}
             </React.Fragment>
         }
 
     });
 
-
-
-
 interface SourceTreeProps {
     node: any;
+    first?: boolean
 }
 
 interface SourceTreeState {
-    isNodeSelected: boolean;
+    isConceptSelected: boolean;
+    isHandelSelected: boolean;
+    highlightId: number;
 }
 
 export const SourceTreeComponent = (
     class extends React.Component<SourceTreeProps, SourceTreeState> {
         constructor(props: SourceTreeProps) {
             super(props)
-            console.log(props);
-            
             this.state = {
-                isNodeSelected: false
+                isConceptSelected: false,
+                isHandelSelected: undefined,
+                highlightId: undefined
             }
+        }
+        conceptClick() {
+            localStorage.setItem('treeHighlight', this.props.node.id);
+            this.setState({
+                isConceptSelected: !this.state.isConceptSelected
+            })
+            this.getTreeHighlight()
+        }
+        getTreeHighlight(){
+            this.setState({
+                highlightId: parseInt(localStorage.getItem('treeHighlight'))
+            })
+        }
+        handleClick() {
+            this.setState({
+                isHandelSelected: !this.state.isHandelSelected
+            })
 
         }
-        nodeClick() {
-            this.setState({
-                isNodeSelected: !this.state.isNodeSelected
-            })
+        componentDidMount() {
+            // this.getTreeHighlight();
+            if (this.props.first) {
+                this.setState({ isHandelSelected: true })
+            } else {
+                this.setState({ isHandelSelected: false })
+
+            }
 
         }
 
         render() {
             const { node } = this.props;
-            const { isNodeSelected } = this.state;
+            const { isHandelSelected, isConceptSelected , highlightId} = this.state;
+
             return <React.Fragment>
-                <div style={styles.treeRow} onClick={() => this.nodeClick()}>
-                    {node.group ? <ClrIcon shape='caret' dir={isNodeSelected ? 'down' : 'right'} /> : <span style={styles.childNode}></span>} {node.name} {node.count}
+                <div style={styles.treeRow}>
+                    {node.group ? <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} /> : <span style={styles.childNode}></span>}
+                    <span onClick={() => this.conceptClick()} style={(isConceptSelected && highlightId === node.id) ? { ...styles.treeActive } : {}}>{node.name}</span> <span style={styles.count}>{node.count}</span>
                 </div>
-
-                {(isNodeSelected && node.group && node.children) && node.children.map((child, index) => {
-
-                    return <div style={styles.childNode}><SourceTreeComponent node={child} /></div>
-
-
+                {(isHandelSelected && node.group && node.children) && node.children.map((child, index) => {
+                    return <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>
                 })}
-                {isNodeSelected && node.group && !node.children && <ChildNodeComponent {...node} />}
-
+                {isHandelSelected && node.group && !node.children && <ChildFetchingComponent id={node.id} />}
             </React.Fragment>
         }
     });
@@ -185,7 +192,8 @@ export const SourceTreeComponent = (
 })
 export class SourceTreeWrapperComponent extends BaseReactWrapper {
     @Input() node: any;
+    @Input() first: boolean;
     constructor() {
-        super(SourceTreeComponent, ['node']);
+        super(SourceTreeComponent, ['node', 'first']);
     }
 }
