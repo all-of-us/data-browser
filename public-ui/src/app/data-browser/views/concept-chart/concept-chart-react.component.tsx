@@ -44,7 +44,7 @@ const styles = reactStyles({
     ehrMChartItem: {
         width: 'calc((33.3%) - 18px)',
         height: 'auto',
-        flexGrow: '1'
+        flexGrow: 1
     },
     conceptBoxInfoP: {
         fontSize: '14px',
