@@ -156,12 +156,7 @@ export const SourceTreeComponent = (
         }
         componentDidMount() {
             // this.getTreeHighlight();
-            if (this.props.first) {
-                this.setState({ isHandelSelected: true });
-            } else {
-                this.setState({ isHandelSelected: false });
-
-            }
+            this.setState({ isHandelSelected: this.props.first });
 
         }
 
