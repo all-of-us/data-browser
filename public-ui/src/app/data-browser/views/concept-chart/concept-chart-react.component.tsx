@@ -10,29 +10,40 @@ import { SourcesChartReactComponent } from 'app/data-browser/charts/chart-source
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { reactStyles } from 'app/utils';
 import { GraphType } from 'app/utils/enum-defs';
 import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
+const styles = reactStyles({
+    sourceLayout: {
+        display: 'flex',
+        margin: '0 2rem',
+        height: '100%',
+        flexDirection: 'row'
+    },
+    sourcesChart: {
+      width: '100%',
+      marginLeft: '-1rem',
+      background: 'white'
+    },
+    conceptBoxInfo: {
+        padding: '.5rem',
+        textAlign: 'left'
+    },
+    measurementFilterChoice: {
+      color: '#262262'
+    },
+    ehrMChartLayout: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: '1em'
+    }
+});
+
 const cssStyles = `
-.source-layout {
-    display: flex;
-    margin: 0 2rem;
-    height: 100%;
-    flex-direction: row;
-}
-
-.sources-chart {
-  width: 100%;
-  margin-left: -1rem;
-  background: white;
-}
-
-.concept-box-info {
-    padding: .5rem;
-    text-align: left;
-}
-
 .concept-box-info p {
     font-size: 14px;
     color: #262262;
@@ -48,18 +59,6 @@ const cssStyles = `
 
 .measurement-filter-choice.active {
   text-decoration: underline;
-}
-
-.measurement-filter-choice {
-  color: #262262;
-}
-
-.ehr-m-chart-layout {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1em;
 }
 
 .ehr-m-chart-item {
@@ -353,12 +352,13 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     {mixtureOfValues ?
                     noUnitValueButtons.map((noUnit, index) => {
                         return <div key={index} className={selectedMeasurementType === noUnit ? 'active btn btn-link measurement-filter-choice' : 'btn btn-link measurement-filter-choice'}
+                        style={styles.measurementFilterChoice}
                         onClick={() => this.showSpecificMeasurementTypeValues(noUnit)}>{noUnit}</div>;
                     }) : null
                     }
                     </div>
                     <div className='chart-container'>
-                    <div className='ehr-m-chart-layout'>
+                    <div className='ehr-m-chart-layout' style={styles.ehrMChartLayout}>
                     {(genderResults && toDisplayMeasurementGenderAnalysis) ?
                     genderResults.map((gender, index) => {
                         return <div key={index} className='ehr-m-chart-item'>
@@ -371,9 +371,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     </div> : null
                     }
                     {graphToShow === 'Sources' && sourceConcepts ?
-                    <div className='source-layout'>
-                        <div className='sources-chart' key='sources-chart'>
-                            <div className='concept-box-info'>
+                    <div className='source-layout' style={styles.sourceLayout}>
+                        <div className='sources-chart' style={styles.sourcesChart} key='sources-chart'>
+                            <div className='concept-box-info' style={styles.conceptBoxInfo}>
                                 <p><strong>{concept.conceptName}</strong></p>
                                 <p>{concept.vocabularyId} Code: {concept.conceptCode}</p>
                                  <p>OMOP Concept Id: {concept.conceptId}</p>
