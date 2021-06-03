@@ -3,8 +3,8 @@ import * as React from 'react';
 
 import {AppRoute, AppRouter, withRouteData} from 'app/components/app-router';
 import {BaseReactWrapper} from 'app/data-browser/base-react/base-react.wrapper';
-import {IntroVidReactComponent} from './data-browser/views/intro-vids/intro-vids-react.component';
 import {SurveyViewReactComponent} from 'app/data-browser/views/survey-view/survey-react-view.component';
+import {IntroVidReactComponent} from './data-browser/views/intro-vids/intro-vids-react.component';
 
 const SurveyViewPage = withRouteData(SurveyViewReactComponent);
 
