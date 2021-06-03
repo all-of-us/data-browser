@@ -40,17 +40,21 @@ const styles = reactStyles({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingTop: '1em'
+    },
+    ehrMChartItem: {
+        width: 'calc((33.3%) - 18px)',
+        height: 'auto',
+        flexGrow: '1'
+    },
+    conceptBoxInfoP: {
+        fontSize: '14px',
+        color: '#262262',
+        marginTop: '0',
+        lineHeight: '1.5'
     }
 });
 
 const cssStyles = `
-.concept-box-info p {
-    font-size: 14px;
-    color: #262262;
-    margin-top: 0;
-    line-height: 1.5;
-}
-
 .unit-choice.active {
   border-style: solid;
   border-color: #bee1ff;
@@ -59,12 +63,6 @@ const cssStyles = `
 
 .measurement-filter-choice.active {
   text-decoration: underline;
-}
-
-.ehr-m-chart-item {
-    width: calc((33.3%) - 18px);
-    height: auto;
-    flex-grow: 1;
 }
 `;
 
@@ -228,7 +226,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     });
             }
         }
-        return;
     }
 
     showMeasurementGenderHistogram(unit: string) {
@@ -239,16 +236,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             if (unitResults && unitResults.results && unitResults.results.length > 0) {
                 const numericResults = unitResults.results.filter(r => r.measurementValueType === 'numeric');
                 const textResults = unitResults.results.filter(r => r.measurementValueType === 'text');
-                if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
+                if (numericResults.length > 0 && textResults.length > 0) {
                     mixtureOfValues = true;
                 }
             }
         }
         const toDisplayMeasurementGenderAnalysis = { ...selectedChartAnalysis.find(aa => aa.unitName === unit) };
-        let toDisplayMeasurementGenderCountAnalysis = null;
-        if (measurementGenderCountAnalysis) {
-            toDisplayMeasurementGenderCountAnalysis = measurementGenderCountAnalysis.find(aa => aa.unitName === unit);
-        }
+        const toDisplayMeasurementGenderCountAnalysis = measurementGenderCountAnalysis ?
+                  measurementGenderCountAnalysis.find(aa => aa.unitName === unit) : null;
         let selectedMeasurementType = null;
         if (mixtureOfValues) {
             toDisplayMeasurementGenderAnalysis.results = toDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
@@ -268,11 +263,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         if (toDisplayMeasurementGenderCountAnalysis) {
             const genderResults = toDisplayMeasurementGenderCountAnalysis.results
                 .filter(r => r.stratum3 === gender.stratum2)[0];
-            if (genderResults && genderResults.countValue > 20) {
-                return gender.analysisStratumName + ' - ' + genderResults.countValue;
-            } else {
-                return gender.analysisStratumName + ' - &le; ' + 20;
-            }
+            return genderResults && genderResults.countValue > 20 ?
+                          gender.analysisStratumName + ' - ' + genderResults.countValue :
+                          gender.analysisStratumName + ' - &le; ' + 20;
         } else {
             return gender.analysisStratumName + ' - ' + gender.countValue;
         }
@@ -306,8 +299,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             <style>{cssStyles}</style>
             <div className='graph-menu'>
             {(selectedChartAnalysis || sourceConcepts) && graphButtons.map((g, index) => {
-                return (
-                    <div onClick={() => this.selectGraphType(g)}
+                return <div onClick={() => this.selectGraphType(g)}
                     className={graphToShow === g ? 'active chart-choice' : 'chart-choice'}
                     tabIndex={tabIndex} key={index}>
                     <span>{g}</span>
@@ -315,18 +307,16 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     label='EHR Tooltip Hover' searchTerm={searchTerm}
                     action={'Concept graph ' + g + ' tooltip hover on concept ' + concept.conceptName}>
                     </TooltipReactComponent>
-                    </div>
-                );
+                    </div>;
           })
         }
             </div>
-            {loading ? <Spinner /> : null}
+            {loading && <Spinner />}
             {displayGraphErrorMessage
                     ? <div className='graph-error-message'>
                         <ErrorMessageReactComponent dataType='chart' />
                       </div>
-                    : [
-                    <React.Fragment key={concept.conceptId}>
+                    : <React.Fragment key={concept.conceptId}>
                     {(isAnalysisLoaded && selectedChartAnalysis && countAnalysis && countAnalysis.genderCountAnalysis) &&
                     graphToShow === 'Sex Assigned at Birth' ?
                     <div className='chart' key='biosex-chart'>
@@ -339,54 +329,51 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         <AgeChartReactComponent domain='ehr' ageAnalysis={selectedChartAnalysis}
                         ageCountAnalysis={countAnalysis.ageCountAnalysis} selectedResult=''/>
                     </div> :
-                    graphToShow === 'Values' ?
+                    graphToShow === 'Values' &&
                     <div className='chart' key='values-chart'>
                     {unitNames.map((unit, index) => {
-                        return (
-                            <div key={index} className={selectedUnit === unit ? 'active btn btn-link unit-choice' : 'btn btn-link unit-choice'}
-                            onClick={() => this.showMeasurementGenderHistogram(unit)}>{unit}</div>
-                        );
+                        return <div key={index} className={selectedUnit === unit ? 'active btn btn-link unit-choice' : 'btn btn-link unit-choice'}
+                            onClick={() => this.showMeasurementGenderHistogram(unit)}>{unit}</div>;
                     })
                     }
                     <div>
-                    {mixtureOfValues ?
+                    {mixtureOfValues &&
                     noUnitValueButtons.map((noUnit, index) => {
                         return <div key={index} className={selectedMeasurementType === noUnit ? 'active btn btn-link measurement-filter-choice' : 'btn btn-link measurement-filter-choice'}
                         style={styles.measurementFilterChoice}
                         onClick={() => this.showSpecificMeasurementTypeValues(noUnit)}>{noUnit}</div>;
-                    }) : null
+                    })
                     }
                     </div>
                     <div className='chart-container'>
                     <div className='ehr-m-chart-layout' style={styles.ehrMChartLayout}>
-                    {(genderResults && toDisplayMeasurementGenderAnalysis) ?
+                    {(genderResults && toDisplayMeasurementGenderAnalysis) &&
                     genderResults.map((gender, index) => {
-                        return <div key={index} className='ehr-m-chart-item'>
+                        return <div key={index} className='ehr-m-chart-item' style={styles.ehrMChartItem}>
                         <ValueReactChartComponent conceptId={concept.conceptId} valueAnalysis={toDisplayMeasurementGenderAnalysis}
                         genderId={gender.stratum2} chartTitle={this.fetchChartTitle(gender)}/></div>;
-                    }) : null
+                    })
                     }
                     </div>
                     </div>
-                    </div> : null
+                    </div>
                     }
-                    {graphToShow === 'Sources' && sourceConcepts ?
+                    {(graphToShow === 'Sources' && sourceConcepts) &&
                     <div className='source-layout' style={styles.sourceLayout}>
                         <div className='sources-chart' style={styles.sourcesChart} key='sources-chart'>
                             <div className='concept-box-info' style={styles.conceptBoxInfo}>
-                                <p><strong>{concept.conceptName}</strong></p>
-                                <p>{concept.vocabularyId} Code: {concept.conceptCode}</p>
-                                 <p>OMOP Concept Id: {concept.conceptId}</p>
+                                <p style={styles.conceptBoxInfoP}><strong>{concept.conceptName}</strong></p>
+                                <p style={styles.conceptBoxInfoP}>{concept.vocabularyId} Code: {concept.conceptCode}</p>
+                                 <p style={styles.conceptBoxInfoP}>OMOP Concept Id: {concept.conceptId}</p>
                             </div>
                             <SourcesChartReactComponent concepts={sourceConcepts} />
                         </div>
-                        {(domain === 'condition' || domain === 'procedure') ?
+                        {(domain === 'condition' || domain === 'procedure') &&
                         <div className='tree-view'>
                         <p>Sources Tree</p>
-                        </div> : null }
-                    </div> : null}
+                        </div>}
+                    </div>}
                     </React.Fragment>
-                    ]
             }
             </React.Fragment>;
     }
