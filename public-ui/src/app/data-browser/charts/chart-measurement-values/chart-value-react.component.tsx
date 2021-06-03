@@ -16,7 +16,6 @@ interface State {
 interface Props {
     conceptId: any;
     valueAnalysis: any;
-    domainCountAnalysis: any;
     genderId: any;
     chartTitle: any;
 }
@@ -288,11 +287,10 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
 export class ValueChartWrapperComponent extends BaseReactWrapper {
   @Input() conceptId: any;
   @Input() valueAnalysis: any;
-  @Input() domainCountAnalysis: any;
   @Input() genderId: any;
   @Input() chartTitle: any;
 
   constructor() {
-    super(ValueReactChartComponent, ['conceptId', 'valueAnalysis', 'domainCountAnalysis', 'genderId', 'chartTitle']);
+    super(ValueReactChartComponent, ['conceptId', 'valueAnalysis', 'genderId', 'chartTitle']);
   }
 }
