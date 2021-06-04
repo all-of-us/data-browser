@@ -277,7 +277,7 @@
                                        [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
                   </div>
                 </div>
-                <ng-container *ngIf="r.graphToShow === graphType.Sources; else NonSourceCharts">
+                <ng-container *ngIf="r.graphToShow === graphType.Sources && !ehrReact; else NonSourceCharts">
                   <app-sources [ehrDomain]="ehrDomain"
                                [graphToShow]="r.graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r">
                   </app-sources>
