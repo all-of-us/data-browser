@@ -143,7 +143,7 @@ export const SourceTreeComponent = (
         }
         
         getChildren() {
-           dataBrowserApi().getCriteriaChildren(this.props.id).then(
+           dataBrowserApi().getCriteriaChildren(this.props.node.id).then(
                 (data) => {
                     this.setState({ children: data.items });
                 }
