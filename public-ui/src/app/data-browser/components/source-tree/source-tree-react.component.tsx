@@ -152,7 +152,7 @@ export const SourceTreeComponent = (
 
         render() {
             const { node } = this.props;
-            const { isHandelSelected, isConceptSelected, highlightId } = this.state;
+            const { children, isHandelSelected, isConceptSelected, highlightId } = this.state;
             const nodeChildren = node.children || children;
             return <React.Fragment>
                 <div style={styles.treeRow}>
