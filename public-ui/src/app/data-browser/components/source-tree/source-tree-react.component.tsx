@@ -20,15 +20,6 @@ const styles = reactStyles({
         marginLeft: '.25rem',
         alignSelf: 'center',
     },
-    blueText: {
-        color: '#216fb4'
-    },
-    children: {
-        marginLeft: '1.5em',
-        display: 'flex',
-        flexDirection: 'column',
-        fontSize: '.7rem'
-    },
     treeActive: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
         fontWeight: 'bold'
@@ -43,22 +34,8 @@ const styles = reactStyles({
         display: 'flex',
         textAlign: 'left'
     },
-    treeRowChild: {
-        alignItems: 'flex-start',
-        display: 'flex',
-        textAlign: 'left',
-        marginLeft: '1em'
-    },
     childNode: {
         marginLeft: '1em'
-    },
-    smallSpinner: {
-        width: '.5rem',
-        height: '.5rem'
-    },
-    loading: {
-        marginTop: '0.1rem',
-        left: '-.1rem'
     }
 });
 
@@ -162,7 +139,6 @@ export const SourceTreeComponent = (
                 this.setState({ isHandelSelected: false });
 
             }
-
         }
 
         render() {
