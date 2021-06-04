@@ -162,10 +162,9 @@ export const SourceTreeComponent = (
                          { ...styles.treeActive } : {}}>{node.name}</span>
                     <span style={styles.count}>{node.count}</span>
                 </div>
-                {(isHandelSelected && node.group && node.children) && node.children.map((child, index) => {
-                    return <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>;
-                })}
-                {isHandelSelected && node.group && !node.children && <ChildFetchingComponent id={node.id} />}
+                {(isHandelSelected && node.group && nodeChildren) && nodeChildren.map((child, index) =>
+                    <div key={index} style={styles.childNode}><SourceTreeComponent node={child} /></div>
+                )}
             </React.Fragment>;
         }
     });
