@@ -109,6 +109,7 @@ export const SourceTreeComponent = (
         constructor(props: SourceTreeProps) {
             super(props);
             this.state = {
+                children: undefined,
                 isConceptSelected: false,
                 isHandelSelected: undefined,
                 highlightId: undefined
