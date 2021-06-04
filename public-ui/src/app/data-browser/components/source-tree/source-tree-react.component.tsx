@@ -98,6 +98,7 @@ interface SourceTreeProps {
 }
 
 interface SourceTreeState {
+    children: Array<any>;
     isConceptSelected: boolean;
     isHandelSelected: boolean;
     highlightId: number;
