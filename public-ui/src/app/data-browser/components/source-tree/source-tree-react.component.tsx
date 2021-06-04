@@ -134,9 +134,20 @@ export const SourceTreeComponent = (
 
         }
         componentDidMount() {
+            const {first, node} = this.props;
             // this.getTreeHighlight();
-            this.setState({ isHandelSelected: this.props.first });
-
+            this.setState({ isHandelSelected: first });
+            if (node.group && !node.children && !this.state.children) {
+                this.getChildren();
+            }
+        }
+        
+        getChildren() {
+           dataBrowserApi().getCriteriaChildren(this.props.id).then(
+                (data) => {
+                    this.setState({ children: data.items });
+                }
+            );
         }
 
         render() {
