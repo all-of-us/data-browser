@@ -392,14 +392,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         if (concept.measurementConceptInfo !== null &&
           concept.measurementConceptInfo.hasValues === 1 && !sources) {
           concept.graphToShow = GraphType.Values;
-        } else if (concept.measurementConceptInfo !== null &&
-          concept.measurementConceptInfo.hasValues === 0 && !sources) {
-          concept.graphToShow = GraphType.BiologicalSex;
-        } else if (sources) {
-          concept.graphToShow = GraphType.Sources;
         }
       } else {
-        concept.graphToShow = GraphType.BiologicalSex;
         if (fromChart) {
             this.selectGraph(concept.graphToShow, concept);
         }
