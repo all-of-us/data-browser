@@ -69,6 +69,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   orderFilter = 0;
   showStatement: boolean;
   testReact: boolean;
+  ehrReact: boolean;
   dataStatement = `The <i>All of Us</i> Research Program includes a demographically, geographically, and
   medically diverse group of participants, however, it is not a representative sample of the
   population of the United States. Enrollment in the <i>All of Us</i> Research program is open to all who
@@ -89,6 +90,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit() {
     this.testReact = environment.testReact;
     this.reactChart = environment.reactChart;
+    this.ehrReact = environment.ehrReact;
     this.route.params.subscribe(params => {
       this.domainId = this.dbc.routeToDomain[params.id];
     });

@@ -269,7 +269,7 @@
               <div class="row-expansion"
                    *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
                    #chartElement>
-                <div class="graph-menu">
+                <div class="graph-menu" *ngIf="!ehrReact">
                   <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':r.graphToShow === g}" tabindex="0"
                        (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
                     <span>{{g}}</span>
@@ -277,17 +277,20 @@
                                        [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
                   </div>
                 </div>
-                <ng-container *ngIf="r.graphToShow === graphType.Sources; else NonSourceCharts">
+                <ng-container *ngIf="r.graphToShow === graphType.Sources && !ehrReact; else NonSourceCharts">
                   <app-sources [ehrDomain]="ehrDomain"
                                [graphToShow]="r.graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r">
                   </app-sources>
                 </ng-container>
                 <ng-template #NonSourceCharts>
-                  <div class="graph-item">
+                  <div class="graph-item" *ngIf="!ehrReact">
                     <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
                     </app-concept-charts>
                   </div>
                 </ng-template>
+                <div class="concept-chart" *ngIf="ehrReact">
+                  <app-concept-chart-react [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>
+                </div>
               </div>
             </div>
           </div>
