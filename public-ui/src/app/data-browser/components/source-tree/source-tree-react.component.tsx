@@ -153,7 +153,7 @@ export const SourceTreeComponent = (
         render() {
             const { node } = this.props;
             const { isHandelSelected, isConceptSelected, highlightId } = this.state;
-
+            const nodeChildren = node.children || children;
             return <React.Fragment>
                 <div style={styles.treeRow}>
                     {node.group ? <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} /> :
