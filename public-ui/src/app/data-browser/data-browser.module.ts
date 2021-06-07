@@ -30,6 +30,7 @@ import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-r
 import { VersionChartWrapperComponent } from './charts/chart-version/chart-version-react.component';
 import { ChartService } from './charts/chart.service';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
+import { SourceTreeWrapperComponent } from './components/source-tree/source-tree-react.component';
 import { SourceTreeComponent } from './components/source-tree/source-tree.component';
 import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
 import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
@@ -65,6 +66,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbNoResultsComponent,
     RecursiveTreeComponent,
     SourceTreeComponent,
+    SourceTreeWrapperComponent,
     EhrViewComponent,
     PhysicalMeasurementsComponent,
     QuickSearchComponent,
@@ -126,6 +128,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     DbHomeWrapperComponent,
     PopUpWrapperComponent,
     SourcesWrapperComponent,
+    SourceTreeWrapperComponent,
     TopResultsChartWrapperComponent,
     SurveyViewWrapperComponent,
     AgeWrapperComponent,
