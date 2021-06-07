@@ -40,57 +40,6 @@ const styles = reactStyles({
 });
 
 
-interface ChildState {
-    isChildSelected: boolean;
-    children: any;
-}
-interface ChildProps {
-    id: number;
-}
-
-const ChildFetchingComponent = (
-    class extends React.Component<ChildProps, ChildState> {
-        constructor(props: ChildProps) {
-            super(props);
-            this.state = {
-                isChildSelected: false,
-                children: undefined
-            };
-        }
-
-        childClick() {
-            this.getChildren();
-            this.setState({
-                isChildSelected: !this.state.isChildSelected
-            });
-        }
-
-        getChildren() {
-            return dataBrowserApi().getCriteriaChildren(this.props.id).then(
-                (data) => {
-                    this.setState({ children: data.items });
-
-                }
-            );
-        }
-
-        componentDidMount() {
-            this.getChildren();
-        }
-
-        render() {
-            const { children } = this.state;
-            return <React.Fragment>
-                {children && children.map((child, index) => {
-                    return <div key={index} style={styles.childNode}>
-                        {/* tslint:disable-next-line:no-use-before-declare */}
-                        <SourceTreeComponent node={child} />
-                    </div>;
-                })}
-            </React.Fragment>;
-        }
-
-    });
 
 interface SourceTreeProps {
     node: any;
@@ -124,7 +73,7 @@ export const SourceTreeComponent = (
         }
         getTreeHighlight() {
             this.setState({
-                highlightId: parseInt(localStorage.getItem('treeHighlight') , 10)
+                highlightId: parseInt(localStorage.getItem('treeHighlight'), 10)
             });
         }
         handleClick() {
@@ -134,16 +83,16 @@ export const SourceTreeComponent = (
 
         }
         componentDidMount() {
-            const {first, node} = this.props;
+            const { first, node } = this.props;
             // this.getTreeHighlight();
             this.setState({ isHandelSelected: first });
             if (node.group && !node.children && !this.state.children) {
                 this.getChildren();
             }
         }
-        
+
         getChildren() {
-           dataBrowserApi().getCriteriaChildren(this.props.node.id).then(
+            dataBrowserApi().getCriteriaChildren(this.props.node.id).then(
                 (data) => {
                     this.setState({ children: data.items });
                 }
@@ -157,9 +106,9 @@ export const SourceTreeComponent = (
             return <React.Fragment>
                 <div style={styles.treeRow}>
                     {node.group ? <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} /> :
-                    <span style={styles.childNode}></span>}
+                        <span style={styles.childNode}></span>}
                     <span onClick={() => this.conceptClick()} style={(isConceptSelected && highlightId === node.id) ?
-                         { ...styles.treeActive } : {}}>{node.name}</span>
+                        { ...styles.treeActive } : {}}>{node.name}</span>
                     <span style={styles.count}>{node.count}</span>
                 </div>
                 {(isHandelSelected && node.group && nodeChildren) && nodeChildren.map((child, index) =>
