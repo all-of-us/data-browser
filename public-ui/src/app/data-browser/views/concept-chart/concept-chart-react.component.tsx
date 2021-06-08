@@ -91,6 +91,7 @@ interface Props {
     concept: any;
     domain: any;
     searchTerm: any;
+    graphToShow: string;
 }
 
 export class ConceptChartReactComponent extends React.Component<Props, State> {
@@ -98,7 +99,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
           graphButtons: this.props.domain === 'labs & measurements' ? ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
-          graphToShow: this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
+          graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex),
           displayGraphErrorMessage: false,
           selectedChartAnalysis: null,
           conceptAnalyses: null,
@@ -387,8 +388,9 @@ export class ConceptChartWrapperComponent extends BaseReactWrapper {
   @Input() concept: any;
   @Input() domain: any;
   @Input() searchTerm: string;
+  @Input() graphToShow: string;
 
   constructor() {
-    super(ConceptChartReactComponent, ['concept', 'domain', 'searchTerm']);
+    super(ConceptChartReactComponent, ['concept', 'domain', 'searchTerm', 'graphToShow']);
   }
 }

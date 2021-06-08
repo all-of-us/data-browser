@@ -128,6 +128,12 @@
             <div class="tbl-exp-r"
                  [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
                  *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
+              <div *ngIf="ehrReact; else angConceptRow">
+                <app-concept-row-react [concept]="r" [totalResults]="totalResults" [maxResults]="searchRequest.maxResults" [currentPage]="currentPage" [counter]="i"
+                [searchTerm]="prevSearchText" [totalParticipants]="totalParticipants" [synonymString]="synonymString[r.conceptId]"
+                [domain]="ehrDomain.name.toLowerCase()" [selectedConcept]="selectedConcept"></app-concept-row-react>
+              </div>
+              <ng-template #angConceptRow>
               <div [attr.id]="'c'+r.conceptId"  [ngClass]="ehrDomain.domain === 'MEASUREMENT'?'tbl-r_labs':'tbl-r'" (click)="expandRow(r)">
                 <div class="body-lead tbl-d"
                      *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
@@ -292,6 +298,7 @@
                   <app-concept-chart-react [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>
                 </div>
               </div>
+              </ng-template>
             </div>
           </div>
         </ng-container>
