@@ -59,7 +59,7 @@ const styles = reactStyles({
         color: '#216fb4',
         fontWeight: 400,
         position: 'relative',
-        zIndex: '99'
+        zIndex: 99
     },
     iconBtnGroup: {
         textAlign: 'right',
