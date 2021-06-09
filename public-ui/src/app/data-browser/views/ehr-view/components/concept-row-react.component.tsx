@@ -10,9 +10,6 @@ import { environment } from 'environments/environment';
 import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 
-
-const api = new DataBrowserApi(new Configuration({ basePath: environment.publicApiUrl }));
-
 const styles = reactStyles({
     bodyLead: {
         fontFamily: 'GothamBook, Arial, sans-serif',

@@ -98,8 +98,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-          graphButtons: this.props.domain === 'labs & measurements' ? ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
-          graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex),
+          graphButtons: this.props.domain === 'labs & measurements' ?
+          ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
+          graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain === 'labs & measurements' ?
+          GraphType.Values : GraphType.BiologicalSex),
           displayGraphErrorMessage: false,
           selectedChartAnalysis: null,
           conceptAnalyses: null,
