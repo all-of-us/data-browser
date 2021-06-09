@@ -19,6 +19,40 @@ const styles = reactStyles({
         padding: '0 .5rem',
         fontSize: '.8em',
         position: 'relative'
+    },
+    tblRow: {
+        display: 'grid',
+        gridTemplateColumns: '30% 25% 20% 1fr',
+        textAlign: 'left',
+        minWidth: '810px',
+        border: 'none'
+    },
+    tblRLabs: {
+        display: 'grid',
+        gridTemplateColumns: '30% 25% 20% 10% 1fr',
+        textAlign: 'left',
+        minWidth: '810px'
+    },
+    akaText: {
+        /* width: 170px; */
+        fontFamily: 'Arial, sans-serif',
+        fontStyle: 'italic',
+        color: '#6B6B6B'
+    },
+    sourceBtnMeta: {
+        width: '1.3rem',
+        height: '1.3rem',
+        margin: 'auto',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%'
+    },
+    measurementTypeSpan: {
+        fontSize: '1em'
+    },
+    aka: {
+        paddingLeft: '9px',
+        paddingTop: '9px',
+        fontSize: '.8em'
     }
 });
 
@@ -45,39 +79,11 @@ const cssStyles = `
     background: #f6f6f8;
     transition: .1s background ease-in;
 }
-.tbl-r {
-    display: grid;
-    grid-template-columns: 30% 25% 20% 1fr;
-    text-align: left;
-    min-width: 810px;
-    border: none;
-}
-.tbl-r-labs {
-    display: grid;
-    grid-template-columns: 30% 25% 20% 10% 1fr;
-    text-align: left;
-    min-width: 810px;
-}
 .tbl-d:first-of-type::before {
     content: none;
 }
 .tbl-d:nth-of-type(4) {
     text-align: center;
-}
-.source-btn-active {
-    background: url('/assets/icons/source_btn_active.svg');
-}
-
-.source-btn {
-    background: url('/assets/icons/source_btn.svg');
-}
-
-.source-btn, .source-btn-active {
-    width: 1.3rem;
-    height: 1.3rem;
-    margin: auto;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
 }
 .icon-btn-group {
     text-align: right;
@@ -85,35 +91,12 @@ const cssStyles = `
     justify-content: flex-end;
     align-items: flex-start;
 }
-.icon-btn-group .icon-btn {
-    font-size: 2.5rem;
-}
 .icon-btn {
     position: relative;
     width: 100%;
     text-align: right;
+    font-size: 2.5rem;
 }
-.aka-text {
-    /* width: 170px; */
-    font-family: Arial, sans-serif;
-    font-style: italic;
-    color: #6B6B6B;
-}
-
-.aka-info {
-    opacity: .7;
-}
-
-.aka {
-    padding-left: 9px;
-    padding-top: 9px;
-    font-size: 14px;
-}
-
-.aka-layout {
-    font-size: .8em;
-}
-
 .see-more, .see-less, .brands-link {
     display: inline;
     color: #216fb4;
@@ -128,9 +111,11 @@ const cssStyles = `
      border: none;
      outline: none;
  }
-
-.test-span, .order-span {
-    font-size: 1em;
+.source-btn-active {
+    background: url('/assets/icons/source_btn_active.svg');
+}
+.source-btn {
+    background: url('/assets/icons/source_btn.svg');
 }
 `;
 
@@ -286,7 +271,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                <style>{cssStyles}</style>
                <div id={id}>
                  <div className='tbl-exp-r' onClick={() => this.expandRow()}>
-                 <div className={tblClass}>
+                 <div className={tblClass} style={domain === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
                  <div className='body-lead tbl-d' style={styles.bodyLead}>
                     <span>{conceptIndex}. </span>
                     <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
@@ -300,9 +285,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                  {domain === 'labs & measurements' && concept.measurementConceptInfo &&
                  <div className='body-lead tbl-d'>
                     {concept.measurementConceptInfo.hasValues === 1 ?
-                    <span className='test-span'><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}}></i>
+                    <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}}></i>
                     <TooltipReactComponent tooltipKey='valueFilter' label='' searchTerm='' action=''></TooltipReactComponent></span> :
-                    <span className='order-span'><i className='far fa-file-signature'></i>
+                    <span className='order-span' style={styles.measurementTypeSpan}><i className='far fa-file-signature'></i>
                    <TooltipReactComponent tooltipKey='orderFilter' label='' searchTerm='' action=''></TooltipReactComponent></span>}
                  </div>
                  }
@@ -312,7 +297,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
                     </button>
                     <button className='icon-btn icon-choice' onClick={(e) => {e.stopPropagation(); this.showChart('sources'); }}>
-                        <div className={(showConceptChart && graphToShow === GraphType.Sources) ? 'source-btn-active' : 'source-btn'}>
+                        <div className={(showConceptChart && graphToShow === GraphType.Sources) ? 'source-btn-active' : 'source-btn'}
+                        style={styles.sourceBtnMeta} >
                         </div>
                     </button>
                     <button className='icon-btn'>
@@ -325,8 +311,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                  </div>
                </div>
                {synonymString &&
-               <div className='body-lead aka-layout aka'>
-                <div className='aka-text'>
+               <div className='body-lead aka-layout aka' style={styles.aka}>
+                <div className='aka-text' style={styles.akaText}>
                     <span>Also Known As</span>
                     <TooltipReactComponent
                                         label='EHR Tooltip Hover'
@@ -343,8 +329,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                </div>
                }
                {domain === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
-               <div className='body-lead aka-layout aka'>
-               <div className='aka-text'>
+               <div className='body-lead aka-layout aka' style={styles.aka}>
+               <div className='aka-text' style={styles.akaText}>
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
                     <div>
                     <a tabIndex={tabIndex} className='toggle-link brands-link' onClick={() => this.toggleDrugBrands()}>
