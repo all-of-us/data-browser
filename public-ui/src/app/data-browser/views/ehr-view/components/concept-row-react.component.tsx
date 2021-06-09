@@ -304,17 +304,17 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                  </div>
                  }
                  <div className='body-lead tbl-d icon-btn-group'>
-                    <button className='icon-btn' onClick={(e) => {e.stopPropagation(); this.showChart('non-sources');}}>
+                    <button className='icon-btn' onClick={(e) => {e.stopPropagation(); this.showChart('non-sources'); }}>
                         <ClrIcon shape='bar-chart' className={(showConceptChart && graphToShow !== GraphType.Sources) ?
                         'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
                     </button>
-                    <button className='icon-btn icon-choice' onClick={(e) => {e.stopPropagation(); this.showChart('sources');}}>
+                    <button className='icon-btn icon-choice' onClick={(e) => {e.stopPropagation(); this.showChart('sources'); }}>
                         <div className={(showConceptChart && graphToShow === GraphType.Sources) ? 'source-btn-active' : 'source-btn'}>
                         </div>
                     </button>
                     <button className='icon-btn'>
                          <ClrIcon shape='share' className='icon-choice' style={{width: 20, height: 20, color: '#2691D0'}}
-                         onClick={(e) => {e.stopPropagation(); this.shareConcept(e);}}>
+                         onClick={(e) => {e.stopPropagation(); this.shareConcept(e); }}>
                          </ClrIcon>
                     </button>
                  </div>
@@ -362,7 +362,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                {showConceptChart && graphToShow &&
                <div className='row-expansion'>
                 <div className='concept-chart'>
-                    <ConceptChartReactComponent concept={concept} domain={domain} searchTerm={searchTerm} graphToShow={graphToShow} key={graphToShow}/>
+                    <ConceptChartReactComponent concept={concept} domain={domain} searchTerm={searchTerm}
+                    graphToShow={graphToShow} key={graphToShow}/>
                 </div>
                </div>
                }
