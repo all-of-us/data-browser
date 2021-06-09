@@ -437,9 +437,9 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public getConceptIndex(i: number) {
     if (this.totalResults > this.searchRequest.maxResults) {
-        return i+((this.currentPage-1) * this.searchRequest.maxResults)+1;
+        return i + ((this.currentPage - 1) * this.searchRequest.maxResults) + 1;
     }
-    return i+1;
+    return i + 1;
   }
 
   public processSearchResults(results) {

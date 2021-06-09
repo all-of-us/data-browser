@@ -6,8 +6,6 @@ import { HighlightReactComponent } from 'app/shared/components/highlight-search/
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-defs';
-import { environment } from 'environments/environment';
-import { Configuration, DataBrowserApi } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -164,19 +162,22 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         this.state = {
             showMoreSynonyms: false,
             showMoreDrugBrands: false,
-            showConceptChart: this.props.selectedConcept && this.props.selectedConcept.conceptId === this.props.concept.conceptId ? true : false,
+            showConceptChart: this.props.selectedConcept &&
+            this.props.selectedConcept.conceptId === this.props.concept.conceptId ? true : false,
             graphToShow: this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
         };
     }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    if (prevProps.selectedConcept !== this.props.selectedConcept && this.props.selectedConcept.conceptId === this.props.concept.conceptId) {
+    if (prevProps.selectedConcept !== this.props.selectedConcept && this.props.selectedConcept.conceptId ===
+    this.props.concept.conceptId) {
         this.setState({
             showConceptChart: true,
             graphToShow: this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
         });
     }
-    if (this.props.selectedConcept && this.props.selectedConcept.conceptId !== this.props.concept.conceptId && this.state.showConceptChart) {
+    if (this.props.selectedConcept && this.props.selectedConcept.conceptId !== this.props.concept.conceptId &&
+    this.state.showConceptChart) {
         this.setState({
             showConceptChart: false
         });
