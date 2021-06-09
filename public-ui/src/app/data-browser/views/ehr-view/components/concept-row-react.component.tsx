@@ -213,7 +213,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
 
     showChart(chartType: string) {
         if (this.state.showConceptChart) {
-            if (chartType === 'sources' && (this.state.graphToShow === GraphType.BiologicalSex || this.state.graphToShow === GraphType.Age || this.state.graphToShow === GraphType.Values)) {
+            if (chartType === 'sources' && (this.state.graphToShow === GraphType.BiologicalSex ||
+            this.state.graphToShow === GraphType.Age || this.state.graphToShow === GraphType.Values)) {
                 this.setState({
                     graphToShow: GraphType.Sources
                 });
@@ -224,13 +225,15 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
             } else {
                 this.setState({
                     showConceptChart: !this.state.showConceptChart,
-                    graphToShow: chartType === 'sources' ? GraphType.Sources : (this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
+                    graphToShow: chartType === 'sources' ? GraphType.Sources :
+                    (this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
                 });
             }
         } else {
             this.setState({
                 showConceptChart: !this.state.showConceptChart,
-                graphToShow: chartType === 'sources' ? GraphType.Sources : (this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
+                graphToShow: chartType === 'sources' ? GraphType.Sources : (this.props.domain === 'labs & measurements'
+                ? GraphType.Values : GraphType.BiologicalSex)
             });
         }
     }
@@ -269,9 +272,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         const id = 'c' + concept.conceptId;
         const tabIndex = 0;
         const tooltipAction = 'Concept synonyms tooltip hover on concept ' + concept.conceptName;
-        var conceptIndex = counter+1;
+        let conceptIndex = counter + 1;
         if (totalResults > maxResults) {
-            conceptIndex = counter+((currentPage-1) * maxResults)+1;
+            conceptIndex = counter + ((currentPage - 1) * maxResults) + 1;
         }
         const synonymsStr = showMoreSynonyms ? synonymString : (synonymString ? synonymString.substring(0,100) : null);
         const drugBrandsStr = showMoreDrugBrands ? concept.drugBrands.join(', ') : concept.drugBrands.slice(0, 10).join(', ');
@@ -302,14 +305,16 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                  }
                  <div className='body-lead tbl-d icon-btn-group'>
                     <button className='icon-btn' onClick={(e)=> {e.stopPropagation(); this.showChart('non-sources')}}>
-                        <ClrIcon shape='bar-chart' className={(showConceptChart && graphToShow !== GraphType.Sources) ? 'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
+                        <ClrIcon shape='bar-chart' className={(showConceptChart && graphToShow !== GraphType.Sources) ?
+                        'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
                     </button>
                     <button className='icon-btn icon-choice' onClick={(e)=> {e.stopPropagation(); this.showChart('sources')}}>
                         <div className={(showConceptChart && graphToShow === GraphType.Sources) ? 'source-btn-active' : 'source-btn'}>
                         </div>
                     </button>
                     <button className='icon-btn'>
-                         <ClrIcon shape='share' className='icon-choice' style={{width: 20, height: 20, color: '#2691D0'}} onClick={(e)=> {e.stopPropagation(); this.shareConcept(e)}}>
+                         <ClrIcon shape='share' className='icon-choice' style={{width: 20, height: 20, color: '#2691D0'}}
+                         onClick={(e)=> {e.stopPropagation(); this.shareConcept(e)}}>
                          </ClrIcon>
                     </button>
                  </div>
@@ -329,7 +334,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 <HighlightReactComponent searchTerm={searchTerm} text={synonymsStr}>
                 </HighlightReactComponent>
                 <a tabIndex={tabIndex} className='toggle-link' onClick={() => this.toggleSynonyms()}>
-                {(synonymString.length > 100) ? (showMoreSynonyms ? ' See Less' : <React.Fragment><ClrIcon shape='ellipsis-horizontal' style={{color: '#2691D0'}}/> See More</React.Fragment>) : ''}
+                {(synonymString.length > 100) ? (showMoreSynonyms ? ' See Less' : <React.Fragment><ClrIcon shape='ellipsis-horizontal'
+                style={{color: '#2691D0'}}/> See More</React.Fragment>) : ''}
                 </a>
                </div>
                }
@@ -339,7 +345,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
                     <div>
                     <a tabIndex={tabIndex} className='toggle-link brands-link' onClick={() => this.toggleDrugBrands()}>
-                                    {(concept.drugBrands.length > 10) ? (showMoreDrugBrands ? <React.Fragment>See Less<ClrIcon shape='caret' style={{color: '#2691D0'}} dir='down'/></React.Fragment> : <React.Fragment>See More<ClrIcon shape='caret' dir='right' style={{color: '#2691D0'}}/></React.Fragment>) : ''}
+                                    {(concept.drugBrands.length > 10) ? (showMoreDrugBrands ?
+                                    <React.Fragment>See Less<ClrIcon shape='caret' style={{color: '#2691D0'}} dir='down'/></React.Fragment> :
+                                    <React.Fragment>See More<ClrIcon shape='caret' dir='right' style={{color: '#2691D0'}}/></React.Fragment>) : ''}
                                     </a>
                     </div>
                     <HighlightReactComponent searchTerm={searchTerm} text={drugBrandsStr}>
