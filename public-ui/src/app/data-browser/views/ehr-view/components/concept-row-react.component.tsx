@@ -60,6 +60,12 @@ const styles = reactStyles({
         fontWeight: 400,
         position: 'relative',
         zIndex: '99'
+    },
+    iconBtnGroup: {
+        textAlign: 'right',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start'
     }
 });
 
@@ -91,12 +97,6 @@ const cssStyles = `
 }
 .tbl-d:nth-of-type(4) {
     text-align: center;
-}
-.icon-btn-group {
-    text-align: right;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
 }
 .icon-btn {
     position: relative;
@@ -291,7 +291,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                    <TooltipReactComponent tooltipKey='orderFilter' label='' searchTerm='' action=''></TooltipReactComponent></span>}
                  </div>
                  }
-                 <div className='body-lead tbl-d icon-btn-group'>
+                 <div className='body-lead tbl-d icon-btn-group' style={styles.iconBtnGroup}>
                     <button className='icon-btn' onClick={(e) => {e.stopPropagation(); this.showChart('non-sources'); }}>
                         <ClrIcon shape='bar-chart' className={(showConceptChart && graphToShow !== GraphType.Sources) ?
                         'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
