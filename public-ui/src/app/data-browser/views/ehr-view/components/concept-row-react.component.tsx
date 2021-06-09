@@ -53,6 +53,13 @@ const styles = reactStyles({
         paddingLeft: '9px',
         paddingTop: '9px',
         fontSize: '.8em'
+    },
+    showMoreLink: {
+        display: 'inline',
+        color: '#216fb4',
+        fontWeight: 400,
+        position: 'relative',
+        zIndex: '99'
     }
 });
 
@@ -96,13 +103,6 @@ const cssStyles = `
     width: 100%;
     text-align: right;
     font-size: 2.5rem;
-}
-.see-more, .see-less, .brands-link {
-    display: inline;
-    color: #216fb4;
-    font-weight: 400;
-    position: relative;
-    z-index: 99;
 }
 .toggle-link,
  .toggle-link:link,
@@ -333,7 +333,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                <div className='aka-text' style={styles.akaText}>
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
                     <div>
-                    <a tabIndex={tabIndex} className='toggle-link brands-link' onClick={() => this.toggleDrugBrands()}>
+                    <a tabIndex={tabIndex} className='toggle-link brands-link' style={styles.showMoreLink}
+                                    onClick={() => this.toggleDrugBrands()}>
                                     {(concept.drugBrands.length > 10) ? (showMoreDrugBrands ?
                                     <React.Fragment>See Less
                                     <ClrIcon shape='caret' style={{color: '#2691D0'}} dir='down'/>
