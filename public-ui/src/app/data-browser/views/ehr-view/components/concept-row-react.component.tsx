@@ -169,14 +169,15 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    if (prevProps.selectedConcept !== this.props.selectedConcept && this.props.selectedConcept.conceptId ===
-    this.props.concept.conceptId) {
+    const {selectedConcept, concept, domain} = this.props;
+    if (prevProps.selectedConcept !== selectedConcept && selectedConcept.conceptId ===
+    concept.conceptId) {
         this.setState({
             showConceptChart: true,
-            graphToShow: this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
+            graphToShow: domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
         });
     }
-    if (this.props.selectedConcept && this.props.selectedConcept.conceptId !== this.props.concept.conceptId &&
+    if (selectedConcept && selectedConcept.conceptId !== concept.conceptId &&
     this.state.showConceptChart) {
         this.setState({
             showConceptChart: false
@@ -212,27 +213,29 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
 
     showChart(chartType: string) {
-        if (this.state.showConceptChart) {
-            if (chartType === 'sources' && (this.state.graphToShow === GraphType.BiologicalSex ||
-            this.state.graphToShow === GraphType.Age || this.state.graphToShow === GraphType.Values)) {
+        const {showConceptChart, graphToShow} = this.state;
+        const {domain} = this.props;
+        if (showConceptChart) {
+            if (chartType === 'sources' && (graphToShow === GraphType.BiologicalSex ||
+            graphToShow === GraphType.Age || graphToShow === GraphType.Values)) {
                 this.setState({
                     graphToShow: GraphType.Sources
                 });
-            } else if (chartType === 'non-sources' && this.state.graphToShow === GraphType.Sources) {
+            } else if (chartType === 'non-sources' && graphToShow === GraphType.Sources) {
                 this.setState({
                     graphToShow: GraphType.Values
                 });
             } else {
                 this.setState({
-                    showConceptChart: !this.state.showConceptChart,
+                    showConceptChart: !showConceptChart,
                     graphToShow: chartType === 'sources' ? GraphType.Sources :
-                    (this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
+                    (domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
                 });
             }
         } else {
             this.setState({
-                showConceptChart: !this.state.showConceptChart,
-                graphToShow: chartType === 'sources' ? GraphType.Sources : (this.props.domain === 'labs & measurements'
+                showConceptChart: !showConceptChart,
+                graphToShow: chartType === 'sources' ? GraphType.Sources : (domain === 'labs & measurements'
                 ? GraphType.Values : GraphType.BiologicalSex)
             });
         }
@@ -278,7 +281,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         }
         const synonymsStr = showMoreSynonyms ? synonymString : (synonymString ? synonymString.substring(0, 100) : null);
         const drugBrandsStr = showMoreDrugBrands ? concept.drugBrands.join(', ') : concept.drugBrands.slice(0, 10).join(', ');
-        const tblClass = this.props.domain === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
+        const tblClass = domain === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
         return <React.Fragment>
                <style>{cssStyles}</style>
                <div id={id}>
