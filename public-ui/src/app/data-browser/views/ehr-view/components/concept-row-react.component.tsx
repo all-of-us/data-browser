@@ -146,8 +146,6 @@ interface State {
     showMoreDrugBrands: boolean;
     graphToShow: string;
     showCopyAlert: boolean;
-    alertEventPageX: number;
-    alertEventPageY: number;
 }
 
 export class ConceptRowReactComponent extends React.Component<Props, State> {
@@ -160,9 +158,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
             showConceptChart: props.selectedConcept &&
             props.selectedConcept.conceptId === props.concept.conceptId,
             graphToShow: props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
-            showCopyAlert: false,
-            alertEventPageX: 0,
-            alertEventPageY: 0
+            showCopyAlert: false
         };
     }
 
@@ -240,27 +236,18 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       const {concept} = this.props;
       navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?search=' + concept.conceptId);
       this.setState({
-        showCopyAlert: true,
-        alertEventPageX: e.pageX,
-        alertEventPageY: e.pageY
+        showCopyAlert: true
       });
       setTimeout(() => {
-        this.setState({showCopyAlert: false,
-            alertEventPageY: 0,
-            alertEventPageX: 0});
+        this.setState({showCopyAlert: false});
       }, 400);
     }
 
     render() {
         const {concept, domain, totalResults, maxResults, currentPage, counter, searchTerm, synonymString} = this.props;
-        const {showMoreSynonyms, showMoreDrugBrands, showConceptChart, graphToShow, showCopyAlert,
-        alertEventPageX, alertEventPageY} = this.state;
+        const {showMoreSynonyms, showMoreDrugBrands, showConceptChart, graphToShow, showCopyAlert} = this.state;
         const id = 'c' + concept.conceptId;
         const tabIndex = 0;
-        const alertBoxTop = alertEventPageY + 10;
-        const  alertBoxTopStr = alertBoxTop + 'px';
-        const alertBoxLeft = alertEventPageX - 60;
-        const  alertBoxLeftStr = alertBoxLeft + 'px';
         const tooltipAction = 'Concept synonyms tooltip hover on concept ' + concept.conceptName;
         let conceptIndex = counter + 1;
         if (totalResults > maxResults) {
@@ -287,9 +274,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                  {domain === 'labs & measurements' && concept.measurementConceptInfo &&
                  <div className='body-lead tbl-d'>
                     {concept.measurementConceptInfo.hasValues === 1 ?
-                    <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}}></i>
+                    <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}} />
                     <TooltipReactComponent tooltipKey='valueFilter' label='' searchTerm='' action='' /></span> :
-                    <span className='order-span' style={styles.measurementTypeSpan}><i className='far fa-file-signature'></i>
+                    <span className='order-span' style={styles.measurementTypeSpan}><i className='far fa-file-signature' />
                    <TooltipReactComponent tooltipKey='orderFilter' label='' searchTerm='' action='' /></span>}
                  </div>
                  }
@@ -309,7 +296,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                          </ClrIcon>
                     </button>
                     {showCopyAlert &&
-                        <div style={{position: 'absolute', top: alertBoxTopStr, left: alertBoxLeftStr}}>
+                        <div style={{margin: '20px -60px 0 0', position: 'absolute'}}>
                         <div className='copy-alert'>Link copied to clipboard</div></div>}
                  </div>
                  </div>
