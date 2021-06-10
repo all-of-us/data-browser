@@ -247,7 +247,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       setTimeout(() => {
         this.setState({showCopyAlert: false,
             alertEventPageY: 0,
-            alertEventPageX: 0})
+            alertEventPageX: 0});
       }, 400);
     }
 
@@ -309,7 +309,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                          </ClrIcon>
                     </button>
                     {showCopyAlert &&
-                        <div style={{position: 'absolute', top: alertBoxTopStr, left: alertBoxLeftStr}}><div className='copy-alert'>Link copied to clipboard</div></div>}
+                        <div style={{position: 'absolute', top: alertBoxTopStr, left: alertBoxLeftStr}}>
+                        <div className='copy-alert'>Link copied to clipboard</div></div>}
                  </div>
                  </div>
                  </div>
