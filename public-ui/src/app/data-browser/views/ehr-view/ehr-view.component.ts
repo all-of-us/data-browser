@@ -331,6 +331,39 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       return this.graphButtons;
   }
 
+  public clickAlertBox(message: string, e: any) {
+      const alertBox = document.createElement('div');
+      alertBox.style.position = 'absolute';
+      alertBox.style.top = e.pageY + 10 + 'px';
+      alertBox.style.left = e.pageX - 60 + 'px';
+      alertBox.innerHTML =
+        `<div class="copy-alert">
+        ${message}
+      </div>`;
+      // alertBox.innerText = message;
+      document.body.appendChild(alertBox);
+      setTimeout(() => {
+        document.body.removeChild(alertBox);
+      }, 400);
+  }
+
+  public share(conceptName: string, e) {
+    const selBox = document.createElement('textarea');
+    const copystr = window.location.origin + window.location.pathname +
+      '?search=' + conceptName.replace(/ /g, '%20');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = copystr.toLowerCase();
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.clickAlertBox('Link copied to clipboard', e);
+  }
+
   public checkIfExpanded(concept: any, event: any, sources?: boolean) {
       const classList = event.target.classList;
       for (let i = 0; i < classList.length; i++) {
@@ -401,6 +434,13 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
         }
       }
     }
+
+  public getConceptIndex(i: number) {
+    if (this.totalResults > this.searchRequest.maxResults) {
+        return i + ((this.currentPage - 1) * this.searchRequest.maxResults) + 1;
+    }
+    return i + 1;
+  }
 
   public processSearchResults(results) {
     this.searchResult = results;

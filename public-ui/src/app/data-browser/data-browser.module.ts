@@ -8,6 +8,7 @@ import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measur
 import { SourcesWrapperComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
 import { TopResultsChartWrapperComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
 import { ConceptChartWrapperComponent } from 'app/data-browser/views/concept-chart/concept-chart-react.component';
+import { ConceptRowWrapperComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
 import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
@@ -96,6 +97,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     BioSexWrapperComponent,
     SurveyChartWrapperComponent,
     ConceptChartWrapperComponent,
+    ConceptRowWrapperComponent,
     NoResultSearchWrapperComponent,
     ValueChartWrapperComponent,
     SurveyVersionWrapperComponent,
@@ -136,6 +138,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     TooltipWrapperComponent,
     SurveyChartWrapperComponent,
     ConceptChartWrapperComponent,
+    ConceptRowWrapperComponent,
     NoResultSearchWrapperComponent,
     ValueChartWrapperComponent,
     SurveyVersionWrapperComponent,
