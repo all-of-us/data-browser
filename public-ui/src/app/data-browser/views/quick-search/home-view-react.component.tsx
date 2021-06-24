@@ -160,7 +160,6 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
     }
 
     resultClick(info) {
-        console.log(info, 'infffooo');
         if (info.domainConceptId) {
             switch (info.domainConceptId) {
                 // condition

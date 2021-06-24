@@ -7,6 +7,7 @@ import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-defs';
 import * as React from 'react';
+import ReactPaginate from 'react-paginate';
 
 const styles = reactStyles({
     bodyLead: {
@@ -129,7 +130,7 @@ const cssStyles = `
 
 interface Props {
     concept: any;
-    domain: string;
+    domain: any;
     totalResults: number;
     maxResults: number;
     currentPage: number;
@@ -146,36 +147,49 @@ interface State {
     showMoreDrugBrands: boolean;
     graphToShow: string;
     showCopyAlert: boolean;
+    selectedConcept: any;
 }
 
 export class ConceptRowReactComponent extends React.Component<Props, State> {
     versionAnalysis: any[] = [];
+    myRef: any;
     constructor(props: Props) {
         super(props);
+        this.myRef = React.createRef();
         this.state = {
             showMoreSynonyms: false,
             showMoreDrugBrands: false,
             showConceptChart: props.selectedConcept &&
             props.selectedConcept.conceptId === props.concept.conceptId,
-            graphToShow: props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
-            showCopyAlert: false
+            graphToShow: props.domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
+            showCopyAlert: false,
+            selectedConcept: this.props.selectedConcept
         };
     }
 
+  componentDidMount() {
+    if (this.props.selectedConcept && this.props.concept && this.props.selectedConcept.conceptId === this.props.concept.conceptId) {
+        console.log('*** 0000 **** ((()))');
+        this.myRef.current.scrollIntoView();
+    }
+  }
+
   componentDidUpdate(prevProps: Readonly<Props>) {
     const {selectedConcept, concept, domain} = this.props;
-    if (prevProps.selectedConcept !== selectedConcept && selectedConcept.conceptId ===
-    concept.conceptId) {
+    if (prevProps.selectedConcept !== this.props.selectedConcept && this.props.selectedConcept.conceptId === concept.conceptId) {
+        this.myRef.current.scrollIntoView();
+        var id = '#c' + this.props.selectedConcept.conceptId;
         this.setState({
+            selectedConcept: this.props.selectedConcept,
             showConceptChart: true,
-            graphToShow: domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
+            graphToShow: domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
         });
     }
-    if (selectedConcept && selectedConcept.conceptId !== concept.conceptId &&
-    this.state.showConceptChart) {
-        this.setState({
-            showConceptChart: false
-        });
+    if (this.props.selectedConcept && concept && this.props.selectedConcept.conceptId === concept.conceptId) {
+        console.log('m i here 0000 ???');
+    }
+    if (this.state.selectedConcept && this.state.selectedConcept.conceptId !== concept.conceptId && this.state.showConceptChart) {
+        this.setState({showConceptChart: false});
     }
   }
 
@@ -199,7 +213,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     expandRow() {
         this.setState({
             showConceptChart: !this.state.showConceptChart,
-            graphToShow: this.props.domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
+            graphToShow: this.props.domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
         });
     }
 
@@ -220,13 +234,13 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 this.setState({
                     showConceptChart: !showConceptChart,
                     graphToShow: chartType === 'sources' ? GraphType.Sources :
-                    (domain === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
+                    (domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
                 });
             }
         } else {
             this.setState({
                 showConceptChart: !showConceptChart,
-                graphToShow: chartType === 'sources' ? GraphType.Sources : (domain === 'labs & measurements'
+                graphToShow: chartType === 'sources' ? GraphType.Sources : (domain.name.toLowerCase() === 'labs & measurements'
                 ? GraphType.Values : GraphType.BiologicalSex)
             });
         }
@@ -255,53 +269,51 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         }
         const synonymsStr = showMoreSynonyms ? synonymString : (synonymString ? synonymString.substring(0, 100) : null);
         const drugBrandsStr = showMoreDrugBrands ? concept.drugBrands.join(', ') : concept.drugBrands.slice(0, 10).join(', ');
-        const tblClass = domain === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
+        const tblClass = domain.name.toLowerCase() === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
         return <React.Fragment>
                <style>{cssStyles}</style>
-               <div id={id}>
-                 <div className='tbl-exp-r' onClick={() => this.expandRow()}>
-                 <div className={tblClass} style={domain === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
-                 <div className='body-lead tbl-d' style={styles.bodyLead}>
-                    <span>{conceptIndex}. </span>
-                    <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
-                 </div>
-                 <div className='body-lead tbl-d' style={styles.bodyLead}>
-                    {concept.countValue <= 20 && <span>&le; </span>} {concept.countValue.toLocaleString()}
-                 </div>
-                 <div className='body-lead tbl-d' style={styles.bodyLead}>
-                    {this.participantPercentage(concept.countValue)} %
-                 </div>
-                 {domain === 'labs & measurements' && concept.measurementConceptInfo &&
-                 <div className='body-lead tbl-d'>
-                    {concept.measurementConceptInfo.hasValues === 1 ?
-                    <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}} />
-                    <TooltipReactComponent tooltipKey='valueFilter' label='' searchTerm='' action='' /></span> :
-                    <span className='order-span' style={styles.measurementTypeSpan}><i className='far fa-file-signature' />
-                   <TooltipReactComponent tooltipKey='orderFilter' label='' searchTerm='' action='' /></span>}
-                 </div>
-                 }
-                 <div className='body-lead tbl-d icon-btn-group' style={styles.iconBtnGroup}>
-                    <button className='icon-btn' onClick={(e) => {e.stopPropagation(); this.showChart('non-sources'); }}>
-                        <ClrIcon shape='bar-chart' className={(showConceptChart && graphToShow !== GraphType.Sources) ?
-                        'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
-                    </button>
-                    <button className='icon-btn icon-choice' onClick={(e) => {e.stopPropagation(); this.showChart('sources'); }}>
-                        <div className={(showConceptChart && graphToShow === GraphType.Sources) ? 'source-btn-active' : 'source-btn'}
-                        style={styles.sourceBtnMeta} >
+               <div id={id} ref={this.myRef}>
+                 <div className='tbl-exp-r' onClick={(e) => {e.stopPropagation(); this.expandRow(); }}>
+                    <div className={tblClass} style={domain.name.toLowerCase() === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
+                        <div className='body-lead tbl-d' style={styles.bodyLead}>
+                            <span>{conceptIndex}. </span>
+                            <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
                         </div>
-                    </button>
-                    <button className='icon-btn'>
-                         <ClrIcon shape='share' className='icon-choice' style={{width: 20, height: 20, color: '#2691D0'}}
-                         onClick={(e) => {e.stopPropagation(); this.shareConcept(e); }}>
-                         </ClrIcon>
-                    </button>
-                    {showCopyAlert &&
-                        <div style={{margin: '20px -60px 0 0', position: 'absolute'}}>
-                        <div className='copy-alert'>Link copied to clipboard</div></div>}
-                 </div>
-                 </div>
-                 </div>
-               </div>
+                        <div className='body-lead tbl-d' style={styles.bodyLead}>
+                            {concept.countValue <= 20 && <span>&le; </span>} {concept.countValue.toLocaleString()}
+                        </div>
+                        <div className='body-lead tbl-d' style={styles.bodyLead}>
+                            {this.participantPercentage(concept.countValue)} %
+                        </div>
+                        {domain.name.toLowerCase() === 'labs & measurements' && concept.measurementConceptInfo &&
+                        <div className='body-lead tbl-d'>
+                            {concept.measurementConceptInfo.hasValues === 1 ?
+                            <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}} />
+                            <TooltipReactComponent tooltipKey='valueFilter' label='' searchTerm='' action='' /></span> :
+                            <span className='order-span' style={styles.measurementTypeSpan}><i className='far fa-file-signature' />
+                           <TooltipReactComponent tooltipKey='orderFilter' label='' searchTerm='' action='' /></span>}
+                        </div>
+                        }
+                        <div className='body-lead tbl-d icon-btn-group' style={styles.iconBtnGroup}>
+                        <button className='icon-btn' onClick={(e) => {e.stopPropagation(); this.showChart('non-sources'); }}>
+                            <ClrIcon shape='bar-chart' className={(showConceptChart && graphToShow !== GraphType.Sources) ?
+                            'is-solid icon-choice' : 'icon-choice'} style={{width: 20, height: 20, color: '#2691D0'}}/>
+                        </button>
+                        <button className='icon-btn icon-choice' onClick={(e) => {e.stopPropagation(); this.showChart('sources'); }}>
+                            <div className={(showConceptChart && graphToShow === GraphType.Sources) ? 'source-btn-active' : 'source-btn'}
+                            style={styles.sourceBtnMeta} >
+                            </div>
+                        </button>
+                        <button className='icon-btn'>
+                             <ClrIcon shape='share' className='icon-choice' style={{width: 20, height: 20, color: '#2691D0'}}
+                             onClick={(e) => {e.stopPropagation(); this.shareConcept(e); }}>
+                             </ClrIcon>
+                        </button>
+                        {showCopyAlert &&
+                            <div style={{margin: '20px -60px 0 0', position: 'absolute'}}>
+                            <div className='copy-alert'>Link copied to clipboard</div></div>}
+                    </div>
+                    </div>
                {synonymString &&
                <div className='body-lead aka-layout aka' style={styles.aka}>
                 <div className='aka-text' style={styles.akaText}>
@@ -319,7 +331,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 </a>
                </div>
                }
-               {domain === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
+               {domain.name.toLowerCase() === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
                <div className='body-lead aka-layout aka' style={styles.aka}>
                <div className='aka-text' style={styles.akaText}>
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
@@ -347,6 +359,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 </div>
                </div>
                }
+               </div>
+               </div>
                </React.Fragment>;
     }
 }

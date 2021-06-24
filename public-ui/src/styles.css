@@ -704,6 +704,22 @@ strong {
   color: white !important;
 }
 
+.pagination {
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+}
+
+.pagination li {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.pagination li:not(:first-of-type){
+  color: #262262 !important;
+  margin-left: 2%;
+}
+
 body *:focus {
   outline: 1px solid rgba(38, 145, 208, 0.5);
 }

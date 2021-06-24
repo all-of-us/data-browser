@@ -1,3 +1,5 @@
+<react-ehr-view *ngIf="ehrReact" [domainId]="domainId" [searchTerm]="searchText.value"></react-ehr-view>
+<ng-template #angEhrView>
 <div class="page-header">
   <h2 class="primary-display">{{title}}</h2>
 </div>
@@ -12,7 +14,8 @@
 <app-spinner [loading]="loadingCheck"></app-spinner>
 <div class="results" *ngIf="canDisplayTable()">
   <a class="btn btn-link btn-sm main-search-link" [routerLink]="['']">
-    < Back to main search </a> <div class="result-list">
+    < Back to main search </a>
+  <div class="result-list">
   <div class="db-card">
     <div class="db-card-inner">
       <button (click)="showStatement = true" class="disclaimer-btn">data disclaimer</button>
@@ -36,42 +39,42 @@
       <app-spinner [loading]="loadingCheck"></app-spinner>
       <div class="results-grid">
         <div class="domain-info-layout">
-    <span *ngIf="!displayConceptErrorMessage && canDisplayTable()">
-      <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
-        <h5 id="domain-name" class="primary-display">
-          Showing top {{totalResults}}
-        </h5>
-      </ng-container>
-      <ng-template #show_pages>
-        <h5 id="domain-name" class="primary-display" *ngIf="!displayConceptErrorMessage">
-          Showing top {{((currentPage-1) * searchRequest.maxResults)+1}} -
-          {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
-        </h5>
-      </ng-template>
-      <ng-container *ngIf="!searchText.value; else no_search_term">
-        <h5 id="domain-name-text" class="primary-display">
-          concepts for this domain
-          <app-tooltip-react [tooltipKey]="'matchingConceptsHelpText'"
-                             [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                             [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
-        </h5>
-      </ng-container>
-      <ng-template #no_search_term>
-        <h5 id="domain-name-text" class="primary-display" *ngIf="searchText.value">
-          matching medical concepts
-                    <app-tooltip-react [tooltipKey]="'matchingConceptsHelpText'"
-                                       [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                       [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
-        </h5>
-      </ng-template>
-    </span>
+  <span *ngIf="!displayConceptErrorMessage && canDisplayTable()">
+    <ng-container *ngIf="totalResults <= searchRequest.maxResults; else show_pages">
+      <h5 id="domain-name" class="primary-display">
+        Showing top {{totalResults}}
+      </h5>
+    </ng-container>
+    <ng-template #show_pages>
+      <h5 id="domain-name" class="primary-display" *ngIf="!displayConceptErrorMessage">
+        Showing top {{((currentPage-1) * searchRequest.maxResults)+1}} -
+        {{items.length + (searchRequest.pageNumber * searchRequest.maxResults)}} of {{totalResults}}
+      </h5>
+    </ng-template>
+    <ng-container *ngIf="!searchText.value; else no_search_term">
+      <h5 id="domain-name-text" class="primary-display">
+        concepts for this domain
+        <app-tooltip-react [tooltipKey]="'matchingConceptsHelpText'"
+                           [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                           [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
+      </h5>
+    </ng-container>
+    <ng-template #no_search_term>
+      <h5 id="domain-name-text" class="primary-display" *ngIf="searchText.value">
+        matching medical concepts
+                  <app-tooltip-react [tooltipKey]="'matchingConceptsHelpText'"
+                                     [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                     [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
+      </h5>
+    </ng-template>
+  </span>
           <span *ngIf="displayConceptErrorMessage">
-      <h5 id="domain-name" class="primary-display">Showing top 50 concepts for this domain</h5>
-                      <app-tooltip-react [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
-                                         [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
-    </span>
+    <h5 id="domain-name" class="primary-display">Showing top 50 concepts for this domain</h5>
+                    <app-tooltip-react [tooltipKey]="'matchingConceptsHelpText'" [label]="'EHR Tooltip Hover'"
+                                       [searchTerm]="searchText.value" [action]="'Matching medical concepts tooltip hover'"></app-tooltip-react>
+  </span>
           <h6 *ngIf="searchText.value && !displayConceptErrorMessage && (items && items.length > 0)"
-              class="primary-display medline-link">Interested in general
+              class="medline-link">Interested in general
             health information related to "{{getTerm()}}"?
             <br /><a href="{{medlinePlusLink}}" target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
         </div>
@@ -124,183 +127,186 @@
               </div>
             </div>
           </div>
-          <div class="tbl-body">
-            <div class="tbl-exp-r"
-                 [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
-                 *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
-              <div *ngIf="ehrReact; else angConceptRow">
-                <app-concept-row-react [concept]="r" [totalResults]="totalResults" [maxResults]="searchRequest.maxResults" [currentPage]="currentPage" [counter]="i"
-                [searchTerm]="prevSearchText" [totalParticipants]="totalParticipants" [synonymString]="synonymString[r.conceptId]"
-                [domain]="ehrDomain.name.toLowerCase()" [selectedConcept]="selectedConcept"></app-concept-row-react>
-              </div>
-              <ng-template #angConceptRow>
-              <div [attr.id]="'c'+r.conceptId"  [ngClass]="ehrDomain.domain === 'MEASUREMENT'?'tbl-r_labs':'tbl-r'" (click)="expandRow(r)">
-                <div class="body-lead tbl-d"
-                     *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
-                  <div class="code-tooltip">
-                    <b>Exact Source Match:</b> <br />
-                    <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
-                  </div>
-                </div>
-                <ng-template #code_match_standard>
+          <ng-template [ngIf]="ehrReact">
+            <app-concept-table-react [currentPage]="currentPage"
+                                     [searchTerm]="prevSearchText"
+                                     [totalParticipants]="totalParticipants"
+                                     [domain]="ehrDomain"
+                                     [selectedConcept]="selectedConcept"
+                                     [numPages]="numPages"></app-concept-table-react>
+          </ng-template>
+          <ng-template [ngIf]="!ehrReact">
+            <div class="tbl-body">
+              <div class="tbl-exp-r"
+                   [ngClass]="selectedConcept && selectedConcept.conceptCode == r.conceptCode?'row-selected':''"
+                   *ngFor="let r of standardConcepts.concat(items) | paginate: { itemsPerPage: searchRequest.maxResults, currentPage: currentPage, totalItems: totalResults }, let i = index">
+                <div [attr.id]="'c'+r.conceptId"  [ngClass]="ehrDomain.domain === 'MEASUREMENT'?'tbl-r_labs':'tbl-r'" (click)="expandRow(r)">
                   <div class="body-lead tbl-d"
-                       *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
-                    <div class="code-tooltip"
-                         *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
-                      <b>Standard concept match:</b> <br />
-                      <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
-                    </div>
-                  </div>
-                </ng-template>
-                <ng-template #code_match_not_standard>
-                  <div class="body-lead tbl-d">
+                       *ngIf="searchResult.matchType === 'CONCEPT_CODE' && r.conceptId === searchResult.sourceOfStandardConcepts; else code_match_standard">
                     <div class="code-tooltip">
-                <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
-                  {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
-                </span>
-                      <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
+                      <b>Exact Source Match:</b> <br />
                       <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
                     </div>
                   </div>
-                </ng-template>
-
-                <div class="body-lead tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
-                  &le; {{r.countValue | number}}
-                </div>
-                <ng-template #Non20Counts>
-                  <div class="body-lead tbl-d">
-                    {{r.countValue | number}}
-                  </div>
-                </ng-template>
-                <div class="body-lead tbl-d">
-                  {{participantPercentage(r.countValue) | number}}%
-                </div>
-                <ng-template #noConceptSynonyms>
-                  <div class="body-lead tbl-d"></div>
-                </ng-template>
-                <div class="body-lead tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
-            <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder"
-                  class="vial-span">
-              <i class="fas fa-vial fa-rotate-45"></i>
-                        <app-tooltip-react [tooltipKey]="'valueFilter'"></app-tooltip-react>
-            </span>
-                  <ng-template #labOrder><span class="order-span">
-                <i class="far fa-file-signature"></i>
-                              <app-tooltip-react [tooltipKey]="'orderFilter'"></app-tooltip-react>
-              </span></ng-template>
-                </div>
-                <div class="body-lead tbl-d icon-btn-group">
-                  <button (click)="checkIfExpanded(r,$event);$event.stopPropagation()" class="icon-btn">
-                    <clr-icon
-                            [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && r.graphToShow != 'Sources'?'is-solid':''"
-                            shape="bar-chart" class="icon-choice">
-                    </clr-icon>
-                  </button>
-                  <button (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()" class="icon-btn icon-choice">
-                    <div
-                            [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && r.graphToShow == 'Sources'?'source-btn_active':'source-btn'">
+                  <ng-template #code_match_standard>
+                    <div class="body-lead tbl-d"
+                         *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+                      <div class="code-tooltip"
+                           *ngIf="searchResult.matchType === 'CONCEPT_CODE' && standardConceptIds && standardConceptIds.indexOf(r.conceptId) > -1;else code_match_not_standard">
+                        <b>Standard concept match:</b> <br />
+                        <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
+                      </div>
                     </div>
-                  </button>
-                  <clr-dropdown>
-                    <button clrDropdownTrigger aria-label="share button" (click)="$event.stopPropagation()" class="icon-btn">
-                      <clr-icon shape="share" class="is-solid icon-choice">
+                  </ng-template>
+                  <ng-template #code_match_not_standard>
+                    <div class="body-lead tbl-d">
+                      <div class="code-tooltip">
+              <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
+                {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
+              </span>
+                        <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
+                        <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <div class="body-lead tbl-d" *ngIf="checkCount(r.countValue); else Non20Counts;">
+                    &le; {{r.countValue | number}}
+                  </div>
+                  <ng-template #Non20Counts>
+                    <div class="body-lead tbl-d">
+                      {{r.countValue | number}}
+                    </div>
+                  </ng-template>
+                  <div class="body-lead tbl-d">
+                    {{participantPercentage(r.countValue) | number}}%
+                  </div>
+                  <ng-template #noConceptSynonyms>
+                    <div class="body-lead tbl-d"></div>
+                  </ng-template>
+                  <div class="body-lead tbl-d" *ngIf="ehrDomain.domainConceptId === 21">
+          <span *ngIf="r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues == 1; else labOrder"
+                class="vial-span">
+            <i class="fas fa-vial fa-rotate-45"></i>
+                      <app-tooltip-react [tooltipKey]="'valueFilter'"></app-tooltip-react>
+          </span>
+                    <ng-template #labOrder><span class="order-span">
+              <i class="far fa-file-signature"></i>
+                            <app-tooltip-react [tooltipKey]="'orderFilter'"></app-tooltip-react>
+            </span></ng-template>
+                  </div>
+                  <div class="body-lead tbl-d icon-btn-group">
+                    <button (click)="checkIfExpanded(r,$event);$event.stopPropagation()" class="icon-btn">
+                      <clr-icon
+                              [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && r.graphToShow != 'Sources'?'is-solid':''"
+                              shape="bar-chart" class="icon-choice">
                       </clr-icon>
                     </button>
-                    <clr-dropdown-menu (click)="$event.stopPropagation()" style="width: 10rem; text-align: left;"
-                                       clrPosition="bottom-right" *clrIfOpen>
-                      <button clrDropdownItem (click)="share(r.conceptName,$event);$event.stopPropagation()"
-                              class="btn btn-sm">Copy link to clipboard</button>
-                    </clr-dropdown-menu>
-                  </clr-dropdown>
+                    <button (click)="checkIfExpanded(r,$event,true);$event.stopPropagation()" class="icon-btn icon-choice">
+                      <div
+                              [ngClass]="expanded && selectedConcept && selectedConcept.conceptCode == r.conceptCode && r.graphToShow == 'Sources'?'source-btn_active':'source-btn'">
+                      </div>
+                    </button>
+                    <clr-dropdown>
+                      <button clrDropdownTrigger aria-label="share button" (click)="$event.stopPropagation()" class="icon-btn">
+                        <clr-icon shape="share" class="is-solid icon-choice">
+                        </clr-icon>
+                      </button>
+                      <clr-dropdown-menu (click)="$event.stopPropagation()" style="width: 10rem; text-align: left;"
+                                         clrPosition="bottom-right" *clrIfOpen>
+                        <button clrDropdownItem (click)="share(r.conceptName,$event);$event.stopPropagation()"
+                                class="btn btn-sm">Copy link to clipboard</button>
+                      </clr-dropdown-menu>
+                    </clr-dropdown>
+                  </div>
                 </div>
-              </div>
-              <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)" class="body-lead aka-layout aka">
-                <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
-                     class="aka-text">
-                  <span>Also Known As</span>
-                  <app-tooltip-react [tooltipKey]="'conceptSynonyms'"
-                                     [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                     [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
-                </div>
+                <div *ngIf="synonymString[r.conceptId]" (click)="expandRow(r)" class="body-lead aka-layout aka">
+                  <div *ngIf="r.conceptSynonyms;else noConceptSynonyms" (click)="$event.stopPropagation();toggleSynonyms(r)"
+                       class="aka-text">
+                    <span>Also Known As</span>
+                    <app-tooltip-react [tooltipKey]="'conceptSynonyms'"
+                                       [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                       [action]="'Concept synonyms tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
+                  </div>
 
-                <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
-                                      [searchTerm]="prevSearchText">
-                </app-highlight-react>
-                <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
-                </app-highlight-react>
-                <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"
-                   (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
-                   *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
-                  See
-                  Less
-                </a>
-                <ng-template #seeMore>
+                  <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+                                       *ngIf="!showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId].substring(0,100)"
+                                       [searchTerm]="prevSearchText">
+                  </app-highlight-react>
+                  <app-highlight-react (click)="toggleSynonyms(r);$event.stopPropagation()" class="aka-body"
+                                       *ngIf="showMoreSynonyms[r.conceptId]" [text]="synonymString[r.conceptId]" [searchTerm]="prevSearchText">
+                  </app-highlight-react>
                   <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"
-                     (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
-                     *ngIf="synonymString[r.conceptId].length > 100">
-                    <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
-                  </a>
-                </ng-template>
-              </div>
-              <div *ngIf="drugBrands[r.conceptId] && drugBrands[r.conceptId].length > 0" (click)="expandRow(r)"
-                   class="body-lead aka-layout aka">
-                <div *ngIf="r.drugBrands;else noDrugBrands" (click)="$event.stopPropagation();toggleDrugBrands(r)">
-                  <span class="aka-text drug-brands-meta">Found in these commercially branded products</span>
-                </div>
-                <div>
-                  <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"
-                     (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link brands-link"
-                     *ngIf="drugBrands[r.conceptId].length > 10 && showMoreDrugBrands[r.conceptId]; else seeMore">
-                    See Less <clr-icon shape="caret" dir="down"></clr-icon>
+                     (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-less"
+                     *ngIf="synonymString[r.conceptId].length > 100 && showMoreSynonyms[r.conceptId]; else seeMore">
+                    See
+                    Less
                   </a>
                   <ng-template #seeMore>
-                    <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"
-                       (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link brands-link"
-                       *ngIf="drugBrands[r.conceptId].length > 10">
-                      See More <clr-icon *ngIf="!showMoreDrugBrands[r.conceptId]" shape="caret" dir="right"></clr-icon>
+                    <a tabindex="0" (keydown.enter)="toggleSynonyms(r);$event.stopPropagation()"
+                       (click)="toggleSynonyms(r);$event.stopPropagation()" class="toggle-link see-more"
+                       *ngIf="synonymString[r.conceptId].length > 100">
+                      <clr-icon shape="ellipsis-horizontal"></clr-icon> See More
                     </a>
                   </ng-template>
                 </div>
-                <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="!showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
-                                      [searchTerm]="prevSearchText">
-                </app-highlight-react>
-                <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
-                                      *ngIf="showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].join(', ')"
-                                      [searchTerm]="prevSearchText">
-                </app-highlight-react>
-              </div>
-              <div class="row-expansion"
-                   *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
-                   #chartElement>
-                <div class="graph-menu" *ngIf="!ehrReact">
-                  <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':r.graphToShow === g}" tabindex="0"
-                       (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
-                    <span>{{g}}</span>
-                    <app-tooltip-react [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
-                                       [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
+                <div *ngIf="drugBrands[r.conceptId] && drugBrands[r.conceptId].length > 0" (click)="expandRow(r)"
+                     class="body-lead aka-layout aka">
+                  <div *ngIf="r.drugBrands;else noDrugBrands" (click)="$event.stopPropagation();toggleDrugBrands(r)">
+                    <span class="aka-text drug-brands-meta">Found in these commercially branded products</span>
+                  </div>
+                  <div>
+                    <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"
+                       (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link brands-link"
+                       *ngIf="drugBrands[r.conceptId].length > 10 && showMoreDrugBrands[r.conceptId]; else seeMore">
+                      See Less <clr-icon shape="caret" dir="down"></clr-icon>
+                    </a>
+                    <ng-template #seeMore>
+                      <a tabindex="0" (keydown.enter)="toggleDrugBrands(r);$event.stopPropagation()"
+                         (click)="toggleDrugBrands(r);$event.stopPropagation()" class="toggle-link brands-link"
+                         *ngIf="drugBrands[r.conceptId].length > 10">
+                        See More <clr-icon *ngIf="!showMoreDrugBrands[r.conceptId]" shape="caret" dir="right"></clr-icon>
+                      </a>
+                    </ng-template>
+                  </div>
+                  <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
+                                       *ngIf="!showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].slice(0, 10).join(', ')"
+                                       [searchTerm]="prevSearchText">
+                  </app-highlight-react>
+                  <app-highlight-react (click)="toggleDrugBrands(r);$event.stopPropagation()" class="aka-body"
+                                       *ngIf="showMoreDrugBrands[r.conceptId]" [text]="drugBrands[r.conceptId].join(', ')"
+                                       [searchTerm]="prevSearchText">
+                  </app-highlight-react>
+                </div>
+                <div class="row-expansion"
+                     *ngIf="expanded && searchRequest && selectedConcept && selectedConcept.conceptCode == r.conceptCode"
+                     #chartElement>
+                  <div class="graph-menu" *ngIf="!ehrReact">
+                    <div *ngFor="let g of getGraphButtons(r)" [ngClass]="{'active':r.graphToShow === g}" tabindex="0"
+                         (keydown.enter)="selectGraph(g, r)" (click)="selectGraph(g, r)" class="chart-choice">
+                      <span>{{g}}</span>
+                      <app-tooltip-react [tooltipKey]="g" [label]="'EHR Tooltip Hover'" [searchTerm]="searchText.value"
+                                         [action]="'Concept graph ' + g + ' tooltip hover on concept ' + r.conceptName"></app-tooltip-react>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="r.graphToShow === graphType.Sources && !ehrReact; else NonSourceCharts">
+                    <app-sources [ehrDomain]="ehrDomain"
+                                 [graphToShow]="r.graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r">
+                    </app-sources>
+                  </ng-container>
+                  <ng-template #NonSourceCharts>
+                    <div class="graph-item" *ngIf="!ehrReact">
+                      <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
+                      </app-concept-charts>
+                    </div>
+                  </ng-template>
+                  <div class="concept-chart" *ngIf="ehrReact">
+                    <app-concept-chart-react [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>
                   </div>
                 </div>
-                <ng-container *ngIf="r.graphToShow === graphType.Sources && !ehrReact; else NonSourceCharts">
-                  <app-sources [ehrDomain]="ehrDomain"
-                               [graphToShow]="r.graphToShow" [treeData]="treeData" [treeLoading]="treeLoading" [concept]="r">
-                  </app-sources>
-                </ng-container>
-                <ng-template #NonSourceCharts>
-                  <div class="graph-item" *ngIf="!ehrReact">
-                    <app-concept-charts [concept]="r" [showGraph]="r.graphToShow" [backgroundColor]="'#ECF1F4'">
-                    </app-concept-charts>
-                  </div>
-                </ng-template>
-                <div class="concept-chart" *ngIf="ehrReact">
-                  <app-concept-chart-react [concept]="r" [domain]="ehrDomain.name.toLowerCase()" [searchTerm]="searchText.value"></app-concept-chart-react>
-                </div>
               </div>
-              </ng-template>
             </div>
-          </div>
+          </ng-template>
         </ng-container>
         <div *ngIf="displayConceptErrorMessage" class="col col-xs-7 alert-container error-message">
           <app-error-message-react [dataType]="'data'"></app-error-message-react>
@@ -309,7 +315,7 @@
     </div>
     <ng-container *ngIf="!displayConceptErrorMessage">
       <pagination-controls (pageChange)="currentPage = $event;
-          getNextPage($event)" directionLinks="true" autoHide="true" previousLabel="Previous" nextLabel="Next"
+        getNextPage($event)" directionLinks="true" autoHide="true" previousLabel="Previous" nextLabel="Next"
                            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
                            screenReaderCurrentLabel="You're on page"></pagination-controls>
     </ng-container>
@@ -321,3 +327,4 @@
   <app-domain-results-match [domainMatch]="changeResults" [searchValue]="searchText.value" [measurementTestFilter]="1" [measurementOrderFilter]="1"></app-domain-results-match>
 </div>
 <app-popup-react *ngIf="showStatement" [helpText]="'EhrViewPopUp'" [onClose]="closePopUp"></app-popup-react>
+</ng-template>

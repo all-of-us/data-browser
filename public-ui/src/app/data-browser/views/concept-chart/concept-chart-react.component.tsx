@@ -98,9 +98,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-          graphButtons: this.props.domain === 'labs & measurements' ?
+          graphButtons: this.props.domain.name.toLowerCase() === 'labs & measurements' ?
           ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
-          graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain === 'labs & measurements' ?
+          graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain.name.toLowerCase() === 'labs & measurements' ?
           GraphType.Values : GraphType.BiologicalSex),
           displayGraphErrorMessage: false,
           selectedChartAnalysis: null,
@@ -129,9 +129,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
-                selectedChartAnalysis: domain === 'labs & measurements' ?
+                selectedChartAnalysis: domain.name.toLowerCase() === 'labs & measurements' ?
                 results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
-                measurementGenderCountAnalysis: domain === 'labs & measurements' ?
+                measurementGenderCountAnalysis: domain.name.toLowerCase() === 'labs & measurements' ?
                 results.items[0].measurementGenderCountAnalysis : null,
                 isAnalysisLoaded: true,
                 loading: false
@@ -302,7 +302,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             <style>{cssStyles}</style>
             <div className='graph-menu'>
             {(selectedChartAnalysis || sourceConcepts) && graphButtons.map((g, index) => {
-                return <div onClick={() => this.selectGraphType(g)}
+                return <div onClick={(e) => {e.stopPropagation(); this.selectGraphType(g); }}
                     className={graphToShow === g ? 'active chart-choice' : 'chart-choice'}
                     tabIndex={tabIndex} key={index}>
                     <span>{g}</span>
@@ -336,7 +336,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     <div className='chart' key='values-chart'>
                     {unitNames.map((unit, index) => {
                         return <div key={index} className={selectedUnit === unit ? 'active btn btn-link unit-choice' : 'btn btn-link unit-choice'}
-                            onClick={() => this.showMeasurementGenderHistogram(unit)}>{unit}</div>;
+                            onClick={(e) => {e.stopPropagation(); this.showMeasurementGenderHistogram(unit); }}>{unit}</div>;
                     })
                     }
                     <div>
@@ -344,7 +344,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     noUnitValueButtons.map((noUnit, index) => {
                         return <div key={index} className={selectedMeasurementType === noUnit ? 'active btn btn-link measurement-filter-choice' : 'btn btn-link measurement-filter-choice'}
                         style={styles.measurementFilterChoice}
-                        onClick={() => this.showSpecificMeasurementTypeValues(noUnit)}>{noUnit}</div>;
+                        onClick={(e) => {e.stopPropagation(); this.showSpecificMeasurementTypeValues(noUnit); }}>{noUnit}</div>;
                     })
                     }
                     </div>
@@ -371,7 +371,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                             </div>
                             <SourcesChartReactComponent concepts={sourceConcepts} />
                         </div>
-                        {(domain === 'condition' || domain === 'procedure') &&
+                        {(domain.name.toLowerCase() === 'condition' || domain.name.toLowerCase() === 'procedure') &&
                         <div className='tree-view'>
                         <p>Sources Tree</p>
                         </div>}

@@ -6,6 +6,7 @@ import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/bas
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
+import { PM_CONCEPTS } from 'app/utils/constants';
 import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
@@ -184,7 +185,6 @@ export class PMReactComponent extends React.Component<{}, State> {
 
   getPMData() {
     const {searchText, pmGroups} = this.state;
-    const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
     dataBrowserApi().getConceptAnalysisResults(PM_CONCEPTS).then(
       (result) => {
         const items = result.items;

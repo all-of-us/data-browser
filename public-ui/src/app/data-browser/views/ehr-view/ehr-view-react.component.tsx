@@ -1,0 +1,604 @@
+import { Component, Input } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
+import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
+import { SearchComponent } from 'app/data-browser/search/home-search.component';
+import { ConceptRowReactComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
+import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
+import { TopResultsChartReactComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
+import { reactStyles } from 'app/utils';
+import { PM_CONCEPTS } from 'app/utils/constants';
+import { ClrIcon } from 'app/utils/clr-icon';
+import { ClrAlert } from 'app/utils/clr-alert';
+import { GraphType } from 'app/utils/enum-defs';
+import { globalStyles } from 'app/utils/global-styles';
+import { navigateByUrl, NavStore } from 'app/utils/navigation';
+import { LoadingDots, Spinner } from 'app/utils/spinner';
+import { environment } from 'environments/environment';
+import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
+import _ from 'lodash';
+import * as React from 'react';
+import ReactPaginate from 'react-paginate';
+
+const styles = reactStyles({
+    searchLink: {
+        fontSize: '14px',
+        fontWeight: 500,
+        lineHeight: '14px'
+    },
+    results: {
+        paddingTop: '36px',
+        width: '100%',
+        padding: '18px'
+    },
+});
+
+const cssStyles = `
+.db-alert {
+    font-size: 15px;
+    display: block;
+    color: #262262;
+    background-color: #E1F1F6;
+    border-radius: 1.2em;
+    padding: 0.8em;
+    line-height: 1.5;
+}
+.page-header {
+    padding: 18px
+}
+.medline-link {
+    font-size: 14px;
+    color: #262262;
+    background: #f6f6f8;
+    border-radius: 10px;
+    padding: .5rem 1rem;
+    line-height: 1.5;
+}
+.results-grid {
+    width: 100%;
+    background: white;
+    padding: 18px;
+}
+
+@media (max-width: 900px) {
+    .results-grid {
+        overflow-x: scroll;
+    }
+}
+
+.domain-info-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1rem 0;
+}
+
+.primary-display
+{
+  font-size: 20px;
+  font-stretch: normal;
+  line-height: 18px;
+}
+.search-bar-container {
+    padding: 18px;
+}
+.disclaimer-btn {
+    font-size:.7em;
+    padding: .5em 1em;
+}
+.disclaimer-btn:hover {
+  background: #262262;
+  color: #fff;
+}
+.toggle-link {
+  cursor: pointer;
+}
+.secondary-display,
+h2 {
+  font-family: Arial, sans-serif;
+  font-weight: 200;
+  font-style: normal;
+  font-size: 27px;
+  font-stretch: normal;
+  line-height: 1.47em;
+  letter-spacing: normal;
+  text-align: left;
+}
+h5.secondary-display {
+    font-size: 20px;
+    font-family: GothamBook, Arial, sans-serif;
+    font-weight: 100;
+}
+h5.secondary-display {
+    padding: 18px;
+    font-size: 1.3em;
+}
+.toggle-icon {
+    display: inline;
+    margin-left: .2em;
+}
+.domain-title {
+  font-family: Arial, sans-serif;
+  font-size: 36.8px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 45.36px;
+  letter-spacing: normal;
+  text-align: left;
+}
+.tbl-head .tbl-d::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    background: url('/assets/icons/divider.svg');
+    background-repeat: no-repeat;
+    left: -10px;
+    padding-right: 1rem;
+}
+
+.tbl-head .tbl-d:first-of-type::before {
+    content: none;
+}
+
+.tbl-r.tbl-head {
+    background: #f6f6f8;
+    border: 1px solid #CCCCCC;
+    padding: .5rem 0;
+    border-radius: 3px 3px 0 0;
+    position: sticky;
+    top:0px;
+    z-index:100;
+}
+
+.tbl-exp-r:first-of-type {
+    border-top: none;
+}
+
+.tbl-r {
+    display: grid;
+    grid-template-columns: 30% 25% 20% 1fr;
+    text-align: left;
+    min-width: 810px;
+}
+
+.tbl-r_labs {
+    display: grid;
+    grid-template-columns: 30% 25% 20% 10% 1fr;
+    text-align: left;
+    min-width: 810px;
+}
+
+.tbl-r_labs .tbl-d:nth-of-type(4) {
+    text-align: center;
+}
+
+.tbl-d {
+    padding: 0 .5rem;
+    font-size: .8em;
+    position: relative;
+}
+
+.row-expansion {
+    width: 100%;
+    text-align: center;
+    padding-top: 9px;
+    background: #f6f6f8;
+    border-top: none;
+    padding-bottom: 27px;
+}
+
+.tbl-r-state {
+    background: #f6f6f8;
+}
+
+.tbl-r-expanded {
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+.tbl-exp-r {
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    cursor: pointer;
+    transition: .2s background ease-out;
+    padding: 9px;
+    padding-top:20px;
+    min-width: 810px;
+}
+
+.tbl-exp-r *.tbl-exp-r {
+    border-left: none;
+    border-right: none;
+    padding: 0.5rem 0;
+    min-width: auto;
+}
+
+.tbl-exp-r:last-of-type {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.tbl-exp-r:hover {
+    background: #f6f6f8;
+    transition: .1s background ease-in;
+}
+
+.tbl-r {
+    border: none;
+}
+
+.clr-checkbox-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.checkbox-input {
+    margin-left: 0.5em;
+    margin-right: 1em;
+}
+.checkbox-label {
+    margin-left: 0.3em;
+}
+`;
+
+interface Props {
+    domainId: string;
+    searchTerm: string;
+}
+
+interface State {
+    domain: any;
+    totalParticipants: number;
+    title: string;
+    subTitle: string;
+    searchWord: string;
+    showStatement: boolean;
+    standardConcepts: any;
+    showTopConcepts: boolean;
+    concepts: any;
+    top10Results: any;
+    domainTotalsLoading: boolean;
+    top10ResultsLoading: boolean;
+    selectedConcept: any;
+    numPages: number;
+    totalResults: number;
+    currentPage: number;
+    medlinePlusLink: string;
+    medlineTerm: string;
+    selectedMeasurementTypeFilter: boolean;
+    measurementTestFilter: boolean;
+    measurementOrderFilter: boolean;
+}
+
+export class EhrViewReactComponent extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            domain: null,
+            totalParticipants: 0,
+            title: '',
+            subTitle: '',
+            searchWord: this.props.searchTerm,
+            showStatement: false,
+            top10Results: null,
+            selectedConcept: null,
+            numPages: null,
+            totalResults: null,
+            concepts: [],
+            standardConcepts: [],
+            currentPage: 1,
+            domainTotalsLoading: true,
+            top10ResultsLoading: true,
+            medlinePlusLink: null,
+            medlineTerm: null,
+            selectedMeasurementTypeFilter: false,
+            measurementTestFilter: true,
+            measurementOrderFilter: true,
+            showTopConcepts: true
+        };
+   }
+
+   domainTotals = _.debounce(() => {
+             this.getDomainTotals();
+             this.getTopConcepts();
+           }, 1000);
+
+   componentDidMount() {
+        this.getDomainTotals();
+   }
+
+   getDomainTotals() {
+    dataBrowserApi().getDomainTotals(this.state.searchWord, this.state.measurementTestFilter ? 1 : 0, this.state.measurementOrderFilter ? 1 : 0)
+                .then(results => {
+                    results.domainInfos.forEach(domain => {
+                        const thisDomain = Domain[domain.domain];
+                        if (thisDomain && thisDomain.toLowerCase() === this.props.domainId) {
+                            let ehrDomain = domain;
+                            let subTitle = 'Keyword: ' + this.props.searchTerm;
+                            let title = ehrDomain.name;
+                            let totalParticipants = ehrDomain.participantCount;
+                            let numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
+                            this.setState({
+                                domain: ehrDomain,
+                                title: title,
+                                subTitle: subTitle,
+                                totalParticipants: totalParticipants,
+                                numPages: numPages,
+                                totalResults: ehrDomain.standardConceptCount,
+                                domainTotalsLoading: false
+                            }, () => {
+                                this.getTopConcepts();
+                            });
+                        }
+                });
+                }).catch(e => {
+                        console.log(e, 'error');
+                        this.setState({top10ResultsLoading: false});
+           });
+   }
+
+   processSearchResults(results) {
+        results.items.filter(
+            x => PM_CONCEPTS.indexOf(x.conceptId) === -1);
+        results.items.sort((a, b) => {a.countValue < b.countValue});
+        var medlineTerm = this.state.searchWord ? this.state.searchWord : '';
+        if (results.matchType === MatchType.ID || results.matchType === MatchType.CODE) {
+              medlineTerm = results.matchedConceptName;
+        }
+        var medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
+            'medlineplus&v%3Asources=medlineplus-bundle&query='
+            + medlineTerm;
+        for (let concept of results.items) {
+            concept['synonymString'] = concept.conceptSynonyms.join(', ');
+            concept['drugBrands'] = concept.drugBrands;
+            if (this.state.domain.domain.toLowerCase() === 'measurement') {
+                concept.graphToShow = GraphType.Values;
+            } else {
+                concept.graphToShow = GraphType.BiologicalSex;
+            }
+        }
+        let standardConcepts = [];
+        if (results.standardConcepts) {
+            standardConcepts = results.standardConcepts;
+        }
+        let top10Results = this.state.top10Results;
+        if (this.state.currentPage === 1) {
+            top10Results = results.items.slice(0, 10);
+        }
+        this.setState({concepts: results.items, standardConcepts: standardConcepts, top10Results: top10Results, top10ResultsLoading: false, medlineTerm: medlineTerm, medlinePlusLink: medlinePlusLink});
+  }
+
+
+   getTopConcepts() {
+        var searchRequest = {
+            query: this.state.searchWord,
+            domain: this.state.domain.domain.toUpperCase(),
+            standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+            maxResults: 50,
+            minCount: 1,
+            pageNumber: 0,
+            measurementTests: this.state.measurementTestFilter ? 1 : 0,
+            measurementOrders: this.state.measurementOrderFilter ? 1 : 0
+        };
+        this.fetchConcepts(searchRequest);
+   }
+
+   fetchConcepts(searchRequest: any) {
+           dataBrowserApi().searchConcepts(searchRequest)
+               .then(results => {
+                    this.processSearchResults(results);
+               }).catch(e => {
+                       console.log(e, 'error');
+                       this.setState({top10ResultsLoading: false});
+          });
+   }
+
+    handleChange(val) {
+        this.setState({ searchWord: val, domainTotalsLoading: true, top10ResultsLoading: true, currentPage: 1, showTopConcepts: true});
+        this.domainTotals(val);
+    }
+
+    backToMain() {
+        navigateByUrl('');
+    }
+
+    selectConcept(concept: any) {
+        console.log('am i here selecting concept ????', this.state.showTopConcepts, '*** current page *** ', this.state.currentPage);
+        if (concept && this.state.currentPage > 1) {
+                this.setState({selectedConcept: concept, currentPage: 1}, () => {this.getTopConcepts()});
+        } else {
+                this.setState({selectedConcept: concept});
+        }
+    }
+
+    getTopResultsSize() {
+        if (this.state.top10Results.length < 10 && this.state.top10Results.length > 1) {
+            return this.state.top10Results.length + ' ' + this.state.title;
+        } else if (this.state.top10Results.length === 1) {
+            return this.state.top10Results.length + ' ' + this.state.title.slice(0, -1);
+        }
+        return 10 + ' ' + this.state.title;
+    }
+
+    handlePageClick = (data) => {
+        var searchRequest = {
+            query: this.state.searchWord,
+            domain: this.state.domain.domain.toUpperCase(),
+            standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+            maxResults: 50,
+            minCount: 1,
+            pageNumber: data.selected,
+            measurementTests: this.state.measurementTestFilter ? 1 : 0,
+            measurementOrders: this.state.measurementOrderFilter ? 1 : 0
+        };
+        let showTopConceptsFlag = true;
+        if (data.selected > 1) {
+            showTopConceptsFlag = false;
+        }
+        this.setState({currentPage: data.selected + 1, showTopConcepts: showTopConceptsFlag});
+        window.scrollTo(0, 0);
+        this.fetchConcepts(searchRequest);
+    };
+
+   render() {
+    const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept, numPages, domainTotalsLoading,
+    top10ResultsLoading, medlinePlusLink, medlineTerm, concepts, standardConcepts, selectedMeasurementTypeFilter, currentPage,
+    measurementTestFilter, measurementOrderFilter} = this.state;
+    const maxResults = 50;
+    const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
+    const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
+    return <React.Fragment>
+        <style>{cssStyles}</style>
+        <div className='page-header'>
+            {title && <h2 className='domain-title'>{title}</h2> }
+        </div>
+        <div className='search-bar-container'>
+            <SearchComponent value={searchWord || ''} searchTitle=''
+                            onChange={(val) => this.handleChange(val)}
+                            onClear={() => this.handleChange('')} />
+        </div>
+        {(domainTotalsLoading && top10ResultsLoading) && <Spinner />}
+        <div className='results' style={styles.results}>
+            <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
+                    &lt; Back to main search </a>
+           <div className='result-list'>
+            <div className='db-card'>
+                <div className='db-card-inner'>
+                     <button className='disclaimer-btn' onClick={() => this.setState({showStatement: true})}>data disclaimer</button>
+                     <section>
+                        <h5 id='domain-summary' className='secondary-display'>
+                            {!(top10ResultsLoading) &&
+                            <React.Fragment>
+                            <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>Top {this.getTopResultsSize()} by Descending Participant Counts
+                                <div className='toggle-icon'>{this.state.showTopConcepts ? <ClrIcon shape="caret" dir="down" style={{width: 20, height: 20}} /> :
+                                <ClrIcon shape="caret" dir="right" style={{width: 20, height: 20}} /> }</div>
+                            </div>
+                            {this.state.showTopConcepts && this.state.top10Results && this.state.top10Results.length > 0 && <TopResultsChartReactComponent concepts={this.state.top10Results} onClick={(e) => this.selectConcept(e)}/>}
+                            </React.Fragment>
+                            }
+                       </h5>
+                     </section>
+                     {domain && !(domainTotalsLoading || top10ResultsLoading) &&
+                     <section>
+                     <div className='results-grid'>
+                        {!domainTotalsLoading &&
+                        <React.Fragment>
+                        <div className='domain-info-layout'>
+                                        <span>
+                                            {(totalResults <= 50) ? <h5 id='domain-name' className='primary-display'>Showing top {totalResults}
+                                            {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> : <React.Fragment> concepts for this domain</React.Fragment>}
+                                            <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
+                                                label='EHR Tooltip Hover' searchTerm={searchWord}
+                                                action='Matching medical concepts tooltip hover' />
+                                            </h5> :
+                                            <h5 id='domain-name' className='primary-display'>Showing top {((currentPage-1) * 50)+1} - {concepts.length + ((currentPage-1) * 50)} of {totalResults}
+                                            {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> : <React.Fragment> concepts for this domain</React.Fragment>}
+                                            <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
+                                                label='EHR Tooltip Hover' searchTerm={searchWord}
+                                                action='Matching medical concepts tooltip hover' /> </h5> }
+                                        </span>
+                                        {searchWord &&
+                                        <h6 className='medline-link'>Interested in general health information related to "{medlineTerm}"?
+                                                    <br /><a href={medlinePlusLink} target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
+                                                    }
+                       </div>
+                       {(concepts.length === 1 && concepts[0].standardConcept != 'S' && standardConcepts.length > 0) &&
+                       <div className='db-alert'>
+                        Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} "{concepts[0].conceptName}"
+                            maps to Standard Vocabulary {standardConcepts[0].vocabularyId}
+                            {standardConcepts[0].conceptCode}.
+                            Standard vocabularies capture data across a variety of source vocabularies.
+                       </div>
+                       }
+                       <div className='tbl-r tbl-head'>
+                        <div className='tbl-d body-lead'> {domain.name}
+                            <TooltipReactComponent tooltipKey={domain.domain.toLowerCase()}
+                                                             label="EHR Tooltip Hover" searchTerm={searchWord}
+                                                             action="Domain name tooltip hover in matching concepts table" />
+                        </div>
+                        <div className='tbl-d body-lead'> Participants of {totalParticipants.toLocaleString()}
+                                      <TooltipReactComponent tooltipKey="participantCountHelpText" label="EHR Tooltip Hover"
+                                                         searchTerm={searchWord} action="Participant count tooltip hover" />
+                        </div>
+                        <div className='tbl-d body-lead'> % of {totalParticipants.toLocaleString()}
+                          <TooltipReactComponent tooltipKey="percentageOfParticipants"
+                                             label="EHR Tooltip Hover" searchTerm={searchWord}
+                                             action="Percentage of participant count tooltip hover" />
+                        </div>
+                        {(domain.domain.toLowerCase() === 'measurement') &&
+                        <div className='tbl-d body-lead info-text'>
+                          Data Type
+                          <div className={dropdownClass}>
+                            <button className='dropdown-toggle'>
+                              <ClrIcon shape='filter-grid' className={filterIconClass} onClick={() => this.setState({selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter})} />
+                            </button>
+                            <div className='dropdown-menu'>
+                                <div className='clr-checkbox-wrapper'>
+                                    <div className='checkbox-input'>
+                                        <input type='checkbox' id='checkbox1' className='clr-checkbox' onClick={() => this.setState({measurementTestFilter: !measurementTestFilter}, () => {this.getDomainTotals(); this.getTopConcepts();} )} defaultChecked={this.state.measurementTestFilter}/>
+                                        <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45' style={{'transform': 'rotate(315deg)'}}></i> Tests</label>
+                                    </div>
+                               </div>
+                               <div className='clr-checkbox-wrapper'>
+                                    <div className='checkbox-input'>
+                                        <input type='checkbox' id='checkbox2' className='clr-checkbox' onClick={() => this.setState({measurementOrderFilter: !measurementOrderFilter}, () => {this.getDomainTotals(); this.getTopConcepts();} )} defaultChecked={this.state.measurementOrderFilter}/>
+                                        <label htmlFor='checkbox2' className='checkbox-label'><i className='far fa-file-signature'></i> Orders</label>
+                                    </div>
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        }
+                        </div>
+                        {concepts && concepts.length > 0 &&
+                        <div className='tbl-body'>
+                        {concepts.map((concept, index) => {
+                                    return <ConceptRowReactComponent key={concept.conceptId} concept={concept} domain={this.state.domain} totalResults={this.state.totalResults}
+                                    maxResults={maxResults} currentPage={this.state.currentPage} counter={index} searchTerm={this.state.searchWord}
+                                    totalParticipants={this.state.totalParticipants}
+                                    selectedConcept={this.state.selectedConcept} synonymString={concept.conceptSynonyms.join(', ')}/>
+                                })}
+                        </div>
+                        }
+                       </React.Fragment>
+                       }
+                     </div>
+                     </section>}
+                </div>
+                    {!(domainTotalsLoading || top10ResultsLoading) &&
+                     <ReactPaginate
+                              previousLabel={'Previous'}
+                              nextLabel={'Next'}
+                              breakLabel={'...'}
+                              breakClassName={'break-me'}
+                              pageCount={this.state.numPages}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={5}
+                              onPageChange={this.handlePageClick}
+                              containerClassName={'pagination'}
+                              activeClassName={'active'}
+                            /> }
+            </div>
+           </div>
+        </div>
+        {showStatement && <PopUpReactComponent helpText='EhrViewPopUp' onClose={() => this.setState({showStatement: false})} />}
+    </React.Fragment>;
+   }
+}
+
+@Component({
+    // tslint:disable-next-line: component-selector
+    selector: 'react-ehr-view',
+    template: `<span #root></span>`
+})
+
+export class EhrViewWrapperComponent extends BaseReactWrapper {
+    @Input() domainId: string;
+    @Input() searchTerm: string;
+
+    constructor() {
+        super(EhrViewReactComponent, ['domainId', 'searchTerm']);
+    }
+}
