@@ -552,12 +552,15 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                         <input type='checkbox' id='checkbox1' className='clr-checkbox' onClick={() =>
                                         this.setState({measurementTestFilter: !measurementTestFilter},
                                         () => {this.getDomainTotals(); this.getTopConcepts(); } )} defaultChecked={measurementTestFilter}/>
-                                        <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45' style={{'transform': 'rotate(315deg)'}}></i> Tests</label>
+                                        <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45'
+                                        style={{'transform': 'rotate(315deg)'}}></i> Tests</label>
                                     </div>
                                </div>
                                <div className='clr-checkbox-wrapper'>
                                     <div className='checkbox-input'>
-                                        <input type='checkbox' id='checkbox2' className='clr-checkbox' onClick={() => this.setState({measurementOrderFilter: !measurementOrderFilter}, () => {this.getDomainTotals(); this.getTopConcepts();} )} defaultChecked={measurementOrderFilter}/>
+                                        <input type='checkbox' id='checkbox2' className='clr-checkbox' onClick={() =>
+                                        this.setState({measurementOrderFilter: !measurementOrderFilter},
+                                        () => {this.getDomainTotals(); this.getTopConcepts(); } )} defaultChecked={measurementOrderFilter}/>
                                         <label htmlFor='checkbox2' className='checkbox-label'><i className='far fa-file-signature'></i> Orders</label>
                                     </div>
                                </div>
@@ -572,7 +575,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                     return <ConceptRowReactComponent key={concept.conceptId} concept={concept} domain={domain} totalResults={totalResults}
                                     maxResults={maxResults} currentPage={currentPage} counter={index} searchTerm={searchWord}
                                     totalParticipants={totalParticipants}
-                                    selectedConcept={selectedConcept} synonymString={concept.conceptSynonyms.join(', ')}/>
+                                    selectedConcept={selectedConcept} synonymString={concept.conceptSynonyms.join(', ')}/>;
                                 });}
                         </div>
                         }
