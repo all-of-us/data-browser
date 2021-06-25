@@ -12,8 +12,8 @@ import { PM_CONCEPTS } from 'app/utils/constants';
 import { GraphType } from 'app/utils/enum-defs';
 import { navigateByUrl } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
-import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
 import _ from 'lodash';
+import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 
@@ -28,36 +28,35 @@ const styles = reactStyles({
         width: '100%',
         padding: '18px'
     },
+    dbAlert: {
+        fontSize: '15px',
+        display: 'block',
+        color: '#262262',
+        backgroundColor: '#E1F1F6',
+        borderRadius: '1.2em',
+        padding: '0.8em',
+        lineHeight: '1.5',
+        margin: '1em'
+    },
+    pageHeader: {
+        padding: '18px'
+    },
+    medlineLink: {
+        fontSize: '14px',
+        color: '#262262',
+        background: '#f6f6f8',
+        borderRadius: '10px',
+        padding: '.5rem 1rem',
+        lineHeight: '1.5'
+    },
+    resultsGrid: {
+        width: '100%',
+        background: 'white',
+        padding: '18px'
+    }
 });
 
 const cssStyles = `
-.db-alert {
-    font-size: 15px;
-    display: block;
-    color: #262262;
-    background-color: #E1F1F6;
-    border-radius: 1.2em;
-    padding: 0.8em;
-    line-height: 1.5;
-    margin: 1em;
-}
-.page-header {
-    padding: 18px
-}
-.medline-link {
-    font-size: 14px;
-    color: #262262;
-    background: #f6f6f8;
-    border-radius: 10px;
-    padding: .5rem 1rem;
-    line-height: 1.5;
-}
-.results-grid {
-    width: 100%;
-    background: white;
-    padding: 18px;
-}
-
 @media (max-width: 900px) {
     .results-grid {
         overflow-x: scroll;
@@ -343,14 +342,14 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         results.items.filter(
             x => PM_CONCEPTS.indexOf(x.conceptId) === -1);
         results.items.sort((a, b) => {a.countValue < b.countValue});
-        var medlineTerm = searchWord ? searchWord : '';
+        let medlineTerm = searchWord ? searchWord : '';
         if (results.matchType === MatchType.ID || results.matchType === MatchType.CODE) {
               medlineTerm = results.matchedConceptName;
         }
-        var medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
+        const medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
             'medlineplus&v%3Asources=medlineplus-bundle&query='
             + medlineTerm;
-        for (let concept of results.items) {
+        for (const concept of results.items) {
             concept['synonymString'] = concept.conceptSynonyms.join(', ');
             concept['drugBrands'] = concept.drugBrands;
             if (domain.domain.toLowerCase() === 'measurement') {
@@ -444,15 +443,16 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     };
 
    render() {
-    const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept, numPages, domainTotalsLoading,
-    top10ResultsLoading, medlinePlusLink, medlineTerm, concepts, standardConcepts, selectedMeasurementTypeFilter, currentPage,
+    const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept,
+    numPages, domainTotalsLoading, top10ResultsLoading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
+    selectedMeasurementTypeFilter, currentPage,
     measurementTestFilter, measurementOrderFilter, top10Results} = this.state;
     const maxResults = 50;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
     const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
     return <React.Fragment>
         <style>{cssStyles}</style>
-        <div className='page-header'>
+        <div className='page-header' style={styles.pageHeader}>
             {title && <h2 className='domain-title'>{title}</h2> }
         </div>
         <div className='search-bar-container'>
@@ -472,8 +472,10 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                         <h5 id='domain-summary' className='secondary-display'>
                             {!(top10ResultsLoading) &&
                             <React.Fragment>
-                            <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>Top {this.getTopResultsSize()} by Descending Participant Counts
-                                <div className='toggle-icon'>{showTopConcepts ? <ClrIcon shape='caret' dir='down' style={{width: 20, height: 20}} /> :
+                            <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>
+                            Top {this.getTopResultsSize()} by Descending Participant Counts
+                                <div className='toggle-icon'>{showTopConcepts ? <ClrIcon shape='caret' dir='down'
+                                style={{width: 20, height: 20}} /> :
                                 <ClrIcon shape='caret' dir='right' style={{width: 20, height: 20}} /> }</div>
                             </div>
                             {showTopConcepts && top10Results && top10Results.length > 0 &&
@@ -484,7 +486,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                      </section>
                      {domain && !(domainTotalsLoading || top10ResultsLoading) &&
                      <section>
-                     <div className='results-grid'>
+                     <div className='results-grid' style={styles.resultsGrid}>
                         {!domainTotalsLoading &&
                         <React.Fragment>
                         <div className='domain-info-layout'>
@@ -502,12 +504,12 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                 action='Matching medical concepts tooltip hover' /> </h5> }
                                         </span>
                                         {searchWord &&
-                                        <h6 className='medline-link'>Interested in general health information related to "{medlineTerm}"?
+                                        <h6 className='medline-link' style={styles.medlineLink}>Interested in general health information related to "{medlineTerm}"?
                                                     <br /><a href={medlinePlusLink} target='_blank' rel='noopener noreferrer'>Search MedlinePlus</a></h6>
                                                     }
                        </div>
                        {(concepts.length === 1 && concepts[0].standardConcept !== 'S' && standardConcepts.length > 0) &&
-                       <div className='db-alert'>
+                       <div className='db-alert' style={styles.dbAlert}>
                         Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} '{concepts[0].conceptName}'
                             maps to Standard Vocabulary {standardConcepts[0].vocabularyId}
                             {standardConcepts[0].conceptCode} '{standardConcepts[0].conceptName}'.
