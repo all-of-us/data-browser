@@ -41,6 +41,7 @@ const cssStyles = `
     border-radius: 1.2em;
     padding: 0.8em;
     line-height: 1.5;
+    margin: 1em;
 }
 .page-header {
     padding: 18px
@@ -273,6 +274,7 @@ interface State {
 export class EhrViewReactComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        // TODO add url params and change them based on search value
         this.state = {
             domain: null,
             totalParticipants: 0,
@@ -320,7 +322,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             let totalParticipants = ehrDomain.participantCount;
                             let numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
                             this.setState({
-                                domain: ehrDomain,
+                                domain: domain,
                                 title: title,
                                 subTitle: subTitle,
                                 totalParticipants: totalParticipants,
@@ -510,7 +512,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                        <div className='db-alert'>
                         Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} "{concepts[0].conceptName}"
                             maps to Standard Vocabulary {standardConcepts[0].vocabularyId}
-                            {standardConcepts[0].conceptCode}.
+                            {standardConcepts[0].conceptCode} "{standardConcepts[0].conceptName}".
                             Standard vocabularies capture data across a variety of source vocabularies.
                        </div>
                        }
@@ -556,7 +558,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                         </div>
                         {concepts && concepts.length > 0 &&
                         <div className='tbl-body'>
-                        {concepts.map((concept, index) => {
+                        {standardConcepts.concat(concepts).map((concept, index) => {
                                     return <ConceptRowReactComponent key={concept.conceptId} concept={concept} domain={domain} totalResults={totalResults}
                                     maxResults={maxResults} currentPage={currentPage} counter={index} searchTerm={searchWord}
                                     totalParticipants={totalParticipants}
@@ -569,7 +571,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                      </div>
                      </section>}
                 </div>
-                    {!(domainTotalsLoading || top10ResultsLoading) &&
+                    {(!(domainTotalsLoading || top10ResultsLoading) && concepts && concepts.length > 50) &&
                      <ReactPaginate
                               previousLabel={'Previous'}
                               nextLabel={'Next'}
