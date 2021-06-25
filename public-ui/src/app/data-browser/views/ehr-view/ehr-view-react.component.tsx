@@ -10,10 +10,8 @@ import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { PM_CONCEPTS } from 'app/utils/constants';
 import { GraphType } from 'app/utils/enum-defs';
-import { globalStyles } from 'app/utils/global-styles';
 import { navigateByUrl } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
-import { environment } from 'environments/environment';
 import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
 import _ from 'lodash';
 import * as React from 'react';
@@ -316,11 +314,11 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                     results.domainInfos.forEach(domain => {
                         const thisDomain = Domain[domain.domain];
                         if (thisDomain && thisDomain.toLowerCase() === this.props.domainId) {
-                            let ehrDomain = domain;
-                            let subTitle = 'Keyword: ' + this.props.searchTerm;
-                            let title = ehrDomain.name;
-                            let totalParticipants = ehrDomain.participantCount;
-                            let numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
+                            const ehrDomain = domain;
+                            const subTitle = 'Keyword: ' + this.props.searchTerm;
+                            const title = ehrDomain.name;
+                            const totalParticipants = ehrDomain.participantCount;
+                            const numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
                             this.setState({
                                 domain: domain,
                                 title: title,
@@ -475,8 +473,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             {!(top10ResultsLoading) &&
                             <React.Fragment>
                             <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>Top {this.getTopResultsSize()} by Descending Participant Counts
-                                <div className='toggle-icon'>{showTopConcepts ? <ClrIcon shape="caret" dir="down" style={{width: 20, height: 20}} /> :
-                                <ClrIcon shape="caret" dir="right" style={{width: 20, height: 20}} /> }</div>
+                                <div className='toggle-icon'>{showTopConcepts ? <ClrIcon shape='caret' dir='down' style={{width: 20, height: 20}} /> :
+                                <ClrIcon shape='caret' dir='right' style={{width: 20, height: 20}} /> }</div>
                             </div>
                             {showTopConcepts && top10Results && top10Results.length > 0 &&
                             <TopResultsChartReactComponent concepts={top10Results} onClick={(e) => this.selectConcept(e)}/>}
@@ -505,31 +503,31 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                         </span>
                                         {searchWord &&
                                         <h6 className='medline-link'>Interested in general health information related to "{medlineTerm}"?
-                                                    <br /><a href={medlinePlusLink} target="_blank" rel="noopener noreferrer">Search MedlinePlus</a></h6>
+                                                    <br /><a href={medlinePlusLink} target='_blank' rel='noopener noreferrer'>Search MedlinePlus</a></h6>
                                                     }
                        </div>
-                       {(concepts.length === 1 && concepts[0].standardConcept != 'S' && standardConcepts.length > 0) &&
+                       {(concepts.length === 1 && concepts[0].standardConcept !== 'S' && standardConcepts.length > 0) &&
                        <div className='db-alert'>
-                        Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} "{concepts[0].conceptName}"
+                        Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} '{concepts[0].conceptName}'
                             maps to Standard Vocabulary {standardConcepts[0].vocabularyId}
-                            {standardConcepts[0].conceptCode} "{standardConcepts[0].conceptName}".
+                            {standardConcepts[0].conceptCode} '{standardConcepts[0].conceptName}'.
                             Standard vocabularies capture data across a variety of source vocabularies.
                        </div>
                        }
                        <div className='tbl-r tbl-head'>
                         <div className='tbl-d body-lead'> {domain.name}
                             <TooltipReactComponent tooltipKey={domain.domain.toLowerCase()}
-                                                             label="EHR Tooltip Hover" searchTerm={searchWord}
-                                                             action="Domain name tooltip hover in matching concepts table" />
+                                                             label='EHR Tooltip Hover' searchTerm={searchWord}
+                                                             action='Domain name tooltip hover in matching concepts table' />
                         </div>
                         <div className='tbl-d body-lead'> Participants of {totalParticipants.toLocaleString()}
-                                      <TooltipReactComponent tooltipKey="participantCountHelpText" label="EHR Tooltip Hover"
-                                                         searchTerm={searchWord} action="Participant count tooltip hover" />
+                                      <TooltipReactComponent tooltipKey='participantCountHelpText' label='EHR Tooltip Hover'
+                                                         searchTerm={searchWord} action='Participant count tooltip hover' />
                         </div>
                         <div className='tbl-d body-lead'> % of {totalParticipants.toLocaleString()}
-                          <TooltipReactComponent tooltipKey="percentageOfParticipants"
-                                             label="EHR Tooltip Hover" searchTerm={searchWord}
-                                             action="Percentage of participant count tooltip hover" />
+                          <TooltipReactComponent tooltipKey='percentageOfParticipants'
+                                             label='EHR Tooltip Hover' searchTerm={searchWord}
+                                             action='Percentage of participant count tooltip hover' />
                         </div>
                         {(domain.domain.toLowerCase() === 'measurement') &&
                         <div className='tbl-d body-lead info-text'>
