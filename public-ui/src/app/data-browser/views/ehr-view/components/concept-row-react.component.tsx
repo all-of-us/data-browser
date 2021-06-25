@@ -308,7 +308,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                                         tooltipKey='conceptSynonyms' />
                 </div>
                 <HighlightReactComponent searchTerm={searchTerm} text={synonymsStr} />
-                <a tabIndex={tabIndex} className='toggle-link' onClick={() => this.setState({showMoreSynonyms: !this.state.showMoreSynonyms})}>
+                <a tabIndex={tabIndex} className='toggle-link' onClick={() =>
+                this.setState({showMoreSynonyms: !this.state.showMoreSynonyms})}>
                 {(synonymString.length > 100) ? (showMoreSynonyms ? ' See Less' : <React.Fragment><ClrIcon shape='ellipsis-horizontal'
                 style={{color: '#2691D0'}}/> See More</React.Fragment>) : ''}
                 </a>
