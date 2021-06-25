@@ -98,9 +98,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-          graphButtons: this.props.domain.name.toLowerCase() === 'labs & measurements' ?
+          graphButtons: props.domain.name.toLowerCase() === 'labs & measurements' ?
           ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
-          graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain.name.toLowerCase() === 'labs & measurements' ?
+          graphToShow: props.graphToShow ? props.graphToShow : (props.domain.name.toLowerCase() === 'labs & measurements' ?
           GraphType.Values : GraphType.BiologicalSex),
           displayGraphErrorMessage: false,
           selectedChartAnalysis: null,
@@ -122,16 +122,16 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        const {concept, domain} = this.props;
+        const {concept, domain: {name}} = this.props;
         dataBrowserApi().getConceptAnalysisResults(
           [concept.conceptId.toString()], concept.domainId
         ).then(results => {
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
-                selectedChartAnalysis: domain.name.toLowerCase() === 'labs & measurements' ?
+                selectedChartAnalysis: name.toLowerCase() === 'labs & measurements' ?
                 results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
-                measurementGenderCountAnalysis: domain.name.toLowerCase() === 'labs & measurements' ?
+                measurementGenderCountAnalysis: name.toLowerCase() === 'labs & measurements' ?
                 results.items[0].measurementGenderCountAnalysis : null,
                 isAnalysisLoaded: true,
                 loading: false
@@ -292,7 +292,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {searchTerm, concept, domain} = this.props;
+        const {searchTerm, concept, domain: {name} = this.props;
         const {graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
          isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
          genderResults, toDisplayMeasurementGenderAnalysis, loading} = this.state;
@@ -371,7 +371,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                             </div>
                             <SourcesChartReactComponent concepts={sourceConcepts} />
                         </div>
-                        {(domain.name.toLowerCase() === 'condition' || domain.name.toLowerCase() === 'procedure') &&
+                        {(name.toLowerCase() === 'condition' || name.toLowerCase() === 'procedure') &&
                         <div className='tree-view'>
                         <p>Sources Tree</p>
                         </div>}

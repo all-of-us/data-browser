@@ -174,15 +174,15 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const {selectedConcept, concept, domain} = this.props;
-    if (prevProps.selectedConcept !== this.props.selectedConcept) {
-        if (this.props.selectedConcept.conceptId === concept.conceptId) {
+    const {selectedConcept, concept, domain: {name}} = this.props;
+    if (prevProps.selectedConcept !== selectedConcept) {
+        if (selectedConcept.conceptId === concept.conceptId) {
             this.myRef.current.scrollIntoView();
-            var id = '#c' + this.props.selectedConcept.conceptId;
+            var id = '#c' + selectedConcept.conceptId;
             this.setState({
-                selectedConcept: this.props.selectedConcept,
+                selectedConcept: selectedConcept,
                 showConceptChart: true,
-                graphToShow: domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
+                graphToShow: name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
             });
        } else {
            this.setState({showConceptChart: false});
@@ -216,7 +216,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
 
     showChart(chartType: string) {
         const {showConceptChart, graphToShow} = this.state;
-        const {domain} = this.props;
+        const {domain: {name}} = this.props;
         if (showConceptChart) {
             if (chartType === 'sources' && (graphToShow === GraphType.BiologicalSex ||
             graphToShow === GraphType.Age || graphToShow === GraphType.Values)) {
@@ -231,13 +231,13 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 this.setState({
                     showConceptChart: !showConceptChart,
                     graphToShow: chartType === 'sources' ? GraphType.Sources :
-                    (domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
+                    (name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex)
                 });
             }
         } else {
             this.setState({
                 showConceptChart: !showConceptChart,
-                graphToShow: chartType === 'sources' ? GraphType.Sources : (domain.name.toLowerCase() === 'labs & measurements'
+                graphToShow: chartType === 'sources' ? GraphType.Sources : (name.toLowerCase() === 'labs & measurements'
                 ? GraphType.Values : GraphType.BiologicalSex)
             });
         }
@@ -255,7 +255,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {concept, domain, totalResults, maxResults, currentPage, counter, searchTerm, synonymString} = this.props;
+        const {concept, domain: {name}, totalResults, maxResults, currentPage, counter, searchTerm, synonymString} = this.props;
         const {showMoreSynonyms, showMoreDrugBrands, showConceptChart, graphToShow, showCopyAlert} = this.state;
         const id = 'c' + concept.conceptId;
         const tabIndex = 0;
@@ -266,12 +266,12 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         }
         const synonymsStr = showMoreSynonyms ? synonymString : (synonymString ? synonymString.substring(0, 100) : null);
         const drugBrandsStr = showMoreDrugBrands ? concept.drugBrands.join(', ') : concept.drugBrands.slice(0, 10).join(', ');
-        const tblClass = domain.name.toLowerCase() === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
+        const tblClass = name.toLowerCase() === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
         return <React.Fragment>
                <style>{cssStyles}</style>
                <div id={id} ref={this.myRef}>
                  <div className='tbl-exp-r' onClick={(e) => {e.stopPropagation(); this.expandRow(); }}>
-                    <div className={tblClass} style={domain.name.toLowerCase() === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
+                    <div className={tblClass} style={name.toLowerCase() === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
                         <div className='body-lead tbl-d' style={styles.bodyLead}>
                             <span>{conceptIndex}. </span>
                             <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
@@ -282,7 +282,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         <div className='body-lead tbl-d' style={styles.bodyLead}>
                             {this.participantPercentage(concept.countValue)} %
                         </div>
-                        {domain.name.toLowerCase() === 'labs & measurements' && concept.measurementConceptInfo &&
+                        {name.toLowerCase() === 'labs & measurements' && concept.measurementConceptInfo &&
                         <div className='body-lead tbl-d'>
                             {concept.measurementConceptInfo.hasValues === 1 ?
                             <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}} />
@@ -328,7 +328,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 </a>
                </div>
                }
-               {domain.name.toLowerCase() === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
+               {name.toLowerCase() === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
                <div className='body-lead aka-layout aka' style={styles.aka}>
                <div className='aka-text' style={styles.akaText}>
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
