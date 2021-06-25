@@ -195,18 +195,6 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         return (!count || count <= 0) ? 0 : parseFloat(((count / totalParticipants) * 100).toFixed(2));
     }
 
-    toggleSynonyms() {
-        this.setState({
-            showMoreSynonyms: !this.state.showMoreSynonyms
-        });
-    }
-
-    toggleDrugBrands() {
-        this.setState({
-            showMoreDrugBrands: !this.state.showMoreDrugBrands
-        });
-    }
-
     expandRow() {
         this.setState({
             showConceptChart: !this.state.showConceptChart,
@@ -255,7 +243,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {concept, domain: {name}, totalResults, maxResults, currentPage, counter, searchTerm, synonymString} = this.props;
+        const {concept, domain, totalResults, maxResults, currentPage, counter, searchTerm, synonymString} = this.props;
         const {showMoreSynonyms, showMoreDrugBrands, showConceptChart, graphToShow, showCopyAlert} = this.state;
         const id = 'c' + concept.conceptId;
         const tabIndex = 0;
@@ -266,12 +254,12 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         }
         const synonymsStr = showMoreSynonyms ? synonymString : (synonymString ? synonymString.substring(0, 100) : null);
         const drugBrandsStr = showMoreDrugBrands ? concept.drugBrands.join(', ') : concept.drugBrands.slice(0, 10).join(', ');
-        const tblClass = name.toLowerCase() === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
+        const tblClass = domain.name.toLowerCase() === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
         return <React.Fragment>
                <style>{cssStyles}</style>
                <div id={id} ref={this.myRef}>
                  <div className='tbl-exp-r' onClick={(e) => {e.stopPropagation(); this.expandRow(); }}>
-                    <div className={tblClass} style={name.toLowerCase() === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
+                    <div className={tblClass} style={domain.name.toLowerCase() === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
                         <div className='body-lead tbl-d' style={styles.bodyLead}>
                             <span>{conceptIndex}. </span>
                             <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
@@ -282,7 +270,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         <div className='body-lead tbl-d' style={styles.bodyLead}>
                             {this.participantPercentage(concept.countValue)} %
                         </div>
-                        {name.toLowerCase() === 'labs & measurements' && concept.measurementConceptInfo &&
+                        {domain.name.toLowerCase() === 'labs & measurements' && concept.measurementConceptInfo &&
                         <div className='body-lead tbl-d'>
                             {concept.measurementConceptInfo.hasValues === 1 ?
                             <span className='test-span' style={styles.measurementTypeSpan}><i className='fas fa-vial' style={{'transform': 'rotate(315deg)'}} />
@@ -322,19 +310,19 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                                         tooltipKey='conceptSynonyms' />
                 </div>
                 <HighlightReactComponent searchTerm={searchTerm} text={synonymsStr} />
-                <a tabIndex={tabIndex} className='toggle-link' onClick={() => this.toggleSynonyms()}>
+                <a tabIndex={tabIndex} className='toggle-link' onClick={() => this.setState({showMoreSynonyms: !this.state.showMoreSynonyms})}>
                 {(synonymString.length > 100) ? (showMoreSynonyms ? ' See Less' : <React.Fragment><ClrIcon shape='ellipsis-horizontal'
                 style={{color: '#2691D0'}}/> See More</React.Fragment>) : ''}
                 </a>
                </div>
                }
-               {name.toLowerCase() === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
+               {domain.name.toLowerCase() === 'drug exposures' && concept.drugBrands && concept.drugBrands.length > 0 &&
                <div className='body-lead aka-layout aka' style={styles.aka}>
                <div className='aka-text' style={styles.akaText}>
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
                     <div>
                     <a tabIndex={tabIndex} className='toggle-link brands-link' style={styles.showMoreLink}
-                                    onClick={() => this.toggleDrugBrands()}>
+                                    onClick={() => this.setState({showMoreDrugBrands: !this.state.showMoreDrugBrands})}>
                                     {(concept.drugBrands.length > 10) ? (showMoreDrugBrands ?
                                     <React.Fragment>See Less
                                     <ClrIcon shape='caret' style={{color: '#2691D0'}} dir='down'/>

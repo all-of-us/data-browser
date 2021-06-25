@@ -292,7 +292,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {searchTerm, concept, domain: {name} = this.props;
+        const {searchTerm, concept, domain: {name}} = this.props;
         const {graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
          isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
          genderResults, toDisplayMeasurementGenderAnalysis, loading} = this.state;
