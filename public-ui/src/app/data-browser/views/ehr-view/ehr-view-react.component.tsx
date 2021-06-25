@@ -500,7 +500,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                 action='Matching medical concepts tooltip hover' />
                                             </h5> :
                                             <h5 id='domain-name' className='primary-display'>
-                                            Showing top {((currentPage-1) * 50)+1} -
+                                            Showing top {((currentPage - 1) * 50) + 1} -
                                             {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
                                             {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
                                             <React.Fragment> concepts for this domain</React.Fragment>}
@@ -509,8 +509,10 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                 action='Matching medical concepts tooltip hover' /> </h5> }
                                         </span>
                                         {searchWord &&
-                                        <h6 className='medline-link' style={styles.medlineLink}>Interested in general health information related to "{medlineTerm}"?
-                                                    <br /><a href={medlinePlusLink} target='_blank' rel='noopener noreferrer'>Search MedlinePlus</a></h6>
+                                        <h6 className='medline-link' style={styles.medlineLink}>Interested in general
+                                        health information related to "{medlineTerm}"?
+                                                    <br /><a href={medlinePlusLink} target='_blank'
+                                                    rel='noopener noreferrer'>Search MedlinePlus</a></h6>
                                                     }
                        </div>
                        {(concepts.length === 1 && concepts[0].standardConcept !== 'S' && standardConcepts.length > 0) &&
@@ -548,7 +550,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                 <div className='clr-checkbox-wrapper'>
                                     <div className='checkbox-input'>
                                         <input type='checkbox' id='checkbox1' className='clr-checkbox' onClick={() =>
-                                        this.setState({measurementTestFilter: !measurementTestFilter}, () => {this.getDomainTotals(); this.getTopConcepts();} )} defaultChecked={measurementTestFilter}/>
+                                        this.setState({measurementTestFilter: !measurementTestFilter},
+                                        () => {this.getDomainTotals(); this.getTopConcepts(); } )} defaultChecked={measurementTestFilter}/>
                                         <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45' style={{'transform': 'rotate(315deg)'}}></i> Tests</label>
                                     </div>
                                </div>
