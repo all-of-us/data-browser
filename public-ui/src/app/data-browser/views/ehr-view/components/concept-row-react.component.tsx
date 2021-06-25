@@ -7,7 +7,6 @@ import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-defs';
 import * as React from 'react';
-import ReactPaginate from 'react-paginate';
 
 const styles = reactStyles({
     bodyLead: {
@@ -178,7 +177,6 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     if (prevProps.selectedConcept !== selectedConcept) {
         if (selectedConcept.conceptId === concept.conceptId) {
             this.myRef.current.scrollIntoView();
-            var id = '#c' + selectedConcept.conceptId;
             this.setState({
                 selectedConcept: selectedConcept,
                 showConceptChart: true,
