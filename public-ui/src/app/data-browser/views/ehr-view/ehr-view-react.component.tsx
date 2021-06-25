@@ -405,7 +405,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     }
 
     selectConcept(concept: any) {
-        console.log('am i here selecting concept ????', this.state.showTopConcepts, '*** current page *** ', this.state.currentPage);
         if (concept && this.state.currentPage > 1) {
                 this.setState({selectedConcept: concept, currentPage: 1}, () => {this.getTopConcepts()});
         } else {
@@ -434,7 +433,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             measurementOrders: this.state.measurementOrderFilter ? 1 : 0
         };
         let showTopConceptsFlag = true;
-        if (data.selected > 1) {
+        if (data.selected > 0) {
             showTopConceptsFlag = false;
         }
         this.setState({currentPage: data.selected + 1, showTopConcepts: showTopConceptsFlag});

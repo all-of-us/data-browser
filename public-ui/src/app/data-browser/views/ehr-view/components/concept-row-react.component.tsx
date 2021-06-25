@@ -169,27 +169,24 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.props.selectedConcept && this.props.concept && this.props.selectedConcept.conceptId === this.props.concept.conceptId) {
-        console.log('*** 0000 **** ((()))');
         this.myRef.current.scrollIntoView();
     }
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const {selectedConcept, concept, domain} = this.props;
-    if (prevProps.selectedConcept !== this.props.selectedConcept && this.props.selectedConcept.conceptId === concept.conceptId) {
-        this.myRef.current.scrollIntoView();
-        var id = '#c' + this.props.selectedConcept.conceptId;
-        this.setState({
-            selectedConcept: this.props.selectedConcept,
-            showConceptChart: true,
-            graphToShow: domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
-        });
-    }
-    if (this.props.selectedConcept && concept && this.props.selectedConcept.conceptId === concept.conceptId) {
-        console.log('m i here 0000 ???');
-    }
-    if (this.state.selectedConcept && this.state.selectedConcept.conceptId !== concept.conceptId && this.state.showConceptChart) {
-        this.setState({showConceptChart: false});
+    if (prevProps.selectedConcept !== this.props.selectedConcept) {
+        if (this.props.selectedConcept.conceptId === concept.conceptId) {
+            this.myRef.current.scrollIntoView();
+            var id = '#c' + this.props.selectedConcept.conceptId;
+            this.setState({
+                selectedConcept: this.props.selectedConcept,
+                showConceptChart: true,
+                graphToShow: domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex
+            });
+       } else {
+           this.setState({showConceptChart: false});
+       }
     }
   }
 
