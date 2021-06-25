@@ -341,7 +341,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         const {searchWord, top10Results, currentPage, domain} = this.state;
         results.items.filter(
             x => PM_CONCEPTS.indexOf(x.conceptId) === -1);
-        results.items.sort((a, b) => {a.countValue < b.countValue});
+        results.items.sort((a, b) => b.countValue - a.countValue);
         let medlineTerm = searchWord ? searchWord : '';
         if (results.matchType === MatchType.ID || results.matchType === MatchType.CODE) {
               medlineTerm = results.matchedConceptName;
@@ -373,7 +373,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
 
    getTopConcepts() {
         const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
-        var searchRequest = {
+        const searchRequest = {
             query: searchWord,
             domain: domain.toUpperCase(),
             standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
@@ -408,7 +408,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     selectConcept(concept: any) {
         const {currentPage} = this.state;
         if (concept && currentPage > 1) {
-                this.setState({selectedConcept: concept, currentPage: 1}, () => {this.getTopConcepts()});
+                this.setState({selectedConcept: concept, currentPage: 1}, () => {this.getTopConcepts();});
         } else {
                 this.setState({selectedConcept: concept});
         }
@@ -417,13 +417,13 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     getTopResultsSize() {
         const {top10Results, title} = this.state;
         const top10ResultsTitle = (top10Results.length === 1) ? top10Results.length + ' ' + title.slice(0, -1) :
-        (top10Results.length < 10 ? top10Results.length + ' ' + title: 10 + ' ' + title);
+        (top10Results.length < 10 ? top10Results.length + ' ' + title : 10 + ' ' + title);
         return top10ResultsTitle;
     }
 
     handlePageClick = (data) => {
         const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
-        var searchRequest = {
+        const searchRequest = {
             query: searchWord,
             domain: domain.toUpperCase(),
             standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
@@ -440,7 +440,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         this.setState({currentPage: data.selected + 1, showTopConcepts: showTopConceptsFlag});
         window.scrollTo(0, 0);
         this.fetchConcepts(searchRequest);
-    };
+    }
 
    render() {
     const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept,
@@ -491,14 +491,18 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                         <React.Fragment>
                         <div className='domain-info-layout'>
                                         <span>
-                                            {(totalResults <= 50) ? <h5 id='domain-name' className='primary-display'>Showing top {totalResults}
-                                            {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> : <React.Fragment> concepts for this domain</React.Fragment>}
+                                            {(totalResults <= 50) ? <h5 id='domain-name' className='primary-display'>
+                                            Showing top {totalResults}
+                                            {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
+                                            <React.Fragment> concepts for this domain</React.Fragment>}
                                             <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
                                                 label='EHR Tooltip Hover' searchTerm={searchWord}
                                                 action='Matching medical concepts tooltip hover' />
                                             </h5> :
-                                            <h5 id='domain-name' className='primary-display'>Showing top {((currentPage-1) * 50)+1} - {concepts.length + ((currentPage-1) * 50)} of {totalResults}
-                                            {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> : <React.Fragment> concepts for this domain</React.Fragment>}
+                                            <h5 id='domain-name' className='primary-display'>
+                                            Showing top {((currentPage-1) * 50)+1} - {concepts.length + ((currentPage-1) * 50)} of {totalResults}
+                                            {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
+                                            <React.Fragment> concepts for this domain</React.Fragment>}
                                             <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
                                                 label='EHR Tooltip Hover' searchTerm={searchWord}
                                                 action='Matching medical concepts tooltip hover' /> </h5> }
