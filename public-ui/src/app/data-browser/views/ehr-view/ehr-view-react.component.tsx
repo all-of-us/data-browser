@@ -408,7 +408,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     selectConcept(concept: any) {
         const {currentPage} = this.state;
         if (concept && currentPage > 1) {
-                this.setState({selectedConcept: concept, currentPage: 1}, () => {this.getTopConcepts();});
+                this.setState({selectedConcept: concept, currentPage: 1}, () => {this.getTopConcepts(); });
         } else {
                 this.setState({selectedConcept: concept});
         }
@@ -500,7 +500,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                 action='Matching medical concepts tooltip hover' />
                                             </h5> :
                                             <h5 id='domain-name' className='primary-display'>
-                                            Showing top {((currentPage-1) * 50)+1} - {concepts.length + ((currentPage-1) * 50)} of {totalResults}
+                                            Showing top {((currentPage-1) * 50)+1} -
+                                            {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
                                             {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
                                             <React.Fragment> concepts for this domain</React.Fragment>}
                                             <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
@@ -540,12 +541,14 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                           Data Type
                           <div className={dropdownClass}>
                             <button className='dropdown-toggle'>
-                              <ClrIcon shape='filter-grid' className={filterIconClass} onClick={() => this.setState({selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter})} />
+                              <ClrIcon shape='filter-grid' className={filterIconClass} onClick={() =>
+                              this.setState({selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter})} />
                             </button>
                             <div className='dropdown-menu'>
                                 <div className='clr-checkbox-wrapper'>
                                     <div className='checkbox-input'>
-                                        <input type='checkbox' id='checkbox1' className='clr-checkbox' onClick={() => this.setState({measurementTestFilter: !measurementTestFilter}, () => {this.getDomainTotals(); this.getTopConcepts();} )} defaultChecked={measurementTestFilter}/>
+                                        <input type='checkbox' id='checkbox1' className='clr-checkbox' onClick={() =>
+                                        this.setState({measurementTestFilter: !measurementTestFilter}, () => {this.getDomainTotals(); this.getTopConcepts();} )} defaultChecked={measurementTestFilter}/>
                                         <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45' style={{'transform': 'rotate(315deg)'}}></i> Tests</label>
                                     </div>
                                </div>
@@ -567,7 +570,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                     maxResults={maxResults} currentPage={currentPage} counter={index} searchTerm={searchWord}
                                     totalParticipants={totalParticipants}
                                     selectedConcept={selectedConcept} synonymString={concept.conceptSynonyms.join(', ')}/>
-                                })}
+                                });}
                         </div>
                         }
                        </React.Fragment>
