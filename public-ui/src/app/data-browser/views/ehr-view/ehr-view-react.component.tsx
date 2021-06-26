@@ -322,7 +322,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     if (this.state.searchWord) {
         url += '?search=' + this.state.searchWord;
     }
-    window.history.replaceState(null, "Ehr View", url);
+    window.history.replaceState(null, 'Ehr View', url);
    }
 
    getDomainTotals() {
@@ -631,7 +631,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         </div>
         {(!(top10ResultsLoading) && concepts.length === 0 && searchWord) &&
         <div>
-            <h5 className="secondary-display"> No results in this domain that match your search.</h5>
+            <h5 className='secondary-display'> No results in this domain that match your search.</h5>
             <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord} measurementTestFilter={noMatchFilter}
              measurementOrderFilter={noMatchFilter} />
         </div>}
