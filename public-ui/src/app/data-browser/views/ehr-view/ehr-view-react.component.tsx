@@ -327,7 +327,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     const {searchWord, measurementTestFilter, measurementOrderFilter} = this.state;
     dataBrowserApi().getDomainTotals(searchWord, measurementTestFilter ? 1 : 0, measurementOrderFilter ? 1 : 0)
                 .then(results => {
-                    console.log(results.domainInfos);
                     results.domainInfos.forEach(domain => {
                         const thisDomain = Domain[domain.domain];
                         if (thisDomain && thisDomain.toLowerCase() === this.props.domainId) {
@@ -336,7 +335,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             const title = ehrDomain.name;
                             const totalParticipants = ehrDomain.participantCount;
                             const numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
-                            console.log('setting domain ???');
                             this.setState({
                                 domain: domain,
                                 title: title,
@@ -488,17 +486,16 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             onClear={() => this.handleChange('')} />
         </div>
         {(loading) && <Spinner />}
+        {domain && !loading && concepts && concepts.length > 0 &&
         <div className='results' style={styles.results}>
             <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
                     &lt; Back to main search </a>
            <div className='result-list'>
-            {domain && !loading && concepts && concepts.length > 0 &&
             <div className='db-card'>
                 <div className='db-card-inner'>
                      <button className='disclaimer-btn' onClick={() => this.setState({showStatement: true})}>data disclaimer</button>
                      <section>
                         <h5 id='domain-summary' className='secondary-display'>
-                            {(!loading && concepts && concepts.length > 0) &&
                             <React.Fragment>
                             <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>
                             Top {this.getTopResultsSize()} by Descending Participant Counts
@@ -509,12 +506,10 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             {showTopConcepts && top10Results && top10Results.length > 0 &&
                             <TopResultsChartReactComponent concepts={top10Results} onClick={(e) => this.selectConcept(e)}/>}
                             </React.Fragment>
-                            }
                        </h5>
                      </section>
                      <section>
                      <div className='results-grid' style={styles.resultsGrid}>
-                        {!loading && concepts && concepts.length > 0 &&
                         <React.Fragment>
                         <div className='domain-info-layout'>
                                         <span>
@@ -609,11 +604,10 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                         </div>
                         }
                        </React.Fragment>
-                       }
                      </div>
                      </section>
                 </div>
-                    {(!loading && concepts && concepts.length > 50) &&
+                    {(concepts && numPages && numPages > 1) &&
                      <ReactPaginate
                               previousLabel={'Previous'}
                               nextLabel={'Next'}
@@ -627,9 +621,9 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                               activeClassName={'active'}
                             /> }
             </div>
-            }
            </div>
         </div>
+        }
         {(!loading && concepts.length === 0 && searchWord) &&
         <div>
             <h5 className='secondary-display'> No results in this domain that match your search.</h5>
