@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { NoResultSearchComponent } from 'app/components/db-no-results/no-results-search.component';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TopResultsChartReactComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
@@ -266,11 +267,13 @@ interface State {
     selectedMeasurementTypeFilter: boolean;
     measurementTestFilter: boolean;
     measurementOrderFilter: boolean;
+    fromDifferentPage: boolean;
 }
 
 export class EhrViewReactComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        this.changeResults = this.changeResults.bind(this);
         // TODO add url params and change them based on search value
         this.state = {
             domain: null,
@@ -293,17 +296,33 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             selectedMeasurementTypeFilter: false,
             measurementTestFilter: true,
             measurementOrderFilter: true,
-            showTopConcepts: true
+            showTopConcepts: true,
+            fromDifferentPage: false
         };
    }
 
    domainTotals = _.debounce(() => {
              this.getDomainTotals();
              this.getTopConcepts();
+             this.changeUrl();
            }, 1000);
 
    componentDidMount() {
         this.getDomainTotals();
+   }
+
+   componentDidUpdate(prevProps: Readonly<Props>) {
+        if (prevProps.domainId !== this.props.domainId) {
+            this.getDomainTotals();
+        }
+   }
+
+   changeUrl() {
+    let url = 'ehr/' + this.props.domainId;
+    if (this.state.searchWord) {
+        url += '?search=' + this.state.searchWord;
+    }
+    window.history.replaceState(null, "Ehr View", url);
    }
 
    getDomainTotals() {
@@ -402,6 +421,9 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     }
 
     backToMain() {
+        if (this.state.searchWord) {
+                localStorage.setItem('searchText', this.state.searchWord);
+        }
         navigateByUrl('');
     }
 
@@ -442,12 +464,17 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         this.fetchConcepts(searchRequest);
     }
 
+    changeResults() {
+        this.setState({selectedConcept: null, fromDifferentPage: true});
+    }
+
    render() {
     const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept,
     numPages, domainTotalsLoading, top10ResultsLoading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
     selectedMeasurementTypeFilter, currentPage,
     measurementTestFilter, measurementOrderFilter, top10Results} = this.state;
     const maxResults = 50;
+    const noMatchFilter = 1;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
     const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
     return <React.Fragment>
@@ -470,7 +497,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                      <button className='disclaimer-btn' onClick={() => this.setState({showStatement: true})}>data disclaimer</button>
                      <section>
                         <h5 id='domain-summary' className='secondary-display'>
-                            {!(top10ResultsLoading) &&
+                            {(!(top10ResultsLoading) && concepts && concepts.length > 0) &&
                             <React.Fragment>
                             <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>
                             Top {this.getTopResultsSize()} by Descending Participant Counts
@@ -561,7 +588,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                         <input type='checkbox' id='checkbox2' className='clr-checkbox' onClick={() =>
                                         this.setState({measurementOrderFilter: !measurementOrderFilter},
                                         () => {this.getDomainTotals(); this.getTopConcepts(); } )} defaultChecked={measurementOrderFilter}/>
-                                        <label htmlFor='checkbox2' className='checkbox-label'><i className='far fa-file-signature'></i> Orders</label>
+                                        <label htmlFor='checkbox2' className='checkbox-label'>
+                                        <i className='far fa-file-signature'></i> Orders</label>
                                     </div>
                                </div>
                             </div>
@@ -572,11 +600,12 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                         {concepts && concepts.length > 0 &&
                         <div className='tbl-body'>
                         {standardConcepts.concat(concepts).map((concept, index) => {
-                                    return <ConceptRowReactComponent key={concept.conceptId} concept={concept} domain={domain} totalResults={totalResults}
+                                    return <ConceptRowReactComponent key={concept.conceptId} concept={concept}
+                                    domain={domain} totalResults={totalResults}
                                     maxResults={maxResults} currentPage={currentPage} counter={index} searchTerm={searchWord}
                                     totalParticipants={totalParticipants}
                                     selectedConcept={selectedConcept} synonymString={concept.conceptSynonyms.join(', ')}/>;
-                                });}
+                                })}
                         </div>
                         }
                        </React.Fragment>
@@ -600,6 +629,12 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             </div>
            </div>
         </div>
+        {(!(top10ResultsLoading) && concepts.length === 0 && searchWord) &&
+        <div>
+            <h5 className="secondary-display"> No results in this domain that match your search.</h5>
+            <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord} measurementTestFilter={noMatchFilter}
+             measurementOrderFilter={noMatchFilter} />
+        </div>}
         {showStatement && <PopUpReactComponent helpText='EhrViewPopUp' onClose={() => this.setState({showStatement: false})} />}
     </React.Fragment>;
    }
