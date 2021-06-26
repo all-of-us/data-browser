@@ -256,8 +256,7 @@ interface State {
     showTopConcepts: boolean;
     concepts: any;
     top10Results: any;
-    domainTotalsLoading: boolean;
-    top10ResultsLoading: boolean;
+    loading: boolean;
     selectedConcept: any;
     numPages: number;
     totalResults: number;
@@ -289,8 +288,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             concepts: [],
             standardConcepts: [],
             currentPage: 1,
-            domainTotalsLoading: true,
-            top10ResultsLoading: true,
+            loading: true,
             medlinePlusLink: null,
             medlineTerm: null,
             selectedMeasurementTypeFilter: false,
@@ -329,6 +327,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     const {searchWord, measurementTestFilter, measurementOrderFilter} = this.state;
     dataBrowserApi().getDomainTotals(searchWord, measurementTestFilter ? 1 : 0, measurementOrderFilter ? 1 : 0)
                 .then(results => {
+                    console.log(results.domainInfos);
                     results.domainInfos.forEach(domain => {
                         const thisDomain = Domain[domain.domain];
                         if (thisDomain && thisDomain.toLowerCase() === this.props.domainId) {
@@ -337,6 +336,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             const title = ehrDomain.name;
                             const totalParticipants = ehrDomain.participantCount;
                             const numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
+                            console.log('setting domain ???');
                             this.setState({
                                 domain: domain,
                                 title: title,
@@ -344,7 +344,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                 totalParticipants: totalParticipants,
                                 numPages: numPages,
                                 totalResults: ehrDomain.standardConceptCount,
-                                domainTotalsLoading: false
                             }, () => {
                                 this.getTopConcepts();
                             });
@@ -352,7 +351,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                 });
                 }).catch(e => {
                         console.log(e, 'error');
-                        this.setState({top10ResultsLoading: false});
            });
    }
 
@@ -386,7 +384,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             topResults = results.items.slice(0, 10);
         }
         this.setState({concepts: results.items, standardConcepts: standardConcepts, top10Results: topResults,
-        top10ResultsLoading: false, medlineTerm: medlineTerm, medlinePlusLink: medlinePlusLink});
+        loading: false, medlineTerm: medlineTerm, medlinePlusLink: medlinePlusLink});
   }
 
 
@@ -406,17 +404,18 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
    }
 
    fetchConcepts(searchRequest: any) {
+           console.log('am i here 1');
            dataBrowserApi().searchConcepts(searchRequest)
                .then(results => {
                     this.processSearchResults(results);
                }).catch(e => {
                        console.log(e, 'error');
-                       this.setState({top10ResultsLoading: false});
+                       this.setState({loading: false});
           });
    }
 
     handleChange(val) {
-        this.setState({ searchWord: val, domainTotalsLoading: true, top10ResultsLoading: true, currentPage: 1, showTopConcepts: true});
+        this.setState({ searchWord: val, loading: true, currentPage: 1, showTopConcepts: true});
         this.domainTotals(val);
     }
 
@@ -470,13 +469,14 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
 
    render() {
     const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept,
-    numPages, domainTotalsLoading, top10ResultsLoading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
+    numPages, loading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
     selectedMeasurementTypeFilter, currentPage,
     measurementTestFilter, measurementOrderFilter, top10Results} = this.state;
     const maxResults = 50;
     const noMatchFilter = 1;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
     const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
+    console.log('test');
     return <React.Fragment>
         <style>{cssStyles}</style>
         <div className='page-header' style={styles.pageHeader}>
@@ -487,17 +487,18 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             onChange={(val) => this.handleChange(val)}
                             onClear={() => this.handleChange('')} />
         </div>
-        {(domainTotalsLoading && top10ResultsLoading) && <Spinner />}
+        {(loading) && <Spinner />}
         <div className='results' style={styles.results}>
             <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
                     &lt; Back to main search </a>
            <div className='result-list'>
+            {domain && !loading && concepts && concepts.length > 0 &&
             <div className='db-card'>
                 <div className='db-card-inner'>
                      <button className='disclaimer-btn' onClick={() => this.setState({showStatement: true})}>data disclaimer</button>
                      <section>
                         <h5 id='domain-summary' className='secondary-display'>
-                            {(!(top10ResultsLoading) && concepts && concepts.length > 0) &&
+                            {(!loading && concepts && concepts.length > 0) &&
                             <React.Fragment>
                             <div className='toggle-link' onClick={() => this.setState({showTopConcepts: !showTopConcepts})}>
                             Top {this.getTopResultsSize()} by Descending Participant Counts
@@ -511,10 +512,9 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                             }
                        </h5>
                      </section>
-                     {domain && !(domainTotalsLoading || top10ResultsLoading) &&
                      <section>
                      <div className='results-grid' style={styles.resultsGrid}>
-                        {!domainTotalsLoading &&
+                        {!loading && concepts && concepts.length > 0 &&
                         <React.Fragment>
                         <div className='domain-info-layout'>
                                         <span>
@@ -611,9 +611,9 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                        </React.Fragment>
                        }
                      </div>
-                     </section>}
+                     </section>
                 </div>
-                    {(!(domainTotalsLoading || top10ResultsLoading) && concepts && concepts.length > 50) &&
+                    {(!loading && concepts && concepts.length > 50) &&
                      <ReactPaginate
                               previousLabel={'Previous'}
                               nextLabel={'Next'}
@@ -627,9 +627,10 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                               activeClassName={'active'}
                             /> }
             </div>
+            }
            </div>
         </div>
-        {(!(top10ResultsLoading) && concepts.length === 0 && searchWord) &&
+        {(!loading && concepts.length === 0 && searchWord) &&
         <div>
             <h5 className='secondary-display'> No results in this domain that match your search.</h5>
             <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord} measurementTestFilter={noMatchFilter}
