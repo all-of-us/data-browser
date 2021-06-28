@@ -8,8 +8,8 @@ import * as React from 'react';
 
 const styles = reactStyles({
     noChildren: {
-        position: 'relative',
-        marginRight: '1rem'
+        marginLeft: '1rem',
+        paddingLeft: '1rem'
     },
     count: {
         backgroundColor: '#2991cf',
@@ -30,12 +30,12 @@ const styles = reactStyles({
         marginTop: '0.1rem'
     },
     treeRow: {
-        alignItems: 'flex-start',
-        display: 'flex',
-        textAlign: 'left'
+        textAlign: 'left',
+        marginLeft: '1em'
     },
     childNode: {
-        marginLeft: '1em'
+        marginLeft: '1em',
+        display:'block'
     }
 });
 
@@ -44,6 +44,7 @@ const styles = reactStyles({
 interface SourceTreeProps {
     node: any;
     first?: boolean;
+    test?: Function;
 }
 
 interface SourceTreeState {
@@ -100,14 +101,14 @@ export const SourceTreeComponent = (
         }
 
         render() {
-            const { node } = this.props;
+            const { node, test } = this.props;
             const { children, isHandelSelected, isConceptSelected, highlightId } = this.state;
             const nodeChildren = node.children || children;
             return <React.Fragment>
-                <div style={styles.treeRow}>
-                    {node.group ? <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} /> :
-                        <span style={styles.childNode}></span>}
-                    <span onClick={() => this.conceptClick()} style={(isConceptSelected && highlightId === node.id) ?
+                <div style={node.group ? {...styles.treeRow} : {...styles.treeRow, ...styles.noChildren}}>
+                    {node.group && <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} />}
+                        
+              <span onClick={() => this.conceptClick()} style={(isConceptSelected && highlightId === node.id) ?
                         { ...styles.treeActive } : {}}>{node.name}</span>
                     <span style={styles.count}>{node.count}</span>
                 </div>
