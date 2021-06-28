@@ -102,7 +102,6 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
             url += 'ehr/' + domainToRoute[domainInfo.domain.toLowerCase()];
             url += '?search=' + searchValue;
             domainMatch();
-            console.log('am i here');
             navigateByUrl(url);
         } else if (type === 'survey') {
             localStorage.setItem('surveyModule', JSON.stringify(domainInfo));

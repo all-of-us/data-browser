@@ -402,7 +402,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
    }
 
    fetchConcepts(searchRequest: any) {
-           console.log('am i here 1');
            dataBrowserApi().searchConcepts(searchRequest)
                .then(results => {
                     this.processSearchResults(results);
