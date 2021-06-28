@@ -266,7 +266,6 @@ interface State {
     selectedMeasurementTypeFilter: boolean;
     measurementTestFilter: boolean;
     measurementOrderFilter: boolean;
-    fromDifferentPage: boolean;
 }
 
 export class EhrViewReactComponent extends React.Component<Props, State> {
@@ -294,8 +293,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             selectedMeasurementTypeFilter: false,
             measurementTestFilter: true,
             measurementOrderFilter: true,
-            showTopConcepts: true,
-            fromDifferentPage: false
+            showTopConcepts: true
         };
    }
 
@@ -330,18 +328,13 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                     results.domainInfos.forEach(domain => {
                         const thisDomain = Domain[domain.domain];
                         if (thisDomain && thisDomain.toLowerCase() === this.props.domainId) {
-                            const ehrDomain = domain;
-                            const subTitle = 'Keyword: ' + this.props.searchTerm;
-                            const title = ehrDomain.name;
-                            const totalParticipants = ehrDomain.participantCount;
-                            const numPages = Math.ceil(ehrDomain.standardConceptCount / 50);
                             this.setState({
                                 domain: domain,
-                                title: title,
-                                subTitle: subTitle,
-                                totalParticipants: totalParticipants,
-                                numPages: numPages,
-                                totalResults: ehrDomain.standardConceptCount,
+                                title: domain.name,
+                                subTitle: 'Keyword: ' + this.props.searchTerm,
+                                totalParticipants: domain.participantCount,
+                                numPages: Math.ceil(domain.standardConceptCount / 50),
+                                totalResults: domain.standardConceptCount,
                             }, () => {
                                 this.getTopConcepts();
                             });
@@ -354,9 +347,9 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
 
    processSearchResults(results) {
         const {searchWord, top10Results, currentPage, domain} = this.state;
-        results.items.filter(
-            x => PM_CONCEPTS.indexOf(x.conceptId) === -1);
-        results.items.sort((a, b) => b.countValue - a.countValue);
+        results.items = results.items
+          .filter(x => PM_CONCEPTS.indexOf(x.conceptId) === -1)
+          .sort((a, b) => b.countValue - a.countValue);
         let medlineTerm = searchWord ? searchWord : '';
         if (results.matchType === MatchType.ID || results.matchType === MatchType.CODE) {
               medlineTerm = results.matchedConceptName;
@@ -373,16 +366,14 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                 concept.graphToShow = GraphType.BiologicalSex;
             }
         }
-        let standardConcepts = [];
-        if (results.standardConcepts) {
-            standardConcepts = results.standardConcepts;
-        }
-        let topResults = top10Results;
-        if (currentPage === 1) {
-            topResults = results.items.slice(0, 10);
-        }
-        this.setState({concepts: results.items, standardConcepts: standardConcepts, top10Results: topResults,
-        loading: false, medlineTerm: medlineTerm, medlinePlusLink: medlinePlusLink});
+        this.setState({
+          concepts: results.items,
+          standardConcepts: results.standardConcepts || [],
+          top10Results: currentPage === 1 ? results.items.slice(0, 10) : top10Results,
+          loading: false,
+          medlineTerm: medlineTerm,
+          medlinePlusLink: medlinePlusLink
+        });
   }
 
 
@@ -434,9 +425,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
 
     getTopResultsSize() {
         const {top10Results, title} = this.state;
-        const top10ResultsTitle = (top10Results.length === 1) ? top10Results.length + ' ' + title.slice(0, -1) :
-        (top10Results.length < 10 ? top10Results.length + ' ' + title : 10 + ' ' + title);
-        return top10ResultsTitle;
+        return (top10Results.length === 1) ? top10Results.length + ' ' + title.slice(0, -1) :
+                (top10Results.length < 10 ? top10Results.length + ' ' + title : 10 + ' ' + title);
     }
 
     handlePageClick = (data) => {
@@ -451,17 +441,13 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             measurementTests: measurementTestFilter ? 1 : 0,
             measurementOrders: measurementOrderFilter ? 1 : 0
         };
-        let showTopConceptsFlag = true;
-        if (data.selected > 0) {
-            showTopConceptsFlag = false;
-        }
-        this.setState({currentPage: data.selected + 1, showTopConcepts: showTopConceptsFlag});
+        this.setState({currentPage: data.selected + 1, showTopConcepts: data.selected <= 0});
         window.scrollTo(0, 0);
         this.fetchConcepts(searchRequest);
     }
 
     changeResults() {
-        this.setState({selectedConcept: null, fromDifferentPage: true});
+        this.setState({selectedConcept: null});
     }
 
    render() {
@@ -574,7 +560,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                         this.setState({measurementTestFilter: !measurementTestFilter},
                                         () => {this.getDomainTotals(); this.getTopConcepts(); } )} defaultChecked={measurementTestFilter}/>
                                         <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45'
-                                        style={{'transform': 'rotate(315deg)'}}></i> Tests</label>
+                                        style={{'transform': 'rotate(315deg)'}}/>Tests</label>
                                     </div>
                                </div>
                                <div className='clr-checkbox-wrapper'>
@@ -583,7 +569,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                         this.setState({measurementOrderFilter: !measurementOrderFilter},
                                         () => {this.getDomainTotals(); this.getTopConcepts(); } )} defaultChecked={measurementOrderFilter}/>
                                         <label htmlFor='checkbox2' className='checkbox-label'>
-                                        <i className='far fa-file-signature'></i> Orders</label>
+                                        <i className='far fa-file-signature'/> Orders</label>
                                     </div>
                                </div>
                             </div>
