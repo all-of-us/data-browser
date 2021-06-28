@@ -93,6 +93,7 @@ interface State {
     conceptAnalyses: any;
     selectedUnit: string;
     sourceConcepts: any;
+    selectedTreeConcept: any;
     unitNames: any;
     toDisplayMeasurementGenderAnalysis: any;
     loading: boolean;
@@ -329,11 +330,20 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             });
     }
 
+    childConceptClicked(){
+        const id = parseInt(localStorage.getItem('treeHighlight'));
+        console.log(id,'does this work??');
+        this.setState({
+            selectedTreeConcept: id
+        })
+        
+    }
+
     render() {
         const { searchTerm, concept, domain } = this.props;
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
-            genderResults, toDisplayMeasurementGenderAnalysis, loading, node } = this.state;
+            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept} = this.state;
         const tabIndex = 0;
         // TODO Add in sources tree in here
         return <React.Fragment>
@@ -413,7 +423,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                 <div>
                                     <div style={styles.treeHeading}>Count Breakdown ({concept.vocabularyId})</div>
                                     <div style={styles.treeView}>
-                                        {node && <SourceTreeComponent node={node} first={true} />}
+                                        {node && <SourceTreeComponent node={node} selectedConcept={selectedTreeConcept} conceptedClicked={() => {this.childConceptClicked()}} first={true} />}
                                     </div>
                                 </div>}
                         </div>}
