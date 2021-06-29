@@ -1,12 +1,10 @@
-import {
-    Component,
-    Input
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
 import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
 import { ValueReactChartComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { SourcesChartReactComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
+import { SourceTreeComponent } from 'app/data-browser/components/source-tree/source-tree-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message/error-message-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
@@ -14,7 +12,6 @@ import { reactStyles } from 'app/utils';
 import { GraphType } from 'app/utils/enum-defs';
 import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
-import { SourceTreeComponent } from 'app/data-browser/components/source-tree/source-tree-react.component';
 
 const styles = reactStyles({
     sourceLayout: {
@@ -25,7 +22,7 @@ const styles = reactStyles({
         justifyContent: 'center'
     },
     sourcesChart: {
-        width: '50%',
+        width: '100%',
         marginLeft: '-1rem',
         background: 'white'
     },
@@ -59,11 +56,11 @@ const styles = reactStyles({
         overflowY: 'scroll',
         fontSize: '.8em'
     },
-    treeHeading:{
-        borderBottom:'1px solid #262362',
-        marginLeft:'1em',
-        marginBottom:'1em',
-        fontSize:'.8em'
+    treeHeading: {
+        borderBottom: '1px solid #262362',
+        marginLeft: '1em',
+        marginBottom: '1em',
+        fontSize: '.8em'
     }
 });
 
@@ -93,7 +90,10 @@ interface State {
     conceptAnalyses: any;
     selectedUnit: string;
     sourceConcepts: any;
-    selectedTreeConcept: any;
+    selectedTreeConcept: number;
+    selectedTreeCode: number;
+    selectedTreeName: string;
+    selectedTreeType: string;
     unitNames: any;
     toDisplayMeasurementGenderAnalysis: any;
     loading: boolean;
@@ -133,7 +133,11 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             noUnitValueButtons: ['No Unit (Text)', 'No Unit (Numeric)'],
             genderResults: null,
             loading: true,
-            node: undefined
+            node: undefined,
+            selectedTreeConcept: undefined,
+            selectedTreeCode: undefined,
+            selectedTreeName: undefined,
+            selectedTreeType: undefined
         };
     }
 
@@ -169,6 +173,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             }).catch(e => {
                 console.log(e, 'error');
             });
+        console.log(concept.conceptId);
+
         dataBrowserApi().getSourceConcepts(concept.conceptId)
             .then(results => {
                 const sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
@@ -312,38 +318,44 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     loadSourceTree(concept: any) {
-        // clear out treeData
-        let treeData = undefined;
-        // this.treeLoading = true;
-        // close previous subscription
-
-        console.log(this.props.domain);
-
+        let treeData;
         dataBrowserApi().getCriteriaRolledCounts(concept.conceptId, 'condition')
             .then(result => {
                 treeData = result.parent;
                 // treeLoading = false;
                 this.setState({
                     node: treeData
-                })
+                });
                 console.log(result, 'result');
             });
     }
 
-    childConceptClicked(){
-        const id = parseInt(localStorage.getItem('treeHighlight'));
-        console.log(id,'does this work??');
-        this.setState({
-            selectedTreeConcept: id
-        })
-        
+    childConceptClicked() {
+        const id = parseInt(localStorage.getItem('selectedTreeConceptId'), 10);
+        const code = parseInt(localStorage.getItem('selectedTreeCode'), 10);
+        const name = localStorage.getItem('selectedTreeName');
+        const type = localStorage.getItem('selectedTreeType');
+        dataBrowserApi().getSourceConcepts(id)
+            .then(results => {
+                const sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
+                this.setState({
+                    sourceConcepts: sources,
+                    selectedTreeConcept: id,
+                    selectedTreeCode: code,
+                    selectedTreeName: name,
+                    selectedTreeType: type
+                });
+            }).catch(e => {
+                console.log(e, 'error');
+            });
     }
 
     render() {
         const { searchTerm, concept, domain } = this.props;
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
-            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept} = this.state;
+            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeCode,
+            selectedTreeName, selectedTreeType } = this.state;
         const tabIndex = 0;
         // TODO Add in sources tree in here
         return <React.Fragment>
@@ -401,8 +413,11 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         {(genderResults && toDisplayMeasurementGenderAnalysis) &&
                                             genderResults.map((gender, index) => {
                                                 return <div key={index} className='ehr-m-chart-item' style={styles.ehrMChartItem}>
-                                                    <ValueReactChartComponent conceptId={concept.conceptId} valueAnalysis={toDisplayMeasurementGenderAnalysis}
-                                                        genderId={gender.stratum2} chartTitle={this.fetchChartTitle(gender)} /></div>;
+                                                    <ValueReactChartComponent
+                                                        conceptId={concept.conceptId}
+                                                        valueAnalysis={toDisplayMeasurementGenderAnalysis}
+                                                        genderId={gender.stratum2}
+                                                        chartTitle={this.fetchChartTitle(gender)} /></div>;
                                             })
                                         }
                                     </div>
@@ -413,17 +428,23 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         <div className='source-layout' style={styles.sourceLayout}>
                             <div className='sources-chart' style={styles.sourcesChart} key='sources-chart'>
                                 <div className='concept-box-info' style={styles.conceptBoxInfo}>
-                                    <p style={styles.conceptBoxInfoP}><strong>{concept.conceptName}</strong></p>
-                                    <p style={styles.conceptBoxInfoP}>{concept.vocabularyId} Code: {concept.conceptCode}</p>
-                                    <p style={styles.conceptBoxInfoP}>OMOP Concept Id: {concept.conceptId}</p>
+                                    <p style={styles.conceptBoxInfoP}><strong>{selectedTreeName ? selectedTreeName : concept.conceptName}
+                                    </strong></p>
+                                    <p style={styles.conceptBoxInfoP}>{selectedTreeType ? selectedTreeType : concept.vocabularyId}
+                                        Code: {selectedTreeCode ? selectedTreeCode : concept.conceptCode}</p>
+                                    <p style={styles.conceptBoxInfoP}>
+                                        OMOP Concept Id: {selectedTreeConcept ? selectedTreeConcept : concept.conceptId}</p>
                                 </div>
                                 <SourcesChartReactComponent concepts={sourceConcepts} />
                             </div>
                             {(domain === 'conditions' || domain === 'procedures') &&
-                                <div>
+                                <div style={{ width: '100%' }}>
                                     <div style={styles.treeHeading}>Count Breakdown ({concept.vocabularyId})</div>
                                     <div style={styles.treeView}>
-                                        {node && <SourceTreeComponent node={node} selectedConcept={selectedTreeConcept} conceptedClicked={() => {this.childConceptClicked()}} first={true} />}
+                                        {node && <SourceTreeComponent
+                                            node={node}
+                                            selectedTreeConcept={selectedTreeConcept}
+                                            conceptedClicked={() => { this.childConceptClicked(); }} first={true} />}
                                     </div>
                                 </div>}
                         </div>}

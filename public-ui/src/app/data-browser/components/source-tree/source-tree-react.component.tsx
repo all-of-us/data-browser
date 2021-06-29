@@ -8,8 +8,8 @@ import * as React from 'react';
 
 const styles = reactStyles({
     noChildren: {
-        marginLeft: '1rem',
-        paddingLeft: '1rem'
+        marginLeft: '1em',
+        paddingLeft: '1em'
     },
     count: {
         backgroundColor: '#2991cf',
@@ -35,7 +35,7 @@ const styles = reactStyles({
     },
     childNode: {
         marginLeft: '1em',
-        display:'block'
+        display: 'block'
     }
 });
 
@@ -45,14 +45,12 @@ interface SourceTreeProps {
     node: any;
     first?: boolean;
     conceptedClicked?: Function;
-    selectedConcept: number;
+    selectedTreeConcept: number;
 }
 
 interface SourceTreeState {
     children: Array<any>;
-    isConceptSelected: boolean;
     isHandelSelected: boolean;
-    highlightId: number;
 }
 
 export const SourceTreeComponent = (
@@ -61,33 +59,24 @@ export const SourceTreeComponent = (
             super(props);
             this.state = {
                 children: undefined,
-                isConceptSelected: false,
                 isHandelSelected: undefined,
-                highlightId: undefined,
-                
             };
         }
         conceptClick() {
-            localStorage.setItem('treeHighlight', this.props.node.id);
-            this.setState({
-                isConceptSelected: !this.state.isConceptSelected
-            });
-            this.getTreeHighlight();
+            localStorage.setItem('selectedTreeConceptId', this.props.node.conceptId);
+            localStorage.setItem('selectedTreeCode', this.props.node.code);
+            localStorage.setItem('selectedTreeName', this.props.node.name);
+            localStorage.setItem('selectedTreeType', this.props.node.type);
         }
-        getTreeHighlight() {
-            this.setState({
-                highlightId: parseInt(localStorage.getItem('treeHighlight'), 10)
-            });
-        }
+
         handleClick() {
             this.setState({
                 isHandelSelected: !this.state.isHandelSelected
             });
-
         }
+
         componentDidMount() {
             const { first, node } = this.props;
-            // this.getTreeHighlight();
             this.setState({ isHandelSelected: first });
             if (node.group && !node.children && !this.state.children) {
                 this.getChildren();
@@ -103,19 +92,25 @@ export const SourceTreeComponent = (
         }
 
         render() {
-            const { node, conceptedClicked, selectedConcept } = this.props;
-            const { children, isHandelSelected, isConceptSelected, highlightId } = this.state;
+            const { node, conceptedClicked, selectedTreeConcept } = this.props;
+            const { children, isHandelSelected } = this.state;
             const nodeChildren = node.children || children;
             return <React.Fragment>
-                <div style={node.group ? {...styles.treeRow} : {...styles.treeRow, ...styles.noChildren}}>
+                <div style={node.group ? { ...styles.treeRow } : { ...styles.treeRow, ...styles.noChildren }}>
                     {node.group && <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} />}
-                        
-              <span onClick={() =>{ this.conceptClick(); conceptedClicked() } } style={(isConceptSelected && selectedConcept === node.id) ?
+
+                    <span onClick={() => {
+                        this.conceptClick(); conceptedClicked();
+                    }} style={(selectedTreeConcept === parseInt(node.conceptId, 10)) ?
                         { ...styles.treeActive } : {}}>{node.name}</span>
                     <span style={styles.count}>{node.count}</span>
                 </div>
                 {(isHandelSelected && node.group && nodeChildren) && nodeChildren.map((child, index) =>
-                    <div key={index} style={styles.childNode}><SourceTreeComponent selectedConcept={selectedConcept} conceptedClicked={conceptedClicked} node={child} /></div>
+                    <div key={index} style={styles.childNode}>
+                        <SourceTreeComponent
+                            selectedTreeConcept={selectedTreeConcept}
+                            conceptedClicked={conceptedClicked}
+                            node={child} /></div>
                 )}
             </React.Fragment>;
         }
