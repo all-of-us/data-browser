@@ -256,8 +256,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                                       monthNum: item.stratum3.split('/')[0],
                                       participants: item.countValue,
                                       numberOfQuestion: '',
-                                      pdfLink: '/assets/surveys/' + item.stratum4.replace('/', '_') +
-                                      '_COPE_COVID_English_Explorer.pdf'
+                                      pdfLink: '/assets/surveys/' +
+                                      'COPE_survey_' + item.stratum4.split('/')[0].replace('/', '_') + '_' + item.stratum5 + '_English.pdf'
                                      });
                                   } else if (item.analysisId === 3401) {
                                       surveyVersions[i].numberOfQuestion = item.countValue;
