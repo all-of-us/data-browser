@@ -10,6 +10,5 @@ export const testEnvironmentBase = {
   reactSurveyTable: true,
   reactSurvey: true,
   ehrReact: false,
-  testReact: false,
-  fitbitReact: true
+  testReact: false
 };

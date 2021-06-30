@@ -13,6 +13,5 @@ export const environment = {
   reactSurveyTable: false,
   reactSurvey: false,
   ehrReact: false,
-  testReact: false,
-  fitbitReact: false
+  testReact: false
 };

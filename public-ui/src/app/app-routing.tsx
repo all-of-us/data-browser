@@ -3,8 +3,8 @@ import * as React from 'react';
 
 import {AppRoute, AppRouter} from 'app/components/app-router';
 import {BaseReactWrapper} from 'app/data-browser/base-react/base-react.wrapper';
-import {IntroVidReactComponent} from './data-browser/views/intro-vids/intro-vids-react.component';
 import {FitbitReactComponent} from 'app/data-browser/views/fitbit-view/fitbit-view-react.component';
+import {IntroVidReactComponent} from './data-browser/views/intro-vids/intro-vids-react.component';
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
   return <AppRouter>

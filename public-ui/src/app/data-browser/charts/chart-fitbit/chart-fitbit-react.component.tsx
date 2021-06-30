@@ -1,8 +1,3 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -82,8 +77,8 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
   }
 
   prepCategoriesAndData(concepts) {
-    let pointData = [];
-    let categoryArr = [];
+    const pointData = [];
+    const categoryArr = [];
     for (const concept of concepts.results) {
       const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
       const totalCount = (this.props.countAnalysis && this.props.countAnalysis.results) ?

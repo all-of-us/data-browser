@@ -5,7 +5,6 @@ import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
-import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 

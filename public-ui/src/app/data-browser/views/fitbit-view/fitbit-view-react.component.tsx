@@ -1,11 +1,7 @@
-import { Component } from '@angular/core';
 import {withRouteData} from 'app/components/app-router';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
 import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/chart-biosex-react.component';
 import { ChartFitbitReactComponent } from 'app/data-browser/charts/chart-fitbit/chart-fitbit-react.component';
-import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
-import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
@@ -110,9 +106,6 @@ const styleCss = `
 }
 `;
 
-interface Props {
-}
-
 interface State {
     concepts: any;
     domainCountAnalysis: any;
@@ -124,7 +117,7 @@ interface State {
     loading: boolean;
 }
 
-export const FitbitReactComponent = withRouteData(class extends React.Component<Props, State> {
+export const FitbitReactComponent = withRouteData(class extends React.Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {concepts: fitbitConcepts, domainCountAnalysis: null, totalCountAnalysis: null, searchText: localStorage.getItem('searchText'), selectedItem: 'any Fitbit data',
