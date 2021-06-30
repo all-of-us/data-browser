@@ -63,10 +63,7 @@ export const SourceTreeComponent = (
             };
         }
         conceptClick() {
-            localStorage.setItem('selectedTreeConceptId', this.props.node.conceptId);
-            localStorage.setItem('selectedTreeCode', this.props.node.code);
-            localStorage.setItem('selectedTreeName', this.props.node.name);
-            localStorage.setItem('selectedTreeType', this.props.node.type);
+            localStorage.setItem('selectedTreeNode', JSON.stringify(this.props.node));
         }
 
         handleClick() {

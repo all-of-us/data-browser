@@ -94,6 +94,8 @@ interface State {
     selectedTreeCode: number;
     selectedTreeName: string;
     selectedTreeType: string;
+    selectedTreeExplorable: number;
+    selectedTreeNode: any;
     unitNames: any;
     toDisplayMeasurementGenderAnalysis: any;
     loading: boolean;
@@ -137,7 +139,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             selectedTreeConcept: undefined,
             selectedTreeCode: undefined,
             selectedTreeName: undefined,
-            selectedTreeType: undefined
+            selectedTreeType: undefined,
+            selectedTreeExplorable: undefined,
+            selectedTreeNode: undefined
         };
     }
 
@@ -173,8 +177,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             }).catch(e => {
                 console.log(e, 'error');
             });
-        console.log(concept.conceptId);
-
         dataBrowserApi().getSourceConcepts(concept.conceptId)
             .then(results => {
                 const sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
@@ -326,15 +328,16 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                 this.setState({
                     node: treeData
                 });
-                console.log(result, 'result');
             });
     }
 
     childConceptClicked() {
-        const id = parseInt(localStorage.getItem('selectedTreeConceptId'), 10);
-        const code = parseInt(localStorage.getItem('selectedTreeCode'), 10);
-        const name = localStorage.getItem('selectedTreeName');
-        const type = localStorage.getItem('selectedTreeType');
+        const selectedNode = JSON.parse(localStorage.getItem('selectedTreeNode'));
+        const id = parseInt(selectedNode.conceptId, 10);
+        const code = parseInt(selectedNode.code, 10);
+        const name = selectedNode.name;
+        const type = selectedNode.type;
+        const explorable = selectedNode.canSelect;
         dataBrowserApi().getSourceConcepts(id)
             .then(results => {
                 const sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
@@ -343,7 +346,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     selectedTreeConcept: id,
                     selectedTreeCode: code,
                     selectedTreeName: name,
-                    selectedTreeType: type
+                    selectedTreeType: type,
+                    selectedTreeExplorable: explorable,
+                    selectedTreeNode: selectedNode
                 });
             }).catch(e => {
                 console.log(e, 'error');
@@ -355,9 +360,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
             genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeCode,
-            selectedTreeName, selectedTreeType } = this.state;
+            selectedTreeName, selectedTreeType, selectedTreeExplorable,selectedTreeNode } = this.state;
         const tabIndex = 0;
-        // TODO Add in sources tree in here
         return <React.Fragment>
             <style>{cssStyles}</style>
             <div className='graph-menu'>
@@ -428,12 +432,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         <div className='source-layout' style={styles.sourceLayout}>
                             <div className='sources-chart' style={styles.sourcesChart} key='sources-chart'>
                                 <div className='concept-box-info' style={styles.conceptBoxInfo}>
-                                    <p style={styles.conceptBoxInfoP}><strong>{selectedTreeName ? selectedTreeName : concept.conceptName}
+                                    <p style={styles.conceptBoxInfoP}><strong>{selectedTreeNode ? selectedTreeNode.name : concept.conceptName}
                                     </strong></p>
-                                    <p style={styles.conceptBoxInfoP}>{selectedTreeType ? selectedTreeType : concept.vocabularyId}
-                                        Code: {selectedTreeCode ? selectedTreeCode : concept.conceptCode}</p>
+                                    <p style={styles.conceptBoxInfoP}>{selectedTreeNode ? selectedTreeNode.type : concept.vocabularyId}
+                                        Code: {selectedTreeNode ? selectedTreeNode.code : concept.conceptCode}</p>
                                     <p style={styles.conceptBoxInfoP}>
-                                        OMOP Concept Id: {selectedTreeConcept ? selectedTreeConcept : concept.conceptId}</p>
+                                        OMOP Concept Id: {selectedTreeNode ? selectedTreeNode.conceptId : concept.conceptId}</p>
+                                    {(selectedTreeNode && selectedTreeNode.canSelect == 1) && <a href={'/ehr/'+ selectedTreeNode.domainId.toLowerCase() +'s?search='+selectedTreeNode.conceptId}>Explore this concept</a>}
+
                                 </div>
                                 <SourcesChartReactComponent concepts={sourceConcepts} />
                             </div>
@@ -444,7 +450,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         {node && <SourceTreeComponent
                                             node={node}
                                             selectedTreeConcept={selectedTreeConcept}
-                                            conceptedClicked={() => { this.childConceptClicked(); }} first={true} />}
+                                            conceptedClicked={() => { this.childConceptClicked(); }} 
+                                            first={true} />}
                                     </div>
                                 </div>}
                         </div>}
