@@ -88,13 +88,9 @@ interface State {
     mixtureOfValues: boolean;
     noUnitValueButtons: any;
     conceptAnalyses: any;
+    selectedTreeConcept: any;
     selectedUnit: string;
     sourceConcepts: any;
-    selectedTreeConcept: number;
-    selectedTreeCode: number;
-    selectedTreeName: string;
-    selectedTreeType: string;
-    selectedTreeExplorable: number;
     selectedTreeNode: any;
     unitNames: any;
     toDisplayMeasurementGenderAnalysis: any;
@@ -334,20 +330,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     childConceptClicked() {
         const selectedNode = JSON.parse(localStorage.getItem('selectedTreeNode'));
         const id = parseInt(selectedNode.conceptId, 10);
-        const code = parseInt(selectedNode.code, 10);
-        const name = selectedNode.name;
-        const type = selectedNode.type;
-        const explorable = selectedNode.canSelect;
         dataBrowserApi().getSourceConcepts(id)
             .then(results => {
-                const sources = results.items.length > 10 ? results.items.slice(0, 10) : results.items;
                 this.setState({
-                    sourceConcepts: sources,
-                    selectedTreeConcept: id,
-                    selectedTreeCode: code,
-                    selectedTreeName: name,
-                    selectedTreeType: type,
-                    selectedTreeExplorable: explorable,
                     selectedTreeNode: selectedNode
                 });
             }).catch(e => {
@@ -359,8 +344,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         const { searchTerm, concept, domain } = this.props;
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
-            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeCode,
-            selectedTreeName, selectedTreeType, selectedTreeExplorable,selectedTreeNode } = this.state;
+            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeNode } = this.state;
         const tabIndex = 0;
         return <React.Fragment>
             <style>{cssStyles}</style>
@@ -432,13 +416,18 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         <div className='source-layout' style={styles.sourceLayout}>
                             <div className='sources-chart' style={styles.sourcesChart} key='sources-chart'>
                                 <div className='concept-box-info' style={styles.conceptBoxInfo}>
-                                    <p style={styles.conceptBoxInfoP}><strong>{selectedTreeNode ? selectedTreeNode.name : concept.conceptName}
-                                    </strong></p>
+                                    <p style={styles.conceptBoxInfoP}>
+                                        <strong>{selectedTreeNode ? selectedTreeNode.name : concept.conceptName}
+                                        </strong></p>
                                     <p style={styles.conceptBoxInfoP}>{selectedTreeNode ? selectedTreeNode.type : concept.vocabularyId}
                                         Code: {selectedTreeNode ? selectedTreeNode.code : concept.conceptCode}</p>
                                     <p style={styles.conceptBoxInfoP}>
                                         OMOP Concept Id: {selectedTreeNode ? selectedTreeNode.conceptId : concept.conceptId}</p>
-                                    {(selectedTreeNode && selectedTreeNode.canSelect == 1) && <a href={'/ehr/'+ selectedTreeNode.domainId.toLowerCase() +'s?search='+selectedTreeNode.conceptId}>Explore this concept</a>}
+                                    {(selectedTreeNode && selectedTreeNode.canSelect === 1) &&
+                                        <a href={'/ehr/' + selectedTreeNode.domainId.toLowerCase()
+                                            + 's?search=' + selectedTreeNode.conceptId}>
+                                            Explore this concept
+                                        </a>}
 
                                 </div>
                                 <SourcesChartReactComponent concepts={sourceConcepts} />
@@ -450,7 +439,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         {node && <SourceTreeComponent
                                             node={node}
                                             selectedTreeConcept={selectedTreeConcept}
-                                            conceptedClicked={() => { this.childConceptClicked(); }} 
+                                            conceptedClicked={() => { this.childConceptClicked(); }}
                                             first={true} />}
                                     </div>
                                 </div>}
