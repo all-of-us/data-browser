@@ -92,7 +92,7 @@ export const SourceTreeComponent = (
                 <div style={node.group ? { ...styles.treeRow } : { ...styles.treeRow, ...styles.noChildren }}>
                     {node.group && <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} />}
 
-                    <span onClick={() => {conceptedClicked(this.props.node);}}
+                    <span onClick={() => {conceptedClicked(this.props.node); }}
                     style={(selectedTreeConcept === parseInt(node.conceptId, 10)) ?
                         { ...styles.treeActive } : {}}>{node.name}</span>
                     <span style={styles.count}>{node.count}</span>
