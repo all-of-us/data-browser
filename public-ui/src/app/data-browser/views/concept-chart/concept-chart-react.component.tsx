@@ -133,10 +133,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             loading: true,
             node: undefined,
             selectedTreeConcept: undefined,
-            selectedTreeCode: undefined,
-            selectedTreeName: undefined,
-            selectedTreeType: undefined,
-            selectedTreeExplorable: undefined,
             selectedTreeNode: undefined
         };
     }
@@ -333,7 +329,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         dataBrowserApi().getSourceConcepts(id)
             .then(results => {
                 this.setState({
-                    selectedTreeNode: selectedNode
+                    selectedTreeNode: selectedNode,
+                    selectedTreeConcept: id
                 });
             }).catch(e => {
                 console.log(e, 'error');
