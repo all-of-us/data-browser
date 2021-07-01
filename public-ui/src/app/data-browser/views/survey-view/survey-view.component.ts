@@ -71,16 +71,10 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
+      this.prevSearchText = params.search;
+      this.searchText.setValue(params.search);
     });
     this.closePopUp = this.closePopUp.bind(this);
-    this.route.queryParams.subscribe(params => {
-      if (params['search']) {
-        this.prevSearchText = params.search;
-        this.searchText.setValue(this.prevSearchText);
-      } else {
-        this.prevSearchText = '';
-      }
-    });
     this.copeDisclaimer = `<div class="cope-statement"><span class='cope-statement-body'>This optional survey was released to participants for completion
     at multiple time points during the COVID-19 pandemic. As a result, a participant may have
     multiple data points if they completed more than one survey.</span>
@@ -138,10 +132,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.searchText.setValue(this.prevSearchText);
     if (this.prevSearchText && this.prevSearchText != null) {
       this.router.navigate(
-        ['survey/' + this.domainId.toLowerCase()],
-        {
-          queryParams: { search: this.searchText.value },
-        }
+        ['survey/' + this.domainId.toLowerCase() + '/' + this.searchText.value],
       );
     }
     // Filter when text value changes
@@ -162,6 +153,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       .subscribe({
         next: results => {
           this.processSurveyQuestions(results);
+          this.filterResults();
         },
         error: err => {
           console.log('Error searching: ', err);
@@ -317,7 +309,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     if (this.surveyConceptId && this.surveyConceptId.toString()) {
       this.subscriptions.push(this.api.getSurveyQuestions(
-        this.surveyConceptId.toString(), this.searchText.value).subscribe({
+        this.surveyConceptId.toString(), this.searchText.value, this.surveyExtraQuestionConceptIds).subscribe({
           next: x => {
             this.processSurveyQuestions(x);
             this.filterResults();
@@ -388,12 +380,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   public filterResults() {
     if (this.searchText.value && this.searchText.value !== 'null') {
       this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          queryParams: { search: this.searchText.value },
-          queryParamsHandling: 'merge'
-        });
+        ['survey/' + this.domainId.toLowerCase() + '/' + this.searchText.value]
+      );
     } else {
       this.router.navigate(
         [],
@@ -640,31 +628,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getMatchingQuestionCount() {
     return this.surveyResultCount;
-  }
-
-  public resetExpansion() {
-    for (const q of this.questions) {
-      q.expanded = false;
-      q.resultFetchComplete = false;
-      for (const r of q.countAnalysis.results) {
-        r.expanded = false;
-        if (r.hasSubQuestions === 1) {
-          for (const sq of r.subQuestions) {
-            sq.subExpanded = false;
-
-            for (const sr of sq.countAnalysis.results) {
-              sr.expanded = false;
-
-              if (sr.hasSubQuestions === 1) {
-                for (const sq2 of sr.subQuestions) {
-                  sq2.subExpanded = false;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 
   closePopUp() {

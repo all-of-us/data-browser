@@ -9,7 +9,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-metadata';
-import { navigateByUrl } from 'app/utils/navigation';
+import { navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
@@ -100,7 +100,7 @@ const styles = reactStyles({
     },
     topicText: {
         borderTop: '1px solid #cccccc',
-        fontSize: '1.2em',
+        fontSize: '1.1em',
         fontWeight: 500,
         paddingTop: '2%',
         paddingBottom: '2%'
@@ -169,6 +169,7 @@ interface Props {
 }
 
 interface State {
+    domainId: string;
     survey: any;
     surveyPdfUrl: any;
     isCopeSurvey: boolean;
@@ -184,16 +185,18 @@ interface State {
 export class SurveyViewReactComponent extends React.Component<Props, State> {
     search = _.debounce(() => {
           this.getSurvey();
-          this.fetchSurvey(this.props.domainId);
+          this.fetchSurvey(this.state.domainId);
         }, 1000);
 
     constructor(props) {
         super(props);
+        const {id, search} = urlParamsStore.getValue();
         this.state = {
             isCopeSurvey: false,
             survey: null,
             surveyPdfUrl: '',
-            searchWord: this.props.searchWord,
+            domainId: id ? id : this.props.domainId,
+            searchWord: search ? search : this.props.searchWord,
             extraQuestionConceptIds: [],
             showAnswer: {},
             questions: [],
@@ -204,12 +207,12 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this.fetchSurvey(this.props.domainId);
+        const {domainId} = this.state;
+        this.fetchSurvey(domainId);
     }
 
     fetchSurvey(domain) {
-        const {domainId} = this.props;
-        const {searchWord} = this.state;
+        const {domainId, searchWord} = this.state;
         let fetchDomain = domainId;
         if (domain && domainId !== domain) {
             fetchDomain = domain;
@@ -323,6 +326,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
   }
 
   backToMain() {
+        localStorage.setItem('searchText', this.state.searchWord);
         navigateByUrl('');
   }
 

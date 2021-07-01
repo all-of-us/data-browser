@@ -276,12 +276,11 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     localStorage.setItem('surveyModule', JSON.stringify(r));
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
+        let routerDest = 'survey/' + idName.conceptName.toLowerCase().split(' ').join('-');
         if (search) {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-')],
-            { queryParams: { search: search } });
-        } else {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-')]);
+          routerDest += '/' + search;
         }
+        this.router.navigate([routerDest]);
       }
     });
   }

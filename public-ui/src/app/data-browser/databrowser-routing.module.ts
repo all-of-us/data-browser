@@ -4,12 +4,15 @@ import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
+import { environment } from 'environments/environment';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
 import {AppRouting} from 'app/app-routing';
+
+const reactSurvey = environment.reactSurvey;
 
 const routes: Routes = [
   {
@@ -56,6 +59,16 @@ const routes: Routes = [
           }
         },
         {
+          path: 'survey/:id/:search',
+          component: SurveyViewComponent,
+          data: {
+            title: 'View Survey Questions and Answers',
+            breadcrumb: {
+              value: ':id survey',
+            }
+          }
+        },
+        {
           path: 'ehr/:id',
           component: EhrViewComponent,
           data: {
@@ -93,8 +106,14 @@ const routes: Routes = [
       }
     ]
   }
-
 ];
+
+if (reactSurvey) {
+    for (const route of routes.filter(r => r.path === '')[0].children[0].children.filter(c => c.path.indexOf('survey') > -1)) {
+        route.data = {};
+        route.component = AppRouting;
+    }
+}
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
