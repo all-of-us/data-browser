@@ -186,12 +186,15 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                 <div className='fm-menu'>
                     { concepts && concepts.map((concept, index) => {
                         const iconClass = 'fas ' + concept.icon;
-                        const conceptClass = selectedItem.toLowerCase() === concept.displayName.toLowerCase() ? styles.fmMenuItemActive : styles.fmMenuItem;
+                        const conceptClass = selectedItem.toLowerCase() === concept.displayName.toLowerCase() ?
+                        styles.fmMenuItemActive : styles.fmMenuItem;
                         return <div className='fm-menu-item-container' style={styles.fmMenuItemContainer} key={index}>
                             <div tabIndex={tabIndex} style={conceptClass} onClick={() => this.setGraphs(concept)}>
                                 <i className={iconClass} style={styles.fas}></i>
-                                <div className='fm-menu-item-display' style={styles.fmMenuItemDisplay}><span style={styles.displayName}>{concept.displayName}</span>
-                                    <TooltipReactComponent tooltipKey={concept.tooltipKey} label='Fitbit concept Hover' searchTerm={searchText} action='Fitbit concept hover'/>
+                                <div className='fm-menu-item-display' style={styles.fmMenuItemDisplay}>
+                                <span style={styles.displayName}>{concept.displayName}</span>
+                                    <TooltipReactComponent tooltipKey={concept.tooltipKey}
+                                    label='Fitbit concept Hover' searchTerm={searchText} action='Fitbit concept hover'/>
                                 </div>
                             </div>
                         </div>;
@@ -204,13 +207,15 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                         <div className='fm-chart' style={styles.fmChart}>
                             <div className='display-body' style={styles.chartDisplayBody}>Participants with {selectedDisplay}</div>
                             {selectedAnalyses && totalCountAnalysis &&
-                                <ChartFitbitReactComponent concepts={selectedAnalyses.participantCountAnalysis} countAnalysis={totalCountAnalysis}/>
+                                <ChartFitbitReactComponent concepts={selectedAnalyses.participantCountAnalysis}
+                                countAnalysis={totalCountAnalysis}/>
                             }
                         </div>
                         <div className='fm-chart' style={styles.fmChart}>
                         <div className='display-body' style={styles.chartDisplayBody}>Sex assigned at birth</div>
                         {selectedAnalyses && totalCountAnalysis && domainCountAnalysis &&
-                        <BioSexChartReactComponent genderAnalysis={selectedAnalyses.genderAnalysis} genderCountAnalysis={domainCountAnalysis.genderCountAnalysis}
+                        <BioSexChartReactComponent genderAnalysis={selectedAnalyses.genderAnalysis}
+                        genderCountAnalysis={domainCountAnalysis.genderCountAnalysis}
                                                 domain='fitbit' selectedResult={selectedResult}/>
                         }
                         </div>

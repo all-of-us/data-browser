@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-fitbit-view',
