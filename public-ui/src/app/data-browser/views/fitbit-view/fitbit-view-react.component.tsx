@@ -10,22 +10,33 @@ import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
 const styles = reactStyles({
+    fmLayout: {
+        display: 'grid',
+        gridTemplateColumns: '20% 80%',
+        columnGap: '0.5rem'
+    },
+    fmBody: {
+        background: 'white',
+        borderRadius: '3px',
+        padding: '2rem',
+        paddingTop: '0'
+    },
+    fmBodyTop: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    fmChart: {
+        paddingTop: '1rem',
+        background: '#216fb40d',
+        width: '100%',
+        padding: '1rem',
+        borderRadius: '3px',
+        minWidth: '15rem',
+        paddingBottom: '1rem'
+    }
 });
 
 const styleCss = `
-.fm-layout {
-    display: grid;
-    grid-template-columns: 20% 80%;
-    column-gap: 0.5rem;
-}
-
-.fm-body {
-    background: white;
-    border-radius: 3px;
-    padding: 2rem;
-    padding-top: 0;
-}
-
 .loading-layout {
     display: flex;
     justify-content: center;
@@ -35,28 +46,17 @@ const styleCss = `
     padding-bottom: 1rem;
     text-transform: capitalize;
 }
-.fm-body-top {
-    display: flex;
-    justify-content: space-between;
-}
 .fm-body-bottom {
     padding-top: 1rem;
     display: flex;
     justify-content: center;
 }
-.fm-body-bottom .fm-chart {
+.fm-body-bottom {
     padding-top: 1rem;
     width: 100%;
 }
 
-.fm-chart {
-    background: #216fb40d;
-    width: calc(50% - 0.5rem);
-    padding: 1rem;
-    border-radius: 3px;
-    min-width: 15rem;
-}
-.fm-chart .display-body {
+.display-body {
     padding-bottom: 1rem;
 }
 .fm-menu-item {
@@ -182,7 +182,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
             <h1>Fitbit Data</h1>
             {loading && <Spinner />}
             {!loading &&
-            <div className='fm-layout'>
+            <div className='fm-layout' style={styles.fmLayout}>
                 <div className='fm-menu'>
                     { concepts && concepts.map((concept, index) => {
                         let iconClass = 'fas ' + concept.icon;
@@ -198,16 +198,16 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                     })
                     }
                 </div>
-                <div className='fm-body db-card'>
+                <div className='fm-body' style={styles.fmBody}>
                     <h2>{selectedDisplay} </h2>
-                    <div className='fm-body-top'>
-                        <div className='fm-chart'>
+                    <div className='fm-body-top' style={styles.fmBodyTop}>
+                        <div className='fm-chart' style={styles.fmChart}>
                             <div className='display-body'>Participants with {selectedDisplay}</div>
                             {selectedAnalyses && totalCountAnalysis &&
                                 <ChartFitbitReactComponent concepts={selectedAnalyses.participantCountAnalysis} countAnalysis={totalCountAnalysis}/>
                             }
                         </div>
-                        <div className='fm-chart'>
+                        <div className='fm-chart' style={styles.fmChart}>
                         <div className='display-body'>Sex assigned at birth</div>
                         {selectedAnalyses && totalCountAnalysis && domainCountAnalysis &&
                         <BioSexChartReactComponent genderAnalysis={selectedAnalyses.genderAnalysis} genderCountAnalysis={domainCountAnalysis.genderCountAnalysis}
@@ -216,7 +216,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                         </div>
                     </div>
                     <div className='fm-body-bottom'>
-                        <div className='fm-chart'>
+                        <div className='fm-chart' style={styles.fmChart}>
                             <div className='display-body'>Age when physical measurement taken</div>
                             {selectedAnalyses && domainCountAnalysis &&
                                 <AgeChartReactComponent ageAnalysis={selectedAnalyses.ageAnalysis}
