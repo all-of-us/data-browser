@@ -62,10 +62,6 @@ export const SourceTreeComponent = (
                 isHandelSelected: undefined,
             };
         }
-        conceptClick() {
-            localStorage.setItem('selectedTreeNode', JSON.stringify(this.props.node));
-        }
-
         handleClick() {
             this.setState({
                 isHandelSelected: !this.state.isHandelSelected
@@ -96,9 +92,8 @@ export const SourceTreeComponent = (
                 <div style={node.group ? { ...styles.treeRow } : { ...styles.treeRow, ...styles.noChildren }}>
                     {node.group && <ClrIcon onClick={() => this.handleClick()} style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} />}
 
-                    <span onClick={() => {
-                        this.conceptClick(); conceptedClicked();
-                    }} style={(selectedTreeConcept === parseInt(node.conceptId, 10)) ?
+                    <span onClick={() => {conceptedClicked(this.props.node)}}
+                    style={(selectedTreeConcept === parseInt(node.conceptId, 10)) ?
                         { ...styles.treeActive } : {}}>{node.name}</span>
                     <span style={styles.count}>{node.count}</span>
                 </div>

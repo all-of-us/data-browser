@@ -61,6 +61,12 @@ const styles = reactStyles({
         marginLeft: '1em',
         marginBottom: '1em',
         fontSize: '.8em'
+    },
+    exploreConceptLink: {
+        fontSize: '14px',
+        textAlign: 'left',
+        color: '#0079b8',
+        cursor: 'pointer',
     }
 });
 
@@ -323,8 +329,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             });
     }
 
-    childConceptClicked() {
-        const selectedNode = JSON.parse(localStorage.getItem('selectedTreeNode'));
+    childConceptClicked(selectedNode: any) {
         const id = parseInt(selectedNode.conceptId, 10);
         dataBrowserApi().getSourceConcepts(id)
             .then(results => {
@@ -422,7 +427,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         OMOP Concept Id: {selectedTreeNode ? selectedTreeNode.conceptId : concept.conceptId}</p>
                                     {(selectedTreeNode && selectedTreeNode.canSelect === 1) &&
                                         <a href={'/ehr/' + selectedTreeNode.domainId.toLowerCase()
-                                            + 's?search=' + selectedTreeNode.conceptId}>
+                                            + 's?search=' + selectedTreeNode.conceptId} style={styles.exploreConceptLink}>
                                             Explore this concept
                                         </a>}
 
@@ -436,7 +441,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         {node && <SourceTreeComponent
                                             node={node}
                                             selectedTreeConcept={selectedTreeConcept}
-                                            conceptedClicked={() => { this.childConceptClicked(); }}
+                                            conceptedClicked={(e) => { this.childConceptClicked(e); }}
                                             first={true} />}
                                     </div>
                                 </div>}
