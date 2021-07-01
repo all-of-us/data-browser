@@ -1,0 +1,42 @@
+<div class="fm-container">
+    <h1>Fitbit Data</h1>
+    <div class="fm-layout">
+        <div class="fm-menu">
+            <ng-container *ngFor="let menuItem of fitbitConcepts">
+                <div class="fm-menu-item-container">
+                    <div tabindex="0" (keydown.enter)="setGraphs(menuItem)"  (click)="setGraphs(menuItem)" class="fm-menu-item"
+                         [ngClass]="{'active': selectedItem == menuItem.displayName}"> <i class="fas {{menuItem.icon}}"></i>
+                        <div class="fm-menu-item-display"><span>{{menuItem.displayName}}</span>
+                            <app-tooltip-react [tooltipKey]="menuItem.tooltipKey"></app-tooltip-react>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div [ngClass]= "{'loading-layout': loading()}" class="fm-body db-card">
+            <app-spinner [loading]="loading()"></app-spinner>
+            <ng-container *ngIf="!loading()">
+                <h2>{{selectedDisplay}} </h2>
+                <div class="fm-body-top">
+                    <div class="fm-chart">
+                        <div class="display-body">Participants with
+                            {{selectedDisplay}}
+                        </div>
+                        <chart-fitbit [concepts]='selectedAnalyses.participantCountAnalysis' [countAnalysis]="totalCountAnalysis"></chart-fitbit>
+                    </div>
+                    <div class="fm-chart">
+                        <div class="display-body">Sex assigned at birth</div>
+                        <app-biosex-chart-react [genderAnalysis]='selectedAnalyses.genderAnalysis' [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis" [domain]="'fitbit'"></app-biosex-chart-react>
+                    </div>
+                </div>
+                <div class="fm-body-bottom">
+                    <div class="fm-chart">
+                        <div class="display-body">Age when physical measurement taken</div>
+                        <app-age-chart-react [ageAnalysis]='selectedAnalyses.ageAnalysis' [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis" [domain]="'fitbit'"></app-age-chart-react>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
