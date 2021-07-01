@@ -133,7 +133,6 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
     const FITBIT_MEASUREMENTS = ['Any Fitbit Data', 'Heart Rate (Summary)', 'Heart rate (minute-level)', 'Activity (daily summary)', 'Activity intraday steps (minute-level)'];
     dataBrowserApi().getFitbitAnalysisResults(FITBIT_MEASUREMENTS).then(
       (result) => {
-        const items = result.items;
         let totalCountAnalysis = null;
         for (const item of result.items) {
             const fitbitConcept = concepts.filter(concept =>
@@ -156,7 +155,8 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
             selectedAnalyses = matchingConcepts[0];
         }
        }
-       this.setState({concepts: concepts, totalCountAnalysis: totalCountAnalysis, selectedItem: selectedItem, selectedDisplay: selectedDisplay, selectedAnalyses: selectedAnalyses, loading: false});
+       this.setState({concepts: concepts, totalCountAnalysis: totalCountAnalysis, selectedItem: selectedItem,
+       selectedDisplay: selectedDisplay, selectedAnalyses: selectedAnalyses, loading: false});
     });
   }
 
@@ -173,7 +173,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
 
   render() {
     const {concepts, searchText, selectedItem, selectedDisplay, selectedAnalyses, totalCountAnalysis, domainCountAnalysis, loading} = this.state;
-    let tabIndex = 0;
+    const tabIndex = 0;
     let selectedResult = null;
     return <React.Fragment>
         <style>{styleCss}</style>
@@ -184,7 +184,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
             <div className='fm-layout' style={styles.fmLayout}>
                 <div className='fm-menu'>
                     { concepts && concepts.map((concept, index) => {
-                        let iconClass = 'fas ' + concept.icon;
+                        const iconClass = 'fas ' + concept.icon;
                         let conceptClass = selectedItem.toLowerCase() === concept.displayName.toLowerCase() ? styles.fmMenuItemActive : styles.fmMenuItem;
                         return <div className='fm-menu-item-container' style={styles.fmMenuItemContainer} key={index}>
                             <div tabIndex={tabIndex} style={conceptClass} onClick={() => this.setGraphs(concept)}>
