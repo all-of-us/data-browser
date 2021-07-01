@@ -6,6 +6,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { fitbitConcepts } from 'app/utils/constants';
+import { urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
@@ -109,7 +110,6 @@ interface State {
     concepts: any;
     domainCountAnalysis: any;
     totalCountAnalysis: any;
-    searchText: string;
     selectedItem: any;
     selectedDisplay: any;
     selectedAnalyses: any;
@@ -119,7 +119,7 @@ interface State {
 export const FitbitReactComponent = withRouteData(class extends React.Component<{}, State> {
   constructor(props) {
     super(props);
-    this.state = {concepts: fitbitConcepts, domainCountAnalysis: null, totalCountAnalysis: null, searchText: localStorage.getItem('searchText'), selectedItem: 'any Fitbit data',
+    this.state = {concepts: fitbitConcepts, domainCountAnalysis: null, totalCountAnalysis: null, selectedItem: 'any Fitbit data',
     selectedDisplay: 'any Fitbit data', selectedAnalyses: null, loading: true};
   }
 
@@ -130,6 +130,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
 
   getFitbitData() {
     const {concepts} = this.state;
+    const {search} = urlParamsStore.getValue();
     const FITBIT_MEASUREMENTS = ['Any Fitbit Data', 'Heart Rate (Summary)', 'Heart rate (minute-level)', 'Activity (daily summary)', 'Activity intraday steps (minute-level)'];
     dataBrowserApi().getFitbitAnalysisResults(FITBIT_MEASUREMENTS).then(
       (result) => {
@@ -146,9 +147,9 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
        let selectedItem = this.state.selectedItem;
        let selectedDisplay = this.state.selectedDisplay;
        let selectedAnalyses = result.items[0];
-       if (this.state.searchText) {
+       if (search) {
         const matchingConcepts = concepts.filter(concept =>
-                     concept.conceptName.toLowerCase().includes(this.state.searchText.toLowerCase()));
+                     concept.conceptName.toLowerCase().includes(search.toLowerCase()));
         if (matchingConcepts && matchingConcepts.length > 0) {
             selectedItem = matchingConcepts[0].conceptName;
             selectedDisplay = matchingConcepts[0].displayName;
@@ -172,8 +173,9 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
   }
 
   render() {
-    const {concepts, searchText, selectedItem, selectedDisplay, selectedAnalyses, totalCountAnalysis,
+    const {concepts, selectedItem, selectedDisplay, selectedAnalyses, totalCountAnalysis,
     domainCountAnalysis, loading} = this.state;
+    const {search} = urlParamsStore.getValue();
     const tabIndex = 0;
     const selectedResult = null;
     return <React.Fragment>
@@ -186,7 +188,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                 <div className='fm-menu'>
                     { concepts && concepts.map((concept, index) => {
                         const iconClass = 'fas ' + concept.icon;
-                        const conceptClass = selectedItem.toLowerCase() === concept.displayName.toLowerCase() ?
+                        const conceptClass = selectedDisplay.toLowerCase() === concept.displayName.toLowerCase() ?
                         styles.fmMenuItemActive : styles.fmMenuItem;
                         return <div className='fm-menu-item-container' style={styles.fmMenuItemContainer} key={index}>
                             <div tabIndex={tabIndex} style={conceptClass} onClick={() => this.setGraphs(concept)}>
@@ -194,7 +196,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                                 <div className='fm-menu-item-display' style={styles.fmMenuItemDisplay}>
                                 <span style={styles.displayName}>{concept.displayName}</span>
                                     <TooltipReactComponent tooltipKey={concept.tooltipKey}
-                                    label='Fitbit concept Hover' searchTerm={searchText} action='Fitbit concept hover'/>
+                                    label='Fitbit concept Hover' searchTerm={search} action='Fitbit concept hover'/>
                                 </div>
                             </div>
                         </div>;

@@ -24,6 +24,14 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
             breadcrumb: {value: 'Fitbit Data'}
           }})}
     />
+    <AppRoute
+      path='/fitbit/:search'
+      component={() => FitbitReactComponent(
+        {routeData: {
+            title: 'Fitbit Data',
+            breadcrumb: {value: 'Fitbit Data'}
+          }})}
+    />
   </AppRouter>;
 };
 

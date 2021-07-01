@@ -80,6 +80,11 @@ const routes: Routes = [
           data: {}
         },
         {
+          path: 'fitbit/:search',
+          component: AppRouting,
+          data: {}
+        },
+        {
           path: 'introductory-videos',
           component:  AppRouting,
           data: {}
