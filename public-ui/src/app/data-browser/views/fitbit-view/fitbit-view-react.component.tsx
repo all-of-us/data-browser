@@ -172,9 +172,10 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
   }
 
   render() {
-    const {concepts, searchText, selectedItem, selectedDisplay, selectedAnalyses, totalCountAnalysis, domainCountAnalysis, loading} = this.state;
+    const {concepts, searchText, selectedItem, selectedDisplay, selectedAnalyses, totalCountAnalysis,
+    domainCountAnalysis, loading} = this.state;
     const tabIndex = 0;
-    let selectedResult = null;
+    const selectedResult = null;
     return <React.Fragment>
         <style>{styleCss}</style>
         <div className='fm-container'>
@@ -185,7 +186,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                 <div className='fm-menu'>
                     { concepts && concepts.map((concept, index) => {
                         const iconClass = 'fas ' + concept.icon;
-                        let conceptClass = selectedItem.toLowerCase() === concept.displayName.toLowerCase() ? styles.fmMenuItemActive : styles.fmMenuItem;
+                        const conceptClass = selectedItem.toLowerCase() === concept.displayName.toLowerCase() ? styles.fmMenuItemActive : styles.fmMenuItem;
                         return <div className='fm-menu-item-container' style={styles.fmMenuItemContainer} key={index}>
                             <div tabIndex={tabIndex} style={conceptClass} onClick={() => this.setGraphs(concept)}>
                                 <i className={iconClass} style={styles.fas}></i>
