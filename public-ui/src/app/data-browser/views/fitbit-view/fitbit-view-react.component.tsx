@@ -87,14 +87,13 @@ const styles = reactStyles({
         padding: '1rem',
         borderRadius: '3px',
         minWidth: '15rem'
+    },
+    displayName: {
+        textTransform: 'capitalize'
     }
 });
 
 const styleCss = `
-.fm-menu-item-display span::first-letter {
-    text-transform: uppercase;
-}
-
 @media (max-width: 900px) {
     .fm-body-top .fm-chart {
         width: 100%;
@@ -190,7 +189,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
                         return <div className='fm-menu-item-container' style={styles.fmMenuItemContainer} key={index}>
                             <div tabIndex={tabIndex} style={conceptClass} onClick={() => this.setGraphs(concept)}>
                                 <i className={iconClass} style={styles.fas}></i>
-                                <div className='fm-menu-item-display' style={styles.fmMenuItemDisplay}><span>{concept.displayName}</span>
+                                <div className='fm-menu-item-display' style={styles.fmMenuItemDisplay}><span style={styles.displayName}>{concept.displayName}</span>
                                     <TooltipReactComponent tooltipKey={concept.tooltipKey} label='Fitbit concept Hover' searchTerm={searchText} action='Fitbit concept hover'/>
                                 </div>
                             </div>
