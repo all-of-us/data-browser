@@ -173,7 +173,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
   }
 
   render() {
-    const {concepts, selectedItem, selectedDisplay, selectedAnalyses, totalCountAnalysis,
+    const {concepts, selectedDisplay, selectedAnalyses, totalCountAnalysis,
     domainCountAnalysis, loading} = this.state;
     const {search} = urlParamsStore.getValue();
     const tabIndex = 0;
