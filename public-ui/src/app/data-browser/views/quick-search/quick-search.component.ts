@@ -197,7 +197,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.resetDomainResults();
           }
         }));
-        this.fitbitMeasurementsFound = 4;
   }
   ngOnDestroy() {
     for (const s of this.subscriptions) {
@@ -217,10 +216,10 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
+    results.domainInfos.filter(domain => domain.standardConceptCount > 0);
     this.domainResults = results.domainInfos.filter(
             domain => domain.name.toLowerCase() !== 'physical measurements' &&
       domain.name.toLowerCase() !== 'fitbit');
-    this.domainResults = this.domainResults.filter(domain => domain.standardConceptCount > 0);
     const physicalMeasurementDomainInfo =
       results.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements');
     const fitbitDomainInfo =

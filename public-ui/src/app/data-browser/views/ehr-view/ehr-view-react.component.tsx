@@ -409,7 +409,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
 
     backToMain() {
         if (this.state.searchWord) {
-                localStorage.setItem('searchText', this.state.searchWord);
+            localStorage.setItem('searchText', this.state.searchWord);
         }
         navigateByUrl('');
     }
