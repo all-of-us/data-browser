@@ -66,7 +66,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   isCopeSurvey = false;
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private api: DataBrowserService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
