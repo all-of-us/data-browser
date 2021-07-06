@@ -459,7 +459,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     const noMatchFilter = 1;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
     const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
-    console.log('test');
     return <React.Fragment>
         <style>{cssStyles}</style>
         <div className='page-header' style={styles.pageHeader}>

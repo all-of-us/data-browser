@@ -434,7 +434,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                 </div>
                                 <SourcesChartReactComponent concepts={sourceConcepts} />
                             </div>
-                            {(domain === 'conditions' || domain === 'procedures') &&
+                            {(name.toLowerCase() === 'conditions' || name.toLowerCase() === 'procedures') &&
                                 <div style={{ width: '100%' }}>
                                     <div style={styles.treeHeading}>Count Breakdown ({concept.vocabularyId})</div>
                                     <div style={styles.treeView}>

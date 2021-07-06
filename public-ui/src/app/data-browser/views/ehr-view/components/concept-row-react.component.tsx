@@ -158,8 +158,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         this.state = {
             showMoreSynonyms: false,
             showMoreDrugBrands: false,
-            showConceptChart: props.selectedConcept &&
-            props.selectedConcept.conceptId === props.concept.conceptId,
+            showConceptChart: props.selectedConcept ? (props.selectedConcept &&
+            props.selectedConcept.conceptId === props.concept.conceptId) : (props.searchTerm ? props.searchTerm == props.concept.conceptId : false),
             graphToShow: props.domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
             showCopyAlert: false,
             selectedConcept: this.props.selectedConcept
@@ -167,7 +167,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
 
   componentDidMount() {
-    if (this.props.selectedConcept && this.props.concept && this.props.selectedConcept.conceptId === this.props.concept.conceptId) {
+    const {selectedConcept, concept, searchTerm} = this.props;
+    if (selectedConcept ? (selectedConcept && selectedConcept.conceptId === concept.conceptId) :
+        (searchTerm ? searchTerm == concept.conceptId : false)) {
         this.myRef.current.scrollIntoView();
     }
   }
