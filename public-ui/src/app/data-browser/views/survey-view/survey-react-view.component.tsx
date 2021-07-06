@@ -9,7 +9,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-metadata';
-import { navigateByUrl } from 'app/utils/navigation';
+import { navigate, navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
@@ -84,26 +84,11 @@ const styles = reactStyles({
     surveyResults: {
         position: 'relative'
     },
-    questionResult: {
-        borderTop: '1px solid #cccccc',
-        padding: '9px 0',
-        fontSize: '0.9em',
-        fontFamily: 'Arial, sans-serif',
-        color: '#262262',
-        width: '100%'
-    },
     noResults: {
         padding: '1em',
         fontSize: '16px',
         color: '#262262',
         textAlign: 'left'
-    },
-    topicText: {
-        borderTop: '1px solid #cccccc',
-        fontSize: '1.2em',
-        fontWeight: 500,
-        paddingTop: '2%',
-        paddingBottom: '2%'
     },
     surveyView: {
         boxSizing: 'border-box'
@@ -118,12 +103,27 @@ const surveyStyle = `
 .toggle-link, .toggle-link:link, .toggle-link:visited {
     color: #216fb4;
 }
+.topic-text {
+        border-top: 1px solid #cccccc;
+        font-size: 1.2em;
+        font-weight: 500;
+        padding-top: 2%;
+        padding-bottom: 2%;
+}
 @media only screen and (max-width: 767px) {
     .stat-container {
         flex-basis: 100%;
     }
 }
-.question-result:first-of-type .topic-text:first-of-type{
+.question-result {
+        border-top: 1px solid #cccccc;
+        padding: 9px 0;
+        font-size: 0.9em;
+        font-family: Arial, sans-serif;
+        color: #262262;
+        width: 100%;
+}
+.question-result:first-of-type{
     border-top: none;
 }
 .topic-text:first-of-type{
@@ -182,14 +182,16 @@ interface State {
 }
 
 export class SurveyViewReactComponent extends React.Component<Props, State> {
-    search = _.debounce(() => {
+    search = _.debounce((val) => {
           this.getSurvey();
           this.fetchSurvey(this.props.domainId);
+          const {id, search} = urlParamsStore.getValue();
+          navigate(['survey', id, val]);
         }, 1000);
 
     constructor(props) {
         super(props);
-        console.log(props.searchWord);
+        const {id, search} = urlParamsStore.getValue();
         this.state = {
             isCopeSurvey: false,
             survey: null,
@@ -390,7 +392,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                     {questions.map((question, index) => {
                         const key = question.conceptId + '-' + index;
                         if (question.type === 'QUESTION') {
-                            return <div className='question-result' style={styles.questionResult} key={key}>
+                            return <div className='question-result' key={key}>
                                      <div className='secondary-display' style={styles.secondaryDisplay}>
                                         <div className='body-default'>
                                             <SurveyQuestionReactComponent
@@ -404,7 +406,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                                      </div>
                             </div>;
                         } else {
-                            return <h3 className='topic-text' key={key} style={styles.topicText}>{question.questionString}</h3>;
+                            return <h3 className='topic-text' key={key}>{question.questionString}</h3>;
                         }
 
                     })

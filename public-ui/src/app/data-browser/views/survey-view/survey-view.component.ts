@@ -70,8 +70,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
+      this.prevSearchText = params.search ? params.search : '';
+      if (this.prevSearchText) {
+        this.searchText.setValue(this.prevSearchText);
+      }
     });
     this.closePopUp = this.closePopUp.bind(this);
+    /**
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
@@ -80,6 +85,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = '';
       }
     });
+    **/
     this.copeDisclaimer = `<div class="cope-statement"><span class='cope-statement-body'>This optional survey was released to participants for completion
     at multiple time points during the COVID-19 pandemic. As a result, a participant may have
     multiple data points if they completed more than one survey.</span>
