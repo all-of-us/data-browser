@@ -159,7 +159,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
             showMoreSynonyms: false,
             showMoreDrugBrands: false,
             showConceptChart: props.selectedConcept ? (props.selectedConcept &&
-            props.selectedConcept.conceptId === props.concept.conceptId) : (props.searchTerm ? props.searchTerm == props.concept.conceptId : false),
+                props.selectedConcept.conceptId === props.concept.conceptId) :
+                (props.searchTerm ? props.searchTerm == props.concept.conceptId : false),
             graphToShow: props.domain.name.toLowerCase() === 'labs & measurements' ? GraphType.Values : GraphType.BiologicalSex,
             showCopyAlert: false,
             selectedConcept: this.props.selectedConcept
