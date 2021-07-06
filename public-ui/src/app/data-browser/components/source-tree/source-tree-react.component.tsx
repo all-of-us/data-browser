@@ -90,13 +90,14 @@ export const SourceTreeComponent = (
             const nodeChildren = node.children || children;
             return <React.Fragment>
                 <div style={node.group ? { ...styles.treeRow } : { ...styles.treeRow, ...styles.noChildren }}
-                onClick={(e) =>{ e.stopPropagation(); }}>
-                    {node.group && <ClrIcon onClick={(e) => {e.stopPropagation(); this.handleClick();}}
+                onClick={(e) => { e.stopPropagation(); }}>
+                    {node.group && <ClrIcon onClick={(e) => { e.stopPropagation(); this.handleClick();}}
                     style={styles.handle} shape='caret' dir={isHandelSelected ? 'down' : 'right'} />}
                     <span onClick={(e) => {e.stopPropagation(); conceptedClicked(this.props.node); }}
                     style={(selectedTreeConcept === parseInt(node.conceptId, 10)) ?
                         { ...styles.treeActive } : {}}>{node.name}</span>
-                    <span style={styles.count} onClick={(e) => {e.stopPropagation(); conceptedClicked(this.props.node);}}>{node.count}</span>
+                    <span style={styles.count} onClick={(e) => {e.stopPropagation();
+                    conceptedClicked(this.props.node); }}>{node.count}</span>
                 </div>
                 {(isHandelSelected && node.group && nodeChildren) && nodeChildren.map((child, index) =>
                     <div key={index} style={styles.childNode}>
