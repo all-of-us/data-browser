@@ -1,4 +1,5 @@
 <react-db-home *ngIf="reactHomeView"></react-db-home>
+<ng-container *ngIf="!reactHomeView">
 <h1 id='db-title' class="primary-display ">Data Browser</h1>
 <p id="db-desc" class="body-default">
   The Data Browser provides interactive views of the publicly available <i>All of Us</i>
@@ -169,7 +170,7 @@
         <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
       </div>
     </div>
-    <div [routerLink]="['fitbit']" class="result-box pm-box" *ngIf="fitbitMeasurementsFound" > 
+    <div [routerLink]="getFitbitUrl()" class="result-box pm-box" *ngIf="fitbitMeasurementsFound" >
       <p class="result-box-title"> Fitbit
         <app-tooltip-react [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'"
                            [tooltipKey]="'fitbitTileHelpText'"></app-tooltip-react>
@@ -204,3 +205,4 @@
   </div>
 </section>
 <app-popup-react *ngIf="showStatement" [helpText]="'HomeViewPopup'" [onClose]="closePopUp"></app-popup-react>
+</ng-container>

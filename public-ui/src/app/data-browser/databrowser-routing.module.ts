@@ -5,7 +5,6 @@ import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
 import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
-import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
@@ -77,13 +76,13 @@ const routes: Routes = [
         },
         {
           path: 'fitbit',
-          component: FitbitViewComponent,
-          data: {
-            title: 'Fitbit Data',
-            breadcrumb: {
-              value: 'Fitbit Data'
-            }
-          }
+          component: AppRouting,
+          data: {}
+        },
+        {
+          path: 'fitbit/:search',
+          component: AppRouting,
+          data: {}
         },
         {
           path: 'introductory-videos',
