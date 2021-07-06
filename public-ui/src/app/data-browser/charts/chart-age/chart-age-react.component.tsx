@@ -177,7 +177,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipHelpText(count, analysisStratumName, percentage, totalCount, domain) {
-      return '<div class="chart-tooltip">' +
+      return '<div class="chart-tooltip" style={{zIndex: 20;}}>' +
                       '<strong>' + count + '</strong>' + ' participants were ages within range ' +
                       analysisStratumName + ' when' + (domain === 'pm' ? ' physical measurement with' : '') +
                       ' this medical concept first occurred and that is <strong>' +

@@ -152,6 +152,7 @@ interface ResultLinkProps {
     standardConceptCount: number;
     domain: string;
     participantCount: number;
+    searchWord: string;
 }
 
 export const ResultLinksComponent = (class extends React.Component<ResultLinkProps> {
@@ -160,7 +161,6 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
     }
 
     resultClick(info) {
-        console.log(info, 'infffooo');
         if (info.domainConceptId) {
             switch (info.domainConceptId) {
                 // condition
@@ -190,6 +190,13 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     const url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
+            }
+        } else {
+            if (info.name === 'Physical Measurements') {
+                NavStore.navigateByUrl('physical-measurements');
+            } else if (info.name === 'Fitbit') {
+                const url = this.props.searchWord ? 'fitbit/' + this.props.searchWord : 'fitbit';
+                NavStore.navigateByUrl(url);
             }
         }
     }
@@ -353,7 +360,7 @@ export const dBHomeComponent = (
                         {
                             domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
-                                return <ResultLinksComponent key={key} {...domain} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} />;
 
                             })
 
@@ -364,7 +371,7 @@ export const dBHomeComponent = (
                         {
                             surveyInfo.map((survey, index) => {
                                 const key = 'survey' + index;
-                                return <ResultLinksComponent key={key} {...survey} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} />;
                             })
 
                         }
@@ -375,7 +382,7 @@ export const dBHomeComponent = (
                         {
                             physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
-                                return <ResultLinksComponent key={key} {...phyMeasurements} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} />;
                             })
                         }
                     </div>
