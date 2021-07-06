@@ -15,6 +15,8 @@ export const surveyIdToRoute = {
     '1333342': 'covid-19-participant-experience'
 };
 
+export const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
+
 export const fitbitConcepts = [{
     id: 1, displayName: 'any Fitbit data',
     conceptName: 'Any Fitbit Data', icon: 'fa-watch-fitness',

@@ -144,17 +144,17 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        const { concept, domain } = this.props;
+        const {concept, domain: {name}} = this.props;
         dataBrowserApi().getConceptAnalysisResults(
             [concept.conceptId.toString()], concept.domainId
         ).then(results => {
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
-                selectedChartAnalysis: domain === 'labs & measurements' ?
-                    results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
-                measurementGenderCountAnalysis: domain === 'labs & measurements' ?
-                    results.items[0].measurementGenderCountAnalysis : null,
+                selectedChartAnalysis: name.toLowerCase() === 'labs & measurements' ?
+                results.items[0].measurementValueGenderAnalysis : results.items[0].genderAnalysis,
+                measurementGenderCountAnalysis: name.toLowerCase() === 'labs & measurements' ?
+                results.items[0].measurementGenderCountAnalysis : null,
                 isAnalysisLoaded: true,
                 loading: false
             }, () => {
@@ -343,7 +343,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { searchTerm, concept, domain } = this.props;
+        const {searchTerm, concept, domain: {name}} = this.props;
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
             genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeNode } = this.state;
@@ -351,15 +351,15 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         return <React.Fragment>
             <style>{cssStyles}</style>
             <div className='graph-menu'>
-                {(selectedChartAnalysis || sourceConcepts) && graphButtons.map((g, index) => {
-                    return <div onClick={() => this.selectGraphType(g)}
-                        className={graphToShow === g ? 'active chart-choice' : 'chart-choice'}
-                        tabIndex={tabIndex} key={index}>
-                        <span>{g}</span>
-                        <TooltipReactComponent tooltipKey={g}
-                            label='EHR Tooltip Hover' searchTerm={searchTerm}
-                            action={'Concept graph ' + g + ' tooltip hover on concept ' + concept.conceptName}>
-                        </TooltipReactComponent>
+            {(selectedChartAnalysis || sourceConcepts) && graphButtons.map((g, index) => {
+                return <div onClick={(e) => {e.stopPropagation(); this.selectGraphType(g); }}
+                    className={graphToShow === g ? 'active chart-choice' : 'chart-choice'}
+                    tabIndex={tabIndex} key={index}>
+                    <span>{g}</span>
+                    <TooltipReactComponent tooltipKey={g}
+                    label='EHR Tooltip Hover' searchTerm={searchTerm}
+                    action={'Concept graph ' + g + ' tooltip hover on concept ' + concept.conceptName}>
+                    </TooltipReactComponent>
                     </div>;
                 })
                 }
@@ -434,7 +434,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                 </div>
                                 <SourcesChartReactComponent concepts={sourceConcepts} />
                             </div>
-                            {(domain === 'conditions' || domain === 'procedures') &&
+                            {(name.toLowerCase() === 'conditions' || name.toLowerCase() === 'procedures') &&
                                 <div style={{ width: '100%' }}>
                                     <div style={styles.treeHeading}>Count Breakdown ({concept.vocabularyId})</div>
                                     <div style={styles.treeView}>
