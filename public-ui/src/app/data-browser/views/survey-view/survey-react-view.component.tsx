@@ -185,18 +185,18 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     search = _.debounce((val) => {
           this.getSurvey();
           this.fetchSurvey(this.props.domainId);
-          const {id, search} = urlParamsStore.getValue();
+          const {id} = urlParamsStore.getValue();
           navigate(['survey', id, val]);
         }, 1000);
 
     constructor(props) {
         super(props);
-        const {id, search} = urlParamsStore.getValue();
+        const {search} = urlParamsStore.getValue();
         this.state = {
             isCopeSurvey: false,
             survey: null,
             surveyPdfUrl: '',
-            searchWord: this.props.searchWord,
+            searchWord: search ? search : this.props.searchWord,
             extraQuestionConceptIds: [],
             showAnswer: {},
             questions: [],
