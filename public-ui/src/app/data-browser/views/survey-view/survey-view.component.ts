@@ -136,6 +136,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.setSurvey();
     this.searchText.setValue(this.prevSearchText);
+    /**
     if (this.prevSearchText && this.prevSearchText != null) {
       this.router.navigate(
         ['survey/' + this.domainId.toLowerCase()],
@@ -144,6 +145,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       );
     }
+    **/
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges.pipe(
@@ -386,6 +388,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+  /**
     if (this.searchText.value && this.searchText.value !== 'null') {
       this.router.navigate(
         [],
@@ -401,6 +404,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           relativeTo: this.route
         });
     }
+    **/
     if (this.searchText.value) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);

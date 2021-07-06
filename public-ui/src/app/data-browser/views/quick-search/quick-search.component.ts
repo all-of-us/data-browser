@@ -276,8 +276,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     this.dbc.conceptIdNames.forEach(idName => {
       if (r.conceptId === idName.conceptId) {
         if (search) {
-          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-')],
-            { queryParams: { search: search } });
+          this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-') + '/' + search]);
         } else {
           this.router.navigate(['survey/' + idName.conceptName.toLowerCase().split(' ').join('-')]);
         }

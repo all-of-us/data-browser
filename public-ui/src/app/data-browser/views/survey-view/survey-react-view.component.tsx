@@ -189,6 +189,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
 
     constructor(props) {
         super(props);
+        console.log(props.searchWord);
         this.state = {
             isCopeSurvey: false,
             survey: null,
