@@ -216,7 +216,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
-    results.domainInfos.filter(domain => domain.standardConceptCount > 0);
+    results.domainInfos = results.domainInfos.filter(domain => domain.standardConceptCount > 0);
     this.domainResults = results.domainInfos.filter(
             domain => domain.name.toLowerCase() !== 'physical measurements' &&
       domain.name.toLowerCase() !== 'fitbit');
