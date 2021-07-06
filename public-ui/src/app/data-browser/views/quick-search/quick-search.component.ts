@@ -197,7 +197,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
             this.resetDomainResults();
           }
         }));
-        this.fitbitMeasurementsFound = 4;
   }
   ngOnDestroy() {
     for (const s of this.subscriptions) {
@@ -217,6 +216,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
   }
 
   private searchCallback(results: DomainInfosAndSurveyModulesResponse) {
+    results.domainInfos = results.domainInfos.filter(domain => domain.standardConceptCount > 0);
     this.domainResults = results.domainInfos.filter(
             domain => domain.name.toLowerCase() !== 'physical measurements' &&
       domain.name.toLowerCase() !== 'fitbit');

@@ -170,7 +170,7 @@
         <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
       </div>
     </div>
-    <div [routerLink]="getFitbitUrl()" class="result-box pm-box" *ngIf="fitbitMeasurementsFound" >
+    <div [routerLink]="getFitbitUrl()" class="result-box pm-box" *ngIf="fitbitMeasurementsFound > 0" >
       <p class="result-box-title"> Fitbit
         <app-tooltip-react [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on fitbit measurements tile tooltip'"
                            [tooltipKey]="'fitbitTileHelpText'"></app-tooltip-react>
