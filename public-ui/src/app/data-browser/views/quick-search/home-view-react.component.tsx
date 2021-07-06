@@ -8,6 +8,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import { NavStore } from 'app/utils/navigation';
+import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import _ from 'lodash';
 import * as React from 'react';
@@ -243,6 +244,7 @@ interface State {
     physicalMeasurementsInfo: any[];
     searchWord: string;
     popUp: boolean;
+    loading: boolean;
 }
 
 export const dBHomeComponent = (
@@ -253,8 +255,9 @@ export const dBHomeComponent = (
                 surveyInfo: [],
                 domainInfo: [],
                 physicalMeasurementsInfo: [],
-                searchWord: '',
-                popUp: false
+                searchWord: localStorage.getItem('searchText') ? localStorage.getItem('searchText') : '',
+                popUp: false,
+                loading: true
             };
         }
 
@@ -269,7 +272,7 @@ export const dBHomeComponent = (
         }
 
         // life cycle hook
-        componentWillMount() {
+        componentDidMount() {
             this.getDomainInfos();
         }
 
@@ -288,10 +291,14 @@ export const dBHomeComponent = (
                     });
                     this.setState({
                         domainInfo: domainInfo, surveyInfo: result.surveyModules,
-                        physicalMeasurementsInfo: physicalMeasurementsInfo
+                        physicalMeasurementsInfo: physicalMeasurementsInfo,
+                        loading: false
                     });
                 }
-            );
+            ).catch(e => {
+                                    console.log(e, 'error');
+                                    this.setState({loading: false});
+                       });
         }
         closePopUp() {
             this.setState({
@@ -300,7 +307,7 @@ export const dBHomeComponent = (
         }
 
         render() {
-            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp } = this.state;
+            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading } = this.state;
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
@@ -347,7 +354,8 @@ export const dBHomeComponent = (
                         </div>
                     </div>
                 </div>
-
+                {(loading) && <Spinner />}
+                {!loading &&
                 <section style={styles.results}>
                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
                         EHR Domains:<TooltipReactComponent
@@ -387,6 +395,7 @@ export const dBHomeComponent = (
                         }
                     </div>
                 </section>
+                }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
             </React.Fragment >;
         }
