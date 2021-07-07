@@ -149,7 +149,7 @@ strong {
     color: #262262;
 }
 
-.question-result:first-of-type .topic-text:first-of-type{
+.question-result:first-of-type{
     border-top: none;
 }
 

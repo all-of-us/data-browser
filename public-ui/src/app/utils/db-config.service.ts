@@ -150,6 +150,15 @@ export class DbConfigService {
   pmGroups: ConceptGroup[] = [];
   physicalMeasurementsFound: Number;
   genderAnalysis: Analysis;
+
+  surveyRouteToIds = {'the-basics': 1586134,
+  'lifestyle': 1585855,
+  'overall-health': 1585710,
+  'personal-medical-history': 43529712,
+  'health-care-access-and-utilization': 43528895,
+  'family-health-history': 43528698,
+  'covid-19-participant-experience': 1333342};
+
   conceptIdNames = [
     { conceptId: 1585855, conceptName: 'Lifestyle' },
     { conceptId: 1585710, conceptName: 'Overall Health' },
