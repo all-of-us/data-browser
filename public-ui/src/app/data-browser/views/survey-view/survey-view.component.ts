@@ -141,6 +141,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.setSurvey();
     this.searchText.setValue(this.prevSearchText);
+    // TODO: CLEANUP
     /**
     if (this.prevSearchText && this.prevSearchText != null) {
       this.router.navigate(
@@ -160,7 +161,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // this.router.navigate(
           // ['survey/' + this.domainId.toLowerCase() + '/' + query]
           // );
-          // this.resetExpansion();
         }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
@@ -393,6 +393,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+  // TODO: CLEANUP
   /**
     if (this.searchText.value && this.searchText.value !== 'null') {
       this.router.navigate(
@@ -649,31 +650,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getMatchingQuestionCount() {
     return this.surveyResultCount;
-  }
-
-  public resetExpansion() {
-    for (const q of this.questions) {
-      q.expanded = false;
-      q.resultFetchComplete = false;
-      for (const r of q.countAnalysis.results) {
-        r.expanded = false;
-        if (r.hasSubQuestions === 1) {
-          for (const sq of r.subQuestions) {
-            sq.subExpanded = false;
-
-            for (const sr of sq.countAnalysis.results) {
-              sr.expanded = false;
-
-              if (sr.hasSubQuestions === 1) {
-                for (const sq2 of sr.subQuestions) {
-                  sq2.subExpanded = false;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 
   closePopUp() {
