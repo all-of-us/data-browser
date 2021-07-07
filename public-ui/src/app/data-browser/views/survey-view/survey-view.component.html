@@ -1,4 +1,4 @@
-<survey-react-view [domainId]="domainId" [searchWord]="searchWord" *ngIf="reactSurvey;else angSurvey"></survey-react-view>
+<survey-react-view [domainId]="domainId" [searchWord]="searchText.value" *ngIf="reactSurvey;else angSurvey"></survey-react-view>
 <ng-template #angSurvey>
     <div class="survey-view">
         <div class="page-header">

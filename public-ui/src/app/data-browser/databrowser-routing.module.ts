@@ -55,6 +55,16 @@ const routes: Routes = [
           }
         },
         {
+          path: 'survey/:id/:search',
+          component: SurveyViewComponent,
+          data: {
+            title: 'View Survey Questions and Answers',
+            breadcrumb: {
+              value: ':id survey',
+            }
+          }
+        },
+        {
           path: 'ehr/:id',
           component: EhrViewComponent,
           data: {

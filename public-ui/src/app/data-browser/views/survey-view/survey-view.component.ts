@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
@@ -66,13 +66,17 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   isCopeSurvey = false;
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private api: DataBrowserService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
+      this.prevSearchText = params.search ? params.search : '';
+      if (this.prevSearchText) {
+        this.searchText.setValue(this.prevSearchText);
+      }
     });
     this.closePopUp = this.closePopUp.bind(this);
+    /**
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.prevSearchText = params.search;
@@ -81,6 +85,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         this.prevSearchText = '';
       }
     });
+    **/
     this.copeDisclaimer = `<div class="cope-statement"><span class='cope-statement-body'>This optional survey was released to participants for completion
     at multiple time points during the COVID-19 pandemic. As a result, a participant may have
     multiple data points if they completed more than one survey.</span>
@@ -136,6 +141,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     }
     this.setSurvey();
     this.searchText.setValue(this.prevSearchText);
+    // TODO: CLEANUP
+    /**
     if (this.prevSearchText && this.prevSearchText != null) {
       this.router.navigate(
         ['survey/' + this.domainId.toLowerCase()],
@@ -144,6 +151,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
         }
       );
     }
+    **/
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges.pipe(
@@ -153,7 +161,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           // this.router.navigate(
           // ['survey/' + this.domainId.toLowerCase() + '/' + query]
           // );
-          // this.resetExpansion();
         }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
@@ -386,6 +393,8 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
+  // TODO: CLEANUP
+  /**
     if (this.searchText.value && this.searchText.value !== 'null') {
       this.router.navigate(
         [],
@@ -401,6 +410,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           relativeTo: this.route
         });
     }
+    **/
     if (this.searchText.value) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
@@ -640,31 +650,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
 
   public getMatchingQuestionCount() {
     return this.surveyResultCount;
-  }
-
-  public resetExpansion() {
-    for (const q of this.questions) {
-      q.expanded = false;
-      q.resultFetchComplete = false;
-      for (const r of q.countAnalysis.results) {
-        r.expanded = false;
-        if (r.hasSubQuestions === 1) {
-          for (const sq of r.subQuestions) {
-            sq.subExpanded = false;
-
-            for (const sr of sq.countAnalysis.results) {
-              sr.expanded = false;
-
-              if (sr.hasSubQuestions === 1) {
-                for (const sq2 of sr.subQuestions) {
-                  sq2.subExpanded = false;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 
   closePopUp() {
