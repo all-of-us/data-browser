@@ -300,8 +300,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       this.searchRequest.measurementOrders = this.valueFilterCheck.orders === true ? 1 : 0;
       this.api.searchConcepts(this.searchRequest).subscribe({
         next: res => {
-          console.log('*** 1 ***');
-          console.log(res);
           if (res.items && res.items.length > 0) {
             this.processSearchResults(res);
           } else {
@@ -654,7 +652,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       };
       this.api.searchConcepts(searchRequest).subscribe({
             next: results => {
-              console.log('*** 2 ***');
               this.items = results.items;
               this.top10Results = results.items.slice(0, 10);
               this.loadingCheck = false;
