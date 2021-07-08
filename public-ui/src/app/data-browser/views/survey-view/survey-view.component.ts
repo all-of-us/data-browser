@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
 import { GraphType } from 'app/utils/enum-defs';
 import { environment } from 'environments/environment';
@@ -47,6 +47,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   allQuestions: any = [];
   questions: any = [];
   questionResults: any = [];
+  surveyVersions: any = [];
   subQuestions: any = [];
   searchText: FormControl = new FormControl();
   searchMethod = 'or';
@@ -66,16 +67,19 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   isCopeSurvey = false;
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private api: DataBrowserService,
     public dbc: DbConfigService) {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
+      this.surveyConceptId = this.dbc.surveyRouteToIds[this.domainId];
       this.prevSearchText = params.search ? params.search : '';
       if (this.prevSearchText) {
         this.searchText.setValue(this.prevSearchText);
       }
     });
     this.closePopUp = this.closePopUp.bind(this);
+    this.changeResults = this.changeResults.bind(this);
     /**
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
@@ -102,11 +106,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.envDisplay = environment.displayTag;
     this.testReact = environment.testReact;
     this.reactSurvey = environment.reactSurvey;
-    if (this.surveyConceptId === 1333342) {
-      this.graphButtons.unshift('Survey Versions');
-    } else if (this.surveyConceptId === 43528698) {
-      this.surveyExtraQuestionConceptIds = this.questionConceptIds;
-    }
   }
 
   ngOnDestroy() {
@@ -135,32 +134,25 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
       if (this.surveyConceptId === 1333342) { this.isCopeSurvey = true; }
       this.surveyName = surveyObj.name;
       this.surveyDescription = surveyObj.description;
-
     } else {
       this.getThisSurvey();
     }
     this.setSurvey();
-    this.searchText.setValue(this.prevSearchText);
-    // TODO: CLEANUP
-    /**
-    if (this.prevSearchText && this.prevSearchText != null) {
-      this.router.navigate(
-        ['survey/' + this.domainId.toLowerCase()],
-        {
-          queryParams: { search: this.searchText.value },
-        }
-      );
+    if (this.surveyConceptId === 1333342) {
+      this.graphButtons.unshift('Survey Versions');
+    } else if (this.surveyConceptId === 43528698) {
+      this.surveyExtraQuestionConceptIds = this.questionConceptIds;
     }
-    **/
+    this.searchText.setValue(this.prevSearchText);
     // Filter when text value changes
     this.subscriptions.push(
       this.searchText.valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(), )
         .subscribe((query) => {
-          // this.router.navigate(
-          // ['survey/' + this.domainId.toLowerCase() + '/' + query]
-          // );
+          this.router.navigate(
+            ['survey/' + this.domainId.toLowerCase() + '/' + query]
+          );
         }));
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
@@ -336,6 +328,36 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
           complete: () => { this.questionFetchComplete = true; }
         }));
     }
+if (this.isCopeSurvey) {
+        this.subscriptions.push(this.api.getSurveyVersionCounts(
+          this.surveyConceptId.toString()).subscribe({
+            next: x => {
+              x.analyses.items.forEach(item => {
+                item.results.forEach((result, i) => {
+                  if (item.analysisId === 3400) {
+                    this.surveyVersions.push(
+                      {
+                        monthName: result.stratum4,
+                        year: result.stratum5,
+                        monthNum: result.stratum3.split('/')[0],
+                        participants: result.countValue,
+                        numberOfQuestion: '',
+                        pdfLink: '/assets/surveys/' +
+                            'COPE_survey_' + result.stratum4.split('/')[0].replace('/', '_') + '_' + result.stratum5 + '_English.pdf'
+                      });
+                  } else if (item.analysisId === 3401) {
+                    this.surveyVersions[i].numberOfQuestion = result.countValue;
+                  }
+                });
+              });
+            },
+            error: err => {
+              console.error('Observer got an error: ' + err);
+              this.loading = false;
+            },
+            complete: () => { }
+          }));
+  }
   }
 
   public setSurvey() {
@@ -366,10 +388,13 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
             if (surveyRoute.indexOf('(cope)') > -1) {
                 if (this.domainId && surveyRoute.indexOf(this.domainId) > -1) {
                     localStorage.setItem('surveyModule', JSON.stringify(survey));
+                    this.surveyConceptId = survey.conceptId;
+                    this.isCopeSurvey = true;
                     this.setSurvey();
                 }
             } else {
                 if (surveyRoute === this.domainId) {
+                    this.surveyConceptId = survey.conceptId;
                     localStorage.setItem('surveyModule', JSON.stringify(survey));
                     this.setSurvey();
                 }
@@ -393,24 +418,6 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public filterResults() {
-  // TODO: CLEANUP
-  /**
-    if (this.searchText.value && this.searchText.value !== 'null') {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          queryParams: { search: this.searchText.value },
-          queryParamsHandling: 'merge'
-        });
-    } else {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route
-        });
-    }
-    **/
     if (this.searchText.value) {
       this.dbc.triggerEvent('domainPageSearch', 'Search',
         'Search Inside Survey' + ' ' + this.survey.name, null, this.searchText.value, null);
@@ -537,6 +544,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   }
 
   public changeResults(e) {
+    console.log(e);
     this.loadPage();
   }
 
