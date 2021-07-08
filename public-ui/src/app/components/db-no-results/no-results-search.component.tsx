@@ -86,7 +86,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
             this.setState({
                 domainInfoResults: result.domainInfos.filter(domain =>
                   domain.name.toLowerCase() !== 'physical measurements' && domain.name.toLowerCase() !== 'fitbit'),
-                surveyModuleResults: result.surveyModules,
+                surveyModuleResults: result.surveyModules.filter(survey => survey.questionCount > 0),
                 pmResults: result.domainInfos.filter(domain => domain.name.toLowerCase() === 'physical measurements'),
                 fitbitResults: result.domainInfos.filter(domain => domain.name.toLowerCase() === 'fitbit'),
                 loading: false

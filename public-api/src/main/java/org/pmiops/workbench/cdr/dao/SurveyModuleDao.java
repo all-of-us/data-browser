@@ -14,7 +14,7 @@ public interface SurveyModuleDao extends CrudRepository<DbSurveyModule, Long> {
    *                https://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
    */
   @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number from \n" +
-          "survey_module m join survey_metadata sqm2 on m.concept_id = sqm2.survey_concept_id join \n" +
+          "survey_module m join survey_metadata sqm2 on m.concept_id = sqm2.survey_concept_id left outer join \n" +
           "(select distinct c.* from survey_metadata c where (match(c.question_string) against (?1 in boolean mode) > 0 or match(c.concept_name) against (?1 in boolean mode) > 0) \n" +
           "and c.sub=0 and c.generate_counts=1\n" +
           "union distinct \n" +
