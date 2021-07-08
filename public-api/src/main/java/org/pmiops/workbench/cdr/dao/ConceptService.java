@@ -302,6 +302,7 @@ public class ConceptService {
 
         ConceptListResponse response = new ConceptListResponse();
 
+
         for(DbConcept con : concepts.getContent()){
             String conceptCode = con.getConceptCode();
             boolean isConceptCodeOrId = StringUtils.isEmpty(searchConceptsRequest.getQuery()) ? false : Stream.of(conceptCode, String.valueOf(con.getConceptId())).anyMatch(searchConceptsRequest.getQuery()::equals);
@@ -329,7 +330,7 @@ public class ConceptService {
                     .collect(Collectors.toList());
 
             if(response.getStandardConcepts() != null) {
-                conceptList = conceptList.stream().filter(c -> !c.getConceptId().equals(response.getSourceOfStandardConcepts())).collect(Collectors.toList());
+                conceptList = conceptList.stream().filter(c -> c.getConceptId() != response.getSourceOfStandardConcepts()).collect(Collectors.toList());
             }
         }
         response.setItems(conceptList);
