@@ -117,7 +117,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            graphButtons: this.props.domain === 'labs & measurements' ?
+            graphButtons: this.props.domain.name.toLowerCase() === 'labs & measurements' ?
                 ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'] : ['Sex Assigned at Birth', 'Age', 'Sources'],
             graphToShow: this.props.graphToShow ? this.props.graphToShow : (this.props.domain === 'labs & measurements' ?
                 GraphType.Values : GraphType.BiologicalSex),
@@ -386,7 +386,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                             <div className='chart' key='values-chart'>
                                 {unitNames.map((unit, index) => {
                                     return <div key={index} className={selectedUnit === unit ? 'active btn btn-link unit-choice' : 'btn btn-link unit-choice'}
-                                        onClick={() => this.showMeasurementGenderHistogram(unit)}>{unit}</div>;
+                                        onClick={(e) => {e.stopPropagation(); this.showMeasurementGenderHistogram(unit); }}>{unit}</div>;
                                 })
                                 }
                                 <div>

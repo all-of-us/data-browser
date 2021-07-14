@@ -8,6 +8,6 @@ export const testEnvironmentBase = {
   reactHomeView: false,
   reactChart: true,
   reactSurvey: true,
-  ehrReact: false,
+  ehrReact: true,
   testReact: false
 };
