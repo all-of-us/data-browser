@@ -10,7 +10,6 @@ import { TopResultsChartWrapperComponent } from 'app/data-browser/charts/chart-t
 import { ConceptChartWrapperComponent } from 'app/data-browser/views/concept-chart/concept-chart-react.component';
 import { ConceptRowWrapperComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
 import { EhrViewWrapperComponent } from 'app/data-browser/views/ehr-view/ehr-view-react.component';
-import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
 import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
@@ -109,8 +108,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent,
-    PhysicalMeasurementsWrapperComponent
+    SurveyDescWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -151,8 +149,7 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent,
-    PhysicalMeasurementsWrapperComponent
+    SurveyDescWrapperComponent
   ],
   providers: [
     ChartService,

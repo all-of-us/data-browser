@@ -5,6 +5,7 @@ import {AppRoute, AppRouter} from 'app/components/app-router';
 import {BaseReactWrapper} from 'app/data-browser/base-react/base-react.wrapper';
 import {FitbitReactComponent} from 'app/data-browser/views/fitbit-view/fitbit-view-react.component';
 import {IntroVidReactComponent} from './data-browser/views/intro-vids/intro-vids-react.component';
+import {PMReactComponent} from 'app/data-browser/views/pm/pm-react.component';
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
   return <AppRouter>
@@ -30,6 +31,22 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         {routeData: {
             title: 'Fitbit Data',
             breadcrumb: {value: 'Fitbit Data'}
+          }})}
+    />
+    <AppRoute
+      path='/physical-measurements'
+      component={() => PMReactComponent(
+        {routeData: {
+            title: 'Physical Measurements',
+            breadcrumb: {value: 'physical measurements'}
+          }})}
+    />
+    <AppRoute
+      path='/physical-measurements/:search'
+      component={() => PMReactComponent(
+        {routeData: {
+            title: 'Physical Measurements',
+            breadcrumb: {value: 'physical measurements'}
           }})}
     />
   </AppRouter>;
