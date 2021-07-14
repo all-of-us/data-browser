@@ -63,7 +63,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       const newBaseOptions = getBaseOptions();
       newBaseOptions.chart.type = 'column';
       newBaseOptions.plotOptions.column.groupPadding = 0.40;
-      newBaseOptions.plotOptions.series.pointWidth = 50;
+      newBaseOptions.plotOptions.series.pointWidth = 15;
       newBaseOptions.legend.enabled = false;
       newBaseOptions.title.style.color = '#262262';
       newBaseOptions.title.style.fontSize = '22px';
