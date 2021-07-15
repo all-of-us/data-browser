@@ -194,7 +194,8 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             }
         } else {
             if (info.name === 'Physical Measurements') {
-                NavStore.navigateByUrl('physical-measurements');
+                const url = this.props.searchWord ? 'physical-measurements/' + this.props.searchWord : 'physical-measurements';
+                NavStore.navigateByUrl(url);
             } else if (info.name === 'Fitbit') {
                 const url = this.props.searchWord ? 'fitbit/' + this.props.searchWord : 'fitbit';
                 NavStore.navigateByUrl(url);

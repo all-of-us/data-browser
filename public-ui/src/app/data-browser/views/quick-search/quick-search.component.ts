@@ -335,4 +335,8 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
  getFitbitUrl() {
     return this.searchText.value ? 'fitbit/' + this.searchText.value : 'fitbit';
  }
+
+ getPMUrl() {
+    return this.searchText.value ? 'physical-measurements/' + this.searchText.value : 'physical-measurements';
+ }
 }

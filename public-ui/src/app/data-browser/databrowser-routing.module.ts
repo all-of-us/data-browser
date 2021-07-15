@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
-import { PhysicalMeasurementsWrapperComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import {NavStore} from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
@@ -76,13 +75,13 @@ const routes: Routes = [
         },
         {
           path: 'physical-measurements',
-          component: PhysicalMeasurementsWrapperComponent,
-          data: {
-            title: 'Physical Measurements from Enrollment',
-            breadcrumb: {
-              value: 'physical measurements'
-            }
-          }
+          component: AppRouting,
+          data: {}
+        },
+        {
+          path: 'physical-measurements/:search',
+          component: AppRouting,
+          data: {}
         },
         {
           path: 'fitbit',
