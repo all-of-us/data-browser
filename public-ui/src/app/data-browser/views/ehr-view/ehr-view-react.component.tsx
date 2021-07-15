@@ -506,7 +506,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                 action='Matching medical concepts tooltip hover' />
                                             </h5> :
                                             <h5 id='domain-name' className='primary-display'>
-                                            Showing top {((currentPage - 1) * 50) + 1} - {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
+                                            Showing top
+                                            {((currentPage - 1) * 50) + 1} - {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
                                             {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
                                             <React.Fragment> concepts for this domain</React.Fragment>}
                                             <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
