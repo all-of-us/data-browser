@@ -238,9 +238,6 @@ h5.secondary-display {
 .checkbox-label {
     margin-left: 0.3em;
 }
-.page-active {
-    color: red;
-}
 `;
 
 interface Props {

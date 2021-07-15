@@ -92,7 +92,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.testReact = environment.testReact;
     this.reactChart = environment.reactChart;
     this.ehrReact = environment.ehrReact;
-    console.log('ang ehr view');
     this.route.params.subscribe(params => {
       this.routeDomainId = params.id;
       this.domainId = this.dbc.routeToDomain[params.id];
