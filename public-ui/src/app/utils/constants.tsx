@@ -15,6 +15,13 @@ export const surveyIdToRoute = {
     '1333342': 'covid-19-participant-experience'
 };
 
+export const routeToDomain = {
+    'conditions': 'condition',
+    'drug-exposures': 'drug',
+    'labs-and-measurements': 'measurement',
+    'procedures': 'procedure'
+};
+
 export const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
 
 export const fitbitConcepts = [{

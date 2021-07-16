@@ -9,7 +9,7 @@ import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { PM_CONCEPTS } from 'app/utils/constants';
+import { PM_CONCEPTS, routeToDomain } from 'app/utils/constants';
 import { GraphType } from 'app/utils/enum-defs';
 import { navigateByUrl } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
@@ -327,7 +327,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                 .then(results => {
                     results.domainInfos.forEach(domain => {
                         const thisDomain = Domain[domain.domain];
-                        if (thisDomain && thisDomain.toLowerCase() === this.props.domainId) {
+                        if (thisDomain && thisDomain.toLowerCase() === routeToDomain[this.props.domainId]) {
                             this.setState({
                                 domain: domain,
                                 title: domain.name,
@@ -403,7 +403,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
    }
 
     handleChange(val) {
-        this.setState({ searchWord: val, loading: true, currentPage: 1, showTopConcepts: true});
+        this.setState({ searchWord: val, currentPage: 1, showTopConcepts: true});
         this.domainTotals(val);
     }
 
@@ -506,8 +506,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                 action='Matching medical concepts tooltip hover' />
                                             </h5> :
                                             <h5 id='domain-name' className='primary-display'>
-                                            Showing top {((currentPage - 1) * 50) + 1} -
-                                            {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
+                                            Showing top
+                                            {((currentPage - 1) * 50) + 1} - {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
                                             {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
                                             <React.Fragment> concepts for this domain</React.Fragment>}
                                             <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
@@ -597,12 +597,12 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                               nextLabel={'Next'}
                               breakLabel={'...'}
                               breakClassName={'break-me'}
+                              activeClassName={'active'}
                               pageCount={numPages}
                               marginPagesDisplayed={2}
                               pageRangeDisplayed={5}
                               onPageChange={this.handlePageClick}
                               containerClassName={'pagination'}
-                              activeClassName={'active'}
                             /> }
             </div>
            </div>

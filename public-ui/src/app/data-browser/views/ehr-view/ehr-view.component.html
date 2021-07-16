@@ -1,4 +1,4 @@
-<react-ehr-view *ngIf="ehrReact; else angEhrView;" [domainId]="domainId" [searchTerm]="searchText.value"></react-ehr-view>
+<react-ehr-view *ngIf="ehrReact; else angEhrView;" [domainId]="routeDomainId" [searchTerm]="searchText.value"></react-ehr-view>
 <ng-template #angEhrView>
 <div class="page-header">
   <h2 class="primary-display">{{title}}</h2>
