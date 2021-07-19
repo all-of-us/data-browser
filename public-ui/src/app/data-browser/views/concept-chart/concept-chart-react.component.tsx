@@ -351,7 +351,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         const {searchTerm, concept, domain: {name}} = this.props;
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
-            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeNode, sourcesLoading } = this.state;
+            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeNode,
+            sourcesLoading } = this.state;
         const tabIndex = 0;
         return <React.Fragment>
             <style>{cssStyles}</style>
