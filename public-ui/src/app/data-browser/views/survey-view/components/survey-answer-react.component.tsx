@@ -147,7 +147,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                 this.addMissingResults(q, aCount);
                 return aCount;
             });
-            if (!q.countAnalysis.results.filter(q => q.stratum4 === 'Did not answer')) {
+            if (!q.countAnalysis.results.filter(qu => qu.stratum4 === 'Did not answer')) {
                 q.countAnalysis.results.push(addDidNotAnswerResult(q.conceptId, q.countAnalysis.results, countValue));
             }
             return q;
