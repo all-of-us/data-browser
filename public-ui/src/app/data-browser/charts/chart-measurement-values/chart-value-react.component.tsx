@@ -133,7 +133,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
                        useHTML: true
                 };
           }
-    newBaseOptions.tooltip.positioner =  function(width, height, point) {
+    newBaseOptions.tooltip.positioner = (width, height, point) => {
         return {
             x: point.plotX + 20,
             y: point.plotY - 25
