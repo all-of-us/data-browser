@@ -10,7 +10,7 @@ import { ErrorMessageReactComponent } from 'app/data-browser/views/error-message
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { GraphType } from 'app/utils/enum-defs';
-import { Spinner } from 'app/utils/spinner';
+import { LoadingDots, Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -104,6 +104,7 @@ interface State {
     toDisplayMeasurementGenderCountAnalysis: any;
     genderResults: any;
     node: any;
+    sourcesLoading: boolean;
 }
 
 interface Props {
@@ -137,6 +138,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             noUnitValueButtons: ['No Unit (Text)', 'No Unit (Numeric)'],
             genderResults: null,
             loading: true,
+            sourcesLoading: true,
             node: undefined,
             selectedTreeConcept: undefined,
             selectedTreeNode: undefined
@@ -319,13 +321,16 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
 
     loadSourceTree(concept: any) {
         let treeData;
-        dataBrowserApi().getCriteriaRolledCounts(concept.conceptId, 'condition')
+        dataBrowserApi().getCriteriaRolledCounts(concept.conceptId, this.props.domain.domain)
             .then(result => {
                 treeData = result.parent;
                 // treeLoading = false;
                 this.setState({
-                    node: treeData
+                    node: treeData,
+                    sourcesLoading: false
                 });
+            }).catch(e => {
+                this.setState({sourcesLoading: false});
             });
     }
 
@@ -346,7 +351,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         const {searchTerm, concept, domain: {name}} = this.props;
         const { graphButtons, graphToShow, displayGraphErrorMessage, selectedChartAnalysis, countAnalysis, sourceConcepts,
             isAnalysisLoaded, unitNames, selectedUnit, mixtureOfValues, noUnitValueButtons, selectedMeasurementType,
-            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeNode } = this.state;
+            genderResults, toDisplayMeasurementGenderAnalysis, loading, node, selectedTreeConcept, selectedTreeNode,
+            sourcesLoading } = this.state;
         const tabIndex = 0;
         return <React.Fragment>
             <style>{cssStyles}</style>
@@ -438,13 +444,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                 <div style={{ width: '100%' }}>
                                     <div style={styles.treeHeading}>Count Breakdown ({concept.vocabularyId})</div>
                                     <div style={styles.treeView}>
+                                        {sourcesLoading && <LoadingDots />}
                                         {node && <SourceTreeComponent
                                             node={node}
                                             selectedTreeConcept={selectedTreeConcept}
                                             conceptedClicked={(e) => { this.childConceptClicked(e); }}
                                             first={true} />}
                                     </div>
-                                </div>}
+                                    </div>}
                         </div>}
                 </React.Fragment>
             }

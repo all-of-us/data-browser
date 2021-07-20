@@ -21,31 +21,32 @@ export const spinnerCss = `
 
 export const loadingCss = `
 .loading-dots {
-    margin-top:.25rem;
     width:2rem;
     display:flex;
     height:auto;
     justify-content:space-between;
+    padding-left: 1em;
 }
 .loading-dots .dot {
-    width:.25rem;
-    height:.25rem;
-    background:transparent;
-    border-radius: 50%;
-    animation:load 1s linear infinite alternate;
+width:.25rem;
+height:.25rem;
+background:transparent;
+border-radius: 50%;
+animation:load 1s linear infinite alternate;
 }
 .loading-dots .dot:first-of-type{
-    animation-delay: .25s;
+animation-delay: .25s;
 }
 .loading-dots .dot:nth-of-type(2){
-    animation-delay: .5s;
+animation-delay: .5s;
 }
 .loading-dots .dot:nth-of-type(3){
-    animation-delay: .75s;
+animation-delay: .75s;
 }
 .loading-dots .dot:nth-of-type(4){
-    animation-delay: 1s;
-}`;
+animation-delay: 1s;
+}
+`;
 
 export const Spinner = () => {
     return <React.Fragment>
@@ -59,6 +60,7 @@ export const Spinner = () => {
 export const LoadingDots = () => {
     return <React.Fragment>
             <style>{loadingCss}</style>
+            <style>{spinnerContainerCss}</style>
             <div className='loading-dots'>
             <div className='dot'></div>
                 <div className='dot'></div>
