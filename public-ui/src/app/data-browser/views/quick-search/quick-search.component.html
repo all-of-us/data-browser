@@ -142,7 +142,7 @@
   </div>
   <h5 class="result-heading secondary-display" *ngIf="!loading"> Physical Measurements and Wearables: </h5>
   <div class="result-boxes" *ngIf="canDisplayPmWTile()">
-    <div [routerLink]="['physical-measurements']" class="result-box pm-box" *ngIf="physicalMeasurementsFound > 0">
+    <div [routerLink]="getPMUrl()" class="result-box pm-box" *ngIf="physicalMeasurementsFound > 0">
       <p class="result-box-title">
         Program Physical Measurements
         <app-tooltip-react [label]="'Homepage Tooltip Hover'" [searchTerm]="searchText.value" [action]="'Hover on physical measurements tile tooltip'"
@@ -167,7 +167,7 @@
         </span>
       </div>
       <div class="result-box-link">
-        <a class="result-bottom-link" [routerLink]="['physical-measurements']"> View Program Physical Measurements </a>
+        <a class="result-bottom-link" [routerLink]="getPMUrl()"> View Program Physical Measurements </a>
       </div>
     </div>
     <div [routerLink]="getFitbitUrl()" class="result-box pm-box" *ngIf="fitbitMeasurementsFound > 0" >

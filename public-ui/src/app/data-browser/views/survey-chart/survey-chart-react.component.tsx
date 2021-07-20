@@ -108,7 +108,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = question.genderAnalysis;
         break;
     }
-
     this.setState({
       graphToShow: g,
       selectedChartAnalysis: selectedAnalysis,

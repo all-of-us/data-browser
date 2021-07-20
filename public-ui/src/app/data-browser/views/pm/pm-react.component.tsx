@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import {withRouteData} from 'app/components/app-router';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
 import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
@@ -7,6 +6,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { PM_CONCEPTS } from 'app/utils/constants';
+import { urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
@@ -166,14 +166,13 @@ interface State {
   selectedConceptValueAnalysis: any;
   selectedConceptValueCountAnalysis: any;
   domainCountAnalysis: any;
-  searchText: any;
   unitNames: Array<String>;
 }
 
-export class PMReactComponent extends React.Component<{}, State> {
+export const PMReactComponent = withRouteData(class extends React.Component<{}, State> {
   constructor(props) {
     super(props);
-    this.state = {pmGroups: PMGroups, loading: true, searchText: localStorage.getItem('searchText'), selectedGroup: PMGroups[0],
+    this.state = {pmGroups: PMGroups, loading: true, selectedGroup: PMGroups[0],
     selectedConcept: PMGroups[0].concepts[0], selectedConceptUnit: null, domainCountAnalysis: null, selectedConceptValueAnalysis: null,
     selectedConceptValueCountAnalysis: null, unitNames: []};
   }
@@ -184,7 +183,8 @@ export class PMReactComponent extends React.Component<{}, State> {
   }
 
   getPMData() {
-    const {searchText, pmGroups} = this.state;
+    const {pmGroups} = this.state;
+    const {search} = urlParamsStore.getValue();
     dataBrowserApi().getConceptAnalysisResults(PM_CONCEPTS).then(
       (result) => {
         const items = result.items;
@@ -203,10 +203,10 @@ export class PMReactComponent extends React.Component<{}, State> {
                 this.setState({loading: false});
             }
           }
-          if (searchText) {
+          if (search) {
             this.setState({selectedGroup: pmGroups.filter(conceptgroup =>
               conceptgroup.groupName.toLowerCase().
-              includes(searchText.toLowerCase()))[0]});
+              includes(search.toLowerCase()))[0]});
           } else {
             this.setState({selectedGroup: pmGroups[0]});
           }
@@ -451,18 +451,4 @@ export class PMReactComponent extends React.Component<{}, State> {
       </div>
       </React.Fragment>;
     }
-}
-
-
-
-@Component({
-    // tslint:disable-next-line: component-selector
-    selector: 'react-pm',
-    template: `<span #root></span>`,
-})
-
-export class PhysicalMeasurementsWrapperComponent extends BaseReactWrapper {
-    constructor() {
-        super(PMReactComponent, []);
-    }
-}
+});
