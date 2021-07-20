@@ -85,7 +85,7 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
       this.props.countAnalysis.results[0].countValue : 0;
       const percentage = ((concept.countValue / totalCount) * 100).toFixed();
       pointData.push({
-        toolTipHelpText: '<div class="fitbit-tooltip" style="z-index: 200; white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"><strong>' + count +
+        toolTipHelpText: '<div class="fitbit-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"><strong>' + count +
           ' </strong> participants had <br>'
           + concept.stratum1 + '<br> by <strong>' + concept.stratum2 + '</strong>' +
           ' and that is <strong>' + percentage + '</strong>% of Total Fitbit Participants. (Total Count = )' +
