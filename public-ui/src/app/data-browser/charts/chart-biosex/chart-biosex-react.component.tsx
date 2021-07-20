@@ -161,7 +161,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipHelpText(count, analysisStratumName, percentage, totalCount, domain) {
-    const toolTipHelpText = '<div class="chart-tooltip">' +
+    const toolTipHelpText = '<div class="chart-tooltip" style="z-index: 200;">' +
         '<strong> ' + count + '</strong> participants had ' + analysisStratumName +
         ' as sex assigned at birth with this ' +
         (domain === 'ehr' ? 'medical concept mentioned in their Electronic Health Record (EHR)' : 'survey answer') + ' and that is ' +
@@ -195,7 +195,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           }
           const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
           pointData.push({
-            toolTipHelpText: '<div class="bio-sex-tooltip"><strong>' +
+            toolTipHelpText: '<div class="bio-sex-tooltip" style="z-index: 200; white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
               count + '</strong>' +
               ' participants <br> who had <strong>' + concept.analysisStratumName +
               '</strong> as sex assigned at birth and that is <strong>' +

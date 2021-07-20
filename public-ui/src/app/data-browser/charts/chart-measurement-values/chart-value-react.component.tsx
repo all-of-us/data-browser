@@ -104,7 +104,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.xAxis.categories = categories;
     delete newBaseOptions.color;
     newBaseOptions.series = [series];
-    newBaseOptions.tooltip.outside = true;
     newBaseOptions.title.text = chartTitle;
     newBaseOptions.legend.enabled = false;
     newBaseOptions.yAxis.gridLineColor = 'transparent';
@@ -194,7 +193,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
             participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
         }
         if (a.stratum2 !== 'No unit') {
-            tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
+            tooltipText = '<div class="chart-tooltip" style="z-index: 200; white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"> <b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value / Range:';
             if (a.stratum4.indexOf('>=') > -1) {
                 tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
@@ -204,7 +203,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
                     + '</b> <br/>' + participantCountText + '</div>';
             }
         } else {
-            tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
+            tooltipText = '<div class="chart-tooltip" style="z-index: 200; white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"> <b>' + analysisStratumName + '</b>' +
                 '<br/>' + 'Measurement Value : <b>' + a.stratum4
                 + '</b> <br/>' + participantCountText + '</div>';
         }

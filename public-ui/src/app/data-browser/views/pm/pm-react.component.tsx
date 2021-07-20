@@ -61,8 +61,8 @@ const PMGroups = [
   {group: 'mean-heart-rate', groupName: 'Mean heart rate', concepts: [
     {conceptId: '903126', conceptName: 'Mean heart rate', chartType: 'histogram', analyses: []}
   ]},
-  {group: 'wheel-chair', groupName: 'Wheel chair use', concepts: [
-    {conceptId: '903111', conceptName: 'Wheel chair use', chartType: 'column', analyses: []}
+  {group: 'wheel-chair', groupName: 'Wheelchair use', concepts: [
+    {conceptId: '903111', conceptName: 'Wheelchair use', chartType: 'column', analyses: []}
   ]},
   {group: 'pregnancy', groupName: 'Pregnancy', concepts: [
     {conceptId: '903120', conceptName: 'Pregnancy', chartType: 'column', analyses: []}
@@ -117,6 +117,7 @@ aside .button-item button {
     width: fit-content;
     padding: 1em;
     padding-top: .5em;
+    text-transform: capitalize;
 }
 .chart-item {
     width: calc((50%) - 18px);
