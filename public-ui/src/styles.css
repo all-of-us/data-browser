@@ -718,9 +718,19 @@ strong {
     margin-bottom: 1%;
 }
 
+.pagination li:not(:first-of-type), .pagination li:not(:last-of-type){
+    padding: 0.2em;
+}
+
 .pagination li:not(:first-of-type){
   color: #262262 !important;
   margin-left: 2%;
+}
+
+.pagination li.active{
+    text-decoration: underline;
+    font-weight: bolder;
+    background: #2691d0 !important;
 }
 
 body *:focus {
