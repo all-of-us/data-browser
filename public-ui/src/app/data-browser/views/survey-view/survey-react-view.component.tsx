@@ -183,7 +183,6 @@ interface State {
 
 export class SurveyViewReactComponent extends React.Component<Props, State> {
     search = _.debounce((val) => {
-          this.getSurvey();
           this.fetchSurvey(this.props.domainId);
           const {id} = urlParamsStore.getValue();
           navigate(['survey', id, val]);
@@ -208,6 +207,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
+
         this.fetchSurvey(this.props.domainId);
     }
 
@@ -293,6 +293,9 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         api.getSurveyQuestions(survey.conceptId.toString(), searchWord, extraQuestionConceptIds).then(
             (x: any) => {
                 this.processSurveyQuestions(x);
+        }).catch(e => {
+                console.log(e, 'error');
+                this.setState({loading: false});
         });
   }
 

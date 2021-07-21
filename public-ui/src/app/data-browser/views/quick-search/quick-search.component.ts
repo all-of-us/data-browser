@@ -230,7 +230,7 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     if (fitbitDomainInfo && fitbitDomainInfo.length > 0) {
         this.fitbitParticipantCount = fitbitDomainInfo[0].participantCount;
     }
-    this.surveyResults = results.surveyModules;
+    this.surveyResults = results.surveyModules.filter(survey => survey.questionCount > 0);
 
     this.surveyResults.forEach(result => {
       if (result.name === 'Lifestyle') {
