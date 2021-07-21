@@ -29,7 +29,6 @@ export const tooltipCss = `
     border-spacing: 5px;
     padding: 5px;
     position: absolute;
-    z-index: 1;
     bottom: 100%;
     left: 0%;
     margin-left: -140px;

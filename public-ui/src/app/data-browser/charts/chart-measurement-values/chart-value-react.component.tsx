@@ -104,7 +104,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.xAxis.categories = categories;
     delete newBaseOptions.color;
     newBaseOptions.series = [series];
-    newBaseOptions.tooltip.outside = true;
     newBaseOptions.title.text = chartTitle;
     newBaseOptions.legend.enabled = false;
     newBaseOptions.yAxis.gridLineColor = 'transparent';
@@ -113,11 +112,12 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.title.style.fontWeight = '400';
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.xAxis.title.text = unitName ? unitName : '';
+    newBaseOptions.xAxis.labels.style.fontSize = '12px';
     if ('dataOnlyLT20' in series) {
             newBaseOptions.yAxis.min = series.dataOnlyLT20 ? 20 : 0;
             newBaseOptions.yAxis.labels = {
                 style: {
-                       fontSize: '14px',
+                       fontSize: '12px',
                        whiteSpace: 'wrap',
                        textOverflow: 'ellipsis',
                        color: '#262262'
@@ -133,6 +133,12 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
                        useHTML: true
                 };
           }
+    newBaseOptions.tooltip.positioner = (width, height, point) => {
+        return {
+            x: point.plotX + 20,
+            y: point.plotY - 25
+        };
+    };
     this.setState({options: newBaseOptions});
   }
 
@@ -194,7 +200,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
             participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
         }
         if (a.stratum2 !== 'No unit') {
-            tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
+            tooltipText = '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: calc((100%/3)*8);"> <b>' + analysisStratumName + '</b>' +
           '<br/>' + 'Measurement Value / Range:';
             if (a.stratum4.indexOf('>=') > -1) {
                 tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
@@ -204,7 +210,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
                     + '</b> <br/>' + participantCountText + '</div>';
             }
         } else {
-            tooltipText = '<div class="chart-tooltip"> <b>' + analysisStratumName + '</b>' +
+            tooltipText = '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: calc((100%/3)*8);"> <b>' + analysisStratumName + '</b>' +
                 '<br/>' + 'Measurement Value : <b>' + a.stratum4
                 + '</b> <br/>' + participantCountText + '</div>';
         }

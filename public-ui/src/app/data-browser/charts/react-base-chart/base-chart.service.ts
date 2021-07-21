@@ -73,8 +73,7 @@ export const baseOptions = {
                   'Participant Count: <b>&le; 20 </b>');
             }
           }
-            return '<div class="tooltip-container" style="z-index: 200; width: auto; white-space: normal;">'
-            + this.point.toolTipHelpText + '</div>';
+            return this.point.toolTipHelpText;
         },
         useHTML: true,
         enabled: true,
@@ -83,6 +82,7 @@ export const baseOptions = {
         backgroundColor: '#FFFFFF',
         style: {
             color: '#302C71',
+            whiteSpace: 'normal',
         }
       },
     colors: ['#2691D0'],

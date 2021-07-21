@@ -195,7 +195,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           }
           const count = (concept.countValue <= 20) ? '&le; 20' : concept.countValue;
           pointData.push({
-            toolTipHelpText: '<div class="bio-sex-tooltip"><strong>' +
+            toolTipHelpText: '<div class="bio-sex-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
               count + '</strong>' +
               ' participants <br> who had <strong>' + concept.analysisStratumName +
               '</strong> as sex assigned at birth and that is <strong>' +
