@@ -191,6 +191,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
 
     constructor(props) {
         super(props);
+        console.log(props.domainId);
         const {search} = urlParamsStore.getValue();
         this.state = {
             isCopeSurvey: false,
@@ -219,8 +220,10 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         }
         api.getDomainTotals(searchWord, 1, 1).then(
                 (data: any) => {
+                  console.log(data);
                   data.surveyModules.forEach(survey => {
-                    const surveyRoute = survey.name.split(' ').join('-').toLowerCase();
+                    const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
+                    survey.name.split(' ').join('-').toLowerCase();
                     if (surveyRoute.indexOf('(cope)') > -1) {
                         if (fetchDomain && surveyRoute.indexOf(fetchDomain) > -1) {
                             localStorage.setItem('surveyModule', JSON.stringify(survey));
