@@ -242,7 +242,7 @@ h5.secondary-display {
 
 interface Props {
     domainId: string;
-    searchWord: string;
+    searchTerm: string;
 }
 
 interface State {

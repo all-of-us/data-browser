@@ -95,7 +95,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.routeDomainId = params.id;
       this.domainId = this.dbc.routeToDomain[params.id];
-      this.prevSearchText = (params.search && params.search !== null && params !== 'null') ? params.search : '';
+      this.prevSearchText = params.search ? params.search : '';
       if (this.prevSearchText) {
         this.searchText.setValue(this.prevSearchText);
       }
