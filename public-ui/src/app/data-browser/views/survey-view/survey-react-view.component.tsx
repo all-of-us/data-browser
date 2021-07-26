@@ -207,7 +207,6 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-
         this.fetchSurvey(this.props.domainId);
     }
 

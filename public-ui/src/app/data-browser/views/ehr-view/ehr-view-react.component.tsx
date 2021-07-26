@@ -11,7 +11,7 @@ import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { PM_CONCEPTS, routeToDomain } from 'app/utils/constants';
 import { GraphType } from 'app/utils/enum-defs';
-import { navigateByUrl } from 'app/utils/navigation';
+import { navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import _ from 'lodash';
 import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
@@ -242,7 +242,7 @@ h5.secondary-display {
 
 interface Props {
     domainId: string;
-    searchTerm: string;
+    searchWord: string;
 }
 
 interface State {
@@ -273,12 +273,13 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         super(props);
         this.changeResults = this.changeResults.bind(this);
         // TODO add url params and change them based on search value
+        const {search} = urlParamsStore.getValue();
         this.state = {
             domain: null,
             totalParticipants: 0,
             title: '',
             subTitle: '',
-            searchWord: this.props.searchTerm,
+            searchWord: search ? search : this.props.searchTerm,
             showStatement: false,
             top10Results: null,
             selectedConcept: null,
@@ -316,7 +317,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
    changeUrl() {
     let url = 'ehr/' + this.props.domainId;
     if (this.state.searchWord) {
-        url += '?search=' + this.state.searchWord;
+        url += '/' + this.state.searchWord;
     }
     window.history.replaceState(null, 'Ehr View', url);
    }
