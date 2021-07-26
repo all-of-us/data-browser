@@ -132,7 +132,8 @@ app-spinner {
     padding: 18px;
     padding-bottom: 3px;
     margin: 0;
-    font-size: 16px;;
+    font-size: 16px;
+    height: 4em;
 }
 
 .result-box:last-of-type {
@@ -157,9 +158,19 @@ app-spinner {
     display: flex;
     flex-direction: column;
 }
+.survey-result-box-link {
+    padding: 18px;
+    padding-top: 0;
+    height: 2em;
+}
 .result-box-link {
     padding: 18px;
     padding-top: 0;
+    height: 4em;
+}
+
+.result-body-description {
+    height: 7em;
 }
 
 .result-body-item {
@@ -226,4 +237,3 @@ app-spinner {
 .cope-preview {
     justify-content: flex-start;
 }
-
