@@ -162,9 +162,8 @@
                     <div class="body-lead tbl-d">
                       <div class="code-tooltip">
               <span *ngIf="totalResults > searchRequest.maxResults" class="item-index">
-                {{i+((currentPage-1) * searchRequest.maxResults)+1}}.
-              </span>
-                        <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}.</span>
+                {{i+((currentPage-1) * searchRequest.maxResults)+1}}. </span>
+                        <span *ngIf="totalResults <= searchRequest.maxResults" class="item-index">{{i+1}}. </span>
                         <app-highlight-react [text]="r.conceptName" [searchTerm]="prevSearchText"></app-highlight-react>
                       </div>
                     </div>
