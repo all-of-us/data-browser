@@ -87,7 +87,8 @@ const styles = reactStyles({
         padding: '18px',
         paddingBottom: '3px',
         margin: '0',
-        fontSize: '16px'
+        fontSize: '16px',
+        height: '20%'
     },
     resultBody: {
         color: '#302c71',
@@ -96,11 +97,12 @@ const styles = reactStyles({
         padding: '18px',
         paddingTop: '0px',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        height: '60%'
     },
     resultBoxLink: {
         padding: '18px',
-        paddingTop: '0'
+        paddingTop: '36px'
     },
     resultHeading: {
         fontSize: '23px',
