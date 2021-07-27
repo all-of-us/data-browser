@@ -76,27 +76,52 @@ const routes: Routes = [
         {
           path: 'physical-measurements',
           component: AppRouting,
-          data: {}
+          data: {
+            title: 'Physical Measurements',
+            breadcrumb: {
+                value: 'Physical Measurements'
+            }
+          }
         },
         {
           path: 'physical-measurements/:search',
           component: AppRouting,
-          data: {}
+          data: {
+            title: 'Physical Measurements',
+            breadcrumb: {
+                value: 'Physical Measurements'
+            }
+          }
         },
         {
           path: 'fitbit',
           component: AppRouting,
-          data: {}
+          data: {
+            title: 'Fitbit Data',
+            breadcrumb: {
+                value: 'Fitbit Data'
+            }
+          }
         },
         {
           path: 'fitbit/:search',
           component: AppRouting,
-          data: {}
+          data: {
+            title: 'Fitbit Data',
+            breadcrumb: {
+                value: 'Fitbit Data'
+            }
+          }
         },
         {
           path: 'introductory-videos',
           component:  AppRouting,
-          data: {}
+          data: {
+            title: 'Introductory Videos',
+            breadcrumb: {
+                value: 'Introductory Videos'
+            }
+          }
         }]
       }
     ]
