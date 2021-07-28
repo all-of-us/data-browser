@@ -80,6 +80,14 @@ const cssStyles = `
 .measurement-filter-choice.active {
   text-decoration: underline;
 }
+.no-values{
+    margin-top:1rem;
+    margin-left: 50%;
+    font-size: 14px;
+    transform: translateX(-50%);
+    width: fit-content;
+    white-space: nowrap;
+}
 `;
 
 interface State {
@@ -131,12 +139,12 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             selectedUnit: null,
             unitNames: [],
             selectedMeasurementType: null,
-            toDisplayMeasurementGenderAnalysis: null,
+            toDisplayMeasurementGenderAnalysis: undefined,
             toDisplayMeasurementGenderCountAnalysis: null,
             isAnalysisLoaded: false,
             mixtureOfValues: false,
             noUnitValueButtons: ['No Unit (Text)', 'No Unit (Numeric)'],
-            genderResults: null,
+            genderResults: undefined,
             loading: true,
             sourcesLoading: true,
             node: undefined,
@@ -229,12 +237,14 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                 return chartGenderOrder.indexOf(a.stratum2) - chartGenderOrder.indexOf(b.stratum2);
             });
             const unitCounts = [];
-            for (const aa of measurementGenderCountAnalysis) {
-                let sumCount = 0;
-                for (const ar of aa.results) {
-                    sumCount = sumCount + ar.countValue;
+            if (measurementGenderCountAnalysis) {
+                for (const aa of measurementGenderCountAnalysis) {
+                    let sumCount = 0;
+                    for (const ar of aa.results) {
+                        sumCount = sumCount + ar.countValue;
+                    }
+                    unitCounts.push({ name: aa.unitName, count: sumCount });
                 }
-                unitCounts.push({ name: aa.unitName, count: sumCount });
             }
             unitCounts.sort((a, b) => {
                 return a.count - b.count;
@@ -406,7 +416,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                 </div>
                                 <div className='chart-container'>
                                     <div className='ehr-m-chart-layout' style={styles.ehrMChartLayout}>
-                                        {(genderResults && toDisplayMeasurementGenderAnalysis) &&
+                                        {(genderResults && toDisplayMeasurementGenderAnalysis) ?
                                             genderResults.map((gender, index) => {
                                                 return <div key={index} className='ehr-m-chart-item' style={styles.ehrMChartItem}>
                                                     <ValueReactChartComponent
@@ -414,7 +424,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                                         valueAnalysis={toDisplayMeasurementGenderAnalysis}
                                                         genderId={gender.stratum2}
                                                         chartTitle={this.fetchChartTitle(gender)} /></div>;
-                                            })
+                                            }) :
+                                            <p className='no-values'>No Values Available</p>
                                         }
                                     </div>
                                 </div>

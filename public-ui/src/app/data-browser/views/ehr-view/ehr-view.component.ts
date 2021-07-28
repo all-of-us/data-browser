@@ -307,11 +307,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public getGraphButtons(r: any) {
       if (r.domainId.toLowerCase() === 'measurement') {
-        if (r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues === 1) {
-          return ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
-        } else if (r.measurementConceptInfo !== null && r.measurementConceptInfo.hasValues === 0) {
-          return ['Sex Assigned at Birth', 'Age', 'Sources'];
-        }
+        return ['Values', 'Sex Assigned at Birth', 'Age', 'Sources'];
       }
       return this.graphButtons;
   }
