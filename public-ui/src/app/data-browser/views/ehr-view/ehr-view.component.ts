@@ -95,26 +95,9 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.routeDomainId = params.id;
       this.domainId = this.dbc.routeToDomain[params.id];
-    });
-    this.route.queryParams.subscribe(params => {
-      if (params['fromDifferentDomain'] && params['fromDifferentDomain'] === 'true') {
-        this.currentPage = 1;
-      }
-      if (params['search']) {
-        this.searchFromUrl = params.search;
-        this.prevSearchText = params.search;
+      this.prevSearchText = params.search ? params.search : '';
+      if (this.prevSearchText) {
         this.searchText.setValue(this.prevSearchText);
-        localStorage.setItem('searchText', this.prevSearchText);
-        if (params['explore'] && params['explore'] === 'true') {
-            this.loadPage();
-        }
-      } else {
-        this.router.navigate(
-          ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()],
-          {
-            replaceUrl: true
-          }
-        );
       }
     });
     this.loadPage();
@@ -486,20 +469,12 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public searchDomain(query: string) {
-    if (query != null && query !== ' ' && query) {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          queryParams: { search: this.searchText.value }
-        });
+    if (query) {
+        this.router.navigate(
+                  ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase() + '/' + query]);
     } else {
-      this.router.navigate(
-        [],
-        {
-          relativeTo: this.route,
-          replaceUrl: true
-        });
+        this.router.navigate(
+                  ['ehr/' + this.dbc.domainToRoute[this.domainId].toLowerCase()]);
     }
     this.getNumberOfPages(query);
     // Unsubscribe from our initial search subscription if this is called again

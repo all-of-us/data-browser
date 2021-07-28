@@ -100,7 +100,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
         if (type === 'ehr') {
             localStorage.setItem('ehrDomain', JSON.stringify(domainInfo));
             url += 'ehr/' + domainToRoute[domainInfo.domain.toLowerCase()];
-            url += '?search=' + searchValue;
+            url += '/' + searchValue;
             domainMatch();
             navigateByUrl(url);
         } else if (type === 'survey') {
