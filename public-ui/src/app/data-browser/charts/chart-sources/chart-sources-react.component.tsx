@@ -88,6 +88,8 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
       cats.push(a.vocabularyId + '-' + a.conceptCode);
     }
     const dataOnlyLT20 = data.filter(x => x.y > 20).length === 0;
+    console.log('here here here');
+    console.log(concepts);
     // Override tooltip and colors and such
     const series = {
       name: concepts[0].domainId, colorByPoint: true, data: data, colors: ['#6CAEE3'],
