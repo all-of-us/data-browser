@@ -457,7 +457,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
 
                                 </div>
                                 {sourceConcepts && sourceConcepts.length > 0 ?
-                                <SourcesChartReactComponent concepts={sourceConcepts} />: <p className='no-values' style={styles.noSources}>No Source Concepts</p> }
+                                <SourcesChartReactComponent concepts={sourceConcepts} /> :
+                                <p className='no-values' style={styles.noSources}>No Source Concepts</p> }
                                 </div>
                             </div>
                             {(name.toLowerCase() === 'conditions' || name.toLowerCase() === 'procedures') &&
