@@ -262,7 +262,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
         return <div
             onClick={() => this.resultClick(this.props)}
-            className="result-box">
+            className='result-box'>
             <div style={styles.resultBoxTitle}>{name}
                 <TooltipReactComponent
                     label='Homepage Tooltip Hover'
@@ -381,7 +381,7 @@ export const dBHomeComponent = (
 
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
-                <div className="search-icon-container">
+                <div className='search-icon-container'>
                     <div>
                         <SearchComponent value={searchWord} searchTitle='Search Across Data Types'
                             onChange={(val) => this.handleChange(val)}
@@ -421,7 +421,7 @@ export const dBHomeComponent = (
                             action='Tooltip Home Page EHR Domains'
                             tooltipKey='ehrDomainHelpText' /></h5>
 
-                    <div className="result-boxes">
+                    <div className='result-boxes'>
                         {
                             domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
