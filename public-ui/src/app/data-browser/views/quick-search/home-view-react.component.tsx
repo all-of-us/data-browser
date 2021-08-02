@@ -51,6 +51,60 @@ const css = `
 .result-bottom-link:hover {
     color: #262262;
 }
+.result-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 48px;
+    flex-grow: 1;
+}
+
+.result-box {
+    /* height:auto; */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* min-width: calc(((100%/12)*3) - 14px); */
+    width: calc(((100% / 12) * 3) - 18px);
+    margin-right: 18px;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+
+.search-icon-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column-reverse;
+    padding-left:1em;
+    padding-bottom:5em;
+    justify-content: 'flex-start';
+}
+
+@media (max-width: 1000px) {
+    .iconlinks {
+        margin-bottom: -13em;
+    }
+    .result-box {
+        height: auto;
+        min-width: calc(((100% / 12) * 6) - 18px);
+        margin-bottom: 18px;
+    }
+    .result-box:nth-of-type(2) {
+        margin-right: 0;
+    }
+}
+
+.result-box:last-of-type {
+    margin-right: 0;
+}
+
+.cope-preview {
+    justify-content: flex-start;
+}
     `;
 const styles = reactStyles({
     searchIconLayout: {
@@ -140,7 +194,7 @@ const styles = reactStyles({
     },
     iconLinks: {
         position: 'relative',
-        top: '2rem',
+        top: '-1rem',
         display: 'flex',
         alignItems: 'baseline',
         justifyContent: 'center',
@@ -208,7 +262,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
         return <div
             onClick={() => this.resultClick(this.props)}
-            style={styles.resultBox}>
+            className="result-box">
             <div style={styles.resultBoxTitle}>{name}
                 <TooltipReactComponent
                     label='Homepage Tooltip Hover'
@@ -327,7 +381,7 @@ export const dBHomeComponent = (
 
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
-                <div style={styles.searchIconLayout}>
+                <div className="search-icon-container">
                     <div>
                         <SearchComponent value={searchWord} searchTitle='Search Across Data Types'
                             onChange={(val) => this.handleChange(val)}
@@ -367,7 +421,7 @@ export const dBHomeComponent = (
                             action='Tooltip Home Page EHR Domains'
                             tooltipKey='ehrDomainHelpText' /></h5>
 
-                    <div style={styles.resultBoxes}>
+                    <div className="result-boxes">
                         {
                             domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
