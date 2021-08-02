@@ -798,11 +798,6 @@ def circle_build_cdr_indices(cmd_name, args)
     "CDR version. Required."
   )
   op.add_option(
-    "--cdr-date [cdr-date]",
-    ->(opts, v) { opts.cdr_date = v},
-    "CDR date is Required. Please use the date from the source CDR. <YYYY-mm-dd>"
-  )
-  op.add_option(
     "--data-browser [data-browser]",
     ->(opts, v) { opts.data_browser = v},
     "Generate for data browser. Optional - Default is false"
