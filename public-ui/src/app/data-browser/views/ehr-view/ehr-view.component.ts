@@ -121,16 +121,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     localStorage.removeItem('totalResults');
   }
 
-  @HostListener('window:popstate', ['$event'])
-  public onPopState(event: any) {
-    if (this.searchText.value) {
-      localStorage.setItem('searchTermBeforeBack', this.searchText.value);
-    } else {
-      localStorage.setItem('searchTermBeforeBack', '');
-    }
-    this.searchText.setValue(null);
-  }
-
   public loadPage() {
     this.items = [];
         // Get search text from localStorage
@@ -328,10 +318,10 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       }, 400);
   }
 
-  public share(conceptName: string, e) {
+  public share(conceptId: string, e) {
     const selBox = document.createElement('textarea');
-    const copystr = window.location.origin + window.location.pathname +
-      '?search=' + conceptName.replace(/ /g, '%20');
+    var pathNames = window.location.pathname.split('/');
+    const copystr = window.location.origin + '/' + pathNames[1] + '/' + pathNames[2] + '/' + conceptId;
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
