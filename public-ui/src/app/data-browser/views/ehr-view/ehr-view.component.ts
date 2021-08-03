@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbConfigService } from 'app/utils/db-config.service';
@@ -320,7 +320,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public share(conceptId: string, e) {
     const selBox = document.createElement('textarea');
-    var pathNames = window.location.pathname.split('/');
+    const pathNames = window.location.pathname.split('/');
     const copystr = window.location.origin + '/' + pathNames[1] + '/' + pathNames[2] + '/' + conceptId;
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
