@@ -299,12 +299,6 @@ export class QuickSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  public setEhrUrl(r) {
-    const url = 'ehr/' +
-      this.dbc.domainToRoute[r.domain.toLowerCase()].replace(' ', '-');
-    return url;
-  }
-
   public iconClickEvent(iconString: string) {
     this.dbc.triggerEvent('HelpEvent', 'Help', 'Click',
       iconString, null, null);
