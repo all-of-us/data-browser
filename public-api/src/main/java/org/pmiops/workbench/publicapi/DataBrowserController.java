@@ -1,10 +1,16 @@
 package org.pmiops.workbench.publicapi;
 
+import com.google.cloud.bigquery.FieldValue;
+import com.google.cloud.bigquery.QueryJobConfiguration;
+import com.google.cloud.bigquery.TableResult;
+import org.pmiops.workbench.service.BigQueryService;
+
 import java.util.logging.Logger;
 import java.time.*;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -60,6 +66,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     private CdrVersionService cdrVersionService;
     @Autowired
     private SurveyMetadataService surveyMetadataService;
+    @Autowired
+    private BigQueryService bigQueryService;
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
@@ -73,7 +81,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController(ConceptService conceptService, CriteriaService criteriaService,
                                  CdrVersionService cdrVersionService, DomainInfoService domainInfoService,
                                  SurveyMetadataService surveyMetadataService, SurveyModuleService surveyModuleService,
-                                 AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
+                                 AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService,
+                                 BigQueryService bigQueryService) {
         this.conceptService = conceptService;
         this.criteriaService = criteriaService;
         this.cdrVersionService = cdrVersionService;
@@ -82,6 +91,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.domainInfoService = domainInfoService;
         this.achillesResultService = achillesResultService;
         this.achillesAnalysisService = achillesAnalysisService;
+        this.bigQueryService = bigQueryService;
     }
 
     @Override
@@ -362,6 +372,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+        System.out.println("Bigquery data fetch testing ****************************");
+        String COUNT_SQL_TEMPLATE =
+                "select count(*) as count\n"
+                        + "from `${projectId}.${dataSetId}.sample_api_test` sample\n";
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(COUNT_SQL_TEMPLATE.toString())
+                .setUseLegacySql(false)
+                .build();
+        qjc = bigQueryService.filterBigQueryConfig(qjc);
+        TableResult result = bigQueryService.executeQuery(qjc);
+        Map<String, Integer> rm = bigQueryService.getResultMapper(result);
+        List<FieldValue> row = result.iterateAll().iterator().next();
+        //System.out.println(bigQueryService.getLong(row, rm.get("count")));
         return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_ANALYSIS_ID)));
     }
 }

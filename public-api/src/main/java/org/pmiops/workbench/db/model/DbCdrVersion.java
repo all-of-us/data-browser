@@ -20,6 +20,8 @@ public class DbCdrVersion {
   private Timestamp creationTime;
   private int numParticipants;
   private String publicDbName;
+  private String bigqueryProject;
+  private String bigqueryDataset;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,7 +78,25 @@ public class DbCdrVersion {
   @Override
   public int hashCode() {
     return Objects.hash(cdrVersionId, isDefault, name,
-          creationTime, numParticipants, publicDbName);
+          creationTime, numParticipants, publicDbName, bigqueryProject, bigqueryDataset);
+  }
+
+  @Column(name = "bigquery_project")
+  public String getBigqueryProject() {
+    return bigqueryProject;
+  }
+
+  public void setBigqueryProject(String bigqueryProject) {
+    this.bigqueryProject = bigqueryProject;
+  }
+
+  @Column(name = "bigquery_dataset")
+  public String getBigqueryDataset() {
+    return bigqueryDataset;
+  }
+
+  public void setBigqueryDataset(String bigqueryDataset) {
+    this.bigqueryDataset = bigqueryDataset;
   }
 
   @Override
@@ -91,6 +111,8 @@ public class DbCdrVersion {
         .append(this.creationTime, that.creationTime)
         .append(this.numParticipants, that.numParticipants)
         .append(this.publicDbName, that.publicDbName)
+        .append(this.bigqueryProject, that.bigqueryProject)
+        .append(this.bigqueryDataset, that.bigqueryDataset)
         .build();
   }
 }

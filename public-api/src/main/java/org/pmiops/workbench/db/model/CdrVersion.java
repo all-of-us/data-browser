@@ -20,6 +20,8 @@ public class CdrVersion {
   private Timestamp creationTime;
   private int numParticipants;
   private String publicDbName;
+  private String bigqueryProject;
+  private String bigqueryDataset;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,6 +74,24 @@ public class CdrVersion {
   public String getPublicDbName() { return publicDbName; }
 
   public void setPublicDbName(String publicDbName) { this.publicDbName = publicDbName; }
+
+  @Column(name = "bigquery_project")
+  public String getBigqueryProject() {
+    return bigqueryProject;
+  }
+
+  public void setBigqueryProject(String bigqueryProject) {
+    this.bigqueryProject = bigqueryProject;
+  }
+
+  @Column(name = "bigquery_dataset")
+  public String getBigqueryDataset() {
+    return bigqueryDataset;
+  }
+
+  public void setBigqueryDataset(String bigqueryDataset) {
+    this.bigqueryDataset = bigqueryDataset;
+  }
 
   @Override
   public int hashCode() {
