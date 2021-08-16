@@ -222,29 +222,34 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    NavStore.navigateByUrl('ehr/conditions');
+                    let url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
+                    NavStore.navigateByUrl(url);
                     break;
                 // drugs
                 case 13:
-                    NavStore.navigateByUrl('ehr/drug-exposures');
+                    url = this.props.searchWord ? 'ehr/drug-exposures/' + this.props.searchWord : 'ehr/drug-exposures';
+                    NavStore.navigateByUrl(url);
                     break;
                 // MEASUREMENT
                 case 21:
-                    NavStore.navigateByUrl('ehr/labs-and-measurements');
+                    url = this.props.searchWord ? 'ehr/labs-and-measurements/' + this.props.searchWord : 'ehr/labs-and-measurements';
+                    NavStore.navigateByUrl(url);
                     break;
                 // PROCEDURE
                 case 10:
-                    NavStore.navigateByUrl('ehr/procedures');
+                    url = this.props.searchWord ? 'ehr/procedures/' + this.props.searchWord : 'ehr/procedures';
+                    NavStore.navigateByUrl(url);
                     break;
 
             }
         } else if (info.conceptId) {
             switch (info.conceptId) {
                 case 1333342:
-                    NavStore.navigateByUrl('survey/covid-19-participant-experience');
+                    let url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
+                    NavStore.navigateByUrl(url);
                     break;
                 default:
-                    const url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
+                    url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
             }
