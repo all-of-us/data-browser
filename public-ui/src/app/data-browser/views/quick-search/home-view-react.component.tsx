@@ -168,7 +168,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    let url = this.props.searchWord ? 'ehr/conditions'  + this.props.searchWord : 'ehr/conditions';
+                    let url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
                     NavStore.navigateByUrl(url);
                     break;
                 // drugs
