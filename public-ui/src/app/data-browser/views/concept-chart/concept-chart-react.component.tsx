@@ -24,6 +24,8 @@ const styles = reactStyles({
     sourcesChart: {
         width: '100%',
         marginLeft: '-1rem',
+    },
+    conceptBox: {
         background: 'white'
     },
     conceptBoxInfo: {
@@ -67,6 +69,9 @@ const styles = reactStyles({
         textAlign: 'left',
         color: '#0079b8',
         cursor: 'pointer',
+    },
+    noSources: {
+        paddingBottom: '1em'
     }
 });
 
@@ -83,10 +88,11 @@ const cssStyles = `
 .no-values{
     margin-top:1rem;
     margin-left: 50%;
-    font-size: 14px;
+    font-size: 18px;
     transform: translateX(-50%);
     width: fit-content;
     white-space: nowrap;
+    color: #262262;
 }
 `;
 
@@ -434,6 +440,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                     {(graphToShow === 'Sources' && sourceConcepts) &&
                         <div className='source-layout' style={styles.sourceLayout}>
                             <div className='sources-chart' style={styles.sourcesChart} key='sources-chart'>
+                                <div className='concept-box' style={styles.conceptBox}>
                                 <div className='concept-box-info' style={styles.conceptBoxInfo}>
                                     <p style={styles.conceptBoxInfoP}>
                                         <strong>{selectedTreeNode ? selectedTreeNode.name : concept.conceptName}
@@ -449,7 +456,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         </a>}
 
                                 </div>
-                                <SourcesChartReactComponent concepts={sourceConcepts} />
+                                {sourceConcepts && sourceConcepts.length > 0 ?
+                                <SourcesChartReactComponent concepts={sourceConcepts} /> :
+                                <p className='no-values' style={styles.noSources}>No Source Concepts</p> }
+                                </div>
                             </div>
                             {(name.toLowerCase() === 'conditions' || name.toLowerCase() === 'procedures') &&
                                 <div style={{ width: '100%' }}>

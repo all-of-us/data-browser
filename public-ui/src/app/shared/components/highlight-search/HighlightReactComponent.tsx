@@ -6,7 +6,6 @@ import {
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import * as React from 'react';
 
-
 export function highlightSearchTerm(searchTerm: string, text: string, highlightColor: string) {
   let words = [];
   let matchString: RegExp;
@@ -39,9 +38,9 @@ export function highlightSearchTerm(searchTerm: string, text: string, highlightC
 
   return <React.Fragment>{words.map((word, w) => <span key={w}
     style={matchString.test(word.toLowerCase()) ? {
-      backgroundColor: highlightColor,
-      fontWeight: 700,
-      display: 'inline-block'
+            fontFamily: 'GothamBold, Arial, san-serif',
+            fontWeight: 700,
+            padding: '3px'
     } : {}}>
     {word}
   </span>)}</React.Fragment>;

@@ -252,12 +252,14 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (concept_id, concept_name, domain_id, vocabulary_id, concept_class_id, standard_concept,
 concept_code, count_value, prevalence, source_count_value, synonyms, can_select, has_counts)
 select c.concept_id, c.concept_name, c.domain_id, c.vocabulary_id, c.concept_class_id, c.standard_concept, c.concept_code,
-0 as count_value , 0.0 as prevalence, 0 as source_count_value,concat(cast(c.concept_id as string),'|',string_agg(replace(cs.concept_synonym_name,'|','||'),'|')) as synonyms,
+0 as count_value , 0.0 as prevalence, 0 as source_count_value,
+(case when cs.concept_id is not null then concat(cast(c.concept_id as string),'|',string_agg(replace(cs.concept_synonym_name,'|','||'),'|'))
+else concat(cast(c.concept_id as string), '|', c.concept_name) end) as synonyms,
 (case when (c.concept_id in (select distinct concept_id from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\`)
 and (select flag from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\` where concept_id = c.concept_id)=0) then 0 else 1 end) as can_select,
 0 as has_select
-from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id
-group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code"
+from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c left outer join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id
+group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code, cs.concept_id"
 
 # Update counts and prevalence in concept
 q="select count_value from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a where a.analysis_id = 1"
