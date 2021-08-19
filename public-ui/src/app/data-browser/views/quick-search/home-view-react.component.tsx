@@ -288,12 +288,14 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                         (
                         domainType === 'ehr' ? <span>matching medical concepts</span> :
                         (domainType === 'survey' ? <span>matching survey questions</span> :
-                        (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> : <span>matching Fitbit Measurements</span>))
+                        (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
+                        <span>matching Fitbit Measurements</span>))
                       )
                     : (
                         domainType === 'ehr' ? <span>medical concepts</span> :
                         (domainType === 'survey' ? <span>questions available</span> :
-                        (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> : <span>Fitbit Measurements</span>))
+                        (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> :
+                        <span>Fitbit Measurements</span>))
                       )}
                 </span>
                 <span style={styles.resultBodyItem} >
@@ -304,10 +306,11 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                            Participants have the option to provide a standard set of physical measurements as part
                                      of the enrollment process.
                            </span>
-                           </div>: (
+                           </div> : (
                            name.toLowerCase() === 'fitbit' ? <div style={styles.resultBodyItem} className='result-body-item'><span>
                            Fitbit data includes heart rate and activity summaries.
-                           </span></div> : (domainType === 'survey' ? <div style={styles.resultBodyItem} className='result-body-item'><span>{description}</span></div> : null)
+                           </span></div> : (domainType === 'survey' ? <div style={styles.resultBodyItem} className='result-body-item'>
+                           <span>{description}</span></div> : null)
                            )
                            }
             </div>

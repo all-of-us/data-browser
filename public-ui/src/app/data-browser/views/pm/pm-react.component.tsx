@@ -74,7 +74,7 @@ const styleCss = `
     font-weight: 900;
 }
 .bs-chart-item {
-    width: 75%;
+    width: 50%;
     height: auto;
     flex-grow: 1;
 }
@@ -155,6 +155,11 @@ aside .button-item button {
         width: 100%;
         height: auto;
     }
+    .bs-chart-item {
+        width: 100%;
+    }
+}
+@media (max-width: 1200px) {
     .bs-chart-item {
         width: 100%;
     }

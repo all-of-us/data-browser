@@ -42,11 +42,6 @@ const styles = reactStyles({
         alignItems: 'center',
         paddingTop: '1em'
     },
-    ehrMChartItem: {
-        width: '100%',
-        height: 'auto',
-        flexGrow: 1
-    },
     conceptBoxInfoP: {
         fontSize: '14px',
         color: '#262262',
@@ -93,6 +88,16 @@ const cssStyles = `
     width: fit-content;
     white-space: nowrap;
     color: #262262;
+}
+.ehr-m-chart-item{
+    width: 50%;
+    height: auto;
+    flex-grow: 1;
+}
+@media (max-width: 1200px) {
+    .ehr-m-chart-item {
+        width: 100%;
+    }
 }
 `;
 
