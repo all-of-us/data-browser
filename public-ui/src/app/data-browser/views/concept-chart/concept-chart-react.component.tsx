@@ -429,7 +429,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                     <div className='ehr-m-chart-layout' style={styles.ehrMChartLayout}>
                                         {(genderResults && toDisplayMeasurementGenderAnalysis) ?
                                             genderResults.map((gender, index) => {
-                                                return <div key={index} className='ehr-m-chart-item' style={styles.ehrMChartItem}>
+                                                return <div key={index} className='ehr-m-chart-item'>
                                                     <ValueReactChartComponent
                                                         conceptId={concept.conceptId}
                                                         valueAnalysis={toDisplayMeasurementGenderAnalysis}
