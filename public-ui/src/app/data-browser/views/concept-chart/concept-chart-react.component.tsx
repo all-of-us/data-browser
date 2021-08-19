@@ -43,7 +43,7 @@ const styles = reactStyles({
         paddingTop: '1em'
     },
     ehrMChartItem: {
-        width: 'calc((33.3%) - 18px)',
+        width: '100%',
         height: 'auto',
         flexGrow: 1
     },

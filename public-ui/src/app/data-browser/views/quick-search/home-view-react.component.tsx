@@ -14,6 +14,9 @@ import _ from 'lodash';
 import * as React from 'react';
 
 const css = `
+.result-body-item {
+    height: 7em;
+}
 .disclaimer-btn {
     padding: 1rem 2rem;
     color: #f9f9fa;
@@ -80,7 +83,6 @@ const css = `
     flex-wrap: wrap;
     flex-flow: column-reverse;
     padding-left:1em;
-    padding-bottom:5em;
     justify-content: 'flex-start';
 }
 
@@ -210,6 +212,7 @@ interface ResultLinkProps {
     domain: string;
     participantCount: number;
     searchWord: string;
+    domainType: string;
 }
 
 export const ResultLinksComponent = (class extends React.Component<ResultLinkProps> {
@@ -219,37 +222,39 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
 
     resultClick(info) {
         if (info.domainConceptId) {
+            let url = 'ehr/';
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    let url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
+                    url += this.props.searchWord ? 'conditions/'  + this.props.searchWord : 'conditions';
                     NavStore.navigateByUrl(url);
                     break;
                 // drugs
                 case 13:
-                    url = this.props.searchWord ? 'ehr/drug-exposures/' + this.props.searchWord : 'ehr/drug-exposures';
+                    url += this.props.searchWord ? 'drug-exposures/' + this.props.searchWord : 'drug-exposures';
                     NavStore.navigateByUrl(url);
                     break;
                 // MEASUREMENT
                 case 21:
-                    url = this.props.searchWord ? 'ehr/labs-and-measurements/' + this.props.searchWord : 'ehr/labs-and-measurements';
+                    url += this.props.searchWord ? 'labs-and-measurements/' + this.props.searchWord : 'labs-and-measurements';
                     NavStore.navigateByUrl(url);
                     break;
                 // PROCEDURE
                 case 10:
-                    url = this.props.searchWord ? 'ehr/procedures/' + this.props.searchWord : 'ehr/procedures';
+                    url += this.props.searchWord ? 'procedures/' + this.props.searchWord : 'procedures';
                     NavStore.navigateByUrl(url);
                     break;
 
             }
         } else if (info.conceptId) {
+            let url = 'survey/';
             switch (info.conceptId) {
                 case 1333342:
-                    let url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
+                    url += this.props.searchWord ? 'covid-19-participant-experience/' + this.props.searchWord : 'covid-19-participant-experience';
                     NavStore.navigateByUrl(url);
                     break;
                 default:
-                    url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
+                    url += info.name.replace(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
             }
@@ -264,7 +269,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         }
     }
     render() {
-        const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
+        const { name, description, questionCount, standardConceptCount, domain, participantCount, searchWord, domainType } = this.props;
         return <div
             onClick={() => this.resultClick(this.props)}
             className='result-box'>
@@ -276,21 +281,35 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     searchTerm='' /></div>
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
-                    <div style={styles.resultStat}>
+                    <div style={styles.resultStat} className='result-stat'>
                         {standardConceptCount}{questionCount}
                     </div>
-                    <span>matching medical concepts</span>
-                    <span>medical concepts</span>
+                    {searchWord ?
+                        (
+                        domainType === 'ehr' ? <span>matching medical concepts</span> :
+                        (domainType === 'survey' ? <span>matching survey questions</span> :
+                        (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> : <span>matching Fitbit Measurements</span>))
+                      )
+                    : (
+                        domainType === 'ehr' ? <span>medical concepts</span> :
+                        (domainType === 'survey' ? <span>questions available</span> :
+                        (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> : <span>Fitbit Measurements</span>))
+                      )}
                 </span>
-                {
-                    (questionCount &&
-                        <div style={styles.resultBodyItem}>
-                            <span>{description}</span>
-                        </div>)
-                }
                 <span style={styles.resultBodyItem} >
                     <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
                 </span>
+                {name.toLowerCase() === 'physical measurements' ?
+                           <div style={styles.resultBodyItem} className='result-body-item'><span>
+                           Participants have the option to provide a standard set of physical measurements as part
+                                     of the enrollment process.
+                           </span>
+                           </div>: (
+                           name.toLowerCase() === 'fitbit' ? <div style={styles.resultBodyItem} className='result-body-item'><span>
+                           Fitbit data includes heart rate and activity summaries.
+                           </span></div> : (domainType === 'survey' ? <div style={styles.resultBodyItem} className='result-body-item'><span>{description}</span></div> : null)
+                           )
+                           }
             </div>
             <div style={styles.resultBoxLink}>
                 {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
@@ -344,6 +363,7 @@ export const dBHomeComponent = (
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
                         domain.standardConceptCount > 0);
+                    result.surveyModules = result.surveyModules.filter(survey => survey.questionCount > 0);
                     const domainInfo = result.domainInfos.filter(
                         domain => domain.name.toLowerCase() !== 'physical measurements' &&
                             domain.name.toLowerCase() !== 'fitbit');
@@ -430,7 +450,7 @@ export const dBHomeComponent = (
                         {
                             domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} domainType='ehr'/>;
 
                             })
 
@@ -441,7 +461,7 @@ export const dBHomeComponent = (
                         {
                             surveyInfo.map((survey, index) => {
                                 const key = 'survey' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} domainType='survey'/>;
                             })
 
                         }
@@ -452,7 +472,7 @@ export const dBHomeComponent = (
                         {
                             physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw'/>;
                             })
                         }
                     </div>
