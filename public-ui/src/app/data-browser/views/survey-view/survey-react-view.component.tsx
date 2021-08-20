@@ -8,6 +8,7 @@ import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/sur
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { GraphType } from 'app/utils/enum-metadata';
 import { navigate, navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
@@ -341,6 +342,7 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
         const statStyle = isCopeSurvey ? styles.copeStatLayout : styles.statLayout;
         return <React.Fragment>
         <style>{surveyStyle}</style>
+            <BreadCrumbComponent domainName={survey && survey.name + ' Survey'} />
         <div className='survey-view' style={styles.surveyView}>
         {survey && <SurveyDescReactComponent surveyName={survey.name} isCopeSurvey={isCopeSurvey} surveyDescription={survey.description}
         click={() => this.setState({showStatement: true})}/>

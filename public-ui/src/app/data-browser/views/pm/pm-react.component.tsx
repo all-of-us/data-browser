@@ -8,6 +8,7 @@ import { reactStyles } from 'app/utils';
 import { PM_CONCEPTS } from 'app/utils/constants';
 import { urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -346,6 +347,7 @@ export const PMReactComponent = withRouteData(class extends React.Component<{}, 
     return <React.Fragment>
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
+        <BreadCrumbComponent domainName={'Physical Measurements'} />
         <h1>Browse Program Physical Measurements</h1>
         { loading ? <Spinner /> :
         <div className='pm-layout' style={styles.pmLayout}>

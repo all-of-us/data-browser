@@ -6,6 +6,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { ConceptRowReactComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -462,6 +463,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
     return <React.Fragment>
         <style>{cssStyles}</style>
+        <BreadCrumbComponent domainName={domain && domain.name + ' Domain'}/>
         <div className='page-header' style={styles.pageHeader}>
             {title && <h2 className='domain-title'>{title}</h2> }
         </div>

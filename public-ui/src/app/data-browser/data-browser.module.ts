@@ -18,6 +18,7 @@ import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactCo
 import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
+import { BreadCrumbWrapperComponent } from '../shared/components/breadcrumb/breadcrumb-react.component';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';
@@ -108,7 +109,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent
+    SurveyDescWrapperComponent,
+    BreadCrumbWrapperComponent
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -149,7 +151,8 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
-    SurveyDescWrapperComponent
+    SurveyDescWrapperComponent,
+    BreadCrumbWrapperComponent
   ],
   providers: [
     ChartService,
