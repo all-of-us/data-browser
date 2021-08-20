@@ -1,12 +1,10 @@
 
+import { Component, Input } from '@angular/core';
+import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { reactStyles } from 'app/utils';
-import { globalStyles } from 'app/utils/global-styles';
 import { NavStore } from 'app/utils/navigation';
 import { environment } from 'environments/environment';
-import { Component, Input } from '@angular/core';
 import * as React from 'react';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { render } from 'react-dom';
 
 const styles = reactStyles({
     preCrumb: {
@@ -16,7 +14,7 @@ const styles = reactStyles({
         color: '#2b266d'
     }
 
-})
+});
 
 const css = `
     .crumb-container *{
@@ -26,10 +24,10 @@ const css = `
         margin-top:1em;
         display:block;
     }
-`
+`;
 
 interface Props {
-    domainName: string
+    domainName: string;
 }
 
 
@@ -40,17 +38,17 @@ export const BreadCrumbComponent = (class extends React.Component<Props> {
     }
 
     render() {
-        const { domainName } = this.props
+        const { domainName } = this.props;
         return <React.Fragment>
             <style>{css}</style>
-            <span className="crumb-container">
+            <span className='crumb-container'>
                 <a href={environment.researchAllOfUsUrl} style={styles.preCrumb}>Home</a>
                 <span>{'>'}</span>
                 <a onClick={() => NavStore.navigateByUrl('/')} style={domainName ? styles.preCrumb : styles.crumb}>Data Browser</a>
                 {domainName && <React.Fragment><span>{'>'}</span>
                     <span style={styles.crumb}>{domainName}</span> </React.Fragment>}
             </span>
-        </React.Fragment>
+        </React.Fragment>;
     }
 
 }

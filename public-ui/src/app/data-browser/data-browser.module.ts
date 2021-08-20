@@ -13,12 +13,12 @@ import { EhrViewWrapperComponent } from 'app/data-browser/views/ehr-view/ehr-vie
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
 import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
+import { BreadCrumbWrapperComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { SharedModule } from 'app/shared/shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import 'highcharts/highcharts-more';
-import { BreadCrumbWrapperComponent } from '../shared/components/breadcrumb/breadcrumb-react.component';
 import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
 import { ChartComponent } from './chart/chart.component';
 import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';

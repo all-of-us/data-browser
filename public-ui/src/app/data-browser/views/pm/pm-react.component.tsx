@@ -1,14 +1,14 @@
-import {withRouteData} from 'app/components/app-router';
+import { withRouteData } from 'app/components/app-router';
 import { AgeChartReactComponent } from 'app/data-browser/charts/chart-age/chart-age-react.component';
-import {ValueReactChartComponent} from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
+import { ValueReactChartComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
 import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { reactStyles } from 'app/utils';
 import { PM_CONCEPTS } from 'app/utils/constants';
 import { urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
-import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import * as React from 'react';
 
 const styles = reactStyles({

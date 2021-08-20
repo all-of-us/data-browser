@@ -4,13 +4,13 @@ import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-versi
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import { NavStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
-import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import _ from 'lodash';
 import * as React from 'react';
 
@@ -252,8 +252,6 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     break;
                 default:
                     url = 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
-                    console.log(url);
-                    
                     NavStore.navigateByUrl(url);
                     break;
             }

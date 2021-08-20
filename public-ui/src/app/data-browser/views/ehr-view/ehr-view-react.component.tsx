@@ -457,7 +457,6 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     numPages, loading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
     selectedMeasurementTypeFilter, currentPage,
     measurementTestFilter, measurementOrderFilter, top10Results} = this.state;
-    
     const maxResults = 50;
     const noMatchFilter = 1;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
