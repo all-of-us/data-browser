@@ -28,7 +28,7 @@ const styles = reactStyles({
     results: {
         paddingTop: '36px',
         width: '100%',
-        padding: '18px'
+        padding: '18px 0'
     },
     dbAlert: {
         fontSize: '15px',
@@ -41,7 +41,7 @@ const styles = reactStyles({
         margin: '1em'
     },
     pageHeader: {
-        padding: '18px'
+        padding: '18px 0'
     },
     medlineLink: {
         fontSize: '14px',
@@ -54,7 +54,7 @@ const styles = reactStyles({
     resultsGrid: {
         width: '100%',
         background: 'white',
-        padding: '18px'
+        padding: '18px 0'
     }
 });
 
@@ -79,7 +79,7 @@ const cssStyles = `
   line-height: 18px;
 }
 .search-bar-container {
-    padding: 18px;
+    padding: 18px 0;
 }
 .disclaimer-btn {
     font-size:.7em;
@@ -457,6 +457,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     numPages, loading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
     selectedMeasurementTypeFilter, currentPage,
     measurementTestFilter, measurementOrderFilter, top10Results} = this.state;
+    
     const maxResults = 50;
     const noMatchFilter = 1;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';

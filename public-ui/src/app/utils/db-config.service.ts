@@ -155,7 +155,7 @@ export class DbConfigService {
   'lifestyle': 1585855,
   'overall-health': 1585710,
   'personal-medical-history': 43529712,
-  'health-care-access-and-utilization': 43528895,
+  'health-care-access-&-utilization': 43528895,
   'family-health-history': 43528698,
   'covid-19-participant-experience': 1333342};
 

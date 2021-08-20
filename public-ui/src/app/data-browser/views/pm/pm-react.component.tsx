@@ -13,7 +13,8 @@ import * as React from 'react';
 
 const styles = reactStyles({
     pmContainer : {
-        margin: '1.2em'
+        margin: '1em',
+        marginBottom: '0'
     },
     aside: {
         paddingRight: '18px',

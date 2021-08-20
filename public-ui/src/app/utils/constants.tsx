@@ -10,7 +10,7 @@ export const surveyIdToRoute = {
     '1585710': 'overall-health',
     '1585855': 'lifestyle',
     '43529712': 'personal-medical-history',
-    '43528895': 'health-care-access-and-utilization',
+    '43528895': 'health-care-access-&-utilization',
     '43528698': 'family-health-history',
     '1333342': 'covid-19-participant-experience'
 };
