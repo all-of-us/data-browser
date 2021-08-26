@@ -1,7 +1,6 @@
 <app-rh-header-react></app-rh-header-react>
 <main class="main-bg" *ngIf="true">
-  <app-breadcrumb *ngIf="!testReact"></app-breadcrumb>
-  <!-- <react-breadcrumbs></react-breadcrumbs> -->
+  <react-breadcrumbs></react-breadcrumbs>
   <div class="db-container">
     <router-outlet (activate)="onActivate()"></router-outlet>
   </div>

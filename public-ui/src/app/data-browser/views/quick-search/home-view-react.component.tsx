@@ -4,7 +4,6 @@ import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-versi
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
-import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
@@ -374,7 +373,6 @@ export const dBHomeComponent = (
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading } = this.state;
             return <React.Fragment>
                 <style>{css}</style>
-                <BreadCrumbComponent domainName={''}/>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
                     The Data Browser provides interactive views of the publicly available<i>All of Us </i>

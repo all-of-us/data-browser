@@ -5,7 +5,6 @@ import { SurveyVersionTableReactComponent } from 'app/data-browser/components/su
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
 import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
-import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -361,7 +360,6 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
 
         return <React.Fragment>
             <style>{surveyStyle}</style>
-            <BreadCrumbComponent domainName={survey && survey.name + ' Survey'} />
             <div className='survey-view' style={styles.surveyView}>
                 {survey &&
                     <SurveyDescReactComponent

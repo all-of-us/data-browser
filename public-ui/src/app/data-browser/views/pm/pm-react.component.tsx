@@ -4,7 +4,6 @@ import { ValueReactChartComponent } from 'app/data-browser/charts/chart-measurem
 import { GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
-import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { reactStyles } from 'app/utils';
 import { PM_CONCEPTS } from 'app/utils/constants';
 import { urlParamsStore } from 'app/utils/navigation';
@@ -348,7 +347,6 @@ export const PMReactComponent = withRouteData(class extends React.Component<{}, 
     return <React.Fragment>
       <style>{styleCss}</style>
       <div style={styles.pmContainer}>
-        <BreadCrumbComponent domainName={'Physical Measurements'} />
         <h1>Browse Program Physical Measurements</h1>
         { loading ? <Spinner /> :
         <div className='pm-layout' style={styles.pmLayout}>
