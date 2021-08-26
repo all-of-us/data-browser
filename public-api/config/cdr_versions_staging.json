@@ -51,7 +51,7 @@
     "name": "All of Us Dataset v4",
     "dataAccessLevel": 1,
     "bigqueryProject": "aou-res-curation-prod",
-    "bigqueryDataset": "2021q3r2_combined_release",
+      "bigqueryDataset": "2021q3r2_combined_release",
     "creationTime": "2020-08-12 15:28:31Z",
     "releaseNumber": 4,
     "numParticipants": 331380,
