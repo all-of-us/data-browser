@@ -93,7 +93,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata survey_metadata)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata survey_metadata survey_version_metadata)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do

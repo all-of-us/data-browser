@@ -39,7 +39,5 @@
 3311,"Age at Occurrence","concept_id","age_decile","domain_id","count_percentage","",NULL,"","column","percentage"
 3320,"Sex Assigned at Birth","survey_concept_id","question_concept_id","","","gender_concept_id","question_path","","column","percentage"
 3321,"Age at occurrence","survey_concept_id","question_concept_id","","","age_decile","question_path",NULL,"column","percentage"
-3331,"Sex Assigned at Birth","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","gender_concept_id","question_path",NULL,"column","percentage_counts_by_question_counts"
-3332,"Age at occurrence","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string","age_decile","question_path",NULL,"column","percentage_counts_by_question_counts"
 3400,"Survey Module Counts By Version","survey_concept_id","version_id","version_month",NULL,NULL,NULL,NULL,"",""
 3401,"Survey Question Counts By Version","survey_concept_id","version_id","version_month",NULL,NULL,NULL,NULL,"",""
