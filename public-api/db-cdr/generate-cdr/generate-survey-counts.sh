@@ -30,17 +30,13 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_
 main_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,sq.path as stratum_6,
-case when EXTRACT(MONTH from o.observation_datetime)=5 and EXTRACT(YEAR from o.observation_datetime)=2020 then '1'
-when EXTRACT(MONTH from o.observation_datetime)=6 and EXTRACT(YEAR from o.observation_datetime)=2020 then '2'
-when (EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8) and EXTRACT(YEAR from o.observation_datetime)=2020 then '3'
-when (EXTRACT(MONTH from o.observation_datetime) >= 9 and EXTRACT(MONTH from o.observation_datetime) <= 11) and EXTRACT(YEAR from o.observation_datetime)=2020 then '4'
-when (EXTRACT(MONTH from o.observation_datetime) = 12) and EXTRACT(YEAR from o.observation_datetime)=2020 then '5'
-when (EXTRACT(MONTH from o.observation_datetime) >= 1) and EXTRACT(YEAR from o.observation_datetime)=2021 then '6'
-end as stratum_7,
+case when ob_ext.survey_version_concept_id=2100000002 then '1' when ob_ext.survey_version_concept_id=2100000003 then '2' when ob_ext.survey_version_concept_id=2100000004 then '3' when ob_ext.survey_version_concept_id=2100000005 then '4'
+when ob_ext.survey_version_concept_id=2100000006 then '5' when ob_ext.survey_version_concept_id=2100000007 then '6' end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=0
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
@@ -48,17 +44,13 @@ order by CAST(sq.order_number as int64) asc),
 sub_1_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,sq.path as stratum_6,
-case when EXTRACT(MONTH from o.observation_datetime)=5 and EXTRACT(YEAR from o.observation_datetime)=2020 then '1'
-when EXTRACT(MONTH from o.observation_datetime)=6 and EXTRACT(YEAR from o.observation_datetime)=2020 then '2'
-when (EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8) and EXTRACT(YEAR from o.observation_datetime)=2020 then '3'
-when (EXTRACT(MONTH from o.observation_datetime) >= 9 and EXTRACT(MONTH from o.observation_datetime) <= 11) and EXTRACT(YEAR from o.observation_datetime)=2020 then '4'
-when (EXTRACT(MONTH from o.observation_datetime) = 12) and EXTRACT(YEAR from o.observation_datetime)=2020 then '5'
-when (EXTRACT(MONTH from o.observation_datetime) >= 1) and EXTRACT(YEAR from o.observation_datetime)=2021 then '6'
-end as stratum_7,
+case when ob_ext.survey_version_concept_id=2100000002 then '1' when ob_ext.survey_version_concept_id=2100000003 then '2' when ob_ext.survey_version_concept_id=2100000004 then '3' when ob_ext.survey_version_concept_id=2100000005 then '4'
+when ob_ext.survey_version_concept_id=2100000006 then '5' when ob_ext.survey_version_concept_id=2100000007 then '6' end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=3
 and
@@ -70,17 +62,13 @@ order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,sq.path as stratum_6,
-case when EXTRACT(MONTH from o.observation_datetime)=5 and EXTRACT(YEAR from o.observation_datetime)=2020 then '1'
-when EXTRACT(MONTH from o.observation_datetime)=6 and EXTRACT(YEAR from o.observation_datetime)=2020 then '2'
-when (EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8) and EXTRACT(YEAR from o.observation_datetime)=2020 then '3'
-when (EXTRACT(MONTH from o.observation_datetime) >= 9 and EXTRACT(MONTH from o.observation_datetime) <= 11) and EXTRACT(YEAR from o.observation_datetime)=2020 then '4'
-when (EXTRACT(MONTH from o.observation_datetime) = 12) and EXTRACT(YEAR from o.observation_datetime)=2020 then '5'
-when (EXTRACT(MONTH from o.observation_datetime) >= 1) and EXTRACT(YEAR from o.observation_datetime)=2021 then '6'
-end as stratum_7,
+case when ob_ext.survey_version_concept_id=2100000002 then '1' when ob_ext.survey_version_concept_id=2100000003 then '2' when ob_ext.survey_version_concept_id=2100000004 then '3' when ob_ext.survey_version_concept_id=2100000005 then '4'
+when ob_ext.survey_version_concept_id=2100000006 then '5' when ob_ext.survey_version_concept_id=2100000007 then '6' end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=5
 and
@@ -96,7 +84,7 @@ select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 union all
 select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_1_questions_count
 union all
-select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count"
+select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_2_questions_count;"
 
 # Set the survey answer count for all the survey questions
 # (except q2 in the basics survey and questions of family health history since we deal with them in a different way)
@@ -805,92 +793,48 @@ Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id not in (40766240,43528428,1585389)
 Group by sq.survey_concept_id"
 
-# Versioned participant count of cope survey
+# Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
-select * from
-(select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '5' as stratum_2, 'May' as stratum_3, '2020' as stratum_4, '1' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 1 and EXTRACT(MONTH from ob.observation_datetime)=5 and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '6' as stratum_2, 'June' as stratum_3, '2020' as stratum_4, '2' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 2 and EXTRACT(MONTH from ob.observation_datetime)=6 and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '7/8' as stratum_2, 'July/August' as stratum_3, '2020' as stratum_4, '3' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 3 and (EXTRACT(MONTH from ob.observation_datetime)=7 or EXTRACT(MONTH from ob.observation_datetime)=8) and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '11' as stratum_2, 'Nov' as stratum_3, '2020' as stratum_4, '4' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 4 and
-(EXTRACT(MONTH from ob.observation_datetime) >= 9 and EXTRACT(MONTH from ob.observation_datetime) <= 11) and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '12' as stratum_2, 'Dec' as stratum_3, '2020' as stratum_4, '5' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 5 and (EXTRACT(MONTH from ob.observation_datetime) = 12) and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '2' as stratum_2, 'Feb' as stratum_3, '2021' as stratum_4, '6' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 6 and (EXTRACT(MONTH from ob.observation_datetime) >= 1) and EXTRACT(YEAR from ob.observation_datetime)=2021
-group by 1,2,3,4,5)"
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6, count_value,source_count_value)
+select 0 as id, 3401 as analysis_id, '1333342' as stratum_1,
+case when b.survey_version_concept_id=2100000002 then '5' when b.survey_version_concept_id=2100000003 then '6' when b.survey_version_concept_id=2100000004 then '7'
+when b.survey_version_concept_id=2100000005 then '11'
+when b.survey_version_concept_id=2100000006 then '12' when b.survey_version_concept_id=2100000007 then '2' end as stratum_2,
+case when b.survey_version_concept_id=2100000002 then 'May' when b.survey_version_concept_id=2100000003 then 'June' when b.survey_version_concept_id=2100000004 then 'July'
+when b.survey_version_concept_id=2100000005 then 'Nov'
+when b.survey_version_concept_id=2100000006 then 'Dec' when b.survey_version_concept_id=2100000007 then 'Feb' end as stratum_3,
+case when b.survey_version_concept_id=2100000002 then '2020' when b.survey_version_concept_id=2100000003 then '2020' when b.survey_version_concept_id=2100000004 then '2020'
+when b.survey_version_concept_id=2100000005 then '2020'
+when b.survey_version_concept_id=2100000006 then '2020' when b.survey_version_concept_id=2100000007 then '2021' end as stratum_4,
+case when b.survey_version_concept_id=2100000002 then '1' when b.survey_version_concept_id=2100000003 then '2' when b.survey_version_concept_id=2100000004 then '3' when b.survey_version_concept_id=2100000005 then '4'
+when b.survey_version_concept_id=2100000006 then '5' when b.survey_version_concept_id=2100000007 then '6' end as stratum_5,
+cast(b.survey_version_concept_id as string) as stratum_6, count(distinct observation_source_concept_id) as count_value,
+count(distinct observation_source_concept_id) as source_count_value  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` a join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` b on a.observation_id=b.observation_id
+where b.survey_version_concept_id is not null
+group by b.survey_version_concept_id
+order by b.survey_version_concept_id asc; "
 
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
-select * from
-(select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '5' as stratum_2, 'May' as stratum_3, '2020' as stratum_4, '1' as stratum_5,
-count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 1 and EXTRACT(MONTH from ob.observation_datetime)=5 and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '6' as stratum_2, 'June' as stratum_3, '2020' as stratum_4, '2' as stratum_5,
-count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 2 and EXTRACT(MONTH from ob.observation_datetime)=6 and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '7/8' as stratum_2, 'July/August' as stratum_3, '2020' as stratum_4, '3' as stratum_5,
-count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 3 and (EXTRACT(MONTH from ob.observation_datetime)=7 or EXTRACT(MONTH from ob.observation_datetime)=8) and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '11' as stratum_2, 'Nov' as stratum_3, '2020' as stratum_4, '4' as stratum_5,
-count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 4 and (EXTRACT(MONTH from ob.observation_datetime) >= 9 and EXTRACT(MONTH from ob.observation_datetime) <= 11) and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '12' as stratum_2, 'Dec' as stratum_3, '2020' as stratum_4, '5' as stratum_5,
-count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 5 and (EXTRACT(MONTH from ob.observation_datetime) = 12) and EXTRACT(YEAR from ob.observation_datetime)=2020
-group by 1,2,3,4,5
-union distinct
-select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '2' as stratum_2, 'Feb' as stratum_3, '2021' as stratum_4, '6' as stratum_5,
-count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
-on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 6 and (EXTRACT(MONTH from ob.observation_datetime) >= 1) and EXTRACT(YEAR from ob.observation_datetime)=2021
-group by 1,2,3,4,5)
-order by cast(stratum_5 as int64) asc;"
+select  0 as id, 3400 as analysis_id,'1333342' as stratum_1,
+case when ob_ext.survey_version_concept_id=2100000002 then '5' when ob_ext.survey_version_concept_id=2100000003 then '6' when ob_ext.survey_version_concept_id=2100000004 then '7'
+when ob_ext.survey_version_concept_id=2100000005 then '11'
+when ob_ext.survey_version_concept_id=2100000006 then '12' when ob_ext.survey_version_concept_id=2100000007 then '2' end as stratum_2,
+case when ob_ext.survey_version_concept_id=2100000002 then 'May' when ob_ext.survey_version_concept_id=2100000003 then 'June' when ob_ext.survey_version_concept_id=2100000004 then 'July'
+when ob_ext.survey_version_concept_id=2100000005 then 'Nov'
+when ob_ext.survey_version_concept_id=2100000006 then 'Dec' when ob_ext.survey_version_concept_id=2100000007 then 'Feb' end as stratum_3,
+case when ob_ext.survey_version_concept_id=2100000002 then '2020' when ob_ext.survey_version_concept_id=2100000003 then '2020' when ob_ext.survey_version_concept_id=2100000004 then '2020'
+when ob_ext.survey_version_concept_id=2100000005 then '2020'
+when ob_ext.survey_version_concept_id=2100000006 then '2020' when ob_ext.survey_version_concept_id=2100000007 then '2021' end as stratum_4,
+case when ob_ext.survey_version_concept_id=2100000002 then '1' when ob_ext.survey_version_concept_id=2100000003 then '2' when ob_ext.survey_version_concept_id=2100000004 then '3' when ob_ext.survey_version_concept_id=2100000005 then '4'
+when ob_ext.survey_version_concept_id=2100000006 then '5' when ob_ext.survey_version_concept_id=2100000007 then '6' end as stratum_5,
+cast(ob_ext.survey_version_concept_id as string) as stratum_6,
+ob_ext.survey_version_concept_id, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
+join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on ob.observation_id=ob_ext.observation_id
+where ob_ext.survey_version_concept_id is not null
+group by ob_ext.survey_version_concept_id
+order by ob_ext.survey_version_concept_id asc;"
