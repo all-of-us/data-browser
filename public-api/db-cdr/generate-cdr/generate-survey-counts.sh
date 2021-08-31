@@ -831,7 +831,7 @@ group by 1,2,3,4,5)"
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
 select * from
 (select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '5' as stratum_2, 'May' as stratum_3, '2020' as stratum_4, '1' as stratum_5,
 count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
