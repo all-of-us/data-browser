@@ -818,7 +818,7 @@ order by b.survey_version_concept_id asc; "
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select  0 as id, 3400 as analysis_id,'1333342' as stratum_1,
 case when ob_ext.survey_version_concept_id=2100000002 then '5' when ob_ext.survey_version_concept_id=2100000003 then '6' when ob_ext.survey_version_concept_id=2100000004 then '7'
 when ob_ext.survey_version_concept_id=2100000005 then '11'
@@ -832,7 +832,7 @@ when ob_ext.survey_version_concept_id=2100000006 then '2020' when ob_ext.survey_
 case when ob_ext.survey_version_concept_id=2100000002 then '1' when ob_ext.survey_version_concept_id=2100000003 then '2' when ob_ext.survey_version_concept_id=2100000004 then '3' when ob_ext.survey_version_concept_id=2100000005 then '4'
 when ob_ext.survey_version_concept_id=2100000006 then '5' when ob_ext.survey_version_concept_id=2100000007 then '6' end as stratum_5,
 cast(ob_ext.survey_version_concept_id as string) as stratum_6,
-ob_ext.survey_version_concept_id, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob
 join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on ob.observation_id=ob_ext.observation_id
 where ob_ext.survey_version_concept_id is not null
