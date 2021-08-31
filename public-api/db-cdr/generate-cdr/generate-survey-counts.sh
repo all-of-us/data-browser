@@ -50,8 +50,9 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=3
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -65,11 +66,12 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=5
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
@@ -107,9 +109,10 @@ On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
-and exists
+and (exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -121,9 +124,10 @@ On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
-and exists
+and (exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012))
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
@@ -263,8 +267,9 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 ),
@@ -281,11 +286,12 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 )
@@ -430,8 +436,9 @@ where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id != 1586140
 and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -447,11 +454,12 @@ where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id != 1586140
 and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
@@ -676,8 +684,9 @@ On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and value_source_concept_id != 903096)
 and sq.sub=1 and sq.level=3
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
 group by sq.survey_concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 ),
@@ -692,11 +701,12 @@ On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and value_source_concept_id != 903096)
 and sq.sub=1 and sq.level=5
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) )
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012))
 group by sq.survey_concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 )
@@ -736,8 +746,9 @@ On o.observation_source_concept_id=sq.concept_id
 where o.observation_source_concept_id > 0 and value_source_concept_id != 903096
 and sq.sub=1 and sq.level=3
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
 group by sq.survey_concept_id,o.observation_source_concept_id,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -750,11 +761,12 @@ On o.observation_source_concept_id=sq.concept_id
 where o.observation_source_concept_id > 0 and value_source_concept_id != 903096
 and sq.sub=1 and sq.level=5
 and exists
-(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+((select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012))
 group by sq.survey_concept_id,o.observation_source_concept_id,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3321 as analysis_id,stratum_1,stratum_2,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
@@ -779,26 +791,87 @@ Group by sq.survey_concept_id"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
-SELECT 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then '7/8' else cast(EXTRACT(MONTH from o.observation_datetime) as string) end as stratum_3,
-case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_4,
-cast(EXTRACT(YEAR from o.observation_datetime) as string) as stratum_5,
-count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id, 4, 5, 6;"
+select * from
+(select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '5' as stratum_2, 'May' as stratum_3, '2020' as stratum_4, '1' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 1 and EXTRACT(MONTH from ob.observation_datetime)=5 and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '6' as stratum_2, 'June' as stratum_3, '2020' as stratum_4, '2' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 2 and EXTRACT(MONTH from ob.observation_datetime)=6 and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '7/8' as stratum_2, 'July/August' as stratum_3, '2020' as stratum_4, '3' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 3 and (EXTRACT(MONTH from ob.observation_datetime)=7 or EXTRACT(MONTH from ob.observation_datetime)=8) and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '11' as stratum_2, 'Nov' as stratum_3, '2020' as stratum_4, '4' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 4 and (EXTRACT(MONTH from ob.observation_datetime) >= 9 and EXTRACT(MONTH from ob.observation_datetime) <= 11) and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '12' as stratum_2, 'Dec' as stratum_3, '2020' as stratum_4, '5' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 5 and (EXTRACT(MONTH from ob.observation_datetime) = 12) and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '2' as stratum_2, 'Feb' as stratum_3, '2021' as stratum_4, '6' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 6 and (EXTRACT(MONTH from ob.observation_datetime) >= 1) and EXTRACT(YEAR from ob.observation_datetime)=2021
+group by 1,2,3,4,5)"
 
 # Versioned question count of cope survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_3,stratum_4,count_value,source_count_value)
-SELECT 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
-case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then '7/8' else cast(EXTRACT(MONTH from o.observation_datetime) as string) end as stratum_3,
-case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_4,
-count(distinct sq.concept_id) as count_value, count(distinct sq.concept_id) as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
-and sq.survey_concept_id = 1333342
-Group by sq.survey_concept_id, 4, 5;"
+select * from
+(select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '5' as stratum_2, 'May' as stratum_3, '2020' as stratum_4, '1' as stratum_5,
+count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 1 and EXTRACT(MONTH from ob.observation_datetime)=5 and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '6' as stratum_2, 'June' as stratum_3, '2020' as stratum_4, '2' as stratum_5,
+count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 2 and EXTRACT(MONTH from ob.observation_datetime)=6 and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '7/8' as stratum_2, 'July/August' as stratum_3, '2020' as stratum_4, '3' as stratum_5,
+count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 3 and (EXTRACT(MONTH from ob.observation_datetime)=7 or EXTRACT(MONTH from ob.observation_datetime)=8) and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '11' as stratum_2, 'Nov' as stratum_3, '2020' as stratum_4, '4' as stratum_5,
+count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 4 and (EXTRACT(MONTH from ob.observation_datetime) >= 9 and EXTRACT(MONTH from ob.observation_datetime) <= 11) and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '12' as stratum_2, 'Dec' as stratum_3, '2020' as stratum_4, '5' as stratum_5,
+count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 5 and (EXTRACT(MONTH from ob.observation_datetime) = 12) and EXTRACT(YEAR from ob.observation_datetime)=2020
+group by 1,2,3,4,5
+union distinct
+select 0 as id, 3401 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '2' as stratum_2, 'Feb' as stratum_3, '2021' as stratum_4, '6' as stratum_5,
+count(distinct observation_source_concept_id) as count_value, count(distinct observation_source_concept_id) as source_count_value
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
+on ob.observation_source_concept_id = sq.question_concept_id
+where sq.version_id = 6 and (EXTRACT(MONTH from ob.observation_datetime) >= 1) and EXTRACT(YEAR from ob.observation_datetime)=2021
+group by 1,2,3,4,5)
+order by cast(stratum_5 as int64) asc;"
