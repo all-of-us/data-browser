@@ -30,7 +30,13 @@ from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_
 main_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,sq.path as stratum_6,
-case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_7,
+case when EXTRACT(MONTH from o.observation_datetime)=5 and EXTRACT(YEAR from o.observation_datetime)=2020 then '1'
+when EXTRACT(MONTH from o.observation_datetime)=6 and EXTRACT(YEAR from o.observation_datetime)=2020 then '2'
+when (EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8) and EXTRACT(YEAR from o.observation_datetime)=2020 then '3'
+when (EXTRACT(MONTH from o.observation_datetime) >= 9 and EXTRACT(MONTH from o.observation_datetime) <= 11) and EXTRACT(YEAR from o.observation_datetime)=2020 then '4'
+when (EXTRACT(MONTH from o.observation_datetime) = 12) and EXTRACT(YEAR from o.observation_datetime)=2020 then '5'
+when (EXTRACT(MONTH from o.observation_datetime) >= 1) and EXTRACT(YEAR from o.observation_datetime)=2021 then '6'
+end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
@@ -42,7 +48,13 @@ order by CAST(sq.order_number as int64) asc),
 sub_1_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,sq.path as stratum_6,
-case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_7,
+case when EXTRACT(MONTH from o.observation_datetime)=5 and EXTRACT(YEAR from o.observation_datetime)=2020 then '1'
+when EXTRACT(MONTH from o.observation_datetime)=6 and EXTRACT(YEAR from o.observation_datetime)=2020 then '2'
+when (EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8) and EXTRACT(YEAR from o.observation_datetime)=2020 then '3'
+when (EXTRACT(MONTH from o.observation_datetime) >= 9 and EXTRACT(MONTH from o.observation_datetime) <= 11) and EXTRACT(YEAR from o.observation_datetime)=2020 then '4'
+when (EXTRACT(MONTH from o.observation_datetime) = 12) and EXTRACT(YEAR from o.observation_datetime)=2020 then '5'
+when (EXTRACT(MONTH from o.observation_datetime) >= 1) and EXTRACT(YEAR from o.observation_datetime)=2021 then '6'
+end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
@@ -58,7 +70,13 @@ order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
 (SELECT 0 as id, 3113 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,sq.path as stratum_6,
-case when EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8 then 'July/August' else FORMAT_DATE('%B', o.observation_date) end as stratum_7,
+case when EXTRACT(MONTH from o.observation_datetime)=5 and EXTRACT(YEAR from o.observation_datetime)=2020 then '1'
+when EXTRACT(MONTH from o.observation_datetime)=6 and EXTRACT(YEAR from o.observation_datetime)=2020 then '2'
+when (EXTRACT(MONTH from o.observation_datetime)=7 or EXTRACT(MONTH from o.observation_datetime)=8) and EXTRACT(YEAR from o.observation_datetime)=2020 then '3'
+when (EXTRACT(MONTH from o.observation_datetime) >= 9 and EXTRACT(MONTH from o.observation_datetime) <= 11) and EXTRACT(YEAR from o.observation_datetime)=2020 then '4'
+when (EXTRACT(MONTH from o.observation_datetime) = 12) and EXTRACT(YEAR from o.observation_datetime)=2020 then '5'
+when (EXTRACT(MONTH from o.observation_datetime) >= 1) and EXTRACT(YEAR from o.observation_datetime)=2021 then '6'
+end as stratum_7,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
@@ -813,7 +831,8 @@ union distinct
 select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '11' as stratum_2, 'Nov' as stratum_3, '2020' as stratum_4, '4' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_version_metadata\` sq
 on ob.observation_source_concept_id = sq.question_concept_id
-where sq.version_id = 4 and (EXTRACT(MONTH from ob.observation_datetime) >= 9 and EXTRACT(MONTH from ob.observation_datetime) <= 11) and EXTRACT(YEAR from ob.observation_datetime)=2020
+where sq.version_id = 4 and
+(EXTRACT(MONTH from ob.observation_datetime) >= 9 and EXTRACT(MONTH from ob.observation_datetime) <= 11) and EXTRACT(YEAR from ob.observation_datetime)=2020
 group by 1,2,3,4,5
 union distinct
 select 0 as id, 3400 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1, '12' as stratum_2, 'Dec' as stratum_3, '2020' as stratum_4, '5' as stratum_5, count(distinct person_id) as count_value, count(distinct person_id) as source_count_value
