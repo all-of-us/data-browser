@@ -373,9 +373,12 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         System.out.println("Bigquery data fetch testing ****************************");
-        String COUNT_SQL_TEMPLATE =
-                "select count(*) as count\n"
-                        + "from `${projectId}.${dataSetId}.sample_api_test` sample\n";
+        String COUNT_SQL_TEMPLATE = "SELECT DISTINCT vid, contig, position, ref_allele, alt_allele, genes\n" +
+                "FROM `${projectId}.${dataSetId}.wgs_variant_vid_cluster`\n" +
+                "WHERE contig = 'chr5'\n" +
+                "AND position >= 6000000\n" +
+                "AND position <= 8010000\n" +
+                "limit 50;";
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(COUNT_SQL_TEMPLATE.toString())
                 .setUseLegacySql(false)
                 .build();
