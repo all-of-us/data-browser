@@ -4,6 +4,7 @@ import { BioSexChartReactComponent } from 'app/data-browser/charts/chart-biosex/
 import { ChartFitbitReactComponent } from 'app/data-browser/charts/chart-fitbit/chart-fitbit-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { reactStyles } from 'app/utils';
 import { fitbitConcepts } from 'app/utils/constants';
 import { urlParamsStore } from 'app/utils/navigation';
@@ -180,6 +181,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
     const selectedResult = null;
     return <React.Fragment>
         <style>{styleCss}</style>
+        <BreadCrumbComponent domainName={'Fitbit Data'} />
         <div className='fm-container'>
             <h1>Fitbit Data</h1>
             {loading && <Spinner />}

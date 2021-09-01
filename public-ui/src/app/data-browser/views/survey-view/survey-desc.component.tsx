@@ -24,6 +24,9 @@ const styles = reactStyles({
 });
 
 const cssStyles = `
+.page-header {
+  padding:18px 0;
+}
 .disclaimer-btn {
   padding: 1rem 2rem;
   color: #f9f9fa;
@@ -62,13 +65,18 @@ p {
     font-family: GothamBold, Arial, sans-serif;
     font-weight: bold;
 }
+@media only screen and (max-width: 1169px) {
+  .page-header {
+    padding:1em;
+  }
+}
 `;
 
 export const SurveyDescReactComponent =
     (props) => {
     return <React.Fragment>
            <style>{cssStyles}</style>
-           <div className='page-header' style={styles.pageHeader}>
+           <div className='page-header'>
                <div className='title-container' style={styles.titleContainer}>
                  <h1> {props.surveyName} </h1>
                  {

@@ -6,6 +6,7 @@ import { TooltipReactComponent } from 'app/data-browser/components/tooltip/toolt
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { ConceptRowReactComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -27,7 +28,7 @@ const styles = reactStyles({
     results: {
         paddingTop: '36px',
         width: '100%',
-        padding: '18px'
+        padding: '18px 0'
     },
     dbAlert: {
         fontSize: '15px',
@@ -40,7 +41,7 @@ const styles = reactStyles({
         margin: '1em'
     },
     pageHeader: {
-        padding: '18px'
+        padding: '18px 0'
     },
     medlineLink: {
         fontSize: '14px',
@@ -53,7 +54,7 @@ const styles = reactStyles({
     resultsGrid: {
         width: '100%',
         background: 'white',
-        padding: '18px'
+        padding: '18px 0'
     }
 });
 
@@ -78,7 +79,7 @@ const cssStyles = `
   line-height: 18px;
 }
 .search-bar-container {
-    padding: 18px;
+    padding: 18px 0;
 }
 .disclaimer-btn {
     font-size:.7em;
@@ -462,6 +463,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     const filterIconClass = selectedMeasurementTypeFilter ? 'filter-grid-icon is-solid' : 'filter-grid-icon';
     return <React.Fragment>
         <style>{cssStyles}</style>
+        <BreadCrumbComponent domainName={domain && domain.name + ' Domain'}/>
         <div className='page-header' style={styles.pageHeader}>
             {title && <h2 className='domain-title'>{title}</h2> }
         </div>

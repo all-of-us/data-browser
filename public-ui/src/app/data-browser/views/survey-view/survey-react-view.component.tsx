@@ -5,6 +5,7 @@ import { SurveyVersionTableReactComponent } from 'app/data-browser/components/su
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
 import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -40,14 +41,13 @@ const styles = reactStyles({
     results: {
         paddingTop: '36px',
         width: '100%',
-        padding: '18px'
     },
     strong: {
         fontFamily: 'GothamBook, Arial, sans-serif',
         color: '#302c71'
     },
     searchBarContainer: {
-        padding: '18px'
+        padding: '18px 0'
     },
     statLayout: {
         display: 'flex',
@@ -132,7 +132,7 @@ const surveyStyle = `
 .question .body-default {
     padding-bottom: 18px;
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1169px) {
     .survey-head {
         flex-direction: column;
     }
@@ -154,6 +154,13 @@ const surveyStyle = `
         top: 0;
         padding-top: 0;
     }
+    .search-bar-container {
+        padding:1em!important;
+    }
+    .results{
+        padding: 1em
+    }
+
 }
 .topic-text + .question-result {
     border-top: none;
@@ -161,6 +168,13 @@ const surveyStyle = `
 div {
     display: block;
 }
+.search-bar-container {
+    padding: 18px 0;
+}
+.results {
+    padding: 18px 0;
+}
+
 `;
 
 interface Props {
@@ -183,15 +197,15 @@ interface State {
 
 export class SurveyViewReactComponent extends React.Component<Props, State> {
     search = _.debounce((val) => {
-          this.fetchSurvey(this.props.domainId);
-          const {id} = urlParamsStore.getValue();
-          navigate(['survey', id, val]);
-        }, 1000);
+        this.fetchSurvey(this.props.domainId);
+        const { id } = urlParamsStore.getValue();
+        navigate(['survey', id, val]);
+    }, 1000);
 
     constructor(props) {
         super(props);
         console.log(props.domainId);
-        const {search} = urlParamsStore.getValue();
+        const { search } = urlParamsStore.getValue();
         this.state = {
             isCopeSurvey: false,
             survey: null,
@@ -211,18 +225,17 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
     }
 
     fetchSurvey(domain) {
-        const {domainId} = this.props;
-        const {searchWord} = this.state;
+        const { domainId } = this.props;
+        const { searchWord } = this.state;
         let fetchDomain = domainId;
         if (domain && domainId !== domain) {
             fetchDomain = domain;
         }
         api.getDomainTotals(searchWord, 1, 1).then(
-                (data: any) => {
-                  console.log(data);
-                  data.surveyModules.forEach(survey => {
-                    const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
-                    survey.name.split(' ').join('-').toLowerCase();
+            (data: any) => {
+                data.surveyModules.forEach(survey => {
+                    const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-&-utilization' :
+                        survey.name.split(' ').join('-').toLowerCase();
                     if (surveyRoute.indexOf('(cope)') > -1) {
                         if (fetchDomain && surveyRoute.indexOf(fetchDomain) > -1) {
                             localStorage.setItem('surveyModule', JSON.stringify(survey));
@@ -234,8 +247,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                             this.setSurvey(JSON.stringify(survey));
                         }
                     }
-                  });
                 });
+            });
     }
 
     setSurvey(surveyObj) {
@@ -246,66 +259,72 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
         const extraConcepts = surveyConceptId === 43528698 ?
             ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786',
-            '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'] : [];
+                '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'] : [];
         const copeFlag = surveyConceptId === 1333342;
         if (surveyConceptId === 1333342) {
             const surveyVersions = [];
             api.getSurveyVersionCounts(surveyConceptId.toString()).then(
-                    result => {
-                        result.analyses.items.map(r =>
-                              r.results.map((item, i) => {
-                                  if (item.analysisId === 3400) {
-                                     surveyVersions.push({
-                                      monthName: item.stratum4,
-                                      year: item.stratum5,
-                                      monthNum: item.stratum3.split('/')[0],
-                                      participants: item.countValue,
-                                      numberOfQuestion: '',
-                                      pdfLink: '/assets/surveys/' +
-                                      'COPE_survey_' + item.stratum4.split('/')[0].replace('/', '_') + '_' + item.stratum5 + '_English.pdf'
-                                     });
-                                  } else if (item.analysisId === 3401) {
-                                      surveyVersions[i].numberOfQuestion = item.countValue;
-                                  }
-                              }
-                              ));
-                              surveyVersions.sort((a1, a2) => {
-                                  const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
-                                  const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
-                                  return a.valueOf() - b.valueOf();
-                              });
-                              this.setState({surveyVersions: surveyVersions});
-                    }
+                result => {
+                    result.analyses.items.map(r =>
+                        r.results.map((item, i) => {
+                            if (item.analysisId === 3400) {
+                                surveyVersions.push({
+                                    monthName: item.stratum4,
+                                    year: item.stratum5,
+                                    monthNum: item.stratum3.split('/')[0],
+                                    participants: item.countValue,
+                                    numberOfQuestion: '',
+                                    pdfLink: '/assets/surveys/' +
+                                        'COPE_survey_' + item.stratum4.split('/')[0].replace('/', '_') + '_' + item.stratum5 + '_English.pdf'
+                                });
+                            } else if (item.analysisId === 3401) {
+                                surveyVersions[i].numberOfQuestion = item.countValue;
+                            }
+                        }
+                        ));
+                    surveyVersions.sort((a1, a2) => {
+                        const a = new Date(a1.year, a1.monthNum.split('/')[0], 1);
+                        const b = new Date(a2.year, a2.monthNum.split('/')[0], 1);
+                        return a.valueOf() - b.valueOf();
+                    });
+                    this.setState({ surveyVersions: surveyVersions });
+                }
             );
         }
-    this.setState({survey: survey, surveyPdfUrl: surveyPdfUrl, isCopeSurvey: copeFlag, extraQuestionConceptIds: extraConcepts}, () => {
-        this.getSurvey(); });
-  }
+        this.setState({
+            survey: survey,
+            surveyPdfUrl: surveyPdfUrl,
+            isCopeSurvey: copeFlag,
+            extraQuestionConceptIds: extraConcepts
+        }, () => {
+            this.getSurvey();
+        });
+    }
 
-  handleChange(val) {
+    handleChange(val) {
         this.setState({ searchWord: val });
         this.search(val);
-  }
+    }
 
-  getSurvey() {
-        const {survey, searchWord, extraQuestionConceptIds} = this.state;
+    getSurvey() {
+        const { survey, searchWord, extraQuestionConceptIds } = this.state;
         api.getSurveyQuestions(survey.conceptId.toString(), searchWord, extraQuestionConceptIds).then(
             (x: any) => {
                 this.processSurveyQuestions(x);
-        }).catch(e => {
+            }).catch(e => {
                 console.log(e, 'error');
-                this.setState({loading: false});
-        });
-  }
+                this.setState({ loading: false });
+            });
+    }
 
-  processSurveyQuestions(results: any) {
+    processSurveyQuestions(results: any) {
         const survey = results.survey;
         const questions = results.questions.items;
         this.setDefaults(questions, 0, survey);
-  }
+    }
 
-  setDefaults(surveyQuestions: any, level: any, survey) {
-        const {isCopeSurvey} = this.state;
+    setDefaults(surveyQuestions: any, level: any, survey) {
+        const { isCopeSurvey } = this.state;
         for (const q of surveyQuestions) {
             q.actualQuestionNumber = q.questionOrderNumber;
             if (isCopeSurvey) {
@@ -327,113 +346,119 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             }
             return 0;
         });
-        this.setState({questions: surveyQuestions, survey: survey, loading: false});
-  }
+        this.setState({ questions: surveyQuestions, survey: survey, loading: false });
+    }
 
-  backToMain() {
+    backToMain() {
         navigateByUrl('');
-  }
+    }
 
 
-  render() {
-        const {loading, searchWord, isCopeSurvey, survey, questions, surveyVersions, surveyPdfUrl, showStatement} = this.state;
+    render() {
+        const { loading, searchWord, isCopeSurvey, survey, questions, surveyVersions, surveyPdfUrl, showStatement } = this.state;
         const statClass = isCopeSurvey ? 'cope-stat-layout' : 'stat-layout';
         const statStyle = isCopeSurvey ? styles.copeStatLayout : styles.statLayout;
+
         return <React.Fragment>
-        <style>{surveyStyle}</style>
-        <div className='survey-view' style={styles.surveyView}>
-        {survey && <SurveyDescReactComponent surveyName={survey.name} isCopeSurvey={isCopeSurvey} surveyDescription={survey.description}
-        click={() => this.setState({showStatement: true})}/>
-        }
-        <div className='search-bar-container' style={styles.searchBarContainer}>
-            <SearchComponent value={searchWord || ''} searchTitle=''
-                onChange={(val) => this.handleChange(val)}
-                onClear={() => this.handleChange('')} />
-        </div>
-        {loading && <Spinner />}
-        {survey &&
-        <section className='results' style={styles.results}>
-        <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
-        &lt; Back to main search </a>
-            <div className='db-card' style={styles.dbCard}>
-                <div className='survey-head' style={styles.surveyHead}>
-                    <div className={statClass} style={statStyle}>
-                        <div className='stat-container' style={styles.statContainer}>
-                            {isCopeSurvey ? <h5><strong style={styles.strong}>Total unique participants</strong></h5> : null}
-                            <h2 className='secondary-display' style={styles.secondaryDisplay}>
-                            {survey.participantCount.toLocaleString()}</h2>
-                            <p className='info-text' style={styles.infoText}>Participants completed this survey</p>
-                        </div>
-                        {!searchWord && <div className='stat-container' style={styles.statContainer}>
+            <style>{surveyStyle}</style>
+            <BreadCrumbComponent domainName={survey && survey.name + ' Survey'} />
+            <div className='survey-view' style={styles.surveyView}>
+                {survey &&
+                    <SurveyDescReactComponent
+                        surveyName={survey.name}
+                        isCopeSurvey={isCopeSurvey}
+                        surveyDescription={survey.description}
+                        click={() => this.setState({ showStatement: true })} />
+                }
+                <div className='search-bar-container'>
+                    <SearchComponent value={searchWord || ''} searchTitle=''
+                        onChange={(val) => this.handleChange(val)}
+                        onClear={() => this.handleChange('')} />
+                </div>
+                {loading && <Spinner />}
+                {survey &&
+                    <section className='results' style={styles.results}>
+                        <a className='btn btn-link btn-sm main-search-link' style={styles.searchLink} onClick={() => this.backToMain()}>
+                            &lt; Back to main search </a>
+                        <div className='db-card' style={styles.dbCard}>
+                            <div className='survey-head' style={styles.surveyHead}>
+                                <div className={statClass} style={statStyle}>
+                                    <div className='stat-container' style={styles.statContainer}>
+                                        {isCopeSurvey ? <h5><strong style={styles.strong}>Total unique participants</strong></h5> : null}
                                         <h2 className='secondary-display' style={styles.secondaryDisplay}>
-                                          <span>{survey.questionCount} </span>
+                                            {survey.participantCount.toLocaleString()}</h2>
+                                        <p className='info-text' style={styles.infoText}>Participants completed this survey</p>
+                                    </div>
+                                    {!searchWord && <div className='stat-container' style={styles.statContainer}>
+                                        <h2 className='secondary-display' style={styles.secondaryDisplay}>
+                                            <span>{survey.questionCount} </span>
                                         </h2>
                                         <p className='info-text' style={styles.infoText}>
-                                          Questions Available
+                                            Questions Available
                                         </p>
-                                      </div>
-                        }
-                        {searchWord && !loading ? <div className='stat-container' style={styles.statContainer}>
-                                <h2 className='secondary-display' style={styles.secondaryDisplay}>
-                                  <span>{questions.length}</span>
-                                </h2>
-                                <p className='info-text' style={styles.infoText}>
-                                  matching of <span className='highlight' style={styles.highlight}>
-                                  {survey.questionCount}</span> questions available
-                                </p>
-                              </div> : null
-                        }
-                    </div>
-                    {isCopeSurvey ?  surveyVersions && <div className='version-table' style={styles.versionTable}>
-                                        <SurveyVersionTableReactComponent surveyVersions={surveyVersions} />
-                                     </div> :
-                                     <div className='pdf-link' style={styles.pdfLink}>
+                                    </div>
+                                    }
+                                    {searchWord && !loading ? <div className='stat-container' style={styles.statContainer}>
+                                        <h2 className='secondary-display' style={styles.secondaryDisplay}>
+                                            <span>{questions.length}</span>
+                                        </h2>
+                                        <p className='info-text' style={styles.infoText}>
+                                            matching of <span className='highlight' style={styles.highlight}>
+                                                {survey.questionCount}</span> questions available
+                                        </p>
+                                    </div> : null
+                                    }
+                                </div>
+                                {isCopeSurvey ? surveyVersions && <div className='version-table' style={styles.versionTable}>
+                                    <SurveyVersionTableReactComponent surveyVersions={surveyVersions} />
+                                </div> :
+                                    <div className='pdf-link' style={styles.pdfLink}>
                                         <a href={surveyPdfUrl} download>
-                                        <ClrIcon shape='file' className='is-solid' /> Download Survey as PDF
+                                            <ClrIcon shape='file' className='is-solid' /> Download Survey as PDF
                                         </a>
-                                     </div> }
-                </div>
-                {questions && <div className='survey-results' style={styles.surveyResults}>
-                    {questions.map((question, index) => {
-                        const key = question.conceptId + '-' + index;
-                        if (question.type === 'QUESTION') {
-                            return <div className='question-result' key={key}>
-                                     <div className='secondary-display' style={styles.secondaryDisplay}>
-                                        <div className='body-default'>
-                                            <SurveyQuestionReactComponent
-                                                                  searchTerm={searchWord}
-                                                                  surveyName={survey.name}
-                                                                  surveyConceptId={survey.conceptId}
-                                                                  isCopeSurvey={isCopeSurvey} question={question}
-                                                                  participantCount= {survey.participantCount}
-                                                                  versionAnalysis={surveyVersions}/>
-                                        </div>
-                                     </div>
-                            </div>;
-                        } else {
-                            return <h3 className='topic-text' key={key}>{question.questionString}</h3>;
-                        }
+                                    </div>}
+                            </div>
+                            {questions && <div className='survey-results' style={styles.surveyResults}>
+                                {questions.map((question, index) => {
+                                    const key = question.conceptId + '-' + index;
+                                    if (question.type === 'QUESTION') {
+                                        return <div className='question-result' key={key}>
+                                            <div className='secondary-display' style={styles.secondaryDisplay}>
+                                                <div className='body-default'>
+                                                    <SurveyQuestionReactComponent
+                                                        searchTerm={searchWord}
+                                                        surveyName={survey.name}
+                                                        surveyConceptId={survey.conceptId}
+                                                        isCopeSurvey={isCopeSurvey} question={question}
+                                                        participantCount={survey.participantCount}
+                                                        versionAnalysis={surveyVersions} />
+                                                </div>
+                                            </div>
+                                        </div>;
+                                    } else {
+                                        return <h3 className='topic-text' key={key}>{question.questionString}</h3>;
+                                    }
 
-                    })
-                    }
-                </div>}
+                                })
+                                }
+                            </div>}
+                        </div>
+                    </section>
+                }
             </div>
-        </section>
-        }
-        </div>
-        {!loading && searchWord && questions && questions.length === 0 ?
-        <div className='no-results' style={styles.noResults}>
-            <p className='results-heading no-results' style={styles.noResults}>
-            <span> No questions match any of the keywords: <strong style={styles.strong}>
-                    {searchWord}</strong>.
-            <span className='search-extra'> <button className='btn btn-link' onClick={() => this.handleChange('')}>Reset
-                      search</button></span>
-            </span>
-            </p>
-            <NoResultSearchComponent domainMatch={(val) => this.fetchSurvey(val)} searchValue={searchWord}
-            measurementTestFilter={1} measurementOrderFilter={1} />
-        </div> : null}
-        {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={() => this.setState({showStatement: false})} />}
+            {!loading && searchWord && questions && questions.length === 0 ?
+                <div className='no-results' style={styles.noResults}>
+                    <p className='results-heading no-results' style={styles.noResults}>
+                        <span> No questions match any of the keywords: <strong style={styles.strong}>
+                            {searchWord}</strong>.
+                            <span className='search-extra'> <button className='btn btn-link' onClick={() => this.handleChange('')}>Reset
+                                search</button></span>
+                        </span>
+                    </p>
+                    <NoResultSearchComponent domainMatch={(val) => this.fetchSurvey(val)} searchValue={searchWord}
+                        measurementTestFilter={1} measurementOrderFilter={1} />
+                </div> : null}
+            {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={() => this.setState({ showStatement: false })} />}
         </React.Fragment>;
     }
 }

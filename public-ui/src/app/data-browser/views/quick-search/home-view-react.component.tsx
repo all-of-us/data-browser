@@ -4,6 +4,7 @@ import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-versi
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
@@ -79,8 +80,7 @@ const css = `
     display: flex;
     flex-wrap: wrap;
     flex-flow: column-reverse;
-    padding-left:1em;
-    padding-bottom:5em;
+    padding-bottom:1em;
     justify-content: 'flex-start';
 }
 
@@ -113,7 +113,7 @@ const styles = reactStyles({
         padding: '1em'
     },
     results: {
-        padding: '18px'
+        padding: '18px 0'
     },
     resultBoxes: {
         display: 'flex',
@@ -178,10 +178,10 @@ const styles = reactStyles({
     dBTitle: {
         textAlign: 'center',
         margin: 0,
-        padding: '18px'
+        padding: '18px 0'
     },
     dBDesc: {
-        padding: '18px',
+        padding: '18px 0',
         paddingBottom: '63px',
         margin: '0 auto',
         lineHeight: '2',
@@ -219,10 +219,11 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
 
     resultClick(info) {
         if (info.domainConceptId) {
+            let url;
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    let url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
+                    url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
                     NavStore.navigateByUrl(url);
                     break;
                 // drugs
@@ -243,13 +244,14 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
 
             }
         } else if (info.conceptId) {
+            let url;
             switch (info.conceptId) {
                 case 1333342:
-                    let url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
+                    url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
                     NavStore.navigateByUrl(url);
                     break;
                 default:
-                    url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
+                    url = 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
             }
@@ -372,6 +374,7 @@ export const dBHomeComponent = (
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading } = this.state;
             return <React.Fragment>
                 <style>{css}</style>
+                <BreadCrumbComponent domainName={''}/>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
                     The Data Browser provides interactive views of the publicly available<i>All of Us </i>
