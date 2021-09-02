@@ -107,7 +107,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           });
           cats.push(a.stratum7);
         }
-        data.sort(function(a, b){return a.version-b.version});
+        data.sort((a, b) => a.version - b.version);
         cats.sort();
         const dataOnlyLT20 = data.filter(x => x.y > 20).length === 0;
         const series = [
