@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { getBaseOptions, VERSION_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { getBaseOptions, VERSION_NAME_MAP, VERSION_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -92,7 +92,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           if (analysisStratumName === null) {
            analysisStratumName = VERSION_STRATUM_MAP[a.stratum7];
           }
-          const version = surveyVersionAnalysis.filter(va => va.monthName === a.stratum7)[0];
+          const version = surveyVersionAnalysis.filter(va => va.versionNum === a.stratum7)[0];
           const percentage = ((a.countValue / version.participants) * 100).toFixed();
           data.push({
             name: analysisStratumName,
@@ -101,11 +101,14 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
             sliced: true,
             toolTipHelpText: this.getTooltipHelpText(a.stratum4, count,
             analysisStratumName, percentage, version),
-            version: a.analysisStratumName,
+            version: a.stratum7,
+            versionName: VERSION_NAME_MAP[a.stratum7],
             analysisId: analysisId
           });
           cats.push(a.stratum7);
         }
+        data.sort(function(a, b){return a.version-b.version});
+        cats.sort();
         const dataOnlyLT20 = data.filter(x => x.y > 20).length === 0;
         const series = [
           {
@@ -116,7 +119,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           dataOnlyLT20: dataOnlyLT20,
           showInLegend: false
           }];
-        return { categories: cats, series: series};
+        return { categories: cats.map(item  => VERSION_NAME_MAP[item]), series: series};
   }
 
   getTooltipHelpText(answer, count, analysisStratumName, percentage, version) {
