@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   overriddenUrl: string = null;
   private baseTitle: string;
   public noHeaderMenu = false;
-
+  public testReact: boolean;
 
   constructor(
     /* Angular's */
@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.testReact = environment.testReact;
     localStorage.removeItem('searchText');
     localStorage.removeItem('treeHighlight');
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);

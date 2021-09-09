@@ -219,10 +219,11 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
 
     resultClick(info) {
         if (info.domainConceptId) {
+            let url;
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    let url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
+                    url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
                     NavStore.navigateByUrl(url);
                     break;
                 // drugs
@@ -243,13 +244,14 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
 
             }
         } else if (info.conceptId) {
+            let url;
             switch (info.conceptId) {
                 case 1333342:
-                    let url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
+                    url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
                     NavStore.navigateByUrl(url);
                     break;
                 default:
-                    url = 'survey/' + info.name.replace(' ', '-').toLowerCase();
+                    url = 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
             }
