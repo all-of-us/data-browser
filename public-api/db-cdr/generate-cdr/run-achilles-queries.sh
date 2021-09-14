@@ -22,7 +22,7 @@ done
 
 if [ -z "${BQ_PROJECT}" ]
 then
-  echo "Usage: $USAGE"
+  echo "Usage: $USAGE"f
   exit 1
 fi
 
