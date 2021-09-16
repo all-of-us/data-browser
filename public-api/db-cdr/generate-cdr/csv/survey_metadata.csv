@@ -286,7 +286,7 @@
 1656,1333293,"In your day-to-day life, how often did this happen to you during the past month? You are threatened or harassed.","eds_9","cope",1333342,0,0,1333293,1,1,116,NULL,"QUESTION","2000-01-01 00:00:00"
 1506,1333294,"In the past month, have you experienced the following as a result of COVID-19? Select all that apply.","cdc_covid_19_23","cope",1333342,0,0,1333294,1,1,26,NULL,"QUESTION","2000-01-01 00:00:00"
 1502,1333295,"In the past 7 days, I was aware that I still had a lot of feelings about COVID-19, but I didn't deal with them.","ies_r_6_4","cope",1333342,0,0,1333295,1,1,22,NULL,"QUESTION","2000-01-01 00:00:00"
-1503,1333296,"In the past 7 days, I tried not to think about COVID-19.","ies_r_6_5","cope",1333342,0,0,1333296,0,0,23,NULL,"TOPIC","2000-01-01 00:00:00"
+1503,1333296,"In the past 7 days, I tried not to think about COVID-19.","ies_r_6_5","cope",1333342,0,0,1333296,1,1,23,NULL,"QUESTION","2000-01-01 00:00:00"
 1474,1333297,"Do you personally know someone who has died of COVID-19?","nhs_covid_fhc17a","cope",1333342,0,0,1333297,1,1,9,NULL,"QUESTION","2000-01-01 00:00:00"
 1655,1333298,"In your day-to-day life, how often did this happen to you during the past month? You are called names or insulted.","eds_8","cope",1333342,0,0,1333298,1,1,115,NULL,"QUESTION","2000-01-01 00:00:00"
 1586,1333299,"In the past month: Did you use any type of electronic nicotine product? This includes e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.","lifestyle_2_xx13","cope",1333342,0,0,1333299,1,1,99,NULL,"QUESTION","2000-01-01 00:00:00"
