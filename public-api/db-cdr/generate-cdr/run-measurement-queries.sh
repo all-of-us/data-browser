@@ -1748,7 +1748,7 @@ union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 ),
 min_dates as
-(select distinct person_id, min(data_date) as join_date from all_fibit_data group by 1),
+(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
 m_age as
 (select co.person_id,
 IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
@@ -1789,7 +1789,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with all_fibit_data as
 (select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`),
 min_dates as
-(select distinct person_id, min(data_date) as join_date from all_fibit_data group by 1),
+(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
 m_age as
 (select co.person_id,
 IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
@@ -1830,7 +1830,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with all_fibit_data as
 (select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`),
 min_dates as
-(select distinct person_id, min(data_date) as join_date from all_fibit_data group by 1),
+(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
 m_age as
 (select co.person_id,
 IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
@@ -1871,7 +1871,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with all_fibit_data as
 (select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`),
 min_dates as
-(select distinct person_id, min(data_date) as join_date from all_fibit_data group by 1),
+(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
 m_age as
 (select co.person_id,
 IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
@@ -1912,7 +1912,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with all_fibit_data as
 (select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`),
 min_dates as
-(select distinct person_id, min(data_date) as join_date from all_fibit_data group by 1),
+(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
 m_age as
 (select co.person_id,
 IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),

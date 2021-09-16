@@ -126,26 +126,18 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     let tempArr: any[] = [];
     const categoryArr = [];
     const { answerChartInfo } = this.state;
-    for (const prop in sortedAnswers) {
-      if (sortedAnswers.hasOwnProperty(prop)) {
-        categoryArr.push(prop);
-        const answerOrder = answerChartInfo.map(p => p.answerId);
-        this.mapOrder(sortedAnswers[prop], answerOrder, 'stratum3');
-        sortedAnswers[prop].forEach(answer => {
-          tempArr.push({
-            name: answer.stratum4,
+    for (const val of answerChartInfo.map(a => a.answerValue)) {
+        tempArr.push({
+            name: val,
             data: []
-          });
         });
-      }
     }
-
     // remove duplicates
     tempArr =
       Array.from(new Set(tempArr.map(x => JSON.stringify(x)))).map(x => JSON.parse(x));
-
     for (const prop in sortedAnswers) {
       if (sortedAnswers.hasOwnProperty(prop)) {
+        categoryArr.push(prop);
         tempArr.forEach(stack => {
           sortedAnswers[prop].forEach(answer => {
             if (stack.name === answer.stratum4) {
