@@ -84,8 +84,8 @@ public class SurveyMetadataService {
                 .collect(Collectors.toList());
     }
 
-    public List<SurveyMetadata> getSubQuestionsLevel2(String answerConceptId){
-        return surveyMetadataDao.getSubQuestionsLevel2(String.valueOf(answerConceptId))
+    public List<SurveyMetadata> getSubQuestionsLevel2(String questionConceptId, String answerConceptId){
+        return surveyMetadataDao.getSubQuestionsLevel2(questionConceptId, answerConceptId)
                 .stream()
                 .map(surveyMetadataMapper::dbModelToClient)
                 .collect(Collectors.toList());

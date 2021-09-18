@@ -56,7 +56,8 @@ and sq.sub=1 and sq.level=3
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -71,13 +72,13 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=5
-and
-(exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+and ((exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
-or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737))
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) ))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737, 1310148, 1310138, 1310139, 1310141, 1332853))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3113 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
@@ -118,7 +119,8 @@ and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
 and (exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -130,13 +132,13 @@ On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
-and (exists
+and ((exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737))
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) ))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737, 1310148, 1310138, 1310139, 1310141, 1332853))
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3110 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
@@ -275,7 +277,8 @@ and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 ),
@@ -291,13 +294,13 @@ On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
-and
-(exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+and ((exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
-or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737))
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) ))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737, 1310148, 1310138, 1310139, 1310141, 1332853))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 )
@@ -444,7 +447,8 @@ and sq.sub=1 and sq.level=3 and sq.survey_concept_id != 43528698
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
-or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -459,13 +463,13 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id != 1586140
 and sq.sub=1 and sq.level=5 and sq.survey_concept_id != 43528698
-and
-(exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+and ((exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) )
-or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737))
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) ))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737, 1310148, 1310138, 1310139, 1310141, 1332853))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
@@ -692,7 +696,8 @@ and sq.sub=1 and sq.level=3
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
-or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326))
 group by sq.survey_concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 ),
@@ -706,13 +711,13 @@ join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and value_source_concept_id != 903096)
 and sq.sub=1 and sq.level=5
-and
-(exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
+and ((exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) )
-or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737))
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) ))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737, 1310148, 1310138, 1310139, 1310141, 1332853))
 group by sq.survey_concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc
 )
@@ -754,7 +759,8 @@ and sq.sub=1 and sq.level=3
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
-or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324))
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326))
 group by sq.survey_concept_id,o.observation_source_concept_id,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc),
 sub_2_questions_count as
@@ -766,13 +772,13 @@ join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 where o.observation_source_concept_id > 0 and value_source_concept_id != 903096
 and sq.sub=1 and sq.level=5
-and
-(exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) )
+and ((exists
+(select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(0)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(1)] as int64) )
 and exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
-and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64))
-or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737))
+and observation_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(2)] as int64) and value_source_concept_id=cast(SPLIT(sq.path, '.')[OFFSET(3)] as int64) ))
+or sq.concept_id in (1310052, 1310051, 1310060, 1310067, 1310062, 1310056, 1310053, 1333012, 1332737, 1310148, 1310138, 1310139, 1310141, 1332853))
 group by sq.survey_concept_id,o.observation_source_concept_id,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3321 as analysis_id,stratum_1,stratum_2,stratum_5,stratum_6,count_value,source_count_value from main_questions_count

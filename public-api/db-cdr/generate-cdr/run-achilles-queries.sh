@@ -475,14 +475,14 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3,
-(select count(distinct person_id) from
+(select count(distinct a.person_id) from
 (SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 union distinct
-SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`)) as count_value, 0 as source_count_value;"
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id) as count_value, 0 as source_count_value;"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -574,30 +574,35 @@ group by 2,5;"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
-with fitbit_data_age as
-(select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(datetime, \"UTC\"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+with all_fibit_data as
+(select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 union all
-select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(date, \"UTC\"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union all
-select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(date, \"UTC\"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
 union all
-select a.person_id, ceil(TIMESTAMP_DIFF(TIMESTAMP(datetime, \"UTC\"), birth_datetime, DAY)/365.25) age from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\` a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id = b.person_id
+select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 ),
-fitbit_data_age_stratum as
+min_dates as
+(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
+m_age as
+(select co.person_id,
+IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
+  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
+from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
+m_age_stratum as
 (
-select person_id,
-case when age >= 18 and age <= 29 then '2'
-when age > 89 then '9'
-when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-when age < 18 then '0' end as age_stratum from fitbit_data_age
-group by person_id,age_stratum
+     select *,
+     case when age >= 18 and age <= 29 then '2'
+     when age > 89 then '9'
+     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+     when age < 18 then '0' end as age_stratum from m_age
 )
-select 0 as id, analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3, stratum_4, sum(count_value) as count_value, sum(source_count_value) as source_count_value from
-(select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Fitbit' as stratum_3, age_stratum as stratum_4,
+select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Fitbit' as stratum_3, age_stratum as stratum_4,
 count(distinct person_id) as count_value, 0 as source_count_value
-from fitbit_data_age_stratum p
-group by age_stratum)
-group by 2,5;"
+from m_age_stratum p
+group by age_stratum;"
 
 ####################
 # survey counts #

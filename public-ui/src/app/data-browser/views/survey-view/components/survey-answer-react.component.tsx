@@ -124,6 +124,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
     processResults(questions: Array<any>) {
         const {countValue} = this.props;
+        console.log(this.state.question);
+        console.log('Hereeeee');
+        questions.sort((a,b) => a.id - b.id);
+        console.log(questions);
         questions.forEach(q => {
             q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
             q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
@@ -152,6 +156,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
             }
             return q;
         });
+        questions = questions.sort((q1, q2) => {q1.id - q2.id});
         return questions;
     }
 
