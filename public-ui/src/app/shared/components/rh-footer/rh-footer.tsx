@@ -17,7 +17,7 @@ const styles = reactStyles({
     fontSize: '0.9rem',
     width: '100%',
     marginTop: '0.5rem',
-    paddingBottom: '0.25rem'
+    paddingBottom: '0.25rem',
   },
   mainMenuItemLink: {
     color: 'white',
@@ -87,7 +87,7 @@ const css = `
   .sub-menu {
     margin-top: 1rem;
     margin-left: 0;
-    display: flex;
+    display: block;
     flex-wrap: wrap;
   }
   .sub-menu li > a {
