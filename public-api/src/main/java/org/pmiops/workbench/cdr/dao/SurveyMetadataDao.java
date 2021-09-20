@@ -56,7 +56,7 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
             "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 2), '.', -1)=?2 and survey_concept_id=?3 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=2")
     List<DbSurveyMetadata> getSubQuestionsLevel1(String questionConceptId, String answerConceptId, String surveyConceptId);
 
-    @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 3), '.', -1)=?1\n" +
+    @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 3), '.', -1)=?1 and \n" +
             "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 4), '.', -1)=?2 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=4")
     List<DbSurveyMetadata> getSubQuestionsLevel2(String questionConceptId, String answerConceptId);
 }

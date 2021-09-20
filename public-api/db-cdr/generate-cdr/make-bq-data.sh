@@ -228,7 +228,8 @@ join survey_row_counts b on a.survey_concept_id = b.survey_concept_id and a.show
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(path, '.')[OFFSET(1)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where ARRAY_LENGTH(SPLIT(path, '.')) = 3 and generate_counts=1) b
+from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(path, '.')[OFFSET(1)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
+where ARRAY_LENGTH(SPLIT(path, '.')) = 3 and generate_counts=1) b
 where a.stratum_2=b.qid
 and a.stratum_3=b.aid and a.analysis_id=3110 and a.stratum_3 not in ('43529842', '43528385', '43529574')"
 
