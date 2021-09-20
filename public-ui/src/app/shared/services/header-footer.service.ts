@@ -83,6 +83,11 @@ export const menuItems = [
         submenu: []
       },
       {
+       title: 'COVID-19 Research Initiatives',
+       url: 'https://researchallofus.org/discover/covid-19-research-initiatives/',
+       submenu: []
+      },
+      {
         title: 'Publications',
         url: 'https://www.researchallofus.org/publications',
         submenu: []

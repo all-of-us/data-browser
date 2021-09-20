@@ -154,10 +154,18 @@ where p.person_id not in
 (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` AS
+"CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` AS
 select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` m
 where (m.observation_concept_id > 0 or m.observation_source_concept_id > 0)
 and m.person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` a
+set a.observation_source_concept_id=705047, a.observation_concept_id=705047, a.observation_source_value='dmfs_27'
+from
+(select b1.* from \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` b1 join \`${BQ_PROJECT}.${BQ_DATASET}.observation\` b2 on
+b1.observation_id=b2.observation_id and b2.observation_source_value='cdc_covid_19_9b' and b1.survey_version_concept_id in (2100000005, 2100000006, 2100000007)) b
+where a.observation_id=b.observation_id;"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` AS
