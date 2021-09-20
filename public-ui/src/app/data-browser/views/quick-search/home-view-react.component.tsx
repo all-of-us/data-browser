@@ -222,7 +222,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    let url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
+                    let url = this.props.searchWord ? 'ehr/conditions/' + this.props.searchWord : 'ehr/conditions';
                     NavStore.navigateByUrl(url);
                     break;
                 // drugs
@@ -358,9 +358,9 @@ export const dBHomeComponent = (
                     });
                 }
             ).catch(e => {
-                                    console.log(e, 'error');
-                                    this.setState({loading: false});
-                       });
+                console.log(e, 'error');
+                this.setState({ loading: false });
+            });
         }
         closePopUp() {
             this.setState({
@@ -374,15 +374,14 @@ export const dBHomeComponent = (
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-                    The Data Browser provides interactive views of the publicly available<i>All of Us </i>
-                    Research Program participant data. Currently, participant provided information, including surveys and physical
-                    measurements taken at the time of participant enrollment, as well as electronic health record data (EHR) are available.
-                EHR data are reported by health care providers and are not participant reported. The <i>All of Us </i>
-                    Research Program data will include more data types over time.<br /><br />
+                    The Data Browser provides interactive views of the publicly available <i>All of Us</i> Research Program participant data. 
+                    Currently, participant-provided information, including data from surveys, wearables, physical measurements taken 
+                    at the time of participant enrollment, and electronic health records (EHR) are available. EHR data are reported by 
+                    health care providers and are not participant reported. The <i>All of Us</i> Research Program data will include more data types over time.<br /><br />
                     In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of
-                20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
+                    20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
                     Please read the public data use statement available below for additional information about our unique dataset and how to
-                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
+                    acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
 
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
@@ -418,45 +417,45 @@ export const dBHomeComponent = (
                 </div>
                 {(loading) && <Spinner />}
                 {!loading &&
-                <section style={styles.results}>
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                        EHR Domains:<TooltipReactComponent
-                            label='Homepage Tooltip Hover'
-                            searchTerm={searchWord}
-                            action='Tooltip Home Page EHR Domains'
-                            tooltipKey='ehrDomainHelpText' /></h5>
+                    <section style={styles.results}>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                            EHR Domains:<TooltipReactComponent
+                                label='Homepage Tooltip Hover'
+                                searchTerm={searchWord}
+                                action='Tooltip Home Page EHR Domains'
+                                tooltipKey='ehrDomainHelpText' /></h5>
 
-                    <div className='result-boxes'>
-                        {
-                            domainInfo.map((domain, index) => {
-                                const key = 'domain' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} />;
+                        <div className='result-boxes'>
+                            {
+                                domainInfo.map((domain, index) => {
+                                    const key = 'domain' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} />;
 
-                            })
+                                })
 
-                        }
-                    </div>
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
-                    <div style={styles.resultBoxes}>
-                        {
-                            surveyInfo.map((survey, index) => {
-                                const key = 'survey' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} />;
-                            })
+                            }
+                        </div>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
+                        <div style={styles.resultBoxes}>
+                            {
+                                surveyInfo.map((survey, index) => {
+                                    const key = 'survey' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} />;
+                                })
 
-                        }
-                    </div>
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                        Physical Measurements and Wearables:</h5>
-                    <div style={styles.resultBoxes}>
-                        {
-                            physicalMeasurementsInfo.map((phyMeasurements, index) => {
-                                const key = 'phyMeasurements' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} />;
-                            })
-                        }
-                    </div>
-                </section>
+                            }
+                        </div>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                            Physical Measurements and Wearables:</h5>
+                        <div style={styles.resultBoxes}>
+                            {
+                                physicalMeasurementsInfo.map((phyMeasurements, index) => {
+                                    const key = 'phyMeasurements' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} />;
+                                })
+                            }
+                        </div>
+                    </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
             </React.Fragment >;
