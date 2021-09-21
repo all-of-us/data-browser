@@ -111,10 +111,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
 
     getSubQuestions() {
         dataBrowserApi().getSubQuestions(
-          this.props.surveyConceptId,
-          this.props.questionConceptId,
-          this.props.answerConceptId,
-          this.state.nextLevel
+            this.props.surveyConceptId,
+            this.props.questionConceptId,
+            this.props.answerConceptId,
+            this.state.nextLevel
         ).then(results => {
             this.setState({
                 subQuestions: this.processResults(results.questions.items)
@@ -152,9 +152,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
             }
             return q;
         });
-        questions.sort((a, b) =>
-            a.id - b.id
-        );
+        questions = questions.sort((q1, q2) => q1.id - q2.id);
         return questions;
     }
 
@@ -223,7 +221,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                         {isCopeSurvey ? <React.Fragment></React.Fragment> :
-                        countValue > 20 ? countString : <React.Fragment>&le; {countString} </React.Fragment>}
+                            countValue > 20 ? countString : <React.Fragment>&le; {countString} </React.Fragment>}
                     </div>
                     <div className='survey-tbl-d display-body info-text survey-answer-level-1'>
                         {isCopeSurvey ? answerConceptId : countPercent ? countPercent.toFixed(2) : participantPercentage}
@@ -234,8 +232,10 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                             <ClrIcon shape='caret' className='survey-row-icon'
                                 style={{ color: '#216fb4' }}
                                 dir={drawerOpen ? 'down' : 'right'} /> :
-                                answerValueString !== 'Did not answer' ?
-                            <ClrIcon className={drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'} shape='bar-chart' /> : null}
+                            answerValueString !== 'Did not answer' ?
+                                <ClrIcon
+                                className={drawerOpen ? 'is-solid survey-row-icon' : 'survey-row-icon'}
+                                shape='bar-chart' /> : null}
                     </div>
                 </div>
             </div >
@@ -302,8 +302,8 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
         return <React.Fragment>
             <style>{styleCss}</style>
             {(isCopeSurvey) && <SurveyAnswerChartReactComponent
-                            countAnalysis={question.countAnalysis.results}
-                            versionAnalysis={question.versionAnalysis.results} />}
+                countAnalysis={question.countAnalysis.results}
+                versionAnalysis={question.versionAnalysis.results} />}
             <div className='survey-tbl'>
                 <div className='survey-tbl-r survey-tbl-head'>
                     <div className='info-text first survey-tbl-d'>
@@ -314,7 +314,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             {isCopeSurvey ? null :
                                 <span>
                                     Concept Code
-                                <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
+                                    <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
                                 </span>
                             }
                         </div >
@@ -331,7 +331,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
                             {isCopeSurvey ?
                                 <span>
                                     Concept Code
-                                <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
+                                    <TooltipReactComponent tooltipKey='conceptCodeHelpText' label='test' searchTerm='test' action='Survey Page Tooltip' />
                                 </span>
                                 :
                                 <span>
