@@ -42,6 +42,7 @@ const routes: Routes = [
         children: [{
           path: '',
           component: QuickSearchComponent,
+          data: {}
         },
         {
           path: 'survey/:id',

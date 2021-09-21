@@ -218,11 +218,10 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             fetchDomain = domain;
         }
         api.getDomainTotals(searchWord, 1, 1).then(
-                (data: any) => {
-                  console.log(data);
-                  data.surveyModules.forEach(survey => {
+            (data: any) => {
+                data.surveyModules.forEach(survey => {
                     const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
-                    survey.name.split(' ').join('-').toLowerCase();
+                        survey.name.split(' ').join('-').toLowerCase();
                     if (surveyRoute.indexOf('(cope)') > -1) {
                         if (fetchDomain && surveyRoute.indexOf(fetchDomain) > -1) {
                             localStorage.setItem('surveyModule', JSON.stringify(survey));
@@ -234,8 +233,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                             this.setSurvey(JSON.stringify(survey));
                         }
                     }
-                  });
                 });
+            });
     }
 
     setSurvey(surveyObj) {
@@ -279,14 +278,20 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                     }
             );
         }
-    this.setState({survey: survey, surveyPdfUrl: surveyPdfUrl, isCopeSurvey: copeFlag, extraQuestionConceptIds: extraConcepts}, () => {
-        this.getSurvey(); });
-  }
+        this.setState({
+            survey: survey,
+            surveyPdfUrl: surveyPdfUrl,
+            isCopeSurvey: copeFlag,
+            extraQuestionConceptIds: extraConcepts
+        }, () => {
+            this.getSurvey();
+        });
+    }
 
-  handleChange(val) {
+    handleChange(val) {
         this.setState({ searchWord: val });
         this.search(val);
-  }
+    }
 
   getSurvey() {
         const {survey, searchWord, extraQuestionConceptIds} = this.state;
