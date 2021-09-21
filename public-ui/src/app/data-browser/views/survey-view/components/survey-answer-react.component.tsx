@@ -123,10 +123,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     }
 
     processResults(questions: Array<any>) {
-        const { countValue } = this.props;
-        console.log(this.state.question);
-        questions.sort((a, b) => a.id - b.id);
-        console.log(questions);
+        const {countValue} = this.props;
         questions.forEach(q => {
             q.countAnalysis.results = q.countAnalysis.results.filter(a => a.stratum6 === q.path);
             q.genderAnalysis.results = q.genderAnalysis.results.filter(a => a.stratum6 === q.path);
@@ -302,7 +299,6 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
             surveyVersions,
             surveyCountAnalysis,
             searchTerm } = this.props;
-
         return <React.Fragment>
             <style>{styleCss}</style>
             {(isCopeSurvey) && <SurveyAnswerChartReactComponent

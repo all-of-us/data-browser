@@ -374,14 +374,14 @@ export const dBHomeComponent = (
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-                    The Data Browser provides interactive views of the publicly available <i>All of Us</i> Research Program
-                    participant data.Currently, participant-provided information, including data from surveys, wearables,
-                    physical measurements taken
-                    at the time of participant enrollment, and electronic health records (EHR) are available. EHR data are reported by
-                    health care providers and are not participant reported. The <i>All of Us</i> Research Program data will include more
-                    data types over time.<br /><br />
-                    In order to protect participant privacy, the data are de-identified, limited to aggregate counts rounded up to counts of
-                    20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
+                    The Data Browser provides interactive views of the publicly available <i>All of Us</i> Research
+                    Program participant data. Currently, participant-provided information, including data from surveys,
+                    wearables, physical measurements taken at the time of participant enrollment,
+                    and electronic health records (EHR) are available. EHR data are reported by health care providers
+                    and are not participant reported. The <i>All of Us</i> Research Program data will include more data
+                    types over time.<br /><br /> In order to protect participant privacy, the data are de-identified,
+                    limited to aggregate counts rounded up to counts of
+                20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
                     Please read the public data use statement available below for additional information about our unique dataset and how to
                     acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
 
