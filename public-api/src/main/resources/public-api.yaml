@@ -508,6 +508,14 @@ definitions:
         type: "array"
         items:
           type: "string"
+      standardConcepts:
+        type: "array"
+        items:
+          $ref: "#/definitions/Concept"
+          description: standard concepts associated with the matched concept
+      matchType:
+        description: match column type on which concept search was successful
+        $ref: "#/definitions/MatchType"
 
   ConceptListResponse:
     type: object
@@ -524,15 +532,6 @@ definitions:
       matchedConceptName:
         description: matched concept name
         type: string
-      standardConcepts:
-        type: "array"
-        items:
-          $ref: "#/definitions/Concept"
-        description: standard concepts associated with the matched concept
-      sourceOfStandardConcepts:
-        description: concept for which standard concepts are fetched
-        type: integer
-        format: int64
 
   SurveyQuestionFetchResponse:
     type: object

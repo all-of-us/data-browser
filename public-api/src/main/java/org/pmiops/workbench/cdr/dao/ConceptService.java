@@ -302,24 +302,33 @@ public class ConceptService {
 
         ConceptListResponse response = new ConceptListResponse();
 
+        Boolean codeIdMatch = false;
+        Boolean codeMatch = false;
+        Boolean idMatch = false;
+        String matchedConceptName = "";
+        List<Long> conceptCodeIdMatches = new ArrayList<>();
 
         for(DbConcept con : concepts.getContent()){
             String conceptCode = con.getConceptCode();
             boolean isConceptCodeOrId = StringUtils.isEmpty(searchConceptsRequest.getQuery()) ? false : Stream.of(conceptCode, String.valueOf(con.getConceptId())).anyMatch(searchConceptsRequest.getQuery()::equals);
 
             if((con.getStandardConcept() == null || !con.getStandardConcept().equals("S") ) && isConceptCodeOrId) {
-                response.setStandardConcepts(getStandardConcepts(con.getConceptId()));
-                response.setSourceOfStandardConcepts(con.getConceptId());
+                List<Concept> standardConcepts = getStandardConcepts(con.getConceptId());
+                con.setStandardConcepts(standardConcepts);
             }
 
-            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery()) && isConceptCodeOrId) {
-                response.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID );
-                response.setMatchedConceptName(con.getConceptName());
+            if(!Strings.isNullOrEmpty(searchConceptsRequest.getQuery())) {
+                if (isConceptCodeOrId) {
+                    codeIdMatch = true;
+                    conceptCodeIdMatches.add(con.getConceptId());
+                    con.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID);
+                    matchedConceptName = con.getConceptName();
+                    codeMatch = conceptCode.equals(searchConceptsRequest.getQuery());
+                    idMatch = !codeMatch;
+                } else {
+                    con.setMatchType(MatchType.NAME);
+                }
             }
-        }
-
-        if(response.getMatchType() == null && response.getStandardConcepts() == null){
-            response.setMatchType(MatchType.NAME);
         }
 
         List<Concept> conceptList = new ArrayList<>();
@@ -329,11 +338,13 @@ public class ConceptService {
                     .map(conceptMapper::dbModelToClient)
                     .collect(Collectors.toList());
 
-            if(response.getStandardConcepts() != null) {
-                conceptList = conceptList.stream().filter(c -> c.getConceptId() != response.getSourceOfStandardConcepts()).collect(Collectors.toList());
+            if(codeIdMatch) {
+                conceptList = conceptList.stream().filter(c -> conceptCodeIdMatches.contains(c.getConceptId())).collect(Collectors.toList());
             }
         }
         response.setItems(conceptList);
+        response.setMatchType(codeIdMatch ? (codeMatch ? MatchType.CODE : MatchType.ID) : MatchType.NAME);
+        response.setMatchedConceptName(matchedConceptName);
         return response;
     }
 }

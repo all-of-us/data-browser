@@ -6,6 +6,7 @@ import { HighlightReactComponent } from 'app/shared/components/highlight-search/
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-defs';
+import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -138,6 +139,8 @@ interface Props {
     totalParticipants: number;
     synonymString: string;
     selectedConcept: any;
+    matchType: MatchType;
+    match: string;
 }
 
 interface State {
@@ -244,7 +247,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {concept, domain, totalResults, maxResults, currentPage, counter, searchTerm, synonymString} = this.props;
+        const {concept, domain, totalResults, maxResults, currentPage, counter, searchTerm, synonymString, matchType, match} = this.props;
         const {showMoreSynonyms, showMoreDrugBrands, showConceptChart, graphToShow, showCopyAlert} = this.state;
         const id = 'c' + concept.conceptId;
         const tabIndex = 0;
@@ -256,14 +259,24 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         const synonymsStr = showMoreSynonyms ? synonymString : (synonymString ? synonymString.substring(0, 100) : null);
         const drugBrandsStr = showMoreDrugBrands ? concept.drugBrands.join(', ') : concept.drugBrands.slice(0, 10).join(', ');
         const tblClass = domain.name.toLowerCase() === 'labs & measurements' ? 'tbl-r-labs' : 'tbl-r';
+        const codeMatchText = match === 'source' ? 'Exact source concept match:' : 'Standard concept match:';
         return <React.Fragment>
                <style>{cssStyles}</style>
                <div id={id} ref={this.myRef}>
                  <div className='tbl-exp-r' onClick={(e) => {e.stopPropagation(); this.expandRow(); }}>
+                 {matchType === MatchType.CODE ? <strong>{codeMatchText}</strong> : null }
                     <div className={tblClass} style={domain.name.toLowerCase() === 'labs & measurements' ? styles.tblRLabs : styles.tblRow}>
                         <div className='body-lead tbl-d' style={styles.bodyLead}>
-                            <span>{conceptIndex}. </span>
-                            <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
+                        {matchType === MatchType.CODE ? (
+                                <React.Fragment>
+                                    <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
+                                </React.Fragment>
+                              ) : (
+                            <React.Fragment>
+                                <span>{conceptIndex}. </span>
+                                <HighlightReactComponent searchTerm={searchTerm} text={concept.conceptName}/>
+                            </React.Fragment>
+                            )}
                         </div>
                         <div className='body-lead tbl-d' style={styles.bodyLead}>
                             {concept.countValue <= 20 && <span>&le; </span>} {concept.countValue.toLocaleString()}
@@ -371,6 +384,6 @@ export class ConceptRowWrapperComponent extends BaseReactWrapper {
     @Input() selectedConcept: any;
 
     constructor() {
-        super(ConceptRowReactComponent, ['concept', 'domain', 'totalResults', 'maxResults', 'currentPage', 'counter', 'searchTerm', 'totalParticipants', 'synonymString', 'selectedConcept']);
+        super(ConceptRowReactComponent, ['concept', 'domain', 'totalResults', 'maxResults', 'currentPage', 'counter', 'searchTerm', 'totalParticipants', 'synonymString', 'selectedConcept', 'matchType', 'match']);
     }
 }

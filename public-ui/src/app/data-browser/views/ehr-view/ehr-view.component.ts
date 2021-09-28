@@ -33,6 +33,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   prevSearchText = '';
   searchResult: ConceptListResponse;
   items: any[] = [];
+  codeMatch: boolean = false;
   fullResultItemsList: any[] = [];
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
@@ -434,6 +435,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
     this.medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
       'medlineplus&v%3Asources=medlineplus-bundle&query='
       + this.getTerm();
+    this.codeMatch = (this.searchResult.matchType === MatchType.CODE);
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] = concept.conceptSynonyms.join(', ');
       this.drugBrands[concept.conceptId] = concept.drugBrands;
@@ -442,13 +444,11 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       } else {
         concept.graphToShow = GraphType.BiologicalSex;
       }
+      if (concept.standardConcepts) {
+        this.standardConcepts = this.standardConcepts.concat(concept.standardConcepts);
+      }
     }
-    if (this.searchResult.standardConcepts) {
-      this.standardConcepts = this.searchResult.standardConcepts;
-      this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
-    } else {
-      this.standardConcepts = [];
-    }
+    this.standardConceptIds = this.standardConcepts.map(a => a.conceptId);
     if (this.currentPage === 1) {
       this.top10Results = this.searchResult.items.slice(0, 10);
     }

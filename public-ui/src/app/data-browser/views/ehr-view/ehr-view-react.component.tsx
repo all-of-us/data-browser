@@ -253,7 +253,9 @@ interface State {
     searchWord: string;
     showStatement: boolean;
     standardConcepts: any;
+    standardConceptIds: any;
     showTopConcepts: boolean;
+    matchType: MatchType;
     concepts: any;
     top10Results: any;
     loading: boolean;
@@ -287,6 +289,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             totalResults: null,
             concepts: [],
             standardConcepts: [],
+            standardConceptIds: [],
             currentPage: 1,
             loading: true,
             medlinePlusLink: null,
@@ -294,7 +297,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             selectedMeasurementTypeFilter: false,
             measurementTestFilter: true,
             measurementOrderFilter: true,
-            showTopConcepts: true
+            showTopConcepts: true,
+            matchType: MatchType.NAME
         };
    }
 
@@ -358,6 +362,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
         const medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
             'medlineplus&v%3Asources=medlineplus-bundle&query='
             + medlineTerm;
+        let conceptStandardConcepts = [];
         for (const concept of results.items) {
             concept['synonymString'] = concept.conceptSynonyms.join(', ');
             concept['drugBrands'] = concept.drugBrands;
@@ -366,10 +371,15 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
             } else {
                 concept.graphToShow = GraphType.BiologicalSex;
             }
+            if (concept.standardConcepts) {
+                conceptStandardConcepts = conceptStandardConcepts.concat(concept.standardConcepts);
+            }
         }
         this.setState({
           concepts: results.items,
-          standardConcepts: results.standardConcepts || [],
+          standardConcepts: conceptStandardConcepts,
+          standardConceptIds: conceptStandardConcepts.map(a => a.conceptId),
+          matchType: results.matchType,
           top10Results: currentPage === 1 ? results.items.slice(0, 10) : top10Results,
           loading: false,
           medlineTerm: medlineTerm,
@@ -381,7 +391,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
    getTopConcepts() {
         const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
         const searchRequest = {
-            query: searchWord,
+            query: searchWord ? searchWord : "",
             domain: domain.toUpperCase(),
             standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
             maxResults: 50,
@@ -433,7 +443,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     handlePageClick = (data) => {
         const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
         const searchRequest = {
-            query: searchWord,
+            query: searchWord ? searchWord: "",
             domain: domain.toUpperCase(),
             standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
             maxResults: 50,
@@ -455,7 +465,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     const {title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept,
     numPages, loading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
     selectedMeasurementTypeFilter, currentPage,
-    measurementTestFilter, measurementOrderFilter, top10Results} = this.state;
+    measurementTestFilter, measurementOrderFilter, top10Results, matchType, standardConceptIds} = this.state;
     const maxResults = 50;
     const noMatchFilter = 1;
     const dropdownClass = selectedMeasurementTypeFilter ? 'dropdown bottom-left open' : 'dropdown bottom-left';
@@ -522,14 +532,17 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                                                     rel='noopener noreferrer'>Search MedlinePlus</a></h6>
                                                     }
                        </div>
-                       {(concepts.length === 1 && concepts[0].standardConcept !== 'S' && standardConcepts.length > 0) &&
-                       <div className='db-alert' style={styles.dbAlert}>
-                        Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} '{concepts[0].conceptName}'
-                            maps to Standard Vocabulary {standardConcepts[0].vocabularyId}
-                            {standardConcepts[0].conceptCode} '{standardConcepts[0].conceptName}'.
-                            Standard vocabularies capture data across a variety of source vocabularies.
-                       </div>
-                       }
+                       {(matchType === MatchType.CODE) &&
+                       concepts.map((concept, index) => {
+                        return concept.standardConcepts && concept.standardConcepts.length > 0 ?
+                         <div className='db-alert' style={styles.dbAlert} key={index}>
+                                 Note: {concept.vocabularyId} {concept.conceptCode} '{concept.conceptName}'
+                                     maps to Standard Vocabulary {concept.standardConcepts[0].vocabularyId}
+                                     {concept.standardConcepts[0].conceptCode} '{concept.standardConcepts[0].conceptName}'.
+                                     Standard vocabularies capture data across a variety of source vocabularies.
+                         </div>
+                        : null;
+                       })}
                        <div className='tbl-r tbl-head'>
                         <div className='tbl-d body-lead'> {domain.name}
                             <TooltipReactComponent tooltipKey={domain.domain.toLowerCase()}
@@ -580,7 +593,8 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
                         {concepts && concepts.length > 0 &&
                         <div className='tbl-body'>
                         {standardConcepts.concat(concepts).map((concept, index) => {
-                                    return <ConceptRowReactComponent key={concept.conceptId} concept={concept}
+                                    return <ConceptRowReactComponent key={concept.conceptId} concept={concept} matchType={matchType}
+                                    match={standardConceptIds.indexOf(concept.conceptId) >= 0 ? 'standard' : 'source'}
                                     domain={domain} totalResults={totalResults}
                                     maxResults={maxResults} currentPage={currentPage} counter={index} searchTerm={searchWord}
                                     totalParticipants={totalParticipants}
