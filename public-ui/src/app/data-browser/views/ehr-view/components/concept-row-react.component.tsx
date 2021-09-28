@@ -6,7 +6,7 @@ import { HighlightReactComponent } from 'app/shared/components/highlight-search/
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-defs';
-import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
+import { MatchType } from 'publicGenerated/fetch';
 import * as React from 'react';
 
 const styles = reactStyles({

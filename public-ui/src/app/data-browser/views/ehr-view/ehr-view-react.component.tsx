@@ -391,7 +391,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
    getTopConcepts() {
         const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
         const searchRequest = {
-            query: searchWord ? searchWord : "",
+            query: searchWord ? searchWord : '',
             domain: domain.toUpperCase(),
             standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
             maxResults: 50,
@@ -443,7 +443,7 @@ export class EhrViewReactComponent extends React.Component<Props, State> {
     handlePageClick = (data) => {
         const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
         const searchRequest = {
-            query: searchWord ? searchWord: "",
+            query: searchWord ? searchWord : '',
             domain: domain.toUpperCase(),
             standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
             maxResults: 50,

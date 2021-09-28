@@ -33,7 +33,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   prevSearchText = '';
   searchResult: ConceptListResponse;
   items: any[] = [];
-  codeMatch: boolean = false;
+  codeMatch = false;
   fullResultItemsList: any[] = [];
   standardConcepts: any[] = [];
   standardConceptIds: number[] = [];
