@@ -532,7 +532,7 @@ public class DataBrowserControllerTest {
     public void testConceptIdSearch() throws Exception{
         ConceptListResponse response = conceptService.getConcepts(new SearchConceptsRequest().query("456")
                 .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
-        assertThat(response.getSourceOfStandardConcepts()).isEqualTo(456L);
+        assertThat(response.getMatchType()).isEqualTo(MatchType.ID);
     }
 
 
