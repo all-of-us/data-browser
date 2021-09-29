@@ -497,7 +497,7 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
         // CLIENT_CONCEPT_7 excluded because it has a zero count
-        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems().get(0).getConceptId()).isEqualTo(7891L);
     }
 
     @Test
@@ -546,7 +546,7 @@ public class DataBrowserControllerTest {
     @Test
     public void testConceptSearchDomainFilter() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004").domain(Domain.CONDITION));
-        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems().get(0).getConceptId()).isEqualTo(7891L);
     }
 
 
