@@ -304,7 +304,6 @@ public class ConceptService {
 
         Boolean codeIdMatch = false;
         Boolean codeMatch = false;
-        Boolean idMatch = false;
         String matchedConceptName = "";
         List<Long> conceptCodeIdMatches = new ArrayList<>();
 
@@ -324,7 +323,6 @@ public class ConceptService {
                     con.setMatchType(conceptCode.equals(searchConceptsRequest.getQuery()) ? MatchType.CODE : MatchType.ID);
                     matchedConceptName = con.getConceptName();
                     codeMatch = conceptCode.equals(searchConceptsRequest.getQuery());
-                    idMatch = !codeMatch;
                 } else {
                     con.setMatchType(MatchType.NAME);
                 }
