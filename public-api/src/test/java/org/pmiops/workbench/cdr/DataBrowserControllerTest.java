@@ -82,7 +82,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_2 = new Concept()
             .conceptId(456L)
@@ -97,7 +97,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_3 = new Concept()
             .conceptId(789L)
@@ -113,7 +113,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_4 = new Concept()
             .conceptId(1234L)
@@ -129,7 +129,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_5 = new Concept()
             .conceptId(7890L)
@@ -145,7 +145,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_6 = new Concept()
             .conceptId(7891L)
@@ -161,7 +161,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
   private static final Concept CLIENT_CONCEPT_7 = new Concept()
             .conceptId(7892L)
@@ -177,7 +177,7 @@ public class DataBrowserControllerTest {
             .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
             .canSelect(1)
             .drugBrands(new ArrayList<String>())
-            .standardConcepts(new ArrayList<String>());
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final DbAchillesAnalysis CLIENT_ANALYSIS_1 = new DbAchillesAnalysis()
             .analysisId(1900L)
