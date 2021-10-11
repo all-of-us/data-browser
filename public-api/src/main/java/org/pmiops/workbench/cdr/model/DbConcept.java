@@ -1,6 +1,8 @@
 package org.pmiops.workbench.cdr.model;
 
 import com.google.common.base.Strings;
+import org.pmiops.workbench.model.Concept;
+import org.pmiops.workbench.model.MatchType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +35,8 @@ public class DbConcept {
     private float prevalence;
     private List<String> synonyms = new ArrayList<>();
     private List<String> drugBrands = new ArrayList<>();
+    private List<Concept> standardConcepts = new ArrayList<>();
+    private MatchType matchType;
     private String synonymsStr;
     private String drugBrandNames;
     private int canSelect;
@@ -293,6 +297,30 @@ public class DbConcept {
 
     @Transient
     public List<String> getDrugBrands() { return drugBrands; }
+
+    @Transient
+    public List<Concept> getStandardConcepts() {
+        return standardConcepts;
+    }
+
+    public void setStandardConcepts(List<Concept> standardConceptsList) {
+        this.standardConcepts = standardConceptsList;
+    }
+    public void addStandardConcept(Concept dbConcept) {
+        this.standardConcepts.add(dbConcept);
+    }
+
+    @Transient
+    public MatchType getMatchType() {
+        return matchType;
+    }
+    public void setMatchType(MatchType matchType) {
+        this.matchType = matchType;
+    }
+    public DbConcept matchType(MatchType matchType) {
+        this.matchType = matchType;
+        return this;
+    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="concept_id", insertable=false, updatable=false)

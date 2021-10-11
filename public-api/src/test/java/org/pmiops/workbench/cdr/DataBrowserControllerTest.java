@@ -81,7 +81,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.2F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_2 = new Concept()
             .conceptId(456L)
@@ -95,7 +96,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.3F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_3 = new Concept()
             .conceptId(789L)
@@ -110,7 +112,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.4F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_4 = new Concept()
             .conceptId(1234L)
@@ -125,7 +128,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.5F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_5 = new Concept()
             .conceptId(7890L)
@@ -140,7 +144,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.9F)
             .conceptSynonyms(new ArrayList<String>())
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final Concept CLIENT_CONCEPT_6 = new Concept()
             .conceptId(7891L)
@@ -155,7 +160,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.1F)
             .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
   private static final Concept CLIENT_CONCEPT_7 = new Concept()
             .conceptId(7892L)
@@ -170,7 +176,8 @@ public class DataBrowserControllerTest {
             .prevalence(0.0F)
             .conceptSynonyms(ImmutableList.of("cstest 1", "cstest 2", "cstest 3"))
             .canSelect(1)
-            .drugBrands(new ArrayList<String>());
+            .drugBrands(new ArrayList<String>())
+            .standardConcepts(new ArrayList<Concept>());
 
     private static final DbAchillesAnalysis CLIENT_ANALYSIS_1 = new DbAchillesAnalysis()
             .analysisId(1900L)
@@ -490,7 +497,7 @@ public class DataBrowserControllerTest {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest()
                 .domain(Domain.CONDITION).query("cstest").standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
         // CLIENT_CONCEPT_7 excluded because it has a zero count
-        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems().get(0).getConceptId()).isEqualTo(7891L);
     }
 
     @Test
@@ -525,21 +532,21 @@ public class DataBrowserControllerTest {
         // We can't test limiting to count > 0 with a concept name search because the match function does not work in hibernate. So we make several concepts with same concept code and one with count 0. The limit > 0 works the same weather it is code or name match.
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004")
                 .standardConceptFilter(StandardConceptFilter.STANDARD_CONCEPTS));
-        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_4, CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems().get(0).getConceptCode()).isEqualTo("004");
     }
 
     @Test
     public void testConceptIdSearch() throws Exception{
         ConceptListResponse response = conceptService.getConcepts(new SearchConceptsRequest().query("456")
                 .standardConceptFilter(StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH));
-        assertThat(response.getSourceOfStandardConcepts()).isEqualTo(456L);
+        assertThat(response.getMatchType()).isEqualTo(MatchType.ID);
     }
 
 
     @Test
     public void testConceptSearchDomainFilter() throws Exception{
         ResponseEntity<ConceptListResponse> response = dataBrowserController.searchConcepts(new SearchConceptsRequest().query("004").domain(Domain.CONDITION));
-        assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_6);
+        assertThat(response.getBody().getItems().get(0).getConceptId()).isEqualTo(7891L);
     }
 
 

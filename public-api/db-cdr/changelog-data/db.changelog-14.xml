@@ -20,12 +20,13 @@
       <column name="concept_class_id" type="STRING"/>
       <column name="standard_concept" type="STRING"/>
       <column name="concept_code" type="STRING"/>
-      <column name="valid_start_date" type="DATE"/>
-      <column name="valid_end_date" type="DATE"/>
-      <column name="invalid_reason" type="STRING"/>
       <column name="count_value" type="NUMERIC"/>
-      <column name="source_count_value" type="NUMERIC" />
       <column name="prevalence" type="NUMERIC"/>
+      <column name="source_count_value" type="NUMERIC" />
+      <column name="synonyms" type="STRING"/>
+      <column name="can_select" type="NUMERIC"/>
+      <column name="has_counts" type="NUMERIC"/>
+      <column name="drug_brand_names" type="STRING"/>
     </loadData>
   </changeSet>
 </databaseChangeLog>
