@@ -1,0 +1,192 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "variant_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gene_symbol",
+    "type": "STRING"
+  },
+  {
+    "mode": "REPEATED",
+    "name": "consequence",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "protein_change",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "dna_change",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "allele_count",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "allele_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "allele_frequency",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "REPEATED",
+    "name": "clinical_significance",
+    "type": "STRING"
+  },
+  {
+    "mode": "REPEATED",
+    "name": "rs_number",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "transcript",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_afr_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_afr_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_afr_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_amr_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_amr_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_amr_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_eas_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_eas_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_eas_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_mid_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_mid_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_mid_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_eur_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_eur_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_eur_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_sas_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_sas_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_sas_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_oth_ac",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_oth_an",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gvs_oth_af",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "contig",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "position",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "ref_allele",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "alt_allele",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "const_str",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "genes",
+    "type": "STRING"
+  }
+]
