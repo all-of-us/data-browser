@@ -583,10 +583,6 @@ def generate_public_cdr_counts(cmd_name, *args)
       ->(opts, v) { opts.bucket = v},
       "GCS bucket required."
     )
-    op.add_option(
-      "--search-vat [search-vat]",
-      ->(opts, v) { opts.search_vat = v}
-    )
     op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
     gcc = GcloudContextV2.new(op)
     op.parse.validate
@@ -595,7 +591,7 @@ def generate_public_cdr_counts(cmd_name, *args)
     with_cloud_proxy_and_db(gcc) do
         common = Common.new
         Dir.chdir('db-cdr') do
-          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket} #{op.opts.search_vat}
+          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
         end
     end
 end
@@ -603,7 +599,7 @@ end
 Common.register_command({
   :invocation => "generate-public-cdr-counts",
   :description => "generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT> \
- --cdr-version=<''|YYYYMMDD> --bucket <BUCKET> --search-vat <SEARCH_VAT>
+ --cdr-version=<''|YYYYMMDD> --bucket <BUCKET>
 Generates databases in bigquery with non de-identified data from a cdr that will be imported to mysql/cloudsql to be used by databrowser.",
   :fn => ->(*args) { generate_public_cdr_counts("generate-public-cdr-counts", *args) }
 })
@@ -805,11 +801,6 @@ def circle_build_cdr_indices(cmd_name, args)
     "--data-browser [data-browser]",
     ->(opts, v) { opts.data_browser = v},
     "Generate for data browser. Optional - Default is false"
-  )
-  op.add_option(
-    "--search-vat [search-vat]",
-    ->(opts, v) { opts.search_vat = v},
-    "Generate search table from VAT. Optional - Default is false"
   )
   op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.bq_dataset and opts.cdr_version}
   op.parse.validate
