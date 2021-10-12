@@ -241,12 +241,6 @@ h5.secondary-display {
     margin-left: 0.3em;
 }
 `;
-
-interface Props {
-    domainId: string;
-    searchTerm: string;
-}
-
 interface State {
     domain: any;
     domainId:string;
@@ -271,11 +265,9 @@ interface State {
     measurementOrderFilter: boolean;
 }
 export const EhrViewReactComponent = withRouteData(
-    class extends React.Component<Props, State> {
-        constructor(props: Props) {
+    class extends React.Component<{}, State> {
+        constructor(props: {}) {
             super(props);
-            console.log(location.pathname.split('/'),'location.pathname');
-            
             this.changeResults = this.changeResults.bind(this);
             // TODO add url params and change them based on search value
             const { search } = urlParamsStore.getValue();
@@ -285,7 +277,7 @@ export const EhrViewReactComponent = withRouteData(
                 totalParticipants: 0,
                 title: '',
                 subTitle: '',
-                searchWord: search ? search : this.props.searchTerm,
+                searchWord: search,
                 showStatement: false,
                 top10Results: null,
                 selectedConcept: null,
@@ -314,12 +306,6 @@ export const EhrViewReactComponent = withRouteData(
             this.getDomainTotals();
         }
 
-        componentDidUpdate(prevProps: Readonly<Props>) {
-            // if (prevProps.domainId !== this.props.domainId) {
-            //     this.getDomainTotals();
-            // }
-        }
-
         changeUrl() {
             let url = 'ehr/' + this.state.domainId;
             if (this.state.searchWord) {
@@ -333,18 +319,13 @@ export const EhrViewReactComponent = withRouteData(
             dataBrowserApi().getDomainTotals(searchWord, measurementTestFilter ? 1 : 0, measurementOrderFilter ? 1 : 0)
                 .then(results => {
                     results.domainInfos.forEach(domain => {
-                        
-                        
                         const thisDomain = Domain[domain.domain];
-                        console.log(location.pathname.split('/')[1]);
-                        
                         if (thisDomain && thisDomain.toLowerCase() === routeToDomain[location.pathname.split('/')[2]]) {
-                            console.log(thisDomain);
                             this.setState({
                                 domain: domain,
                                 domainId:thisDomain,
                                 title: domain.name,
-                                subTitle: 'Keyword: ' + this.props.searchTerm,
+                                subTitle: 'Keyword: ' + searchWord,
                                 totalParticipants: domain.participantCount,
                                 numPages: Math.ceil(domain.standardConceptCount / 50),
                                 totalResults: domain.standardConceptCount,
@@ -639,11 +620,4 @@ export const EhrViewReactComponent = withRouteData(
     template: `<span #root></span>`
 })
 
-export class EhrViewWrapperComponent extends BaseReactWrapper {
-    @Input() domainId: string;
-    @Input() searchTerm: string;
-
-    constructor() {
-        super(EhrViewReactComponent, ['domainId', 'searchTerm']);
-    }
-}
+export class EhrViewWrapperComponent extends BaseReactWrapper {}
