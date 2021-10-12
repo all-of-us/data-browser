@@ -646,7 +646,7 @@ if [[ "$OUTPUT_PROJECT" == *"aou-db-prod"* ]]; then
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`"
 
-  bq mk --table --schema=$schema_path/wgs_variant_vid_cluster.json --time_partitioning_type DAY --clustering_fields variant_id \`$OUTPUT_PROJECT:$GENOMICS_DATASET.wgs_variant_vid_cluster\`
+  bq mk --table --schema=$schema_path/wgs_variant_vid_cluster.json --time_partitioning_type DAY --clustering_fields variant_id aou-db-prod:genomics_v1.wgs_variant_vid_cluster
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "insert into \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`
