@@ -105,7 +105,7 @@ done
 
 if [ "$SEARCH_VAT" = true ]; then
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`"
+  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
@@ -186,7 +186,7 @@ if [ "$SEARCH_VAT" = true ]; then
   AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`
+  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv\`
   CLUSTER BY contig, position
   AS
   SELECT *
