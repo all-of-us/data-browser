@@ -583,6 +583,11 @@ def generate_public_cdr_counts(cmd_name, *args)
       ->(opts, v) { opts.bucket = v},
       "GCS bucket required."
     )
+    op.add_option(
+      "--search-vat [search-vat]",
+      ->(opts, v) { opts.search_vat = v ? v : false},
+      "Flag to generate search table from VAT. Optional."
+    )
     op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
     gcc = GcloudContextV2.new(op)
     op.parse.validate
@@ -591,7 +596,7 @@ def generate_public_cdr_counts(cmd_name, *args)
     with_cloud_proxy_and_db(gcc) do
         common = Common.new
         Dir.chdir('db-cdr') do
-          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
+          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket} #{op.opts.search_vat}}
         end
     end
 end
@@ -802,6 +807,11 @@ def circle_build_cdr_indices(cmd_name, args)
     ->(opts, v) { opts.data_browser = v},
     "Generate for data browser. Optional - Default is false"
   )
+  op.add_option(
+    "--search-vat [search-vat]",
+    ->(opts, v) { opts.search_vat = v},
+    "Generate search table from VAT. Optional - Default is false"
+  )
   op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.bq_dataset and opts.cdr_version}
   op.parse.validate
 
@@ -811,7 +821,7 @@ def circle_build_cdr_indices(cmd_name, args)
   content_type = "Content-Type: application/json"
   accept = "Accept: application/json"
   circle_token = "Circle-Token: "
-  payload = "{ \"branch\": \"#{op.opts.branch}\", \"parameters\": {\"db_build_cdr_indices\": true, \"cdr_source_project\": \"#{env.fetch(:source_cdr_project)}\", \"cdr_source_dataset\": \"#{op.opts.bq_dataset}\", \"cdr_sql_bucket\": \"#{env.fetch(:cdr_sql_bucket)}\", \"project\": \"#{op.opts.project}\", \"cdr_version_db_name\": \"#{op.opts.cdr_version}\", \"data_browser\": #{op.opts.data_browser} }}"
+  payload = "{ \"branch\": \"#{op.opts.branch}\", \"parameters\": {\"db_build_cdr_indices\": true, \"cdr_source_project\": \"#{env.fetch(:source_cdr_project)}\", \"cdr_source_dataset\": \"#{op.opts.bq_dataset}\", \"cdr_sql_bucket\": \"#{env.fetch(:cdr_sql_bucket)}\", \"project\": \"#{op.opts.project}\", \"cdr_version_db_name\": \"#{op.opts.cdr_version}\", \"data_browser\": #{op.opts.data_browser}, \"search_vat\": \"#{op.opts.search_vat}\" }}"
   common.run_inline "curl -X POST https://circleci.com/api/v2/project/github/all-of-us/cdr-indices/pipeline -H '#{content_type}' -H '#{accept}' -H \"#{circle_token}\ $(cat ~/.circle-creds/key.txt)\" -d '#{payload}'"
 end
 
