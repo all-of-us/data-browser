@@ -108,6 +108,109 @@ do
     bq --project_id=$OUTPUT_PROJECT load --quote='"' --source_format=CSV --skip_leading_rows=1 --max_bad_records=10 $OUTPUT_DATASET.$t $csv_path/$t.csv
 done
 
+if [ "$SEARCH_VAT" = true ]; then
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`"
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\` as
+  WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
+  contig, position, ref_allele, alt_allele, transcript, ARRAY_TO_STRING(consequence, ',') as cons_str, dna_change_in_transcript, clinvar_classification as clinical_significance,
+  gvs_all_ac, gvs_all_an, gvs_all_af, dbsnp_rsid as rs_number,
+  gvs_afr_ac, gvs_afr_an, gvs_afr_af,
+  gvs_amr_ac, gvs_amr_an, gvs_amr_af,
+  gvs_eas_ac, gvs_eas_an, gvs_eas_af,
+  gvs_mid_ac, gvs_mid_an, gvs_mid_af,
+  gvs_eur_ac, gvs_eur_an, gvs_eur_af,
+  gvs_sas_ac, gvs_sas_an, gvs_sas_af,
+  gvs_oth_ac, gvs_oth_an, gvs_oth_af,
+  ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
+     CASE ARRAY_TO_STRING(consequence, ',')
+         WHEN 'upstream_gene_variant'
+         THEN 4
+         WHEN 'downstream_gene_variant'
+         THEN 5
+         ELSE 1
+         END
+         ASC
+  )  AS row_number
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
+  WHERE is_canonical_transcript OR transcript is NULL
+  ORDER BY vid, row_number),
+  genes as (
+     SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ' ') as genes
+     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
+     GROUP BY vid
+  )
+  SELECT
+     sorted_transcripts.variant_id,
+     sorted_transcripts.gene_symbol,
+     sorted_transcripts.consequence,
+     sorted_transcripts.protein_change,
+     sorted_transcripts.dna_change_in_transcript as dna_change,
+     sorted_transcripts.gvs_all_ac as allele_count,
+     sorted_transcripts.gvs_all_an as allele_number,
+     sorted_transcripts.gvs_all_af as allele_frequency,
+     sorted_transcripts.clinical_significance,
+     sorted_transcripts.rs_number,
+     sorted_transcripts.transcript as transcript,
+     sorted_transcripts.gvs_afr_ac,
+     sorted_transcripts.gvs_afr_an,
+     sorted_transcripts.gvs_afr_af,
+     sorted_transcripts.gvs_amr_ac,
+     sorted_transcripts.gvs_amr_an,
+     sorted_transcripts.gvs_amr_af,
+     sorted_transcripts.gvs_eas_ac,
+     sorted_transcripts.gvs_eas_an,
+     sorted_transcripts.gvs_eas_af,
+     sorted_transcripts.gvs_mid_ac,
+     sorted_transcripts.gvs_mid_an,
+     sorted_transcripts.gvs_mid_af,
+     sorted_transcripts.gvs_eur_ac,
+     sorted_transcripts.gvs_eur_an,
+     sorted_transcripts.gvs_eur_af,
+     sorted_transcripts.gvs_sas_ac,
+     sorted_transcripts.gvs_sas_an,
+     sorted_transcripts.gvs_sas_af,
+     sorted_transcripts.gvs_oth_ac,
+     sorted_transcripts.gvs_oth_an,
+     sorted_transcripts.gvs_oth_af,
+     sorted_transcripts.contig,
+     sorted_transcripts.position,
+     sorted_transcripts.ref_allele,
+     sorted_transcripts.alt_allele,
+     sorted_transcripts.cons_str,
+     genes.genes
+  FROM sorted_transcripts, genes
+  WHERE genes.vid = sorted_transcripts.variant_id
+  AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`"
+
+  bq mk --table --schema=$schema_path/wgs_variant_vid_cluster.json --time_partitioning_type DAY --clustering_fields variant_id aou-db-prod:genomics_v1.wgs_variant_vid_cluster
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "insert into \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`
+  (variant_id, gene_symbol, consequence, protein_change, dna_change, allele_count, allele_number, allele_frequency, clinical_significance, rs_number,
+  transcript, gvs_afr_ac, gvs_afr_an, gvs_afr_af, gvs_amr_ac, gvs_amr_an, gvs_amr_af, gvs_eas_ac, gvs_eas_an, gvs_eas_af, gvs_mid_ac, gvs_mid_an, gvs_mid_af,
+  gvs_eur_ac, gvs_eur_an, gvs_eur_af, gvs_sas_ac, gvs_sas_an, gvs_sas_af, gvs_oth_ac, gvs_oth_an, gvs_oth_af, contig, position, ref_allele, alt_allele,
+  const_str, genes)
+  select * from \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`
+  CLUSTER BY contig, position
+  AS
+  SELECT *
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`;"
+fi
+
+exit 0
+
 # Populate some tables from cdr data
 ############
 # cb_criteria #
@@ -568,104 +671,3 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
-
-if [ "$SEARCH_VAT" = true ]; then
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`"
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\` as
-  WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
-  contig, position, ref_allele, alt_allele, transcript, ARRAY_TO_STRING(consequence, ',') as cons_str, dna_change_in_transcript, clinvar_classification as clinical_significance,
-  gvs_all_ac, gvs_all_an, gvs_all_af, dbsnp_rsid as rs_number,
-  gvs_afr_ac, gvs_afr_an, gvs_afr_af,
-  gvs_amr_ac, gvs_amr_an, gvs_amr_af,
-  gvs_eas_ac, gvs_eas_an, gvs_eas_af,
-  gvs_mid_ac, gvs_mid_an, gvs_mid_af,
-  gvs_eur_ac, gvs_eur_an, gvs_eur_af,
-  gvs_sas_ac, gvs_sas_an, gvs_sas_af,
-  gvs_oth_ac, gvs_oth_an, gvs_oth_af,
-  ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
-     CASE ARRAY_TO_STRING(consequence, ',')
-         WHEN 'upstream_gene_variant'
-         THEN 4
-         WHEN 'downstream_gene_variant'
-         THEN 5
-         ELSE 1
-         END
-         ASC
-  )  AS row_number
-  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
-  WHERE is_canonical_transcript OR transcript is NULL
-  ORDER BY vid, row_number),
-  genes as (
-     SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ' ') as genes
-     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
-     GROUP BY vid
-  )
-  SELECT
-     sorted_transcripts.variant_id,
-     sorted_transcripts.gene_symbol,
-     sorted_transcripts.consequence,
-     sorted_transcripts.protein_change,
-     sorted_transcripts.dna_change_in_transcript as dna_change,
-     sorted_transcripts.gvs_all_ac as allele_count,
-     sorted_transcripts.gvs_all_an as allele_number,
-     sorted_transcripts.gvs_all_af as allele_frequency,
-     sorted_transcripts.clinical_significance,
-     sorted_transcripts.rs_number,
-     sorted_transcripts.transcript as transcript,
-     sorted_transcripts.gvs_afr_ac,
-     sorted_transcripts.gvs_afr_an,
-     sorted_transcripts.gvs_afr_af,
-     sorted_transcripts.gvs_amr_ac,
-     sorted_transcripts.gvs_amr_an,
-     sorted_transcripts.gvs_amr_af,
-     sorted_transcripts.gvs_eas_ac,
-     sorted_transcripts.gvs_eas_an,
-     sorted_transcripts.gvs_eas_af,
-     sorted_transcripts.gvs_mid_ac,
-     sorted_transcripts.gvs_mid_an,
-     sorted_transcripts.gvs_mid_af,
-     sorted_transcripts.gvs_eur_ac,
-     sorted_transcripts.gvs_eur_an,
-     sorted_transcripts.gvs_eur_af,
-     sorted_transcripts.gvs_sas_ac,
-     sorted_transcripts.gvs_sas_an,
-     sorted_transcripts.gvs_sas_af,
-     sorted_transcripts.gvs_oth_ac,
-     sorted_transcripts.gvs_oth_an,
-     sorted_transcripts.gvs_oth_af,
-     sorted_transcripts.contig,
-     sorted_transcripts.position,
-     sorted_transcripts.ref_allele,
-     sorted_transcripts.alt_allele,
-     sorted_transcripts.cons_str,
-     genes.genes
-  FROM sorted_transcripts, genes
-  WHERE genes.vid = sorted_transcripts.variant_id
-  AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`"
-
-  bq mk --table --schema=$schema_path/wgs_variant_vid_cluster.json --time_partitioning_type DAY --clustering_fields variant_id aou-db-prod:genomics_v1.wgs_variant_vid_cluster
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "insert into \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`
-  (variant_id, gene_symbol, consequence, protein_change, dna_change, allele_count, allele_number, allele_frequency, clinical_significance, rs_number,
-  transcript, gvs_afr_ac, gvs_afr_an, gvs_afr_af, gvs_amr_ac, gvs_amr_an, gvs_amr_af, gvs_eas_ac, gvs_eas_an, gvs_eas_af, gvs_mid_ac, gvs_mid_an, gvs_mid_af,
-  gvs_eur_ac, gvs_eur_an, gvs_eur_af, gvs_sas_ac, gvs_sas_an, gvs_sas_af, gvs_oth_ac, gvs_oth_an, gvs_oth_af, contig, position, ref_allele, alt_allele,
-  const_str, genes)
-  select * from \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`
-  CLUSTER BY contig, position
-  AS
-  SELECT *
-  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`;"
-fi
