@@ -46,11 +46,6 @@ then
   exit 1
 fi
 
-if [ -z "${SEARCH_VAT}"]
-then
-  $SEARCH_VAT=false
-fi
-
 gcloud config set project aou-db-test
 
 # Check that bq_dataset exists and exit if not
@@ -116,7 +111,9 @@ if [ "$SEARCH_VAT" = true ]; then
   "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\` as
+  "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`
+  cluster by variant_id
+  as
   WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
   contig, position, ref_allele, alt_allele, transcript, ARRAY_TO_STRING(consequence, ',') as cons_str, dna_change_in_transcript, clinvar_classification as clinical_significance,
   gvs_all_ac, gvs_all_an, gvs_all_af, dbsnp_rsid as rs_number,
@@ -189,24 +186,11 @@ if [ "$SEARCH_VAT" = true ]; then
   AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`"
-
-  bq mk --table --schema=$schema_path/wgs_variant_vid_cluster.json --time_partitioning_type DAY --clustering_fields variant_id aou-db-prod:genomics_v1.wgs_variant_vid_cluster
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "insert into \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`
-  (variant_id, gene_symbol, consequence, protein_change, dna_change, allele_count, allele_number, allele_frequency, clinical_significance, rs_number,
-  transcript, gvs_afr_ac, gvs_afr_an, gvs_afr_af, gvs_amr_ac, gvs_amr_an, gvs_amr_af, gvs_eas_ac, gvs_eas_an, gvs_eas_af, gvs_mid_ac, gvs_mid_an, gvs_mid_af,
-  gvs_eur_ac, gvs_eur_an, gvs_eur_af, gvs_sas_ac, gvs_sas_an, gvs_sas_af, gvs_oth_ac, gvs_oth_an, gvs_oth_af, contig, position, ref_allele, alt_allele,
-  const_str, genes)
-  select * from \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
-
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`
   CLUSTER BY contig, position
   AS
   SELECT *
-  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster\`;"
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
 fi
 
 exit 0
