@@ -33,12 +33,16 @@ export const NavRedirect = ({path}) => {
 };
 
 export const AppRoute = ({path, data = {}, guards = [], component: Component}): React.ReactElement => {
+  
+  
   const routeParams = useParams();
   const routeHistory = useHistory();
-
+  
   return <Route exact={true} path={path} render={
-    () => {
-      const { redirectPath = null } = fp.find(({allowed}) => !allowed(), guards) || {};
+    () => {      
+      console.log(routeParams,'routeParams');
+      
+      const { redirectPath = null } = fp.find(({allowed}) => !allowed(), guards) || {};      
       return redirectPath
         ? <NavRedirect path={redirectPath}/>
         : <Component urlParams={routeParams} routeHistory={routeHistory} routeConfig={data}/>;
@@ -47,6 +51,6 @@ export const AppRoute = ({path, data = {}, guards = [], component: Component}): 
 };
 
 export const Navigate = ({to}): React.ReactElement => {
-  const location = useLocation();
+  const location = useLocation();  
   return <Redirect to={{pathname: to, state: {from: location}}}/>;
 };

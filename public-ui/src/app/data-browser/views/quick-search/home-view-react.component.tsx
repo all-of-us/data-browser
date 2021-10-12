@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { withRouteData } from 'app/components/app-router';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
@@ -311,7 +312,7 @@ interface State {
     loading: boolean;
 }
 
-export const dBHomeComponent = (
+export const dBHomeComponent = withRouteData(
     class extends React.Component<{}, State> {
         constructor(props: State) {
             super(props);
@@ -473,9 +474,4 @@ export const dBHomeComponent = (
     template: `<span #root></span>`
 })
 
-export class DbHomeWrapperComponent extends BaseReactWrapper {
-
-    constructor() {
-        super(dBHomeComponent, []);
-    }
-}
+export class DbHomeWrapperComponent {}
