@@ -583,6 +583,11 @@ def generate_public_cdr_counts(cmd_name, *args)
       ->(opts, v) { opts.bucket = v},
       "GCS bucket required."
     )
+    op.add_option(
+      "--search-vat [search-vat]",
+      ->(opts, v) { opts.search_vat = v},
+      "Flag to generate search table from VAT. Optional."
+    )
     op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
     gcc = GcloudContextV2.new(op)
     op.parse.validate
@@ -591,7 +596,7 @@ def generate_public_cdr_counts(cmd_name, *args)
     with_cloud_proxy_and_db(gcc) do
         common = Common.new
         Dir.chdir('db-cdr') do
-          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket}}
+          common.run_inline %W{./generate-cdr/generate-public-cdr-counts.sh #{op.opts.bq_project} #{op.opts.bq_dataset} #{op.opts.project} #{op.opts.cdr_version} #{op.opts.bucket} #{op.opts.search_vat}}
         end
     end
 end
