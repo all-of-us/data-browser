@@ -802,6 +802,11 @@ def circle_build_cdr_indices(cmd_name, args)
     ->(opts, v) { opts.data_browser = v},
     "Generate for data browser. Optional - Default is false"
   )
+  op.add_option(
+    "--search-vat [search-vat]",
+    ->(opts, v) { opts.search_vat = v},
+    "Generate search table from VAT. Optional - Default is false"
+  )
   op.add_validator ->(opts) { raise ArgumentError unless opts.project and opts.bq_dataset and opts.cdr_version}
   op.parse.validate
 
