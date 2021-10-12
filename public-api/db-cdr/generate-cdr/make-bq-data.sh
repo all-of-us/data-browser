@@ -10,7 +10,7 @@ IFS=$'\n\t'
 
 # --cdr=cdr_version ... *optional
 USAGE="./generate-clousql-cdr/make-bq-data.sh --bq-project <PROJECT> --bq-dataset <DATASET> --output-project <PROJECT> --output-dataset <DATASET>"
-USAGE="$USAGE --cdr-version=YYYYMMDD"
+USAGE="$USAGE --cdr-version=YYYYMMDD --search-vat <SEARCH_VAT>"
 
 while [ $# -gt 0 ]; do
   echo "1 is $1"
@@ -21,6 +21,7 @@ while [ $# -gt 0 ]; do
     --output-project) OUTPUT_PROJECT=$2; shift 2;;
     --output-dataset) OUTPUT_DATASET=$2; shift 2;;
     --cdr-version) CDR_VERSION=$2; shift 2;;
+    --search-vat) SEARCH_VAT=$2; shift 2;;
     -- ) shift; break ;;
     * ) break ;;
   esac
@@ -43,6 +44,11 @@ if [ -z "${OUTPUT_PROJECT}" ] || [ -z "${OUTPUT_DATASET}" ]
 then
   echo "Usage: $USAGE"
   exit 1
+fi
+
+if [ -z "${SEARCH_VAT}"]
+then
+  $SEARCH_VAT=false
 fi
 
 gcloud config set project aou-db-test
@@ -563,7 +569,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
 
-if [[ "$OUTPUT_PROJECT" == *"aou-db-prod"* ]]; then
+if [ "$SEARCH_VAT" = true ]; then
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_vid_cluster_mv\`"
 
