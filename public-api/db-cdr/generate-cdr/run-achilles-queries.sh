@@ -500,7 +500,7 @@ select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 
 count(distinct p.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 union all
-select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from
 \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002');"
@@ -510,11 +510,11 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2,
-'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 group by 4
 union all
-select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
 group by 4;"
@@ -534,11 +534,11 @@ when distinct_ans like '%1586146%' then 'White' when distinct_ans like '%1586147
 when distinct_ans like '%1586142%' then 'Asian'
 else distinct_ans end as race_eth from person_race_eth_ans)
 select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2,
-'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on pa.person_id=p.person_id
 group by 4
 union all
-select 0 as id, 3503 as analysis_id, '0' as stratum_1,race_eth as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+select 0 as id, 3503 as analysis_id, '0' as stratum_1,race_eth as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
 where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
 group by 4;"
@@ -553,14 +553,14 @@ select 0 as id, 3502 as analysis_id, '0' as stratum_1, case when age >= 18 and a
 when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
 when age < 18 then '0' end as stratum_2,
-'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on pa.person_id=p.person_id
 group by 4
 union all
 select 0 as id, 3502 as analysis_id, '0' as stratum_1,case when age >= 18 and age <= 29 then '2'
 when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
 where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
 group by 4;"
