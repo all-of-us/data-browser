@@ -495,7 +495,7 @@ SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) 
 echo "Getting genomic tile counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+(id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'micro-array' as stratum_4,
 count(distinct p.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
@@ -508,7 +508,7 @@ where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002');"
 echo "Getting genomic biological sex counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2,
 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
@@ -522,7 +522,7 @@ group by 4;"
 echo "Getting genomic race/ ethnicity counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with person_race_eth_ans as
 (select person_id, string_agg(distinct cast(value_source_concept_id as string), ', ') as distinct_ans from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by 1),
@@ -546,7 +546,7 @@ group by 4;"
 echo "Getting genomic current age counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with person_age as
 (select person_id, ceil(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), birth_datetime, DAY)/365.25) as age from \`${BQ_PROJECT}.${BQ_DATASET}.person\`)
 select 0 as id, 3502 as analysis_id, '0' as stratum_1, case when age >= 18 and age <= 29 then '2'
