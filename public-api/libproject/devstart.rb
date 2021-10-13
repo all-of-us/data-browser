@@ -585,7 +585,7 @@ def generate_public_cdr_counts(cmd_name, *args)
     )
     op.add_option(
       "--search-vat [search-vat]",
-      ->(opts, v) { opts.search_vat = v ? v : false},
+      ->(opts, v) { opts.search_vat = v},
       "Flag to generate search table from VAT. Optional."
     )
     op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
