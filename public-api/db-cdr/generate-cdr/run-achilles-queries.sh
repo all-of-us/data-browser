@@ -174,7 +174,7 @@ with survey_age as
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
-group by sobservation_id,age
+group by observation_id,age
 ),
 survey_age_stratum_temp as
 (
