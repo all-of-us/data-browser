@@ -174,7 +174,7 @@ with survey_age as
 select observation_id,
 ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
-group by observation_id,age
+group by sobservation_id,age
 ),
 survey_age_stratum_temp as
 (
@@ -491,6 +491,79 @@ union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id) as count_value, 0 as source_count_value;"
+
+echo "Getting genomic tile counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'micro-array' as stratum_4,
+count(distinct p.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union all
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from
+\`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002');"
+
+echo "Getting genomic biological sex counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2,
+'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+group by 4
+union all
+select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+group by 4;"
+
+echo "Getting genomic race/ ethnicity counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+with person_race_eth_ans as
+(select person_id, string_agg(distinct cast(value_source_concept_id as string), ', ') as distinct_ans from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
+group by 1),
+race_eth_desc as
+(select person_id, case when distinct_ans like '%, %' then 'More than one race/ethnicity'
+when distinct_ans = '1586143' then 'Black'
+when (distinct_ans like '%1586144%' or distinct_ans like '%1586148%' or distinct_ans like '%1586145%' or distinct_ans like '%903070%') then 'Other'
+when distinct_ans like '%1586146%' then 'White' when distinct_ans like '%1586147%' then 'Hispanic' when (distinct_ans like '%903079%' or distinct_ans like '%903096%') then ' Prefer Not To Answer'
+when distinct_ans like '%1586142%' then 'Asian'
+else distinct_ans end as race_eth from person_race_eth_ans)
+select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2,
+'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on pa.person_id=p.person_id
+group by 4
+union all
+select 0 as id, 3503 as analysis_id, '0' as stratum_1,race_eth as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+group by 4;"
+
+echo "Getting genomic current age counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+with person_age as
+(select person_id, ceil(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), birth_datetime, DAY)/365.25) as age from \`${BQ_PROJECT}.${BQ_DATASET}.person\`)
+select 0 as id, 3502 as analysis_id, '0' as stratum_1, case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as stratum_2,
+'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on pa.person_id=p.person_id
+group by 4
+union all
+select 0 as id, 3502 as analysis_id, '0' as stratum_1,case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id) from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+group by 4;"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
