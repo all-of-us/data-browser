@@ -14,6 +14,15 @@ export const surveyIdToRoute = {
     '43528698': 'family-health-history',
     '1333342': 'covid-19-participant-experience'
 };
+export const routeToSurveyId = {
+    'the-basics': '1586134',
+    'overall-health': '1585710',
+    'lifestyle': '1585855',
+    'personal-medical-history': '43529712',
+    'health-care-access-and-utilization': '43528895',
+    'family-health-history': '43528698',
+    'covid-19-participant-experience': '1333342'
+};
 
 export const routeToDomain = {
     'conditions': 'condition',

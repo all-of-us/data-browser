@@ -8,7 +8,7 @@ import { IntroVidReactComponent } from 'app/data-browser/views/intro-vids/intro-
 import { PMReactComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { dBHomeComponent } from 'app/data-browser/views/quick-search/home-view-react.component'
 import { EhrViewReactComponent } from 'app/data-browser/views/ehr-view/ehr-view-react.component'
-
+import { SurveyViewReactComponent } from './data-browser/views/survey-view/survey-react-view.component';
 export const AppRoutingComponent: React.FunctionComponent = () => {
 
   return <AppRouter>
@@ -47,8 +47,38 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
       component={() => EhrViewReactComponent(
         {
           routeData: {
-            title: 'Physical Measurements',
-            breadcrumb: { value: 'physical measurements' }
+            title: 'View Full Results',
+            breadcrumb: { value: ':id Domain' }
+          }
+        })}
+    />
+    <AppRoute
+      path='/ehr/:id/:search'
+      component={() => EhrViewReactComponent(
+        {
+          routeData: {
+            title: 'View Full Results',
+            breadcrumb: { value: ':id Domain' }
+          }
+        })}
+    />
+    <AppRoute
+      path='/survey/:id'
+      component={() => SurveyViewReactComponent(
+        {
+          routeData: {
+            title: 'View Survey Questions and Answers',
+            breadcrumb: { value: ':id Domain' }
+          }
+        })}
+    />
+    <AppRoute
+      path='/survey/:id/:search'
+      component={() => SurveyViewReactComponent(
+        {
+          routeData: {
+            title: 'View Survey Questions and Answers',
+            breadcrumb: { value: ':id Domain' }
           }
         })}
     />

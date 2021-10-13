@@ -252,7 +252,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     NavStore.navigateByUrl(url);
                     break;
                 default:
-                    url = 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
+                    url = this.props.searchWord ? 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() + '/' + this.props.searchWord : 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() ;
                     NavStore.navigateByUrl(url);
                     break;
             }

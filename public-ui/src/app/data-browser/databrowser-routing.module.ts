@@ -57,7 +57,7 @@ const routes: Routes = [
         },
         {
           path: 'survey/:id/:search',
-          component: SurveyViewComponent,
+          component: AppRouting,
           data: {
             title: 'View Survey Questions and Answers',
             breadcrumb: {
@@ -77,7 +77,7 @@ const routes: Routes = [
         },
         {
           path: 'ehr/:id/:search',
-          component: EhrViewComponent,
+          component: AppRouting,
           data: {
             title: 'View Full Results',
             breadcrumb: {
