@@ -604,7 +604,7 @@ end
 Common.register_command({
   :invocation => "generate-public-cdr-counts",
   :description => "generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT> \
- --cdr-version=<''|YYYYMMDD> --bucket <BUCKET>
+ --cdr-version=<''|YYYYMMDD> --bucket <BUCKET> --search-vat <SEARCH_VAT>
 Generates databases in bigquery with non de-identified data from a cdr that will be imported to mysql/cloudsql to be used by databrowser.",
   :fn => ->(*args) { generate_public_cdr_counts("generate-public-cdr-counts", *args) }
 })
