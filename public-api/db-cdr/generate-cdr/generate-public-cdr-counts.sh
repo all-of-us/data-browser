@@ -28,6 +28,11 @@ then
   BIN_SIZE=20
 fi
 
+if [ -z "${SEARCH_VAT}" ]
+then
+  SEARCH_VAT=false
+fi
+
 PUBLIC_DATASET=$CDR_VERSION
 
 startDate=$(date)
