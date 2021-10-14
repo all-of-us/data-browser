@@ -249,7 +249,9 @@ interface State {
     searchWord: string;
     showStatement: boolean;
     standardConcepts: any;
+    standardConceptIds: any;
     showTopConcepts: boolean;
+    matchType: MatchType;
     concepts: any;
     top10Results: any;
     loading: boolean;
@@ -281,6 +283,7 @@ export const EhrViewReactComponent = withRouteData(
                 showStatement: false,
                 top10Results: null,
                 selectedConcept: null,
+                standardConceptIds: '',
                 numPages: null,
                 totalResults: null,
                 concepts: [],
@@ -292,7 +295,8 @@ export const EhrViewReactComponent = withRouteData(
                 selectedMeasurementTypeFilter: false,
                 measurementTestFilter: true,
                 measurementOrderFilter: true,
-                showTopConcepts: true
+                showTopConcepts: true,
+                matchType: MatchType.NAME
             };
         }
 
@@ -365,6 +369,7 @@ export const EhrViewReactComponent = withRouteData(
                 standardConcepts: results.standardConcepts || [],
                 top10Results: currentPage === 1 ? results.items.slice(0, 10) : top10Results,
                 loading: false,
+                matchType: results.matchType,
                 medlineTerm: medlineTerm,
                 medlinePlusLink: medlinePlusLink
             });
@@ -423,22 +428,22 @@ export const EhrViewReactComponent = withRouteData(
                 (top10Results.length < 10 ? top10Results.length + ' ' + title : 10 + ' ' + title);
         }
 
-        handlePageClick = (data) => {
-            const { searchWord, domain: { domain }, measurementTestFilter, measurementOrderFilter } = this.state;
-            const searchRequest = {
-                query: searchWord,
-                domain: domain.toUpperCase(),
-                standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
-                maxResults: 50,
-                minCount: 1,
-                pageNumber: data.selected,
-                measurementTests: measurementTestFilter ? 1 : 0,
-                measurementOrders: measurementOrderFilter ? 1 : 0
-            };
-            this.setState({ currentPage: data.selected + 1, showTopConcepts: data.selected <= 0 });
-            window.scrollTo(0, 0);
-            this.fetchConcepts(searchRequest);
-        }
+    handlePageClick = (data) => {
+        const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
+        const searchRequest = {
+            query: searchWord ? searchWord : '',
+            domain: domain.toUpperCase(),
+            standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+            maxResults: 50,
+            minCount: 1,
+            pageNumber: data.selected,
+            measurementTests: measurementTestFilter ? 1 : 0,
+            measurementOrders: measurementOrderFilter ? 1 : 0
+        };
+        this.setState({currentPage: data.selected + 1, showTopConcepts: data.selected <= 0});
+        window.scrollTo(0, 0);
+        this.fetchConcepts(searchRequest);
+    }
 
         changeResults() {
             this.setState({ selectedConcept: null });
