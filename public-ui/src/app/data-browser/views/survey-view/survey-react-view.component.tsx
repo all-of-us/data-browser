@@ -164,11 +164,6 @@ div {
 }
 `;
 
-interface Props {
-    domainId: string;
-    searchWord: string;
-}
-
 interface State {
     survey: any;
     surveyId: string;
@@ -190,7 +185,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         navigate(['survey', id, val]);
     }, 1000);
 
-    constructor(props:{}) {
+    constructor(props: {}) {
         super(props);
         const { search } = urlParamsStore.getValue();
         this.state = {
@@ -350,8 +345,12 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         return <React.Fragment>
             <style>{surveyStyle}</style>
             <div className='survey-view' style={styles.surveyView}>
-                {survey && <SurveyDescReactComponent surveyName={survey.name} isCopeSurvey={isCopeSurvey} surveyDescription={survey.description}
-                    click={() => this.setState({ showStatement: true })} />
+                {
+                    survey && <SurveyDescReactComponent
+                        surveyName={survey.name}
+                        isCopeSurvey={isCopeSurvey}
+                        surveyDescription={survey.description}
+                        click={() => this.setState({ showStatement: true })} />
                 }
                 <div className='search-bar-container' style={styles.searchBarContainer}>
                     <SearchComponent value={searchWord || ''} searchTitle=''
@@ -445,7 +444,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         </React.Fragment>;
     }
 }
-)
+);
 
 @Component({
     // tslint:disable-next-line: component-selector

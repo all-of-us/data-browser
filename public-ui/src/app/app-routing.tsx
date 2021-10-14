@@ -1,14 +1,14 @@
 import { Component as AComponent } from '@angular/core';
-import * as React from 'react';
-
 import { AppRoute, AppRouter } from 'app/components/app-router';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { EhrViewReactComponent } from 'app/data-browser/views/ehr-view/ehr-view-react.component';
 import { FitbitReactComponent } from 'app/data-browser/views/fitbit-view/fitbit-view-react.component';
 import { IntroVidReactComponent } from 'app/data-browser/views/intro-vids/intro-vids-react.component';
 import { PMReactComponent } from 'app/data-browser/views/pm/pm-react.component';
-import { dBHomeComponent } from 'app/data-browser/views/quick-search/home-view-react.component'
-import { EhrViewReactComponent } from 'app/data-browser/views/ehr-view/ehr-view-react.component'
+import { dBHomeComponent } from 'app/data-browser/views/quick-search/home-view-react.component';
+import * as React from 'react';
 import { SurveyViewReactComponent } from './data-browser/views/survey-view/survey-react-view.component';
+
 export const AppRoutingComponent: React.FunctionComponent = () => {
 
   return <AppRouter>

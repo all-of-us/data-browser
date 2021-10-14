@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { withRouteData } from 'app/components/app-router';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';

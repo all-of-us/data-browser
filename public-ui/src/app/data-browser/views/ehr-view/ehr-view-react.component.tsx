@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { withRouteData } from 'app/components/app-router';
 import { NoResultSearchComponent } from 'app/components/db-no-results/no-results-search.component';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
@@ -16,7 +16,6 @@ import { navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import _ from 'lodash';
 import { Domain, MatchType, StandardConceptFilter } from 'publicGenerated/fetch';
-import { stringify } from 'querystring';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 
@@ -243,7 +242,7 @@ h5.secondary-display {
 `;
 interface State {
     domain: any;
-    domainId:string;
+    domainId: string;
     totalParticipants: number;
     title: string;
     subTitle: string;
@@ -264,6 +263,7 @@ interface State {
     measurementTestFilter: boolean;
     measurementOrderFilter: boolean;
 }
+
 export const EhrViewReactComponent = withRouteData(
     class extends React.Component<{}, State> {
         constructor(props: {}) {
@@ -323,7 +323,7 @@ export const EhrViewReactComponent = withRouteData(
                         if (thisDomain && thisDomain.toLowerCase() === routeToDomain[location.pathname.split('/')[2]]) {
                             this.setState({
                                 domain: domain,
-                                domainId:thisDomain,
+                                domainId: thisDomain,
                                 title: domain.name,
                                 subTitle: 'Keyword: ' + searchWord,
                                 totalParticipants: domain.participantCount,
@@ -471,18 +471,23 @@ export const EhrViewReactComponent = withRouteData(
                         <div className='result-list'>
                             <div className='db-card'>
                                 <div className='db-card-inner'>
-                                    <button className='disclaimer-btn' onClick={() => this.setState({ showStatement: true })}>data disclaimer</button>
+                                    <button className='disclaimer-btn' onClick={() => this.setState({ showStatement: true })}>
+                                        data disclaimer</button>
                                     <section>
                                         <h5 id='domain-summary' className='secondary-display'>
                                             <React.Fragment>
-                                                <div className='toggle-link' onClick={() => this.setState({ showTopConcepts: !showTopConcepts })}>
+                                                <div className='toggle-link' onClick={() => this.setState({
+                                                    showTopConcepts: !showTopConcepts
+                                                })}>
                                                     Top {this.getTopResultsSize()} by Descending Participant Counts
                                                     <div className='toggle-icon'>{showTopConcepts ? <ClrIcon shape='caret' dir='down'
                                                         style={{ width: 20, height: 20 }} /> :
                                                         <ClrIcon shape='caret' dir='right' style={{ width: 20, height: 20 }} />}</div>
                                                 </div>
                                                 {showTopConcepts && top10Results && top10Results.length > 0 &&
-                                                    <TopResultsChartReactComponent concepts={top10Results} onClick={(e) => this.selectConcept(e)} />}
+                                                    <TopResultsChartReactComponent
+                                                        concepts={top10Results}
+                                                        onClick={(e) => this.selectConcept(e)} />}
                                             </React.Fragment>
                                         </h5>
                                     </section>
@@ -496,16 +501,19 @@ export const EhrViewReactComponent = withRouteData(
                                                             {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
                                                                 <React.Fragment> concepts for this domain</React.Fragment>}
                                                             <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
-                                                                label='EHR Tooltip Hover' searchTerm={searchWord}
+                                                                label='EHR Tooltip Hover'
+                                                                searchTerm={searchWord}
                                                                 action='Matching medical concepts tooltip hover' />
                                                         </h5> :
                                                             <h5 id='domain-name' className='primary-display'>
                                                                 Showing top
-                                                                {((currentPage - 1) * 50) + 1} - {concepts.length + ((currentPage - 1) * 50)} of {totalResults}
+                                                                {((currentPage - 1) * 50) + 1} - {concepts.length +
+                                                                    ((currentPage - 1) * 50)} of {totalResults}
                                                                 {searchWord ? <React.Fragment> matching medical concepts </React.Fragment> :
                                                                     <React.Fragment> concepts for this domain</React.Fragment>}
                                                                 <TooltipReactComponent tooltipKey='matchingConceptsHelpText'
-                                                                    label='EHR Tooltip Hover' searchTerm={searchWord}
+                                                                    label='EHR Tooltip Hover'
+                                                                    searchTerm={searchWord}
                                                                     action='Matching medical concepts tooltip hover' /> </h5>}
                                                     </span>
                                                     {searchWord &&
@@ -515,9 +523,11 @@ export const EhrViewReactComponent = withRouteData(
                                                                 rel='noopener noreferrer'>Search MedlinePlus</a></h6>
                                                     }
                                                 </div>
-                                                {(concepts.length === 1 && concepts[0].standardConcept !== 'S' && standardConcepts.length > 0) &&
+                                                {(concepts.length === 1 && concepts[0].standardConcept !== 'S' &&
+                                                    standardConcepts.length > 0) &&
                                                     <div className='db-alert' style={styles.dbAlert}>
-                                                        Note: {concepts[0].vocabularyId} {concepts[0].conceptCode} '{concepts[0].conceptName}'
+                                                        Note: {concepts[0].vocabularyId} {concepts[0].conceptCode}
+                                                        '{concepts[0].conceptName}'
                                                         maps to Standard Vocabulary {standardConcepts[0].vocabularyId}
                                                         {standardConcepts[0].conceptCode} '{standardConcepts[0].conceptName}'.
                                                         Standard vocabularies capture data across a variety of source vocabularies.
@@ -544,23 +554,41 @@ export const EhrViewReactComponent = withRouteData(
                                                             <div className={dropdownClass}>
                                                                 <button className='dropdown-toggle'>
                                                                     <ClrIcon shape='filter-grid' className={filterIconClass} onClick={() =>
-                                                                        this.setState({ selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter })} />
+                                                                        this.setState({
+                                                                            selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter
+                                                                        })} />
                                                                 </button>
                                                                 <div className='dropdown-menu'>
                                                                     <div className='clr-checkbox-wrapper'>
                                                                         <div className='checkbox-input'>
-                                                                            <input type='checkbox' id='checkbox1' className='clr-checkbox' onClick={() =>
-                                                                                this.setState({ measurementTestFilter: !measurementTestFilter },
-                                                                                    () => { this.getDomainTotals(); this.getTopConcepts(); })} defaultChecked={measurementTestFilter} />
-                                                                            <label htmlFor='checkbox1' className='checkbox-label'><i className='fas fa-vial fa-rotate-45'
-                                                                                style={{ 'transform': 'rotate(315deg)' }} />Tests</label>
+                                                                            <input type='checkbox' id='checkbox1'
+                                                                                className='clr-checkbox' onClick={() =>
+                                                                                    this.setState({
+                                                                                        measurementTestFilter: !measurementTestFilter
+                                                                                    },
+                                                                                        () => {
+                                                                                            this.getDomainTotals(); this.getTopConcepts();
+                                                                                        })} defaultChecked={measurementTestFilter} />
+                                                                            <label htmlFor='checkbox1'
+                                                                                className='checkbox-label'>
+                                                                                <i className='fas fa-vial fa-rotate-45'
+                                                                                    style={{ 'transform': 'rotate(315deg)' }} />
+                                                                                Tests</label>
                                                                         </div>
                                                                     </div>
                                                                     <div className='clr-checkbox-wrapper'>
                                                                         <div className='checkbox-input'>
-                                                                            <input type='checkbox' id='checkbox2' className='clr-checkbox' onClick={() =>
-                                                                                this.setState({ measurementOrderFilter: !measurementOrderFilter },
-                                                                                    () => { this.getDomainTotals(); this.getTopConcepts(); })} defaultChecked={measurementOrderFilter} />
+                                                                            <input type='checkbox'
+                                                                                id='checkbox2'
+                                                                                className='clr-checkbox'
+                                                                                onClick={() =>
+                                                                                    this.setState({
+                                                                                        measurementOrderFilter: !measurementOrderFilter
+                                                                                    },
+                                                                                        () => {
+                                                                                            this.getDomainTotals(); this.getTopConcepts();
+                                                                                        })}
+                                                                                defaultChecked={measurementOrderFilter} />
                                                                             <label htmlFor='checkbox2' className='checkbox-label'>
                                                                                 <i className='far fa-file-signature' /> Orders</label>
                                                                         </div>
@@ -575,9 +603,13 @@ export const EhrViewReactComponent = withRouteData(
                                                         {standardConcepts.concat(concepts).map((concept, index) => {
                                                             return <ConceptRowReactComponent key={concept.conceptId} concept={concept}
                                                                 domain={domain} totalResults={totalResults}
-                                                                maxResults={maxResults} currentPage={currentPage} counter={index} searchTerm={searchWord}
+                                                                maxResults={maxResults}
+                                                                currentPage={currentPage}
+                                                                counter={index}
+                                                                searchTerm={searchWord}
                                                                 totalParticipants={totalParticipants}
-                                                                selectedConcept={selectedConcept} synonymString={concept.conceptSynonyms.join(', ')} />;
+                                                                selectedConcept={selectedConcept}
+                                                                synonymString={concept.conceptSynonyms.join(', ')} />;
                                                         })}
                                                     </div>
                                                 }
@@ -605,14 +637,16 @@ export const EhrViewReactComponent = withRouteData(
                 {(!loading && concepts.length === 0 && searchWord) &&
                     <div>
                         <h5 className='secondary-display'> No results in this domain that match your search.</h5>
-                        <NoResultSearchComponent domainMatch={this.changeResults} searchValue={searchWord} measurementTestFilter={noMatchFilter}
-                            measurementOrderFilter={noMatchFilter} />
+                        <NoResultSearchComponent domainMatch={this.changeResults}
+                        searchValue={searchWord}
+                        measurementTestFilter={noMatchFilter}
+                        measurementOrderFilter={noMatchFilter} />
                     </div>}
                 {showStatement && <PopUpReactComponent helpText='EhrViewPopUp' onClose={() => this.setState({ showStatement: false })} />}
             </React.Fragment>;
         }
     }
-)
+);
 
 @Component({
     // tslint:disable-next-line: component-selector
@@ -620,4 +654,4 @@ export const EhrViewReactComponent = withRouteData(
     template: `<span #root></span>`
 })
 
-export class EhrViewWrapperComponent extends BaseReactWrapper {}
+export class EhrViewWrapperComponent extends BaseReactWrapper { }
