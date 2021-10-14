@@ -355,6 +355,7 @@ export const EhrViewReactComponent = withRouteData(
             const medlinePlusLink = 'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=' +
                 'medlineplus&v%3Asources=medlineplus-bundle&query='
                 + medlineTerm;
+            let conceptStandardConcepts: any[] = [];
             for (const concept of results.items) {
                 concept['synonymString'] = concept.conceptSynonyms.join(', ');
                 concept['drugBrands'] = concept.drugBrands;
@@ -363,18 +364,21 @@ export const EhrViewReactComponent = withRouteData(
                 } else {
                     concept.graphToShow = GraphType.BiologicalSex;
                 }
+                if (concept.standardConcepts) {
+                    conceptStandardConcepts = conceptStandardConcepts.concat(concept.standardConcepts);
+                }
             }
             this.setState({
                 concepts: results.items,
-                standardConcepts: results.standardConcepts || [],
+                standardConcepts: conceptStandardConcepts,
+                standardConceptIds: conceptStandardConcepts.map(a => a.conceptId),
+                matchType: results.matchType,
                 top10Results: currentPage === 1 ? results.items.slice(0, 10) : top10Results,
                 loading: false,
-                matchType: results.matchType,
                 medlineTerm: medlineTerm,
                 medlinePlusLink: medlinePlusLink
             });
         }
-
 
         getTopConcepts() {
             const { searchWord, domain: { domain }, measurementTestFilter, measurementOrderFilter } = this.state;
@@ -428,22 +432,22 @@ export const EhrViewReactComponent = withRouteData(
                 (top10Results.length < 10 ? top10Results.length + ' ' + title : 10 + ' ' + title);
         }
 
-    handlePageClick = (data) => {
-        const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
-        const searchRequest = {
-            query: searchWord ? searchWord : '',
-            domain: domain.toUpperCase(),
-            standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
-            maxResults: 50,
-            minCount: 1,
-            pageNumber: data.selected,
-            measurementTests: measurementTestFilter ? 1 : 0,
-            measurementOrders: measurementOrderFilter ? 1 : 0
-        };
-        this.setState({currentPage: data.selected + 1, showTopConcepts: data.selected <= 0});
-        window.scrollTo(0, 0);
-        this.fetchConcepts(searchRequest);
-    }
+        handlePageClick = (data) => {
+            const { searchWord, domain: { domain }, measurementTestFilter, measurementOrderFilter } = this.state;
+            const searchRequest = {
+                query: searchWord ? searchWord : '',
+                domain: domain.toUpperCase(),
+                standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+                maxResults: 50,
+                minCount: 1,
+                pageNumber: data.selected,
+                measurementTests: measurementTestFilter ? 1 : 0,
+                measurementOrders: measurementOrderFilter ? 1 : 0
+            };
+            this.setState({ currentPage: data.selected + 1, showTopConcepts: data.selected <= 0 });
+            window.scrollTo(0, 0);
+            this.fetchConcepts(searchRequest);
+        }
 
         changeResults() {
             this.setState({ selectedConcept: null });
@@ -451,7 +455,7 @@ export const EhrViewReactComponent = withRouteData(
 
         render() {
             const { title, searchWord, showStatement, showTopConcepts, domain, totalResults, totalParticipants, selectedConcept,
-                numPages, loading, medlinePlusLink, medlineTerm, concepts, standardConcepts,
+                numPages, loading, medlinePlusLink, medlineTerm, concepts, standardConcepts, standardConceptIds, matchType,
                 selectedMeasurementTypeFilter, currentPage,
                 measurementTestFilter, measurementOrderFilter, top10Results } = this.state;
             const maxResults = 50;
@@ -614,7 +618,9 @@ export const EhrViewReactComponent = withRouteData(
                                                                 searchTerm={searchWord}
                                                                 totalParticipants={totalParticipants}
                                                                 selectedConcept={selectedConcept}
-                                                                synonymString={concept.conceptSynonyms.join(', ')} />;
+                                                                synonymString={concept.conceptSynonyms.join(', ')}
+                                                                matchType={matchType}
+                                                                match={standardConceptIds.indexOf(concept.conceptId) >= 0 ? 'standard' : 'source'} />;
                                                         })}
                                                     </div>
                                                 }
@@ -643,9 +649,9 @@ export const EhrViewReactComponent = withRouteData(
                     <div>
                         <h5 className='secondary-display'> No results in this domain that match your search.</h5>
                         <NoResultSearchComponent domainMatch={this.changeResults}
-                        searchValue={searchWord}
-                        measurementTestFilter={noMatchFilter}
-                        measurementOrderFilter={noMatchFilter} />
+                            searchValue={searchWord}
+                            measurementTestFilter={noMatchFilter}
+                            measurementOrderFilter={noMatchFilter} />
                     </div>}
                 {showStatement && <PopUpReactComponent helpText='EhrViewPopUp' onClose={() => this.setState({ showStatement: false })} />}
             </React.Fragment>;
