@@ -99,6 +99,7 @@ export const tooltips = {
     'health care access & utilization': `This survey asks questions about participants' access
                                            to and use of health care.`,
     'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
+    'genomics': 'Genomic Data',
     'pmValueChartHelpText': 'Values provide the numeric result of the ' +
         'physical measurements taken at the time of participant enrollment. ' +
         'Unit of measurement displayed has not been converted so each data ' +
@@ -297,6 +298,7 @@ export class TooltipService {
         'health care access & utilization': `This survey asks questions about participants' access
                                            to and use of health care.`,
         'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
+        'genomics': 'Genomic Data',
         'pmValueChartHelpText': 'Values provide the numeric result of the ' +
             'physical measurements taken at the time of participant enrollment. ' +
             'Unit of measurement displayed has not been converted so each data ' +

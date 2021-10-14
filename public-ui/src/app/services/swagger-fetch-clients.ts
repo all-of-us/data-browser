@@ -20,7 +20,7 @@
  * });
  */
 
-import {BaseAPI, Configuration, DataBrowserApi} from 'publicGenerated/fetch';
+import {BaseAPI, Configuration, DataBrowserApi, GenomicsApi} from 'publicGenerated/fetch';
 
 import * as portableFetch from 'portable-fetch';
 
@@ -62,6 +62,7 @@ function bindCtor<T extends BaseAPI>(ctor: new() => T): () => T {
 // To add a new service, add a new entry below. Note that these properties are
 // getters for the API clients, e.g.: dataBrowserApi().getDomainTotals();
 export const dataBrowserApi = bindCtor(DataBrowserApi);
+export const genomicsApi = bindCtor(GenomicsApi);
 
 /**
  * Binds standard API clients. To be called at most once for production use,
