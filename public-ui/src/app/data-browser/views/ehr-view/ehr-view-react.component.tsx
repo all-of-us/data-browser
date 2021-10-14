@@ -249,7 +249,9 @@ interface State {
     searchWord: string;
     showStatement: boolean;
     standardConcepts: any;
+    standardConceptIds: any;
     showTopConcepts: boolean;
+    matchType: MatchType;
     concepts: any;
     top10Results: any;
     loading: boolean;
@@ -281,6 +283,8 @@ export const EhrViewReactComponent = withRouteData(
                 showStatement: false,
                 top10Results: null,
                 selectedConcept: null,
+                standardConceptIds: '',
+                matchType: null,
                 numPages: null,
                 totalResults: null,
                 concepts: [],
