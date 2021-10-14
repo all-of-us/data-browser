@@ -299,7 +299,6 @@ export const EhrViewReactComponent = withRouteData(
                 matchType: MatchType.NAME
             };
         }
-
         domainTotals = _.debounce(() => {
             this.getDomainTotals();
             this.getTopConcepts();
