@@ -427,22 +427,22 @@ export const EhrViewReactComponent = withRouteData(
                 (top10Results.length < 10 ? top10Results.length + ' ' + title : 10 + ' ' + title);
         }
 
-        handlePageClick = (data) => {
-            const { searchWord, domain: { domain }, measurementTestFilter, measurementOrderFilter } = this.state;
-            const searchRequest = {
-                query: searchWord,
-                domain: domain.toUpperCase(),
-                standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
-                maxResults: 50,
-                minCount: 1,
-                pageNumber: data.selected,
-                measurementTests: measurementTestFilter ? 1 : 0,
-                measurementOrders: measurementOrderFilter ? 1 : 0
-            };
-            this.setState({ currentPage: data.selected + 1, showTopConcepts: data.selected <= 0 });
-            window.scrollTo(0, 0);
-            this.fetchConcepts(searchRequest);
-        }
+    handlePageClick = (data) => {
+        const {searchWord, domain: {domain}, measurementTestFilter, measurementOrderFilter} = this.state;
+        const searchRequest = {
+            query: searchWord ? searchWord : '',
+            domain: domain.toUpperCase(),
+            standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+            maxResults: 50,
+            minCount: 1,
+            pageNumber: data.selected,
+            measurementTests: measurementTestFilter ? 1 : 0,
+            measurementOrders: measurementOrderFilter ? 1 : 0
+        };
+        this.setState({currentPage: data.selected + 1, showTopConcepts: data.selected <= 0});
+        window.scrollTo(0, 0);
+        this.fetchConcepts(searchRequest);
+    }
 
         changeResults() {
             this.setState({ selectedConcept: null });
