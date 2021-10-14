@@ -218,11 +218,10 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
             fetchDomain = domain;
         }
         api.getDomainTotals(searchWord, 1, 1).then(
-                (data: any) => {
-                  console.log(data);
-                  data.surveyModules.forEach(survey => {
+            (data: any) => {
+                data.surveyModules.forEach(survey => {
                     const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
-                    survey.name.split(' ').join('-').toLowerCase();
+                        survey.name.split(' ').join('-').toLowerCase();
                     if (surveyRoute.indexOf('(cope)') > -1) {
                         if (fetchDomain && surveyRoute.indexOf(fetchDomain) > -1) {
                             localStorage.setItem('surveyModule', JSON.stringify(survey));
@@ -234,8 +233,8 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                             this.setSurvey(JSON.stringify(survey));
                         }
                     }
-                  });
                 });
+            });
     }
 
     setSurvey(surveyObj) {
@@ -256,13 +255,14 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                               r.results.map((item, i) => {
                                   if (item.analysisId === 3400) {
                                      surveyVersions.push({
-                                      monthName: item.stratum4,
-                                      year: item.stratum5,
-                                      monthNum: item.stratum3.split('/')[0],
+                                      monthName: item.stratum3,
+                                      year: item.stratum4,
+                                      versionNum: item.stratum5,
+                                      monthNum: item.stratum2.split('/')[0],
                                       participants: item.countValue,
                                       numberOfQuestion: '',
                                       pdfLink: '/assets/surveys/' +
-                                      'COPE_survey_' + item.stratum4.split('/')[0].replace('/', '_') + '_' + item.stratum5 + '_English.pdf'
+                                      'COPE_survey_' + item.stratum3.split('/')[0].replace('/', '_') + '_' + item.stratum4 + '_English.pdf'
                                      });
                                   } else if (item.analysisId === 3401) {
                                       surveyVersions[i].numberOfQuestion = item.countValue;
@@ -278,14 +278,20 @@ export class SurveyViewReactComponent extends React.Component<Props, State> {
                     }
             );
         }
-    this.setState({survey: survey, surveyPdfUrl: surveyPdfUrl, isCopeSurvey: copeFlag, extraQuestionConceptIds: extraConcepts}, () => {
-        this.getSurvey(); });
-  }
+        this.setState({
+            survey: survey,
+            surveyPdfUrl: surveyPdfUrl,
+            isCopeSurvey: copeFlag,
+            extraQuestionConceptIds: extraConcepts
+        }, () => {
+            this.getSurvey();
+        });
+    }
 
-  handleChange(val) {
+    handleChange(val) {
         this.setState({ searchWord: val });
         this.search(val);
-  }
+    }
 
   getSurvey() {
         const {survey, searchWord, extraQuestionConceptIds} = this.state;

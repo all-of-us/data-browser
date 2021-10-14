@@ -1,4 +1,4 @@
-import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { getBaseOptions, VERSION_NAME_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import { eightColors, eighteenColors, fourteenColors, tenColors, twentyFiveColors } from 'app/utils/colors';
 import * as highCharts from 'highcharts';
@@ -45,7 +45,7 @@ const cssStyle = `
 }
 `;
 
-const monthOrder = ['May', 'June', 'July/August'];
+const monthOrder = ['1', '2', '3', '4', '5', '6'];
 
 interface State {
     answerChartInfo: any;
@@ -126,26 +126,18 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     let tempArr: any[] = [];
     const categoryArr = [];
     const { answerChartInfo } = this.state;
-    for (const prop in sortedAnswers) {
-      if (sortedAnswers.hasOwnProperty(prop)) {
-        categoryArr.push(prop);
-        const answerOrder = answerChartInfo.map(p => p.answerId);
-        this.mapOrder(sortedAnswers[prop], answerOrder, 'stratum3');
-        sortedAnswers[prop].forEach(answer => {
-          tempArr.push({
-            name: answer.stratum4,
+    for (const val of answerChartInfo.map(a => a.answerValue)) {
+        tempArr.push({
+            name: val,
             data: []
-          });
         });
-      }
     }
-
     // remove duplicates
     tempArr =
       Array.from(new Set(tempArr.map(x => JSON.stringify(x)))).map(x => JSON.parse(x));
-
     for (const prop in sortedAnswers) {
       if (sortedAnswers.hasOwnProperty(prop)) {
+        categoryArr.push(prop);
         tempArr.forEach(stack => {
           sortedAnswers[prop].forEach(answer => {
             if (stack.name === answer.stratum4) {
@@ -164,7 +156,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     const { categoryArr, chartSeries, colors } = this.state;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'column';
-    newBaseOptions.xAxis.categories = categoryArr;
+    newBaseOptions.xAxis.categories = categoryArr.map(item  => VERSION_NAME_MAP[item]);
     newBaseOptions.series = chartSeries;
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.yAxis.title.style.fontSize = '16px';

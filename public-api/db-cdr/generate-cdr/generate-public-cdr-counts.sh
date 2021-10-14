@@ -11,6 +11,7 @@
 # ./project.rb generate-public-cdr-counts --bq-project all-of-us-ehr-dev --bq-dataset test_merge_dec26 \
 # --public-project all-of-us-workbench-test --cdr-version 20180130 \
 # --bucket all-of-us-workbench-cloudsql-create
+# --gen-search-vat false
 
 set -ex
 
@@ -19,6 +20,7 @@ export BQ_DATASET=$2  # dataset
 export PUBLIC_PROJECT=$3 # databrowser project
 export CDR_VERSION=$4 # cdr version
 export BUCKET=$5 # GCS bucket
+export SEARCH_VAT=$6
 
 
 if [ -z "${BIN_SIZE}" ]
@@ -34,7 +36,7 @@ echo $(date) "Starting generate-public-cdr-counts $startDate"
 ## Make public cdr count data
 echo "Intermediary pre-binned count generation"
 if ./generate-cdr/make-bq-data.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --output-project $PUBLIC_PROJECT \
- --output-dataset $PUBLIC_DATASET --cdr-version "$CDR_VERSION"
+ --output-dataset $PUBLIC_DATASET --cdr-version "$CDR_VERSION" --search-vat $SEARCH_VAT
 then
     echo "BigQuery public data generated"
 else

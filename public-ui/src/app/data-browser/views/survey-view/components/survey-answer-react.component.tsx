@@ -152,6 +152,9 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
             }
             return q;
         });
+        questions.sort((a, b) =>
+            a.id - b.id
+        );
         return questions;
     }
 
@@ -296,7 +299,6 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
             surveyVersions,
             surveyCountAnalysis,
             searchTerm } = this.props;
-
         return <React.Fragment>
             <style>{styleCss}</style>
             {(isCopeSurvey) && <SurveyAnswerChartReactComponent
