@@ -135,8 +135,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
           }
     newBaseOptions.tooltip.positioner = (width, height, point) => {
         return {
-            x: point.plotX + 20,
-            y: point.plotY - 25
+            x: point.plotX - 10,
+            y: point.plotY - 40
         };
     };
     this.setState({options: newBaseOptions});
@@ -200,8 +200,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
             participantCountText = 'Participant Count: <strong>' + a.countValue + '</strong>';
         }
         if (a.stratum2 !== 'No unit') {
-            tooltipText = '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: calc((100%/3)*8);"> <b>' + analysisStratumName + '</b>' +
-          '<br/>' + 'Measurement Value / Range:';
+            tooltipText = '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 12px; width: calc((100%/3)*7);"> <strong>' + analysisStratumName + '</strong>' +
+          '<br/>' + 'Range:';
             if (a.stratum4.indexOf('>=') > -1) {
                 tooltipText = tooltipText + ' &ge; <b>' + a.stratum4.replace('>=', '')
                     + '</b> <br/>' + participantCountText + '</div>';
@@ -210,8 +210,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
                     + '</b> <br/>' + participantCountText + '</div>';
             }
         } else {
-            tooltipText = '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: calc((100%/3)*8);"> <b>' + analysisStratumName + '</b>' +
-                '<br/>' + 'Measurement Value : <b>' + a.stratum4
+            tooltipText = '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 12px; width: calc((100%/3)*7);"> <strong>' + analysisStratumName + '</strong>' +
+                '<br/>' + 'Value : <b>' + a.stratum4
                 + '</b> <br/>' + participantCountText + '</div>';
         }
         data.push({
