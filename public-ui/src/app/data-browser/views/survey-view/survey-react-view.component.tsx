@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
 import { withRouteData } from 'app/components/app-router';
 import { NoResultSearchComponent } from 'app/components/db-no-results/no-results-search.component';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { SurveyVersionTableReactComponent } from 'app/data-browser/components/survey-version-table/survey-version-table-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
@@ -191,7 +189,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         this.state = {
             isCopeSurvey: false,
             survey: null,
-            surveyId: location.pathname.split('/')[2],
+            surveyId: urlParamsStore.getValue().id,
             surveyPdfUrl: '',
             searchWord: search,
             extraQuestionConceptIds: [],
@@ -445,17 +443,3 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
     }
 }
 );
-
-@Component({
-    // tslint:disable-next-line: component-selector
-    selector: 'survey-react-view',
-    template: `<span #root></span>`
-})
-
-export class SurveyViewWrapperComponent extends BaseReactWrapper {
-    // @Input() public domainId: string;
-    // @Input() public searchWord: string;
-    // constructor() {
-    //     super(SurveyViewReactComponent, ['domainId', 'searchWord']);
-    // }
-}

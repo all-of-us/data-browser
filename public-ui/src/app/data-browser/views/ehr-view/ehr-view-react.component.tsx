@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
 import { withRouteData } from 'app/components/app-router';
 import { NoResultSearchComponent } from 'app/components/db-no-results/no-results-search.component';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { TopResultsChartReactComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
@@ -273,8 +271,9 @@ export const EhrViewReactComponent = withRouteData(
             this.changeResults = this.changeResults.bind(this);
             // TODO add url params and change them based on search value
             const { search } = urlParamsStore.getValue();
+            
             this.state = {
-                domainId: '',
+                domainId: urlParamsStore.getValue().id,
                 domain: null,
                 totalParticipants: 0,
                 title: '',
@@ -323,10 +322,9 @@ export const EhrViewReactComponent = withRouteData(
                 .then(results => {
                     results.domainInfos.forEach(domain => {
                         const thisDomain = Domain[domain.domain];
-                        if (thisDomain && thisDomain.toLowerCase() === routeToDomain[location.pathname.split('/')[2]]) {
+                        if (thisDomain && thisDomain.toLowerCase() === routeToDomain[this.state.domainId]) {
                             this.setState({
                                 domain: domain,
-                                domainId: thisDomain,
                                 title: domain.name,
                                 subTitle: 'Keyword: ' + searchWord,
                                 totalParticipants: domain.participantCount,
@@ -657,11 +655,3 @@ export const EhrViewReactComponent = withRouteData(
         }
     }
 );
-
-@Component({
-    // tslint:disable-next-line: component-selector
-    selector: 'react-ehr-view',
-    template: `<span #root></span>`
-})
-
-export class EhrViewWrapperComponent extends BaseReactWrapper { }
