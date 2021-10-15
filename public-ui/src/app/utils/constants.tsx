@@ -31,6 +31,17 @@ export const routeToDomain = {
     'procedures': 'procedure'
 };
 
+export let genomicTileMetadata = {
+    'name': 'Whole Genomic Sequence Data and Array Data',
+    'description': 'View aggregate counts of participants with any genomic data, Whole Genomic Sequence (WGS) data, \
+    or Array data in the All of Us dataset.',
+    'description2': 'Define a genomic region to search; results show aggregated allele counts, \
+                         allele frequency, and variant information in the All of Us dataset, based on WGS Data.',
+    'wgsParticipantCount': 0,
+    'microarrayParticipantCount': 0,
+    'domain': 'Genomics'
+};
+
 export const PM_CONCEPTS = ['903118', '903115', '903133', '903121', '903135', '903136', '903126', '903111', '903120'];
 
 export const fitbitConcepts = [{

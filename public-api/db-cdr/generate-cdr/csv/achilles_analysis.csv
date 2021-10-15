@@ -41,3 +41,6 @@
 3321,"Age at occurrence","survey_concept_id","question_concept_id","","","age_decile","question_path",NULL,"column","percentage"
 3400,"Survey Module Counts By Version","survey_concept_id","version_id","version_month",NULL,NULL,NULL,NULL,"",""
 3401,"Survey Question Counts By Version","survey_concept_id","version_id","version_month",NULL,NULL,NULL,NULL,"",""
+3501,"Biological Sex","","ppi_sex_at_birth_concept_id","domain_id","domain_type",NULL,NULL,NULL,"column","counts"
+3502,"Age at occurrence","","age_decile","domain_id","domain_type",NULL,NULL,NULL,"column","counts"
+3503,"Race/ Ethnicity","","race_eth","domain_id","domain_type",NULL,NULL,NULL,"column","counts"
