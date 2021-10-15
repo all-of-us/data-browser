@@ -419,7 +419,7 @@ export const dBHomeComponent = (
                     genomicTileMetadata.wgsParticipantCount = result.results.filter(r => r.stratum4 === 'wgs')[0].countValue;
                     genomicTileMetadata.microarrayParticipantCount = result.results.filter(r => r.stratum4 === 'micro-array')[0].countValue;
                 }
-                this.setState({genomicInfo: genomicTileMetadata}, () => {console.log(this.state.genomicInfo);});
+                this.setState({genomicInfo: genomicTileMetadata}, () => { console.log(this.state.genomicInfo); });
             }).catch(e => {
                console.log(e, 'error');
             });
