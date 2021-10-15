@@ -588,7 +588,7 @@ def generate_public_cdr_counts(cmd_name, *args)
       ->(opts, v) { opts.search_vat = v ? v : false},
       "Flag to generate search table from VAT. Optional."
     )
-    op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket }
+    op.add_validator ->(opts) { raise ArgumentError unless opts.bq_project and opts.bq_dataset and opts.project and opts.cdr_version and opts.bucket}
     gcc = GcloudContextV2.new(op)
     op.parse.validate
     gcc.validate()
@@ -604,7 +604,7 @@ end
 Common.register_command({
   :invocation => "generate-public-cdr-counts",
   :description => "generate-public-cdr-counts --bq-project <PROJECT> --bq-dataset <DATASET> --public-project <PROJECT> \
- --cdr-version=<''|YYYYMMDD> --bucket <BUCKET>
+ --cdr-version=<''|YYYYMMDD> --bucket <BUCKET> --search-vat <SEARCH_VAT>
 Generates databases in bigquery with non de-identified data from a cdr that will be imported to mysql/cloudsql to be used by databrowser.",
   :fn => ->(*args) { generate_public_cdr_counts("generate-public-cdr-counts", *args) }
 })
@@ -821,7 +821,7 @@ def circle_build_cdr_indices(cmd_name, args)
   content_type = "Content-Type: application/json"
   accept = "Accept: application/json"
   circle_token = "Circle-Token: "
-  payload = "{ \"branch\": \"#{op.opts.branch}\", \"parameters\": {\"db_build_cdr_indices\": true, \"cdr_source_project\": \"#{env.fetch(:source_cdr_project)}\", \"cdr_source_dataset\": \"#{op.opts.bq_dataset}\", \"cdr_sql_bucket\": \"#{env.fetch(:cdr_sql_bucket)}\", \"project\": \"#{op.opts.project}\", \"cdr_version_db_name\": \"#{op.opts.cdr_version}\", \"data_browser\": #{op.opts.data_browser}, \"search_vat\": \"#{op.opts.search_vat}\" }}"
+  payload = "{ \"branch\": \"#{op.opts.branch}\", \"parameters\": {\"db_build_cdr_indices\": true, \"cdr_source_project\": \"#{env.fetch(:source_cdr_project)}\", \"cdr_source_dataset\": \"#{op.opts.bq_dataset}\", \"cdr_sql_bucket\": \"#{env.fetch(:cdr_sql_bucket)}\", \"project\": \"#{op.opts.project}\", \"cdr_version_db_name\": \"#{op.opts.cdr_version}\", \"data_browser\": #{op.opts.data_browser}, \"search_vat\": #{op.opts.search_vat}}}"
   common.run_inline "curl -X POST https://circleci.com/api/v2/project/github/all-of-us/cdr-indices/pipeline -H '#{content_type}' -H '#{accept}' -H \"#{circle_token}\ $(cat ~/.circle-creds/key.txt)\" -d '#{payload}'"
 end
 

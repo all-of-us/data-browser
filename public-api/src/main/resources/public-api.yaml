@@ -57,6 +57,20 @@ paths:
           schema:
             $ref: "#/definitions/CdrVersionListResponse"
 
+  # Genomics ###########################################################################
+  /v1/genomics/participant-counts:
+    get:
+      tags:
+        - genomics
+      description: Gets the participant counts
+      operationId: "getParticipantCounts"
+      parameters: []
+      responses:
+        200:
+          description: A collection of results from achilles results view
+          schema:
+            $ref: "#/definitions/Analysis"
+
   # Data Browser #######################################################################
   /v1/config:
     get:

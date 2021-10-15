@@ -193,8 +193,6 @@ if [ "$SEARCH_VAT" = true ]; then
   FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
 fi
 
-exit 0
-
 # Populate some tables from cdr data
 ############
 # cb_criteria #

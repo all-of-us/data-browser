@@ -3,9 +3,10 @@ import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper
 import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { dataBrowserApi, genomicsApi } from 'app/services/swagger-fetch-clients';
 import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
+import { genomicTileMetadata } from 'app/utils/constants';
 import { globalStyles } from 'app/utils/global-styles';
 import { NavStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
@@ -68,6 +69,20 @@ const css = `
     /* min-width: calc(((100%/12)*3) - 14px); */
     width: calc(((100% / 12) * 3) - 18px);
     margin-right: 18px;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.genomic-result-box {
+    /* height:auto; */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* min-width: calc(((100%/12)*3) - 14px); */
+    width: calc(((100% / 11) * 8) - 18px);
     margin-bottom: 18px;
     border-radius: 5px;
     background-color: #ffffff;
@@ -154,6 +169,27 @@ const styles = reactStyles({
         flexDirection: 'column',
         height: '60%'
     },
+    genDesc: {
+        marginBottom: '1em',
+    },
+    genomicTile: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    genomicParticipantMetadata : {
+        display: 'flex',
+        flexDirection: 'column',
+        color: '#302c71',
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontSize: '14px',
+        padding: '18px',
+        paddingTop: '0px',
+        height: '60%',
+        width: '70%'
+    },
+    participantText: {
+        display: 'block'
+    },
     resultBoxLink: {
         padding: '18px',
         paddingTop: '36px'
@@ -205,11 +241,15 @@ const styles = reactStyles({
 interface ResultLinkProps {
     name: string;
     description: string;
+    description2: string;
     questionCount: number;
     standardConceptCount: number;
     domain: string;
     participantCount: number;
     searchWord: string;
+    domainType: string;
+    wgsParticipantCount: number;
+    microarrayParticipantCount: number;
 }
 
 export const ResultLinksComponent = (class extends React.Component<ResultLinkProps> {
@@ -266,23 +306,50 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         }
     }
     render() {
-        const { name, description, questionCount, standardConceptCount, domain, participantCount } = this.props;
+        const { name, description, description2, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
+         wgsParticipantCount, microarrayParticipantCount} = this.props;
+        const classStyleName = (domain === 'Genomics') ? 'genomic-result-box' : 'result-box';
         return <div
             onClick={() => this.resultClick(this.props)}
-            className='result-box'>
+            className={classStyleName}>
             <div style={styles.resultBoxTitle}>{name}
                 <TooltipReactComponent
                     label='Homepage Tooltip Hover'
                     action={'Hover on ' + name + 'tile tooltip'}
                     tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()}
                     searchTerm='' /></div>
+            {(domain === 'Genomics') ?
+            <div style={styles.genomicTile}>
+            <div style={styles.resultBody}>
+            <div style={styles.genDesc}>{description}</div>
+            {description2 && <div style={styles.genDesc}>{description2}</div>}
+            </div>
+            <div style={styles.genomicParticipantMetadata}>
+                <div><strong>{wgsParticipantCount.toLocaleString()}</strong>
+                <span style={styles.participantText}>participants in the WGS dataset </span></div>
+                <div><strong>{microarrayParticipantCount.toLocaleString()}</strong>
+                <span style={styles.participantText}>participants in the Array dataset </span></div>
+            </div>
+            </div>
+            :
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
                     <div style={styles.resultStat}>
                         {standardConceptCount}{questionCount}
                     </div>
-                    <span>matching medical concepts</span>
-                    <span>medical concepts</span>
+                    {searchWord ?
+                                            (
+                                            domainType === 'ehr' ? <span>matching medical concepts</span> :
+                                            (domainType === 'survey' ? <span>matching survey questions</span> :
+                                            (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
+                                            <span>matching Fitbit Measurements</span>))
+                                          )
+                                        : (
+                                            domainType === 'ehr' ? <span>medical concepts</span> :
+                                            (domainType === 'survey' ? <span>questions available</span> :
+                                            (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> :
+                                            <span>Fitbit Measurements</span>))
+                                          )}
                 </span>
                 {
                     (questionCount &&
@@ -291,12 +358,15 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                         </div>)
                 }
                 <span style={styles.resultBodyItem} >
+                {participantCount &&
                     <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
+                }
                 </span>
             </div>
+            }
             <div style={styles.resultBoxLink}>
                 {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
-                    <a className='result-bottom-link'>View {name}</a>)}
+                    (domain === 'Genomics' ? <a className='result-bottom-link'>View Genomic data types</a> : <a className='result-bottom-link'>View {name}</a>))}
             </div>
         </div>;
     }
@@ -305,6 +375,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
 interface State {
     surveyInfo: any[];
     domainInfo: any[];
+    genomicInfo: any;
     physicalMeasurementsInfo: any[];
     searchWord: string;
     popUp: boolean;
@@ -318,6 +389,7 @@ export const dBHomeComponent = (
             this.state = {
                 surveyInfo: [],
                 domainInfo: [],
+                genomicInfo: null,
                 physicalMeasurementsInfo: [],
                 searchWord: localStorage.getItem('searchText') ? localStorage.getItem('searchText') : '',
                 popUp: false,
@@ -338,6 +410,19 @@ export const dBHomeComponent = (
         // life cycle hook
         componentDidMount() {
             this.getDomainInfos();
+            this.getGenomicParticipantCounts();
+        }
+
+        getGenomicParticipantCounts() {
+            return genomicsApi().getParticipantCounts().then(result => {
+                if (result.results) {
+                    genomicTileMetadata.wgsParticipantCount = result.results.filter(r => r.stratum4 === 'wgs')[0].countValue;
+                    genomicTileMetadata.microarrayParticipantCount = result.results.filter(r => r.stratum4 === 'micro-array')[0].countValue;
+                }
+                this.setState({genomicInfo: genomicTileMetadata});
+            }).catch(e => {
+               console.log(e, 'error');
+            });
         }
 
         getDomainInfos() {
@@ -371,7 +456,7 @@ export const dBHomeComponent = (
         }
 
         render() {
-            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading } = this.state;
+            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo } = this.state;
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
@@ -433,18 +518,26 @@ export const dBHomeComponent = (
                         {
                             domainInfo.map((domain, index) => {
                                 const key = 'domain' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} domainType='ehr' />;
 
                             })
 
                         }
                     </div>
+                    { (environment.geno) &&
+                    <React.Fragment>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics </h5>
+                        <div>
+                            <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} />
+                        </div>
+                    </React.Fragment>
+                    }
                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
                     <div style={styles.resultBoxes}>
                         {
                             surveyInfo.map((survey, index) => {
                                 const key = 'survey' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} domainType='survey' />;
                             })
 
                         }
@@ -455,7 +548,7 @@ export const dBHomeComponent = (
                         {
                             physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                 const key = 'phyMeasurements' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} />;
+                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw' />;
                             })
                         }
                     </div>
