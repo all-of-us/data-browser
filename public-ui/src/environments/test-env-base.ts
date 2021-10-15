@@ -9,5 +9,6 @@ export const testEnvironmentBase = {
   reactChart: true,
   reactSurvey: true,
   ehrReact: true,
-  testReact: true
+  testReact: true,
+  geno: false
 };
