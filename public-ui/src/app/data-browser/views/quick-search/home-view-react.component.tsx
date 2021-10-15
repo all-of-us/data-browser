@@ -419,7 +419,7 @@ export const dBHomeComponent = (
                     genomicTileMetadata.wgsParticipantCount = result.results.filter(r => r.stratum4 === 'wgs')[0].countValue;
                     genomicTileMetadata.microarrayParticipantCount = result.results.filter(r => r.stratum4 === 'micro-array')[0].countValue;
                 }
-                this.setState({genomicInfo: genomicTileMetadata}, () => { console.log(this.state.genomicInfo); });
+                this.setState({genomicInfo: genomicTileMetadata});
             }).catch(e => {
                console.log(e, 'error');
             });
@@ -524,10 +524,14 @@ export const dBHomeComponent = (
 
                         }
                     </div>
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics </h5>
-                    <div>
-                        <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} />
-                    </div>
+                    { (environment.geno) &&
+                    <React.Fragment>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics </h5>
+                        <div>
+                            <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} />
+                        </div>
+                    </React.Fragment>
+                    }
                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
                     <div style={styles.resultBoxes}>
                         {
