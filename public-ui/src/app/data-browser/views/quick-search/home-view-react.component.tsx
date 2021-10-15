@@ -308,7 +308,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
     render() {
         const { name, description, description2, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
          wgsParticipantCount, microarrayParticipantCount} = this.props;
-        let classStyleName = (domain === 'Genomics') ? 'genomic-result-box' : 'result-box';
+        const classStyleName = (domain === 'Genomics') ? 'genomic-result-box' : 'result-box';
         return <div
             onClick={() => this.resultClick(this.props)}
             className={classStyleName}>
@@ -325,8 +325,10 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             {description2 && <div style={styles.genDesc}>{description2}</div>}
             </div>
             <div style={styles.genomicParticipantMetadata}>
-                <div><strong>{wgsParticipantCount.toLocaleString()}</strong> <span style={styles.participantText}>participants in the WGS dataset </span></div>
-                <div><strong>{microarrayParticipantCount.toLocaleString()}</strong> <span style={styles.participantText}>participants in the Array dataset </span></div>
+                <div><strong>{wgsParticipantCount.toLocaleString()}</strong>
+                <span style={styles.participantText}>participants in the WGS dataset </span></div>
+                <div><strong>{microarrayParticipantCount.toLocaleString()}</strong>
+                <span style={styles.participantText}>participants in the Array dataset </span></div>
             </div>
             </div>
             :
@@ -417,7 +419,7 @@ export const dBHomeComponent = (
                     genomicTileMetadata.wgsParticipantCount = result.results.filter(r => r.stratum4 === 'wgs')[0].countValue;
                     genomicTileMetadata.microarrayParticipantCount = result.results.filter(r => r.stratum4 === 'micro-array')[0].countValue;
                 }
-                this.setState({genomicInfo: genomicTileMetadata}, () => {console.log(this.state.genomicInfo)});
+                this.setState({genomicInfo: genomicTileMetadata}, () => {console.log(this.state.genomicInfo);});
             }).catch(e => {
                console.log(e, 'error');
             });
@@ -455,7 +457,6 @@ export const dBHomeComponent = (
 
         render() {
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo } = this.state;
-            console.log(genomicInfo);
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
