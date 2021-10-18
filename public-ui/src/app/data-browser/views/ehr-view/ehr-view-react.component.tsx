@@ -271,7 +271,6 @@ export const EhrViewReactComponent = withRouteData(
             this.changeResults = this.changeResults.bind(this);
             // TODO add url params and change them based on search value
             const { search } = urlParamsStore.getValue();
-            
             this.state = {
                 domainId: urlParamsStore.getValue().id,
                 domain: null,

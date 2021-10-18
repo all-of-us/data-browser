@@ -23,16 +23,6 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         })}
     />
     <AppRoute
-      path='/:id'
-      component={() => dBHomeComponent(
-        {
-          routeData: {
-            title: 'Data Browser',
-            breadcrumb: { value: '' }
-          }
-        })}
-    />
-    <AppRoute
       path='/introductory-videos'
       component={() => IntroVidReactComponent(
         {
@@ -103,7 +93,7 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         })}
     />
     <AppRoute
-      path='/physical-measurements'
+      path='/physical-measurements/'
       component={() => PMReactComponent(
         {
           routeData: {
