@@ -15,6 +15,6 @@ export const GenomicViewReactComponent = withRouteData(class extends React.Compo
                 <div className='gene-container'>
                     <h1>Genomic Data</h1>
                 </div>
-               </React.Fragment>
+               </React.Fragment>;
        }
 });
