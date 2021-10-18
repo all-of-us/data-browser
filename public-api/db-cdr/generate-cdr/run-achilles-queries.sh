@@ -495,6 +495,18 @@ SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) 
 echo "Getting genomic tile counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_3, count_value, source_count_value)
+select 0 as id, 3000 as analysis_id, 'Genomics' as stratum_3, count(person) as count_value, 0 as source_count_value from
+(select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+union distinct
+select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id);"
+
+echo "Getting genomic tile counts"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'micro-array' as stratum_4,
 count(distinct p.person_id) as count_value, 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
