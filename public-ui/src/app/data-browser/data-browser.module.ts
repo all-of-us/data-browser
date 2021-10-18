@@ -9,10 +9,8 @@ import { SourcesWrapperComponent } from 'app/data-browser/charts/chart-sources/c
 import { TopResultsChartWrapperComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
 import { ConceptChartWrapperComponent } from 'app/data-browser/views/concept-chart/concept-chart-react.component';
 import { ConceptRowWrapperComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
-import { EhrViewWrapperComponent } from 'app/data-browser/views/ehr-view/ehr-view-react.component';
 import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
 import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
-import { SurveyViewWrapperComponent } from 'app/data-browser/views/survey-view/survey-react-view.component';
 import { BreadCrumbWrapperComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
 import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
@@ -50,7 +48,6 @@ import { ErrorMessageComponent } from './views/error-message/error-message.compo
 import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
 import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
 import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
-import { DbHomeWrapperComponent } from './views/quick-search/home-view-react.component';
 import { QuickSearchComponent } from './views/quick-search/quick-search.component';
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyAnswerWrapperComponent } from './views/survey-view/components/survey-answer-react.component';
@@ -88,12 +85,9 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartAgeComponent,
     ChartSurveyAnswersComponent,
     IntroVidsComponent,
-    DbHomeWrapperComponent,
-    EhrViewWrapperComponent,
     PopUpWrapperComponent,
     SourcesWrapperComponent,
     TopResultsChartWrapperComponent,
-    SurveyViewWrapperComponent,
     TooltipWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
@@ -129,13 +123,10 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     ChartBaseComponent,
     HighchartsChartModule,
     IntroVidsComponent,
-    DbHomeWrapperComponent,
-    EhrViewWrapperComponent,
     PopUpWrapperComponent,
     SourcesWrapperComponent,
     SourceTreeWrapperComponent,
     TopResultsChartWrapperComponent,
-    SurveyViewWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
     TooltipWrapperComponent,
