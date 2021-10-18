@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { reactStyles } from 'app/utils';
+import * as React from 'react';
 import { VariantExpandedComponent } from './variant-expanded.component';
 
 
@@ -8,13 +8,13 @@ const styles = reactStyles({
         border: '1px solid',
         margin: '1rem'
     }
-})
+});
 
-
+// tslint:disable-next-line:no-empty-interface
 interface Props {
 
 }
-
+// tslint:disable-next-line:no-empty-interface
 interface State {
 
 }
@@ -23,7 +23,7 @@ interface State {
 
 export class VariantRowComponent extends React.Component<Props, State> {
     constructor(props: Props) {
-        super(props)
+        super(props);
     }
 
     render() {
@@ -32,6 +32,6 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 <p>I am Variant Row</p>
                 <VariantExpandedComponent />
             </div>
-        </React.Fragment>
+        </React.Fragment>;
     }
-};
+}

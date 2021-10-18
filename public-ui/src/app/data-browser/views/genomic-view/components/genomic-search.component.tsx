@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { reactStyles } from 'app/utils';
+import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
 
@@ -8,13 +8,13 @@ const styles = reactStyles({
         border: '1px solid',
         margin: '1rem'
     }
-})
+});
 
-
+// tslint:disable-next-line:no-empty-interface
 interface Props {
 
 }
-
+// tslint:disable-next-line:no-empty-interface
 interface State {
 
 }
@@ -23,7 +23,7 @@ interface State {
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
-        super(props)
+        super(props);
     }
 
     render() {
@@ -33,6 +33,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                 <VariantSearchComponent />
                 <VariantTableComponent />
             </div>
-        </React.Fragment>
+        </React.Fragment>;
     }
-};
+}

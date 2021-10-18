@@ -7,8 +7,8 @@ import { IntroVidReactComponent } from 'app/data-browser/views/intro-vids/intro-
 import { PMReactComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { dBHomeComponent } from 'app/data-browser/views/quick-search/home-view-react.component';
 import * as React from 'react';
-import { SurveyViewReactComponent } from './data-browser/views/survey-view/survey-react-view.component';
 import { GenomicViewComponent } from './data-browser/views/genomic-view/genomic-view.component';
+import { SurveyViewReactComponent } from './data-browser/views/survey-view/survey-react-view.component';
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
 
