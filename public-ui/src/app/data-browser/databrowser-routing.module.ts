@@ -132,6 +132,16 @@ const routes: Routes = [
               value: 'Introductory Videos'
             }
           }
+        },
+        {
+          path: 'genomics',
+          component: AppRouting,
+          data: {
+            title: 'Genomic Data',
+            breadcrumb: {
+              value: 'Genomic Data'
+            }
+          }
         }]
       }
     ]
