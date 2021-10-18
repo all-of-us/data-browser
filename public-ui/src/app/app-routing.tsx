@@ -8,6 +8,7 @@ import { PMReactComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { dBHomeComponent } from 'app/data-browser/views/quick-search/home-view-react.component';
 import * as React from 'react';
 import { SurveyViewReactComponent } from './data-browser/views/survey-view/survey-react-view.component';
+import { GenomicViewComponent } from './data-browser/views/genomic-view/genomic-view.component';
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
 
@@ -112,7 +113,18 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
           }
         })}
     />
-  </AppRouter>;
+    <AppRoute
+      path='/genomics'
+      component={() => GenomicViewComponent(
+        {
+          routeData: {
+            title: 'Genomic Data',
+            breadcrumb: { value: ':id Domain' }
+          }
+        })}
+    />
+  </AppRouter>
+    ;
 
 };
 
