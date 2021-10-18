@@ -71,6 +71,43 @@ paths:
           schema:
             $ref: "#/definitions/Analysis"
 
+  /v1/genomics/search-variants:
+    get:
+      tags:
+        - genomics
+      description: Gets the list of matched variants
+      operationId: "searchVariants"
+      parameters:
+        - in: query
+          name: variant-search-term
+          type: string
+          required: true
+          description: variant search term
+      responses:
+        200:
+          description: A collection of variants from the wgs_variant table
+          schema:
+            $ref: "#/definitions/VariantListResponse"
+
+  /v1/genomics/variant-search-result-size:
+    get:
+      tags:
+        - genomics
+      description: Gets the size of variant result list
+      operationId: "getVariantSearchResultSize"
+      parameters:
+        - in: query
+          name: variant-search-term
+          type: string
+          required: true
+          description: variant search term
+      responses:
+        200:
+          description: Variant result list size
+          schema:
+            type: integer
+            format: int64
+
   # Data Browser #######################################################################
   /v1/config:
     get:
@@ -1286,3 +1323,21 @@ definitions:
       PARSE_ERROR
     ]
 
+  Variant:
+    type: object
+    required:
+      - variantId
+    properties:
+      variantId:
+        description: id variant
+        type: string
+
+  VariantListResponse:
+    type: object
+    required:
+      - items
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/Variant"
