@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
-import {NavStore} from 'app/utils/navigation';
+import { NavStore } from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
-import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
-import { QuickSearchComponent } from './views/quick-search/quick-search.component';
-import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 
-import {AppRouting} from 'app/app-routing';
+
+
+import { AppRouting } from 'app/app-routing';
 
 const routes: Routes = [
   {
@@ -41,12 +40,12 @@ const routes: Routes = [
         },
         children: [{
           path: '',
-          component: QuickSearchComponent,
+          component: AppRouting,
           data: {}
         },
         {
           path: 'survey/:id',
-          component: SurveyViewComponent,
+          component: AppRouting,
           data: {
             title: 'View Survey Questions and Answers',
             breadcrumb: {
@@ -56,7 +55,7 @@ const routes: Routes = [
         },
         {
           path: 'survey/:id/:search',
-          component: SurveyViewComponent,
+          component: AppRouting,
           data: {
             title: 'View Survey Questions and Answers',
             breadcrumb: {
@@ -66,7 +65,7 @@ const routes: Routes = [
         },
         {
           path: 'ehr/:id',
-          component: EhrViewComponent,
+          component: AppRouting,
           data: {
             title: 'View Full Results',
             breadcrumb: {
@@ -76,7 +75,7 @@ const routes: Routes = [
         },
         {
           path: 'ehr/:id/:search',
-          component: EhrViewComponent,
+          component: AppRouting,
           data: {
             title: 'View Full Results',
             breadcrumb: {
@@ -100,7 +99,7 @@ const routes: Routes = [
           data: {
             title: 'Physical Measurements',
             breadcrumb: {
-                value: 'Physical Measurements'
+              value: 'Physical Measurements'
             }
           }
         },
@@ -110,7 +109,7 @@ const routes: Routes = [
           data: {
             title: 'Physical Measurements',
             breadcrumb: {
-                value: 'Physical Measurements'
+              value: 'Physical Measurements'
             }
           }
         },
@@ -120,7 +119,7 @@ const routes: Routes = [
           data: {
             title: 'Fitbit Data',
             breadcrumb: {
-                value: 'Fitbit Data'
+              value: 'Fitbit Data'
             }
           }
         },
@@ -130,17 +129,17 @@ const routes: Routes = [
           data: {
             title: 'Fitbit Data',
             breadcrumb: {
-                value: 'Fitbit Data'
+              value: 'Fitbit Data'
             }
           }
         },
         {
           path: 'introductory-videos',
-          component:  AppRouting,
+          component: AppRouting,
           data: {
             title: 'Introductory Videos',
             breadcrumb: {
-                value: 'Introductory Videos'
+              value: 'Introductory Videos'
             }
           }
         }]
@@ -160,8 +159,10 @@ const routes: Routes = [
 export class DataBrowserRoutingModule {
 
   constructor(public router: Router) {
+
+
     NavStore.navigate = (commands, extras) => this.router.navigate(commands, extras);
     NavStore.navigateByUrl = (url, extras) => this.router.navigateByUrl(url, extras);
-    this.router.events.subscribe(event => {});
+    this.router.events.subscribe(event => { });
   }
 }

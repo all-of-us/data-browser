@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
+import { withRouteData } from 'app/components/app-router';
 import { CdrVersionReactComponent } from 'app/data-browser/cdr-version/cdr-version-info';
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
@@ -291,7 +290,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     NavStore.navigateByUrl(url);
                     break;
                 default:
-                    url = 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
+                    url = this.props.searchWord ? 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() + '/' + this.props.searchWord : 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() ;
                     NavStore.navigateByUrl(url);
                     break;
             }
@@ -382,7 +381,7 @@ interface State {
     loading: boolean;
 }
 
-export const dBHomeComponent = (
+export const dBHomeComponent = withRouteData(
     class extends React.Component<{}, State> {
         constructor(props: State) {
             super(props);
@@ -560,15 +559,3 @@ export const dBHomeComponent = (
     }
 );
 
-@Component({
-    // tslint:disable-next-line: component-selector
-    selector: 'react-db-home',
-    template: `<span #root></span>`
-})
-
-export class DbHomeWrapperComponent extends BaseReactWrapper {
-
-    constructor() {
-        super(dBHomeComponent, []);
-    }
-}
