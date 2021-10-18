@@ -3,6 +3,24 @@ import { reactStyles } from 'app/utils';
 import * as React from 'react';
 
 const styles = reactStyles({
+    genoLayout: {
+        display: 'grid',
+        gridTemplateColumns: '20% 80%',
+        columnGap: '0.5rem'
+    },
+    genoMenuItem: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0.5rem',
+        fontSize: '0.8em',
+        /* border-bottom: 1px solid #262262 ; */
+        cursor: 'pointer'
+    },
+    genoMenuItemContainer: {
+        padding: '0.25rem 0rem',
+        borderBottom: '1px solid #262262',
+        cursor: 'pointer'
+    },
 });
 
 const styleCss = `
@@ -21,6 +39,12 @@ export const GenomicViewReactComponent = withRouteData(class extends React.Compo
                     preliminary exploration of genetic variant allele frequencies by with select annotations and genetic
                     ancestry associations.
                      </div>
+                    <div className='geno-layout' style={styles.genoLayout}>
+                        <div className='geno-menu' style={styles.genoMenuItem}>
+                            <div className='geno-menu-item-container' style={styles.genoMenuItemContainer}>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                </React.Fragment>;
        }
