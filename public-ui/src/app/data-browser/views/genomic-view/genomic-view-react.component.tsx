@@ -21,6 +21,16 @@ const styles = reactStyles({
         borderBottom: '1px solid #262262',
         cursor: 'pointer'
     },
+    genoMenuItemDisplay: {
+        color: '#0079b8',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
+    },
+    displayName: {
+        fontSize: '1.5em'
+    }
 });
 
 const styleCss = `
@@ -28,6 +38,7 @@ const styleCss = `
 
 export const GenomicViewReactComponent = withRouteData(class extends React.Component<{}, {}> {
        render() {
+        const tabIndex = 0;
         return <React.Fragment>
                 <style>{styleCss}</style>
                 <div className='gene-container'>
@@ -42,6 +53,11 @@ export const GenomicViewReactComponent = withRouteData(class extends React.Compo
                     <div className='geno-layout' style={styles.genoLayout}>
                         <div className='geno-menu' style={styles.genoMenuItem}>
                             <div className='geno-menu-item-container' style={styles.genoMenuItemContainer}>
+                                <div tabIndex={tabIndex} style={styles.genoMenuItem}>
+                                    <div className='geno-menu-item-display' style={styles.genoMenuItemDisplay}>
+                                    <span style={styles.displayName}>Participants with Genomic Data</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

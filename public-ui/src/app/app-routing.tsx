@@ -6,7 +6,6 @@ import { FitbitReactComponent } from 'app/data-browser/views/fitbit-view/fitbit-
 import { IntroVidReactComponent } from 'app/data-browser/views/intro-vids/intro-vids-react.component';
 import { PMReactComponent } from 'app/data-browser/views/pm/pm-react.component';
 import { dBHomeComponent } from 'app/data-browser/views/quick-search/home-view-react.component';
-import {BaseReactWrapper} from 'app/data-browser/base-react/base-react.wrapper';
 import {FitbitReactComponent} from 'app/data-browser/views/fitbit-view/fitbit-view-react.component';
 import {GenomicViewReactComponent} from 'app/data-browser/views/genomic-view/genomic-view-react.component';
 import {IntroVidReactComponent} from 'app/data-browser/views/intro-vids/intro-vids-react.component';
