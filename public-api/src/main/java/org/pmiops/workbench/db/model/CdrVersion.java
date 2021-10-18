@@ -20,6 +20,8 @@ public class CdrVersion {
   private Timestamp creationTime;
   private int numParticipants;
   private String publicDbName;
+  private String bigqueryProject;
+  private String bigqueryDataset;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,10 +75,28 @@ public class CdrVersion {
 
   public void setPublicDbName(String publicDbName) { this.publicDbName = publicDbName; }
 
+  @Column(name = "bigquery_project")
+  public String getBigqueryProject() {
+    return bigqueryProject;
+  }
+
+  public void setBigqueryProject(String bigqueryProject) {
+    this.bigqueryProject = bigqueryProject;
+  }
+
+  @Column(name = "bigquery_dataset")
+  public String getBigqueryDataset() {
+    return bigqueryDataset;
+  }
+
+  public void setBigqueryDataset(String bigqueryDataset) {
+    this.bigqueryDataset = bigqueryDataset;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(cdrVersionId, isDefault, name,
-          creationTime, numParticipants, publicDbName);
+            creationTime, numParticipants, publicDbName);
   }
 
   @Override
@@ -86,11 +106,11 @@ public class CdrVersion {
     }
     CdrVersion that = (CdrVersion) obj;
     return new EqualsBuilder().append(this.cdrVersionId, that.cdrVersionId)
-        .append(this.isDefault, that.isDefault)
-        .append(this.name, that.name)
-        .append(this.creationTime, that.creationTime)
-        .append(this.numParticipants, that.numParticipants)
-        .append(this.publicDbName, that.publicDbName)
-        .build();
+            .append(this.isDefault, that.isDefault)
+            .append(this.name, that.name)
+            .append(this.creationTime, that.creationTime)
+            .append(this.numParticipants, that.numParticipants)
+            .append(this.publicDbName, that.publicDbName)
+            .build();
   }
 }

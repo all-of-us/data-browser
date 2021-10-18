@@ -218,7 +218,6 @@ public class ConceptService {
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 };
         // Return up to limit results, sorted in descending count value order.
-
         Pageable pageable = new PageRequest(page, limit,
                 new Sort(Direction.DESC, "countValue"));
         NoCountFindAllDao<DbConcept, Long> conceptDao = new NoCountFindAllDao<>(DbConcept.class,
