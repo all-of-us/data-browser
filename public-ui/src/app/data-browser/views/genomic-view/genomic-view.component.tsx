@@ -42,7 +42,7 @@ const styles = reactStyles({
 });
 // tslint:disable-next-line:no-empty-interface
 interface State {
-    selection: string
+    selectionId: number
 }
 
 
@@ -51,18 +51,31 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     constructor(props: {}) {
         super(props);
         this.state = {
-            selection: 'GD'
+            selectionId: 1
         }
     }
-    selection: string;
+    sideBarItems = [
+        {
+            id: 1,
+            label: 'Participants with Genomic Data'
+        },
+        {
+            id: 2,
+            label: 'Search Variants'
+        },
+        {
+            id: 3,
+            label: 'Genomics FAQ'
+        },
+    ]
 
-    sideBarClick(selected: string) {
+    sideBarClick(selected: number) {
         this.setState({
-            selection: selected
+            selectionId: selected
         })
     }
     render() {
-        const { selection } = this.state;
+        const { selectionId } = this.state;
         return <React.Fragment>
             <h1 style={styles.title}>Genomic Data</h1>
             <p style={globalStyles.bodyDefault}>This section provides an overview of genomic data within the current
@@ -72,24 +85,20 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 annotations and genetic ancestry associations.</p>
             <div style={styles.viewLayout}>
                 <div style={styles.sideBarLayout}>
-                    <div onClick={() => this.sideBarClick('GD')}
-                        style={{ ...selection == 'GD' && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
-                        <span style={styles.sideBarItemText}>
-                            Participants with Genomic Data
-                        </span>
-                    </div>
-                    <div onClick={() => this.sideBarClick('GS')}
-                        style={{ ...selection == 'GS' && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
-                        <span style={styles.sideBarItemText}>Search Variants</span>
-                    </div>
-                    <div onClick={() => this.sideBarClick('FAQ')}
-                        style={{ ...selection == 'FAQ' && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
-                        <span style={styles.sideBarItemText}>Genomic FAQs</span>
-                    </div>
+                    {this.sideBarItems.map((item,index) => {
+                        return <div key={index} onClick={() => this.sideBarClick(item.id)}
+                            style={{ ...selectionId == item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
+                            <span style={styles.sideBarItemText}>
+                                {item.label}
+                            </span>
+                        </div>
+                    })
+                    }
+
                 </div>
                 <div>
-                    {selection == 'GD' && <GenomicOverviewComponent />}
-                    {selection == 'GS' && <GenomicSearchComponent />}
+                    {selectionId == 1 && <GenomicOverviewComponent />}
+                    {selectionId == 2 && <GenomicSearchComponent />}
                 </div>
             </div>
 
