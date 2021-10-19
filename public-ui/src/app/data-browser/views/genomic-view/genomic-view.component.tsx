@@ -1,9 +1,10 @@
-import { withRouteData } from 'app/components/app-router';
-import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
+import {withRouteData} from 'app/components/app-router';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
-import * as React from 'react';
+import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
+import * as React from 'react';
+
 const styles = reactStyles({
     title: {
         margin: '0'
