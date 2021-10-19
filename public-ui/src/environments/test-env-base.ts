@@ -10,5 +10,5 @@ export const testEnvironmentBase = {
   reactSurvey: true,
   ehrReact: true,
   testReact: true,
-  geno: false
+  geno: true
 };

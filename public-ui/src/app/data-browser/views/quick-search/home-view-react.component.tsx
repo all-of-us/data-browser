@@ -301,6 +301,9 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             } else if (info.name === 'Fitbit') {
                 const url = this.props.searchWord ? 'fitbit/' + this.props.searchWord : 'fitbit';
                 NavStore.navigateByUrl(url);
+                } else if (info.name === 'Whole Genomic Sequence Data and Array Data') {
+                const url = this.props.searchWord ? 'genomics/' + this.props.searchWord : 'genomics';
+                NavStore.navigateByUrl(url);
             }
         }
     }

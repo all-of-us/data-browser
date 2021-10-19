@@ -108,6 +108,20 @@ paths:
             type: integer
             format: int64
 
+  /v1/genomics/chart-demo-data:
+    get:
+      tags:
+        - genomics
+      description: Gets the demographic participant counts
+      operationId: "getChartData"
+      parameters: []
+      responses:
+        200:
+          description: A collection of results from achilles results view
+          schema:
+            $ref: "#/definitions/AnalysisListResponse"
+
+
   # Data Browser #######################################################################
   /v1/config:
     get:
@@ -1148,6 +1162,9 @@ definitions:
       - MEASUREMENT_GENDER_UNIT_ANALYSIS_ID
       - RACE_ANALYSIS
       - ETHNICITY_ANALYSIS
+      - GENO_GENDER_ANALYSIS
+      - GENO_AGE_ANALYSIS
+      - GENO_RACE_ANALYSIS
 
   SearchConceptsRequest:
     type: object
