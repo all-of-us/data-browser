@@ -302,7 +302,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                 const url = this.props.searchWord ? 'fitbit/' + this.props.searchWord : 'fitbit';
                 NavStore.navigateByUrl(url);
                 } else if (info.name === 'Whole Genomic Sequence Data and Array Data') {
-                const url = this.props.searchWord ? 'genomics/' + this.props.searchWord : 'genomics';
+                const url = this.props.searchWord ? 'genomic-data/' + this.props.searchWord : 'genomic-data';
                 NavStore.navigateByUrl(url);
             }
         }
