@@ -1,9 +1,9 @@
-import {withRouteData} from 'app/components/app-router';
+import { withRouteData } from 'app/components/app-router';
+import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
-import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
-import { GenomicSearchComponent } from './components/genomic-search.component';
 import * as React from 'react';
+import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
     title: {
