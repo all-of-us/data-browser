@@ -162,6 +162,7 @@ export const FitbitReactComponent = withRouteData(class extends React.Component<
   }
 
   getCountData() {
+    console.log('testing new eoute change trigger');
     dataBrowserApi().getCountAnalysis('Fitbit', 'fitbit').then(
         (result) => {
             this.setState({domainCountAnalysis: result});

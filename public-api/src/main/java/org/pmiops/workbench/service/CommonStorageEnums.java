@@ -61,6 +61,9 @@ public class CommonStorageEnums {
                   .put(AnalysisIdConstant.RACE_ANALYSIS, 4L)
                   .put(AnalysisIdConstant.ETHNICITY_ANALYSIS, 5L)
                   .put(AnalysisIdConstant.GENDER_ANALYSIS, 2L)
+                  .put(AnalysisIdConstant.GENO_GENDER_ANALYSIS, 3501L)
+                  .put(AnalysisIdConstant.GENO_AGE_ANALYSIS, 3502L)
+                  .put(AnalysisIdConstant.GENO_RACE_ANALYSIS, 3503L)
                   .build();
 
   public static Domain domainFromStorage(Short domain) {
