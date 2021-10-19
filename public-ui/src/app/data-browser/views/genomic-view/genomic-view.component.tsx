@@ -1,10 +1,9 @@
 import { withRouteData } from 'app/components/app-router';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
+import { globalStyles } from 'app/utils/global-styles';
 import * as React from 'react';
 import { GenomicSearchComponent } from './components/genomic-search.component';
-import { globalStyles } from 'app/utils/global-styles';
-import { style } from '@angular/animations';
 const styles = reactStyles({
     title: {
         margin: '0'
@@ -26,7 +25,7 @@ const styles = reactStyles({
     sideBarItemConainer: {
         paddingBottom: '.25rem',
         borderBottom: '1px solid rgba(38, 34, 98, .25)',
-        width:'100%'
+        width: '100%'
 
     },
     sideBarItem: {
@@ -45,14 +44,14 @@ const styles = reactStyles({
         background: 'red',
         borderRadius: '3px',
         fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
-        fontWeight:'bolder',
-        backgroundColor:'rgba(33,111,180,0.15)'
+        fontWeight: 'bolder',
+        backgroundColor: 'rgba(33,111,180,0.15)'
     }
 
 });
-// tslint:disable-next-line:no-empty-interface
+
 interface State {
-    selectionId: number
+    selectionId: number;
 }
 
 
@@ -62,7 +61,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         super(props);
         this.state = {
             selectionId: 1
-        }
+        };
     }
 
     sideBarItems = [
@@ -78,13 +77,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             id: 3,
             label: 'Genomics FAQ'
         },
-    ]
-    title = 'Genomic Data'
+    ];
+    title = 'Genomic Data';
 
     sideBarClick(selected: number) {
         this.setState({
             selectionId: selected
-        })
+        });
     }
     render() {
         const { selectionId } = this.state;
@@ -102,19 +101,19 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                     {this.sideBarItems.map((item, index) => {
                         return <div style={styles.sideBarItemConainer}>
                             <div key={index} onClick={() => this.sideBarClick(item.id)}
-                                style={{ ...selectionId == item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
+                                style={{ ...selectionId === item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
                                 <span style={styles.sideBarItemText}>
                                     {item.label}
                                 </span>
                             </div>
-                        </div>
+                        </div>;
                     })
                     }
 
                 </div>
                 <div>
-                    {selectionId == 1 && <GenomicOverviewComponent />}
-                    {selectionId == 2 && <GenomicSearchComponent />}
+                    {selectionId === 1 && <GenomicOverviewComponent />}
+                    {selectionId === 2 && <GenomicSearchComponent />}
                 </div>
             </div>
 
