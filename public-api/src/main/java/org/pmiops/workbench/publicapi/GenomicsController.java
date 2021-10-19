@@ -54,8 +54,8 @@ public class GenomicsController implements GenomicsApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         String COUNT_SQL_TEMPLATE = "";
-        String genomicRegionRegex = "(chr([0-9]{1,})*[XY]*:).*";
-        String variantIdRegex = "\\d{1,}-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
+        String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XY]*:).*";
+        String variantIdRegex = "(?i)\\d{1,}-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
 
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(variantSearchTerm)) {
