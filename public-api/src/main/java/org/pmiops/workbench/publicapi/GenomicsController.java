@@ -55,7 +55,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         String COUNT_SQL_TEMPLATE = "";
         String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XY]*:).*";
-        String variantIdRegex = "(?i)\\d{1,}-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
+        String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
 
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(variantSearchTerm)) {
