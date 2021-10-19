@@ -36,7 +36,7 @@ const styles = reactStyles({
 const styleCss = `
 `;
 
-export const GenomicViewReactComponent = withRouteData(class extends React.Component<{}, {}> {
+export const GenomicViewComponent = withRouteData(class extends React.Component<{}, {}> {
        render() {
         const tabIndex = 0;
         return <React.Fragment>
