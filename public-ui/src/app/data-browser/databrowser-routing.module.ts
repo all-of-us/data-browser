@@ -84,6 +84,16 @@ const routes: Routes = [
           }
         },
         {
+          path: 'genomic-data',
+          component: AppRouting,
+          data: {
+            title: 'Genomic Data',
+            breadcrumb: {
+                value: 'Genomic Data'
+            }
+          }
+        },
+        {
           path: 'physical-measurements',
           component: AppRouting,
           data: {
@@ -130,6 +140,16 @@ const routes: Routes = [
             title: 'Introductory Videos',
             breadcrumb: {
               value: 'Introductory Videos'
+            }
+          }
+        },
+        {
+          path: 'genomics',
+          component: AppRouting,
+          data: {
+            title: 'Genomic Data',
+            breadcrumb: {
+              value: 'Genomic Data'
             }
           }
         }]

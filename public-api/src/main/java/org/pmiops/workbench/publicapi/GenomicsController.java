@@ -16,6 +16,10 @@ import com.google.cloud.bigquery.FieldValue;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 import com.google.common.base.Strings;
+import org.pmiops.workbench.model.AnalysisListResponse;
+import com.google.common.collect.ImmutableList;
+import org.pmiops.workbench.model.AnalysisIdConstant;
+import org.pmiops.workbench.model.CommonStorageEnums;
 
 @RestController
 public class GenomicsController implements GenomicsApiDelegate {
@@ -113,5 +117,21 @@ public class GenomicsController implements GenomicsApiDelegate {
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         return null;
+    }
+  
+    @Override
+    public ResponseEntity<AnalysisListResponse> getChartData() {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+        ImmutableList<Long> analysisIds = ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENO_GENDER_ANALYSIS),
+                CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENO_AGE_ANALYSIS),
+                CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENO_RACE_ANALYSIS),
+                CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID));
+        AnalysisListResponse analysisListResponse = new AnalysisListResponse();
+        analysisListResponse.setItems(achillesAnalysisService.findAnalysisByIdsAndDomain(analysisIds, "Genomics"));
+        return ResponseEntity.ok(analysisListResponse);
     }
 }
