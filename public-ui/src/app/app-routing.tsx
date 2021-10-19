@@ -119,16 +119,6 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
           }
         })}
     />
-    <AppRoute
-      path='/genomics'
-      component={() => GenomicViewComponent(
-        {
-          routeData: {
-            title: 'Genomic Data',
-            breadcrumb: { value: ':id Domain' }
-          }
-        })}
-    />
   </AppRouter>
     ;
 

@@ -100,8 +100,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             <div style={styles.viewLayout}>
                 <div style={styles.sideBarLayout}>
                     {this.sideBarItems.map((item, index) => {
-                        return <div style={styles.sideBarItemConainer}>
-                            <div key={index} onClick={() => this.sideBarClick(item.id)}
+                        return <div key={index} style={styles.sideBarItemConainer}>
+                            <div onClick={() => this.sideBarClick(item.id)}
                                 style={{ ...selectionId === item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
                                 <span style={styles.sideBarItemText}>
                                     {item.label}
