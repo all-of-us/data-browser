@@ -23,20 +23,30 @@ const styles = reactStyles({
         width: '100%'
 
     },
+    sideBarItemConainer: {
+        paddingBottom: '.25rem',
+        borderBottom: '1px solid rgba(38, 34, 98, .25)',
+        width:'100%'
+
+    },
     sideBarItem: {
         display: 'flex',
         alignItems: 'center',
         padding: '0.5rem',
+        paddingBottom: '0',
         fontSize: '0.8em',
         width: '100%',
         cursor: 'pointer',
-        borderBottom: '1px solid rgba(38, 34, 98, .25)'
     },
     sideBarItemText: {
         width: '75%'
     },
     sideBarItemSelected: {
-        background: 'red'
+        background: 'red',
+        borderRadius: '3px',
+        fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
+        fontWeight:'bolder',
+        backgroundColor:'rgba(33,111,180,0.15)'
     }
 
 });
@@ -54,6 +64,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             selectionId: 1
         }
     }
+
     sideBarItems = [
         {
             id: 1,
@@ -68,6 +79,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             label: 'Genomics FAQ'
         },
     ]
+    title = 'Genomic Data'
 
     sideBarClick(selected: number) {
         this.setState({
@@ -77,20 +89,24 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     render() {
         const { selectionId } = this.state;
         return <React.Fragment>
-            <h1 style={styles.title}>Genomic Data</h1>
-            <p style={globalStyles.bodyDefault}>This section provides an overview of genomic data within the current
-                All of Us dataset. Researchers can use the Participants with Genomic
-                Data page to view currently available genomic data by participant-reported
+            <h1 style={styles.title}>{this.title}</h1>
+            <p style={globalStyles.bodyDefault}>
+                This section provides an overview of genomic data within the current
+                <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
+                Data page to view currently available genomic data by participant - reported
                 for preliminary exploration of genetic variant allele frequencies by with select
-                annotations and genetic ancestry associations.</p>
+                annotations and genetic ancestry associations.
+            </p>
             <div style={styles.viewLayout}>
                 <div style={styles.sideBarLayout}>
-                    {this.sideBarItems.map((item,index) => {
-                        return <div key={index} onClick={() => this.sideBarClick(item.id)}
-                            style={{ ...selectionId == item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
-                            <span style={styles.sideBarItemText}>
-                                {item.label}
-                            </span>
+                    {this.sideBarItems.map((item, index) => {
+                        return <div style={styles.sideBarItemConainer}>
+                            <div key={index} onClick={() => this.sideBarClick(item.id)}
+                                style={{ ...selectionId == item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
+                                <span style={styles.sideBarItemText}>
+                                    {item.label}
+                                </span>
+                            </div>
                         </div>
                     })
                     }
