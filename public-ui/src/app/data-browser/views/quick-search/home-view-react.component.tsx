@@ -175,7 +175,7 @@ const styles = reactStyles({
         display: 'flex',
         flexDirection: 'row',
     },
-    genomicParticipantMetadata : {
+    genomicParticipantMetadata: {
         display: 'flex',
         flexDirection: 'column',
         color: '#302c71',
@@ -262,7 +262,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             switch (info.domainConceptId) {
                 // condition
                 case 19:
-                    url = this.props.searchWord ? 'ehr/conditions/'  + this.props.searchWord : 'ehr/conditions';
+                    url = this.props.searchWord ? 'ehr/conditions/' + this.props.searchWord : 'ehr/conditions';
                     NavStore.navigateByUrl(url);
                     break;
                 // drugs
@@ -290,7 +290,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     NavStore.navigateByUrl(url);
                     break;
                 default:
-                    url = this.props.searchWord ? 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() + '/' + this.props.searchWord : 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() ;
+                    url = this.props.searchWord ? 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() + '/' + this.props.searchWord : 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
                     break;
             }
@@ -309,7 +309,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
     }
     render() {
         const { name, description, description2, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
-         wgsParticipantCount, microarrayParticipantCount} = this.props;
+            wgsParticipantCount, microarrayParticipantCount } = this.props;
         const classStyleName = (domain === 'Genomics') ? 'genomic-result-box' : 'result-box';
         return <div
             onClick={() => this.resultClick(this.props)}
@@ -321,50 +321,50 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()}
                     searchTerm='' /></div>
             {(domain === 'Genomics') ?
-            <div style={styles.genomicTile}>
-            <div style={styles.resultBody}>
-            <div style={styles.genDesc}>{description}</div>
-            {description2 && <div style={styles.genDesc}>{description2}</div>}
-            </div>
-            <div style={styles.genomicParticipantMetadata}>
-                <div><strong>{wgsParticipantCount.toLocaleString()}</strong>
-                <span style={styles.participantText}>participants in the WGS dataset </span></div>
-                <div><strong>{microarrayParticipantCount.toLocaleString()}</strong>
-                <span style={styles.participantText}>participants in the Array dataset </span></div>
-            </div>
-            </div>
-            :
-            <div style={styles.resultBody}>
-                <span style={styles.resultBodyItem}>
-                    <div style={styles.resultStat}>
-                        {standardConceptCount}{questionCount}
+                <div style={styles.genomicTile}>
+                    <div style={styles.resultBody}>
+                        <div style={styles.genDesc}>{description}</div>
+                        {description2 && <div style={styles.genDesc}>{description2}</div>}
                     </div>
-                    {searchWord ?
-                                            (
-                                            domainType === 'ehr' ? <span>matching medical concepts</span> :
-                                            (domainType === 'survey' ? <span>matching survey questions</span> :
-                                            (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
+                    <div style={styles.genomicParticipantMetadata}>
+                        <div><strong>{wgsParticipantCount.toLocaleString()}</strong>
+                            <span style={styles.participantText}>participants in the WGS dataset </span></div>
+                        <div><strong>{microarrayParticipantCount.toLocaleString()}</strong>
+                            <span style={styles.participantText}>participants in the Array dataset </span></div>
+                    </div>
+                </div>
+                :
+                <div style={styles.resultBody}>
+                    <span style={styles.resultBodyItem}>
+                        <div style={styles.resultStat}>
+                            {standardConceptCount}{questionCount}
+                        </div>
+                        {searchWord ?
+                            (
+                                domainType === 'ehr' ? <span>matching medical concepts</span> :
+                                    (domainType === 'survey' ? <span>matching survey questions</span> :
+                                        (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
                                             <span>matching Fitbit Measurements</span>))
-                                          )
-                                        : (
-                                            domainType === 'ehr' ? <span>medical concepts</span> :
-                                            (domainType === 'survey' ? <span>questions available</span> :
-                                            (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> :
+                            )
+                            : (
+                                domainType === 'ehr' ? <span>medical concepts</span> :
+                                    (domainType === 'survey' ? <span>questions available</span> :
+                                        (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> :
                                             <span>Fitbit Measurements</span>))
-                                          )}
-                </span>
-                {
-                    (questionCount &&
-                        <div style={styles.resultBodyItem}>
-                            <span>{description}</span>
-                        </div>)
-                }
-                <span style={styles.resultBodyItem} >
-                {participantCount &&
-                    <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
-                }
-                </span>
-            </div>
+                            )}
+                    </span>
+                    {
+                        (questionCount &&
+                            <div style={styles.resultBodyItem}>
+                                <span>{description}</span>
+                            </div>)
+                    }
+                    <span style={styles.resultBodyItem} >
+                        {participantCount &&
+                            <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
+                        }
+                    </span>
+                </div>
             }
             <div style={styles.resultBoxLink}>
                 {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
@@ -421,9 +421,9 @@ export const dBHomeComponent = withRouteData(
                     genomicTileMetadata.wgsParticipantCount = result.results.filter(r => r.stratum4 === 'wgs')[0].countValue;
                     genomicTileMetadata.microarrayParticipantCount = result.results.filter(r => r.stratum4 === 'micro-array')[0].countValue;
                 }
-                this.setState({genomicInfo: genomicTileMetadata});
+                this.setState({ genomicInfo: genomicTileMetadata });
             }).catch(e => {
-               console.log(e, 'error');
+                console.log(e, 'error');
             });
         }
 
@@ -447,9 +447,9 @@ export const dBHomeComponent = withRouteData(
                     });
                 }
             ).catch(e => {
-                                    console.log(e, 'error');
-                                    this.setState({loading: false});
-                       });
+                console.log(e, 'error');
+                this.setState({ loading: false });
+            });
         }
         closePopUp() {
             this.setState({
@@ -470,9 +470,9 @@ export const dBHomeComponent = withRouteData(
                     and are not participant reported. The <i>All of Us</i> Research Program data will include more data
                     types over time.<br /><br /> In order to protect participant privacy, the data are de-identified,
                     limited to aggregate counts rounded up to counts of
-                20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
+                    20, and summary demographic information. For more information, please visit our FAQ page.<br /><br />
                     Please read the public data use statement available below for additional information about our unique dataset and how to
-                acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
+                    acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
 
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
@@ -508,53 +508,56 @@ export const dBHomeComponent = withRouteData(
                 </div>
                 {(loading) && <Spinner />}
                 {!loading &&
-                <section style={styles.results}>
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                        EHR Domains:<TooltipReactComponent
-                            label='Homepage Tooltip Hover'
-                            searchTerm={searchWord}
-                            action='Tooltip Home Page EHR Domains'
-                            tooltipKey='ehrDomainHelpText' /></h5>
+                    <section style={styles.results}>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                            EHR Domains:<TooltipReactComponent
+                                label='Homepage Tooltip Hover'
+                                searchTerm={searchWord}
+                                action='Tooltip Home Page EHR Domains'
+                                tooltipKey='ehrDomainHelpText' /></h5>
 
-                    <div className='result-boxes'>
-                        {
-                            domainInfo.map((domain, index) => {
-                                const key = 'domain' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} domainType='ehr' />;
+                        <div className='result-boxes'>
+                            {
+                                domainInfo.map((domain, index) => {
+                                    const key = 'domain' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} domainType='ehr' />;
 
-                            })
+                                })
 
-                        }
-                    </div>
-                    { (environment.geno) &&
-                    <React.Fragment>
-                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics </h5>
-                        <div>
-                            <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} />
+                            }
                         </div>
-                    </React.Fragment>
-                    }
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
-                    <div style={styles.resultBoxes}>
-                        {
-                            surveyInfo.map((survey, index) => {
-                                const key = 'survey' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} domainType='survey' />;
-                            })
+                        {(environment.geno) &&
+                            <React.Fragment>
+                                <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics </h5>
+                                <div>
+                                    {
+                                        genomicInfo &&
+                                        <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} />
+                                    }
+                                </div>
+                            </React.Fragment>
+                        }
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions:</h5>
+                        <div style={styles.resultBoxes}>
+                            {
+                                surveyInfo.map((survey, index) => {
+                                    const key = 'survey' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} domainType='survey' />;
+                                })
 
-                        }
-                    </div>
-                    <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                        Physical Measurements and Wearables:</h5>
-                    <div style={styles.resultBoxes}>
-                        {
-                            physicalMeasurementsInfo.map((phyMeasurements, index) => {
-                                const key = 'phyMeasurements' + index;
-                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw' />;
-                            })
-                        }
-                    </div>
-                </section>
+                            }
+                        </div>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                            Physical Measurements and Wearables:</h5>
+                        <div style={styles.resultBoxes}>
+                            {
+                                physicalMeasurementsInfo.map((phyMeasurements, index) => {
+                                    const key = 'phyMeasurements' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw' />;
+                                })
+                            }
+                        </div>
+                    </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
             </React.Fragment >;
