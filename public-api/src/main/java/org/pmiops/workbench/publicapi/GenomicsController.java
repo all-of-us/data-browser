@@ -100,7 +100,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE;
             }
         }
-        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql.toString())
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
                 .addNamedParameter("low", QueryParameterValue.int64(low))
