@@ -32,7 +32,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
             variantListSize: 0,
             loading: true,
             numPages: 0
-        }
+        };
     }
 
     handlePageClick() {
@@ -42,7 +42,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     componentDidMount() {
         genomicsApi().getVariantSearchResultSize('').then(result => {
             console.log(result);
-            this.setState({loading: false, variantListSize: result, numPages: Math.ceil(result / 50),});
+            this.setState({loading: false, variantListSize: result, numPages: Math.ceil(result / 50)});
         }).catch(e => {
             console.log(e, 'error');
         });
