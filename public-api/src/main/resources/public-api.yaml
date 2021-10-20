@@ -121,7 +121,6 @@ paths:
           schema:
             $ref: "#/definitions/AnalysisListResponse"
 
-<<<<<<< HEAD
   /v1/genomics/search-variants:
     get:
       tags:
