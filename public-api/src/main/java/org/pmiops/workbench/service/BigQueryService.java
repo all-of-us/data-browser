@@ -17,15 +17,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Provider;
 import javax.servlet.http.HttpServletResponse;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.pmiops.workbench.cdr.CdrVersionContext;
-import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.exceptions.ForbiddenException;
 import org.pmiops.workbench.exceptions.ServerErrorException;
@@ -37,9 +34,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class BigQueryService {
 
-    private static final Logger logger = Logger.getLogger(BigQueryService.class.getName());
-
-    @Autowired private Provider<WorkbenchConfig> workbenchConfigProvider;
     @Autowired private BigQuery defaultBigQuery;
 
     @VisibleForTesting
