@@ -1,4 +1,5 @@
 import { withRouteData } from 'app/components/app-router';
+import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
@@ -47,6 +48,9 @@ const styles = reactStyles({
         fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
         fontWeight: 'bolder',
         backgroundColor: 'rgba(33,111,180,0.15)'
+    },
+    pageContainer: {
+        background:'white'
     }
 
 });
@@ -112,7 +116,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                     }
 
                 </div>
-                <div>
+                <div style={styles.pageContainer} >
                     {selectionId === 1 && <GenomicOverviewComponent />}
                     {selectionId === 2 && <GenomicSearchComponent />}
                 </div>
