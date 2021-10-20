@@ -1,3 +1,4 @@
+import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
 import { GenomicChartComponent } from './genomic-chart.component';
@@ -23,6 +24,16 @@ interface State {
 export class GenomicOverviewComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+    }
+    getGenomicParticipantCounts() {
+        return genomicsApi().getParticipantCounts().then(result => {
+            console.log(result);
+
+        });
+    }
+
+    componentDidMount() {
+        this.getGenomicParticipantCounts();
     }
 
     render() {

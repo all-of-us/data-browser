@@ -1,67 +1,123 @@
-import {withRouteData} from 'app/components/app-router';
+import { withRouteData } from 'app/components/app-router';
+import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
+import { globalStyles } from 'app/utils/global-styles';
 import * as React from 'react';
+import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
-    genoLayout: {
-        display: 'grid',
-        gridTemplateColumns: '20% 80%',
-        columnGap: '0.5rem'
+    title: {
+        margin: '0'
     },
-    genoMenuItem: {
+    viewLayout: {
+        display: 'grid',
+        gridTemplateColumns: '185px 1fr',
+        columnGap: '0.5rem',
+        marginTop: '1em'
+    },
+    sideBarLayout: {
+        color: '#0079b8',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%'
+
+    },
+    sideBarItemConainer: {
+        paddingBottom: '.25rem',
+        borderBottom: '1px solid rgba(38, 34, 98, .25)',
+        width: '100%'
+
+    },
+    sideBarItem: {
         display: 'flex',
         alignItems: 'center',
         padding: '0.5rem',
+        paddingBottom: '0',
         fontSize: '0.8em',
-        /* border-bottom: 1px solid #262262 ; */
-        cursor: 'pointer'
+        width: '100%',
+        cursor: 'pointer',
     },
-    genoMenuItemContainer: {
-        padding: '0.25rem 0rem',
-        borderBottom: '1px solid #262262',
-        cursor: 'pointer'
+    sideBarItemText: {
+        width: '75%'
     },
-    genoMenuItemDisplay: {
-        color: '#0079b8',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%'
-    },
-    displayName: {
-        fontSize: '1.5em'
+    sideBarItemSelected: {
+        background: 'red',
+        borderRadius: '3px',
+        fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
+        fontWeight: 'bolder',
+        backgroundColor: 'rgba(33,111,180,0.15)'
     }
+
 });
 
-const styleCss = `
-`;
+interface State {
+    selectionId: number;
+}
 
-export const GenomicViewComponent = withRouteData(class extends React.Component<{}, {}> {
-       render() {
-        const tabIndex = 0;
+
+
+export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
+    constructor(props: {}) {
+        super(props);
+        this.state = {
+            selectionId: 1
+        };
+    }
+
+    sideBarItems = [
+        {
+            id: 1,
+            label: 'Participants with Genomic Data'
+        },
+        {
+            id: 2,
+            label: 'Search Variants'
+        },
+        {
+            id: 3,
+            label: 'Genomics FAQ'
+        },
+    ];
+    title = 'Genomic Data';
+
+    sideBarClick(selected: number) {
+        this.setState({
+            selectionId: selected
+        });
+    }
+    render() {
+        const { selectionId } = this.state;
         return <React.Fragment>
-                <style>{styleCss}</style>
-                <div className='gene-container'>
-                    <h1>Genomic Data</h1>
-                    <div>
-                    This section provides an overview of genomic data within the current <i>All of Us</i> dataset.
-                    Researchers can use the Participants with Genomic Data page to view currently available genomic data by
-                    participant-reported race/ethnicity, sex assigned at birth, and age. The Variant Search can be used for
-                    preliminary exploration of genetic variant allele frequencies by with select annotations and genetic
-                    ancestry associations.
-                     </div>
-                    <div className='geno-layout' style={styles.genoLayout}>
-                        <div className='geno-menu' style={styles.genoMenuItem}>
-                            <div className='geno-menu-item-container' style={styles.genoMenuItemContainer}>
-                                <div tabIndex={tabIndex} style={styles.genoMenuItem}>
-                                    <div className='geno-menu-item-display' style={styles.genoMenuItemDisplay}>
-                                    <span style={styles.displayName}>Participants with Genomic Data</span>
-                                    </div>
-                                </div>
+            <h1 style={styles.title}>{this.title}</h1>
+            <p style={globalStyles.bodyDefault}>
+                This section provides an overview of genomic data within the current
+                <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
+                Data page to view currently available genomic data by participant - reported
+                for preliminary exploration of genetic variant allele frequencies by with select
+                annotations and genetic ancestry associations.
+            </p>
+            <div style={styles.viewLayout}>
+                <div style={styles.sideBarLayout}>
+                    {this.sideBarItems.map((item, index) => {
+                        return <div key={index} style={styles.sideBarItemConainer}>
+                            <div onClick={() => this.sideBarClick(item.id)}
+                                style={{ ...selectionId === item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
+                                <span style={styles.sideBarItemText}>
+                                    {item.label}
+                                </span>
                             </div>
-                        </div>
-                    </div>
+                        </div>;
+                    })
+                    }
+
                 </div>
-               </React.Fragment>;
-       }
+                <div>
+                    {selectionId === 1 && <GenomicOverviewComponent />}
+                    {selectionId === 2 && <GenomicSearchComponent />}
+                </div>
+            </div>
+
+        </React.Fragment>;
+    }
 });
