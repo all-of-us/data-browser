@@ -9,13 +9,11 @@ import org.pmiops.workbench.service.CdrVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.pmiops.workbench.model.Analysis;
-<<<<<<< HEAD
 import org.pmiops.workbench.model.AnalysisListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import com.google.common.collect.ImmutableList;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.CommonStorageEnums;
-=======
 import org.pmiops.workbench.model.VariantListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.service.BigQueryService;
@@ -23,11 +21,7 @@ import com.google.cloud.bigquery.FieldValue;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.QueryParameterValue;
 import com.google.cloud.bigquery.TableResult;
-<<<<<<< HEAD
->>>>>>> wip
-=======
 import com.google.common.base.Strings;
->>>>>>> getting page count from api'
 
 @RestController
 public class GenomicsController implements GenomicsApiDelegate {
@@ -42,7 +36,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XY]*:).*";
     private static final String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
-    private static final String WHERE_CONTIG1 = " where contig = @contig";
+    private static final String WHERE_CONTIG = " where contig = @contig";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
@@ -85,7 +79,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             if (variantSearchTerm.matches(genomicRegionRegex)) {
                 String[] regionTermSplit = variantSearchTerm.split(":");
                 contig = regionTermSplit[0];
-                finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG1;
+                finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
                     String[] rangeSplit = regionTermSplit[1].split("-");
                     try {
