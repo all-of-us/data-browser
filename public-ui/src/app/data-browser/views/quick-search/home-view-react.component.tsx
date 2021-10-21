@@ -555,7 +555,7 @@ export const dBHomeComponent = withRouteData(
                             }
                         </div>
                         </React.Fragment>
-                        }
+                                                }
                     </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
