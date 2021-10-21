@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import org.pmiops.workbench.cdr.dao.ConceptService;
 import org.pmiops.workbench.service.CdrVersionService;
 import org.pmiops.workbench.model.Analysis;
+import org.pmiops.workbench.model.CdrVersion;
 import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.DomainInfoService;
 import org.pmiops.workbench.service.CriteriaService;
@@ -164,7 +165,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<org.pmiops.workbench.model.CdrVersion> getCdrVersionUsed() {
+    public ResponseEntity<CdrVersion> getCdrVersionUsed() {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
