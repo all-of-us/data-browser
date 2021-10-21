@@ -308,7 +308,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         }
     }
     render() {
-        const { name, description, description2, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
+        const { name, description, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
             wgsParticipantCount, microarrayParticipantCount } = this.props;
         const classStyleName = 'result-box';
         return <div
@@ -327,18 +327,16 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                             : wgsParticipantCount.toLocaleString() )}
                         </div>
                           {(domainType === 'genomics') ? 'participants in the WGS dataset' : (searchWord ?
-                                          (
-                                              domainType === 'ehr' ? <span>matching medical concepts</span> :
-                                                  (domainType === 'survey' ? <span>matching survey questions</span> :
-                                                      (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
-                                                          <span>matching Fitbit Measurements</span>))
-                                          )
-                                          : (
-                                              domainType === 'ehr' ? <span>medical concepts</span> :
-                                                  (domainType === 'survey' ? <span>questions available</span> :
-                                                      (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> :
-                                                          <span>Fitbit Measurements</span>))
-                                          ))}
+                           (domainType === 'ehr' ? <span>matching medical concepts</span> :
+                           (domainType === 'survey' ? <span>matching survey questions</span> :
+                           (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
+                           <span>matching Fitbit Measurements</span>)))
+                           : (
+                           domainType === 'ehr' ? <span>medical concepts</span> :
+                           (domainType === 'survey' ? <span>questions available</span> :
+                           (name.toLowerCase() === 'physical measurements' ? <span>Physical Measurements</span> :
+                           <span>Fitbit Measurements</span>))
+                          ))}
                     </span>
                     {
                         (questionCount &&
@@ -351,11 +349,13 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                             <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
                         }
                     </span>
-                    {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>{microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Array dataset</span></React.Fragment>}
+                    {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>
+                    {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Array dataset</span></React.Fragment>}
                 </div>
             <div style={styles.resultBoxLink}>
                 {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
-                    (domain === 'Genomics' ? <a className='result-bottom-link'>View Genomic Data</a> : <a className='result-bottom-link'>View {name}</a>))}
+                    (domain === 'Genomics' ? <a className='result-bottom-link'>View Genomic Data</a>
+                    : <a className='result-bottom-link'>View {name}</a>))}
             </div>
         </div>;
     }
