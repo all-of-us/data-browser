@@ -23,7 +23,7 @@ export const routeToDomain = {
 };
 
 export let genomicTileMetadata = {
-    'name': 'Whole Genomic Sequence Data and Array Data',
+    'name': 'Whole Genome Sequencing (WGS) + Genotyping Arrays',
     'description': 'View aggregate counts of participants with any genomic data, Whole Genomic Sequence (WGS) data, \
     or Array data in the All of Us dataset.',
     'description2': 'Define a genomic region to search; results show aggregated allele counts, \
