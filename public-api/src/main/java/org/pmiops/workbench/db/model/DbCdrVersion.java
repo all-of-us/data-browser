@@ -22,6 +22,8 @@ public class DbCdrVersion {
   private String publicDbName;
   private String bigqueryProject;
   private String bigqueryDataset;
+  private String genomicsProject;
+  private String genomicsDataset;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,6 +92,15 @@ public class DbCdrVersion {
     this.bigqueryProject = bigqueryProject;
   }
 
+  @Column(name = "genomics_project")
+  public String getGenomicsProject() {
+    return genomicsProject;
+  }
+
+  public void setGenomicsProject(String genomicsProject) {
+    this.genomicsProject = genomicsProject;
+  }
+
   @Column(name = "bigquery_dataset")
   public String getBigqueryDataset() {
     return bigqueryDataset;
@@ -97,6 +108,15 @@ public class DbCdrVersion {
 
   public void setBigqueryDataset(String bigqueryDataset) {
     this.bigqueryDataset = bigqueryDataset;
+  }
+
+  @Column(name = "genomics_dataset")
+  public String getGenomicsDataset() {
+    return genomicsDataset;
+  }
+
+  public void setGenomicsDataset(String genomicsDataset) {
+    this.genomicsDataset = genomicsDataset;
   }
 
   @Override
@@ -113,6 +133,8 @@ public class DbCdrVersion {
             .append(this.publicDbName, that.publicDbName)
             .append(this.bigqueryProject, that.bigqueryProject)
             .append(this.bigqueryDataset, that.bigqueryDataset)
+            .append(this.genomicsProject, that.genomicsProject)
+            .append(this.genomicsDataset, that.genomicsDataset)
             .build();
   }
 }

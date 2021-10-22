@@ -46,7 +46,7 @@ public class BigQueryService {
         // well. By default, the query would run in the Workbench App Engine project, which would
         // violate VPC-SC restrictions.
         return BigQueryOptions.newBuilder()
-                .setProjectId(cdrVersion.getBigqueryProject())
+                .setProjectId(cdrVersion.getGenomicsProject())
                 .build()
                 .getService();
     }
@@ -88,8 +88,8 @@ public class BigQueryService {
         }
 
         String returnSql =
-                queryJobConfiguration.getQuery().replace("${projectId}", cdrVersion.getBigqueryProject());
-        returnSql = returnSql.replace("${dataSetId}", cdrVersion.getBigqueryDataset());
+                queryJobConfiguration.getQuery().replace("${projectId}", cdrVersion.getGenomicsProject());
+        returnSql = returnSql.replace("${dataSetId}", cdrVersion.getGenomicsDataset());
         return queryJobConfiguration.toBuilder().setQuery(returnSql).build();
     }
 

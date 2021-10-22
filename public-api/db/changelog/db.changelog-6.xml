@@ -24,4 +24,24 @@
       <column name="bigquery_dataset" type="VARCHAR(100)" />
     </addColumn>
   </changeSet>
+  <changeSet author="srushti" id="changelog-6-add-col-3">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="cdr_version" columnName="genomics_project"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="cdr_version">
+      <column name="genomics_project" type="VARCHAR(100)" />
+    </addColumn>
+  </changeSet>
+  <changeSet author="srushti" id="changelog-6-add-col-4">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="cdr_version" columnName="genomics_dataset"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="cdr_version">
+      <column name="genomics_dataset" type="VARCHAR(100)" />
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>
