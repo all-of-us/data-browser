@@ -6,6 +6,8 @@
     "dataAccessLevel": 1,
     "bigqueryProject": "all-of-us-ehr-dev",
     "bigqueryDataset": "synthetic_cdr20180606",
+    "genomicsProject": "aou-db-prod",
+    "genomicsDataset": "genomics_v1",
     "creationTime": "2017-12-26 00:00:00Z",
     "releaseNumber": 1,
     "numParticipants": 946237,

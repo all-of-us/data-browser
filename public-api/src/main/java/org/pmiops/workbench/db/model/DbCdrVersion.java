@@ -20,6 +20,10 @@ public class DbCdrVersion {
   private Timestamp creationTime;
   private int numParticipants;
   private String publicDbName;
+  private String bigqueryProject;
+  private String bigqueryDataset;
+  private String genomicsProject;
+  private String genomicsDataset;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,7 +80,43 @@ public class DbCdrVersion {
   @Override
   public int hashCode() {
     return Objects.hash(cdrVersionId, isDefault, name,
-          creationTime, numParticipants, publicDbName);
+            creationTime, numParticipants, publicDbName, bigqueryProject, bigqueryDataset);
+  }
+
+  @Column(name = "bigquery_project")
+  public String getBigqueryProject() {
+    return bigqueryProject;
+  }
+
+  public void setBigqueryProject(String bigqueryProject) {
+    this.bigqueryProject = bigqueryProject;
+  }
+
+  @Column(name = "genomics_project")
+  public String getGenomicsProject() {
+    return genomicsProject;
+  }
+
+  public void setGenomicsProject(String genomicsProject) {
+    this.genomicsProject = genomicsProject;
+  }
+
+  @Column(name = "bigquery_dataset")
+  public String getBigqueryDataset() {
+    return bigqueryDataset;
+  }
+
+  public void setBigqueryDataset(String bigqueryDataset) {
+    this.bigqueryDataset = bigqueryDataset;
+  }
+
+  @Column(name = "genomics_dataset")
+  public String getGenomicsDataset() {
+    return genomicsDataset;
+  }
+
+  public void setGenomicsDataset(String genomicsDataset) {
+    this.genomicsDataset = genomicsDataset;
   }
 
   @Override
@@ -86,11 +126,15 @@ public class DbCdrVersion {
     }
     DbCdrVersion that = (DbCdrVersion) obj;
     return new EqualsBuilder().append(this.cdrVersionId, that.cdrVersionId)
-        .append(this.isDefault, that.isDefault)
-        .append(this.name, that.name)
-        .append(this.creationTime, that.creationTime)
-        .append(this.numParticipants, that.numParticipants)
-        .append(this.publicDbName, that.publicDbName)
-        .build();
+            .append(this.isDefault, that.isDefault)
+            .append(this.name, that.name)
+            .append(this.creationTime, that.creationTime)
+            .append(this.numParticipants, that.numParticipants)
+            .append(this.publicDbName, that.publicDbName)
+            .append(this.bigqueryProject, that.bigqueryProject)
+            .append(this.bigqueryDataset, that.bigqueryDataset)
+            .append(this.genomicsProject, that.genomicsProject)
+            .append(this.genomicsDataset, that.genomicsDataset)
+            .build();
   }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <changeSet author="srushti" id="changelog-6-add-col-1">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="cdr_version" columnName="bigquery_project"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="cdr_version">
+      <column name="bigquery_project" type="VARCHAR(100)" />
+    </addColumn>
+  </changeSet>
+  <changeSet author="srushti" id="changelog-6-add-col-2">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="cdr_version" columnName="bigquery_dataset"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="cdr_version">
+      <column name="bigquery_dataset" type="VARCHAR(100)" />
+    </addColumn>
+  </changeSet>
+  <changeSet author="srushti" id="changelog-6-add-col-3">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="cdr_version" columnName="genomics_project"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="cdr_version">
+      <column name="genomics_project" type="VARCHAR(100)" />
+    </addColumn>
+  </changeSet>
+  <changeSet author="srushti" id="changelog-6-add-col-4">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="cdr_version" columnName="genomics_dataset"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="cdr_version">
+      <column name="genomics_dataset" type="VARCHAR(100)" />
+    </addColumn>
+  </changeSet>
+</databaseChangeLog>
