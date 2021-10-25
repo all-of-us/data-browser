@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Variant;
+import org.pmiops.workbench.model.VariantInfo;
 import org.pmiops.workbench.model.VariantListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.service.BigQueryService;
@@ -202,5 +203,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(achillesAnalysisService.findAnalysisByIdsAndDomain(analysisIds, "Genomics"));
         return ResponseEntity.ok(analysisListResponse);
+    }
+
+    @Override
+    public ResponseEntity<VariantInfo> getVariantDetails(String variantId) {
+        return null;
     }
 }

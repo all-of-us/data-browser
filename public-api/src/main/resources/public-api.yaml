@@ -127,6 +127,24 @@ paths:
           schema:
             $ref: "#/definitions/AnalysisListResponse"
 
+  /v1/genomics/variant-details:
+    get:
+      tags:
+        - genomics
+      description: Gets the variant details
+      operationId: "getVariantDetails"
+      parameters:
+        - in: query
+          name: variant-id
+          type: string
+          required: true
+          description: variant id
+      responses:
+        200:
+          description: Variant Information
+          schema:
+            $ref: "#/definitions/VariantInfo"
+
   # Data Browser #######################################################################
   /v1/config:
     get:
@@ -1391,3 +1409,20 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Variant"
+
+  VariantInfo:
+    type: object
+    required:
+      - variantId
+    properties:
+      dnaChange:
+        description: dna change
+        type: string
+      transcript:
+        description: transcript
+        type: string
+      rsNumber:
+        description: rs number
+        type: array
+        items:
+          type: string
