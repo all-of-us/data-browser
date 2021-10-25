@@ -310,10 +310,9 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
     render() {
         const { name, description, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
             wgsParticipantCount, microarrayParticipantCount } = this.props;
-        const classStyleName = 'result-box';
         return <div
             onClick={() => this.resultClick(this.props)}
-            className={classStyleName}>
+            className='result-box'>
             <div style={styles.resultBoxTitle}>{name}
                 <TooltipReactComponent
                     label='Homepage Tooltip Hover'
