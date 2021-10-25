@@ -21,14 +21,6 @@ import org.pmiops.workbench.model.AnalysisListResponse;
 import com.google.common.collect.ImmutableList;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.CommonStorageEnums;
-import org.pmiops.workbench.model.VariantListResponse;
-import org.pmiops.workbench.exceptions.ServerErrorException;
-import org.pmiops.workbench.service.BigQueryService;
-import com.google.cloud.bigquery.FieldValue;
-import com.google.cloud.bigquery.QueryJobConfiguration;
-import com.google.cloud.bigquery.QueryParameterValue;
-import com.google.cloud.bigquery.TableResult;
-import com.google.common.base.Strings;
 
 @RestController
 public class GenomicsController implements GenomicsApiDelegate {
@@ -47,6 +39,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
+    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, gene, consequence, protein_change, clinical_significance, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
 
     public GenomicsController() {}
 
@@ -124,7 +117,49 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
     @Override
-    public ResponseEntity<VariantListResponse> searchVariants(String variantSearchTerm) {
+    public ResponseEntity<VariantListResponse> searchVariants(String variantSearchTerm, Integer page) {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+        String finalSql = VARIANT_LIST_SQL_TEMPLATE;
+        String genes = "";
+        Long low = 0L;
+        Long high = 0L;
+        String variant_id = "";
+        String contig = "";
+        // Make sure the search term is not empty
+        if (!Strings.isNullOrEmpty(variantSearchTerm)) {
+            // Check if the search term matches genomic region search term pattern
+            if (variantSearchTerm.matches(genomicRegionRegex)) {
+                String[] regionTermSplit = variantSearchTerm.split(":");
+                contig = regionTermSplit[0];
+                finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
+                if (regionTermSplit.length > 1) {
+                    String[] rangeSplit = regionTermSplit[1].split("-");
+                    try {
+                        if (rangeSplit.length == 2) {
+                            low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
+                            high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
+                            finalSql += AND_POSITION;
+                        }
+                    } catch(NumberFormatException e) {
+                        System.out.println("Trying to convert bad number.");
+                    }
+                }
+            } else if (variantSearchTerm.matches(variantIdRegex)) {
+                // Check if the search term matches variant id pattern
+                variant_id = variantSearchTerm;
+                finalSql += WHERE_VARIANT_ID;
+            } else {// Check if the search term matches gene coding pattern
+                genes = variantSearchTerm;
+                finalSql += WHERE_GENE;
+            }
+        }
+        finalSql += "LIMIT 50 OFFSET " + (page-1)*50;
+        System.out.println(finalSql);
+        VariantListResponse variantListResponse = new VariantListResponse();
         return null;
     }
 

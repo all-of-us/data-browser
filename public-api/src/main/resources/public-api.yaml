@@ -83,6 +83,12 @@ paths:
           type: string
           required: true
           description: variant search term
+        - in: query
+          name: page number
+          type: integer
+          format: int32
+          required: true
+          description: page number
       responses:
         200:
           description: A collection of variants from the wgs_variant table
