@@ -5,7 +5,7 @@ import { GenomicChartComponent } from './genomic-chart.component';
 
 const styles = reactStyles({
     innerContainer: {
-        padding:'1em'
+        padding: '1em'
     },
     title: {
         margin: '0',
@@ -32,15 +32,25 @@ interface Props {
 // tslint:disable-next-line:no-empty-interface
 interface State {
     participantCount: string;
+    raceEthData: any;
+    sexAtBirthData: any;
+    currentAgeData: any;
 }
 
 export class GenomicOverviewComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            participantCount: null
+            participantCount: null,
+            raceEthData: [],
+            sexAtBirthData: [],
+            currentAgeData: []
         }
     }
+
+    raceEthArr: any[] = [];
+    sexAtBirthArr: any[] = [];
+    currentAgeArr: any[] = [];
     async getGenomicParticipantCounts() {
         const result_1 = await genomicsApi().getParticipantCounts();
         result_1.results.forEach(type => {
@@ -54,20 +64,37 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
 
     componentDidMount() {
         this.getGenomicParticipantCounts();
-    }
-    getGenomicParticipantCounts() {
-        return genomicsApi().getParticipantCounts().then(result => {
-            console.log(result);
+        this.getGenomicChartData();
 
+    }
+    getGenomicChartData() {
+        return genomicsApi().getChartData().then(result => {            
+            // const raceEthArr: any[] = [], sexAtBirthArr: any[] = [], currentAgeArr: any[] = [];
+            result.items.forEach(item => {
+                switch (item.analysisId) {
+                    case 3503:
+                        this.raceEthArr.push(item);
+                        break;
+                    case 3501:
+                        this.sexAtBirthArr.push(item);
+                        break;
+                    case 3502:
+                        this.currentAgeArr.push(item);
+                        break;
+                }
+
+            });
+            this.setState({
+                raceEthData: this.raceEthArr,
+                sexAtBirthData: this.sexAtBirthArr,
+                currentAgeData: this.currentAgeArr
+            })
         });
     }
 
-    componentDidMount() {
-        this.getGenomicParticipantCounts();
-    }
 
     render() {
-        const { participantCount } = this.state;
+        const { participantCount, raceEthData, sexAtBirthData, currentAgeData } = this.state;
         return <React.Fragment>
             <div style={styles.innerContainer}>
                 <div style={styles.headingLayout}>
@@ -79,9 +106,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                         <span>{participantCount} participants</span>
                     </div>
                 </div>
-                <GenomicChartComponent />
-                <GenomicChartComponent />
-                <GenomicChartComponent />
+                {raceEthData.length && <GenomicChartComponent title='Race/ethnicity' data={raceEthData[0]} />}
+                {sexAtBirthData.length && <GenomicChartComponent title='Sex assigned at birth' data={sexAtBirthData[0]} />}
+                {currentAgeData.length && <GenomicChartComponent title='Current age' data={currentAgeData[0]} />}
             </div>
         </React.Fragment>;
     }
