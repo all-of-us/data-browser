@@ -9,6 +9,7 @@ import org.pmiops.workbench.service.CdrVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.pmiops.workbench.model.Analysis;
+import org.pmiops.workbench.model.Variant;
 import org.pmiops.workbench.model.VariantListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.service.BigQueryService;
@@ -39,7 +40,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
-    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, gene, consequence, protein_change, clinical_significance, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
+    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, consequence, protein_change, clinical_significance, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
 
     public GenomicsController() {}
 
@@ -123,6 +124,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+        page = (page == null) ? 1 : page;
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -157,10 +159,33 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE;
             }
         }
-        finalSql += "LIMIT 50 OFFSET " + (page-1)*50;
-        System.out.println(finalSql);
+        finalSql += " LIMIT 50 OFFSET " + ((page-1)*50);
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
+                .addNamedParameter("contig", QueryParameterValue.string(contig))
+                .addNamedParameter("high", QueryParameterValue.int64(high))
+                .addNamedParameter("low", QueryParameterValue.int64(low))
+                .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
+                .addNamedParameter("genes", QueryParameterValue.string(genes))
+                .setUseLegacySql(false)
+                .build();
+        qjc = bigQueryService.filterBigQueryConfig(qjc);
+        TableResult result = bigQueryService.executeQuery(qjc);
+        Map<String, Integer> rm = bigQueryService.getResultMapper(result);
+        List<Variant> variantList = new ArrayList<>();
+        for (List<FieldValue> row : result.iterateAll()) {
+            variantList.add(new Variant()
+                .variantId(bigQueryService.getString(row, rm.get("variant_id")))
+                .genes(bigQueryService.getString(row, rm.get("genes")))
+                .consequence(bigQueryService.getList(row, rm.get("consequence")))
+                .proteinChange(bigQueryService.getString(row, rm.get("protein_change")))
+                .clinicalSignificance(bigQueryService.getList(row, rm.get("clinical_significance")))
+                .alleleCount(bigQueryService.getLong(row, rm.get("allele_count")))
+                .alleleNumber(bigQueryService.getLong(row, rm.get("allele_number")))
+                .alleleFrequency(bigQueryService.getDouble(row, rm.get("allele_frequency"))));
+        }
         VariantListResponse variantListResponse = new VariantListResponse();
-        return null;
+        variantListResponse.setItems(variantList);
+        return ResponseEntity.ok(variantListResponse);
     }
 
     @Override
