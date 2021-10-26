@@ -66,7 +66,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
 
     render() {
         const {searchWord, searchResultSize, searchSizeLoading} = this.state;
-        console.log("sEarch result var ", searchResultSize);
         return <React.Fragment>
             <div style={styles.searchContainer}>
             <div>

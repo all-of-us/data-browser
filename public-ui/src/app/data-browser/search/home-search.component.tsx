@@ -121,7 +121,6 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
 
     render() {
         const {onChange, onClear, value, searchTitle, domain} = this.props;
-        console.log(domain);
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
         const headingClassName = (domain === 'genomics') ? 'genomics-search-heading-display' : 'secondary-display';
