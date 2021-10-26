@@ -1,5 +1,5 @@
-import { reactStyles } from 'app/utils';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
+import { reactStyles } from 'app/utils';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
@@ -35,8 +35,8 @@ interface Props {
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
-    participantCount: number,
-    loading: boolean
+    participantCount: number;
+    loading: boolean;
 }
 
 
@@ -52,7 +52,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
     getGenomicParticipantCounts() {
         return genomicsApi().getParticipantCounts().then(result => {
-            let domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
+            const domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
             this.setState({participantCount: domainCountResult.countValue, loading: false});
         });
     }
@@ -66,7 +66,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         return <React.Fragment>
         {!loading &&
             <div style={styles.border}>
-                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>{participantCount.toLocaleString()} participants</div></div>
+                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
+                {participantCount.toLocaleString()} participants</div></div>
                 <VariantSearchComponent />
                 <VariantTableComponent />
             </div>}

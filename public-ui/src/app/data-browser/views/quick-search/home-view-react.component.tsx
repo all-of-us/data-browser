@@ -524,7 +524,8 @@ export const dBHomeComponent = withRouteData(
                                                                 tooltipKey='genomicDomainHelpText' />
                                </h5>
                                 <div>
-                                    <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} domainType='genomics' />
+                                    <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo}
+                                    domainType='genomics' />
                                 </div>
                             </React.Fragment>
                         }

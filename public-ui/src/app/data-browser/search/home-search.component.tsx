@@ -130,7 +130,7 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
             {searchTitle && <style>{homeSearchStyle}</style>}
             <div className='search-title'>
                 <span className={headingClassName}>{searchTitle}</span>
-                {searchTitle && domain!=='genomics' && <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
+                {searchTitle && domain !== 'genomics' && <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
                                                 action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>}
             </div>
             <div id='db-search-bar'>

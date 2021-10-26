@@ -1,7 +1,7 @@
-import { reactStyles } from 'app/utils';
-import * as React from 'react';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
+import { reactStyles } from 'app/utils';
+import * as React from 'react';
 
 const styles = reactStyles({
     searchContainer: {
@@ -41,12 +41,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         };
     }
 
+    search = _.debounce((val) => this.getSearchSize(), 1000);
+
     // life cycle hook
     componentDidMount() {
         this.getSearchSize();
     }
-
-    search = _.debounce((val) => this.getSearchSize(), 1000);
 
     handleChange(val) {
         this.setState({ searchWord: val});
