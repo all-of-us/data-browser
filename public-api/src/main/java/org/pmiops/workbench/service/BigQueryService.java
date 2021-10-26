@@ -104,17 +104,11 @@ public class BigQueryService {
     }
 
     public Long getLong(List<FieldValue> row, int index) {
-        if (row.get(index).isNull()) {
-            throw new BigQueryException(500, "FieldValue is null at position: " + index);
-        }
-        return row.get(index).getLongValue();
+        return row.get(index).isNull() ? 0L : row.get(index).getLongValue();
     }
 
     public Double getDouble(List<FieldValue> row, int index) {
-        if (row.get(index).isNull()) {
-            throw new BigQueryException(500, "FieldValue is null at position: " + index);
-        }
-        return row.get(index).getDoubleValue();
+        return row.get(index).isNull() ? 0.0 : row.get(index).getDoubleValue();
     }
 
     public List<String> getList(List<FieldValue> row, int index) {
