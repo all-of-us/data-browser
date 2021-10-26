@@ -68,7 +68,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
 
     }
     getGenomicChartData() {
-        return genomicsApi().getChartData().then(result => {            
+        return genomicsApi().getChartData().then(result => {
             // const raceEthArr: any[] = [], sexAtBirthArr: any[] = [], currentAgeArr: any[] = [];
             result.items.forEach(item => {
                 switch (item.analysisId) {
