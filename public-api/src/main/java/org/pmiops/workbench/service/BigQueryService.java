@@ -15,6 +15,7 @@ import com.google.cloud.bigquery.TableResult;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -120,8 +121,12 @@ public class BigQueryService {
         if (row.get(index).isNull()) {
             throw new BigQueryException(500, "FieldValue is null at position: " + index);
         }
-        return row.stream().map(Object::toString)
-                .collect(Collectors.toList());
+        List<FieldValue> rowValues = row.get(index).getRepeatedValue();
+        List<String> rowStringValues = new ArrayList<>();
+        for(FieldValue rowValue : rowValues) {
+            rowStringValues.add(rowValue.getStringValue());
+        }
+        return rowStringValues;
     }
 
     public boolean isNull(List<FieldValue> row, int index) {

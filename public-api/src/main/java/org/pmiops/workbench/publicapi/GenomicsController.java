@@ -42,6 +42,12 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, consequence, protein_change, clinical_significance, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
+    private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
+            "gvs_eur_ac as eur_allele_count, gvs_eur_an as eur_allele_number, gvs_eur_af as eur_allele_frequency, " +
+            "gvs_amr_ac as amr_allele_count, gvs_amr_an as amr_allele_number, gvs_amr_af as amr_allele_frequency, " +
+            "gvs_mid_ac as mid_allele_count, gvs_mid_an as mid_allele_number, gvs_mid_af as mid_allele_frequency, " +
+            "gvs_sas_ac as sas_allele_count, gvs_sas_an as sas_allele_number, gvs_sas_af as sas_allele_frequency, " +
+            "gvs_oth_ac as oth_allele_count, gvs_oth_an as oth_allele_number, gvs_oth_af as oth_allele_frequency from ${projectId}.${dataSetId}.wgs_variant";
 
     public GenomicsController() {}
 
@@ -206,7 +212,47 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
     @Override
-    public ResponseEntity<VariantInfo> getVariantDetails(String variantId) {
-        return null;
+    public ResponseEntity<VariantInfo> getVariantDetails(String variant_id) {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+        String finalSql = VARIANT_DETAIL_SQL_TEMPLATE + WHERE_VARIANT_ID;
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
+                .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
+                .setUseLegacySql(false)
+                .build();
+        qjc = bigQueryService.filterBigQueryConfig(qjc);
+        TableResult result = bigQueryService.executeQuery(qjc);
+        Map<String, Integer> rm = bigQueryService.getResultMapper(result);
+        List<FieldValue> row = result.iterateAll().iterator().next();
+        VariantInfo variantInfo = new VariantInfo()
+                .variantId(variant_id)
+                .dnaChange(bigQueryService.getString(row, rm.get("dna_change")))
+                .transcript(bigQueryService.getString(row, rm.get("transcript")))
+                .rsNumber(bigQueryService.getList(row, rm.get("rs_number")))
+                .afrAlleleCount(bigQueryService.getLong(row, rm.get("afr_allele_count")))
+                .afrAlleleNumber(bigQueryService.getLong(row, rm.get("afr_allele_number")))
+                .afrAlleleFrequency(bigQueryService.getDouble(row, rm.get("afr_allele_frequency")))
+                .easAlleleCount(bigQueryService.getLong(row, rm.get("eas_allele_count")))
+                .easAlleleNumber(bigQueryService.getLong(row, rm.get("eas_allele_number")))
+                .easAlleleFrequency(bigQueryService.getDouble(row, rm.get("eas_allele_frequency")))
+                .eurAlleleCount(bigQueryService.getLong(row, rm.get("eur_allele_count")))
+                .eurAlleleNumber(bigQueryService.getLong(row, rm.get("eur_allele_number")))
+                .eurAlleleFrequency(bigQueryService.getDouble(row, rm.get("eur_allele_frequency")))
+                .amrAlleleCount(bigQueryService.getLong(row, rm.get("amr_allele_count")))
+                .amrAlleleNumber(bigQueryService.getLong(row, rm.get("amr_allele_number")))
+                .amrAlleleFrequency(bigQueryService.getDouble(row, rm.get("amr_allele_frequency")))
+                .midAlleleCount(bigQueryService.getLong(row, rm.get("mid_allele_count")))
+                .midAlleleNumber(bigQueryService.getLong(row, rm.get("mid_allele_number")))
+                .midAlleleFrequency(bigQueryService.getDouble(row, rm.get("mid_allele_frequency")))
+                .sasAlleleCount(bigQueryService.getLong(row, rm.get("sas_allele_count")))
+                .sasAlleleNumber(bigQueryService.getLong(row, rm.get("sas_allele_number")))
+                .sasAlleleFrequency(bigQueryService.getDouble(row, rm.get("sas_allele_frequency")))
+                .othAlleleCount(bigQueryService.getLong(row, rm.get("oth_allele_count")))
+                .othAlleleNumber(bigQueryService.getLong(row, rm.get("oth_allele_number")))
+                .othAlleleFrequency(bigQueryService.getDouble(row, rm.get("oth_allele_frequency")));
+        return ResponseEntity.ok(variantInfo);
     }
 }
