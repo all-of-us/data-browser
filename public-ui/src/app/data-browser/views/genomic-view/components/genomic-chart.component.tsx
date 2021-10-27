@@ -1,10 +1,9 @@
-import { baseOptions, getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
+import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
-import { fakeAsync } from '@angular/core/testing';
+
 
 
 const chartSimple = {
@@ -25,21 +24,16 @@ const chartSimple = {
     },
     tooltip: {
         followPointer: true,
-        outside: false,
-        formatter: function (tooltip) {
-            // console.log(this.point.toolTipHelpText, 'this somehow works');
-            alert();
-            return '<div>sdfsdfdsfdsfds</div>';
-        },
-        useHTML: false,
-        enabled: true,
-        borderColor: '#262262',
-        borderRadius: '1px',
-        backgroundColor: '#FFFFFF',
-        style: {
-            color: '#302C71',
-            whiteSpace: 'normal',
-        }
+        useHTML: true,
+        // shared: true,
+        backgroundColor: 'transparent',
+        padding: 0,
+        borderWidth: 0,
+        shadow: false,
+        headerFormat: '<div class="geno-chart-tooltip">',
+        pointFormat: '{point.toolTipHelpText}',
+        footerFormat: '</div>'
+
     },
     xAxis: {
         labels: {
@@ -96,7 +90,7 @@ const chartSimple = {
         tickLength: 0,
         lineWidth: 1,
         lineColor: '#979797',
-        gridLineColor: 'transparent',
+        gridLineColor: '#DDE0E4',
         labels: {
             style: {
                 fontSize: '12px',
@@ -162,38 +156,49 @@ interface State {
 
 export class GenomicChartComponent extends React.Component<Props, State> {
 
-
-
     constructor(props: Props) {
         super(props);
         this.state = {
             options: null,
             setData: props.data
         }
-        console.log(this.props.data, 'from', this.props.title);
     }
-
 
     dataToOptions() {
         const chartOptions = JSON.parse(JSON.stringify(chartSimple));
         const { setData } = this.state;
-        const wgsData: Array<any> = [], microArrayData: Array<any> = [];
+        let wgsData: Array<any> = [], microArrayData: Array<any> = [];
         chartOptions.chart.type = setData.chartType;
         chartOptions.xAxis.categories = [];
         chartOptions.column = {}
         setData.results.forEach(result => {
+            if (GENDER_STRATUM_MAP[result.stratum2]) {
+                result.stratum2 = GENDER_STRATUM_MAP[result.stratum2]
+            } else if (AGE_STRATUM_MAP[result.stratum2]) {
+                result.stratum2 = AGE_STRATUM_MAP[result.stratum2];
+            }
+            const toolTipHelpText = `<strong>` + result.stratum2 + `</strong> <br> ` + result.countValue.toLocaleString() + `
+            participants`
             if (result.stratum4 === 'wgs') {
-                chartOptions.xAxis.categories.push(result.stratum2);
                 wgsData.push({
+                    cat: result.stratum2,
                     y: result.countValue,
-                    toolTipHelpText: '<div>whahahahahaha</div>'
+                    toolTipHelpText: toolTipHelpText
                 });
             } else if (result.stratum4 === 'micro-array') {
-                microArrayData.push(result.countValue);
+                chartOptions.xAxis.categories.push(result.stratum2);
+                microArrayData.push({
+                    cat: result.stratum2,
+                    y: result.countValue,
+                    toolTipHelpText: toolTipHelpText
+                });
             }
         });
+        wgsData = wgsData.sort(function (a, b) {
+            return chartOptions.xAxis.categories.indexOf(a.cat) - chartOptions.xAxis.categories.indexOf(b.cat);
+        });
+
         chartOptions.series = [{
-            toolTipHelpText: 'sssssss',
             name: 'wsg',
             data: wgsData,
             color: '#216FB4'
@@ -210,17 +215,14 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-
         this.dataToOptions();
-
     }
 
 
     render() {
-        const { options, setData } = this.state;
+        const { options } = this.state;
         const { title } = this.props;
         return <div style={styles.chartContainer}>
-            <h1>{setData.stratum2Name}</h1>
             <h3 style={styles.chartTitle}>{title}</h3>
             <HighchartsReact allowChartUpdate="false" highcharts={highCharts} options={options} />
         </div>;

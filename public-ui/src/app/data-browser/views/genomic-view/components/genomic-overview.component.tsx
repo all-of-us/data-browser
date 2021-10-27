@@ -51,6 +51,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     raceEthArr: any[] = [];
     sexAtBirthArr: any[] = [];
     currentAgeArr: any[] = [];
+    participantCountsArr: any[] = [];
     async getGenomicParticipantCounts() {
         const result_1 = await genomicsApi().getParticipantCounts();
         result_1.results.forEach(type => {
@@ -69,6 +70,8 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     }
     getGenomicChartData() {
         return genomicsApi().getChartData().then(result => {
+            console.log(result, 'rererereressulllt');
+
             // const raceEthArr: any[] = [], sexAtBirthArr: any[] = [], currentAgeArr: any[] = [];
             result.items.forEach(item => {
                 switch (item.analysisId) {
@@ -81,6 +84,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                     case 3502:
                         this.currentAgeArr.push(item);
                         break;
+                    case 3000:
+                        this.
+
                 }
 
             });

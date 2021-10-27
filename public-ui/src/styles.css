@@ -600,6 +600,7 @@ a a:link a:visited {
 .fitbit-tooltip,
 .version-survey-tooltip,
 .age-tooltip,
+.geno-chart-tooltip,
 .survey-answer-tooltip {
   display: block;
   width: 500px;
@@ -621,6 +622,10 @@ a a:link a:visited {
   width: 10rem;
 }
 
+.geno-chart-tooltip {
+  width: 10rem;
+}
+
 .version-survey-tooltip,
 .survey-answer-tooltip {
   width: fit-content;
@@ -636,12 +641,12 @@ a a:link a:visited {
 }
 
 .highcharts-tooltip {
-    z-index: 200;
+  z-index: 200;
 }
 
 .survey-answer-tooltip strong {
   color: #262262;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
 }
 
 .highcharts-container svg {
@@ -708,29 +713,30 @@ strong {
 }
 
 .pagination {
-    display: flex;
-    flex-direction: row;
-    padding: 1em;
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
 }
 
 .pagination li {
-    margin-top: 1%;
-    margin-bottom: 1%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
-.pagination li:not(:first-of-type), .pagination li:not(:last-of-type){
-    padding: 0.2em;
+.pagination li:not(:first-of-type),
+.pagination li:not(:last-of-type) {
+  padding: 0.2em;
 }
 
-.pagination li:not(:first-of-type){
+.pagination li:not(:first-of-type) {
   color: #262262 !important;
   margin-left: 2%;
 }
 
-.pagination li.active{
-    text-decoration: underline;
-    font-weight: bolder;
-    background: #2691d0 !important;
+.pagination li.active {
+  text-decoration: underline;
+  font-weight: bolder;
+  background: #2691d0 !important;
 }
 
 body *:focus {
