@@ -1,6 +1,7 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
+import _ from 'lodash';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -36,6 +37,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             searchWord: localStorage.getItem('genomicSearchText') ? localStorage.getItem('genomicSearchText') : '',
+            searchResultSize: 0,
             loading: true,
             searchSizeLoading: true
         };
