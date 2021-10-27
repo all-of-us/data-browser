@@ -3,6 +3,7 @@ package org.pmiops.workbench.publicapi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.web.bind.annotation.RestController;
 import org.pmiops.workbench.service.AchillesAnalysisService;
 import org.pmiops.workbench.service.CdrVersionService;
@@ -131,7 +132,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        page = (page == null) ? 1 : page;
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -166,7 +166,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE;
             }
         }
-        finalSql += " LIMIT 50 OFFSET " + ((page-1)*50);
+        finalSql += " LIMIT 50 OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*50);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
