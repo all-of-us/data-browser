@@ -143,7 +143,8 @@ const styles = reactStyles({
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-    data: any;
+    data: any[];
+    counts: any[];
     title: string;
 }
 // tslint:disable-next-line:no-empty-interface
