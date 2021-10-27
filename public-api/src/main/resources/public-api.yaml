@@ -127,18 +127,18 @@ paths:
           schema:
             $ref: "#/definitions/AnalysisListResponse"
 
-  /v1/genomics/variant-details:
+  /v1/genomics/variant-details/{variantId}:
     get:
       tags:
         - genomics
       description: Gets the variant details
       operationId: "getVariantDetails"
       parameters:
-        - in: query
-          name: variant-id
+        - in: path
+          name: variantId
           type: string
           required: true
-          description: variant id
+          description: the variant id
       responses:
         200:
           description: Variant Information

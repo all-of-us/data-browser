@@ -115,12 +115,9 @@ public class BigQueryService {
         if (row.get(index).isNull()) {
             throw new BigQueryException(500, "FieldValue is null at position: " + index);
         }
-        List<FieldValue> rowValues = row.get(index).getRepeatedValue();
-        List<String> rowStringValues = new ArrayList<>();
-        for(FieldValue rowValue : rowValues) {
-            rowStringValues.add(rowValue.getStringValue());
-        }
-        return rowStringValues;
+        return row.get(index).getRepeatedValue().stream()
+                .map(FieldValue::getStringValue)
+                .collect(Collectors.toList());
     }
 
     public boolean isNull(List<FieldValue> row, int index) {
