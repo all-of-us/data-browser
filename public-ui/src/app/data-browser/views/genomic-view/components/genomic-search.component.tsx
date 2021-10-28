@@ -1,3 +1,4 @@
+import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
@@ -5,8 +6,26 @@ import { VariantTableComponent } from './variant-table.component';
 
 const styles = reactStyles({
     border: {
-        border: '1px solid',
-        margin: '1rem'
+        background: 'white',
+        borderRadius: '3px',
+        padding: '2rem',
+        paddingTop: '1em'
+    },
+    titleBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    boxHeading: {
+        fontFamily: 'Arial, sans-serif',
+        fontWeight: 200,
+        fontStyle: 'normal',
+        fontSize: '27px',
+        fontStretch: 'normal',
+        lineHeight: '1.47em',
+        letterSpacing: 'normal',
+        textAlign: 'left',
+        color: '#262262'
     }
 });
 
@@ -16,6 +35,8 @@ interface Props {
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
+    participantCount: number;
+    loading: boolean;
 }
 
 
@@ -23,15 +44,33 @@ interface State {
 export class GenomicSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        this.state = {
+            participantCount: 0,
+            loading: true
+        };
+    }
+
+    getGenomicParticipantCounts() {
+        genomicsApi().getParticipantCounts().then(result => {
+            const domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
+            this.setState({participantCount: domainCountResult.countValue, loading: false});
+        });
+    }
+
+    componentDidMount() {
+        this.getGenomicParticipantCounts();
     }
 
     render() {
+        const {loading, participantCount} = this.state;
         return <React.Fragment>
+        {!loading &&
             <div style={styles.border}>
-                <p>I am Genomic Search</p>
+                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
+                {participantCount.toLocaleString()} participants</div></div>
                 <VariantSearchComponent />
                 <VariantTableComponent />
-            </div>
+            </div>}
         </React.Fragment>;
     }
 }

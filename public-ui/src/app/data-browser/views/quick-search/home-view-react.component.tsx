@@ -466,7 +466,7 @@ export const dBHomeComponent = withRouteData(
                 </p>
                 <div className='search-icon-container'>
                     <div>
-                        <SearchComponent value={searchWord} searchTitle='Search Across Data Types'
+                        <SearchComponent value={searchWord} searchTitle='Search Across Data Types' domain='home'
                             onChange={(val) => this.handleChange(val)}
                             onClear={() => this.handleChange('')} />
                         <CdrVersionReactComponent />
@@ -514,7 +514,7 @@ export const dBHomeComponent = withRouteData(
 
                             }
                         </div>
-                        {(environment.geno) &&
+                        {(environment.geno) && genomicInfo &&
                             <React.Fragment>
                                 <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics
                                 <TooltipReactComponent
@@ -524,10 +524,8 @@ export const dBHomeComponent = withRouteData(
                                                                 tooltipKey='genomicDomainHelpText' />
                                </h5>
                                 <div>
-                                    {
-                                        genomicInfo &&
-                                        <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo} domainType='genomics' />
-                                    }
+                                    <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo}
+                                    domainType='genomics' />
                                 </div>
                             </React.Fragment>
                         }
