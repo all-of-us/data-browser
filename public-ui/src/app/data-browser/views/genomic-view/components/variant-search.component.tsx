@@ -43,7 +43,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         };
     }
 
-    search = _.debounce((val) => this.getSearchSize(), 1000);
+    search = _.debounce(() => this.getSearchSize(), 1000);
 
     // life cycle hook
     componentDidMount() {
@@ -56,7 +56,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     getSearchSize() {
-        return genomicsApi().getVariantSearchResultSize(this.state.searchWord).then(
+        genomicsApi().getVariantSearchResultSize(this.state.searchWord).then(
             result => {
                 this.setState({searchResultSize: result, searchSizeLoading: false});
             }

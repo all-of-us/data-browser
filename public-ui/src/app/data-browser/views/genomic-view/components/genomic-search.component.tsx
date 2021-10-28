@@ -51,7 +51,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     }
 
     getGenomicParticipantCounts() {
-        return genomicsApi().getParticipantCounts().then(result => {
+        genomicsApi().getParticipantCounts().then(result => {
             const domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
             this.setState({participantCount: domainCountResult.countValue, loading: false});
         });
