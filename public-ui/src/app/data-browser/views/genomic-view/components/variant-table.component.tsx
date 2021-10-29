@@ -14,7 +14,7 @@ const styles = reactStyles({
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-
+    searchResults: any[];
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
@@ -50,6 +50,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     render() {
         const {loading, numPages} = this.state;
+        const {searchResults} = this.props;
         return <React.Fragment>
             <div style={styles.border}>
                 <p>I am Variant Table</p>

@@ -37,6 +37,7 @@ interface Props {
 interface State {
     participantCount: number;
     loading: boolean;
+    searchResults: any[];
 }
 
 
@@ -46,14 +47,15 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             participantCount: 0,
-            loading: true
+            loading: true,
+            searchResults: null
         };
     }
 
     getGenomicParticipantCounts() {
         genomicsApi().getParticipantCounts().then(result => {
             const domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
-            this.setState({participantCount: domainCountResult.countValue, loading: false});
+            this.setState({ participantCount: domainCountResult.countValue, loading: false });
         });
     }
 
@@ -61,16 +63,22 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.getGenomicParticipantCounts();
     }
 
+    handleResults(results: any[]) {
+        this.setState({
+            searchResults: results
+        })
+    }
+
     render() {
-        const {loading, participantCount} = this.state;
+        const { loading, participantCount, searchResults } = this.state;
         return <React.Fragment>
-        {!loading &&
-            <div style={styles.border}>
-                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
-                {participantCount.toLocaleString()} participants</div></div>
-                <VariantSearchComponent />
-                <VariantTableComponent />
-            </div>}
+            {!loading &&
+                <div style={styles.border}>
+                    <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
+                        {participantCount.toLocaleString()} participants</div></div>
+                    <VariantSearchComponent onSearchReturn={(results: any[]) => this.handleResults(results)} />
+                    <VariantTableComponent searchResults={searchResults} />
+                </div>}
         </React.Fragment>;
     }
 }

@@ -20,7 +20,7 @@ const styles = reactStyles({
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-
+    onSearchReturn: Function
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
@@ -29,8 +29,6 @@ interface State {
     loading: boolean;
     searchSizeLoading: boolean;
 }
-
-
 
 export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -43,7 +41,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         };
     }
 
-    search = _.debounce(() => this.getSearchSize(), 1000);
+    search = _.debounce(() => this.getVariantSearch(), 1000);
 
     // life cycle hook
     componentDidMount() {
@@ -64,6 +62,15 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             console.log(e, 'error');
             this.setState({ searchSizeLoading: false });
         });
+    }
+
+    getVariantSearch(){
+        this.getSearchSize();
+        genomicsApi().searchVariants(this.state.searchWord).then(
+            result => {
+                this.props.onSearchReturn(result)
+            }
+        )
     }
 
     render() {

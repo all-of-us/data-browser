@@ -61,7 +61,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     constructor(props: {}) {
         super(props);
         this.state = {
-            selectionId: 1
+            selectionId: 2
         };
     }
 
