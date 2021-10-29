@@ -9,7 +9,8 @@ const styles = reactStyles({
         background: 'white',
         borderRadius: '3px',
         padding: '2rem',
-        paddingTop: '1em'
+        paddingTop: '1em',
+        overflow: 'hidden'
     },
     titleBox: {
         display: 'flex',

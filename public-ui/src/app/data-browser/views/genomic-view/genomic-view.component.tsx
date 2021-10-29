@@ -11,7 +11,7 @@ const styles = reactStyles({
     },
     viewLayout: {
         display: 'grid',
-        gridTemplateColumns: '185px 1fr',
+        gridTemplateColumns: '185px 85%',
         columnGap: '0.5rem',
         marginTop: '1em'
     },

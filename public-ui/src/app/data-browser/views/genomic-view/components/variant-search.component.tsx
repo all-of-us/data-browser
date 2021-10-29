@@ -49,14 +49,17 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleChange(val) {
-        this.setState({ searchWord: val});
+        this.setState({ searchWord: val });
         this.search(val);
     }
 
     getSearchSize() {
         genomicsApi().getVariantSearchResultSize(this.state.searchWord).then(
             result => {
-                this.setState({searchResultSize: result, searchSizeLoading: false});
+                this.setState({
+                    searchResultSize: this.state.searchWord !== '' ? result : 0,
+                    searchSizeLoading: false
+                });
             }
         ).catch(e => {
             console.log(e, 'error');
@@ -64,7 +67,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         });
     }
 
-    getVariantSearch(){
+    getVariantSearch() {
         this.getSearchSize();
         genomicsApi().searchVariants(this.state.searchWord).then(
             result => {
@@ -74,21 +77,22 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {searchWord, searchResultSize, searchSizeLoading} = this.state;
+        const { searchWord, searchResultSize, searchSizeLoading } = this.state;
         return <React.Fragment>
             <div style={styles.searchContainer}>
-            <div>
-            <SearchComponent value={searchWord} searchTitle='Search' domain='genomics'
-                                        onChange={(val) => this.handleChange(val)}
-                                        onClear={() => this.handleChange('')} />
+                <div>
+                    <SearchComponent value={searchWord} searchTitle='Search' domain='genomics'
+                        onChange={(val) => this.handleChange(val)}
+                        onClear={() => this.handleChange('')} />
+                </div>
+                <div style={styles.searchHelpText}>
+                    Examples: <br></br>
+                    Gene: TP53, Variant: 17-7577097-C-T, <br></br>
+                    Genomic Region: chr17:7572855-7579987
+                </div>
             </div>
-            <div style={styles.searchHelpText}>
-            Examples: <br></br>
-            Gene: TP53, Variant: 17-7577097-C-T, <br></br>
-            Genomic Region: chr17:7572855-7579987
-            </div>
-            </div>
-            {!searchSizeLoading && searchResultSize && <div>{searchResultSize.toLocaleString()} variants found</div>}
+            {!searchSizeLoading && searchResultSize ? <strong >{searchResultSize.toLocaleString()} variants found</strong> :
+            <strong>{searchResultSize.toLocaleString()} results</strong> }
         </React.Fragment>;
     }
 }

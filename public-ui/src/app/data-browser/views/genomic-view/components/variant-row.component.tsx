@@ -5,8 +5,7 @@ import { VariantExpandedComponent } from './variant-expanded.component';
 
 const styles = reactStyles({
     border: {
-        border: '1px solid',
-        margin: '1rem'
+        border: '1px solid'
     }
 });
 
