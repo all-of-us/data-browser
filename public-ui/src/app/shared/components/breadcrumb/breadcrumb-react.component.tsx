@@ -17,7 +17,8 @@ const styles = reactStyles({
     marginRight: '0.5em',
   },
   crumbContainer: {
-    margin: '1em 10% 0',
+    margin: '0em 10% 0',
+    paddingTop:'1em'
   },
   separator: {
     marginRight: '0.5em'
