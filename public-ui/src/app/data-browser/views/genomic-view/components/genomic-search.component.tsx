@@ -10,7 +10,6 @@ const styles = reactStyles({
         borderRadius: '3px',
         padding: '2rem',
         paddingTop: '1em',
-        overflow: 'hidden'
     },
     titleBox: {
         display: 'flex',
@@ -64,9 +63,11 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.getGenomicParticipantCounts();
     }
 
-    handleResults(results: any[]) {
+    handleResults(results: any) {
+        console.log(results.items, 'frerere');
+
         this.setState({
-            searchResults: results
+            searchResults: results.items
         })
     }
 

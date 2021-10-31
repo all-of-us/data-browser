@@ -9,8 +9,8 @@ const styles = reactStyles({
         border: '1px solid #CCCCCC',
         borderRadius: '3px',
         background: '#FAFAFA',
-        marginTop: '0.5rem'
-        // margin: '1rem'
+        marginTop: '0.5rem',
+        overflow: 'scroll'
     },
     tableFrame: {
         border: '1px solid #CCCCCC',
@@ -21,14 +21,22 @@ const styles = reactStyles({
     },
     headerLayout: {
         display: 'grid',
-        gridTemplateColumns: '10rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem',
-        padding: '0.5rem',
+        gridTemplateColumns: '10rem 10rem 15rem 13rem 10rem 10rem 10rem 10rem',
         background: '#f9f9fa',
-        overflow: 'hidden'
+        borderBottom: '1px solid #CCCCCC',
     },
-    headingLabel: {
-        fontSize: '.8em'
+    headingItem: {
+        fontSize: '.8em',
+        paddingTop:'.5rem',
+        paddingBottom: '.5rem'
+    },
+    first:{
+        paddingLeft:'.5rem',
+    },
+    last:{
+        paddingRight:'.5rem'
     }
+    
 });
 
 
@@ -53,7 +61,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
             loading: true,
             numPages: 0
         };
+        console.log(this.props.searchResults,'loool');
+        
     }
+
+    
 
     columnNames = [
         'Variant ID',
@@ -66,16 +78,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Frequency']
 
     handlePageClick() {
+        const ref = React.useRef(null);
+        React.useEffect(() => {
+            console.log("width", ref.current.offsetWidth);
+          }, []);
         console.log('Clicked on paginator');
     }
 
     componentDidMount() {
 
-        // genomicsApi().getVariantSearchResultSize('').then(result => {
-        //     this.setState({ loading: false, variantListSize: result, numPages: Math.ceil(result / 50) });
-        // }).catch(e => {
-        //     console.log(e, 'error');
-        // });
+        genomicsApi().getVariantSearchResultSize('').then(result => {
+            this.setState({ loading: false, variantListSize: result, numPages: Math.ceil(result / 50) });
+        }).catch(e => {
+            console.log(e, 'error');
+        });
 
     }
 
@@ -85,12 +101,23 @@ export class VariantTableComponent extends React.Component<Props, State> {
         return <React.Fragment> {searchResults &&
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
-                    {
+                    {/* {
                         this.columnNames.map((heading, index) => {
                             return <div style={styles.headingLabel} key={index}>{heading}</div>
                         })
-                    }
+                    } */}
+<div style={{...styles.headingItem, ...styles.first}}>Variant ID</div>
+<div style={styles.headingItem}>Gene</div>
+<div style={styles.headingItem}>Consequence</div>
+<div style={styles.headingItem}>Protein Change</div>
+<div style={styles.headingItem}>Clinical Significance</div>
+<div style={styles.headingItem}>Allele Count</div>
+<div style={styles.headingItem}>Allele Number</div>
+<div style={{...styles.headingItem, ...styles.last}}>Allele Frequency</div>
                 </div>
+                {searchResults  && searchResults.map((varData, index) => {
+                    return <VariantRowComponent key={index} varData={varData} />
+                })}
 
                 {!loading &&
                     <ReactPaginate
