@@ -1,4 +1,3 @@
-import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
@@ -30,7 +29,7 @@ const styles = reactStyles({
         fontSize: '.8em',
         paddingTop: '.5rem',
         paddingBottom: '.5rem',
-        paddingLeft:'.75rem',
+        paddingLeft: '.75rem',
         borderBottom: '1px solid #CCCCCC'
     },
     headingLabel: {
@@ -45,19 +44,15 @@ const styles = reactStyles({
 
 });
 
-
-// tslint:disable-next-line:no-empty-interface
 interface Props {
     searchResults: any[];
 }
-// tslint:disable-next-line:no-empty-interface
+
 interface State {
     variantListSize: number;
     numPages: number;
     loading: boolean;
 }
-
-
 
 export class VariantTableComponent extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -71,8 +66,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     }
 
-
-
     columnNames = [
         'Variant ID',
         'Gene',
@@ -81,37 +74,26 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Clinical Significance',
         'Allele Count',
         'Allele Number',
-        'Allele Frequency']
+        'Allele Frequency'];
 
     handlePageClick() {
-        const ref = React.useRef(null);
-        React.useEffect(() => {
-            console.log("width", ref.current.offsetWidth);
-        }, []);
         console.log('Clicked on paginator');
     }
 
     componentDidMount() {
-
         genomicsApi().getVariantSearchResultSize('').then(result => {
             this.setState({ loading: false, variantListSize: result, numPages: Math.ceil(result / 50) });
         }).catch(e => {
             console.log(e, 'error');
         });
-
     }
 
     render() {
-        const { loading, numPages, variantListSize } = this.state;
+        const { loading, numPages } = this.state;
         const { searchResults } = this.props;
         return <React.Fragment> {searchResults &&
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
-                    {/* {
-                        this.columnNames.map((heading, index) => {
-                            return <div style={styles.headingLabel} key={index}>{heading}</div>
-                        })
-                    } */}
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
@@ -122,7 +104,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}>Allele Frequency</span></div>
                 </div>
                 {searchResults && searchResults.map((varData, index) => {
-                    return <VariantRowComponent key={index} varData={varData} />
+                    return <VariantRowComponent key={index} varData={varData} />;
                 })}
 
                 {!loading &&

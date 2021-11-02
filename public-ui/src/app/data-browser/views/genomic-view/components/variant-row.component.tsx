@@ -1,9 +1,8 @@
 import { reactStyles } from 'app/utils';
-import * as React from 'react';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { VariantExpandedComponent } from './variant-expanded.component';
-
 import { Variant } from 'publicGenerated';
+import * as React from 'react';
+
 
 
 const styles = reactStyles({
@@ -43,18 +42,12 @@ const styles = reactStyles({
     }
 });
 
-// tslint:disable-next-line:no-empty-interface
+
 interface Props {
-    varData: Variant
-}
-// tslint:disable-next-line:no-empty-interface
-interface State {
-
+    varData: Variant;
 }
 
-
-
-export class VariantRowComponent extends React.Component<Props, State> {
+export class VariantRowComponent extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
     }
@@ -73,13 +66,14 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 <div style={styles.rowItem}>{varData.genes}</div>
                 <div style={styles.rowItem}>
                     {varData.consequence.length ? varData.consequence.map((item, index) => {
-                        return <div key={index}>{item}<br /></div>
+                        return <div key={index}>{item}<br /></div>;
                     }) : <div>–</div>}
                 </div>
-                {varData.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>{varData.proteinChange}</div> : <div>–</div>}
+                {varData.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
+                    {varData.proteinChange}</div> : <div>–</div>}
                 <div style={styles.rowItem}>
                     {varData.clinicalSignificance.length ? varData.clinicalSignificance.map((item, index) => {
-                        return <div key={index}>{item}<br /></div>
+                        return <div key={index}>{item}<br /></div>;
                     }) : <div>–</div>}
                 </div>
                 <div style={styles.rowItem}>{varData.alleleCount}</div>

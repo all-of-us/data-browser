@@ -68,7 +68,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
         this.setState({
             searchResults: results.items
-        })
+        });
     }
 
     render() {

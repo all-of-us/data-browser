@@ -20,7 +20,7 @@ const styles = reactStyles({
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-    onSearchReturn: Function
+    onSearchReturn: Function;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
@@ -71,9 +71,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.getSearchSize();
         genomicsApi().searchVariants(this.state.searchWord).then(
             result => {
-                this.props.onSearchReturn(result)
+                this.props.onSearchReturn(result);
             }
-        )
+        );
     }
 
     render() {
