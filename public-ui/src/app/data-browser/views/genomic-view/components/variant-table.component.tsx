@@ -62,8 +62,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
             loading: true,
             numPages: 0
         };
-        console.log(this.props.searchResults, 'loool');
-
     }
 
     columnNames = [

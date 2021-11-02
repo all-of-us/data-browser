@@ -64,8 +64,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     }
 
     handleResults(results: any) {
-        console.log(results.items, 'frerere');
-
         this.setState({
             searchResults: results.items
         });
