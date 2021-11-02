@@ -1,3 +1,4 @@
+import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
@@ -23,20 +24,25 @@ const styles = reactStyles({
         display: 'grid',
         gridTemplateColumns: '10rem 10rem 15rem 13rem 10rem 10rem 10rem 10rem',
         background: '#f9f9fa',
-        borderBottom: '1px solid #CCCCCC',
+        fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
     },
     headingItem: {
         fontSize: '.8em',
-        paddingTop:'.5rem',
-        paddingBottom: '.5rem'
+        paddingTop: '.5rem',
+        paddingBottom: '.5rem',
+        paddingLeft:'.75rem',
+        borderBottom: '1px solid #CCCCCC'
     },
-    first:{
-        paddingLeft:'.5rem',
+    headingLabel: {
+        borderBottom: '1px dashed'
     },
-    last:{
-        paddingRight:'.5rem'
+    first: {
+        paddingLeft: '.5rem',
+    },
+    last: {
+        paddingRight: '.5rem'
     }
-    
+
 });
 
 
@@ -61,11 +67,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
             loading: true,
             numPages: 0
         };
-        console.log(this.props.searchResults,'loool');
-        
+        console.log(this.props.searchResults, 'loool');
+
     }
 
-    
+
 
     columnNames = [
         'Variant ID',
@@ -81,7 +87,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         const ref = React.useRef(null);
         React.useEffect(() => {
             console.log("width", ref.current.offsetWidth);
-          }, []);
+        }, []);
         console.log('Clicked on paginator');
     }
 
@@ -106,16 +112,16 @@ export class VariantTableComponent extends React.Component<Props, State> {
                             return <div style={styles.headingLabel} key={index}>{heading}</div>
                         })
                     } */}
-<div style={{...styles.headingItem, ...styles.first}}>Variant ID</div>
-<div style={styles.headingItem}>Gene</div>
-<div style={styles.headingItem}>Consequence</div>
-<div style={styles.headingItem}>Protein Change</div>
-<div style={styles.headingItem}>Clinical Significance</div>
-<div style={styles.headingItem}>Allele Count</div>
-<div style={styles.headingItem}>Allele Number</div>
-<div style={{...styles.headingItem, ...styles.last}}>Allele Frequency</div>
+                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Protein Change</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Clinical Significance</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Count</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Number</span></div>
+                    <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}>Allele Frequency</span></div>
                 </div>
-                {searchResults  && searchResults.map((varData, index) => {
+                {searchResults && searchResults.map((varData, index) => {
                     return <VariantRowComponent key={index} varData={varData} />
                 })}
 
