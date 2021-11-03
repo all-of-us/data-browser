@@ -19,10 +19,10 @@ const styles = reactStyles({
         justifyContent: 'space-between',
     },
     boxHeading: {
-        fontFamily: 'Arial, sans-serif',
-        fontWeight: 200,
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontWeight: 100,
         fontStyle: 'normal',
-        fontSize: '27px',
+        fontSize: '1.3em',
         fontStretch: 'normal',
         lineHeight: '1.47em',
         letterSpacing: 'normal',
