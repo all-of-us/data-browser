@@ -12,7 +12,7 @@ const styles = reactStyles({
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-
+    closed:Function;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
@@ -25,9 +25,13 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
         super(props);
     }
 
+    handleClick(e) {
+
+    }
+
     render() {
         return <React.Fragment>
-            <div style={styles.border}>
+            <div onClick={(e)=> this.props.closed(e)} style={styles.border}>
                 <p>I am Variant Row Expanded</p>
             </div>
         </React.Fragment>;

@@ -2,6 +2,7 @@ import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Variant } from 'publicGenerated';
 import * as React from 'react';
+import { VariantExpandedComponent } from './variant-expanded.component';
 
 
 
@@ -23,6 +24,13 @@ const styles = reactStyles({
         borderRight: '1px solid #CCCCCC',
         boxShadow: 'rgb(204 204 204) 0.2rem 0px 8px -2px',
         paddingRight: '0.25rem'
+    },
+    variantExpanded: {
+        position:'sticky',
+        width:'100%',
+        background:'yellow',
+        top: '1px',
+        left: '1px'
     },
     caretIcon: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
@@ -47,41 +55,58 @@ interface Props {
     varData: Variant;
 }
 
-export class VariantRowComponent extends React.Component<Props, {}> {
+interface State {
+    variantCliked: boolean
+}
+
+export class VariantRowComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        this.state = {
+            variantCliked: false
+        }
     }
 
+    handleClick(e) {
+        this.setState({
+            variantCliked: !this.state.variantCliked
+        })
+
+    }
 
     render() {
         const { varData } = this.props;
+        const { variantCliked } = this.state;
         return <React.Fragment>
-            <div style={styles.rowLayout}>
-                <div style={styles.variant}>
-                    <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{varData.variantId}&#x20;
+            {variantCliked ? <div style={styles.variantExpanded}>
+                <VariantExpandedComponent closed={(e)=> this.handleClick(e)} /> 
+            </div>:
+                <div style={styles.rowLayout}>
+                    <div onClick={(e) => this.handleClick(e)} style={styles.variant}>
+                        <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{varData.variantId}&#x20;
+                        </div>
+                        <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
+                            size='lg' shape='caret' dir='down' />
                     </div>
-                    <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
-                        size='lg' shape='caret' dir='down' />
+                    <div style={styles.rowItem}>{varData.genes}</div>
+                    <div style={styles.rowItem}>
+                        {varData.consequence.length ? varData.consequence.map((item, index) => {
+                            return <div key={index}>{item}<br /></div>;
+                        }) : <div>–</div>}
+                    </div>
+                    {varData.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
+                        {varData.proteinChange}</div> : <div>–</div>}
+                    <div style={styles.rowItem}>
+                        {varData.clinicalSignificance.length ? varData.clinicalSignificance.map((item, index) => {
+                            return <div key={index}>{item}<br /></div>;
+                        }) : <div>–</div>}
+                    </div>
+                    <div style={styles.rowItem}>{varData.alleleCount}</div>
+                    <div style={styles.rowItem}>{varData.alleleNumber}</div>
+                    <div style={styles.rowItem}>{varData.alleleFrequency}</div>
                 </div>
-                <div style={styles.rowItem}>{varData.genes}</div>
-                <div style={styles.rowItem}>
-                    {varData.consequence.length ? varData.consequence.map((item, index) => {
-                        return <div key={index}>{item}<br /></div>;
-                    }) : <div>–</div>}
-                </div>
-                {varData.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
-                    {varData.proteinChange}</div> : <div>–</div>}
-                <div style={styles.rowItem}>
-                    {varData.clinicalSignificance.length ? varData.clinicalSignificance.map((item, index) => {
-                        return <div key={index}>{item}<br /></div>;
-                    }) : <div>–</div>}
-                </div>
-                <div style={styles.rowItem}>{varData.alleleCount}</div>
-                <div style={styles.rowItem}>{varData.alleleNumber}</div>
-                <div style={styles.rowItem}>{varData.alleleFrequency}</div>
+            }
 
-            </div>
-            {/* <VariantExpandedComponent /> */}
         </React.Fragment>;
     }
 }
