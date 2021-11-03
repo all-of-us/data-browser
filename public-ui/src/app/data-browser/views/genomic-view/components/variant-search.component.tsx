@@ -1,7 +1,5 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import _ from 'lodash';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -18,16 +16,13 @@ const styles = reactStyles({
     }
 });
 
-// tslint:disable-next-line:no-empty-interface
 interface Props {
     onSearchReturn: Function;
+    searchTerm: Function;
+    variantListSize: number;
 }
-// tslint:disable-next-line:no-empty-interface
 interface State {
     searchWord: string;
-    searchResultSize: number;
-    loading: boolean;
-    searchSizeLoading: boolean;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -35,54 +30,31 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             searchWord: localStorage.getItem('genomicSearchText') ? localStorage.getItem('genomicSearchText') : '',
-            searchResultSize: 0,
-            loading: true,
-            searchSizeLoading: true
         };
+        if (this.state.searchWord !== '') {
+            this.props.searchTerm(this.state.searchWord);
+        }
     }
 
-    search = _.debounce(() => this.getVariantSearch(), 1000);
+    handleChange(val: string) {
+        if (val !== '') {
+            localStorage.setItem('genomicSearchText', val);
 
-    // life cycle hook
-    componentDidMount() {
-        this.getSearchSize();
-    }
-
-    handleChange(val) {
+        } else {
+            localStorage.removeItem('genomicSearchText');
+        }
+        this.props.searchTerm(val);
         this.setState({ searchWord: val });
-        this.search(val);
-    }
-
-    getSearchSize() {
-        genomicsApi().getVariantSearchResultSize(this.state.searchWord).then(
-            result => {
-                this.setState({
-                    searchResultSize: this.state.searchWord !== '' ? result : 0,
-                    searchSizeLoading: false
-                });
-            }
-        ).catch(e => {
-            console.log(e, 'error');
-            this.setState({ searchSizeLoading: false });
-        });
-    }
-
-    getVariantSearch() {
-        this.getSearchSize();
-        genomicsApi().searchVariants(this.state.searchWord).then(
-            result => {
-                this.props.onSearchReturn(result);
-            }
-        );
     }
 
     render() {
-        const { searchWord, searchResultSize, searchSizeLoading } = this.state;
+        const { searchWord } = this.state;
+        const { variantListSize } = this.props;
         return <React.Fragment>
             <div style={styles.searchContainer}>
                 <div>
                     <SearchComponent value={searchWord} searchTitle='Search' domain='genomics'
-                        onChange={(val) => this.handleChange(val)}
+                        onChange={(val: string) => this.handleChange(val)}
                         onClear={() => this.handleChange('')} />
                 </div>
                 <div style={styles.searchHelpText}>
@@ -91,8 +63,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     Genomic Region: chr17:7572855-7579987
                 </div>
             </div>
-            {!searchSizeLoading && searchResultSize ? <strong >{searchResultSize.toLocaleString()} variants found</strong> :
-            <strong>{searchResultSize.toLocaleString()} results</strong> }
+            {variantListSize ? <strong >{variantListSize.toLocaleString()} variants found</strong> :
+                <strong>{variantListSize.toLocaleString()} results</strong>}
         </React.Fragment>;
     }
 }

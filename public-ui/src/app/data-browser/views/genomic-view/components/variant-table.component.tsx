@@ -1,5 +1,5 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
@@ -45,21 +45,18 @@ const styles = reactStyles({
 });
 
 interface Props {
-    searchResults: any[];
+    searchResults: Variant[];
+    variantListSize: number;
 }
 
 interface State {
-    variantListSize: number;
     numPages: number;
-    loading: boolean;
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            variantListSize: 0,
-            loading: true,
             numPages: 0
         };
     }
@@ -78,17 +75,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
         console.log('Clicked on paginator');
     }
 
-    componentDidMount() {
-        genomicsApi().getVariantSearchResultSize('').then(result => {
-            this.setState({ loading: false, variantListSize: result, numPages: Math.ceil(result / 50) });
-        }).catch(e => {
-            console.log(e, 'error');
-        });
-    }
-
     render() {
-        const { loading, numPages } = this.state;
-        const { searchResults } = this.props;
+        const { numPages } = this.state;
+        const { searchResults, variantListSize } = this.props;
         return <React.Fragment> {searchResults &&
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
@@ -105,7 +94,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     return <VariantRowComponent key={index} varData={varData} />;
                 })}
 
-                {!loading &&
+                {variantListSize &&
                     <ReactPaginate
                         previousLabel={'Previous'}
                         nextLabel={'Next'}
