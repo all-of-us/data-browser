@@ -4,8 +4,11 @@ import * as React from 'react';
 
 const styles = reactStyles({
     border: {
-        border: '1px solid',
-        margin: '1rem'
+        // border: '1px solid',
+        width: '100%',
+        height:'100%',
+        margin: '0'
+
     }
 });
 
@@ -32,7 +35,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
     render() {
         return <React.Fragment>
             <div onClick={(e)=> this.props.closed(e)} style={styles.border}>
-                <p>I am Variant Row Expanded</p>
+                <span>I am Variant Row Expanded</span>
             </div>
         </React.Fragment>;
     }
