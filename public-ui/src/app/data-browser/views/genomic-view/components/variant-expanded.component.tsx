@@ -1,13 +1,34 @@
+import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
+import { VariantInfo } from 'publicGenerated';
 import * as React from 'react';
 
 
 const styles = reactStyles({
-    border: {
-        // border: '1px solid',
+    top: {
+        position: 'relative',
+        borderBottom: '1px solid',
         width: '100%',
-        height:'100%',
-        margin: '0'
+        margin: '0',
+        padding:'1rem',
+        
+
+    },
+    variantExpanded: {
+        position: 'sticky',
+        width: '100%',
+        background: '#ECF1F4',
+        top: '0px',
+        left: '0px',
+        padding:'.5em'
+    },
+    exit: {
+        position: 'absolute',
+        top: '0',
+        right: '0'
+    },
+    title :{
+        fontSize: '1em',
 
     }
 });
@@ -15,11 +36,12 @@ const styles = reactStyles({
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-    closed:Function;
+    closed: Function;
+    variantDetails: VariantInfo;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
-
+    
 }
 
 
@@ -27,15 +49,15 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
     }
-
-    handleClick(e) {
-
-    }
-
+    
     render() {
+       const {variantDetails}= this.props;
         return <React.Fragment>
-            <div onClick={(e)=> this.props.closed(e)} style={styles.border}>
-                <span>I am Variant Row Expanded</span>
+            <div style={styles.variantExpanded}>
+                <div style={styles.top}>
+                    {variantDetails && <span style={styles.title}>Variant ID: {variantDetails.variantId} </span>}
+                    <div onClick={(e) => this.props.closed()} style={styles.exit}>X</div>
+                </div>
             </div>
         </React.Fragment>;
     }

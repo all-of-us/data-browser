@@ -11,7 +11,7 @@ const styles = reactStyles({
         background: 'white',
         borderRadius: '3px',
         padding: '2rem',
-        paddingTop: '1em',
+        paddingTop: '1em'
     },
     titleBox: {
         display: 'flex',
