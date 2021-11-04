@@ -1,7 +1,7 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import _ from 'lodash';
-import { Variant, VariantListResponse } from 'publicGenerated';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
