@@ -94,11 +94,6 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
         this.getGenomicParticipantCounts();
     }
 
-    handleResults(results: VariantListResponse) {
-        this.setState({
-            searchResults: results.items
-        });
-    }
 
     render() {
         const { loading, participantCount, searchResults, variantListSize } = this.state;
@@ -108,8 +103,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
                     <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
                         {participantCount.toLocaleString()} participants</div></div>
                     <VariantSearchComponent variantListSize={variantListSize}
-                        searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
-                        onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
+                        searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}/>
                     <VariantTableComponent variantListSize={variantListSize} searchResults={searchResults} />
                 </div>}
         </React.Fragment>;

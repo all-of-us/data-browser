@@ -17,7 +17,6 @@ const styles = reactStyles({
 });
 
 interface Props {
-    onSearchReturn: Function;
     searchTerm: Function;
     variantListSize: number;
 }
