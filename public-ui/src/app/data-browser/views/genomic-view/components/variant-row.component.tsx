@@ -22,7 +22,8 @@ const styles = reactStyles({
         height: '100%',
         borderRight: '1px solid #CCCCCC',
         boxShadow: 'rgb(204 204 204) 0.2rem 0px 8px -2px',
-        paddingRight: '0.25rem'
+        paddingRight: '0.25rem',
+        color: '#216FB4'
     },
     caretIcon: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
@@ -82,7 +83,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
         const { varData } = this.props;
         const { variantCliked, variantDetails } = this.state;
         return <React.Fragment>
-            {variantCliked ? <VariantExpandedComponent variantDetails={variantDetails} closed={()=> this.handleClick()} /> :
+            {variantCliked ? <VariantExpandedComponent variant={varData} variantDetails={variantDetails} closed={()=> this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(varData.variantId)} style={styles.variant}>
                         <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{varData.variantId}&#x20;
