@@ -27,7 +27,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     }
     getGenomicParticipantCounts() {
         return genomicsApi().getParticipantCounts().then(result => {
-            console.log(result);
+            // console.log(result);
         });
     }
 

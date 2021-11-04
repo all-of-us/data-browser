@@ -1,7 +1,5 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import _ from 'lodash';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -18,70 +16,54 @@ const styles = reactStyles({
     }
 });
 
-// tslint:disable-next-line:no-empty-interface
 interface Props {
-
+    searchTerm: Function;
+    variantListSize: number;
 }
-// tslint:disable-next-line:no-empty-interface
 interface State {
     searchWord: string;
-    searchResultSize: number;
-    loading: boolean;
-    searchSizeLoading: boolean;
 }
-
-
 
 export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
             searchWord: localStorage.getItem('genomicSearchText') ? localStorage.getItem('genomicSearchText') : '',
-            searchResultSize: 0,
-            loading: true,
-            searchSizeLoading: true
         };
+        if (this.state.searchWord !== '') {
+            this.props.searchTerm(this.state.searchWord);
+        }
     }
 
-    search = _.debounce(() => this.getSearchSize(), 1000);
+    handleChange(val: string) {
+        if (val !== '') {
+            localStorage.setItem('genomicSearchText', val);
 
-    // life cycle hook
-    componentDidMount() {
-        this.getSearchSize();
-    }
-
-    handleChange(val) {
-        this.setState({ searchWord: val});
-        this.search(val);
-    }
-
-    getSearchSize() {
-        genomicsApi().getVariantSearchResultSize(this.state.searchWord).then(
-            result => {
-                this.setState({searchResultSize: result, searchSizeLoading: false});
-            }
-        ).catch(e => {
-            console.log(e, 'error');
-            this.setState({ searchSizeLoading: false });
-        });
+        } else {
+            localStorage.removeItem('genomicSearchText');
+        }
+        this.props.searchTerm(val);
+        this.setState({ searchWord: val });
     }
 
     render() {
-        const {searchWord, searchResultSize, searchSizeLoading} = this.state;
+        const { searchWord } = this.state;
+        const { variantListSize } = this.props;
         return <React.Fragment>
             <div style={styles.searchContainer}>
-            <div>
-            <SearchComponent value={searchWord} searchTitle='Search' domain='genomics'
-                                        onChange={(val) => this.handleChange(val)}
-                                        onClear={() => this.handleChange('')} />
+                <div>
+                    <SearchComponent value={searchWord} searchTitle='Search' domain='genomics'
+                        onChange={(val: string) => this.handleChange(val)}
+                        onClear={() => this.handleChange('')} />
+                </div>
+                <div style={styles.searchHelpText}>
+                    Examples: <br></br>
+                    Gene: TP53, Variant: 17-7577097-C-T, <br></br>
+                    Genomic Region: chr17:7572855-7579987
+                </div>
             </div>
-            <div style={styles.searchHelpText}>
-            Examples: <br></br>
-            Gene: TP53, Variant: 17-7577097-C-T, <br></br>
-            Genomic Region: chr17:7572855-7579987
-            </div>
-            </div>
-            {!searchSizeLoading && searchResultSize && <div>{searchResultSize.toLocaleString()} variants found</div>}
+            {variantListSize ? <strong >{variantListSize.toLocaleString()} variants found</strong> :
+                <strong>{variantListSize.toLocaleString()} results</strong>}
         </React.Fragment>;
     }
 }
