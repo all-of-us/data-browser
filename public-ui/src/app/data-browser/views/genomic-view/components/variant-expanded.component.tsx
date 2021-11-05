@@ -19,14 +19,15 @@ const styles = reactStyles({
         background: '#ECF1F4',
         top: '0px',
         left: '0px',
-        padding: '.5em'
+        padding: '.5em',
+        paddingLeft:'1em'
     },
     top: {
         position: 'relative',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: '1px solid',
+        borderBottom: '1px solid #979797',
         width: '100%',
         margin: '0',
         paddingBottom: '.5rem',
@@ -34,18 +35,26 @@ const styles = reactStyles({
 
     },
     title: {
-        fontSize: '1em',
+        fontSize: '18px',
 
     },
     body: {
         display: 'grid',
         gridTemplateColumns:'25% 25% 25% 25%',
         columnGap:'1rem',
-        rowGap:'1rem'
+        rowGap:'1rem',
+        paddingTop:'1rem',
+        fontSize:'14px',
+        width:'75%'
+    },
+    catHeading: {
+        fontFamily:'gothamBold,Arial, Helvetica, sans-serif'
+    },
+    catInfo:{
+        overflowWrap:'anywhere'
     }
 });
 
-// tslint:disable-next-line:no-empty-interface
 interface Props {
     closed: Function;
     variant: Variant;
@@ -72,32 +81,32 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                 </div>
                 {(variantDetails && variant) && <div style={styles.body}>
                      <div>
-                        <span>Consequence:</span><br/>
-                        <span>{variant.consequence}</span>
+                        <span style={styles.catHeading}>Consequence:</span><br/>
+                        <span style={styles.catInfo}>{variant.consequence}</span>
                     </div>
                     <div>
-                        <span>Protein Change:</span><br/>
-                        <span>{variant.proteinChange}:</span>
+                        <span style={styles.catHeading}>Protein Change:</span><br/>
+                        <span style={styles.catInfo}>{variant.proteinChange}</span>
                     </div>
                     <div>
-                        <span>DNA Change:</span><br/>
-                        <span>{variantDetails.dnaChange}</span>
+                        <span style={styles.catHeading}>DNA Change:</span><br/>
+                        <span style={styles.catInfo}>{variantDetails.dnaChange}</span>
                     </div>
                     <div>
-                        <span>Transcript:</span><br/>
-                        <span>{variantDetails.transcript}</span>
+                        <span style={styles.catHeading}>Transcript:</span><br/>
+                        <span style={styles.catInfo}>{variantDetails.transcript}</span>
                     </div>
                     <div>
-                        <span>RS Number:</span><br/>
-                        <span>{variantDetails.rsNumber}</span>
+                        <span style={styles.catHeading}>RS Number:</span><br/>
+                        <span style={styles.catInfo}>{variantDetails.rsNumber}</span>
                     </div>
                     <div>
-                        <span>Gene:</span><br/>
-                        <span>{variant.genes}</span>
+                        <span style={styles.catHeading}>Gene:</span><br/>
+                        <span style={styles.catInfo}>{variant.genes}</span>
                     </div>
                     <div>
-                        <span>Clinical Significance:</span><br/>
-                        <span>{variant.clinicalSignificance}</span>
+                        <span style={styles.catHeading}>Clinical Significance:</span><br/>
+                        <span style={styles.catInfo}>{variant.clinicalSignificance}</span>
                     </div>
                 </div>}
             </div>
