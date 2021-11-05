@@ -1,7 +1,6 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import { VariantInfo,Variant } from 'publicGenerated';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
 
 const css = `
@@ -20,7 +19,7 @@ const styles = reactStyles({
         top: '0px',
         left: '0px',
         padding: '.5em',
-        paddingLeft:'1em'
+        paddingLeft: '1em'
     },
     top: {
         position: 'relative',
@@ -31,8 +30,6 @@ const styles = reactStyles({
         width: '100%',
         margin: '0',
         paddingBottom: '.5rem',
-
-
     },
     title: {
         fontSize: '18px',
@@ -40,18 +37,18 @@ const styles = reactStyles({
     },
     body: {
         display: 'grid',
-        gridTemplateColumns:'25% 25% 25% 25%',
-        columnGap:'1rem',
-        rowGap:'1rem',
-        paddingTop:'1rem',
-        fontSize:'14px',
-        width:'75%'
+        gridTemplateColumns: '25% 25% 25% 25%',
+        columnGap: '1rem',
+        rowGap: '1rem',
+        paddingTop: '1rem',
+        fontSize: '14px',
+        width: '75%'
     },
     catHeading: {
-        fontFamily:'gothamBold,Arial, Helvetica, sans-serif'
+        fontFamily: 'gothamBold,Arial, Helvetica, sans-serif'
     },
-    catInfo:{
-        overflowWrap:'anywhere'
+    catInfo: {
+        overflowWrap: 'anywhere'
     }
 });
 
@@ -71,41 +68,41 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { variantDetails,variant } = this.props;
+        const { variantDetails, variant } = this.props;
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.variantExpanded}>
                 <div style={styles.top}>
                     <span style={styles.title}><strong>Variant ID:</strong> {variantDetails && variantDetails.variantId} </span>
-                    <div ><ClrIcon onClick={(e) => this.props.closed()} className="exit" size="xl" shape='window-close' /></div>
+                    <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' /></div>
                 </div>
                 {(variantDetails && variant) && <div style={styles.body}>
-                     <div>
-                        <span style={styles.catHeading}>Consequence:</span><br/>
+                    <div>
+                        <span style={styles.catHeading}>Consequence:</span><br />
                         <span style={styles.catInfo}>{variant.consequence}</span>
                     </div>
                     <div>
-                        <span style={styles.catHeading}>Protein Change:</span><br/>
+                        <span style={styles.catHeading}>Protein Change:</span><br />
                         <span style={styles.catInfo}>{variant.proteinChange}</span>
                     </div>
                     <div>
-                        <span style={styles.catHeading}>DNA Change:</span><br/>
+                        <span style={styles.catHeading}>DNA Change:</span><br />
                         <span style={styles.catInfo}>{variantDetails.dnaChange}</span>
                     </div>
                     <div>
-                        <span style={styles.catHeading}>Transcript:</span><br/>
+                        <span style={styles.catHeading}>Transcript:</span><br />
                         <span style={styles.catInfo}>{variantDetails.transcript}</span>
                     </div>
                     <div>
-                        <span style={styles.catHeading}>RS Number:</span><br/>
+                        <span style={styles.catHeading}>RS Number:</span><br />
                         <span style={styles.catInfo}>{variantDetails.rsNumber}</span>
                     </div>
                     <div>
-                        <span style={styles.catHeading}>Gene:</span><br/>
+                        <span style={styles.catHeading}>Gene:</span><br />
                         <span style={styles.catInfo}>{variant.genes}</span>
                     </div>
                     <div>
-                        <span style={styles.catHeading}>Clinical Significance:</span><br/>
+                        <span style={styles.catHeading}>Clinical Significance:</span><br />
                         <span style={styles.catInfo}>{variant.clinicalSignificance}</span>
                     </div>
                 </div>}

@@ -1,7 +1,7 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { Variant,VariantInfo } from 'publicGenerated';
+import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
 import { VariantExpandedComponent } from './variant-expanded.component';
 
@@ -49,8 +49,8 @@ interface Props {
 }
 
 interface State {
-    variantCliked: boolean,
-    variantDetails: VariantInfo
+    variantCliked: boolean;
+    variantDetails: VariantInfo;
 }
 
 export class VariantRowComponent extends React.Component<Props, State> {
@@ -59,31 +59,34 @@ export class VariantRowComponent extends React.Component<Props, State> {
         this.state = {
             variantCliked: false,
             variantDetails: null
-        }
+        };
     }
 
-    getVariantDetails(variantId: string){
-        genomicsApi().getVariantDetails(variantId).then((results:VariantInfo)=>{            
+    getVariantDetails(variantId: string) {
+        genomicsApi().getVariantDetails(variantId).then((results: VariantInfo) => {
             this.setState({
-                variantDetails:results
+                variantDetails: results
             });
-        })
+        });
     }
 
-    handleClick(variantId?: string) {             
+    handleClick(variantId?: string) {
         if (variantId) {
-          this.getVariantDetails(variantId);  
-        }   
+            this.getVariantDetails(variantId);
+        }
         this.setState({
             variantCliked: !this.state.variantCliked
-        })
+        });
     }
 
     render() {
         const { varData } = this.props;
         const { variantCliked, variantDetails } = this.state;
         return <React.Fragment>
-            {variantCliked ? <VariantExpandedComponent variant={varData} variantDetails={variantDetails} closed={()=> this.handleClick()} /> :
+            {variantCliked ? <VariantExpandedComponent
+                variant={varData}
+                variantDetails={variantDetails}
+                closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(varData.variantId)} style={styles.variant}>
                         <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{varData.variantId}&#x20;
