@@ -39,8 +39,6 @@ interface State {
     searchResults: Variant[];
 }
 
-
-
 export class GenomicSearchComponent extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);

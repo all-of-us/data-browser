@@ -45,7 +45,7 @@ const styles = reactStyles({
 
 
 interface Props {
-    varData: Variant;
+    variant: Variant;
 }
 
 interface State {
@@ -80,36 +80,36 @@ export class VariantRowComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { varData } = this.props;
+        const { variant } = this.props;
         const { variantCliked, variantDetails } = this.state;
         return <React.Fragment>
             {variantCliked ? <VariantExpandedComponent
-                variant={varData}
+                variant={variant}
                 variantDetails={variantDetails}
                 closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
-                    <div onClick={() => this.handleClick(varData.variantId)} style={styles.variant}>
-                        <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{varData.variantId}&#x20;
+                    <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
+                        <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{variant.variantId}&#x20;
                         </div>
                         <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
                             size='lg' shape='caret' dir='down' />
                     </div>
-                    <div style={styles.rowItem}>{varData.genes}</div>
+                    <div style={styles.rowItem}>{variant.genes}</div>
                     <div style={styles.rowItem}>
-                        {varData.consequence.length ? varData.consequence.map((item, index) => {
+                        {variant.consequence.length ? variant.consequence.map((item, index) => {
                             return <div key={index}>{item}<br /></div>;
                         }) : <div>–</div>}
                     </div>
-                    {varData.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
-                        {varData.proteinChange}</div> : <div>–</div>}
+                    {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
+                        {variant.proteinChange}</div> : <div>–</div>}
                     <div style={styles.rowItem}>
-                        {varData.clinicalSignificance.length ? varData.clinicalSignificance.map((item, index) => {
+                        {variant.clinicalSignificance.length ? variant.clinicalSignificance.map((item, index) => {
                             return <div key={index}>{item}<br /></div>;
                         }) : <div>–</div>}
                     </div>
-                    <div style={styles.rowItem}>{varData.alleleCount}</div>
-                    <div style={styles.rowItem}>{varData.alleleNumber}</div>
-                    <div style={styles.rowItem}>{varData.alleleFrequency}</div>
+                    <div style={styles.rowItem}>{variant.alleleCount}</div>
+                    <div style={styles.rowItem}>{variant.alleleNumber}</div>
+                    <div style={styles.rowItem}>{variant.alleleFrequency}</div>
                 </div>
             }
 
