@@ -1,7 +1,8 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
-
+import { Spinner } from 'app/utils/spinner';
+import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 const styles = reactStyles({
     searchContainer: {
         paddingTop: '1em',
@@ -13,6 +14,16 @@ const styles = reactStyles({
         paddingLeft: '1em',
         paddingTop: '3.6em',
         fontSize: '0.75em'
+    },
+    loading:{
+        transform: 'scale(.3)',
+        marginLeft:'-0.5rem',
+        width:'2rem'
+    },
+    resultSize:{
+        display:'flex',
+        alignItems:'center',
+        height: '1rem'
     }
 });
 
@@ -20,6 +31,7 @@ interface Props {
     onSearchReturn: Function;
     searchTerm: Function;
     variantListSize: number;
+    loading: boolean;
 }
 interface State {
     searchWord: string;
@@ -49,7 +61,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
 
     render() {
         const { searchWord } = this.state;
-        const { variantListSize } = this.props;
+        const { variantListSize, loading } = this.props;
         return <React.Fragment>
             <div style={styles.searchContainer}>
                 <div>
@@ -63,8 +75,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     Genomic Region: chr17:7572855-7579987
                 </div>
             </div>
-            {variantListSize ? <strong >{variantListSize.toLocaleString()} variants found</strong> :
-                <strong>{variantListSize.toLocaleString()} results</strong>}
+            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}><Spinner /></span> } results</strong>}
         </React.Fragment>;
     }
 }

@@ -34,6 +34,7 @@ const styles = reactStyles({
 interface State {
     participantCount: number;
     loading: boolean;
+    loadingVariantListSize: boolean;
     variantListSize: number;
     searchWord: string;
     searchResults: Variant[];
@@ -45,6 +46,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
         this.state = {
             participantCount: 0,
             loading: null,
+            loadingVariantListSize: null,
             searchResults: null,
             variantListSize: 0,
             searchWord: ''
@@ -61,10 +63,12 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     getSearchSize(searchTerm: string) {
+        this.setState({loadingVariantListSize: true})
         genomicsApi().getVariantSearchResultSize(searchTerm).then(
             result => {
                 this.setState({
                     variantListSize: searchTerm !== '' ? result : 0,
+                    loadingVariantListSize: false
                 });
             }
         ).catch(e => {
@@ -102,12 +106,12 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     render() {
-        const { loading, participantCount, searchResults, variantListSize } = this.state;
+        const { loading, participantCount, searchResults, variantListSize,loadingVariantListSize } = this.state;
         return <React.Fragment>
                 <div style={styles.border}>
                     <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
                         {participantCount.toLocaleString()} participants</div></div>
-                    <VariantSearchComponent variantListSize={variantListSize}
+                    <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
                         searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
                         onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
                     <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults} />
