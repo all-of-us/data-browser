@@ -20,7 +20,7 @@ const styles = reactStyles({
         left: '0px',
         padding: '.5em',
         paddingLeft: '1em',
-        borderTop:'1px solid rgb(204, 204, 204)'
+        borderTop: '1px solid rgb(204, 204, 204)'
     },
     top: {
         position: 'relative',
@@ -57,6 +57,7 @@ interface Props {
     closed: Function;
     variant: Variant;
     variantDetails: VariantInfo;
+    loading: boolean;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
@@ -69,15 +70,15 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { variantDetails, variant } = this.props;
+        const { variantDetails, variant, loading } = this.props;
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.variantExpanded}>
                 <div style={styles.top}>
-                    <span style={styles.title}><strong>Variant ID:</strong> {variantDetails && variantDetails.variantId} </span>
+                    <span style={styles.title}><strong>Variant ID:</strong> {!loading && variantDetails.variantId} </span>
                     <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' /></div>
                 </div>
-                {(variantDetails && variant) && <div style={styles.body}>
+                {!loading && <div style={styles.body}>
                     <div>
                         <span style={styles.catHeading}>Consequence:</span><br />
                         <span style={styles.catInfo}>{variant.consequence}</span>

@@ -3,6 +3,7 @@ import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
+import { Spinner } from 'app/utils/spinner';
 
 const styles = reactStyles({
     tableContainer: {
@@ -40,6 +41,13 @@ const styles = reactStyles({
     },
     last: {
         paddingRight: '.5rem'
+    },
+    center: {
+        display:'flex',
+        height:'100%',
+        width:'100%',
+        justifyContent:'center',
+        alignItems: 'center'
     }
 
 });
@@ -47,6 +55,7 @@ const styles = reactStyles({
 interface Props {
     searchResults: Variant[];
     variantListSize: number;
+    loading: boolean;
 }
 
 interface State {
@@ -57,7 +66,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            numPages: 0
+            numPages: 0,
         };
     }
 
@@ -77,8 +86,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     render() {
         const { numPages } = this.state;
-        const { searchResults, variantListSize } = this.props;
-        return <React.Fragment> {searchResults &&
+        const { searchResults, variantListSize, loading } = this.props;
+        return <React.Fragment> {searchResults ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
@@ -108,10 +117,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         containerClassName={'pagination'}
                     />}
 
-            </div>
+            </div> : <div style={styles.tableFrame}> {loading && <div style={styles.center}><Spinner /> </div>}</div>
         }
-            {!searchResults && <div style={styles.tableFrame}></div>
-            }
+            {/* {!searchResults &&
+            } */}
         </React.Fragment>;
     }
 }

@@ -44,7 +44,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
         super(props);
         this.state = {
             participantCount: 0,
-            loading: true,
+            loading: null,
             searchResults: null,
             variantListSize: 0,
             searchWord: ''
@@ -56,7 +56,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     getGenomicParticipantCounts() {
         genomicsApi().getParticipantCounts().then(result => {
             const domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
-            this.setState({ participantCount: domainCountResult.countValue, loading: false });
+            this.setState({ participantCount: domainCountResult.countValue });
         });
     }
 
@@ -73,17 +73,20 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     getVariantSearch(searchTerm: string) {
+        this.setState({loading:true})
         if (searchTerm !== '') {
             genomicsApi().searchVariants(searchTerm).then(
                 results => {
                     this.setState({
-                        searchResults: results.items
+                        searchResults: results.items,
+                        loading: false
                     });
                 }
             );
         } else {
             this.setState({
-                searchResults: null
+                searchResults: null,
+                loading: false
             });
         }
     }
@@ -101,15 +104,14 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     render() {
         const { loading, participantCount, searchResults, variantListSize } = this.state;
         return <React.Fragment>
-            {!loading &&
                 <div style={styles.border}>
                     <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
                         {participantCount.toLocaleString()} participants</div></div>
                     <VariantSearchComponent variantListSize={variantListSize}
                         searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
                         onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
-                    <VariantTableComponent variantListSize={variantListSize} searchResults={searchResults} />
-                </div>}
+                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults} />
+                </div>
         </React.Fragment>;
     }
 }

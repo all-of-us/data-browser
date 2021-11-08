@@ -51,6 +51,7 @@ interface Props {
 interface State {
     variantCliked: boolean;
     variantDetails: VariantInfo;
+    loadingVarDetails: boolean,
 }
 
 export class VariantRowComponent extends React.Component<Props, State> {
@@ -58,14 +59,16 @@ export class VariantRowComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             variantCliked: false,
-            variantDetails: null
+            variantDetails: null,
+            loadingVarDetails: true
         };
     }
 
     getVariantDetails(variantId: string) {
         genomicsApi().getVariantDetails(variantId).then((results: VariantInfo) => {
             this.setState({
-                variantDetails: results
+                variantDetails: results,
+                loadingVarDetails: false
             });
         });
     }
@@ -81,9 +84,10 @@ export class VariantRowComponent extends React.Component<Props, State> {
 
     render() {
         const { variant } = this.props;
-        const { variantCliked, variantDetails } = this.state;
+        const { variantCliked, variantDetails, loadingVarDetails } = this.state;
         return <React.Fragment>
             {variantCliked ? <VariantExpandedComponent
+                loading={loadingVarDetails}
                 variant={variant}
                 variantDetails={variantDetails}
                 closed={() => this.handleClick()} /> :
