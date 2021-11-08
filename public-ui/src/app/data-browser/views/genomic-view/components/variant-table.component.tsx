@@ -90,8 +90,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Number</span></div>
                     <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}>Allele Frequency</span></div>
                 </div>
-                {searchResults && searchResults.map((varData, index) => {
-                    return <VariantRowComponent key={index} varData={varData} />;
+                {searchResults && searchResults.map((variant, index) => {
+                    return <VariantRowComponent key={index} variant={variant} />;
                 })}
 
                 {variantListSize &&
