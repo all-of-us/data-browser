@@ -63,7 +63,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     getSearchSize(searchTerm: string) {
-        this.setState({loadingVariantListSize: true})
+        this.setState({loadingVariantListSize: true});
         genomicsApi().getVariantSearchResultSize(searchTerm).then(
             result => {
                 this.setState({
@@ -77,7 +77,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     getVariantSearch(searchTerm: string) {
-        this.setState({loading:true})
+        this.setState({loading: true});
         if (searchTerm !== '') {
             genomicsApi().searchVariants(searchTerm).then(
                 results => {
@@ -106,7 +106,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     render() {
-        const { loading, participantCount, searchResults, variantListSize,loadingVariantListSize } = this.state;
+        const { loading, participantCount, searchResults, variantListSize, loadingVariantListSize } = this.state;
         return <React.Fragment>
                 <div style={styles.border}>
                     <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>

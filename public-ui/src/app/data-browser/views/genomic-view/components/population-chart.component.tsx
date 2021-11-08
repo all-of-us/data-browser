@@ -1,9 +1,3 @@
-import {
-  Component,
-  Input,
-  ViewEncapsulation
-} from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
 import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import * as highCharts from 'highcharts';
