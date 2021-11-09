@@ -1,9 +1,9 @@
 import { reactStyles } from 'app/utils';
+import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
-import { Spinner } from 'app/utils/spinner';
 
 const styles = reactStyles({
     tableContainer: {
@@ -43,10 +43,10 @@ const styles = reactStyles({
         paddingRight: '.5rem'
     },
     center: {
-        display:'flex',
-        height:'100%',
-        width:'100%',
-        justifyContent:'center',
+        display: 'flex',
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
         alignItems: 'center'
     }
 
