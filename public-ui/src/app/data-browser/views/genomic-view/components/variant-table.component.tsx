@@ -100,13 +100,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
     handlePageClick = (data) => {
         const {searchTerm} = this.props;
         this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1});
-        window.scrollTo(0, 0);
         genomicsApi().searchVariants(searchTerm, data.selected + 1).then(
                 results => {
                     this.setState({
                         searchResults: results.items,
                         loading: false
-                    });
+                    }, () => {        window.scrollTo(0, 0);});
                 }
         );
     }
