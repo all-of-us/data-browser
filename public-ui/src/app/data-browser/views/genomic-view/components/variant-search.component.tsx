@@ -1,8 +1,9 @@
+import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { reactStyles } from 'app/utils';
-import * as React from 'react';
 import { Spinner } from 'app/utils/spinner';
-import { style } from 'app/data-browser/cdr-version/cdr-version-info';
+import * as React from 'react';
+
 const styles = reactStyles({
     searchContainer: {
         paddingTop: '1em',
@@ -15,14 +16,14 @@ const styles = reactStyles({
         paddingTop: '3.6em',
         fontSize: '0.75em'
     },
-    loading:{
+    loading: {
         transform: 'scale(.3)',
-        marginLeft:'-0.5rem',
-        width:'2rem'
+        marginLeft: '-0.5rem',
+        width: '2rem'
     },
     resultSize:{
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         height: '1rem'
     }
 });
@@ -75,8 +76,10 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     Genomic Region: chr17:7572855-7579987
                 </div>
             </div>
-            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-                <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}><Spinner /></span> } results</strong>}
+            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() :
+            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}>
+                <Spinner /></span> } results</strong>}
         </React.Fragment>;
     }
 }
