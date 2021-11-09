@@ -102,4 +102,4 @@ export const prepVariantPopulationDetails = (variantDetails) => {
         variantDetails.eurAlleleFrequency + variantDetails.afrAlleleFrequency + variantDetails.midAlleleFrequency +
         variantDetails.sasAlleleFrequency + variantDetails.othAlleleFrequency;
      return VARIANT_POPULATION_DETAILS;
-}
+};
