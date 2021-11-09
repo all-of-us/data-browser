@@ -2,6 +2,7 @@ import { PopulationChartReactComponent } from 'app/data-browser/views/genomic-vi
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
+import { relativeLength } from 'highcharts';
 import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
 
@@ -47,7 +48,7 @@ const styles = reactStyles({
     },
     body: {
         display: 'grid',
-        gridTemplateColumns: '25% 25% 25% 25%',
+        gridTemplateColumns: '31% 23% 23% 23%',
         columnGap: '1rem',
         rowGap: '1rem',
         paddingTop: '1rem',
@@ -65,19 +66,37 @@ const styles = reactStyles({
     },
     popTableContainer: {
         display: 'grid',
-        gridTemplateColumns: '55% 45%',
-        textAlign: 'left'
+        gridTemplateColumns: '60% 40%',
+        textAlign: 'left',
+        alignItems: 'center'
     },
     popTable: {
         display: 'grid',
-        gridTemplateColumns: '25% 25% 25% 25%',
-        borderBottom: '1px solid grey',
-        margin: '0.5rem'
+        gridTemplateColumns: '31% 23% 23% 23%',
+        fontSize: '14px'
     },
-    popHeading: {
+    popTitle: {
         fontWeight: 'bold',
-        marginTop: '2em'
+        fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
+        fontSize: '18px',
+        marginTop: '2rem'
+    },
+    popTableHeading: {
+        padding: '.5rem',
+        paddingBottom: '0',
+        paddingTop: '0'
+    },
+    popTableBody: {
+        borderBottom: '1px solid #DDE0E4',
+        marginBottom: '2rem'
+    },
+    popTableData: {
+        border: '1px solid #DDE0E4',
+        borderBottom: 'none',
+        borderLeft: 'none',
+        padding: '.5rem'
     }
+
 });
 
 interface Props {
@@ -100,43 +119,59 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
         const { variantDetails, variant, loading } = this.props;
         const variantPopulationDetails = [];
         if (!loading) {
-            variantPopulationDetails.push({'Ancestry': 'African', 'AlleleCount': variantDetails.afrAlleleCount,
-            'AlleleNumber': variantDetails.afrAlleleNumber,
-                'AlleleFrequency': variantDetails.afrAlleleFrequency, 'color': '#1F78B4'});
-            variantPopulationDetails.push({'Ancestry': 'East Asian', 'AlleleCount': variantDetails.easAlleleCount,
-            'AlleleNumber': variantDetails.easAlleleNumber,
-                'AlleleFrequency': variantDetails.easAlleleFrequency, 'color': '#A27BD7'});
-            variantPopulationDetails.push({'Ancestry': 'European', 'AlleleCount': variantDetails.eurAlleleCount,
-            'AlleleNumber': variantDetails.eurAlleleNumber,
-                'AlleleFrequency': variantDetails.eurAlleleFrequency, 'color': '#F8C854'});
-            variantPopulationDetails.push({'Ancestry': 'Latin American', 'AlleleCount': variantDetails.amrAlleleCount,
-            'AlleleNumber': variantDetails.amrAlleleNumber,
-                'AlleleFrequency': variantDetails.amrAlleleFrequency, 'color': '#6CABE4'});
-            variantPopulationDetails.push({'Ancestry': 'Middle Eastern', 'AlleleCount': variantDetails.midAlleleCount,
-            'AlleleNumber': variantDetails.midAlleleNumber,
-                'AlleleFrequency': variantDetails.midAlleleFrequency, 'color': '#CB2D4C'});
-            variantPopulationDetails.push({'Ancestry': 'South Asian', 'AlleleCount': variantDetails.sasAlleleCount,
-            'AlleleNumber': variantDetails.sasAlleleNumber,
-                'AlleleFrequency': variantDetails.sasAlleleFrequency, 'color': '#8BC990'});
-            variantPopulationDetails.push({'Ancestry': 'Other', 'AlleleCount': variantDetails.othAlleleCount,
-            'AlleleNumber': variantDetails.othAlleleNumber,
-                'AlleleFrequency': variantDetails.othAlleleFrequency, 'color': '#B2AEAD'});
-            variantPopulationDetails.push({'Ancestry': 'Total', 'AlleleCount': variantDetails.afrAlleleCount +
-            variantDetails.easAlleleCount + variantDetails.eurAlleleCount + variantDetails.amrAlleleCount +
-            variantDetails.midAlleleCount + variantDetails.sasAlleleCount + variantDetails.othAlleleCount,
+            variantPopulationDetails.push({
+                'Ancestry': 'African', 'AlleleCount': variantDetails.afrAlleleCount,
+                'AlleleNumber': variantDetails.afrAlleleNumber,
+                'AlleleFrequency': variantDetails.afrAlleleFrequency, 'color': '#1F78B4'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'East Asian', 'AlleleCount': variantDetails.easAlleleCount,
+                'AlleleNumber': variantDetails.easAlleleNumber,
+                'AlleleFrequency': variantDetails.easAlleleFrequency, 'color': '#A27BD7'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'European', 'AlleleCount': variantDetails.eurAlleleCount,
+                'AlleleNumber': variantDetails.eurAlleleNumber,
+                'AlleleFrequency': variantDetails.eurAlleleFrequency, 'color': '#F8C854'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'Latin American', 'AlleleCount': variantDetails.amrAlleleCount,
+                'AlleleNumber': variantDetails.amrAlleleNumber,
+                'AlleleFrequency': variantDetails.amrAlleleFrequency, 'color': '#6CABE4'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'Middle Eastern', 'AlleleCount': variantDetails.midAlleleCount,
+                'AlleleNumber': variantDetails.midAlleleNumber,
+                'AlleleFrequency': variantDetails.midAlleleFrequency, 'color': '#CB2D4C'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'South Asian', 'AlleleCount': variantDetails.sasAlleleCount,
+                'AlleleNumber': variantDetails.sasAlleleNumber,
+                'AlleleFrequency': variantDetails.sasAlleleFrequency, 'color': '#8BC990'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'Other', 'AlleleCount': variantDetails.othAlleleCount,
+                'AlleleNumber': variantDetails.othAlleleNumber,
+                'AlleleFrequency': variantDetails.othAlleleFrequency, 'color': '#B2AEAD'
+            });
+            variantPopulationDetails.push({
+                'Ancestry': 'Total', 'AlleleCount': variantDetails.afrAlleleCount +
+                    variantDetails.easAlleleCount + variantDetails.eurAlleleCount + variantDetails.amrAlleleCount +
+                    variantDetails.midAlleleCount + variantDetails.sasAlleleCount + variantDetails.othAlleleCount,
                 'AlleleNumber': variantDetails.afrAlleleNumber + variantDetails.easAlleleNumber + variantDetails.eurAlleleNumber +
-                variantDetails.afrAlleleNumber + variantDetails.midAlleleNumber + variantDetails.sasAlleleNumber +
-                variantDetails.othAlleleNumber,
+                    variantDetails.afrAlleleNumber + variantDetails.midAlleleNumber + variantDetails.sasAlleleNumber +
+                    variantDetails.othAlleleNumber,
                 'AlleleFrequency': variantDetails.afrAlleleFrequency + variantDetails.easAlleleFrequency +
-                variantDetails.eurAlleleFrequency + variantDetails.afrAlleleFrequency + variantDetails.midAlleleFrequency +
-                 variantDetails.sasAlleleFrequency + variantDetails.othAlleleFrequency});
+                    variantDetails.eurAlleleFrequency + variantDetails.afrAlleleFrequency + variantDetails.midAlleleFrequency +
+                    variantDetails.sasAlleleFrequency + variantDetails.othAlleleFrequency
+            });
         }
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.variantExpanded}>
                 <div style={styles.top}>
-                    <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ? <span style={{paddingLeft: '1em'}}>
-                    {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
+                    <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ? <span style={{ paddingLeft: '1em' }}>
+                        {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
                     <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' /></div>
                 </div>
                 {!loading && <React.Fragment><div style={styles.body}>
@@ -169,32 +204,33 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                         <span style={styles.catInfo}>{variant.clinicalSignificance}</span>
                     </div>
                 </div>
-                <div style={styles.popTableContainer}>
-                    <div>
-                    <h4 style={styles.popHeading}>Genetic Ancestry Populations</h4>
-                    <div style={styles.popTable} className='popTable'>
-                        <div></div>
-                        <div><strong>Allele Count</strong></div>
-                        <div><strong>Allele Number</strong></div>
-                        <div><strong>Allele Frequency</strong></div>
+                    <div style={styles.popTableContainer}>
+                        <div>
+                            <h4 style={styles.popTitle}>Genetic Ancestry Populations</h4>
+                            <div style={styles.popTable} className='popTable'>
+                                <div style={styles.popTableHeading}></div>
+                                <div style={styles.popTableHeading}><strong>Allele Count</strong></div>
+                                <div style={styles.popTableHeading}><strong>Allele Number</strong></div>
+                                <div style={styles.popTableHeading}><strong>Allele Frequency</strong></div>
+                            </div>
+                            <div style={styles.popTableBody}>
+                                {variantPopulationDetails.map((item, index) => {
+                                    const colorStyle = { color: item.color };
+                                    return <div key={index} style={styles.popTable}>
+                                        <div style={styles.popTableData}>{(item.Ancestry !== 'Total') ? <span><i className='fas fa-circle' style={{ ...colorStyle, marginRight: '.5rem', transform: 'scale(1.5)' }} />
+                                            {item.Ancestry} </span> : <strong>{item.Ancestry}</strong>} </div>
+                                        <div style={styles.popTableData}>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleCount}</React.Fragment> :
+                                            <strong>{item.AlleleCount}</strong>}</div>
+                                        <div style={styles.popTableData}>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleNumber}</React.Fragment> :
+                                            <strong>{item.AlleleNumber}</strong>}</div>
+                                        <div style={styles.popTableData}>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment>
+                                            : <strong>{item.AlleleFrequency.toFixed(2)}</strong>}</div>
+                                    </div>;
+                                })}
+                            </div>
+                        </div>
+                        <PopulationChartReactComponent variantPopulationDetails={variantPopulationDetails} />
                     </div>
-                    {variantPopulationDetails.map((item, index) => {
-                        const colorStyle = {color : item.color};
-                        const emptySpan = {'marginLeft': '1.3em'};
-                        return <div key={index} style={styles.popTable}>
-                            <div>{(item.Ancestry !== 'Total') ? <span><i className='fas fa-circle' style={colorStyle}/>
-                            {item.Ancestry} </span> : <span style={emptySpan}><strong>{item.Ancestry}</strong></span>} </div>
-                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleCount}</React.Fragment> :
-                            <strong>{item.AlleleCount}</strong>}</div>
-                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleNumber}</React.Fragment> :
-                            <strong>{item.AlleleNumber}</strong>}</div>
-                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment>
-                            : <strong>{item.AlleleFrequency.toFixed(2)}</strong>}</div>
-                        </div>;
-                    })}
-                    </div>
-                    <PopulationChartReactComponent variantPopulationDetails={variantPopulationDetails}/>
-                </div>
                 </React.Fragment>}
             </div>
         </React.Fragment>;
