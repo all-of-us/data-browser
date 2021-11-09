@@ -18,6 +18,18 @@ const searchStyle = `
   letter-spacing: normal;
   text-align: left;
 }
+.genomics-search-heading-display {
+  font-family: Arial, sans-serif;
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 200;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-stretch: normal;
+  line-height: 1.47em;
+  letter-spacing: normal;
+  text-align: left;
+}
 
 /* •••••SEARCH-BAR•••••• */
 
@@ -97,6 +109,7 @@ const homeSearchStyle = `
 interface SearchProps {
     value: string;
     searchTitle: string;
+    domain: string;
     onChange: Function;
     onClear: Function;
 }
@@ -107,16 +120,17 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
     }
 
     render() {
-        const {onChange, onClear, value, searchTitle} = this.props;
+        const {onChange, onClear, value, searchTitle, domain} = this.props;
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
+        const headingClassName = (domain === 'genomics') ? 'genomics-search-heading-display' : 'secondary-display';
         return (
             <React.Fragment>
             <style>{searchStyle}</style>
             {searchTitle && <style>{homeSearchStyle}</style>}
             <div className='search-title'>
-                <span className='secondary-display'>{searchTitle}</span>
-                {searchTitle && <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
+                <span className={headingClassName}>{searchTitle}</span>
+                {searchTitle && domain !== 'genomics' && <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
                                                 action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>}
             </div>
             <div id='db-search-bar'>

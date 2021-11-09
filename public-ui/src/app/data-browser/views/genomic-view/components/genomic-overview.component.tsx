@@ -49,20 +49,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
             participantCounts : []
         }
     }
-
-    raceEthArr: any[] = [];
-    sexAtBirthArr: any[] = [];
-    currentAgeArr: any[] = [];
-    participantCountsArr: any[] = [];
-
-    async getGenomicParticipantCounts() {
-        const result_1 = await genomicsApi().getParticipantCounts();
-        result_1.results.forEach(type => {
-            if (type.stratum4 === null) {
-                this.setState({
-                    participantCount: type.countValue.toLocaleString()
-                });
-            }
+    getGenomicParticipantCounts() {
+        return genomicsApi().getParticipantCounts().then(result => {
+            // console.log(result);
         });
     }
 

@@ -23,7 +23,7 @@ export const routeToDomain = {
 };
 
 export let genomicTileMetadata = {
-    'name': 'Whole Genomic Sequence Data and Array Data',
+    'name': 'Whole Genome Sequencing (WGS) + Genotyping Arrays',
     'description': 'View aggregate counts of participants with any genomic data, Whole Genomic Sequence (WGS) data, \
     or Array data in the All of Us dataset.',
     'description2': 'Define a genomic region to search; results show aggregated allele counts, \
@@ -60,3 +60,46 @@ export const fitbitConcepts = [{
     conceptName: 'Activity intraday steps (minute-level)', icon: 'fa-walking',
     tooltipKey: 'fitbitActivityStepsHelpText'
 }];
+
+export const VARIANT_POPULATION_DETAILS = [{'Ancestry': 'African', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#1F78B4'},
+{'Ancestry': 'East Asian', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#A27BD7'},
+{'Ancestry': 'European', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#F8C854'},
+{'Ancestry': 'Latin American', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#6CABE4'},
+{'Ancestry': 'Middle Eastern', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#CB2D4C'},
+{'Ancestry': 'South Asian', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#8BC990'},
+{'Ancestry': 'Other', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0, 'color': '#B2AEAD'},
+{'Ancestry': 'Total', 'AlleleCount': 0, 'AlleleNumber': 0, 'AlleleFrequency': 0}];
+
+export const prepVariantPopulationDetails = (variantDetails) => {
+    VARIANT_POPULATION_DETAILS[0]['AlleleCount'] = variantDetails.afrAlleleCount;
+    VARIANT_POPULATION_DETAILS[0]['AlleleNumber'] = variantDetails.afrAlleleNumber;
+    VARIANT_POPULATION_DETAILS[0]['AlleleFrequency'] = variantDetails.afrAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[1]['AlleleCount'] = variantDetails.easAlleleCount;
+    VARIANT_POPULATION_DETAILS[1]['AlleleNumber'] = variantDetails.easAlleleNumber;
+    VARIANT_POPULATION_DETAILS[1]['AlleleFrequency'] = variantDetails.easAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[2]['AlleleCount'] = variantDetails.eurAlleleCount;
+    VARIANT_POPULATION_DETAILS[2]['AlleleNumber'] = variantDetails.eurAlleleNumber;
+    VARIANT_POPULATION_DETAILS[2]['AlleleFrequency'] = variantDetails.eurAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[3]['AlleleCount'] = variantDetails.amrAlleleCount;
+    VARIANT_POPULATION_DETAILS[3]['AlleleNumber'] = variantDetails.amrAlleleNumber;
+    VARIANT_POPULATION_DETAILS[3]['AlleleFrequency'] = variantDetails.amrAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[4]['AlleleCount'] = variantDetails.midAlleleCount;
+    VARIANT_POPULATION_DETAILS[4]['AlleleNumber'] = variantDetails.midAlleleNumber;
+    VARIANT_POPULATION_DETAILS[4]['AlleleFrequency'] = variantDetails.midAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[5]['AlleleCount'] = variantDetails.sasAlleleCount;
+    VARIANT_POPULATION_DETAILS[5]['AlleleNumber'] = variantDetails.sasAlleleNumber;
+    VARIANT_POPULATION_DETAILS[5]['AlleleFrequency'] = variantDetails.sasAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[6]['AlleleCount'] = variantDetails.othAlleleCount;
+    VARIANT_POPULATION_DETAILS[6]['AlleleNumber'] = variantDetails.othAlleleNumber;
+    VARIANT_POPULATION_DETAILS[6]['AlleleFrequency'] = variantDetails.othAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[7]['AlleleCount'] = variantDetails.afrAlleleCount + variantDetails.easAlleleCount +
+        variantDetails.eurAlleleCount + variantDetails.amrAlleleCount + variantDetails.midAlleleCount +
+        variantDetails.sasAlleleCount + variantDetails.othAlleleCount;
+    VARIANT_POPULATION_DETAILS[7]['AlleleNumber'] = variantDetails.afrAlleleNumber + variantDetails.easAlleleNumber +
+        variantDetails.eurAlleleNumber + variantDetails.afrAlleleNumber + variantDetails.midAlleleNumber +
+        variantDetails.sasAlleleNumber + variantDetails.othAlleleNumber;
+    VARIANT_POPULATION_DETAILS[7]['AlleleFrequency'] = variantDetails.afrAlleleFrequency + variantDetails.easAlleleFrequency +
+        variantDetails.eurAlleleFrequency + variantDetails.afrAlleleFrequency + variantDetails.midAlleleFrequency +
+        variantDetails.sasAlleleFrequency + variantDetails.othAlleleFrequency;
+     return VARIANT_POPULATION_DETAILS;
+};

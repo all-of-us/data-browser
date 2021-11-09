@@ -83,6 +83,12 @@ paths:
           type: string
           required: true
           description: variant search term
+        - in: query
+          name: page
+          type: integer
+          format: int32
+          required: false
+          description: page number
       responses:
         200:
           description: A collection of variants from the wgs_variant table
@@ -120,6 +126,24 @@ paths:
           description: A collection of results from achilles results view
           schema:
             $ref: "#/definitions/AnalysisListResponse"
+
+  /v1/genomics/variant-details/{variantId}:
+    get:
+      tags:
+        - genomics
+      description: Gets the variant details
+      operationId: "getVariantDetails"
+      parameters:
+        - in: path
+          name: variantId
+          type: string
+          required: true
+          description: the variant id
+      responses:
+        200:
+          description: Variant Information
+          schema:
+            $ref: "#/definitions/VariantInfo"
 
   # Data Browser #######################################################################
   /v1/config:
@@ -1347,6 +1371,34 @@ definitions:
       variantId:
         description: id variant
         type: string
+      genes:
+        description: genes
+        type: string
+      consequence:
+        description: consequence
+        type: array
+        items:
+          type: string
+      proteinChange:
+        description: protein change
+        type: string
+      clinicalSignificance:
+        description: clinical significance
+        type: array
+        items:
+          type: string
+      alleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      alleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      alleleFrequency:
+        description: allele count
+        type: number
+        format: double
 
   VariantListResponse:
     type: object
@@ -1357,3 +1409,107 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Variant"
+
+  VariantInfo:
+    type: object
+    required:
+      - variantId
+    properties:
+      variantId:
+        description: variant id
+        type: string
+      dnaChange:
+        description: dna change
+        type: string
+      transcript:
+        description: transcript
+        type: string
+      rsNumber:
+        description: rs number
+        type: array
+        items:
+          type: string
+      afrAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      afrAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      afrAlleleFrequency:
+        description: allele count
+        type: number
+        format: double
+      easAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      easAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      easAlleleFrequency:
+        description: allele count
+        type: number
+        format: double
+      eurAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      eurAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      eurAlleleFrequency:
+        description: allele count
+        type: number
+        format: double
+      amrAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      amrAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      amrAlleleFrequency:
+        description: allele count
+        type: number
+        format: double
+      midAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      midAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      midAlleleFrequency:
+        description: allele count
+        type: number
+        format: double
+      sasAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      sasAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      sasAlleleFrequency:
+        description: allele count
+        type: number
+        format: double
+      othAlleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      othAlleleNumber:
+        description: allele count
+        type: integer
+        format: int64
+      othAlleleFrequency:
+        description: allele count
+        type: number
+        format: double

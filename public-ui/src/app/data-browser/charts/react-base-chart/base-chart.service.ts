@@ -117,16 +117,17 @@ export const baseOptions = {
       useHTML: true,
     },
     title: {
-      text: '',
-      style: {
-        color: '#262262',
-        whiteSpace: 'wrap',
-        textOverflow: 'ellipsis',
-        fontWeight: 'bold',
-        textTransform: 'capitalize',
-        fontSize: '14px'
-      }
-    },
+               text: '',
+               verticalAlign: '',
+               style: {
+                 color: '#262262',
+                 whiteSpace: 'wrap',
+                 textOverflow: 'ellipsis',
+                 fontWeight: 'bold',
+                 textTransform: 'capitalize',
+                 fontSize: '14px'
+               }
+             },
     tickLength: 0,
     lineWidth: 1,
     lineColor: '#979797',
@@ -174,43 +175,54 @@ export const baseOptions = {
   legend: { enabled: false },
   credits: { enabled: false },
   plotOptions: {
-    series: {
-      animation: {
-        duration: 100,
-      },
-      pointWidth: 50,
-      fontSize: '',
-      minPointLength: 3,
-      events: {
-      },
-    },
-    bar: {
-      shadow: false,
-      borderColor: null,
-      colorByPoint: true,
-      groupPadding: 0,
-      pointPadding: 0,
-      dataLabels: {
-        enabled: false,
-      },
-      events: {}
-    },
-    column: {
-      shadow: false,
-      borderColor: null,
-      colorByPoint: true,
-      groupPadding: 0,
-      pointPadding: 0,
-      borderWidth: 0,
-      pointWidth: 50,
-      dataLabels: {
-        enabled: false,
-      },
-      stacking: '',
-      events: {},
-    }
-  },
-  series: [{ name: '', data: [] }]
+          series: {
+            animation: {
+              duration: 100,
+            },
+            pointWidth: 50,
+            fontSize: '',
+            minPointLength: 3,
+            events: {
+            },
+            states: {
+                hover: {
+                    enabled: false
+                }
+            }
+          },
+          bar: {
+                 shadow: false,
+                 borderColor: null,
+                 colorByPoint: true,
+                 groupPadding: 0,
+                 pointPadding: 0,
+                 dataLabels: {
+                   enabled: false,
+                 },
+                 events: {}
+          },
+        column: {
+                  shadow: false,
+                  borderColor: null,
+                  colorByPoint: true,
+                  groupPadding: 0,
+                  pointPadding: 0,
+                  borderWidth: 0,
+                  pointWidth: 50,
+                  dataLabels: {
+                    enabled: false,
+                  },
+                  stacking: '',
+                  events: {},
+            },
+       pie: {
+                    shadow: false,
+                    events: {},
+                    size: '100%',
+                    height: '100%'
+       },
+        },
+  series: [{ data: [] }]
 };
 
 export function getBaseOptions() {

@@ -351,7 +351,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                         click={() => this.setState({ showStatement: true })} />
                 }
                 <div className='search-bar-container' style={styles.searchBarContainer}>
-                    <SearchComponent value={searchWord || ''} searchTitle=''
+                    <SearchComponent value={searchWord || ''} searchTitle='' domain='survey'
                         onChange={(val) => this.handleChange(val)}
                         onClear={() => this.handleChange('')} />
                 </div>

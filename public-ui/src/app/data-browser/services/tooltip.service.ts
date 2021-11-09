@@ -67,6 +67,7 @@ export const tooltips = {
         'There are numerous domains of data in EHR records, ' +
         'but some of the most common domains include conditions, drug exposures,' +
         ' measurements, and procedures.',
+    'genomicDomainHelpText': 'Genomics Tile',
     'physicalMeasurements': `Measurements taken at the time of participant enrollment,
      including blood pressure, heart rate, height, weight, waist and hip circumference,
       pregnancy status, and wheelchair use.`,
@@ -267,6 +268,7 @@ export class TooltipService {
             'There are numerous domains of data in EHR records, ' +
             'but some of the most common domains include conditions, drug exposures,' +
             ' measurements, and procedures.',
+        'genomicDomainHelpText': 'Genomics Tile',
         'physical measurements': `Measurements taken at the time of participant enrollment,
      including blood pressure, heart rate, height, weight, waist and hip circumference,
       pregnancy status, and wheelchair use.`,

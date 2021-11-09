@@ -25,7 +25,7 @@ html {
 
 body {
   width: 100vw;
-
+  overflow-x: hidden;
   margin: 0;
 }
 
@@ -641,7 +641,7 @@ a a:link a:visited {
 }
 
 .highcharts-tooltip {
-  z-index: 200;
+    z-index:9999!important;
 }
 
 .survey-answer-tooltip strong {

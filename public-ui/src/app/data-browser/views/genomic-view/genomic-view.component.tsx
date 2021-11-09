@@ -12,7 +12,7 @@ const styles = reactStyles({
     },
     viewLayout: {
         display: 'grid',
-        gridTemplateColumns: '185px 1fr',
+        gridTemplateColumns: '185px 85%',
         columnGap: '0.5rem',
         marginTop: '1em'
     },
@@ -65,7 +65,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     constructor(props: {}) {
         super(props);
         this.state = {
-            selectionId: 1
+            selectionId: 2
         };
     }
 
