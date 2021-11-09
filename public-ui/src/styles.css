@@ -636,7 +636,7 @@ a a:link a:visited {
 }
 
 .highcharts-tooltip {
-    z-index: 200;
+    z-index:9999!important;
 }
 
 .survey-answer-tooltip strong {

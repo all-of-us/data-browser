@@ -118,6 +118,7 @@ export const baseOptions = {
         },
     title: {
                text: '',
+               verticalAlign: '',
                style: {
                  color: '#262262',
                  whiteSpace: 'wrap',
@@ -183,6 +184,11 @@ export const baseOptions = {
             minPointLength: 3,
             events: {
             },
+            states: {
+                hover: {
+                    enabled: false
+                }
+            }
           },
           bar: {
                  shadow: false,
@@ -208,7 +214,13 @@ export const baseOptions = {
                   },
                   stacking: '',
                   events: {},
-            }
+            },
+       pie: {
+                    shadow: false,
+                    events: {},
+                    size: '100%',
+                    height: '100%'
+       },
         },
   series: [{ data: [] }]
 };
