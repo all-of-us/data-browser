@@ -135,7 +135,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
             <style>{css}</style>
             <div style={styles.variantExpanded}>
                 <div style={styles.top}>
-                    <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ? <span style={{paddingLeft:'1em'}}>
+                    <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ? <span style={{paddingLeft: '1em'}}>
                     {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
                     <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' /></div>
                 </div>
@@ -182,11 +182,15 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                         const colorStyle = {color : item.color};
                         const emptySpan = {'marginLeft': '1.3em'};
                         return <div key={index} style={styles.popTable}>
-                            <div>{(item.Ancestry !== 'Total') ? <span><i className='fas fa-circle' style={colorStyle}/> {item.Ancestry} </span> : <span style={emptySpan}><strong>{item.Ancestry}</strong></span>} </div>
-                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleCount}</React.Fragment> : <strong>{item.AlleleCount}</strong>}</div>
-                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleNumber}</React.Fragment> : <strong>{item.AlleleNumber}</strong>}</div>
-                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment> : <strong>{item.AlleleFrequency.toFixed(2)}</strong>}</div>
-                        </div>
+                            <div>{(item.Ancestry !== 'Total') ? <span><i className='fas fa-circle' style={colorStyle}/>
+                            {item.Ancestry} </span> : <span style={emptySpan}><strong>{item.Ancestry}</strong></span>} </div>
+                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleCount}</React.Fragment> :
+                            <strong>{item.AlleleCount}</strong>}</div>
+                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleNumber}</React.Fragment> :
+                            <strong>{item.AlleleNumber}</strong>}</div>
+                            <div>{item.Ancestry !== 'Total' ? <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment>
+                            : <strong>{item.AlleleFrequency.toFixed(2)}</strong>}</div>
+                        </div>;
                     })}
                     </div>
                     <PopulationChartReactComponent variantPopulationDetails={variantPopulationDetails}/>

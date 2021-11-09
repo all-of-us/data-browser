@@ -1,4 +1,3 @@
-import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
@@ -21,7 +20,7 @@ const styles = reactStyles({
         marginLeft: '-0.5rem',
         width: '2rem'
     },
-    resultSize:{
+    resultSize: {
         display: 'flex',
         alignItems: 'center',
         height: '1rem'
