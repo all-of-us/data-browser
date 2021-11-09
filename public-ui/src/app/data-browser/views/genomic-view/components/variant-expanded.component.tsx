@@ -1,6 +1,7 @@
 import { PopulationChartReactComponent } from 'app/data-browser/views/genomic-view/components/population-chart.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { prepVariantPopulationDetails } from 'app/utils/constants';
 import { Spinner } from 'app/utils/spinner';
 import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
@@ -98,38 +99,9 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
 
     render() {
         const { variantDetails, variant, loading } = this.props;
-        const variantPopulationDetails = [];
+        let variantPopulationDetails = [];
         if (!loading) {
-            variantPopulationDetails.push({'Ancestry': 'African', 'AlleleCount': variantDetails.afrAlleleCount,
-            'AlleleNumber': variantDetails.afrAlleleNumber,
-                'AlleleFrequency': variantDetails.afrAlleleFrequency, 'color': '#1F78B4'});
-            variantPopulationDetails.push({'Ancestry': 'East Asian', 'AlleleCount': variantDetails.easAlleleCount,
-            'AlleleNumber': variantDetails.easAlleleNumber,
-                'AlleleFrequency': variantDetails.easAlleleFrequency, 'color': '#A27BD7'});
-            variantPopulationDetails.push({'Ancestry': 'European', 'AlleleCount': variantDetails.eurAlleleCount,
-            'AlleleNumber': variantDetails.eurAlleleNumber,
-                'AlleleFrequency': variantDetails.eurAlleleFrequency, 'color': '#F8C854'});
-            variantPopulationDetails.push({'Ancestry': 'Latin American', 'AlleleCount': variantDetails.amrAlleleCount,
-            'AlleleNumber': variantDetails.amrAlleleNumber,
-                'AlleleFrequency': variantDetails.amrAlleleFrequency, 'color': '#6CABE4'});
-            variantPopulationDetails.push({'Ancestry': 'Middle Eastern', 'AlleleCount': variantDetails.midAlleleCount,
-            'AlleleNumber': variantDetails.midAlleleNumber,
-                'AlleleFrequency': variantDetails.midAlleleFrequency, 'color': '#CB2D4C'});
-            variantPopulationDetails.push({'Ancestry': 'South Asian', 'AlleleCount': variantDetails.sasAlleleCount,
-            'AlleleNumber': variantDetails.sasAlleleNumber,
-                'AlleleFrequency': variantDetails.sasAlleleFrequency, 'color': '#8BC990'});
-            variantPopulationDetails.push({'Ancestry': 'Other', 'AlleleCount': variantDetails.othAlleleCount,
-            'AlleleNumber': variantDetails.othAlleleNumber,
-                'AlleleFrequency': variantDetails.othAlleleFrequency, 'color': '#B2AEAD'});
-            variantPopulationDetails.push({'Ancestry': 'Total', 'AlleleCount': variantDetails.afrAlleleCount +
-            variantDetails.easAlleleCount + variantDetails.eurAlleleCount + variantDetails.amrAlleleCount +
-            variantDetails.midAlleleCount + variantDetails.sasAlleleCount + variantDetails.othAlleleCount,
-                'AlleleNumber': variantDetails.afrAlleleNumber + variantDetails.easAlleleNumber + variantDetails.eurAlleleNumber +
-                variantDetails.afrAlleleNumber + variantDetails.midAlleleNumber + variantDetails.sasAlleleNumber +
-                variantDetails.othAlleleNumber,
-                'AlleleFrequency': variantDetails.afrAlleleFrequency + variantDetails.easAlleleFrequency +
-                variantDetails.eurAlleleFrequency + variantDetails.afrAlleleFrequency + variantDetails.midAlleleFrequency +
-                 variantDetails.sasAlleleFrequency + variantDetails.othAlleleFrequency});
+            variantPopulationDetails = prepVariantPopulationDetails(variantDetails);
         }
         return <React.Fragment>
             <style>{css}</style>
