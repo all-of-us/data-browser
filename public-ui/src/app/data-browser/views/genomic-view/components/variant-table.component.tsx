@@ -1,3 +1,4 @@
+import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
@@ -56,19 +57,35 @@ interface Props {
     searchResults: Variant[];
     variantListSize: number;
     loading: boolean;
+    searchTerm: string;
 }
 
 interface State {
     numPages: number;
+    page: number;
+    loading: boolean;
+    searchResults: Variant[];
+    currentPage: number;
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            numPages: 0,
+            numPages: Math.ceil(props.variantListSize / 50),
+            page: 1,
+            loading: props.loading,
+            searchResults: props.searchResults,
+            currentPage: 1
         };
     }
+
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        const {variantListSize, searchTerm, searchResults} = this.props;
+        if (prevProps.searchResults !== searchResults) {
+            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults});
+        }
+   }
 
     columnNames = [
         'Variant ID',
@@ -80,13 +97,23 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Number',
         'Allele Frequency'];
 
-    handlePageClick() {
-        console.log('Clicked on paginator');
+    handlePageClick = (data) => {
+        const {searchTerm} = this.props;
+        this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1});
+        window.scrollTo(0, 0);
+        genomicsApi().searchVariants(searchTerm, data.selected + 1).then(
+                results => {
+                    this.setState({
+                        searchResults: results.items,
+                        loading: false
+                    });
+                }
+        );
     }
 
     render() {
-        const { numPages } = this.state;
-        const { searchResults, variantListSize, loading } = this.props;
+        const { numPages, loading, searchResults } = this.state;
+        const { variantListSize } = this.props;
         return <React.Fragment> {searchResults ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
@@ -103,7 +130,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     return <VariantRowComponent key={index} variant={variant} />;
                 })}
 
-                {variantListSize &&
+                {(numPages && numPages > 1) &&
                     <ReactPaginate
                         previousLabel={'Previous'}
                         nextLabel={'Next'}
@@ -119,8 +146,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
             </div> : <div style={styles.tableFrame}> {loading && <div style={styles.center}><Spinner /> </div>}</div>
         }
-            {/* {!searchResults &&
-            } */}
+
         </React.Fragment>;
     }
 }

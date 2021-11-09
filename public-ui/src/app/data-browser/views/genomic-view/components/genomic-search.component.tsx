@@ -77,7 +77,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     getVariantSearch(searchTerm: string) {
-        this.setState({loading: true});
+        this.setState({loading: true, searchWord: searchTerm});
         if (searchTerm !== '') {
             genomicsApi().searchVariants(searchTerm).then(
                 results => {
@@ -106,7 +106,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     render() {
-        const { loading, participantCount, searchResults, variantListSize, loadingVariantListSize } = this.state;
+        const { loading, participantCount, searchResults, variantListSize, loadingVariantListSize, searchWord } = this.state;
         return <React.Fragment>
                 <div style={styles.border}>
                     <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
@@ -114,7 +114,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
                     <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
                         searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
                         onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
-                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults} />
+                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults} searchTerm={searchWord}/>
                 </div>
         </React.Fragment>;
     }
