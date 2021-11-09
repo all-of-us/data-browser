@@ -80,13 +80,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
         };
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
-        const {variantListSize, searchTerm, searchResults} = this.props;
-        if (prevProps.searchResults !== searchResults) {
-            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults});
-        }
-   }
-
     columnNames = [
         'Variant ID',
         'Gene',
@@ -97,6 +90,13 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Number',
         'Allele Frequency'];
 
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        const {variantListSize, searchResults} = this.props;
+        if (prevProps.searchResults !== searchResults) {
+            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults});
+        }
+   }
+
     handlePageClick = (data) => {
         const {searchTerm} = this.props;
         this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1});
@@ -105,14 +105,13 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     this.setState({
                         searchResults: results.items,
                         loading: false
-                    }, () => {        window.scrollTo(0, 0);});
+                    }, () => { window.scrollTo(0, 0); });
                 }
         );
     }
 
     render() {
         const { numPages, loading, searchResults } = this.state;
-        const { variantListSize } = this.props;
         return <React.Fragment> {searchResults ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
