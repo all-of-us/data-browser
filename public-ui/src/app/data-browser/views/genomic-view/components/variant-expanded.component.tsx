@@ -1,8 +1,8 @@
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { Spinner } from 'app/utils/spinner';
 import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
-import { Spinner } from 'app/utils/spinner';
 
 const css = `
 .exit{
@@ -36,8 +36,8 @@ const styles = reactStyles({
     variantId: {
         fontSize: '18px',
         display: 'flex',
-        alignItems:'center'
-        
+        alignItems: 'center'
+
     },
     body: {
         display: 'grid',
@@ -81,7 +81,10 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
             <style>{css}</style>
             <div style={styles.variantExpanded}>
                 <div style={styles.top}>
-                    <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ? <span style={{paddingLeft:'1em'}}> {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
+                    <span style={styles.variantId}>
+                        <strong>Variant ID: </strong> 
+                        {!loading ? <span style={{ paddingLeft: '1em' }}> {variant.variantId}</span> :
+                        <div style={styles.loading}><Spinner /></div>} </span>
                     <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' /></div>
                 </div>
                 {!loading && <div style={styles.body}>

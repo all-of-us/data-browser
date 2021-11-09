@@ -1,8 +1,7 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { reactStyles } from 'app/utils';
-import * as React from 'react';
 import { Spinner } from 'app/utils/spinner';
-import { style } from 'app/data-browser/cdr-version/cdr-version-info';
+import * as React from 'react';
 const styles = reactStyles({
     searchContainer: {
         paddingTop: '1em',

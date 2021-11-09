@@ -51,7 +51,7 @@ interface Props {
 interface State {
     variantCliked: boolean;
     variantDetails: VariantInfo;
-    loadingVarDetails: boolean,
+    loadingVarDetails: boolean;
 }
 
 export class VariantRowComponent extends React.Component<Props, State> {
