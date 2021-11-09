@@ -44,7 +44,8 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
     };
     console.log(newBaseOptions.plotOptions);
     newBaseOptions.tooltip = { formatter: function() {
-        return '<div><strong>'+ this.point.name +'</strong> <br /> '+ this.point.percentage.toFixed(2) +' % | Allele Count: ' + this.y + '</div>';
+        return '<div><strong>' + this.point.name + '</strong> <br /> ' + this.point.percentage.toFixed(2) +
+        ' % | Allele Count: ' + this.y + '</div>';
     }};
     newBaseOptions.tooltip.outside = true;
     newBaseOptions.tooltip.style = {
@@ -52,12 +53,13 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
         whiteSpace: 'normal',
         zIndex: 9998
     };
-    let chartData = [];
-    let totalAlleleCount = variantPopulationDetails.filter(v => v.Ancestry === 'Total')[0].AlleleCount;
-    for (let variantDet of variantPopulationDetails) {
+    const chartData = [];
+    const totalAlleleCount = variantPopulationDetails.filter(v => v.Ancestry === 'Total')[0].AlleleCount;
+    for (const variantDet of variantPopulationDetails) {
         if (variantDet.Ancestry !== 'Total') {
-            let roundedPercentage = ((variantDet.AlleleCount / totalAlleleCount) * 100).toFixed(2);
-            chartData.push({'name': variantDet.Ancestry, 'y': variantDet.AlleleCount, 'color': variantDet.color, 'totalCount': totalAlleleCount, 'percentage': roundedPercentage});
+            const roundedPercentage = ((variantDet.AlleleCount / totalAlleleCount) * 100).toFixed(2);
+            chartData.push({'name': variantDet.Ancestry, 'y': variantDet.AlleleCount, 'color': variantDet.color,
+            'totalCount': totalAlleleCount, 'percentage': roundedPercentage});
         }
     }
     newBaseOptions.series =  [{
@@ -66,7 +68,7 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
                     size: '80%',
                     shadow: false,
                     innerSize: '60%',
-                    showInLegend:true,
+                    showInLegend: true,
                     dataLabels: {
                         enabled: false
                     }}];
