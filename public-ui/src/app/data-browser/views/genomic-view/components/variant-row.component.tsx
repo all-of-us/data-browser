@@ -49,7 +49,7 @@ interface Props {
 }
 
 interface State {
-    variantCliked: boolean;
+    variantClicked: boolean;
     variantDetails: VariantInfo;
     loadingVarDetails: boolean;
 }
