@@ -58,7 +58,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            variantCliked: false,
+            variantClicked: false,
             variantDetails: null,
             loadingVarDetails: true
         };
@@ -79,15 +79,15 @@ export class VariantRowComponent extends React.Component<Props, State> {
             this.getVariantDetails(variantId);
         }
         this.setState({
-            variantCliked: !this.state.variantCliked
+            variantClicked: !this.state.variantClicked
         });
     }
 
     render() {
         const { variant } = this.props;
-        const { variantCliked, variantDetails, loadingVarDetails } = this.state;
+        const { variantClicked, variantDetails, loadingVarDetails } = this.state;
         return <React.Fragment>
-            {variantCliked ? <VariantExpandedComponent
+            {variantClicked ? <VariantExpandedComponent
                 loading={loadingVarDetails}
                 variant={variant}
                 variantDetails={variantDetails}
