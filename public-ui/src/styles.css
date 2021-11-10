@@ -623,7 +623,8 @@ a a:link a:visited {
 }
 
 .geno-chart-tooltip {
-  width: 10rem;
+  width: 12rem;
+  color:#262262;
 }
 
 .version-survey-tooltip,

@@ -116,9 +116,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                     </div>
                 </div>
                 {!loading && <React.Fragment>
-                    <GenomicChartComponent counts={participantCounts} title='Race/ethnicity' data={raceEthData[0]} />
-                    <GenomicChartComponent counts={participantCounts} title='Sex assigned at birth' data={sexAtBirthData[0]} />
-                    <GenomicChartComponent counts={participantCounts} title='Current age' data={currentAgeData[0]} />
+                    <GenomicChartComponent counts={participantCounts[0]} title='Race/ethnicity' data={raceEthData[0]} />
+                    <GenomicChartComponent counts={participantCounts[0]} title='Sex assigned at birth' data={sexAtBirthData[0]} />
+                    <GenomicChartComponent counts={participantCounts[0]} title='Current age' data={currentAgeData[0]} />
                 </React.Fragment>}
             </div>
         </React.Fragment>;

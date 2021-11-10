@@ -3,6 +3,7 @@ import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/rea
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
+import { Analysis } from 'publicGenerated';
 
 
 
@@ -148,23 +149,25 @@ const styles = reactStyles({
         alignItems: 'baseline'
     },
     legend: {
-        fontSize:'14px',
+        display: 'flex',
+        alignItems: 'center'
     },
     legendItem: {
-        paddingRight:'.5rem'
+        fontSize: '.6em',
+        paddingRight: '.5rem',
+        paddingLeft: '.25rem'
     }
 });
 
 // tslint:disable-next-line:no-empty-interface
 interface Props {
-    data: any[];
-    counts: any[];
+    data: Analysis;
+    counts: any;
     title: string;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
     options: any;
-    setData: any;
 }
 
 
@@ -175,32 +178,63 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             options: null,
-            setData: props.data
         }
     }
 
     dataToOptions() {
         const chartOptions = JSON.parse(JSON.stringify(chartSimple));
-        const { setData } = this.state;
+        const { data, counts } = this.props;
+        let toolTipHelpText;
+        const sortingDemoArr = [
+            'White',
+            'Asian',
+            'Black',
+            'Hispanic',
+            'More than one race/ethnicity',
+            'Other',
+            ' Prefer Not To Answer'
+        ];
+        const sortingSexArr = [
+            'Female',
+            'Male',
+            'Other'
+        ];
+        let participantTypeCount = {
+            wsg: '',
+            microArray:''
+        };
+        counts.results.forEach(item => {
+            if (item.stratum4 === 'wgs') {
+                participantTypeCount['wsg'] = item.countValue;
+            } else if (item.stratum4 === 'micro-array') {
+                participantTypeCount['microArray'] = item.countValue
+            }
+        });
+
+
         let wgsData: Array<any> = [], microArrayData: Array<any> = [];
-        chartOptions.chart.type = setData.chartType;
+        chartOptions.chart.type = data.chartType;
         chartOptions.xAxis.categories = [];
         chartOptions.column = {}
-        setData.results.forEach(result => {
+        data.results.forEach(result => {
             if (GENDER_STRATUM_MAP[result.stratum2]) {
                 result.stratum2 = GENDER_STRATUM_MAP[result.stratum2]
             } else if (AGE_STRATUM_MAP[result.stratum2]) {
                 result.stratum2 = AGE_STRATUM_MAP[result.stratum2];
             }
-            const toolTipHelpText = `<strong>` + result.stratum2 + `</strong> <br> ` + result.countValue.toLocaleString() + `
-            participants`
             if (result.stratum4 === 'wgs') {
+                let percent:any = result.countValue / parseInt(participantTypeCount.wsg) * 100;
+                toolTipHelpText = `<strong>` + result.stratum2 + `</strong> <br> ` + result.countValue.toLocaleString() + `
+                participants, `+ parseFloat(percent).toFixed(2)+ `%`;
                 wgsData.push({
                     cat: result.stratum2,
                     y: result.countValue,
                     toolTipHelpText: toolTipHelpText,
                 });
             } else if (result.stratum4 === 'micro-array') {
+                let percent:any = result.countValue / parseInt(participantTypeCount.microArray) * 100;
+                toolTipHelpText = `<strong>` + result.stratum2 + `</strong> <br> ` + result.countValue.toLocaleString() + `
+                participants, `+ parseFloat(percent).toFixed(2)+ `%`;
                 chartOptions.xAxis.categories.push(result.stratum2);
                 microArrayData.push({
                     cat: result.stratum2,
@@ -209,10 +243,17 @@ export class GenomicChartComponent extends React.Component<Props, State> {
                 });
             }
         });
-        wgsData = wgsData.sort(function (a, b) {
+        // ordering the catigories to match mockup
+        chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort((a, b) => {
+            const sortArr = (data.analysisId === 3503) ? sortingDemoArr : sortingSexArr;
+            return sortArr.indexOf(a) - sortArr.indexOf(b);
+        })
+        wgsData = wgsData.sort((a, b) => {
             return chartOptions.xAxis.categories.indexOf(a.cat) - chartOptions.xAxis.categories.indexOf(b.cat);
         });
-
+        microArrayData = microArrayData.sort((a, b) => {
+            return chartOptions.xAxis.categories.indexOf(a.cat) - chartOptions.xAxis.categories.indexOf(b.cat);
+        });
         chartOptions.series = [{
             name: 'wsg',
             data: wgsData,
@@ -226,13 +267,11 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         this.setState({
             options: chartOptions
         });
-
     }
 
     componentDidMount() {
         this.dataToOptions();
     }
-
 
     render() {
         const { options } = this.state;
