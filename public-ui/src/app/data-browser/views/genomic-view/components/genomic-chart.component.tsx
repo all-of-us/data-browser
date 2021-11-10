@@ -110,11 +110,7 @@ const chartSimple = {
         }
     },
     legend: {
-        // layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
-        floating: true,
-        useHTML: true
+        enabled: false
     },
     credits: { enabled: false },
     plotOptions: {
@@ -143,7 +139,19 @@ const styles = reactStyles({
         paddingTop: '.25em'
     },
     chartTitle: {
-        fontSize: '1em'
+        fontSize: '1em',
+    },
+    legendLayout: {
+        paddingBottom: '1rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'baseline'
+    },
+    legend: {
+        fontSize:'14px',
+    },
+    legendItem: {
+        paddingRight:'.5rem'
     }
 });
 
@@ -230,7 +238,13 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         const { options } = this.state;
         const { title } = this.props;
         return <div style={styles.chartContainer}>
-            <h3 style={styles.chartTitle}>{title}</h3>
+            <div style={styles.legendLayout}>
+                <h3 style={styles.chartTitle}><strong>{title}</strong></h3>
+                <div style={styles.legend}>
+                    <i className="fas fa-circle" style={{ color: '#216FB4' }}></i> <span style={styles.legendItem}>WGS</span>
+                    <i className="fas fa-circle" style={{ color: '#8BC990' }}></i> <span style={styles.legendItem}>Genotyping Arrays</span>
+                </div>
+            </div>
             <HighchartsReact allowChartUpdate="false" highcharts={highCharts} options={options} />
         </div>;
     }
