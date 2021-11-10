@@ -124,7 +124,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         </div>;
                     })
                     }
-                    <div style={styles.faqHeading}>Questions about genomics?<br/><div style={styles.faqLink} onClick={() => this.sideBarClick(3)}>Learn More</div></div>
+                    <div style={styles.faqHeading}>Questions about genomics?<br/><div style={styles.faqLink}
+                    onClick={() => this.sideBarClick(3)}>Learn More</div></div>
                 </div>
                 <div>
                     {selectionId === 1 && <GenomicOverviewComponent />}

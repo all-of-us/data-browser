@@ -53,11 +53,13 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
             <div style={styles.faqContainer}>
                 <div style={styles.top}>
                     <span>Genomic FAQs: </span>
-                    <div><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' style={{width: 40, height: 40, color: '#0079b8'}} /></div>
+                    <div><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
+                    style={{width: 40, height: 40, color: '#0079b8'}} /></div>
                 </div>
                 <div>
                 <div style={styles.question}><strong>How can the Variant Search be used?</strong></div>
-                <div style={styles.answer}>This data browser allows researchers to plan studies using <em>All of Us</em> data. Using the Variant Search,
+                <div style={styles.answer}>This data browser allows researchers to plan studies using
+                <em>All of Us</em> data. Using the Variant Search,
                 researchers can conduct preliminary exploration of allele frequencies by broad genetic ancestry categories
                 and can observe how patterns of variation might differ between groups with different genetic ancestries.
                 However, researchers may wish to conduct more in-depth studies about the association of genetic variants
@@ -79,7 +81,8 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                 </div>
                 <div style={styles.answer}>
                 Genetic ancestry is not the same as race and ethnicity. Race and ethnicity are concepts created by humans
-                and are not determined by DNA. They are usually based on physical features, such as skin color, or shared language and culture.
+                and are not determined by DNA. They are usually based on physical features, such as skin color,
+                or shared language and culture.
                 People of the same race or ethnicity may share the same genetic ancestry, but this is not always the case.
                 </div>
                 <div style={styles.question}>
