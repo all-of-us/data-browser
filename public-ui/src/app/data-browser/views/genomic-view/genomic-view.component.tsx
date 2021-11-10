@@ -3,6 +3,7 @@ import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/co
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import * as React from 'react';
+import { GenomicFaqComponent } from './components/genomic-faq.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
@@ -21,13 +22,11 @@ const styles = reactStyles({
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%'
-
     },
     sideBarItemConainer: {
         paddingBottom: '.25rem',
         borderBottom: '1px solid rgba(38, 34, 98, .25)',
         width: '100%'
-
     },
     sideBarItem: {
         display: 'flex',
@@ -37,6 +36,7 @@ const styles = reactStyles({
         fontSize: '0.8em',
         width: '100%',
         cursor: 'pointer',
+        margin: '0.5rem'
     },
     sideBarItemText: {
         width: '75%'
@@ -47,8 +47,21 @@ const styles = reactStyles({
         fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
         fontWeight: 'bolder',
         backgroundColor: 'rgba(33,111,180,0.15)'
+    },
+    faqHeading: {
+        fontSize: '0.8em',
+        color: 'rgb(38, 34, 98)',
+        align: 'center',
+        padding: '0.5rem',
+        margin: '0.5rem',
+        marginTop: '2em',
+    },
+    faqLink: {
+        color: '#0079b8',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center'
     }
-
 });
 
 interface State {
@@ -68,16 +81,12 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     sideBarItems = [
         {
             id: 1,
-            label: 'Participants with Genomic Data'
+            label: 'Participant Demographics'
         },
         {
             id: 2,
-            label: 'Search Variants'
-        },
-        {
-            id: 3,
-            label: 'Genomics FAQ'
-        },
+            label: 'Variant Search'
+        }
     ];
     title = 'Genomic Data';
 
@@ -86,6 +95,11 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             selectionId: selected
         });
     }
+
+    handleFaqClose() {
+        this.setState({selectionId: 2});
+    }
+
     render() {
         const { selectionId } = this.state;
         return <React.Fragment>
@@ -110,11 +124,12 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         </div>;
                     })
                     }
-
+                    <div style={styles.faqHeading}>Questions about genomics?<br/><div style={styles.faqLink} onClick={() => this.sideBarClick(3)}>Learn More</div></div>
                 </div>
                 <div>
                     {selectionId === 1 && <GenomicOverviewComponent />}
                     {selectionId === 2 && <GenomicSearchComponent />}
+                    {selectionId === 3 && <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
                 </div>
             </div>
 
