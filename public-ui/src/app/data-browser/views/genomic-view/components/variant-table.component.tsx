@@ -58,6 +58,7 @@ interface Props {
     variantListSize: number;
     loading: boolean;
     searchTerm: string;
+    onPageChange: Function;
 }
 
 interface State {
@@ -91,28 +92,30 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Frequency'];
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const {variantListSize, searchResults} = this.props;
+        const {variantListSize, searchResults, loading} = this.props;
         if (prevProps.searchResults !== searchResults) {
-            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults});
+            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults, loading: loading});
         }
    }
 
     handlePageClick = (data) => {
         const {searchTerm} = this.props;
         this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1});
+        this.props.onPageChange();
         genomicsApi().searchVariants(searchTerm, data.selected + 1).then(
                 results => {
                     this.setState({
                         searchResults: results.items,
                         loading: false
-                    }, () => { window.scrollTo(0, 0); });
+                    }, () => { });
                 }
         );
     }
 
     render() {
         const { numPages, loading, searchResults } = this.state;
-        return <React.Fragment> {searchResults ?
+        return <React.Fragment> {loading && <div style={styles.center}><Spinner /> </div>}
+            {searchResults ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
@@ -142,7 +145,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         containerClassName={'pagination'}
                     />}
 
-            </div> : <div style={styles.tableFrame}> {loading && <div style={styles.center}><Spinner /> </div>}</div>
+            </div> : <div style={styles.tableFrame}></div>
         }
 
         </React.Fragment>;
