@@ -57,7 +57,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                 </div>
                 <div>
                 <div style={styles.question}><strong>How can the Variant Search be used?</strong></div>
-                <div style={styles.answer}>This data browser allows researchers to plan studies using All of Us data. Using the Variant Search,
+                <div style={styles.answer}>This data browser allows researchers to plan studies using <em>All of Us</em> data. Using the Variant Search,
                 researchers can conduct preliminary exploration of allele frequencies by broad genetic ancestry categories
                 and can observe how patterns of variation might differ between groups with different genetic ancestries.
                 However, researchers may wish to conduct more in-depth studies about the association of genetic variants
@@ -83,10 +83,10 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                 People of the same race or ethnicity may share the same genetic ancestry, but this is not always the case.
                 </div>
                 <div style={styles.question}>
-                <strong>How does All of Us compute genetic ancestry?</strong>
+                <strong>How does <em>All of Us</em> compute genetic ancestry?</strong>
                 </div>
                 <div style={styles.answer}>
-                All of Us carries out an analysis that clusters individuals into groups based on the shared patterns in their DNA.
+                <em>All of Us</em> carries out an analysis that clusters individuals into groups based on the shared patterns in their DNA.
                 This allows us to infer their genetic ancestry.
                 </div>
                 <div style={styles.question}>
