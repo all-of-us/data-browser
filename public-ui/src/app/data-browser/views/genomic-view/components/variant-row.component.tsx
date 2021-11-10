@@ -35,6 +35,10 @@ const styles = reactStyles({
         paddingBottom: '.5rem',
         paddingLeft: '.75rem'
     },
+    variantId: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+    },
     first: {
         paddingLeft: '.5rem'
     },
@@ -94,7 +98,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
-                        <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{variant.variantId}&#x20;
+                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>{variant.variantId}&#x20;
                         </div>
                         <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
                             size='lg' shape='caret' dir='down' />
