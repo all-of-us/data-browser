@@ -31,6 +31,7 @@ interface Props {
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
+    loading: boolean;
     participantCount: string;
     raceEthData: any;
     sexAtBirthData: any;
@@ -42,16 +43,28 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            loading: true,
             participantCount: null,
             raceEthData: [],
             sexAtBirthData: [],
             currentAgeData: [],
-            participantCounts : []
+            participantCounts: []
         }
     }
-    getGenomicParticipantCounts() {
-        return genomicsApi().getParticipantCounts().then(result => {
-            // console.log(result);
+
+    raceEthArr: any[] = [];
+    sexAtBirthArr: any[] = [];
+    currentAgeArr: any[] = [];
+    participantCountsArr: any[] = [];
+
+    async getGenomicParticipantCounts() {
+        const result_1 = await genomicsApi().getParticipantCounts();
+        result_1.results.forEach(type => {
+            if (type.stratum4 === null) {
+                this.setState({
+                    participantCount: type.countValue.toLocaleString()
+                });
+            }
         });
     }
 
@@ -62,9 +75,6 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     }
     getGenomicChartData() {
         return genomicsApi().getChartData().then(result => {
-            console.log(result, 'rererereressulllt');
-
-            // const raceEthArr: any[] = [], sexAtBirthArr: any[] = [], currentAgeArr: any[] = [];
             result.items.forEach(item => {
                 switch (item.analysisId) {
                     case 3503:
@@ -80,7 +90,6 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                         this.participantCountsArr.push(item);
 
                 }
-
             });
             this.setState({
                 raceEthData: this.raceEthArr,
@@ -88,12 +97,13 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 currentAgeData: this.currentAgeArr,
                 participantCounts: this.participantCountsArr
             })
+            this.setState({ loading: false });
         });
     }
 
 
     render() {
-        const { participantCount, raceEthData, sexAtBirthData, currentAgeData, participantCounts } = this.state;
+        const { participantCount, raceEthData, sexAtBirthData, currentAgeData, participantCounts, loading } = this.state;
         return <React.Fragment>
             <div style={styles.innerContainer}>
                 <div style={styles.headingLayout}>
@@ -105,9 +115,11 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                         <span>{participantCount} participants</span>
                     </div>
                 </div>
-                {raceEthData.length && <GenomicChartComponent counts={participantCounts} title='Race/ethnicity' data={raceEthData[0]} />}
-                {sexAtBirthData.length && <GenomicChartComponent counts={participantCounts} title='Sex assigned at birth' data={sexAtBirthData[0]} />}
-                {currentAgeData.length && <GenomicChartComponent counts={participantCounts} title='Current age' data={currentAgeData[0]} />}
+                {!loading && <React.Fragment>
+                    <GenomicChartComponent counts={participantCounts} title='Race/ethnicity' data={raceEthData[0]} />
+                    <GenomicChartComponent counts={participantCounts} title='Sex assigned at birth' data={sexAtBirthData[0]} />
+                    <GenomicChartComponent counts={participantCounts} title='Current age' data={currentAgeData[0]} />
+                </React.Fragment>}
             </div>
         </React.Fragment>;
     }

@@ -109,7 +109,13 @@ const chartSimple = {
             useHTML: true,
         }
     },
-    legend: { enabled: true },
+    legend: {
+        // layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        floating: true,
+        useHTML: true
+    },
     credits: { enabled: false },
     plotOptions: {
         series: {
@@ -184,7 +190,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
                 wgsData.push({
                     cat: result.stratum2,
                     y: result.countValue,
-                    toolTipHelpText: toolTipHelpText
+                    toolTipHelpText: toolTipHelpText,
                 });
             } else if (result.stratum4 === 'micro-array') {
                 chartOptions.xAxis.categories.push(result.stratum2);

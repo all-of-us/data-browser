@@ -595,6 +595,13 @@ a a:link a:visited {
   overflow: visible !important;
 }
 
+.highcharts-legend-box {
+  position: absolute!important;
+  top:0px!important;
+  right:-30px!important;
+  background: red!important;
+}
+
 .chart-tooltip,
 .bio-sex-tooltip,
 .fitbit-tooltip,
