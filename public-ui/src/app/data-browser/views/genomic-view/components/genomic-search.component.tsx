@@ -32,7 +32,6 @@ const styles = reactStyles({
 });
 
 interface State {
-    participantCount: number;
     loading: boolean;
     loadingVariantListSize: boolean;
     variantListSize: number;
@@ -44,7 +43,6 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);
         this.state = {
-            participantCount: 0,
             loading: null,
             loadingVariantListSize: null,
             searchResults: null,
@@ -54,13 +52,6 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     search = _.debounce((searchTerm: string) => this.getVariantSearch(searchTerm), 1000);
-
-    getGenomicParticipantCounts() {
-        genomicsApi().getParticipantCounts().then(result => {
-            const domainCountResult = result.results.filter(r => r.stratum4 === null)[0];
-            this.setState({ participantCount: domainCountResult.countValue });
-        });
-    }
 
     getSearchSize(searchTerm: string) {
         this.setState({loadingVariantListSize: true});
@@ -95,10 +86,6 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
         }
     }
 
-    componentDidMount() {
-        this.getGenomicParticipantCounts();
-    }
-
     handleResults(results: VariantListResponse) {
         this.setState({
             searchResults: results.items
@@ -106,11 +93,10 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     render() {
-        const { loading, participantCount, searchResults, variantListSize, loadingVariantListSize } = this.state;
+        const { loading, searchResults, variantListSize, loadingVariantListSize } = this.state;
         return <React.Fragment>
                 <div style={styles.border}>
-                    <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div><div style={styles.boxHeading}>
-                        {participantCount.toLocaleString()} participants</div></div>
+                    <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div></div>
                     <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
                         searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
                         onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
