@@ -163,7 +163,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 variant_id = variantSearchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                genes = variantSearchTerm;
+                genes = "(?i)" + variantSearchTerm;
                 finalSql += WHERE_GENE;
             }
         }
