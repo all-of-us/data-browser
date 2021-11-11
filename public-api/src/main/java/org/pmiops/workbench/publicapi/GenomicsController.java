@@ -48,7 +48,8 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_amr_ac as amr_allele_count, gvs_amr_an as amr_allele_number, gvs_amr_af as amr_allele_frequency, " +
             "gvs_mid_ac as mid_allele_count, gvs_mid_an as mid_allele_number, gvs_mid_af as mid_allele_frequency, " +
             "gvs_sas_ac as sas_allele_count, gvs_sas_an as sas_allele_number, gvs_sas_af as sas_allele_frequency, " +
-            "gvs_oth_ac as oth_allele_count, gvs_oth_an as oth_allele_number, gvs_oth_af as oth_allele_frequency from ${projectId}.${dataSetId}.wgs_variant";
+            "gvs_oth_ac as oth_allele_count, gvs_oth_an as oth_allele_number, gvs_oth_af as oth_allele_frequency, " +
+            "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency from ${projectId}.${dataSetId}.wgs_variant";
 
     public GenomicsController() {}
 
@@ -252,7 +253,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .sasAlleleFrequency(bigQueryService.getDouble(row, rm.get("sas_allele_frequency")))
                 .othAlleleCount(bigQueryService.getLong(row, rm.get("oth_allele_count")))
                 .othAlleleNumber(bigQueryService.getLong(row, rm.get("oth_allele_number")))
-                .othAlleleFrequency(bigQueryService.getDouble(row, rm.get("oth_allele_frequency")));
+                .othAlleleFrequency(bigQueryService.getDouble(row, rm.get("oth_allele_frequency")))
+                .totalAlleleCount(bigQueryService.getLong(row, rm.get("total_allele_count")))
+                .totalAlleleNumber(bigQueryService.getLong(row, rm.get("total_allele_number")))
+                .totalAlleleFrequency(bigQueryService.getDouble(row, rm.get("total_allele_frequency")));
         return ResponseEntity.ok(variantInfo);
     }
 }
