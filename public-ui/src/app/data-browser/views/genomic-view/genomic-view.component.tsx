@@ -92,12 +92,12 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     title = 'Genomic Data';
 
     sideBarClick(selected: number) {
-        if (selected === 3) {
-            document.getElementById('sideBar').style.filter = 'blur(2px)';
-            document.getElementById('genomicTitle').style.filter = 'blur(2px)';
-        } else {
-            this.resetFilters();
-        }
+        // if (selected === 3) {
+        //     document.getElementById('sideBar').style.filter = 'blur(2px)';
+        //     document.getElementById('genomicTitle').style.filter = 'blur(2px)';
+        // } else {
+        //     this.resetFilters();
+        // }
         this.setState({
             selectionId: selected
         });
