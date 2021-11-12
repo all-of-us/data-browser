@@ -32,6 +32,7 @@ const styles = reactStyles({
         fontSize: '1.75em',
         width: '100%',
         margin: '0',
+        paddingTop: '.5em',
         paddingBottom: '.5rem',
     },
     question: {
