@@ -102,8 +102,8 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                             <strong>How does <em>All of Us</em> compute genetic ancestry?</strong>
                         </div>
                         <div style={styles.answer}>
-                            <em>All of Us</em> carries out an analysis that clusters individuals into groups based on the shared patterns in their DNA.
-                            This allows us to infer their genetic ancestry.
+                            <em>All of Us</em> carries out an analysis that clusters individuals into groups based on
+                            the shared patterns in their DNA. This allows us to infer their genetic ancestry.
                         </div>
                         <div style={styles.question}>
                             <strong>What do the genetic ancestry categories in the Variant Search mean?</strong>
