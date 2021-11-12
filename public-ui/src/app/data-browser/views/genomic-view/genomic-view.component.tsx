@@ -8,18 +8,7 @@ import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
     title: {
-        fontSize: '35px'
-    },
-    pageHeader: {
-        paddingTop: '18px',
-        paddingBottom: '18px',
-        lineHeight: '1.5'
-    },
-    titleContainer: {
-        lineHeight: '1em',
-        margin: '0px',
-        width: '100%',
-        display: 'block'
+        margin: '0'
     },
     viewLayout: {
         display: 'grid',
@@ -127,17 +116,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     render() {
         const { selectionId } = this.state;
         return <React.Fragment>
-            <div style={styles.pageHeader}>
-            <div style={styles.titleContainer}>
+            <style>{css}</style>
+            <div id='genomicView'>
+            <div id='genomicTitle'>
             <h1 style={styles.title}>{this.title}</h1>
-            <div style={globalStyles.bodyDefault}>
+            <p style={globalStyles.bodyDefault}>
                 This section provides an overview of genomic data within the current
                 <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
                 Data page to view currently available genomic data by participant - reported
                 for preliminary exploration of genetic variant allele frequencies by with select
                 annotations and genetic ancestry associations.
-            </div>
-            </div>
+            </p>
             </div>
             <div style={styles.viewLayout}>
                 <div style={styles.sideBarLayout} id='sideBar'>
