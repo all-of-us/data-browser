@@ -68,7 +68,8 @@ interface State {
     selectionId: number;
 }
 
-
+const css = `
+`;
 
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
     constructor(props: {}) {
@@ -91,18 +92,33 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     title = 'Genomic Data';
 
     sideBarClick(selected: number) {
+        if (selected === 3) {
+            document.getElementById('sideBar').style.filter = 'blur(2px)';
+            document.getElementById('genomicTitle').style.filter = 'blur(2px)';
+        } else {
+            this.resetFilters();
+        }
         this.setState({
             selectionId: selected
         });
     }
 
+    resetFilters() {
+        document.getElementById('sideBar').style.filter = '';
+        document.getElementById('genomicTitle').style.filter = '';
+    }
+
     handleFaqClose() {
         this.setState({selectionId: 2});
+        this.resetFilters();
     }
 
     render() {
         const { selectionId } = this.state;
         return <React.Fragment>
+            <style>{css}</style>
+            <div id='genomicView'>
+            <div id='genomicTitle'>
             <h1 style={styles.title}>{this.title}</h1>
             <p style={globalStyles.bodyDefault}>
                 This section provides an overview of genomic data within the current
@@ -111,8 +127,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 for preliminary exploration of genetic variant allele frequencies by with select
                 annotations and genetic ancestry associations.
             </p>
+            </div>
             <div style={styles.viewLayout}>
-                <div style={styles.sideBarLayout}>
+                <div style={styles.sideBarLayout} id='sideBar'>
                     {this.sideBarItems.map((item, index) => {
                         return <div key={index} style={styles.sideBarItemConainer}>
                             <div onClick={() => this.sideBarClick(item.id)}
@@ -127,13 +144,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                     <div style={styles.faqHeading}>Questions about genomics?<br/><div style={styles.faqLink}
                     onClick={() => this.sideBarClick(3)}>Learn More</div></div>
                 </div>
-                <div>
+                <div id='childView'>
                     {selectionId === 1 && <GenomicOverviewComponent />}
                     {selectionId === 2 && <GenomicSearchComponent />}
                     {selectionId === 3 && <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
                 </div>
             </div>
-
+        </div>
         </React.Fragment>;
     }
 });

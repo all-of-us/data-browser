@@ -11,7 +11,7 @@ const styles = reactStyles({
         left: '0px',
         padding: '.5em',
         paddingLeft: '2.5em',
-        paddingRight: '2.5em'
+        paddingRight: '2.5em',
     },
     top: {
         position: 'relative',
@@ -44,13 +44,14 @@ const css = `
 `;
 
 export class GenomicFaqComponent extends React.Component<Props, State> {
+    faqWindow: any;
     constructor(props: Props) {
         super(props);
     }
     render() {
         return <React.Fragment>
             <style>{css}</style>
-            <div style={styles.faqContainer}>
+            <div style={styles.faqContainer} id="genomicsFaq" ref={this.faqWindow}>
                 <div style={styles.top}>
                     <span>Genomic FAQs: </span>
                     <div><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
