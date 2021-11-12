@@ -54,7 +54,8 @@ export const baseOptions = {
   chart: {
         type: '',
         backgroundColor: 'transparent',
-        tooltip: {}
+        tooltip: {},
+        plotShadow: false
   },
   color: '',
   title: {
@@ -219,9 +220,20 @@ export const baseOptions = {
                     shadow: false,
                     events: {},
                     size: '100%',
-                    height: '100%'
+                    height: '100%',
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    states: {
+                        inactive: {
+                            opacity: 1,
+                        },
+                        hover: {
+                            enabled: true,
+                            opacity: 0.5
+                        }
+                    },
+            },
        },
-        },
   series: [{ data: [] }]
 };
 
