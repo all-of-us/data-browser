@@ -65,7 +65,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         return <React.Fragment>
             <div style={styles.searchContainer}>
                 <div>
-                    <SearchComponent value={searchWord} searchTitle='Search' domain='genomics'
+                    <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
                         onClear={() => this.handleChange('')} />
                 </div>
