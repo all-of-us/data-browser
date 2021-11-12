@@ -14,11 +14,11 @@ const styles = reactStyles({
         top: 0
     },
     faqContainer: {
-        position:'relative',
+        position: 'relative',
         width: '100%',
         background: 'white',
         left: '-5rem',
-        top:'-7rem',
+        top: '-7rem',
         padding: '.5em',
         paddingLeft: '2.5em',
         paddingRight: '2.5em',
@@ -77,9 +77,9 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                             and can observe how patterns of variation might differ between groups with different genetic ancestries.
                             However, researchers may wish to conduct more in-depth studies about the association of genetic variants
                             with specific diseases across many populations. To conduct these studies,
-                            researchers must request access to individual-level participant data, available through the Researcher Workbench.
-                            All registered researchers must successfully complete a required training about responsibly using genetic ancestry,
-                            race, and ethnicity data in their studies.</div>
+                            researchers must request access to individual-level participant data, available through the
+                            Researcher Workbench. All registered researchers must successfully complete a required training about
+                            responsibly using genetic ancestry, race, and ethnicity data in their studies.</div>
                         <div style={styles.question}>
                             <strong>What is genetic ancestry?</strong>
                         </div>
