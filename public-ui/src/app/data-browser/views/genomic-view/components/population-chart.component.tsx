@@ -42,7 +42,6 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
              'fontFamily': 'GothamBook',
              'fontWeight': 'normal'
     };
-    console.log(newBaseOptions.plotOptions);
     newBaseOptions.tooltip = { formatter: function() {
         return '<div><strong>' + this.point.name + '</strong> <br /> ' + this.point.percentage.toFixed(2) +
         ' % | Allele Count: ' + this.y + '</div>';
@@ -72,7 +71,6 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
                     dataLabels: {
                         enabled: false
                     }}];
-    console.log(newBaseOptions);
     this.setState({options: newBaseOptions});
   }
 

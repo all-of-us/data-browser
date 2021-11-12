@@ -66,7 +66,6 @@ export class VariantRowComponent extends React.Component<Props, State> {
 
     getVariantDetails(variantId: string) {
         genomicsApi().getVariantDetails(variantId).then((results: VariantInfo) => {
-
             this.setState({
                 variantDetails: results,
                 loadingVarDetails: false
@@ -87,7 +86,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
         const { variant } = this.props;
         const { variantClicked, variantDetails, loadingVarDetails } = this.state;
         return <React.Fragment>
-            {variantClicked ? <VariantExpandedComponent
+            {(!loadingVarDetails && variantClicked) ? <VariantExpandedComponent
                 loading={loadingVarDetails}
                 variant={variant}
                 variantDetails={variantDetails}
