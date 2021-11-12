@@ -99,10 +99,10 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     render() {
-        const { loading, searchResults, variantListSize, loadingVariantListSize } = this.state;
+        const { loading, searchResults, variantListSize, loadingVariantListSize, searchWord } = this.state;
         return <React.Fragment>
                 <div style={styles.border}>
-                    <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div></div>
+                    <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
                     <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
                         searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
                         onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
