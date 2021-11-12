@@ -1430,86 +1430,98 @@ definitions:
         items:
           type: string
       afrAlleleCount:
-        description: allele count
+        description: African Ancestry Allele Count
         type: integer
         format: int64
       afrAlleleNumber:
-        description: allele count
+        description: African Ancestry Allele Number
         type: integer
         format: int64
       afrAlleleFrequency:
-        description: allele count
+        description: African Ancestry Allele Frequency
         type: number
         format: double
       easAlleleCount:
-        description: allele count
+        description: East Asian Ancestry Allele Count
         type: integer
         format: int64
       easAlleleNumber:
-        description: allele count
+        description: East Asian Ancestry Allele Number
         type: integer
         format: int64
       easAlleleFrequency:
-        description: allele count
+        description: East Asian Ancestry Allele Frequency
         type: number
         format: double
       eurAlleleCount:
-        description: allele count
+        description: European Ancestry Allele Count
         type: integer
         format: int64
       eurAlleleNumber:
-        description: allele count
+        description: European Ancestry Allele Number
         type: integer
         format: int64
       eurAlleleFrequency:
-        description: allele count
+        description: European Ancestry Allele Frequency
         type: number
         format: double
       amrAlleleCount:
-        description: allele count
+        description: Latin American Ancestry Allele Count
         type: integer
         format: int64
       amrAlleleNumber:
-        description: allele count
+        description: Latin American Ancestry Allele Number
         type: integer
         format: int64
       amrAlleleFrequency:
-        description: allele count
+        description: Latin American Ancestry Allele Frequency
         type: number
         format: double
       midAlleleCount:
-        description: allele count
+        description: Middle Eastern Ancestry Allele Count
         type: integer
         format: int64
       midAlleleNumber:
-        description: allele count
+        description: Middle Eastern Ancestry Allele Number
         type: integer
         format: int64
       midAlleleFrequency:
-        description: allele count
+        description: Middle Eastern Ancestry Allele Frequency
         type: number
         format: double
       sasAlleleCount:
-        description: allele count
+        description: South Asian Ancestry Allele Count
         type: integer
         format: int64
       sasAlleleNumber:
-        description: allele count
+        description: South Asian Ancestry Allele Number
         type: integer
         format: int64
       sasAlleleFrequency:
-        description: allele count
+        description: South Asian Ancestry Allele Frequency
         type: number
         format: double
       othAlleleCount:
-        description: allele count
+        description: Other Ancestry Allele Count
         type: integer
         format: int64
       othAlleleNumber:
-        description: allele count
+        description: Other Ancestry Allele Number
         type: integer
         format: int64
       othAlleleFrequency:
-        description: allele count
+        description: Other Ancestry Allele Frequency
+        type: number
+        format: double
+      totalAlleleCount:
+        description: Total Allele Count
+        type: integer
+        format: int64
+      totalAlleleNumber:
+        description: Total Allele Number
+        type: integer
+        format: int64
+      totalAlleleFrequency:
+        description: Total Allele Frequency
         type: number
         format: double

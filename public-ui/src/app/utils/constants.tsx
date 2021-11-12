@@ -92,14 +92,8 @@ export const prepVariantPopulationDetails = (variantDetails) => {
     VARIANT_POPULATION_DETAILS[6]['AlleleCount'] = variantDetails.othAlleleCount;
     VARIANT_POPULATION_DETAILS[6]['AlleleNumber'] = variantDetails.othAlleleNumber;
     VARIANT_POPULATION_DETAILS[6]['AlleleFrequency'] = variantDetails.othAlleleFrequency;
-    VARIANT_POPULATION_DETAILS[7]['AlleleCount'] = variantDetails.afrAlleleCount + variantDetails.easAlleleCount +
-        variantDetails.eurAlleleCount + variantDetails.amrAlleleCount + variantDetails.midAlleleCount +
-        variantDetails.sasAlleleCount + variantDetails.othAlleleCount;
-    VARIANT_POPULATION_DETAILS[7]['AlleleNumber'] = variantDetails.afrAlleleNumber + variantDetails.easAlleleNumber +
-        variantDetails.eurAlleleNumber + variantDetails.afrAlleleNumber + variantDetails.midAlleleNumber +
-        variantDetails.sasAlleleNumber + variantDetails.othAlleleNumber;
-    VARIANT_POPULATION_DETAILS[7]['AlleleFrequency'] = variantDetails.afrAlleleFrequency + variantDetails.easAlleleFrequency +
-        variantDetails.eurAlleleFrequency + variantDetails.afrAlleleFrequency + variantDetails.midAlleleFrequency +
-        variantDetails.sasAlleleFrequency + variantDetails.othAlleleFrequency;
+    VARIANT_POPULATION_DETAILS[7]['AlleleCount'] = variantDetails.totalAlleleCount;
+    VARIANT_POPULATION_DETAILS[7]['AlleleNumber'] = variantDetails.totalAlleleNumber;
+    VARIANT_POPULATION_DETAILS[7]['AlleleFrequency'] = variantDetails.totalAlleleFrequency;
      return VARIANT_POPULATION_DETAILS;
 };
