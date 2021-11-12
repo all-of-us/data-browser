@@ -51,7 +51,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
     render() {
         return <React.Fragment>
             <style>{css}</style>
-            <div style={styles.faqContainer} id="genomicsFaq" ref={this.faqWindow}>
+            <div style={styles.faqContainer} id='genomicsFaq' ref={this.faqWindow}>
                 <div style={styles.top}>
                     <span>Genomic FAQs: </span>
                     <div><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
