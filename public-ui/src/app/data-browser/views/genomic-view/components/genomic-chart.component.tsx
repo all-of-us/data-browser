@@ -1,9 +1,9 @@
-import { reactStyles } from 'app/utils';
 import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { reactStyles } from 'app/utils';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import * as React from 'react';
 import { Analysis } from 'publicGenerated';
+import * as React from 'react';
 
 
 
@@ -43,10 +43,11 @@ const chartSimple = {
                 whiteSpace: 'wrap',
                 textOverflow: 'ellipsis',
                 width: '80px',
-                fontSize: '14px',
+                fontSize: '11px',
                 color: '#262262',
+                fontFamily: 'GothamBook'
             },
-            formatter: function () {
+            formatter: () => {
                 const label = this.axis.defaultLabelFormatter.call(this);
                 // Change <= 20 count to display '<= 20'
                 if (label && label.indexOf('>=') > -1) {
@@ -64,7 +65,8 @@ const chartSimple = {
                 textOverflow: 'ellipsis',
                 fontWeight: 'bold',
                 textTransform: 'capitalize',
-                fontSize: '14px'
+                fontSize: '11px',
+                fontFamily: 'GothamBook'
             }
         },
         tickLength: 0,
@@ -75,11 +77,11 @@ const chartSimple = {
     },
     yAxis: {
         title: {
-            text: '',
+            text: 'PARTICIPANT COUNT',
             style: {
                 color: '#262262',
-                fontSize: '14px',
-                fontWeight: 'bold',
+                fontSize: '11px',
+                fontFamily: 'GothamBook',
                 textTransform: 'capitalize',
                 whiteSpace: 'wrap',
                 textOverflow: 'ellipsis',
@@ -97,9 +99,10 @@ const chartSimple = {
                 fontSize: '12px',
                 whiteSpace: 'wrap',
                 textOverflow: 'ellipsis',
-                color: '#262262'
+                color: '#262262',
+                fontFamily: 'GothamBook'
             },
-            formatter: function () {
+            formatter: () => {
                 const label = this.axis.defaultLabelFormatter.call(this);
                 // Change <= 20 count to display '<= 20'
                 if (label && label.indexOf('>=') > -1) {
@@ -128,7 +131,7 @@ const chartSimple = {
             },
         },
     }
-}
+};
 
 
 
@@ -141,6 +144,7 @@ const styles = reactStyles({
     },
     chartTitle: {
         fontSize: '1em',
+        paddingBottom: '.5em'
     },
     legendLayout: {
         paddingBottom: '1rem',
@@ -178,7 +182,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             options: null,
-        }
+        };
     }
 
     dataToOptions() {
@@ -199,15 +203,15 @@ export class GenomicChartComponent extends React.Component<Props, State> {
             'Male',
             'Other'
         ];
-        let participantTypeCount = {
+        const participantTypeCount = {
             wsg: '',
-            microArray:''
+            microArray: ''
         };
         counts.results.forEach(item => {
             if (item.stratum4 === 'wgs') {
                 participantTypeCount['wsg'] = item.countValue;
             } else if (item.stratum4 === 'micro-array') {
-                participantTypeCount['microArray'] = item.countValue
+                participantTypeCount['microArray'] = item.countValue;
             }
         });
 
@@ -215,26 +219,26 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         let wgsData: Array<any> = [], microArrayData: Array<any> = [];
         chartOptions.chart.type = data.chartType;
         chartOptions.xAxis.categories = [];
-        chartOptions.column = {}
+        chartOptions.column = {};
         data.results.forEach(result => {
             if (GENDER_STRATUM_MAP[result.stratum2]) {
-                result.stratum2 = GENDER_STRATUM_MAP[result.stratum2]
+                result.stratum2 = GENDER_STRATUM_MAP[result.stratum2];
             } else if (AGE_STRATUM_MAP[result.stratum2]) {
                 result.stratum2 = AGE_STRATUM_MAP[result.stratum2];
             }
             if (result.stratum4 === 'wgs') {
-                let percent:any = result.countValue / parseInt(participantTypeCount.wsg) * 100;
+                const percent: any = result.countValue / parseInt(participantTypeCount.wsg, 10) * 100;
                 toolTipHelpText = `<strong>` + result.stratum2 + `</strong> <br> ` + result.countValue.toLocaleString() + `
-                participants, `+ parseFloat(percent).toFixed(2)+ `%`;
+                participants, ` + parseFloat(percent).toFixed(2) + `%`;
                 wgsData.push({
                     cat: result.stratum2,
                     y: result.countValue,
                     toolTipHelpText: toolTipHelpText,
                 });
             } else if (result.stratum4 === 'micro-array') {
-                let percent:any = result.countValue / parseInt(participantTypeCount.microArray) * 100;
+                const percent: any = result.countValue / parseInt(participantTypeCount.microArray, 10) * 100;
                 toolTipHelpText = `<strong>` + result.stratum2 + `</strong> <br> ` + result.countValue.toLocaleString() + `
-                participants, `+ parseFloat(percent).toFixed(2)+ `%`;
+                participants, ` + parseFloat(percent).toFixed(2) + `%`;
                 chartOptions.xAxis.categories.push(result.stratum2);
                 microArrayData.push({
                     cat: result.stratum2,
@@ -247,7 +251,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort((a, b) => {
             const sortArr = (data.analysisId === 3503) ? sortingDemoArr : sortingSexArr;
             return sortArr.indexOf(a) - sortArr.indexOf(b);
-        })
+        });
         wgsData = wgsData.sort((a, b) => {
             return chartOptions.xAxis.categories.indexOf(a.cat) - chartOptions.xAxis.categories.indexOf(b.cat);
         });
@@ -278,13 +282,13 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         const { title } = this.props;
         return <div style={styles.chartContainer}>
             <div style={styles.legendLayout}>
-                <h3 style={styles.chartTitle}><strong>{title}</strong></h3>
+                <h3 style={styles.chartTitle}>{title}</h3>
                 <div style={styles.legend}>
-                    <i className="fas fa-circle" style={{ color: '#216FB4' }}></i> <span style={styles.legendItem}>WGS</span>
-                    <i className="fas fa-circle" style={{ color: '#8BC990' }}></i> <span style={styles.legendItem}>Genotyping Arrays</span>
+                    <i className='fas fa-circle' style={{ color: '#216FB4' }}></i> <span style={styles.legendItem}>WGS</span>
+                    <i className='fas fa-circle' style={{ color: '#8BC990' }}></i> <span style={styles.legendItem}>Genotyping Arrays</span>
                 </div>
             </div>
-            <HighchartsReact allowChartUpdate="false" highcharts={highCharts} options={options} />
+            <HighchartsReact allowChartUpdate='false' highcharts={highCharts} options={options} />
         </div>;
     }
 }

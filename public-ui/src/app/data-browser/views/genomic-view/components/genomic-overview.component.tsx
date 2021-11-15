@@ -49,7 +49,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
             sexAtBirthData: [],
             currentAgeData: [],
             participantCounts: []
-        }
+        };
     }
 
     raceEthArr: any[] = [];
@@ -95,9 +95,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 raceEthData: this.raceEthArr,
                 sexAtBirthData: this.sexAtBirthArr,
                 currentAgeData: this.currentAgeArr,
-                participantCounts: this.participantCountsArr
-            })
-            this.setState({ loading: false });
+                participantCounts: this.participantCountsArr,
+                loading: false
+            });
         });
     }
 

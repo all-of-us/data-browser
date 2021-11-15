@@ -70,7 +70,7 @@ export const baseOptions = {
   tooltip: {
     followPointer: true,
     outside: false,
-    formatter: function (tooltip) {
+    formatter: (tooltip) => {
       if (this.point.y <= 20) {
         if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
           this.point.toolTipHelpText =
@@ -106,7 +106,7 @@ export const baseOptions = {
         fontSize: '14px',
         color: '#262262',
       },
-      formatter: function () {
+      formatter: () => {
         const label = this.axis.defaultLabelFormatter.call(this);
         // Change <= 20 count to display '<= 20'
         if (label && label.indexOf('>=') > -1) {
@@ -117,17 +117,17 @@ export const baseOptions = {
       useHTML: true,
     },
     title: {
-               text: '',
-               verticalAlign: '',
-               style: {
-                 color: '#262262',
-                 whiteSpace: 'wrap',
-                 textOverflow: 'ellipsis',
-                 fontWeight: 'bold',
-                 textTransform: 'capitalize',
-                 fontSize: '14px'
-               }
-             },
+      text: '',
+      verticalAlign: '',
+      style: {
+        color: '#262262',
+        whiteSpace: 'wrap',
+        textOverflow: 'ellipsis',
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+        fontSize: '14px'
+      }
+    },
     tickLength: 0,
     lineWidth: 1,
     lineColor: '#979797',
@@ -160,7 +160,7 @@ export const baseOptions = {
         textOverflow: 'ellipsis',
         color: '#262262'
       },
-      formatter: function () {
+      formatter: () => {
         const label = this.axis.defaultLabelFormatter.call(this);
         // Change <= 20 count to display '<= 20'
         if (label && label.indexOf('>=') > -1) {
@@ -175,53 +175,53 @@ export const baseOptions = {
   legend: { enabled: false },
   credits: { enabled: false },
   plotOptions: {
-          series: {
-            animation: {
-              duration: 100,
-            },
-            pointWidth: 50,
-            fontSize: '',
-            minPointLength: 3,
-            events: {
-            },
-            states: {
-                hover: {
-                    enabled: false
-                }
-            }
-          },
-          bar: {
-                 shadow: false,
-                 borderColor: null,
-                 colorByPoint: true,
-                 groupPadding: 0,
-                 pointPadding: 0,
-                 dataLabels: {
-                   enabled: false,
-                 },
-                 events: {}
-          },
-        column: {
-                  shadow: false,
-                  borderColor: null,
-                  colorByPoint: true,
-                  groupPadding: 0,
-                  pointPadding: 0,
-                  borderWidth: 0,
-                  pointWidth: 50,
-                  dataLabels: {
-                    enabled: false,
-                  },
-                  stacking: '',
-                  events: {},
-            },
-       pie: {
-                    shadow: false,
-                    events: {},
-                    size: '100%',
-                    height: '100%'
-       },
-        },
+    series: {
+      animation: {
+        duration: 100,
+      },
+      pointWidth: 50,
+      fontSize: '',
+      minPointLength: 3,
+      events: {
+      },
+      states: {
+        hover: {
+          enabled: false
+        }
+      }
+    },
+    bar: {
+      shadow: false,
+      borderColor: null,
+      colorByPoint: true,
+      groupPadding: 0,
+      pointPadding: 0,
+      dataLabels: {
+        enabled: false,
+      },
+      events: {}
+    },
+    column: {
+      shadow: false,
+      borderColor: null,
+      colorByPoint: true,
+      groupPadding: 0,
+      pointPadding: 0,
+      borderWidth: 0,
+      pointWidth: 50,
+      dataLabels: {
+        enabled: false,
+      },
+      stacking: '',
+      events: {},
+    },
+    pie: {
+      shadow: false,
+      events: {},
+      size: '100%',
+      height: '100%'
+    },
+  },
   series: [{ data: [] }]
 };
 

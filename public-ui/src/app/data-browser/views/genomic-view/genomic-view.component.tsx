@@ -1,5 +1,4 @@
 import { withRouteData } from 'app/components/app-router';
-import { style } from 'app/data-browser/cdr-version/cdr-version-info';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
@@ -61,7 +60,7 @@ const styles = reactStyles({
         backgroundColor: 'rgba(33,111,180,0.15)'
     },
     pageContainer: {
-        background:'white'
+        background: 'white'
     }
 
 });
@@ -105,16 +104,16 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         const { selectionId } = this.state;
         return <React.Fragment>
             <div style={styles.pageHeader}>
-            <div style={styles.titleContainer}>
-            <h1 style={styles.title}>{this.title}</h1>
-            <div style={globalStyles.bodyDefault}>
-                This section provides an overview of genomic data within the current
-                <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
-                Data page to view currently available genomic data by participant - reported
-                for preliminary exploration of genetic variant allele frequencies by with select
-                annotations and genetic ancestry associations.
-            </div>
-            </div>
+                <div style={styles.titleContainer}>
+                    <h1 style={styles.title}>{this.title}</h1>
+                    <div style={globalStyles.bodyDefault}>
+                        This section provides an overview of genomic data within the current
+                        <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
+                        Data page to view currently available genomic data by participant - reported
+                        for preliminary exploration of genetic variant allele frequencies by with select
+                        annotations and genetic ancestry associations.
+                    </div>
+                </div>
             </div>
             <div style={styles.viewLayout}>
                 <div style={styles.sideBarLayout}>
