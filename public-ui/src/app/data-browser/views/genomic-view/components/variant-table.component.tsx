@@ -114,7 +114,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     render() {
         const { numPages, loading, searchResults } = this.state;
-        return <React.Fragment> {loading && <div style={styles.center}><Spinner /> </div>}
+        return <React.Fragment>
             {searchResults ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
