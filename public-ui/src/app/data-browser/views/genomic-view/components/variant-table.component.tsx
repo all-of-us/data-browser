@@ -87,7 +87,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     render() {
         const { numPages } = this.state;
         const { searchResults, variantListSize, loading } = this.props;
-        return <React.Fragment> {searchResults ?
+        return <React.Fragment> {(!loading && searchResults) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
