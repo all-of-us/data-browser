@@ -18,7 +18,7 @@ const styles = reactStyles({
         width: '100%',
         background: 'white',
         left: '-5rem',
-        top: '-7rem',
+        top: '-15rem',
         padding: '.5em',
         paddingLeft: '2.5em',
         paddingRight: '2.5em',
