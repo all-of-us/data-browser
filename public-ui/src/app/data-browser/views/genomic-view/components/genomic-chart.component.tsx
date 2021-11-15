@@ -1,139 +1,9 @@
-import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { AGE_STRATUM_MAP, GENDER_STRATUM_MAP, getGenomicOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Analysis } from 'publicGenerated';
 import * as React from 'react';
-
-
-
-const chartSimple = {
-    chart: {
-        type: 'column',
-        backgroundColor: 'transparent'
-    },
-    color: '',
-    title: {
-        text: '',
-        useHTML: true,
-        style: {
-            color: '#666',
-            fontSize: '14px',
-            fontFamily: 'GothamBook',
-            fontWeight: 'normal'
-        }
-    },
-    tooltip: {
-        followPointer: true,
-        useHTML: true,
-        // shared: true,
-        backgroundColor: 'transparent',
-        padding: 0,
-        borderWidth: 0,
-        shadow: false,
-        headerFormat: '<div class="geno-chart-tooltip">',
-        pointFormat: '{point.toolTipHelpText}',
-        footerFormat: '</div>'
-
-    },
-    xAxis: {
-        labels: {
-            reserveSpace: true,
-            style: {
-                whiteSpace: 'wrap',
-                textOverflow: 'ellipsis',
-                width: '80px',
-                fontSize: '11px',
-                color: '#262262',
-                fontFamily: 'GothamBook'
-            },
-            formatter: () => {
-                const label = this.axis.defaultLabelFormatter.call(this);
-                // Change <= 20 count to display '<= 20'
-                if (label && label.indexOf('>=') > -1) {
-                    return '&#8805; ' + label.replace('>=', '');
-                }
-                return label;
-            },
-            useHTML: true,
-        },
-        title: {
-            text: '',
-            style: {
-                color: '#262262',
-                whiteSpace: 'wrap',
-                textOverflow: 'ellipsis',
-                fontWeight: 'bold',
-                textTransform: 'capitalize',
-                fontSize: '11px',
-                fontFamily: 'GothamBook'
-            }
-        },
-        tickLength: 0,
-        lineWidth: 1,
-        lineColor: '#979797',
-        gridLineWidth: 1,
-        gridLineColor: 'transparent'
-    },
-    yAxis: {
-        title: {
-            text: 'PARTICIPANT COUNT',
-            style: {
-                color: '#262262',
-                fontSize: '11px',
-                fontFamily: 'GothamBook',
-                textTransform: 'capitalize',
-                whiteSpace: 'wrap',
-                textOverflow: 'ellipsis',
-                padding: ''
-            }
-        },
-        min: 20,
-        gridLineWidth: 1,
-        tickLength: 0,
-        lineWidth: 1,
-        lineColor: '#979797',
-        gridLineColor: '#DDE0E4',
-        labels: {
-            style: {
-                fontSize: '12px',
-                whiteSpace: 'wrap',
-                textOverflow: 'ellipsis',
-                color: '#262262',
-                fontFamily: 'GothamBook'
-            },
-            formatter: () => {
-                const label = this.axis.defaultLabelFormatter.call(this);
-                // Change <= 20 count to display '<= 20'
-                if (label && label.indexOf('>=') > -1) {
-                    return '&#8805; ' + label.replace('>=', '');
-                }
-                return label;
-            },
-            useHTML: true,
-        }
-    },
-    legend: {
-        enabled: false
-    },
-    credits: { enabled: false },
-    plotOptions: {
-        series: {
-            animation: {
-                duration: 100,
-            },
-            maxPointWidth: 100,
-            minPointWidth: 50,
-            pointPadding: 0,
-            borderWidth: 0,
-            fontSize: '',
-            events: {
-            },
-        },
-    }
-};
-
-
 
 const styles = reactStyles({
     chartContainer: {
@@ -174,8 +44,6 @@ interface State {
     options: any;
 }
 
-
-
 export class GenomicChartComponent extends React.Component<Props, State> {
 
     constructor(props: Props) {
@@ -186,7 +54,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     }
 
     dataToOptions() {
-        const chartOptions = JSON.parse(JSON.stringify(chartSimple));
+        const chartOptions = getGenomicOptions();
         const { data, counts } = this.props;
         let toolTipHelpText;
         const sortingDemoArr = [
@@ -214,8 +82,6 @@ export class GenomicChartComponent extends React.Component<Props, State> {
                 participantTypeCount['microArray'] = item.countValue;
             }
         });
-
-
         let wgsData: Array<any> = [], microArrayData: Array<any> = [];
         chartOptions.chart.type = data.chartType;
         chartOptions.xAxis.categories = [];
@@ -288,7 +154,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
                     <i className='fas fa-circle' style={{ color: '#8BC990' }}></i> <span style={styles.legendItem}>Genotyping Arrays</span>
                 </div>
             </div>
-            <HighchartsReact allowChartUpdate='false' highcharts={highCharts} options={options} />
+            {options && <HighchartsReact allowChartUpdate='false' highcharts={highCharts} options={options} />}
         </div>;
     }
 }
