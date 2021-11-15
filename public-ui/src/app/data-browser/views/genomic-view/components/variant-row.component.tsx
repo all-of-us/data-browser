@@ -1,6 +1,7 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { relative } from 'path';
 import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
 import { VariantExpandedComponent } from './variant-expanded.component';
@@ -14,6 +15,7 @@ const styles = reactStyles({
         background: 'white',
         fontSize: '.8em',
         borderBottom: '1px solid #CCCCCC',
+        position: 'relative'
     },
     variant: {
         display: 'flex',
@@ -23,7 +25,10 @@ const styles = reactStyles({
         borderRight: '1px solid #CCCCCC',
         boxShadow: 'rgb(204 204 204) 0.2rem 0px 8px -2px',
         paddingRight: '0.25rem',
-        color: '#216FB4'
+        background: 'white',
+        color: '#216FB4',
+        position: 'sticky',
+        left: 0
     },
     caretIcon: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
@@ -105,8 +110,10 @@ export class VariantRowComponent extends React.Component<Props, State> {
                             return <div key={index}>{item}<br /></div>;
                         }) : <div>–</div>}
                     </div>
-                    {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
-                        {variant.proteinChange}</div> : <div>–</div>}
+                    <div style={styles.rowItem}>
+                        {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere' }}>
+                            {variant.proteinChange}</div> : <div>–</div>}
+                    </div>
                     <div style={styles.rowItem}>
                         {variant.clinicalSignificance.length ? variant.clinicalSignificance.map((item, index) => {
                             return <div key={index}>{item}<br /></div>;
