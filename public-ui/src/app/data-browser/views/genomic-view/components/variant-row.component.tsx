@@ -1,7 +1,6 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
-import { relative } from 'path';
 import { Variant, VariantInfo } from 'publicGenerated';
 import * as React from 'react';
 import { VariantExpandedComponent } from './variant-expanded.component';
