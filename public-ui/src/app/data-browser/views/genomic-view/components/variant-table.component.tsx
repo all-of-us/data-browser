@@ -145,7 +145,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         containerClassName={'pagination'}
                     />}
 
-            </div> : <div style={styles.tableFrame}></div>
+            </div> : <div style={styles.tableFrame}>{loading && <div style={styles.center}><Spinner /> </div>}</div>
         }
 
         </React.Fragment>;
