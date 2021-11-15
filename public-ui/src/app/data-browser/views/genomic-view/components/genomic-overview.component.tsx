@@ -16,7 +16,6 @@ interface Props {
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
-
 }
 
 
