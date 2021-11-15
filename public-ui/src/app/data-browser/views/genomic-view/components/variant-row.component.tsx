@@ -35,18 +35,16 @@ const styles = reactStyles({
         paddingBottom: '.5rem',
         paddingLeft: '.75rem'
     },
-    variantId: {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
-    },
     first: {
         paddingLeft: '.5rem'
     },
     last: {
         paddingRight: '.5rem'
+    },
+    variantId: {
+        wordBreak: 'break-all'
     }
 });
-
 
 interface Props {
     variant: Variant;
@@ -98,10 +96,11 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
-                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>{variant.variantId}&#x20;
+                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>{(variant.variantId.length > 40) ?
+                        <React.Fragment>{variant.variantId.substr(0,40)}&#8230;</React.Fragment> : variant.variantId} &#x20;
+                                                <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
+                                                    size='lg' shape='caret' dir='down' />
                         </div>
-                        <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
-                            size='lg' shape='caret' dir='down' />
                     </div>
                     <div style={styles.rowItem}>{variant.genes}</div>
                     <div style={styles.rowItem}>
