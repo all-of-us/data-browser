@@ -31,7 +31,6 @@ const styles = reactStyles({
 });
 
 interface Props {
-    onSearchReturn: Function;
     searchTerm: Function;
     variantListSize: number;
     loading: boolean;
@@ -64,6 +63,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     render() {
         const { searchWord } = this.state;
         const { variantListSize, loading } = this.props;
+        const variantListSizeDisplay = variantListSize && variantListSize.toLocaleString();
+        
         return <React.Fragment>
             <div style={styles.searchContainer}>
                 <div style={styles.searchBar}>
@@ -77,9 +78,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     Genomic Region: chr17:7572855-7579987
                 </div>
             </div>
-            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() :
+            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
             <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-                <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}>
+                <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                 <Spinner /></span> } results</strong>}
         </React.Fragment>;
     }

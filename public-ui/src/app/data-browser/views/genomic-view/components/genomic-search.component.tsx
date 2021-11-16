@@ -1,6 +1,5 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import _ from 'lodash';
 import { Variant, VariantListResponse } from 'publicGenerated';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
@@ -31,65 +30,20 @@ const styles = reactStyles({
     }
 });
 
-interface State {
-    loading: boolean;
-    loadingVariantListSize: boolean;
+interface Props {
+    onSearchInput: Function;
     variantListSize: number;
-    searchWord: string;
+    loadingVariantListSize: boolean;
+    loadingResults: boolean;
     searchResults: Variant[];
 }
 
-export class GenomicSearchComponent extends React.Component<{}, State> {
-    scrollDiv: any;
-    constructor(props: {}) {
+interface State {
+}
+
+export class GenomicSearchComponent extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
-        this.scrollDiv = React.createRef();
-        this.state = {
-            loading: false,
-            loadingVariantListSize: null,
-            searchResults: null,
-            variantListSize: 0,
-            searchWord: ''
-        };
-    }
-
-    search = _.debounce((searchTerm: string) => this.getVariantSearch(searchTerm), 1000);
-
-    getSearchSize(searchTerm: string) {
-        this.setState({loadingVariantListSize: true});
-        genomicsApi().getVariantSearchResultSize(searchTerm).then(
-            result => {
-                this.setState({
-                    variantListSize: searchTerm !== '' ? result : 0,
-                    loadingVariantListSize: false
-                });
-            }
-        ).catch(e => {
-            console.log(e, 'error');
-        });
-    }
-
-    getVariantSearch(searchTerm: string) {
-        this.setState({loading: true, searchWord: searchTerm});
-        if (searchTerm !== '') {
-            const searchRequest = {
-                query: searchTerm,
-                pageNumber: 1
-            };
-            genomicsApi().searchVariants(searchRequest).then(
-                results => {
-                    this.setState({
-                        searchResults: results.items,
-                        loading: false
-                    });
-                }
-            );
-        } else {
-            this.setState({
-                searchResults: null,
-                loading: false
-            });
-        }
     }
 
     handleResults(results: VariantListResponse) {
@@ -103,16 +57,14 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     render() {
-        const { loading, searchResults, variantListSize, loadingVariantListSize, searchWord } = this.state;
+        const { onSearchInput, variantListSize, loadingVariantListSize, searchResults, loadingResults } = this.props;
         return <React.Fragment>
-                <div style={styles.border}>
-                    <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
-                    <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
-                        searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
-                        onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
-                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults}
-                    searchTerm={searchWord} onPageChange={() => this.handlePageChange()}/>
-                </div>
+            <div style={styles.border}>
+                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div></div>
+                <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
+                    searchTerm={(searchTerm: string) => { onSearchInput(searchTerm) }} />
+                <VariantTableComponent loading={loadingResults} variantListSize={variantListSize} searchResults={searchResults} />
+            </div>
         </React.Fragment>;
     }
 }

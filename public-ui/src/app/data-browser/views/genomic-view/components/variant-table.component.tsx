@@ -1,7 +1,7 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
-import { Variant } from 'publicGenerated';
+import { Variant, VariantListResponse } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
