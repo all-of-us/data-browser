@@ -28,7 +28,7 @@ const styles = reactStyles({
 });
 
 interface Props {
-    searchTerm: Function;
+    onSearchTerm: Function;
     variantListSize: number;
     loading: boolean;
 }
@@ -43,7 +43,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             searchWord: localStorage.getItem('genomicSearchText') ? localStorage.getItem('genomicSearchText') : '',
         };
         if (this.state.searchWord !== '') {
-            this.props.searchTerm(this.state.searchWord);
+            this.props.onSearchTerm(this.state.searchWord);
         }
     }
 
@@ -54,7 +54,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         } else {
             localStorage.removeItem('genomicSearchText');
         }
-        this.props.searchTerm(val);
+        this.props.onSearchTerm(val);
         this.setState({ searchWord: val });
     }
 
