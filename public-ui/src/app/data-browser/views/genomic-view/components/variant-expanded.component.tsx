@@ -29,7 +29,7 @@ const styles = reactStyles({
         left: '0px',
         padding: '.5em',
         paddingLeft: '1em',
-        borderTop: '1px solid rgb(204, 204, 204)'
+        borderTop: '2px solid white'
     },
     top: {
         position: 'relative',
