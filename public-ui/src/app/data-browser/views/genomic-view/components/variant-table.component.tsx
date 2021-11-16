@@ -107,15 +107,14 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     this.setState({
                         searchResults: results.items,
                         loading: false
-                    }, () => { });
+                    }, () => { this.props.onPageChange(); });
                 }
         );
     }
 
     render() {
-        const { numPages, loading, searchResults } = this.state;
-        return <React.Fragment>
-            {searchResults ?
+       const { numPages, loading, searchResults } = this.state;
+       return <React.Fragment> {(searchResults) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
@@ -128,7 +127,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}>Allele Frequency</span></div>
                 </div>
                 {searchResults && searchResults.map((variant, index) => {
-                    return <VariantRowComponent key={index} variant={variant} />;
+                    return <VariantRowComponent key={variant.variantId} variant={variant} />;
                 })}
 
                 {(numPages && numPages > 1) &&
