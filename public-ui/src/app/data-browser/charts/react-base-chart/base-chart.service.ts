@@ -240,3 +240,7 @@ export const baseOptions = {
 export function getBaseOptions() {
   return cloneDeep(baseOptions);
 }
+
+export function getGenomicOptions() {
+  return cloneDeep(genomicOptions);
+}
