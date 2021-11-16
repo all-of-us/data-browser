@@ -43,8 +43,10 @@ interface State {
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
+    scrollDiv: any;
     constructor(props: Props) {
         super(props);
+        this.scrollDiv = React.createRef();
     }
 
 
@@ -54,14 +56,26 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         });
     }
 
+    handlePageChange() {
+        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
     render() {
-        const { onSearchInput, variantListSize, loadingVariantListSize, searchResults, loadingResults } = this.props;
+        let searchTerm: string;
+        const { loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
-                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div></div>
-                <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
-                    searchTerm={(searchTerm: string) => { onSearchInput(searchTerm) }} />
-                <VariantTableComponent loading={loadingResults} variantListSize={variantListSize} searchResults={searchResults} />
+                <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
+                <VariantSearchComponent
+                    onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); searchTerm = searchTerm; }}
+                    loading={loadingVariantListSize}
+                    variantListSize={variantListSize} />
+                <VariantTableComponent
+                    loading={loadingResults}
+                    variantListSize={variantListSize}
+                    searchResults={searchResults}
+                    searchTerm={searchTerm}
+                    onPageChange={() => this.handlePageChange()} />
             </div>
         </React.Fragment>;
     }

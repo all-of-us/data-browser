@@ -44,9 +44,11 @@ const styles = reactStyles({
     },
     last: {
         paddingRight: '.5rem'
+    },
+    variantId: {
+        wordBreak: 'break-all'
     }
 });
-
 
 interface Props {
     variant: Variant;
@@ -70,7 +72,6 @@ export class VariantRowComponent extends React.Component<Props, State> {
 
     getVariantDetails(variantId: string) {
         genomicsApi().getVariantDetails(variantId).then((results: VariantInfo) => {
-
             this.setState({
                 variantDetails: results,
                 loadingVarDetails: false
@@ -91,17 +92,18 @@ export class VariantRowComponent extends React.Component<Props, State> {
         const { variant } = this.props;
         const { variantClicked, variantDetails, loadingVarDetails } = this.state;
         return <React.Fragment>
-            {variantClicked ? <VariantExpandedComponent
+            {(!loadingVarDetails && variantClicked) ? <VariantExpandedComponent
                 loading={loadingVarDetails}
                 variant={variant}
                 variantDetails={variantDetails}
                 closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
-                        <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{variant.variantId}&#x20;
+                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>{(variant.variantId.length > 40) ?
+                        <React.Fragment>{variant.variantId.substr(0, 40)} &#8230;</React.Fragment> : variant.variantId} &#x20;
+                                                <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
+                                                    size='lg' shape='caret' dir='down' />
                         </div>
-                        <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
-                            size='lg' shape='caret' dir='down' />
                     </div>
                     <div style={styles.rowItem}>{variant.genes}</div>
                     <div style={styles.rowItem}>

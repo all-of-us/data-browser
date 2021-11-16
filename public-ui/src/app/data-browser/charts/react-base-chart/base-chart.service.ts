@@ -54,7 +54,8 @@ export const baseOptions = {
   chart: {
         type: '',
         backgroundColor: 'transparent',
-        tooltip: {}
+        tooltip: {},
+        plotShadow: false
   },
   color: '',
   title: {
@@ -219,12 +220,153 @@ export const baseOptions = {
                     shadow: false,
                     events: {},
                     size: '100%',
-                    height: '100%'
+                    height: '100%',
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    states: {
+                        inactive: {
+                            opacity: 1,
+                        },
+                        hover: {
+                            enabled: true,
+                            opacity: 0.5
+                        }
+                    },
+            },
        },
-        },
   series: [{ data: [] }]
+};
+
+export const genomicOptions = {
+  chart: {
+      type: 'column',
+      backgroundColor: 'transparent'
+  },
+  color: '',
+  title: {
+      text: '',
+      useHTML: true,
+      style: {
+          color: '#666',
+          fontSize: '14px',
+          fontFamily: 'GothamBook',
+          fontWeight: 'normal'
+      }
+  },
+  tooltip: {
+      followPointer: true,
+      useHTML: true,
+      // shared: true,
+      backgroundColor: 'transparent',
+      padding: 0,
+      borderWidth: 0,
+      shadow: false,
+      headerFormat: '<div class="geno-chart-tooltip">',
+      pointFormat: '{point.toolTipHelpText}',
+      footerFormat: '</div>'
+
+  },
+  xAxis: {
+      labels: {
+          reserveSpace: true,
+          style: {
+              whiteSpace: 'wrap',
+              textOverflow: 'ellipsis',
+              width: '80px',
+              fontSize: '11px',
+              color: '#262262',
+              fontFamily: 'GothamBook'
+          },
+          // formatter: () => {
+          //     const label = this.axis.defaultLabelFormatter.call(this);
+          //     // Change <= 20 count to display '<= 20'
+          //     if (label && label.indexOf('>=') > -1) {
+          //         return '&#8805; ' + label.replace('>=', '');
+          //     }
+          //     return label;
+          // },
+          useHTML: true,
+      },
+      title: {
+          text: '',
+          style: {
+              color: '#262262',
+              whiteSpace: 'wrap',
+              textOverflow: 'ellipsis',
+              fontWeight: 'bold',
+              textTransform: 'capitalize',
+              fontSize: '11px',
+              fontFamily: 'GothamBook'
+          }
+      },
+      tickLength: 0,
+      lineWidth: 1,
+      lineColor: '#979797',
+      gridLineWidth: 1,
+      gridLineColor: 'transparent'
+  },
+  yAxis: {
+      title: {
+          text: 'PARTICIPANT COUNT',
+          style: {
+              color: '#262262',
+              fontSize: '11px',
+              fontFamily: 'GothamBook',
+              textTransform: 'capitalize',
+              whiteSpace: 'wrap',
+              textOverflow: 'ellipsis',
+              padding: ''
+          }
+      },
+      min: 20,
+      gridLineWidth: 1,
+      tickLength: 0,
+      lineWidth: 1,
+      lineColor: '#979797',
+      gridLineColor: '#DDE0E4',
+      labels: {
+          style: {
+              fontSize: '12px',
+              whiteSpace: 'wrap',
+              textOverflow: 'ellipsis',
+              color: '#262262',
+              fontFamily: 'GothamBook'
+          },
+          // formatter: () => {
+          //     const label = this.axis.defaultLabelFormatter.call(this);
+          //     // Change <= 20 count to display '<= 20'
+          //     if (label && label.indexOf('>=') > -1) {
+          //         return '&#8805; ' + label.replace('>=', '');
+          //     }
+          //     return label;
+          // },
+          useHTML: true,
+      }
+  },
+  legend: {
+      enabled: false
+  },
+  credits: { enabled: false },
+  plotOptions: {
+      series: {
+          animation: {
+              duration: 100,
+          },
+          maxPointWidth: 100,
+          minPointWidth: 50,
+          pointPadding: 0,
+          borderWidth: 0,
+          fontSize: '',
+          events: {
+          },
+      },
+  }
 };
 
 export function getBaseOptions() {
   return cloneDeep(baseOptions);
+}
+
+export function getGenomicOptions() {
+  return cloneDeep(genomicOptions);
 }

@@ -68,7 +68,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                     <div style={styles.top}>
                         <span>Genomic FAQs: </span>
                         <div><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
-                            style={{ width: 40, height: 40, color: '#0079b8', cursor:'pointer' }} /></div>
+                            style={{ width: 40, height: 40, color: '#0079b8', cursor: 'pointer' }} /></div>
                     </div>
                     <div>
                         <div style={styles.question}><strong>How can the Variant Search be used?</strong></div>
