@@ -14,6 +14,7 @@ const styles = reactStyles({
         background: 'white',
         fontSize: '.8em',
         borderBottom: '1px solid #CCCCCC',
+        position: 'relative'
     },
     variant: {
         display: 'flex',
@@ -23,7 +24,10 @@ const styles = reactStyles({
         borderRight: '1px solid #CCCCCC',
         boxShadow: 'rgb(204 204 204) 0.2rem 0px 8px -2px',
         paddingRight: '0.25rem',
-        color: '#216FB4'
+        background: 'white',
+        color: '#216FB4',
+        position: 'sticky',
+        left: 0
     },
     caretIcon: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
@@ -40,9 +44,11 @@ const styles = reactStyles({
     },
     last: {
         paddingRight: '.5rem'
+    },
+    variantId: {
+        wordBreak: 'break-all'
     }
 });
-
 
 interface Props {
     variant: Variant;
@@ -93,10 +99,11 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
-                        <div style={{ ...styles.first, ...styles.rowItem, overflowWrap: 'anywhere' }}>{variant.variantId}&#x20;
+                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>{(variant.variantId.length > 40) ?
+                        <React.Fragment>{variant.variantId.substr(0, 40)} &#8230;</React.Fragment> : variant.variantId} &#x20;
+                                                <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
+                                                    size='lg' shape='caret' dir='down' />
                         </div>
-                        <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
-                            size='lg' shape='caret' dir='down' />
                     </div>
                     <div style={styles.rowItem}>{variant.genes}</div>
                     <div style={styles.rowItem}>
@@ -104,8 +111,10 @@ export class VariantRowComponent extends React.Component<Props, State> {
                             return <div key={index}>{item}<br /></div>;
                         }) : <div>–</div>}
                     </div>
-                    {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere', ...styles.rowItem }}>
-                        {variant.proteinChange}</div> : <div>–</div>}
+                    <div style={styles.rowItem}>
+                        {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere' }}>
+                            {variant.proteinChange}</div> : <div>–</div>}
+                    </div>
                     <div style={styles.rowItem}>
                         {variant.clinicalSignificance.length ? variant.clinicalSignificance.map((item, index) => {
                             return <div key={index}>{item}<br /></div>;
