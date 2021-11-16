@@ -40,8 +40,10 @@ interface State {
 }
 
 export class GenomicSearchComponent extends React.Component<{}, State> {
+    scrollDiv: any;
     constructor(props: {}) {
         super(props);
+        this.scrollDiv = React.createRef();
         this.state = {
             loading: null,
             loadingVariantListSize: null,
@@ -68,7 +70,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     }
 
     getVariantSearch(searchTerm: string) {
-        this.setState({loading: true});
+        this.setState({loading: true, searchWord: searchTerm});
         if (searchTerm !== '') {
             genomicsApi().searchVariants(searchTerm).then(
                 results => {
@@ -92,15 +94,20 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
         });
     }
 
+    handlePageChange() {
+        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
     render() {
-        const { loading, searchResults, variantListSize, loadingVariantListSize } = this.state;
+        const { loading, searchResults, variantListSize, loadingVariantListSize, searchWord } = this.state;
         return <React.Fragment>
                 <div style={styles.border}>
-                    <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div></div>
+                    <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
                     <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
                         searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
                         onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
-                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults} />
+                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults}
+                    searchTerm={searchWord} onPageChange={() => this.handlePageChange()}/>
                 </div>
         </React.Fragment>;
     }
