@@ -81,7 +81,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.state = {
             numPages: Math.ceil(props.variantListSize / 50),
             page: 1,
-            loading: props.loading ? props.loading : true,
+            loading: props.loading == null ? true : props.loading,
             searchResults: props.searchResults,
             currentPage: 1
         };
