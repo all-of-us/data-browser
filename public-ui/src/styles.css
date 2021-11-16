@@ -641,7 +641,7 @@ a a:link a:visited {
   color: #262262;
 }
 
-.highcharts-tooltip {
+.highcharts-tooltip  {
     z-index:9999!important;
 }
 

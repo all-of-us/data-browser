@@ -3,22 +3,12 @@ import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/co
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import * as React from 'react';
+import { GenomicFaqComponent } from './components/genomic-faq.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
     title: {
-        fontSize: '35px'
-    },
-    pageHeader: {
-        paddingTop: '18px',
-        paddingBottom: '18px',
-        lineHeight: '1.5'
-    },
-    titleContainer: {
-        lineHeight: '1em',
-        margin: '0px',
-        width: '100%',
-        display: 'block'
+        margin: '0'
     },
     viewLayout: {
         display: 'grid',
@@ -32,13 +22,11 @@ const styles = reactStyles({
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%'
-
     },
     sideBarItemConainer: {
         paddingBottom: '.25rem',
         borderBottom: '1px solid rgba(38, 34, 98, .25)',
         width: '100%'
-
     },
     sideBarItem: {
         display: 'flex',
@@ -48,6 +36,7 @@ const styles = reactStyles({
         fontSize: '0.8em',
         width: '100%',
         cursor: 'pointer',
+        margin: '0.5rem'
     },
     sideBarItemText: {
         width: '75%'
@@ -59,17 +48,28 @@ const styles = reactStyles({
         fontWeight: 'bolder',
         backgroundColor: 'rgba(33,111,180,0.15)'
     },
-    pageContainer: {
-        background: 'white'
+    faqHeading: {
+        fontSize: '0.8em',
+        color: 'rgb(38, 34, 98)',
+        align: 'center',
+        padding: '0.5rem',
+        margin: '0.5rem',
+        marginTop: '2em',
+    },
+    faqLink: {
+        color: '#0079b8',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center'
     }
-
 });
 
 interface State {
     selectionId: number;
 }
 
-
+const css = `
+`;
 
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
     constructor(props: {}) {
@@ -82,41 +82,54 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     sideBarItems = [
         {
             id: 1,
-            label: 'Participants with Genomic Data'
+            label: 'Participant Demographics'
         },
         {
             id: 2,
-            label: 'Search Variants'
-        },
-        {
-            id: 3,
-            label: 'Genomics FAQ'
-        },
+            label: 'Variant Search'
+        }
     ];
     title = 'Genomic Data';
 
     sideBarClick(selected: number) {
+        // if (selected === 3) {
+        //     document.getElementById('sideBar').style.filter = 'blur(2px)';
+        //     document.getElementById('genomicTitle').style.filter = 'blur(2px)';
+        // } else {
+        //     this.resetFilters();
+        // }
         this.setState({
             selectionId: selected
         });
     }
+
+    resetFilters() {
+        document.getElementById('sideBar').style.filter = '';
+        document.getElementById('genomicTitle').style.filter = '';
+    }
+
+    handleFaqClose() {
+        this.setState({selectionId: 2});
+        this.resetFilters();
+    }
+
     render() {
         const { selectionId } = this.state;
         return <React.Fragment>
-            <div style={styles.pageHeader}>
-                <div style={styles.titleContainer}>
-                    <h1 style={styles.title}>{this.title}</h1>
-                    <div style={globalStyles.bodyDefault}>
-                        This section provides an overview of genomic data within the current
-                        <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
-                        Data page to view currently available genomic data by participant - reported
-                        for preliminary exploration of genetic variant allele frequencies by with select
-                        annotations and genetic ancestry associations.
-                    </div>
-                </div>
+            <style>{css}</style>
+            <div id='genomicView'>
+            <div id='genomicTitle'>
+            <h1 style={styles.title}>{this.title}</h1>
+            <p style={globalStyles.bodyDefault}>
+                This section provides an overview of genomic data within the current
+                <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
+                Data page to view currently available genomic data by participant - reported
+                for preliminary exploration of genetic variant allele frequencies by with select
+                annotations and genetic ancestry associations.
+            </p>
             </div>
             <div style={styles.viewLayout}>
-                <div style={styles.sideBarLayout}>
+                <div style={styles.sideBarLayout} id='sideBar'>
                     {this.sideBarItems.map((item, index) => {
                         return <div key={index} style={styles.sideBarItemConainer}>
                             <div onClick={() => this.sideBarClick(item.id)}
@@ -128,14 +141,16 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         </div>;
                     })
                     }
-
+                    <div style={styles.faqHeading}>Questions about genomics?<br/><div style={styles.faqLink}
+                    onClick={() => this.sideBarClick(3)}>Learn More</div></div>
                 </div>
-                <div style={styles.pageContainer} >
+                <div id='childView'>
                     {selectionId === 1 && <GenomicOverviewComponent />}
                     {selectionId === 2 && <GenomicSearchComponent />}
+                    {selectionId === 3 && <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
                 </div>
             </div>
-
+        </div>
         </React.Fragment>;
     }
 });
