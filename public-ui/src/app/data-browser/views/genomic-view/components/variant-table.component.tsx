@@ -11,7 +11,8 @@ const styles = reactStyles({
         borderRadius: '3px',
         background: '#FAFAFA',
         marginTop: '0.5rem',
-        overflow: 'scroll'
+        overflowX: 'scroll',
+        overflowY: 'hidden'
     },
     tableFrame: {
         border: '1px solid #CCCCCC',
@@ -25,6 +26,8 @@ const styles = reactStyles({
         gridTemplateColumns: '10rem 10rem 15rem 13rem 10rem 10rem 10rem 10rem',
         background: '#f9f9fa',
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
+        width: '89rem',
+        position: 'relative',
     },
     headingItem: {
         fontSize: '.8em',
@@ -38,6 +41,9 @@ const styles = reactStyles({
     },
     first: {
         paddingLeft: '.5rem',
+        position: 'sticky',
+        left: 0,
+        background: '#f9f9fa'
     },
     last: {
         paddingRight: '.5rem'
