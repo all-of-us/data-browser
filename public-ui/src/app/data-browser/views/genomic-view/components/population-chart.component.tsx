@@ -42,10 +42,6 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
              'fontFamily': 'GothamBook',
              'fontWeight': 'normal'
     };
-    newBaseOptions.tooltip = { formatter: function() {
-        return '<div><strong>' + this.point.name + '</strong> <br /> ' + this.point.percentage.toFixed(2) +
-        ' % | Allele Count: ' + this.y + '</div>';
-    }};
     newBaseOptions.tooltip.outside = true;
     newBaseOptions.tooltip.style = {
         color: 'black',
@@ -58,7 +54,8 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
         if (variantDet.Ancestry !== 'Total') {
             const roundedPercentage = ((variantDet.AlleleCount / totalAlleleCount) * 100).toFixed(2);
             chartData.push({'name': variantDet.Ancestry, 'y': variantDet.AlleleCount, 'color': variantDet.color,
-            'totalCount': totalAlleleCount, 'percentage': roundedPercentage});
+            'totalCount': totalAlleleCount, 'percentage': roundedPercentage,
+            toolTipHelpText: this.getTooltipHelpText(variantDet.Ancestry, roundedPercentage, variantDet.AlleleCount)});
         }
     }
     newBaseOptions.series =  [{
@@ -72,6 +69,12 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
                         enabled: false
                     }}];
     this.setState({options: newBaseOptions});
+  }
+
+  getTooltipHelpText(name: string, percentage: any, count: number) {
+    return '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 1.5em; width: 15em; color: #302C71;"' +
+    '<strong>' + name + '</strong> <br /> ' + percentage +
+            ' % | Allele Count: ' + count + '</div>';
   }
 
   render() {
