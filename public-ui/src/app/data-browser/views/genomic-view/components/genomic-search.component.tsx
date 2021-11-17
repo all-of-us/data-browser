@@ -54,7 +54,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         }
     }
 
-
     handlePageChange(info) {
         this.props.onPageChange(info);
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
