@@ -70,12 +70,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); this.setState({ searchTerm: searchTerm }) }}
                     loading={loadingVariantListSize}
                     variantListSize={variantListSize} />
-                {searchTerm && <VariantTableComponent
+                <VariantTableComponent
                     loadingResults={loadingResults}
+                    loadingVariantListSize={loadingVariantListSize}
                     variantListSize={variantListSize}
                     searchResults={searchResults}
                     searchTerm={searchTerm}
-                    onPageChange={(info:any) => this.handlePageChange(info)} />}
+                    onPageChange={(info:any) => this.handlePageChange(info)} />
             </div>
         </React.Fragment>;
     }
