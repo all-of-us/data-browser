@@ -9,13 +9,14 @@ const styles = reactStyles({
     border: {
         background: 'white',
         borderRadius: '3px',
-        padding: '2rem',
-        paddingTop: '1em'
+        padding: '2em',
+        paddingTop: '1em',
+        margin: '1em'
     },
     titleBox: {
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'flex-start'
     },
     boxHeading: {
         fontFamily: 'GothamBook, Arial, sans-serif',
@@ -32,38 +33,56 @@ const styles = reactStyles({
 
 interface Props {
     onSearchInput: Function;
+    onPageChange: Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchResults: Variant[];
+    currentPage: number;
+    participantCount: string;
 }
 
 interface State {
+    searchTerm: string;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
+    scrollDiv: any;
     constructor(props: Props) {
         super(props);
+        this.scrollDiv = React.createRef();
+        this.state = {
+            searchTerm: null,
+        }
     }
 
-    handleResults(results: VariantListResponse) {
-        this.setState({
-            searchResults: results.items
-        });
-    }
-
-    handlePageChange() {
+    handlePageChange(info) {
+        this.props.onPageChange(info);
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     render() {
-        const { onSearchInput, variantListSize, loadingVariantListSize, searchResults, loadingResults } = this.props;
+        const { searchTerm } = this.state;
+        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput, participantCount } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
-                <div style={styles.titleBox}><div style={styles.boxHeading}>Variant Search</div></div>
-                <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
-                    searchTerm={(searchTerm: string) => { onSearchInput(searchTerm) }} />
-                <VariantTableComponent loading={loadingResults} variantListSize={variantListSize} searchResults={searchResults} />
+                <div style={styles.titleBox}>
+                    <div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div>
+                    <div>{participantCount} participants</div>
+
+                </div>
+                <VariantSearchComponent
+                    onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); this.setState({ searchTerm: searchTerm }) }}
+                    loading={loadingVariantListSize}
+                    variantListSize={variantListSize} />
+                <VariantTableComponent
+                    loadingResults={loadingResults}
+                    loadingVariantListSize={loadingVariantListSize}
+                    variantListSize={variantListSize}
+                    searchResults={searchResults}
+                    searchTerm={searchTerm}
+                    onPageChange={(info: any) => this.handlePageChange(info)}
+                    currentPage={currentPage} />
             </div>
         </React.Fragment>;
     }
