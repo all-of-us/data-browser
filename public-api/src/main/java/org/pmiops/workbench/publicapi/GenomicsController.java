@@ -167,6 +167,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE;
             }
         }
+        finalSql += " ORDER BY variant_id ASC";
         finalSql += " LIMIT 50 OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*50);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
