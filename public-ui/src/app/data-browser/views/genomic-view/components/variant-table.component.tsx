@@ -75,6 +75,7 @@ const styles = reactStyles({
 interface Props {
     searchResults: Variant[];
     variantListSize: number;
+    loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchTerm: string;
     onPageChange: Function;
@@ -113,7 +114,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.state = {
             numPages: Math.ceil(props.variantListSize / 50),
             page: 1,
-            loading: props.loadingResults,
+            loading: props.searchResults ? props.loadingResults : true,
             searchResults: props.searchResults,
             currentPage: 1,
             sortMetadata: {'variant_id': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1}}
@@ -141,16 +142,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
         const { searchTerm } = this.props;
         this.setState({ loading: true, page: data.selected + 1, currentPage: data.selected + 1 });
         this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
-        // genomicsApi().searchVariants(searchTerm, data.selected + 1).then(
-        //         results => {
-        //             console.log(results.items[0],'from inside');
-
-        //             this.setState({
-        //                 searchResults: results.items,
-        //                 loading: false
-        //             });
-        //         }
-        // );
     }
 
     sortClick(key: string) {
@@ -164,9 +155,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { variantListSize } = this.props;
+        const { loadingVariantListSize, variantListSize } = this.props;
         const { numPages, loading, searchResults } = this.state;
-        return <React.Fragment> {(!loading) ?
+        return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
@@ -187,9 +178,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {searchResults && searchResults.map((variant, index) => {
                     return <VariantRowComponent key={variant.variantId} variant={variant} />;
                 })}
-            </div> : <div style={styles.tableFrame}>{loading && <div style={styles.center}><Spinner /> </div>}</div>
+            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) && <div style={styles.center}><Spinner /> </div>}</div>
         }
-            {(numPages > 0) &&
+            {(!loadingVariantListSize && variantListSize > 0 && numPages > 0) &&
                 <div style={styles.paginator}>
                     <ReactPaginate
                         previousLabel={'Previous'}
