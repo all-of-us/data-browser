@@ -83,7 +83,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     constructor(props: {}) {
         super(props);
         this.state = {
-            selectionId: 1,
+            selectionId: 2,
             searchResults: [],
             loadingResults: null,
             variantListSize: null,
@@ -148,6 +148,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     handleFaqClose() {
         this.setState({ selectionId: 2 });
     }
+    handlePageChange(info) {
+        this.setState({ loadingResults: true });
+        genomicsApi().searchVariants(info.searchTerm, info.selectedPage + 1).then(
+            results => {
+                this.setState({
+                    searchResults: results.items,
+                    loadingResults: false
+                });
+            }
+        );
+    }
 
     render() {
         const { selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults } = this.state;
@@ -186,6 +197,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         {selectionId === 2 &&
                             <GenomicSearchComponent
                                 onSearchInput={(searchTerm: string) => { this.search(searchTerm) }}
+                                onPageChange={(info) => { this.handlePageChange(info) }}
                                 variantListSize={variantListSize}
                                 loadingVariantListSize={loadingVariantListSize}
                                 loadingResults={loadingResults}

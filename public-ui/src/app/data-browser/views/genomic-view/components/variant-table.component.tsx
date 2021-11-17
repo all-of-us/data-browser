@@ -8,8 +8,11 @@ import { VariantRowComponent } from './variant-row.component';
 
 const styles = reactStyles({
     tableContainer: {
-        border: '1px solid #CCCCCC',
-        borderRadius: '3px',
+        borderTop: '1px solid #CCCCCC',
+        borderLeft: '1px solid #CCCCCC',
+        borderRight: '1px solid #CCCCCC',
+        borderBottom: 'none',
+        borderRadius: '3px 3px 0 0',
         background: '#FAFAFA',
         marginTop: '0.5rem',
         overflowX: 'scroll',
@@ -55,6 +58,14 @@ const styles = reactStyles({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    paginator: {
+        background: '#f9f9fa',
+        borderBottom: '1px solid #CCCCCC',
+        borderRight: '1px solid #CCCCCC',
+        borderLeft: '1px solid #CCCCCC',
+        borderTop: 'none',
+        borderRadius: '0 0 3px 3px',
     }
 
 });
@@ -62,7 +73,7 @@ const styles = reactStyles({
 interface Props {
     searchResults: Variant[];
     variantListSize: number;
-    loading: boolean;
+    loadingResults: boolean;
     searchTerm: string;
     onPageChange: Function;
 }
@@ -81,7 +92,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.state = {
             numPages: Math.ceil(props.variantListSize / 50),
             page: 1,
-            loading: props.loading ? props.loading : true,
+            loading: props.loadingResults,
             searchResults: props.searchResults,
             currentPage: 1
         };
@@ -98,29 +109,32 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Frequency'];
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const {variantListSize, searchResults, loading} = this.props;
+        const { variantListSize, searchResults, loadingResults } = this.props;
         if (prevProps.searchResults !== searchResults) {
-            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults, loading: loading});
+            this.setState({ numPages: Math.ceil(variantListSize / 50), searchResults: searchResults, loading: loadingResults });
         }
-   }
+    }
 
     handlePageClick = (data) => {
-        const {searchTerm} = this.props;
-        this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1});
-        this.props.onPageChange();
-        genomicsApi().searchVariants(searchTerm, data.selected + 1).then(
-                results => {
-                    this.setState({
-                        searchResults: results.items,
-                        loading: false
-                    }, () => { this.props.onPageChange(); });
-                }
-        );
+        const { searchTerm } = this.props;
+        this.setState({ loading: true, page: data.selected + 1, currentPage: data.selected + 1 });
+        this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
+        // genomicsApi().searchVariants(searchTerm, data.selected + 1).then(
+        //         results => {
+        //             console.log(results.items[0],'from inside');
+
+        //             this.setState({
+        //                 searchResults: results.items,
+        //                 loading: false
+        //             });
+        //         }
+        // );
     }
 
     render() {
-       const { numPages, loading, searchResults } = this.state;
-       return <React.Fragment> {(searchResults) ?
+        const { variantListSize } = this.props;
+        const { numPages, loading, searchResults } = this.state;
+        return <React.Fragment> {(!loading) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
@@ -135,8 +149,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {searchResults && searchResults.map((variant, index) => {
                     return <VariantRowComponent key={variant.variantId} variant={variant} />;
                 })}
-
-                {(numPages && numPages > 1) &&
+            </div> : <div style={styles.tableFrame}>{loading && <div style={styles.center}><Spinner /> </div>}</div>
+        }
+            {(numPages > 0) &&
+                <div style={styles.paginator}>
                     <ReactPaginate
                         previousLabel={'Previous'}
                         nextLabel={'Next'}
@@ -148,11 +164,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         pageRangeDisplayed={5}
                         onPageChange={this.handlePageClick}
                         containerClassName={'pagination'}
-                    />}
-
-            </div> : <div style={styles.tableFrame}>{loading && <div style={styles.center}><Spinner /> </div>}</div>
-        }
-
+                    />
+                </div>}
         </React.Fragment>;
     }
 }

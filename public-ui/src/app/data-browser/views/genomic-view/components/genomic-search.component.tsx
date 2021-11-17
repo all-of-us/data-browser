@@ -2,6 +2,7 @@ import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Variant, VariantListResponse } from 'publicGenerated';
 import * as React from 'react';
+import { throwIfEmpty } from 'rxjs/operators';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
 
@@ -32,6 +33,7 @@ const styles = reactStyles({
 
 interface Props {
     onSearchInput: Function;
+    onPageChange: Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
@@ -39,7 +41,7 @@ interface Props {
 }
 
 interface State {
-
+    searchTerm: string;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
@@ -47,35 +49,33 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.scrollDiv = React.createRef();
+        this.state = {
+            searchTerm: null
+        }
     }
 
 
-    handleResults(results: VariantListResponse) {
-        this.setState({
-            searchResults: results.items
-        });
-    }
-
-    handlePageChange() {
+    handlePageChange(info) {
+        this.props.onPageChange(info);
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     render() {
-        let searchTerm: string;
+        const {searchTerm} = this.state;
         const { loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
                 <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
                 <VariantSearchComponent
-                    onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); searchTerm = searchTerm; }}
+                    onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); this.setState({ searchTerm: searchTerm }) }}
                     loading={loadingVariantListSize}
                     variantListSize={variantListSize} />
-                <VariantTableComponent
-                    loading={loadingResults}
+                {searchTerm && <VariantTableComponent
+                    loadingResults={loadingResults}
                     variantListSize={variantListSize}
                     searchResults={searchResults}
                     searchTerm={searchTerm}
-                    onPageChange={() => this.handlePageChange()} />
+                    onPageChange={(info:any) => this.handlePageChange(info)} />}
             </div>
         </React.Fragment>;
     }
