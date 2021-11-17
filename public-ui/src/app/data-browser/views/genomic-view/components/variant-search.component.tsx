@@ -8,6 +8,7 @@ const styles = reactStyles({
         paddingTop: '1em',
         paddingBottom: '1em',
         display: 'flex',
+        alignItems: 'flex-end',
         flexDirection: 'row'
     },
     searchBar: {
@@ -56,9 +57,10 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         } else {
             localStorage.removeItem('genomicSearchText');
         }
-        this.props.onSearchTerm(val);
         this.setState({ searchWord: val });
+        this.props.onSearchTerm(val);
     }
+
 
     render() {
         const { searchWord } = this.state;
