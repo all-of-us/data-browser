@@ -155,7 +155,8 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                     </div>
                     <div>
                         <span style={styles.catHeading}>RS Number:</span><br />
-                        <span style={styles.catInfo}>{variantDetails.rsNumber ? [<a href={rsLink} key={variantDetails.variantId} style={styles.rsLink} target='_blank'>{variantDetails.rsNumber}</a>]: '-'}</span>
+                        <span style={styles.catInfo}>{variantDetails.rsNumber ? [<a href={rsLink} key={variantDetails.variantId}
+                        style={styles.rsLink} target='_blank'>{variantDetails.rsNumber}</a>]: '-'}</span>
                     </div>
                     <div>
                         <span style={styles.catHeading}>Gene:</span><br />
