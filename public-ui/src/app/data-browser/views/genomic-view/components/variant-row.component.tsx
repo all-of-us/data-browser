@@ -46,7 +46,8 @@ const styles = reactStyles({
         paddingRight: '.5rem'
     },
     variantId: {
-        wordBreak: 'break-all'
+        wordBreak: 'break-all',
+        cursor: 'pointer'
     }
 });
 

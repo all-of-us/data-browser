@@ -39,7 +39,8 @@ const styles = reactStyles({
         borderBottom: '1px solid #CCCCCC'
     },
     headingLabel: {
-        borderBottom: '1px dashed'
+        borderBottom: '1px dashed',
+        cursor: 'pointer'
     },
     first: {
         paddingLeft: '.5rem',
