@@ -72,7 +72,11 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
     getVariantSearch(searchTerm: string) {
         this.setState({loading: true, searchWord: searchTerm});
         if (searchTerm !== '') {
-            genomicsApi().searchVariants(searchTerm).then(
+            const searchRequest = {
+                query: searchTerm,
+                pageNumber: 1
+            };
+            genomicsApi().searchVariants(searchRequest).then(
                 results => {
                     this.setState({
                         searchResults: results.items,

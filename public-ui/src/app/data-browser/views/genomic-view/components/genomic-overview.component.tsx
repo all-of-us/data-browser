@@ -88,7 +88,6 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                         break;
                     case 3000:
                         this.participantCountsArr.push(item);
-
                 }
             });
             this.setState({
