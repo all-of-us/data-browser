@@ -24,6 +24,9 @@ import org.pmiops.workbench.model.AnalysisListResponse;
 import com.google.common.collect.ImmutableList;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.CommonStorageEnums;
+import org.pmiops.workbench.model.SearchVariantsRequest;
+import org.pmiops.workbench.model.SortMetadata;
+import org.pmiops.workbench.model.SortColumnDetails;
 
 @RestController
 public class GenomicsController implements GenomicsApiDelegate {
@@ -127,11 +130,25 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
     @Override
-    public ResponseEntity<VariantListResponse> searchVariants(String variantSearchTerm, Integer page) {
+    public ResponseEntity<VariantListResponse> searchVariants(SearchVariantsRequest searchVariantsRequest) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
+        }
+        String variantSearchTerm = searchVariantsRequest.getQuery();
+        Integer page = searchVariantsRequest.getPageNumber();
+        SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
+        String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
+        if (sortMetadata != null) {
+            SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
+            if (variantIdColumnSortMetadata != null) {
+                if (variantIdColumnSortMetadata.getSortActive()) {
+                    if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
+                        ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
+                    }
+                }
+            }
         }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
@@ -167,7 +184,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE;
             }
         }
-        finalSql += " ORDER BY variant_id ASC";
+        finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT 50 OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*50);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))

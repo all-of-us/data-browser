@@ -113,6 +113,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         this.resetFilters();
     }
 
+    componentWillUnmount() {
+        localStorage.setItem('genomicSearchText', '');
+    }
+
     render() {
         const { selectionId } = this.state;
         return <React.Fragment>

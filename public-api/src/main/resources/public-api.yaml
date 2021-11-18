@@ -72,23 +72,19 @@ paths:
             $ref: "#/definitions/Analysis"
 
   /v1/genomics/search-variants:
-    get:
+    post:
       tags:
         - genomics
+      consumes:
+        - application/json
       description: Gets the list of matched variants
       operationId: "searchVariants"
       parameters:
-        - in: query
-          name: variant-search-term
-          type: string
-          required: true
-          description: variant search term
-        - in: query
-          name: page
-          type: integer
-          format: int32
-          required: false
-          description: page number
+        - in: body
+          name: request
+          description: search concept request
+          schema:
+            $ref: "#/definitions/SearchVariantsRequest"
       responses:
         200:
           description: A collection of variants from the wgs_variant table
@@ -1189,6 +1185,25 @@ definitions:
       - GENO_AGE_ANALYSIS
       - GENO_RACE_ANALYSIS
 
+  SearchVariantsRequest:
+    type: object
+    required:
+      - query
+    properties:
+      query:
+        type: string
+        description: >
+          A query string that can be used to match a subset of the name (case-insensitively),
+          the entire code value (case-insensitively), or the concept ID.
+      pageNumber:
+        type: integer
+        default: 0
+        description: By default it returns the first page and then its next pages from that on.
+      sortMetadata:
+        type: object
+        description: sort metadata
+        $ref: "#/definitions/SortMetadata"
+
   SearchConceptsRequest:
     type: object
     required:
@@ -1305,6 +1320,28 @@ definitions:
         description: number of participants with data in the CDR for a concept in this domain
         type: integer
         format: int64
+
+  SortMetadata:
+    type: object
+    properties:
+      variantId:
+        description: variant id column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+
+  SortColumnDetails:
+    type: object
+    properties:
+      sortActive:
+        description: Flag for active sort
+        type: boolean
+      sortDirection:
+        description: Sort Direction
+        type: string
+      sortOrder:
+        description: Sort Order
+        type: integer
+        format: int32
 
   SurveyModule:
     type: object
