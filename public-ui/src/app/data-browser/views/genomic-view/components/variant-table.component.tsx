@@ -126,7 +126,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
    }
 
     handlePageClick = (data) => {
-        const {searchTerm} = this.props;
         this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1},
             () => { this.fetchVariantData(); });
         this.props.onPageChange();
@@ -173,7 +172,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
                     onClick={() => {this.setState({loading: true}); this.sortClick('variant_id'); }}></i> :
                     <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                        onClick={() => {this.sortClick('variant_id');}}></i> }
+                                        onClick={() => {this.sortClick('variant_id'); }}></i> }
                     </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
