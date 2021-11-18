@@ -80,8 +80,10 @@ interface State {
 
 class SortMetadataClass implements SortMetadata {
     variantId: any;
-    constructor(variantId: any) {
+    gene: any;
+    constructor(variantId: any, gene: any) {
         this.variantId = variantId;
+        this.gene = gene;
     }
 }
 
@@ -105,7 +107,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
             loading: props.loading == null ? true : props.loading,
             searchResults: props.searchResults,
             currentPage: 1,
-            sortMetadata: {'variant_id': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1}}
+            sortMetadata: {'variant_id': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1},
+            'gene': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 2}}
         };
     }
 
@@ -135,9 +138,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
     fetchVariantData() {
         const {searchTerm} = this.props;
         const {page, sortMetadata} = this.state;
-        const sortColumnDetailsObj = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'], sortMetadata['variant_id']['sortDirection'],
+        const variantSortMetadata = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'], sortMetadata['variant_id']['sortDirection'],
         sortMetadata['variant_id']['sortOrder']);
-        const sortMetadataObj = new SortMetadataClass(sortColumnDetailsObj);
+        const geneSortMetadata = new SortColumnDetailsClass(sortMetadata['gene']['sortActive'], sortMetadata['gene']['sortDirection'],
+         sortMetadata['gene']['sortOrder']);
+        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata);
         const searchRequest = {
                 query: searchTerm,
                 pageNumber: page,
@@ -158,6 +163,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
         sortMetadata[key]['sortActive'] = true;
         const direction = sortMetadata[key]['sortDirection'];
         direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
+        for (let sKey in sortMetadata) {
+            if (sKey !== key) {
+                sortMetadata[sKey]['sortActive'] = false;
+                sortMetadata[sKey]['sortDirection'] = 'asc';
+            }
+        }
         this.setState({sortMetadata: sortMetadata}, () => {
             this.fetchVariantData();
         });
@@ -175,7 +186,13 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
                                         onClick={() => {this.sortClick('variant_id'); }}></i> }
                     </div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span>
+                    {sortMetadata['gene']['sortDirection'] === 'asc' ?
+                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    onClick={() => {this.setState({loading: true}); this.sortClick('gene'); }}></i> :
+                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    onClick={() => {this.sortClick('gene'); }}></i> }
+                    </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Protein Change</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Clinical Significance</span></div>

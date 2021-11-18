@@ -7,6 +7,15 @@ import { GenomicFaqComponent } from './components/genomic-faq.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
+    pageHeader: {
+        padding: '18px'
+    },
+    titleContainer: {
+        width: '100%',
+        paddingRight: '18px',
+        margin: '0',
+        lineHeight: '1em'
+    },
     title: {
         margin: '0'
     },
@@ -93,25 +102,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     title = 'Genomic Data';
 
     sideBarClick(selected: number) {
-        // if (selected === 3) {
-        //     document.getElementById('sideBar').style.filter = 'blur(2px)';
-        //     document.getElementById('genomicTitle').style.filter = 'blur(2px)';
-        // } else {
-        //     this.resetFilters();
-        // }
         this.setState({
             selectionId: selected
         });
     }
 
-    resetFilters() {
-        document.getElementById('sideBar').style.filter = '';
-        document.getElementById('genomicTitle').style.filter = '';
-    }
-
     handleFaqClose() {
         this.setState({selectionId: 2});
-        this.resetFilters();
+    }
+
+    componentDidMount() {
+        localStorage.setItem('genomicSearchText', '');
     }
 
     componentWillUnmount() {
@@ -123,15 +124,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         return <React.Fragment>
             <style>{css}</style>
             <div id='genomicView'>
-            <div id='genomicTitle'>
-            <h1 style={styles.title}>{this.title}</h1>
-            <p style={globalStyles.bodyDefault}>
+            <div className='page-header' style={styles.pageHeader}>
+               <div className='title-container' style={styles.titleContainer}>
+                <h1>Genomic Data</h1>
+                <div style={globalStyles.bodyDefault}>
                 This section provides an overview of genomic data within the current
                 <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
                 Data page to view currently available genomic data by participant - reported
                 for preliminary exploration of genetic variant allele frequencies by with select
                 annotations and genetic ancestry associations.
-            </p>
+                </div>
+               </div>
             </div>
             <div style={styles.viewLayout}>
                 <div style={styles.sideBarLayout} id='sideBar'>

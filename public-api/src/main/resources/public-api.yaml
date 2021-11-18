@@ -1328,6 +1328,10 @@ definitions:
         description: variant id column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
+      gene:
+        description: gene column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
 
   SortColumnDetails:
     type: object

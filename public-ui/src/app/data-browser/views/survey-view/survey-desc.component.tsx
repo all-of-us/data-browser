@@ -64,7 +64,7 @@ p {
 }
 `;
 
-export const SurveyDescReactComponent =
+    export const SurveyDescReactComponent =
     (props) => {
     return <React.Fragment>
            <style>{cssStyles}</style>

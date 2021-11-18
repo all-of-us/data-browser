@@ -149,6 +149,16 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
+            SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
+            if (geneColumnSortMetadata != null) {
+                if (geneColumnSortMetadata.getSortActive()) {
+                    if (geneColumnSortMetadata.getSortDirection().equals("desc")) {
+                        ORDER_BY_CLAUSE = " ORDER BY genes DESC";
+                    } else {
+                        ORDER_BY_CLAUSE = " ORDER BY genes ASC";
+                    }
+                }
+            }
         }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
