@@ -76,6 +76,7 @@ interface State {
     variantListSize: number;
     loadingVariantListSize: boolean;
     searchTerm: string;
+    currentPage: number;
 }
 
 const css = `
@@ -90,7 +91,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             loadingResults: null,
             variantListSize: null,
             loadingVariantListSize: null,
-            searchTerm: ''
+            searchTerm: '',
+            currentPage: null
         };
     }
 
@@ -158,17 +160,18 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             results => {
                 this.setState({
                     searchResults: results.items,
-                    loadingResults: false
+                    loadingResults: false,
+                    currentPage: info.selectedPage
                 });
             }
         );
     }
+
     handleSearchTerm(searchTerm: string) {
         console.log(this.state.searchTerm, searchTerm);
         if (this.state.searchTerm !== searchTerm) {
             this.search(searchTerm);
         }
-
     }
 
     componentWillUnmount() {
@@ -176,7 +179,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     render() {
-        const { selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults } = this.state;
+        const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults } = this.state;
         return <React.Fragment>
             <style>{css}</style>
             <div id='genomicView'>
@@ -213,6 +216,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             <GenomicSearchComponent
                                 onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm); this.setState({ searchTerm: searchTerm }) }}
                                 onPageChange={(info) => { this.handlePageChange(info) }}
+                                currentPage={currentPage}
                                 variantListSize={variantListSize}
                                 loadingVariantListSize={loadingVariantListSize}
                                 loadingResults={loadingResults}
