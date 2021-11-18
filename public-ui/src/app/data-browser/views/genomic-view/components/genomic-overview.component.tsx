@@ -5,12 +5,13 @@ import { GenomicChartComponent } from './genomic-chart.component';
 
 const styles = reactStyles({
     innerContainer: {
-        padding: '1em',
-        background: 'white'
+        background: 'white',
+        margin: '1em',
+        padding: '2em',
+        paddingTop: '1em',
     },
     title: {
         margin: '0',
-
     },
     desc: {
         color: '#302C71',
@@ -21,19 +22,17 @@ const styles = reactStyles({
     },
     headingLayout: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
     }
 
 });
-
-// tslint:disable-next-line:no-empty-interface
 interface Props {
-
+    participantCount: string;
+    chartData: any[];
 }
-// tslint:disable-next-line:no-empty-interface
 interface State {
     loading: boolean;
-    participantCount: string;
     raceEthData: any;
     sexAtBirthData: any;
     currentAgeData: any;
@@ -45,7 +44,6 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             loading: true,
-            participantCount: null,
             raceEthData: [],
             sexAtBirthData: [],
             currentAgeData: [],
@@ -58,52 +56,39 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     currentAgeArr: any[] = [];
     participantCountsArr: any[] = [];
 
-    async getGenomicParticipantCounts() {
-        const result_1 = await genomicsApi().getParticipantCounts();
-        result_1.results.forEach(type => {
-            if (type.stratum4 === null) {
-                this.setState({
-                    participantCount: type.countValue.toLocaleString()
-                });
-            }
-        });
-    }
 
     componentDidMount() {
-        this.getGenomicParticipantCounts();
-        this.getGenomicChartData();
-
+        { this.props.chartData && this.getGenomicChartData(); }
     }
+
     getGenomicChartData() {
-        return genomicsApi().getChartData().then(result => {
-            result.items.forEach(item => {
-                switch (item.analysisId) {
-                    case 3503:
-                        this.raceEthArr.push(item);
-                        break;
-                    case 3501:
-                        this.sexAtBirthArr.push(item);
-                        break;
-                    case 3502:
-                        this.currentAgeArr.push(item);
-                        break;
-                    case 3000:
-                        this.participantCountsArr.push(item);
-                }
-            });
-            this.setState({
-                raceEthData: this.raceEthArr,
-                sexAtBirthData: this.sexAtBirthArr,
-                currentAgeData: this.currentAgeArr,
-                participantCounts: this.participantCountsArr,
-                loading: false
-            });
+        this.props.chartData.forEach(item => {
+            switch (item.analysisId) {
+                case 3503:
+                    this.raceEthArr.push(item);
+                    break;
+                case 3501:
+                    this.sexAtBirthArr.push(item);
+                    break;
+                case 3502:
+                    this.currentAgeArr.push(item);
+                    break;
+                case 3000:
+                    this.participantCountsArr.push(item);
+            }
+        });
+        this.setState({
+            raceEthData: this.raceEthArr,
+            sexAtBirthData: this.sexAtBirthArr,
+            currentAgeData: this.currentAgeArr,
+            participantCounts: this.participantCountsArr,
+            loading: false
         });
     }
 
-
     render() {
-        const { participantCount, raceEthData, sexAtBirthData, currentAgeData, participantCounts, loading } = this.state;
+        const { raceEthData, sexAtBirthData, currentAgeData, participantCounts, loading } = this.state;
+        const { participantCount } = this.props;
         return <React.Fragment>
             <div style={styles.innerContainer}>
                 <div style={styles.headingLayout}>

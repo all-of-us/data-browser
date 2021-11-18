@@ -77,6 +77,8 @@ interface State {
     loadingVariantListSize: boolean;
     searchTerm: string;
     currentPage: number;
+    participantCount: string;
+    chartData: any;
 }
 
 const css = `
@@ -92,7 +94,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             variantListSize: null,
             loadingVariantListSize: null,
             searchTerm: '',
-            currentPage: null
+            currentPage: null,
+            participantCount: null,
+            chartData: null
         };
     }
 
@@ -144,14 +148,23 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         }
     }
 
-    sideBarClick(selected: number) {
-        this.setState({
-            selectionId: selected
+    getGenomicParticipantCounts() {
+        genomicsApi().getParticipantCounts().then((results) => {
+            results.results.forEach(type => {
+                if (type.stratum4 === null) {
+                    this.setState({
+                        participantCount: type.countValue.toLocaleString()
+                    });
+                }
+            })
+
         });
     }
 
-    handleFaqClose() {
-        this.setState({ selectionId: 2 });
+    getGenomicChartData() {
+        return genomicsApi().getChartData().then(results => {
+            this.setState({ chartData: results.items })
+        });
     }
 
     handlePageChange(info) {
@@ -167,6 +180,16 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         );
     }
 
+    sideBarClick(selected: number) {
+        this.setState({
+            selectionId: selected
+        });
+    }
+
+    handleFaqClose() {
+        this.setState({ selectionId: 2 });
+    }
+
     handleSearchTerm(searchTerm: string) {
         console.log(this.state.searchTerm, searchTerm);
         if (this.state.searchTerm !== searchTerm) {
@@ -178,8 +201,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         localStorage.setItem('genomicSearchText', '');
     }
 
+    componentDidMount() {
+        this.getGenomicParticipantCounts();
+        this.getGenomicChartData();
+    }
+
     render() {
-        const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults } = this.state;
+        const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults, participantCount, chartData } = this.state;
         return <React.Fragment>
             <style>{css}</style>
             <div id='genomicView'>
@@ -211,7 +239,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                     </div>
                     <div id='childView'>
                         {selectionId === 1 &&
-                            <GenomicOverviewComponent />}
+                            <GenomicOverviewComponent
+                                participantCount={participantCount}
+                                chartData={chartData}
+                            />}
                         {selectionId === 2 &&
                             <GenomicSearchComponent
                                 onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm); this.setState({ searchTerm: searchTerm }) }}
@@ -220,7 +251,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 variantListSize={variantListSize}
                                 loadingVariantListSize={loadingVariantListSize}
                                 loadingResults={loadingResults}
-                                searchResults={searchResults} />}
+                                searchResults={searchResults}
+                                participantCount={participantCount} />}
 
                         {selectionId === 3 &&
                             <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
