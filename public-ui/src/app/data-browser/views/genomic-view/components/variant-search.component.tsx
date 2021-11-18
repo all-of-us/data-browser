@@ -10,9 +10,12 @@ const styles = reactStyles({
         display: 'flex',
         flexDirection: 'row'
     },
+    searchBar: {
+        paddingRight: '2rem'
+    },
     searchHelpText: {
-        paddingLeft: '1em',
-        paddingTop: '3.6em',
+        paddingTop: '2em',
+        lineHeight: '1.3em',
         fontSize: '0.75em'
     },
     loading: {
@@ -63,7 +66,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const { variantListSize, loading } = this.props;
         return <React.Fragment>
             <div style={styles.searchContainer}>
-                <div>
+                <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
                         onClear={() => this.handleChange('')} />

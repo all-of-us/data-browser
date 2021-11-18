@@ -5,7 +5,8 @@ import { GenomicChartComponent } from './genomic-chart.component';
 
 const styles = reactStyles({
     innerContainer: {
-        padding: '1em'
+        padding: '1em',
+        background: 'white'
     },
     title: {
         margin: '0',

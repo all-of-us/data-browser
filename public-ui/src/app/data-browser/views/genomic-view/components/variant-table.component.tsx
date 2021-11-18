@@ -2,10 +2,10 @@ import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
+import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
-import { SortMetadata, SortColumnDetails } from 'publicGenerated/fetch';
 
 const styles = reactStyles({
     tableContainer: {
@@ -119,25 +119,24 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Frequency'];
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const {variantListSize, searchResults, loading, searchTerm} = this.props;
+        const {variantListSize, searchResults, loading} = this.props;
         if (prevProps.searchResults !== searchResults) {
             this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults, loading: loading});
         }
    }
 
     handlePageClick = (data) => {
-        const {searchTerm} = this.props;
-        this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1}, () =>
-        {   this.fetchVariantData(); });
+        this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1},
+            () => { this.fetchVariantData(); });
         this.props.onPageChange();
     }
 
     fetchVariantData() {
         const {searchTerm} = this.props;
         const {page, sortMetadata} = this.state;
-        let sortColumnDetailsObj = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'], sortMetadata['variant_id']['sortDirection'],
+        const sortColumnDetailsObj = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'], sortMetadata['variant_id']['sortDirection'],
         sortMetadata['variant_id']['sortOrder']);
-        let sortMetadataObj = new SortMetadataClass(sortColumnDetailsObj);
+        const sortMetadataObj = new SortMetadataClass(sortColumnDetailsObj);
         const searchRequest = {
                 query: searchTerm,
                 pageNumber: page,
@@ -156,7 +155,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     sortClick(key: string) {
         const {sortMetadata} = this.state;
         sortMetadata[key]['sortActive'] = true;
-        let direction = sortMetadata[key]['sortDirection'];
+        const direction = sortMetadata[key]['sortDirection'];
         direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
         this.setState({sortMetadata: sortMetadata}, () => {
             this.fetchVariantData();
@@ -171,9 +170,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
                     {sortMetadata['variant_id']['sortDirection'] === 'asc' ?
                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                    onClick={() => {this.setState({loading: true}); this.sortClick('variant_id');}}></i> :
+                    onClick={() => {this.setState({loading: true}); this.sortClick('variant_id'); }}></i> :
                     <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                        onClick={() => {this.sortClick('variant_id');}}></i> }
+                                        onClick={() => {this.sortClick('variant_id'); }}></i> }
                     </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
