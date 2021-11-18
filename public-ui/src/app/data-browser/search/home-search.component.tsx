@@ -96,6 +96,7 @@ const searchStyle = `
 }
 .clear-icon {
     margin-right: 3%;
+    cursor: pointer;
 }
 `;
 
