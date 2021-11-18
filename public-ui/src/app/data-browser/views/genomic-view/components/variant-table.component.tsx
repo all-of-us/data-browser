@@ -71,20 +71,19 @@ const styles = reactStyles({
 });
 
 interface Props {
+    onPageChange: Function;
     searchResults: Variant[];
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchTerm: string;
-    onPageChange: Function;
+    currentPage: number;
 }
 
 interface State {
     numPages: number;
-    page: number;
     loading: boolean;
     searchResults: Variant[];
-    currentPage: number;
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
@@ -92,10 +91,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             numPages: Math.ceil(props.variantListSize / 50),
-            page: 1,
             loading: props.searchResults ? props.loadingResults : true,
-            searchResults: props.searchResults,
-            currentPage: 1
+            searchResults: props.searchResults
         };
     }
 
@@ -118,12 +115,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     handlePageClick = (data) => {
         const { searchTerm } = this.props;
-        this.setState({ loading: true, page: data.selected + 1, currentPage: data.selected + 1 });
+        this.setState({ loading: true });
         this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
     }
 
     render() {
-        const { loadingVariantListSize, variantListSize } = this.props;
+        const { loadingVariantListSize, variantListSize, currentPage } = this.props;
         const { numPages, loading, searchResults } = this.state;
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
@@ -142,21 +139,22 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 })}
             </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) && <div style={styles.center}><Spinner /> </div>}</div>
         }
-            {(!loadingVariantListSize && variantListSize > 0 && numPages > 0) &&
-                <div style={styles.paginator}>
-                    <ReactPaginate
-                        previousLabel={'Previous'}
-                        nextLabel={'Next'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        activeClassName={'active'}
-                        pageCount={numPages}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={this.handlePageClick}
-                        containerClassName={'pagination'}
-                    />
-                </div>}
+
+            <div style={styles.paginator}>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    activeClassName={'active'}
+                    pageCount={numPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={'pagination'}
+                    forcePage={currentPage}
+                />
+            </div>
         </React.Fragment>;
     }
 }

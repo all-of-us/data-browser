@@ -2,7 +2,6 @@ import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Variant, VariantListResponse } from 'publicGenerated';
 import * as React from 'react';
-import { throwIfEmpty } from 'rxjs/operators';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
 
@@ -38,6 +37,7 @@ interface Props {
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchResults: Variant[];
+    currentPage: number;
 }
 
 interface State {
@@ -60,8 +60,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const {searchTerm} = this.state;
-        const { loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
+        const { searchTerm } = this.state;
+        const {currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
                 <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
@@ -75,7 +75,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     variantListSize={variantListSize}
                     searchResults={searchResults}
                     searchTerm={searchTerm}
-                    onPageChange={(info:any) => this.handlePageChange(info)} />
+                    onPageChange={(info: any) => this.handlePageChange(info)}
+                    currentPage={currentPage} />
             </div>
         </React.Fragment>;
     }
