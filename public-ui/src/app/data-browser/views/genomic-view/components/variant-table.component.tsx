@@ -1,7 +1,6 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
-import { Variant, VariantListResponse } from 'publicGenerated';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
@@ -123,7 +122,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
-                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
+                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID
+                    </span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Protein Change</span></div>
@@ -135,8 +135,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {searchResults && searchResults.map((variant, index) => {
                     return <VariantRowComponent key={variant.variantId} variant={variant} />;
                 })}
-            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) && <div style={styles.center}><Spinner /> </div>}</div>
-        }
+            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
+                <div style={styles.center}><Spinner /></div>}</div>}
             <div style={styles.paginator}>
                 <ReactPaginate
                     previousLabel={'Previous'}

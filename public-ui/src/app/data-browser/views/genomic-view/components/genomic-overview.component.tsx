@@ -1,4 +1,3 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
 import { GenomicChartComponent } from './genomic-chart.component';
@@ -58,10 +57,12 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
 
 
     componentDidMount() {
-        { this.props.chartData && this.getGenomicChartData(); }
+        if (this.props.chartData) {
+            this.setGenomicChartData();
+        }
     }
 
-    getGenomicChartData() {
+    setGenomicChartData() {
         this.props.chartData.forEach(item => {
             switch (item.analysisId) {
                 case 3503:

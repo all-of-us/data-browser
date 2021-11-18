@@ -1,14 +1,13 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
-import _ from 'lodash';
-import { Variant, VariantListResponse } from 'publicGenerated';
 import { withRouteData } from 'app/components/app-router';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
+import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
+import _ from 'lodash';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import { GenomicFaqComponent } from './components/genomic-faq.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
-import { numberFormat } from 'highcharts';
 
 const styles = reactStyles({
     title: {
@@ -70,6 +69,7 @@ const styles = reactStyles({
 
 interface State {
     selectionId: number;
+    previousId: number;
     searchResults: Variant[];
     loadingResults: boolean;
     variantListSize: number;
@@ -88,6 +88,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         super(props);
         this.state = {
             selectionId: 2,
+            previousId: null,
             searchResults: [],
             loadingResults: null,
             variantListSize: null,
@@ -155,14 +156,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         participantCount: type.countValue.toLocaleString()
                     });
                 }
-            })
-
+            });
         });
     }
 
     getGenomicChartData() {
         return genomicsApi().getChartData().then(results => {
-            this.setState({ chartData: results.items })
+            this.setState({ chartData: results.items });
         });
     }
 
@@ -181,12 +181,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     sideBarClick(selected: number) {
         this.setState({
-            selectionId: selected
+            selectionId: selected,
+            previousId: this.state.selectionId
         });
     }
 
     handleFaqClose() {
-        this.setState({ selectionId: 2 });
+        this.setState({ selectionId: this.state.previousId });
     }
 
     handleSearchTerm(searchTerm: string) {
@@ -202,7 +203,14 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     render() {
-        const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults, participantCount, chartData } = this.state;
+        const { currentPage,
+            selectionId,
+            loadingVariantListSize,
+            variantListSize,
+            loadingResults,
+            searchResults,
+            participantCount,
+            chartData } = this.state;
         return <React.Fragment>
             <style>{css}</style>
             <div id='genomicView'>
@@ -240,15 +248,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             />}
                         {selectionId === 2 &&
                             <GenomicSearchComponent
-                                onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm); this.setState({ searchTerm: searchTerm }) }}
-                                onPageChange={(info) => { this.handlePageChange(info) }}
+                                onSearchInput={(searchTerm: string) => {
+                                    this.handleSearchTerm(searchTerm);
+                                    this.setState({ searchTerm: searchTerm });
+                                }}
+                                onPageChange={(info) => { this.handlePageChange(info); }}
                                 currentPage={currentPage}
                                 variantListSize={variantListSize}
                                 loadingVariantListSize={loadingVariantListSize}
                                 loadingResults={loadingResults}
                                 searchResults={searchResults}
                                 participantCount={participantCount} />}
-
                         {selectionId === 3 &&
                             <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
                     </div>

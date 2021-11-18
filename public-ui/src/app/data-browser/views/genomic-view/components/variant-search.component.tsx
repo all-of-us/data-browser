@@ -64,7 +64,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const { searchWord } = this.state;
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
-        
         return <React.Fragment>
             <div style={styles.searchContainer}>
                 <div>
@@ -79,9 +78,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 </div>
             </div>
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
-            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
-                <Spinner /></span> } results</strong>}
+                    <Spinner /></span>} results</strong>}
         </React.Fragment>;
     }
 }

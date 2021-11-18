@@ -1,6 +1,5 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import { Variant, VariantListResponse } from 'publicGenerated';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
@@ -53,7 +52,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.scrollDiv = React.createRef();
         this.state = {
             searchTerm: null,
-        }
+        };
     }
 
     handlePageChange(info) {
@@ -63,16 +62,21 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
     render() {
         const { searchTerm } = this.state;
-        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput, participantCount } = this.props;
+        const { currentPage,
+            loadingResults,
+            searchResults,
+            variantListSize,
+            loadingVariantListSize,
+            onSearchInput,
+            participantCount } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
                 <div style={styles.titleBox}>
                     <div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div>
                     <div>{participantCount} participants</div>
-
                 </div>
                 <VariantSearchComponent
-                    onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); this.setState({ searchTerm: searchTerm }) }}
+                    onSearchTerm={(searchText: string) => { onSearchInput(searchText); this.setState({ searchTerm: searchText }); }}
                     loading={loadingVariantListSize}
                     variantListSize={variantListSize} />
                 <VariantTableComponent
