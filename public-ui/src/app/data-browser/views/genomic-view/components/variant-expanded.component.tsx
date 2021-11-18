@@ -136,7 +136,8 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ?
                     <span style={{ paddingLeft: '1em', overflowWrap: 'anywhere' }}>
                         {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
-                    <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close' style={styles.closeIcon}/></div>
+                    <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
+                    style={styles.closeIcon}/></div>
                 </div>
                 {!loading && <React.Fragment><div style={styles.body}>
                     <div>
