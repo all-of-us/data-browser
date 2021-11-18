@@ -182,7 +182,8 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                     return <div key={index} style={styles.popTable}>
                                         <div style={styles.popTableData}>{(item.Ancestry !== 'Total') ?
                                             <span><i className='fas fa-circle' style={{ ...colorStyle, marginRight: '.5rem', transform: 'scale(1.3)' }} />
-                                                {item.Ancestry} </span> : <span style={{marginLeft: '1.6em'}}><strong>{item.Ancestry}</strong></span>} </div>
+                                                {item.Ancestry} </span> :
+                                                <span style={{marginLeft: '1.6em'}}><strong>{item.Ancestry}</strong></span>} </div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
                                             <React.Fragment>{item.AlleleCount}</React.Fragment> :
                                             <span style={styles.catHeading}>{item.AlleleCount}</span>}</div>
