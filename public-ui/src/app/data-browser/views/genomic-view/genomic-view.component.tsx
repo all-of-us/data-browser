@@ -55,6 +55,7 @@ const styles = reactStyles({
         padding: '0.5rem',
         margin: '0.5rem',
         marginTop: '2em',
+        paddingTop: '2.5em'
     },
     faqLink: {
         color: '#0079b8',
