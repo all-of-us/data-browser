@@ -81,7 +81,6 @@ interface Props {
 }
 
 interface State {
-    numPages: number;
     loading: boolean;
     searchResults: Variant[];
 }
@@ -90,8 +89,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            numPages: Math.ceil(props.variantListSize / 50),
-            loading: props.searchResults ? props.loadingResults : true,
+            loading: props.loadingResults,
             searchResults: props.searchResults
         };
     }
@@ -107,9 +105,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Frequency'];
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const { variantListSize, searchResults, loadingResults } = this.props;
+        const { searchResults, loadingResults } = this.props;
         if (prevProps.searchResults !== searchResults) {
-            this.setState({ numPages: Math.ceil(variantListSize / 50), searchResults: searchResults, loading: loadingResults });
+            this.setState({ searchResults: searchResults, loading: loadingResults });
         }
     }
 
@@ -121,7 +119,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     render() {
         const { loadingVariantListSize, variantListSize, currentPage } = this.props;
-        const { numPages, loading, searchResults } = this.state;
+        const { loading, searchResults } = this.state;
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
@@ -139,7 +137,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 })}
             </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) && <div style={styles.center}><Spinner /> </div>}</div>
         }
-
             <div style={styles.paginator}>
                 <ReactPaginate
                     previousLabel={'Previous'}
@@ -147,7 +144,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     breakLabel={'...'}
                     breakClassName={'break-me'}
                     activeClassName={'active'}
-                    pageCount={numPages}
+                    pageCount={Math.ceil(variantListSize / 50)}
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={5}
                     onPageChange={this.handlePageClick}

@@ -9,13 +9,14 @@ const styles = reactStyles({
     border: {
         background: 'white',
         borderRadius: '3px',
-        padding: '2rem',
-        paddingTop: '1em'
+        padding: '2em',
+        paddingTop: '1em',
+        margin: '1em'
     },
     titleBox: {
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'flex-start'
     },
     boxHeading: {
         fontFamily: 'GothamBook, Arial, sans-serif',
@@ -38,6 +39,7 @@ interface Props {
     loadingResults: boolean;
     searchResults: Variant[];
     currentPage: number;
+    participantCount: string;
 }
 
 interface State {
@@ -50,7 +52,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         super(props);
         this.scrollDiv = React.createRef();
         this.state = {
-            searchTerm: null
+            searchTerm: null,
         }
     }
 
@@ -61,10 +63,14 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
     render() {
         const { searchTerm } = this.state;
-        const {currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
+        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput, participantCount } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
-                <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
+                <div style={styles.titleBox}>
+                    <div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div>
+                    <div>{participantCount} participants</div>
+
+                </div>
                 <VariantSearchComponent
                     onSearchTerm={(searchTerm: string) => { onSearchInput(searchTerm); this.setState({ searchTerm: searchTerm }) }}
                     loading={loadingVariantListSize}
