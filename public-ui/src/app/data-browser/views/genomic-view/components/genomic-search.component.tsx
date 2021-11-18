@@ -45,7 +45,7 @@ export class GenomicSearchComponent extends React.Component<{}, State> {
         super(props);
         this.scrollDiv = React.createRef();
         this.state = {
-            loading: null,
+            loading: false,
             loadingVariantListSize: null,
             searchResults: null,
             variantListSize: 0,
