@@ -163,7 +163,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         sortMetadata[key]['sortActive'] = true;
         const direction = sortMetadata[key]['sortDirection'];
         direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
-        for (let sKey in sortMetadata) {
+        for (const sKey in sortMetadata) {
             if (sKey !== key) {
                 sortMetadata[sKey]['sortActive'] = false;
                 sortMetadata[sKey]['sortDirection'] = 'asc';
