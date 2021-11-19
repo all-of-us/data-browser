@@ -1,7 +1,6 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
-import { Variant, VariantListResponse } from 'publicGenerated';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
@@ -154,7 +153,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {searchResults && searchResults.map((variant, index) => {
                     return <VariantRowComponent key={variant.variantId} variant={variant} />;
                 })}
-            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) && <div style={styles.center}><Spinner /> </div>}</div>
+            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
+                        <div style={styles.center}><Spinner /> </div>}</div>
         }
             <div style={styles.paginator}>
                 <ReactPaginate

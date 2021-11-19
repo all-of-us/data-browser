@@ -1,6 +1,6 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import _ from 'lodash';
-import { Variant, VariantListResponse } from 'publicGenerated';
+import { Variant } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
 import { withRouteData } from 'app/components/app-router';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
@@ -9,7 +9,6 @@ import { globalStyles } from 'app/utils/global-styles';
 import * as React from 'react';
 import { GenomicFaqComponent } from './components/genomic-faq.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
-import { numberFormat } from 'highcharts';
 
 const styles = reactStyles({
     title: {
@@ -171,7 +170,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                     });
                 }
             })
-
         });
     }
 
@@ -238,7 +236,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     render() {
-        const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults, participantCount, chartData } = this.state;
+        const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
+        participantCount, chartData } = this.state;
         return <React.Fragment>
             <style>{css}</style>
             <div id='genomicView'>
@@ -276,7 +275,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             />}
                         {selectionId === 2 &&
                             <GenomicSearchComponent
-                                onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm); this.setState({ searchTerm: searchTerm }) }}
+                                onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm);
+                                    this.setState({ searchTerm: searchTerm }) }}
                                 onPageChange={(info) => { this.handlePageChange(info) }}
                                 onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata) }}
                                 currentPage={currentPage}

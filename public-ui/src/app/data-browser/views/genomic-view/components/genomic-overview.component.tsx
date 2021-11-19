@@ -1,4 +1,3 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
 import { GenomicChartComponent } from './genomic-chart.component';
