@@ -165,9 +165,9 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                             <h4 style={styles.popTitle}>Genetic Ancestry Populations</h4>
                             <div style={styles.popTable} className='popTable'>
                                 <div style={styles.popTableHeading}></div>
-                                <div style={styles.popTableHeading}><strong>Allele Count</strong></div>
-                                <div style={styles.popTableHeading}><strong>Allele Number</strong></div>
-                                <div style={styles.popTableHeading}><strong>Allele Frequency</strong></div>
+                                <div style={styles.popTableHeading}><span style={styles.catHeading}>Allele Count</span></div>
+                                <div style={styles.popTableHeading}><span style={styles.catHeading}>Allele Number</span></div>
+                                <div style={styles.popTableHeading}><span style={styles.catHeading}>Allele Frequency</span></div>
                             </div>
                             <div style={styles.popTableBody}>
                                 {variantPopulationDetails.map((item, index) => {
@@ -175,16 +175,16 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                     return <div key={index} style={styles.popTable}>
                                         <div style={styles.popTableData}>{(item.Ancestry !== 'Total') ?
                                             <span><i className='fas fa-circle' style={{ ...colorStyle, marginRight: '.5rem', transform: 'scale(1.3)' }} />
-                                                {item.Ancestry} </span> : <strong>{item.Ancestry}</strong>} </div>
+                                                {item.Ancestry} </span> : <span style={styles.catHeading}>Total</span>} </div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
                                             <React.Fragment>{item.AlleleCount}</React.Fragment> :
-                                            <strong>{item.AlleleCount}</strong>}</div>
+                                            <span style={styles.catHeading}>{item.AlleleCount}</span>}</div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
                                             <React.Fragment>{item.AlleleNumber}</React.Fragment> :
-                                            <strong>{item.AlleleNumber}</strong>}</div>
+                                            <span style={styles.catHeading}>{item.AlleleNumber}</span>}</div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
                                             <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment>
-                                            : <strong>{item.AlleleFrequency.toFixed(2)}</strong>}</div>
+                                            : <span style={styles.catHeading}>{item.AlleleFrequency.toFixed(2)}</span>}</div>
                                     </div>;
                                 })}
                             </div>

@@ -202,6 +202,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         this.getGenomicChartData();
     }
 
+    componentWillUnmount() {
+        localStorage.setItem('genomicSearchText', '');
+    }
+
     render() {
         const { currentPage,
             selectionId,

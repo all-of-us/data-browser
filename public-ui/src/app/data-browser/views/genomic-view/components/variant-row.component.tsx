@@ -105,7 +105,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
                                                     size='lg' shape='caret' dir='down' />
                         </div>
                     </div>
-                    <div style={styles.rowItem}>{variant.genes}</div>
+                    <div style={styles.rowItem}>{(variant.genes && variant.genes.length) ? <div>{variant.genes}</div> : <div>-</div>}</div>
                     <div style={styles.rowItem}>
                         {variant.consequence.length ? variant.consequence.map((item, index) => {
                             return <div key={index}>{item}<br /></div>;

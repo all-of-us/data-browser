@@ -51,7 +51,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     handleChange(val: string) {
         if (val !== '') {
             localStorage.setItem('genomicSearchText', val);
-
         } else {
             localStorage.removeItem('genomicSearchText');
         }

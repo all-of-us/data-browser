@@ -4,6 +4,7 @@ import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
+import { SortMetadata, SortColumnDetails } from 'publicGenerated/fetch';
 
 const styles = reactStyles({
     tableContainer: {
@@ -82,6 +83,26 @@ interface Props {
 interface State {
     loading: boolean;
     searchResults: Variant[];
+    currentPage: number;
+    sortMetadata: any;
+}
+
+class SortMetadataClass implements SortMetadata {
+    variantId: any;
+    constructor(variantId: any) {
+        this.variantId = variantId;
+    }
+}
+
+class SortColumnDetailsClass implements SortColumnDetails {
+    sortActive: boolean;
+    sortDirection: string;
+    sortOrder: number;
+    constructor(sortActive: boolean, sortDirection: string, sortOrder: number) {
+        this.sortActive = sortActive;
+        this.sortDirection = sortDirection;
+        this.sortOrder = sortOrder;
+    }
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
@@ -89,7 +110,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             loading: props.loadingResults,
-            searchResults: props.searchResults
+            searchResults: props.searchResults,
+            currentPage: 1,
+            sortMetadata: { 'variant_id': { 'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1 } }
         };
     }
 
@@ -112,18 +135,46 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
     handlePageClick = (data) => {
         const { searchTerm } = this.props;
-        this.setState({ loading: true });
+        this.setState({ loading: true }, () => { this.fetchVariantData(); });
         this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
+        this.props.onPageChange();
+    }
+
+    fetchVariantData() {
+        const { searchTerm } = this.props;
+        const { sortMetadata } = this.state;
+        let sortColumnDetailsObj = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'], sortMetadata['variant_id']['sortDirection'],
+            sortMetadata['variant_id']['sortOrder']);
+        let sortMetadataObj = new SortMetadataClass(sortColumnDetailsObj);
+        const searchRequest = {
+            query: searchTerm,
+            sortMetadata: sortMetadataObj
+        };
+    }
+
+    sortClick(key: string) {
+        const { sortMetadata } = this.state;
+        sortMetadata[key]['sortActive'] = true;
+        let direction = sortMetadata[key]['sortDirection'];
+        direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
+        this.setState({ sortMetadata: sortMetadata }, () => {
+            this.fetchVariantData();
+        });
     }
 
     render() {
         const { loadingVariantListSize, variantListSize, currentPage } = this.props;
-        const { loading, searchResults } = this.state;
+        const { loading, searchResults, sortMetadata, } = this.state;
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
-                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID
-                    </span></div>
+                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
+                        {sortMetadata['variant_id']['sortDirection'] === 'asc' ?
+                            <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                onClick={() => { this.setState({ loading: true }); this.sortClick('variant_id'); }}></i> :
+                            <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                onClick={() => { this.sortClick('variant_id'); }}></i>}
+                    </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Protein Change</span></div>
