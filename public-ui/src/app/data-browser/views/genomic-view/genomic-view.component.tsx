@@ -1,8 +1,8 @@
+import { withRouteData } from 'app/components/app-router';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import _ from 'lodash';
 import { Variant } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
-import { withRouteData } from 'app/components/app-router';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
@@ -169,13 +169,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         participantCount: type.countValue.toLocaleString()
                     });
                 }
-            })
+            });
         });
     }
 
     getGenomicChartData() {
         return genomicsApi().getChartData().then(results => {
-            this.setState({ chartData: results.items })
+            this.setState({ chartData: results.items });
         });
     }
 
@@ -276,9 +276,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         {selectionId === 2 &&
                             <GenomicSearchComponent
                                 onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm);
-                                    this.setState({ searchTerm: searchTerm }) }}
-                                onPageChange={(info) => { this.handlePageChange(info) }}
-                                onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata) }}
+                                    this.setState({ searchTerm: searchTerm }); }}
+                                onPageChange={(info) => { this.handlePageChange(info); }}
+                                onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
                                 currentPage={currentPage}
                                 variantListSize={variantListSize}
                                 loadingVariantListSize={loadingVariantListSize}
