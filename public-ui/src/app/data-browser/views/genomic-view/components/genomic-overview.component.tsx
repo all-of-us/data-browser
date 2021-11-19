@@ -55,7 +55,6 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     currentAgeArr: any[] = [];
     participantCountsArr: any[] = [];
 
-
     componentDidMount() {
         { this.props.chartData && this.getGenomicChartData(); }
     }

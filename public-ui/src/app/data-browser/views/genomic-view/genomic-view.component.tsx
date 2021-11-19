@@ -1,9 +1,9 @@
 import { withRouteData } from 'app/components/app-router';
+import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import _ from 'lodash';
 import { Variant } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
-import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
 import * as React from 'react';
