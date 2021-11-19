@@ -1,6 +1,7 @@
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import _ from 'lodash';
 import { Variant, VariantListResponse } from 'publicGenerated';
+import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
 import { withRouteData } from 'app/components/app-router';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { reactStyles } from 'app/utils';
@@ -79,6 +80,25 @@ interface State {
     currentPage: number;
     participantCount: string;
     chartData: any;
+    sortMetadata: any;
+}
+
+class SortMetadataClass implements SortMetadata {
+    variantId: any;
+    constructor(variantId: any) {
+        this.variantId = variantId;
+    }
+}
+
+class SortColumnDetailsClass implements SortColumnDetails {
+    sortActive: boolean;
+    sortDirection: string;
+    sortOrder: number;
+    constructor(sortActive: boolean, sortDirection: string, sortOrder: number) {
+        this.sortActive = sortActive;
+        this.sortDirection = sortDirection;
+        this.sortOrder = sortOrder;
+    }
 }
 
 const css = `
@@ -96,7 +116,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             searchTerm: '',
             currentPage: null,
             participantCount: null,
-            chartData: null
+            chartData: null,
+            sortMetadata: null
         };
     }
 
@@ -132,14 +153,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         this.getSearchSize(searchTerm);
         this.setState({ loadingResults: true });
         if (searchTerm !== '') {
-            genomicsApi().searchVariants(searchTerm).then(
-                results => {
-                    this.setState({
-                        searchResults: results.items,
-                        loadingResults: false
-                    });
-                }
-            );
+            this.fetchVariantData();
         } else {
             this.setState({
                 searchResults: null,
@@ -168,15 +182,33 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     handlePageChange(info) {
-        this.setState({ loadingResults: true });
-        genomicsApi().searchVariants(info.searchTerm, info.selectedPage + 1).then(
-            results => {
-                this.setState({
-                    searchResults: results.items,
-                    loadingResults: false,
-                    currentPage: info.selectedPage
-                });
-            }
+        this.setState({ loadingResults: true, currentPage: info.selectedPage }, () => { this.fetchVariantData(); });
+    }
+
+    handleSortClick(sortMetadataTemp) {
+        this.setState({sortMetadata: sortMetadataTemp}, () => { this.fetchVariantData(); });
+    }
+
+    fetchVariantData() {
+        const {searchTerm, currentPage, sortMetadata} = this.state;
+        let variantSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        if (sortMetadata) {
+            variantSortMetadata = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'],
+            sortMetadata['variant_id']['sortDirection'], sortMetadata['variant_id']['sortOrder']);
+        }
+        const variantSortMetadataObj = new SortMetadataClass(variantSortMetadata);
+        const searchRequest = {
+                query: searchTerm,
+                pageNumber: currentPage + 1,
+                sortMetadata: variantSortMetadataObj
+        };
+        genomicsApi().searchVariants(searchRequest).then(
+                results => {
+                    this.setState({
+                        searchResults: results.items,
+                        loadingResults: false
+                    });
+                }
         );
     }
 
@@ -191,7 +223,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     handleSearchTerm(searchTerm: string) {
-        console.log(this.state.searchTerm, searchTerm);
         if (this.state.searchTerm !== searchTerm) {
             this.search(searchTerm);
         }
@@ -247,6 +278,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             <GenomicSearchComponent
                                 onSearchInput={(searchTerm: string) => { this.handleSearchTerm(searchTerm); this.setState({ searchTerm: searchTerm }) }}
                                 onPageChange={(info) => { this.handlePageChange(info) }}
+                                onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata) }}
                                 currentPage={currentPage}
                                 variantListSize={variantListSize}
                                 loadingVariantListSize={loadingVariantListSize}

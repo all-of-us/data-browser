@@ -34,6 +34,7 @@ const styles = reactStyles({
 interface Props {
     onSearchInput: Function;
     onPageChange: Function;
+    onSortClick: Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
@@ -61,6 +62,10 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
 
+    handleSortClick(sortMetadata) {
+        this.props.onSortClick(sortMetadata);
+    }
+
     render() {
         const { searchTerm } = this.state;
         const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput, participantCount } = this.props;
@@ -82,6 +87,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     searchResults={searchResults}
                     searchTerm={searchTerm}
                     onPageChange={(info: any) => this.handlePageChange(info)}
+                    onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
                     currentPage={currentPage} />
             </div>
         </React.Fragment>;

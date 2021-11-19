@@ -72,6 +72,7 @@ const styles = reactStyles({
 
 interface Props {
     onPageChange: Function;
+    onSortClick: Function;
     searchResults: Variant[];
     variantListSize: number;
     loadingVariantListSize: boolean;
@@ -83,6 +84,7 @@ interface Props {
 interface State {
     loading: boolean;
     searchResults: Variant[];
+    sortMetadata: any;
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
@@ -90,7 +92,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             loading: props.loadingResults,
-            searchResults: props.searchResults
+            searchResults: props.searchResults,
+            sortMetadata: {'variant_id': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1}}
         };
     }
 
@@ -117,13 +120,29 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
     }
 
+    sortClick(key: string) {
+        const {sortMetadata} = this.state;
+        sortMetadata[key]['sortActive'] = true;
+        const direction = sortMetadata[key]['sortDirection'];
+        direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
+        this.setState({sortMetadata: sortMetadata}, () => {
+            this.props.onSortClick(this.state.sortMetadata);
+        });
+    }
+
     render() {
         const { loadingVariantListSize, variantListSize, currentPage } = this.props;
-        const { loading, searchResults } = this.state;
+        const { loading, searchResults, sortMetadata } = this.state;
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
-                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span></div>
+                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
+                    {sortMetadata['variant_id']['sortDirection'] === 'asc' ?
+                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    onClick={() => {this.sortClick('variant_id'); }}></i> :
+                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                        onClick={() => {this.sortClick('variant_id'); }}></i> }
+                    </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Protein Change</span></div>
