@@ -10,7 +10,10 @@ const styles = reactStyles({
         borderRadius: '3px',
         padding: '2em',
         paddingTop: '1em',
-        margin: '1em'
+        marginLeft: '1em',
+        marginRight: '1em',
+        marginBottom: '1em',
+        marginTop: '0.5em',
     },
     titleBox: {
         display: 'flex',
