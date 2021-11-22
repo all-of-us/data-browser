@@ -1328,6 +1328,22 @@ definitions:
         description: variant id column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
+      gene:
+        description: gene column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      alleleCount:
+        description: allele count column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      alleleNumber:
+        description: allele number column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      alleleFrequency:
+        description: allele frequency column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
 
   SortColumnDetails:
     type: object

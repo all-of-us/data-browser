@@ -11,6 +11,15 @@ import { GenomicFaqComponent } from './components/genomic-faq.component';
 import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
+    pageHeader: {
+        padding: '18px'
+    },
+    titleContainer: {
+        width: '100%',
+        paddingRight: '18px',
+        margin: '0',
+        lineHeight: '1em'
+    },
     title: {
         margin: '0'
     },
@@ -84,8 +93,16 @@ interface State {
 
 class SortMetadataClass implements SortMetadata {
     variantId: any;
-    constructor(variantId: any) {
+    gene: any;
+    alleleCount: any;
+    alleleNumber: any;
+    alleleFrequency: any;
+    constructor(variantId: any, gene: any, alleleCount: any, alleleNumber: any, alleleFrequency: any) {
         this.variantId = variantId;
+        this.gene = gene;
+        this.alleleCount = alleleCount;
+        this.alleleNumber = alleleNumber;
+        this.alleleFrequency = alleleFrequency;
     }
 }
 
@@ -190,15 +207,38 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     fetchVariantData() {
         const {searchTerm, currentPage, sortMetadata} = this.state;
         let variantSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let geneSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let alleleCountSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let alleleNumberSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let alleleFrequencySortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
         if (sortMetadata) {
-            variantSortMetadata = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'],
-            sortMetadata['variant_id']['sortDirection'], sortMetadata['variant_id']['sortOrder']);
+            if (sortMetadata['variant_id']) {
+                variantSortMetadata = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'],
+                sortMetadata['variant_id']['sortDirection'], sortMetadata['variant_id']['sortOrder']);
+            }
+            if (sortMetadata['gene']) {
+                geneSortMetadata = new SortColumnDetailsClass(sortMetadata['gene']['sortActive'],
+                sortMetadata['gene']['sortDirection'], sortMetadata['gene']['sortOrder']);
+            }
+            if (sortMetadata['allele_count']) {
+                alleleCountSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_count']['sortActive'],
+                sortMetadata['allele_count']['sortDirection'], sortMetadata['allele_count']['sortOrder'])
+            }
+            if (sortMetadata['allele_number']) {
+                alleleNumberSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_number']['sortActive'],
+                sortMetadata['allele_number']['sortDirection'], sortMetadata['allele_number']['sortOrder'])
+            }
+            if (sortMetadata['allele_frequency']) {
+                alleleFrequencySortMetadata = new SortColumnDetailsClass(sortMetadata['allele_frequency']['sortActive'],
+                sortMetadata['allele_frequency']['sortDirection'], sortMetadata['allele_frequency']['sortOrder'])
+            }
         }
-        const variantSortMetadataObj = new SortMetadataClass(variantSortMetadata);
+        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata, alleleCountSortMetadata, alleleNumberSortMetadata,
+        alleleFrequencySortMetadata);
         const searchRequest = {
                 query: searchTerm,
                 pageNumber: currentPage + 1,
-                sortMetadata: variantSortMetadataObj
+                sortMetadata: sortMetadataObj
         };
         genomicsApi().searchVariants(searchRequest).then(
                 results => {
@@ -231,6 +271,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     componentDidMount() {
+        localStorage.setItem('genomicSearchText', '');
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
@@ -241,16 +282,18 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         return <React.Fragment>
             <style>{css}</style>
             <div id='genomicView'>
-                <div id='genomicTitle'>
-                    <h1 style={styles.title}>{this.title}</h1>
-                    <p style={globalStyles.bodyDefault}>
-                        This section provides an overview of genomic data within the current
-                        <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
-                        Data page to view currently available genomic data by participant - reported
-                        for preliminary exploration of genetic variant allele frequencies by with select
-                        annotations and genetic ancestry associations.
-                    </p>
+            <div className='page-header' style={styles.pageHeader}>
+               <div className='title-container' style={styles.titleContainer}>
+                <h1>Genomic Data</h1>
+                <div style={globalStyles.bodyDefault}>
+                This section provides an overview of genomic data within the current
+                <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
+                Data page to view currently available genomic data by participant - reported
+                for preliminary exploration of genetic variant allele frequencies by with select
+                annotations and genetic ancestry associations.
                 </div>
+               </div>
+            </div>
                 <div style={styles.viewLayout}>
                     <div style={styles.sideBarLayout} id='sideBar'>
                         {this.sideBarItems.map((item, index) => {
