@@ -1,16 +1,17 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
-import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
 
 const styles = reactStyles({
     tableContainer: {
-        border: '1px solid #CCCCCC',
-        borderRadius: '3px',
+        borderTop: '1px solid #CCCCCC',
+        borderLeft: '1px solid #CCCCCC',
+        borderRight: '1px solid #CCCCCC',
+        borderBottom: 'none',
+        borderRadius: '3px 3px 0 0',
         background: '#FAFAFA',
         marginTop: '0.5rem',
         overflowX: 'scroll',
@@ -39,8 +40,7 @@ const styles = reactStyles({
         borderBottom: '1px solid #CCCCCC'
     },
     headingLabel: {
-        borderBottom: '1px dashed',
-        cursor: 'pointer'
+        borderBottom: '1px dashed'
     },
     first: {
         paddingLeft: '.5rem',
@@ -57,54 +57,41 @@ const styles = reactStyles({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    paginator: {
+        background: '#f9f9fa',
+        borderBottom: '1px solid #CCCCCC',
+        borderRight: '1px solid #CCCCCC',
+        borderLeft: '1px solid #CCCCCC',
+        borderTop: 'none',
+        borderRadius: '0 0 3px 3px',
     }
 
 });
 
 interface Props {
+    onPageChange: Function;
+    onSortClick: Function;
     searchResults: Variant[];
     variantListSize: number;
-    loading: boolean;
+    loadingVariantListSize: boolean;
+    loadingResults: boolean;
     searchTerm: string;
-    onPageChange: Function;
+    currentPage: number;
 }
 
 interface State {
-    numPages: number;
-    page: number;
     loading: boolean;
     searchResults: Variant[];
-    currentPage: number;
     sortMetadata: any;
-}
-
-class SortMetadataClass implements SortMetadata {
-    variantId: any;
-    constructor(variantId: any) {
-        this.variantId = variantId;
-    }
-}
-
-class SortColumnDetailsClass implements SortColumnDetails {
-    sortActive: boolean;
-    sortDirection: string;
-    sortOrder: number;
-    constructor(sortActive: boolean, sortDirection: string, sortOrder: number) {
-        this.sortActive = sortActive;
-        this.sortDirection = sortDirection;
-        this.sortOrder = sortOrder;
-    }
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            numPages: Math.ceil(props.variantListSize / 50),
-            page: 1,
-            loading: props.loading == null ? true : props.loading,
+            loading: props.loadingResults,
             searchResults: props.searchResults,
-            currentPage: 1,
             sortMetadata: {'variant_id': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1}}
         };
     }
@@ -120,37 +107,16 @@ export class VariantTableComponent extends React.Component<Props, State> {
         'Allele Frequency'];
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const {variantListSize, searchResults, loading} = this.props;
+        const { searchResults, loadingResults } = this.props;
         if (prevProps.searchResults !== searchResults) {
-            this.setState({numPages: Math.ceil(variantListSize / 50), searchResults: searchResults, loading: loading});
+            this.setState({ searchResults: searchResults, loading: loadingResults });
         }
-   }
-
-    handlePageClick = (data) => {
-        this.setState({loading: true, page: data.selected + 1, currentPage: data.selected + 1},
-            () => { this.fetchVariantData(); });
-        this.props.onPageChange();
     }
 
-    fetchVariantData() {
-        const {searchTerm} = this.props;
-        const {page, sortMetadata} = this.state;
-        const sortColumnDetailsObj = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'], sortMetadata['variant_id']['sortDirection'],
-        sortMetadata['variant_id']['sortOrder']);
-        const sortMetadataObj = new SortMetadataClass(sortColumnDetailsObj);
-        const searchRequest = {
-                query: searchTerm,
-                pageNumber: page,
-                sortMetadata: sortMetadataObj
-        };
-        genomicsApi().searchVariants(searchRequest).then(
-                results => {
-                    this.setState({
-                        searchResults: results.items,
-                        loading: false
-                    });
-                }
-        );
+    handlePageClick = (data) => {
+        const { searchTerm } = this.props;
+        this.setState({ loading: true });
+        this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
     }
 
     sortClick(key: string) {
@@ -159,19 +125,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
         const direction = sortMetadata[key]['sortDirection'];
         direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
         this.setState({sortMetadata: sortMetadata}, () => {
-            this.fetchVariantData();
+            this.props.onSortClick(this.state.sortMetadata);
         });
     }
 
     render() {
-       const { numPages, loading, searchResults, sortMetadata } = this.state;
-       return <React.Fragment> {(searchResults) ?
+        const { loadingVariantListSize, variantListSize, currentPage } = this.props;
+        const { loading, searchResults, sortMetadata } = this.state;
+        return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
                     {sortMetadata['variant_id']['sortDirection'] === 'asc' ?
                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                    onClick={() => {this.setState({loading: true}); this.sortClick('variant_id'); }}></i> :
+                    onClick={() => {this.sortClick('variant_id'); }}></i> :
                     <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
                                         onClick={() => {this.sortClick('variant_id'); }}></i> }
                     </div>
@@ -186,24 +153,24 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {searchResults && searchResults.map((variant, index) => {
                     return <VariantRowComponent key={variant.variantId} variant={variant} />;
                 })}
-
-                {(numPages && numPages > 1) &&
-                    <ReactPaginate
-                        previousLabel={'Previous'}
-                        nextLabel={'Next'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        activeClassName={'active'}
-                        pageCount={numPages}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={this.handlePageClick}
-                        containerClassName={'pagination'}
-                    />}
-
-            </div> : <div style={styles.tableFrame}>{loading && <div style={styles.center}><Spinner /> </div>}</div>
+            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
+                        <div style={styles.center}><Spinner /> </div>}</div>
         }
-
+            <div style={styles.paginator}>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    activeClassName={'active'}
+                    pageCount={Math.ceil(variantListSize / 50)}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={'pagination'}
+                    forcePage={currentPage}
+                />
+            </div>
         </React.Fragment>;
     }
 }

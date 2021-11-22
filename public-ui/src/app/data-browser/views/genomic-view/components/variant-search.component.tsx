@@ -8,6 +8,7 @@ const styles = reactStyles({
         paddingTop: '1em',
         paddingBottom: '1em',
         display: 'flex',
+        alignItems: 'flex-end',
         flexDirection: 'row'
     },
     searchBar: {
@@ -31,8 +32,7 @@ const styles = reactStyles({
 });
 
 interface Props {
-    onSearchReturn: Function;
-    searchTerm: Function;
+    onSearchTerm: Function;
     variantListSize: number;
     loading: boolean;
 }
@@ -47,7 +47,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             searchWord: localStorage.getItem('genomicSearchText') ? localStorage.getItem('genomicSearchText') : '',
         };
         if (this.state.searchWord !== '') {
-            this.props.searchTerm(this.state.searchWord);
+            this.props.onSearchTerm(this.state.searchWord);
         }
     }
 
@@ -57,13 +57,14 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         } else {
             localStorage.removeItem('genomicSearchText');
         }
-        this.props.searchTerm(val);
         this.setState({ searchWord: val });
+        this.props.onSearchTerm(val);
     }
 
     render() {
         const { searchWord } = this.state;
         const { variantListSize, loading } = this.props;
+        const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
             <div style={styles.searchContainer}>
                 <div style={styles.searchBar}>
@@ -77,9 +78,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     Genomic Region: chr17:7572855-7579987
                 </div>
             </div>
-            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() :
+            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
             <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-                <strong style={styles.resultSize} >{!loading ? variantListSize.toLocaleString() : <span style={styles.loading}>
+                <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                 <Spinner /></span> } results</strong>}
         </React.Fragment>;
     }

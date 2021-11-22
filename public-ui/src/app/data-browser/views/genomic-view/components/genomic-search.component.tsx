@@ -1,7 +1,5 @@
-import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import _ from 'lodash';
-import { Variant, VariantListResponse } from 'publicGenerated';
+import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
@@ -10,13 +8,17 @@ const styles = reactStyles({
     border: {
         background: 'white',
         borderRadius: '3px',
-        padding: '2rem',
-        paddingTop: '1em'
+        padding: '2em',
+        paddingTop: '1em',
+        marginLeft: '1em',
+        marginRight: '1em',
+        marginBottom: '1em',
+        marginTop: '0.5em',
     },
     titleBox: {
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'flex-start'
     },
     boxHeading: {
         fontFamily: 'GothamBook, Arial, sans-serif',
@@ -31,88 +33,66 @@ const styles = reactStyles({
     }
 });
 
-interface State {
-    loading: boolean;
-    loadingVariantListSize: boolean;
+interface Props {
+    onSearchInput: Function;
+    onPageChange: Function;
+    onSortClick: Function;
     variantListSize: number;
-    searchWord: string;
+    loadingVariantListSize: boolean;
+    loadingResults: boolean;
     searchResults: Variant[];
+    currentPage: number;
+    participantCount: string;
 }
 
-export class GenomicSearchComponent extends React.Component<{}, State> {
+interface State {
+    searchTerm: string;
+}
+
+export class GenomicSearchComponent extends React.Component<Props, State> {
     scrollDiv: any;
-    constructor(props: {}) {
+    constructor(props: Props) {
         super(props);
         this.scrollDiv = React.createRef();
         this.state = {
-            loading: false,
-            loadingVariantListSize: null,
-            searchResults: null,
-            variantListSize: 0,
-            searchWord: ''
+            searchTerm: null,
         };
     }
 
-    search = _.debounce((searchTerm: string) => this.getVariantSearch(searchTerm), 1000);
-
-    getSearchSize(searchTerm: string) {
-        this.setState({loadingVariantListSize: true});
-        genomicsApi().getVariantSearchResultSize(searchTerm).then(
-            result => {
-                this.setState({
-                    variantListSize: searchTerm !== '' ? result : 0,
-                    loadingVariantListSize: false
-                });
-            }
-        ).catch(e => {
-            console.log(e, 'error');
-        });
-    }
-
-    getVariantSearch(searchTerm: string) {
-        this.setState({loading: true, searchWord: searchTerm});
-        if (searchTerm !== '') {
-            const searchRequest = {
-                query: searchTerm,
-                pageNumber: 1
-            };
-            genomicsApi().searchVariants(searchRequest).then(
-                results => {
-                    this.setState({
-                        searchResults: results.items,
-                        loading: false
-                    });
-                }
-            );
-        } else {
-            this.setState({
-                searchResults: null,
-                loading: false
-            });
-        }
-    }
-
-    handleResults(results: VariantListResponse) {
-        this.setState({
-            searchResults: results.items
-        });
-    }
-
-    handlePageChange() {
+    handlePageChange(info) {
+        this.props.onPageChange(info);
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
 
+    handleSortClick(sortMetadata) {
+        this.props.onSortClick(sortMetadata);
+    }
+
     render() {
-        const { loading, searchResults, variantListSize, loadingVariantListSize, searchWord } = this.state;
+        const { searchTerm } = this.state;
+        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
+        participantCount } = this.props;
         return <React.Fragment>
-                <div style={styles.border}>
-                    <div style={styles.titleBox}><div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div></div>
-                    <VariantSearchComponent loading={loadingVariantListSize} variantListSize={variantListSize}
-                        searchTerm={(searchTerm: string) => { this.search(searchTerm); this.getSearchSize(searchTerm); }}
-                        onSearchReturn={(results: VariantListResponse) => this.handleResults(results)} />
-                    <VariantTableComponent loading={loading} variantListSize={variantListSize} searchResults={searchResults}
-                    searchTerm={searchWord} onPageChange={() => this.handlePageChange()}/>
+            <div style={styles.border}>
+                <div style={styles.titleBox}>
+                    <div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div>
+                    <div>{participantCount} participants</div>
+
                 </div>
+                <VariantSearchComponent
+                    onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
+                    loading={loadingVariantListSize}
+                    variantListSize={variantListSize} />
+                <VariantTableComponent
+                    loadingResults={loadingResults}
+                    loadingVariantListSize={loadingVariantListSize}
+                    variantListSize={variantListSize}
+                    searchResults={searchResults}
+                    searchTerm={searchTerm}
+                    onPageChange={(info: any) => this.handlePageChange(info)}
+                    onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
+                    currentPage={currentPage} />
+            </div>
         </React.Fragment>;
     }
 }
