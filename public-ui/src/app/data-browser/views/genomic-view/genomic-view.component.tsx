@@ -222,19 +222,19 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             }
             if (sortMetadata['allele_count']) {
                 alleleCountSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_count']['sortActive'],
-                sortMetadata['allele_count']['sortDirection'], sortMetadata['allele_count']['sortOrder'])
+                sortMetadata['allele_count']['sortDirection'], sortMetadata['allele_count']['sortOrder']);
             }
             if (sortMetadata['allele_number']) {
                 alleleNumberSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_number']['sortActive'],
-                sortMetadata['allele_number']['sortDirection'], sortMetadata['allele_number']['sortOrder'])
+                sortMetadata['allele_number']['sortDirection'], sortMetadata['allele_number']['sortOrder']);
             }
             if (sortMetadata['allele_frequency']) {
                 alleleFrequencySortMetadata = new SortColumnDetailsClass(sortMetadata['allele_frequency']['sortActive'],
-                sortMetadata['allele_frequency']['sortDirection'], sortMetadata['allele_frequency']['sortOrder'])
+                sortMetadata['allele_frequency']['sortDirection'], sortMetadata['allele_frequency']['sortOrder']);
             }
         }
-        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata, alleleCountSortMetadata, alleleNumberSortMetadata,
-        alleleFrequencySortMetadata);
+        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata, alleleCountSortMetadata,
+        alleleNumberSortMetadata, alleleFrequencySortMetadata);
         const searchRequest = {
                 query: searchTerm,
                 pageNumber: currentPage + 1,
