@@ -143,21 +143,22 @@ export class VariantTableComponent extends React.Component<Props, State> {
     render() {
         const { loadingVariantListSize, variantListSize, currentPage } = this.props;
         const { loading, searchResults, sortMetadata } = this.state;
+        const sortIconStyle = { color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' };
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
                     <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
                     {sortMetadata['variant_id']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['variant_id']['sortActive'] === true ? 'fas fa-arrow-down fa-lg' : 'fas fa-arrow-down'} style={sortIconStyle}
                     onClick={() => {this.sortClick('variant_id'); }}></i> :
-                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['variant_id']['sortActive'] === true ? 'fas fa-arrow-up fa-lg' : 'fas fa-arrow-up'} style={sortIconStyle}
                                         onClick={() => {this.sortClick('variant_id'); }}></i> }
                     </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span>
                     {sortMetadata['gene']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['gene']['sortActive'] === true ? 'fas fa-arrow-down fa-lg' : 'fas fa-arrow-down'} style={sortIconStyle}
                     onClick={() => {this.setState({loading: true}); this.sortClick('gene'); }}></i> :
-                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['gene']['sortActive'] === true ? 'fas fa-arrow-up fa-lg' : 'fas fa-arrow-up'} style={sortIconStyle}
                     onClick={() => {this.sortClick('gene'); }}></i> }
                     </div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
@@ -165,22 +166,22 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Clinical Significance</span></div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Count</span>
                     {sortMetadata['allele_count']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['allele_count']['sortActive'] === true ? 'fas fa-arrow-down fa-lg' : 'fas fa-arrow-down'} style={sortIconStyle}
                     onClick={() => {this.setState({loading: true}); this.sortClick('allele_count'); }}></i> :
-                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['allele_count']['sortActive'] === true ? 'fas fa-arrow-up fa-lg' : 'fas fa-arrow-up'} style={sortIconStyle}
                     onClick={() => {this.sortClick('allele_count'); }}></i> }</div>
                     <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Number</span>
                     {sortMetadata['allele_number']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className='fas fa-arrow-down' style={sortIconStyle}
                     onClick={() => {this.setState({loading: true}); this.sortClick('allele_number'); }}></i> :
-                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className='fas fa-arrow-up' style={sortIconStyle}
                     onClick={() => {this.sortClick('allele_number'); }}></i> }
                     </div>
                     <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}>Allele Frequency</span>
                     {sortMetadata['allele_frequency']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['allele_frequency']['sortActive'] === true ? 'fas fa-arrow-down fa-lg' : 'fas fa-arrow-down'} style={sortIconStyle}
                     onClick={() => {this.setState({loading: true}); this.sortClick('allele_frequency'); }}></i> :
-                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                    <i className={sortMetadata['allele_frequency']['sortActive'] === true ? 'fas fa-arrow-up fa-lg' : 'fas fa-arrow-up'} style={sortIconStyle}
                     onClick={() => {this.sortClick('allele_frequency'); }}></i> }
                     </div>
                 </div>
