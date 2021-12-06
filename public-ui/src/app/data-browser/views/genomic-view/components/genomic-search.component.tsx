@@ -76,7 +76,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
             <div style={styles.border}>
                 <div style={styles.titleBox}>
                     <div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div>
-                    <div>{participantCount} participants</div>
 
                 </div>
                 <VariantSearchComponent
