@@ -142,52 +142,42 @@ public class GenomicsController implements GenomicsApiDelegate {
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
-            if (variantIdColumnSortMetadata != null) {
-                if (variantIdColumnSortMetadata.getSortActive()) {
+            if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.getSortActive()) {
                     if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
                         ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
                     }
-                }
             }
             SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
-            if (geneColumnSortMetadata != null) {
-                if (geneColumnSortMetadata.getSortActive()) {
+            if (geneColumnSortMetadata != null && geneColumnSortMetadata.getSortActive()) {
                     if (geneColumnSortMetadata.getSortDirection().equals("desc")) {
                         ORDER_BY_CLAUSE = " ORDER BY genes DESC";
                     } else {
                         ORDER_BY_CLAUSE = " ORDER BY genes ASC";
                     }
-                }
             }
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
-            if (alleleCountColumnSortMetadata != null) {
-                if (alleleCountColumnSortMetadata.getSortActive()) {
+            if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.getSortActive()) {
                     if (alleleCountColumnSortMetadata.getSortDirection().equals("desc")) {
                         ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
                     } else {
                         ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
                     }
-                }
             }
             SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
-            if (alleleNumberColumnSortMetadata != null) {
-                if (alleleNumberColumnSortMetadata.getSortActive()) {
+            if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.getSortActive()) {
                     if (alleleNumberColumnSortMetadata.getSortDirection().equals("desc")) {
                         ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
                     } else {
                         ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
                     }
-                }
             }
             SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
-            if (alleleFrequencyColumnSortMetadata != null) {
-                if (alleleFrequencyColumnSortMetadata.getSortActive()) {
+            if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.getSortActive()) {
                     if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("desc")) {
                         ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
                     } else {
                         ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
                     }
-                }
             }
         }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
