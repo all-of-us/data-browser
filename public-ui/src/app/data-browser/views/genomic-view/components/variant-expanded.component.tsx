@@ -66,6 +66,10 @@ const styles = reactStyles({
     catInfo: {
         overflowWrap: 'anywhere'
     },
+    totalCatHeading: {
+        fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
+        marginLeft: '1.6em'
+    },
     loading: {
         transform: 'scale(.5)'
     },
@@ -186,7 +190,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                         <div style={styles.popTableData}>{(item.Ancestry !== 'Total') ?
                                             <span><i className='fas fa-circle' style={{ ...colorStyle, marginRight: '.5rem', transform: 'scale(1.3)' }} />
                                                 {item.Ancestry} </span> :
-                                                <span style={{marginLeft: '1.6em'}}><strong>{item.Ancestry}</strong></span>} </div>
+                                                <span style={styles.totalCatHeading}>{item.Ancestry}</span>} </div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
                                             <React.Fragment>{item.AlleleCount}</React.Fragment> :
                                             <span style={styles.catHeading}>{item.AlleleCount}</span>}</div>
