@@ -466,7 +466,7 @@ export const EhrViewReactComponent = withRouteData(
                 <div className='search-bar-container'>
                     <SearchComponent value={searchWord || ''} searchTitle='' domain='ehr'
                         onChange={(val) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} />
+                        onClear={() => this.handleChange('')} placeholderText='Keyword Search'/>
                 </div>
                 {(loading) && <Spinner />}
                 {domain && !loading && concepts && concepts.length > 0 &&

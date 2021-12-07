@@ -477,7 +477,7 @@ export const dBHomeComponent = withRouteData(
                     <div>
                         <SearchComponent value={searchWord} searchTitle='Search Across Data Types' domain='home'
                             onChange={(val) => this.handleChange(val)}
-                            onClear={() => this.handleChange('')} />
+                            onClear={() => this.handleChange('')} placeholderText='Keyword Search'/>
                         <CdrVersionReactComponent />
                     </div>
                     <div style={styles.iconLinks}>

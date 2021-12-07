@@ -353,7 +353,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                 <div className='search-bar-container' style={styles.searchBarContainer}>
                     <SearchComponent value={searchWord || ''} searchTitle='' domain='survey'
                         onChange={(val) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} />
+                        onClear={() => this.handleChange('')} placeholderText='Keyword Search'/>
                 </div>
                 {loading && <Spinner />}
                 {survey &&
