@@ -1,6 +1,18 @@
 import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
+import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import * as React from 'react';
+
+const styles = reactStyles({
+    searchTitle: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    toolTipContainer: {
+        paddingLeft: '1em'
+    }
+});
 
 const searchStyle = `
 .search-title {
@@ -129,10 +141,10 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
             <React.Fragment>
             <style>{searchStyle}</style>
             {searchTitle && <style>{homeSearchStyle}</style>}
-            <div className='search-title'>
-                <span className={headingClassName}>{searchTitle}</span>
-                {searchTitle && domain !== 'genomics' && <TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
-                                                action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/>}
+            <div className='search-title' style={styles.searchTitle}>
+                <div className={headingClassName}>{searchTitle}</div>
+                {searchTitle && domain !== 'genomics' && <div style={styles.toolTipContainer}><TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
+                                                action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/></div>}
             </div>
             <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />

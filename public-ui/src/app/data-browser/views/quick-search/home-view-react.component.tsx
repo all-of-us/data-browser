@@ -119,12 +119,18 @@ const css = `
 .cope-preview {
     justify-content: flex-start;
 }
+.tooltip-container {
+    padding-left: 1em;
+}
     `;
 const styles = reactStyles({
     searchIconLayout: {
         display: 'grid',
         gridTemplateColumns: '50% 50%',
         padding: '1em'
+    },
+    toolTipContainer: {
+        paddingLeft: '1em'
     },
     results: {
         padding: '18px'
@@ -156,7 +162,9 @@ const styles = reactStyles({
         paddingBottom: '3px',
         margin: '0',
         fontSize: '16px',
-        height: '20%'
+        height: '20%',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     resultBody: {
         color: '#302c71',
@@ -196,7 +204,8 @@ const styles = reactStyles({
     resultHeading: {
         fontSize: '23px',
         margin: '0',
-        padding: '9px',
+        paddingTop: '9px',
+        paddingBottom: '9px',
         paddingLeft: '0'
     },
     resultBodyItem: {
@@ -313,12 +322,12 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         return <div
             onClick={() => this.resultClick(this.props)}
             className='result-box'>
-            <div style={styles.resultBoxTitle}>{name}
-                <TooltipReactComponent
+            <div style={styles.resultBoxTitle}><div style={styles.boxTitleText}>{name}</div>
+                <div style={styles.boxTooltip}><TooltipReactComponent
                     label='Homepage Tooltip Hover'
                     action={'Hover on ' + name + 'tile tooltip'}
                     tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()}
-                    searchTerm='' /></div>
+                    searchTerm='' /></div></div>
                 <div style={styles.resultBody}>
                     <span style={styles.resultBodyItem}>
                         <div style={styles.resultStat}>
@@ -498,11 +507,11 @@ export const dBHomeComponent = withRouteData(
                 {!loading &&
                     <section style={styles.results}>
                         <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                            EHR Domains <TooltipReactComponent
+                            EHR Domains<span className='tooltip-container'><TooltipReactComponent
                                 label='Homepage Tooltip Hover'
                                 searchTerm={searchWord}
                                 action='Tooltip Home Page EHR Domains'
-                                tooltipKey='ehrDomainHelpText' /></h5>
+                                tooltipKey='ehrDomainHelpText' /></span></h5>
 
                         <div className='result-boxes'>
                             {
