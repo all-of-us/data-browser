@@ -113,8 +113,8 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
                         <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>
-                        <div style={styles.variantIdText}>{(variant.variantId.length > 40) ? <React.Fragment>{variant.variantId.substr(0, 40)} &#8230;</React.Fragment>
-                        : variant.variantId}</div>
+                        <div style={styles.variantIdText}>{(variant.variantId.length > 40) ?
+                        <React.Fragment>{variant.variantId.substr(0, 40)} &#8230;</React.Fragment> : variant.variantId}</div>
                         <div style={styles.variantIconText}><ClrIcon style={styles.caretIcon} onClick={(e) => { }}
                                                     size='lg' shape='caret' dir='down' /></div>
                         </div>
