@@ -4,15 +4,9 @@ import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
 const styles = reactStyles({
-    searchContainer: {
-        paddingTop: '1em',
-        paddingBottom: '1em',
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexDirection: 'row'
-    },
     searchBar: {
-        paddingRight: '2rem'
+        paddingRight: '2rem',
+        width: '35em'
     },
     searchHelpText: {
         paddingTop: '2em',
@@ -30,6 +24,22 @@ const styles = reactStyles({
         height: '1rem'
     }
 });
+
+const css = `
+.search-container {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+}
+@media (max-width: 1096px) {
+    .search-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+`;
 
 interface Props {
     onSearchTerm: Function;
@@ -66,11 +76,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
-            <div style={styles.searchContainer}>
+            <style>{css}</style>
+            <div className='search-container'>
                 <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} />
+                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, or genomic region'/>
                 </div>
                 <div style={styles.searchHelpText}>
                     Examples: <br></br>

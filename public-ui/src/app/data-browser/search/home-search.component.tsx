@@ -123,6 +123,7 @@ interface SearchProps {
     value: string;
     searchTitle: string;
     domain: string;
+    placeholderText: string;
     onChange: Function;
     onClear: Function;
 }
@@ -133,10 +134,11 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
     }
 
     render() {
-        const {onChange, onClear, value, searchTitle, domain} = this.props;
+        const {onChange, onClear, value, searchTitle, domain, placeholderText} = this.props;
         const iconShape = 'search';
         const iconClass = 'is-info search-icon';
         const headingClassName = (domain === 'genomics') ? 'genomics-search-heading-display' : 'secondary-display';
+        const placeholder = placeholderText ? placeholderText : 'Keyword Search';
         return (
             <React.Fragment>
             <style>{searchStyle}</style>
@@ -149,7 +151,7 @@ export const SearchComponent = (class extends React.Component<SearchProps, {}> {
             <div id='db-search-bar'>
             <ClrIcon shape={iconShape} className={iconClass} />
             <input type='text' aria-label='Main Search' id='search-db'
-            placeholder='Keyword Search' name='searchText'
+            placeholder={placeholder} name='searchText'
             onChange={(e) => {onChange(e.target.value); }} value={value}/>
             <div className='clear-icon' onClick={(e) => {onClear(); }}>
             <i className='far fa-times fa-1x clear-search-icon'></i></div>

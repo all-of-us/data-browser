@@ -322,8 +322,8 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
         return <div
             onClick={() => this.resultClick(this.props)}
             className='result-box'>
-            <div style={styles.resultBoxTitle}><div style={styles.boxTitleText}>{name}</div>
-                <div style={styles.boxTooltip}><TooltipReactComponent
+            <div style={styles.resultBoxTitle}><div>{name}</div>
+                <div><TooltipReactComponent
                     label='Homepage Tooltip Hover'
                     action={'Hover on ' + name + 'tile tooltip'}
                     tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()}
@@ -526,11 +526,11 @@ export const dBHomeComponent = withRouteData(
                         {(environment.geno) && genomicInfo &&
                             <React.Fragment>
                                 <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics
-                                <TooltipReactComponent
+                                <span className='tooltip-container'><TooltipReactComponent
                                                                 label='Homepage Tooltip Hover'
                                                                 searchTerm={searchWord}
                                                                 action='Tooltip Home Page Genomic Data Domain'
-                                                                tooltipKey='genomicDomainHelpText' />
+                                                                tooltipKey='genomicDomainHelpText' /></span>
                                </h5>
                                 <div>
                                     <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo}
