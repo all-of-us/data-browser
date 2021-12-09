@@ -8,7 +8,7 @@ import { VariantExpandedComponent } from './variant-expanded.component';
 const styles = reactStyles({
     rowLayout: {
         display: 'grid',
-        gridTemplateColumns: '10rem 10rem 15rem 13rem 10rem 10rem 10rem 10rem',
+        gridTemplateColumns: '13rem 10rem 15rem 10rem 10rem 10rem 10rem 10rem',
         alignItems: 'center',
         width: '89rem',
         background: 'white',
@@ -47,7 +47,18 @@ const styles = reactStyles({
     },
     variantId: {
         wordBreak: 'break-all',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    variantIdText: {
+        width: '75%'
+    },
+    variantIconText: {
+        paddingLeft: '0.75rem',
+        paddingRight: '0.75rem',
+        display: 'flex',
+        alignItems: 'center'
     }
 });
 
@@ -92,6 +103,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
     render() {
         const { variant } = this.props;
         const { variantClicked, variantDetails, loadingVarDetails } = this.state;
+        console.log(variant.variantId.length);
         return <React.Fragment>
             {(!loadingVarDetails && variantClicked) ? <VariantExpandedComponent
                 loading={loadingVarDetails}
@@ -100,10 +112,11 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 closed={() => this.handleClick()} /> :
                 <div style={styles.rowLayout}>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
-                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>{(variant.variantId.length > 40) ?
-                        <React.Fragment>{variant.variantId.substr(0, 40)} &#8230;</React.Fragment> : variant.variantId} &#x20;
-                                                <ClrIcon style={styles.caretIcon} onClick={(e) => { }}
-                                                    size='lg' shape='caret' dir='down' />
+                        <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>
+                        <div style={styles.variantIdText}>{(variant.variantId.length > 40) ?
+                        <React.Fragment>{variant.variantId.substr(0, 40)} &#8230;</React.Fragment> : variant.variantId}</div>
+                        <div style={styles.variantIconText}><ClrIcon style={styles.caretIcon} onClick={(e) => { }}
+                                                    size='lg' shape='caret' dir='down' /></div>
                         </div>
                     </div>
                     <div style={styles.rowItem}>{(variant.genes && variant.genes.length) ? <div>{variant.genes}</div> : <div>-</div>}</div>
