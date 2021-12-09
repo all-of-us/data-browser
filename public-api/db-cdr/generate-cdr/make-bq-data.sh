@@ -138,7 +138,7 @@ if [ "$SEARCH_VAT" = true ]; then
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
-     SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ' ') as genes
+     SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
      FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
      GROUP BY vid
   )
