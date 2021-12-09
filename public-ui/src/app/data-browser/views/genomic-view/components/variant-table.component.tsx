@@ -26,7 +26,7 @@ const styles = reactStyles({
     },
     headerLayout: {
         display: 'grid',
-        gridTemplateColumns: '10rem 10rem 15rem 13rem 10rem 10rem 10rem 10rem',
+        gridTemplateColumns: '13rem 10rem 15rem 10rem 10rem 10rem 10rem 10rem',
         background: '#f9f9fa',
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
         width: '89rem',
@@ -40,7 +40,8 @@ const styles = reactStyles({
         borderBottom: '1px solid #CCCCCC'
     },
     headingLabel: {
-        borderBottom: '1px dashed'
+        borderBottom: '1px dashed',
+        cursor: 'pointer'
     },
     first: {
         paddingLeft: '.5rem',

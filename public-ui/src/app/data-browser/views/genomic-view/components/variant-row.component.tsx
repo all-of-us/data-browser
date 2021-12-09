@@ -52,7 +52,7 @@ const styles = reactStyles({
         flexDirection: 'row'
     },
     variantIdText: {
-        width: '75%'
+        width: '90%'
     },
     variantIconText: {
         paddingLeft: '0.75rem',

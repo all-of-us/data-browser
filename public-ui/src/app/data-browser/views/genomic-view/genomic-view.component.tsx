@@ -12,7 +12,18 @@ import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
     title: {
-        margin: '0'
+        fontSize: '35px'
+    },
+    pageHeader: {
+        paddingTop: '18px',
+        paddingBottom: '18px',
+        lineHeight: '1.5'
+    },
+    titleContainer: {
+        lineHeight: '1em',
+        margin: '0px',
+        width: '100%',
+        display: 'block'
     },
     viewLayout: {
         display: 'grid',
@@ -51,6 +62,9 @@ const styles = reactStyles({
         fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
         fontWeight: 'bolder',
         backgroundColor: 'rgba(33,111,180,0.15)'
+    },
+    genomicsDescText: {
+        paddingTop: '1%'
     },
     faqHeading: {
         fontSize: '0.8em',
@@ -240,16 +254,16 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         participantCount, chartData } = this.state;
         return <React.Fragment>
             <style>{css}</style>
-            <div id='genomicView'>
-                <div id='genomicTitle'>
+            <div style={styles.pageHeader}>
+            <div style={styles.titleContainer}>
                     <h1 style={styles.title}>{this.title}</h1>
-                    <p style={globalStyles.bodyDefault}>
+                    <div><p style={{...globalStyles.bodyDefault, ...styles.genomicsDescText}}>
                         This section provides an overview of genomic data within the current
                         <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
                         Data page to view currently available genomic data by participant - reported
                         for preliminary exploration of genetic variant allele frequencies by with select
-                        annotations and genetic ancestry associations.
-                    </p>
+                        annotations and genetic ancestry associations.</p>
+                    </div>
                 </div>
                 <div style={styles.viewLayout}>
                     <div style={styles.sideBarLayout} id='sideBar'>
