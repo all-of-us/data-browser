@@ -150,9 +150,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     getVariantSearch(searchTerm: string) {
         this.getSearchSize(searchTerm);
-        this.setState({ loadingResults: true });
         if (searchTerm !== '') {
-            this.fetchVariantData();
+            this.setState({ loadingResults: true, currentPage: 0 }, () => { this.fetchVariantData(); });
         } else {
             this.setState({
                 searchResults: null,
