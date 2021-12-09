@@ -38,7 +38,7 @@ const styles = reactStyles({
         alignItems: 'center',
         width: '100%'
     },
-    sideBarItemConainer: {
+    sideBarItemContainer: {
         paddingBottom: '.25rem',
         borderBottom: '1px solid rgba(38, 34, 98, .25)',
         width: '100%'
@@ -46,8 +46,7 @@ const styles = reactStyles({
     sideBarItem: {
         display: 'flex',
         alignItems: 'center',
-        padding: '0.5rem',
-        paddingBottom: '0',
+        justifyContent: 'center',
         fontSize: '0.8em',
         width: '100%',
         cursor: 'pointer',
@@ -58,7 +57,7 @@ const styles = reactStyles({
     },
     sideBarItemSelected: {
         background: 'red',
-        borderRadius: '3px',
+        borderRadius: '2.5px',
         fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
         fontWeight: 'bolder',
         backgroundColor: 'rgba(33,111,180,0.15)'
@@ -268,7 +267,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 <div style={styles.viewLayout}>
                     <div style={styles.sideBarLayout} id='sideBar'>
                         {this.sideBarItems.map((item, index) => {
-                            return <div key={index} style={styles.sideBarItemConainer}>
+                            return <div key={index} style={styles.sideBarItemContainer}>
                                 <div onClick={() => this.sideBarClick(item.id)}
                                     style={{ ...selectionId === item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
                                     <span style={styles.sideBarItemText}>
