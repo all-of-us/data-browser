@@ -32,7 +32,7 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
     const {variantPopulationDetails} = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'pie';
-    newBaseOptions.title.text = 'PERCENTAGE <br/> OF ALLELES';
+    newBaseOptions.title.text = '<div style="text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
     newBaseOptions.title.verticalAlign = 'middle';
     newBaseOptions.title.style = {
              'color': 'black',
