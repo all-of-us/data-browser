@@ -59,6 +59,10 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
     faqWindow: any;
     constructor(props: Props) {
         super(props);
+        this.faqWindow = React.createRef();
+    }
+    componentDidMount() {
+        this.faqWindow.current.scrollIntoView({ behavior: 'smooth' });
     }
     render() {
         return <React.Fragment>
@@ -66,7 +70,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
             <div style={styles.background}>           </div>
                 <div style={styles.faqContainer} id='genomicsFaq' ref={this.faqWindow}>
                     <div style={styles.top}>
-                        <span>Genomic FAQs: </span>
+                        <span>FAQs </span>
                         <div><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
                             style={{ width: 40, height: 40, color: '#0079b8', cursor: 'pointer' }} /></div>
                     </div>

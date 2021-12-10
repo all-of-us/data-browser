@@ -243,6 +243,9 @@ const styles = reactStyles({
         alignItems: 'baseline',
         justifyContent: 'center',
         width: '100%'
+    },
+    resultBodyDescription: {
+        height: '7em'
     }
 });
 
@@ -346,12 +349,6 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                            <span>Fitbit Measurements</span>))
                           ))}
                     </span>
-                    {
-                        (questionCount &&
-                            <div style={styles.resultBodyItem}>
-                                <span>{description}</span>
-                            </div>)
-                    }
                     <span style={styles.resultBodyItem} >
                         {participantCount &&
                             <span><strong> {participantCount.toLocaleString()}</strong> participants in this domain</span>
@@ -359,6 +356,20 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     </span>
                     {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>
                     {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Array dataset</span></React.Fragment>}
+                    {
+                        (questionCount &&
+                            <div style={styles.resultBodyItem}>
+                                <span>{description}</span>
+                            </div>)
+                    }
+                    {
+                        (name.toLowerCase() === 'physical measurements') && <span style={styles.resultBodyDescription}>Participants
+                        have the option to provide a standard set of physical measurements.</span>
+                    }
+                    {
+                        (name.toLowerCase() === 'fitbit') && <span style={styles.resultBodyDescription}>Fitbit data includes
+                        heart rate and activity summaries.</span>
+                    }
                 </div>
             <div style={styles.resultBoxLink}>
                 {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
