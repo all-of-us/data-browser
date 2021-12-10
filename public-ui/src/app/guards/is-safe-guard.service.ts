@@ -6,6 +6,7 @@ import {
   CanActivateChild,
   Router, RouterStateSnapshot
 } from '@angular/router';
+import { environment } from 'environments/environment';
 import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
 import {from as observableFrom} from 'rxjs/observable/from';
@@ -21,6 +22,9 @@ export class IsSafeGuard implements CanActivate, CanActivateChild {
     private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    if (state.url.indexOf('genomic-data') > -1 && !environment.geno) {
+        this.router.navigate(['/']);
+    }
     return this.serverConfigService.getConfig().flatMap(config => {
       // if true function and normal else show emergency page
       if (config.dataBrowserIsSafe) {
