@@ -26,7 +26,7 @@ const styles = reactStyles({
     },
     headerLayout: {
         display: 'grid',
-        gridTemplateColumns: '13rem 10rem 15rem 10rem 10rem 10rem 10rem 10rem',
+        gridTemplateColumns: '13rem 10rem 13rem 10rem 12rem 10rem 10rem 10rem',
         background: '#f9f9fa',
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',
         width: '89rem',
@@ -93,7 +93,14 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.state = {
             loading: props.loadingResults,
             searchResults: props.searchResults,
-            sortMetadata: {'variant_id': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 1}}
+            sortMetadata: {'variant_id': {'sortActive': true, 'sortDirection': 'asc', 'sortOrder': 1},
+                'gene': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 2},
+                'consequence': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 3},
+                'protein_change': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 4},
+                'clinical_significance': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 5},
+                'allele_count': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 6},
+                'allele_number': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 7},
+                'allele_frequency': {'sortActive': false, 'sortDirection': 'asc', 'sortOrder': 8}}
         };
     }
 
@@ -125,6 +132,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
         sortMetadata[key]['sortActive'] = true;
         const direction = sortMetadata[key]['sortDirection'];
         direction === 'asc' ? sortMetadata[key]['sortDirection'] = 'desc' : sortMetadata[key]['sortDirection'] = 'asc';
+        for (const sKey in sortMetadata) {
+            if (sKey !== key) {
+                sortMetadata[sKey]['sortActive'] = false;
+                sortMetadata[sKey]['sortDirection'] = 'asc';
+            }
+        }
         this.setState({sortMetadata: sortMetadata}, () => {
             this.props.onSortClick(this.state.sortMetadata);
         });
@@ -136,20 +149,70 @@ export class VariantTableComponent extends React.Component<Props, State> {
         return <React.Fragment> {(!loading && !loadingVariantListSize && searchResults && searchResults.length) ?
             <div style={styles.tableContainer}>
                 <div style={styles.headerLayout}>
-                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel}>Variant ID</span>
-                    {sortMetadata['variant_id']['sortDirection'] === 'asc' ?
+                    <div style={{ ...styles.headingItem, ...styles.first }}><span style={styles.headingLabel} onClick={() => {this.sortClick('variant_id'); }}>Variant ID</span>
+                    {sortMetadata['variant_id']['sortActive'] &&
+                    <React.Fragment>{sortMetadata['variant_id']['sortDirection'] === 'asc' ?
                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                    onClick={() => {this.sortClick('variant_id'); }}></i> :
-                    <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                        onClick={() => {this.sortClick('variant_id'); }}></i> }
+                                                onClick={() => {this.sortClick('variant_id'); }}></i>
+                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('variant_id'); }}></i>}</React.Fragment>}
                     </div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Gene</span></div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Consequence</span></div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Protein Change</span></div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Clinical Significance</span></div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Count</span></div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel}>Allele Number</span></div>
-                    <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}>Allele Frequency</span></div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('gene'); }}>Gene</span>
+                    {sortMetadata['gene']['sortActive'] &&
+                    <React.Fragment>{sortMetadata['gene']['sortDirection'] === 'asc' ?
+                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('gene'); }}></i>
+                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('gene'); }}></i>}</React.Fragment>}
+                    </div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('consequence'); }}>Consequence</span>
+                     {sortMetadata['consequence']['sortActive'] &&
+                     <React.Fragment>{sortMetadata['consequence']['sortDirection'] === 'asc' ?
+                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                 onClick={() => {this.sortClick('consequence'); }}></i>
+                     : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                 onClick={() => {this.sortClick('consequence'); }}></i>}</React.Fragment>}
+                    </div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('protein_change'); }}>Protein Change</span>
+                     {sortMetadata['protein_change']['sortActive'] &&
+                     <React.Fragment>{sortMetadata['protein_change']['sortDirection'] === 'asc' ?
+                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                 onClick={() => {this.sortClick('protein_change'); }}></i>
+                     : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                 onClick={() => {this.sortClick('protein_change'); }}></i>}</React.Fragment>}
+                    </div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('clinical_significance'); }}>Clinical Significance</span>
+                     {sortMetadata['clinical_significance']['sortActive'] &&
+                     <React.Fragment>{sortMetadata['clinical_significance']['sortDirection'] === 'asc' ?
+                     <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                 onClick={() => {this.sortClick('clinical_significance'); }}></i>
+                     : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                 onClick={() => {this.sortClick('clinical_significance'); }}></i>}</React.Fragment>}
+                    </div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('allele_count'); }}>Allele Count</span>
+                    {sortMetadata['allele_count']['sortActive'] &&
+                    <React.Fragment>{sortMetadata['allele_count']['sortDirection'] === 'asc' ?
+                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('allele_count'); }}></i>
+                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('allele_count'); }}></i>}</React.Fragment>}
+                    </div>
+                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('allele_number'); }}>Allele Number</span>
+                    {sortMetadata['allele_number']['sortActive'] &&
+                    <React.Fragment>{sortMetadata['allele_number']['sortDirection'] === 'asc' ?
+                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('allele_number'); }}></i>
+                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('allele_number'); }}></i>}</React.Fragment>}
+                    </div>
+                    <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel} onClick={() => {this.sortClick('allele_frequency'); }}>Allele Frequency</span>
+                    {sortMetadata['allele_frequency']['sortActive'] &&
+                    <React.Fragment>{sortMetadata['allele_frequency']['sortDirection'] === 'asc' ?
+                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('allele_frequency'); }}></i>
+                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
+                                                onClick={() => {this.sortClick('allele_frequency'); }}></i>}</React.Fragment>}
+                    </div>
                 </div>
                 {searchResults && searchResults.map((variant, index) => {
                     return <VariantRowComponent key={variant.variantId} variant={variant} />;

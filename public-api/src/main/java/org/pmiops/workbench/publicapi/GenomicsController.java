@@ -155,6 +155,30 @@ public class GenomicsController implements GenomicsApiDelegate {
                         ORDER_BY_CLAUSE = " ORDER BY genes ASC";
                     }
             }
+            SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
+            if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.getSortActive()) {
+                if (consequenceColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY consequence DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY consequence ASC";
+                }
+            }
+            SortColumnDetails proteinChangeColumnSortMetadata = sortMetadata.getProteinChange();
+            if (proteinChangeColumnSortMetadata != null && proteinChangeColumnSortMetadata.getSortActive()) {
+                if (proteinChangeColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY protein_change DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY protein_change ASC";
+                }
+            }
+            SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
+            if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.getSortActive()) {
+                if (clinSigColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY clinical_significance DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY clinical_significance ASC";
+                }
+            }
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
             if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.getSortActive()) {
                     if (alleleCountColumnSortMetadata.getSortDirection().equals("desc")) {
