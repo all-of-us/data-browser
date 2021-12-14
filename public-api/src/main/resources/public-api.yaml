@@ -1429,17 +1429,13 @@ definitions:
         type: string
       consequence:
         description: consequence
-        type: array
-        items:
-          type: string
+        type: string
       proteinChange:
         description: protein change
         type: string
       clinicalSignificance:
         description: clinical significance
-        type: array
-        items:
-          type: string
+        type: string
       alleleCount:
         description: allele count
         type: integer
