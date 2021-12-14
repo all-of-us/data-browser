@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
+import { AppRouting } from 'app/app-routing';
 import { IsSafeGuard } from 'app/guards/is-safe-guard.service';
 import { NavStore } from 'app/utils/navigation';
 import { EmergencyComponent } from 'app/views/emergency/emergency.component';
-
-
-
-import { AppRouting } from 'app/app-routing';
 
 const routes: Routes = [
   {
@@ -86,6 +83,7 @@ const routes: Routes = [
         {
           path: 'genomic-data',
           component: AppRouting,
+          canActivate: [IsSafeGuard],
           data: {
             title: 'Genomic Data',
             breadcrumb: {
@@ -160,8 +158,6 @@ const routes: Routes = [
 export class DataBrowserRoutingModule {
 
   constructor(public router: Router) {
-
-
     NavStore.navigate = (commands, extras) => this.router.navigate(commands, extras);
     NavStore.navigateByUrl = (url, extras) => this.router.navigateByUrl(url, extras);
     this.router.events.subscribe(event => { });

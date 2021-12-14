@@ -23,7 +23,6 @@ const styles = reactStyles({
         height: '100%',
         borderRight: '1px solid #CCCCCC',
         boxShadow: 'rgb(204 204 204) 0.2rem 0px 8px -2px',
-        paddingRight: '0.25rem',
         background: 'white',
         color: '#216FB4',
         position: 'sticky',
@@ -48,11 +47,11 @@ const styles = reactStyles({
     variantId: {
         wordBreak: 'break-all',
         cursor: 'pointer',
-        display: 'flex',
+        display: 'inline-flex',
         flexDirection: 'row'
     },
     variantIdText: {
-        width: '75%'
+        width: '90%'
     },
     variantIconText: {
         paddingLeft: '0.75rem',
@@ -103,7 +102,6 @@ export class VariantRowComponent extends React.Component<Props, State> {
     render() {
         const { variant } = this.props;
         const { variantClicked, variantDetails, loadingVarDetails } = this.state;
-        console.log(variant.variantId.length);
         return <React.Fragment>
             {(!loadingVarDetails && variantClicked) ? <VariantExpandedComponent
                 loading={loadingVarDetails}

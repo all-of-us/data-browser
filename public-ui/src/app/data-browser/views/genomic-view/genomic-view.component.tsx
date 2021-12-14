@@ -12,7 +12,18 @@ import { GenomicSearchComponent } from './components/genomic-search.component';
 
 const styles = reactStyles({
     title: {
-        margin: '0'
+        fontSize: '35px'
+    },
+    pageHeader: {
+        paddingTop: '18px',
+        paddingBottom: '18px',
+        lineHeight: '1.5'
+    },
+    titleContainer: {
+        lineHeight: '1em',
+        margin: '0px',
+        width: '100%',
+        display: 'block'
     },
     viewLayout: {
         display: 'grid',
@@ -27,7 +38,7 @@ const styles = reactStyles({
         alignItems: 'center',
         width: '100%'
     },
-    sideBarItemConainer: {
+    sideBarItemContainer: {
         paddingBottom: '.25rem',
         borderBottom: '1px solid rgba(38, 34, 98, .25)',
         width: '100%'
@@ -35,8 +46,7 @@ const styles = reactStyles({
     sideBarItem: {
         display: 'flex',
         alignItems: 'center',
-        padding: '0.5rem',
-        paddingBottom: '0',
+        justifyContent: 'center',
         fontSize: '0.8em',
         width: '100%',
         cursor: 'pointer',
@@ -47,19 +57,21 @@ const styles = reactStyles({
     },
     sideBarItemSelected: {
         background: 'red',
-        borderRadius: '3px',
+        borderRadius: '2.5px',
         fontFamily: 'GothamBold, Arial, Helvetica, sans-serif',
         fontWeight: 'bolder',
         backgroundColor: 'rgba(33,111,180,0.15)'
     },
+    genomicsDescText: {
+        paddingTop: '1%'
+    },
     faqHeading: {
         fontSize: '0.8em',
         color: 'rgb(38, 34, 98)',
-        align: 'center',
-        padding: '0.5rem',
-        margin: '0.5rem',
-        marginTop: '2em',
-        paddingTop: '2.5em'
+        margin: '0px auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     faqLink: {
         color: '#0079b8',
@@ -101,6 +113,36 @@ class SortColumnDetailsClass implements SortColumnDetails {
 }
 
 const css = `
+    .faq-heading-text {
+        padding-left: 15%;
+        padding-right: 15%;
+        padding-top: 48%;
+    }
+    @media (max-width: 1500px) {
+        .faq-heading-text {
+            padding-top: 55%;
+        }
+    }
+    @media (max-width: 1400px) {
+        .faq-heading-text {
+            padding-top: 58%;
+        }
+    }
+    @media (max-width: 1300px) {
+        .faq-heading-text {
+            padding-top: 65%;
+        }
+    }
+    @media (max-width: 1200px) {
+        .faq-heading-text {
+            padding-top: 60%;
+        }
+    }
+    @media (max-width: 1100px) {
+        .faq-heading-text {
+            padding-top: 90%;
+        }
+    }
 `;
 
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
@@ -240,21 +282,21 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         participantCount, chartData } = this.state;
         return <React.Fragment>
             <style>{css}</style>
-            <div id='genomicView'>
-                <div id='genomicTitle'>
+            <div style={styles.pageHeader}>
+            <div style={styles.titleContainer}>
                     <h1 style={styles.title}>{this.title}</h1>
-                    <p style={globalStyles.bodyDefault}>
+                    <div><p style={{...globalStyles.bodyDefault, ...styles.genomicsDescText}}>
                         This section provides an overview of genomic data within the current
                         <i> All of Us</i> dataset.Researchers can use the Participants with Genomic
                         Data page to view currently available genomic data by participant - reported
                         for preliminary exploration of genetic variant allele frequencies by with select
-                        annotations and genetic ancestry associations.
-                    </p>
+                        annotations and genetic ancestry associations.</p>
+                    </div>
                 </div>
                 <div style={styles.viewLayout}>
                     <div style={styles.sideBarLayout} id='sideBar'>
                         {this.sideBarItems.map((item, index) => {
-                            return <div key={index} style={styles.sideBarItemConainer}>
+                            return <div key={index} style={styles.sideBarItemContainer}>
                                 <div onClick={() => this.sideBarClick(item.id)}
                                     style={{ ...selectionId === item.id && { ...styles.sideBarItemSelected }, ...styles.sideBarItem }}>
                                     <span style={styles.sideBarItemText}>
@@ -264,8 +306,11 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             </div>;
                         })
                         }
-                        <div style={styles.faqHeading}>Questions about genomics?<br /><div style={styles.faqLink}
-                            onClick={() => this.sideBarClick(3)}>Learn More</div></div>
+                        <div style={styles.faqHeading}>
+                            <div className='faq-heading-text'>Questions about genomics? <br />
+                            <span style={styles.faqLink} onClick={() => this.sideBarClick(3)}>Learn More</span>
+                            </div>
+                        </div>
                     </div>
                     <div id='childView'>
                         {selectionId === 1 &&

@@ -53,12 +53,12 @@ const styles = reactStyles({
     },
     body: {
         display: 'grid',
-        gridTemplateColumns: '31% 23% 23% 23%',
+        gridTemplateColumns: '25% 25% 25% 25%',
         columnGap: '1rem',
         rowGap: '1rem',
         paddingTop: '1rem',
         fontSize: '14px',
-        width: '75%'
+        width: '100%'
     },
     catHeading: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif'
@@ -81,7 +81,7 @@ const styles = reactStyles({
     },
     popTable: {
         display: 'grid',
-        gridTemplateColumns: '31% 23% 23% 23%',
+        gridTemplateColumns: '25% 25% 25% 25%',
         fontSize: '14px'
     },
     popTitle: {
