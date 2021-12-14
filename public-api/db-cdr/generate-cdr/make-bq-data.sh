@@ -115,8 +115,9 @@ if [ "$SEARCH_VAT" = true ]; then
   cluster by variant_id
   as
   WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
-  contig, position, ref_allele, alt_allele, transcript, ARRAY_TO_STRING(consequence, ',') as cons_str, dna_change_in_transcript, clinvar_classification as clinical_significance,
-  gvs_all_ac, gvs_all_an, gvs_all_af, dbsnp_rsid as rs_number,
+  contig, position, ref_allele, alt_allele, transcript, ARRAY_TO_STRING(consequence, ', ') as cons_str, dna_change_in_transcript,
+  ARRAY_TO_STRING(clinvar_classification, ', ') as clinical_significance,
+  gvs_all_ac, gvs_all_an, gvs_all_af, ARRAY_TO_STRING(dbsnp_rsid, ', ') as rs_number,
   gvs_afr_ac, gvs_afr_an, gvs_afr_af,
   gvs_amr_ac, gvs_amr_an, gvs_amr_af,
   gvs_eas_ac, gvs_eas_an, gvs_eas_af,
@@ -125,7 +126,7 @@ if [ "$SEARCH_VAT" = true ]; then
   gvs_sas_ac, gvs_sas_an, gvs_sas_af,
   gvs_oth_ac, gvs_oth_an, gvs_oth_af,
   ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
-     CASE ARRAY_TO_STRING(consequence, ',')
+     CASE ARRAY_TO_STRING(consequence, ', ')
          WHEN 'upstream_gene_variant'
          THEN 4
          WHEN 'downstream_gene_variant'
