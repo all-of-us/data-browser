@@ -103,7 +103,8 @@ class SortMetadataClass implements SortMetadata {
     alleleCount: any;
     alleleNumber: any;
     alleleFrequency: any;
-    constructor(variantId: any, gene: any, consequence: any, proteinChange: any, clinicalSignificance: any, alleleCount: any, alleleNumber: any, alleleFrequency: any) {
+    constructor(variantId: any, gene: any, consequence: any, proteinChange: any, clinicalSignificance: any,
+    alleleCount: any, alleleNumber: any, alleleFrequency: any) {
         this.variantId = variantId;
         this.gene = gene;
         this.consequence = consequence;
@@ -286,7 +287,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 sortMetadata['allele_frequency']['sortDirection'], sortMetadata['allele_frequency']['sortOrder']);
             }
         }
-        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata, consequenceSortMetadata, proteinChangeSortMetadata, clinicalSignificanceSortMetadata,
+        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata, consequenceSortMetadata,
+        proteinChangeSortMetadata, clinicalSignificanceSortMetadata,
         alleleCountSortMetadata,
         alleleNumberSortMetadata, alleleFrequencySortMetadata);
         const searchRequest = {
