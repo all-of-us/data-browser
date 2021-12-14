@@ -194,8 +194,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                      : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
                                                  onClick={() => {this.sortClick('protein_change'); }}></i>}</React.Fragment>}
                     </div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('clinical_significance'); }}
-                    title='Click to sort'>Clinical Significance</span>
+                    <div style={styles.headingItem}><span style={styles.headingLabel}
+                    onClick={() => {this.sortClick('clinical_significance'); }} title='Click to sort'>Clinical Significance</span>
                      {sortMetadata['clinical_significance']['sortActive'] &&
                      <React.Fragment>{sortMetadata['clinical_significance']['sortDirection'] === 'asc' ?
                      <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
