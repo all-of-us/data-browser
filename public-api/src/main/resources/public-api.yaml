@@ -1475,9 +1475,7 @@ definitions:
         type: string
       rsNumber:
         description: rs number
-        type: array
-        items:
-          type: string
+        type: string
       afrAlleleCount:
         description: African Ancestry Allele Count
         type: integer
