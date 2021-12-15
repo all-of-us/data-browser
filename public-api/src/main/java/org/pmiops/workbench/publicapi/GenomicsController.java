@@ -45,8 +45,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
-    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as consequence, " +
-            "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clinical_significance, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
+    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
+            "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
             "gvs_eur_ac as eur_allele_count, gvs_eur_an as eur_allele_number, gvs_eur_af as eur_allele_frequency, " +
             "gvs_amr_ac as amr_allele_count, gvs_amr_an as amr_allele_number, gvs_amr_af as amr_allele_frequency, " +
@@ -159,9 +159,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.getSortActive()) {
                 if (consequenceColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY consequence DESC";
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) DESC";
                 } else {
-                    ORDER_BY_CLAUSE = " ORDER BY consequence ASC";
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) ASC";
                 }
             }
             SortColumnDetails proteinChangeColumnSortMetadata = sortMetadata.getProteinChange();
@@ -175,9 +175,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
             if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.getSortActive()) {
                 if (clinSigColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY clinical_significance DESC";
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) DESC";
                 } else {
-                    ORDER_BY_CLAUSE = " ORDER BY clinical_significance ASC";
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) ASC";
                 }
             }
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
@@ -257,9 +257,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             variantList.add(new Variant()
                 .variantId(bigQueryService.getString(row, rm.get("variant_id")))
                 .genes(bigQueryService.getString(row, rm.get("genes")))
-                .consequence(bigQueryService.getString(row, rm.get("consequence")))
+                .consequence(bigQueryService.getString(row, rm.get("cons_agg_str")))
                 .proteinChange(bigQueryService.getString(row, rm.get("protein_change")))
-                .clinicalSignificance(bigQueryService.getString(row, rm.get("clinical_significance")))
+                .clinicalSignificance(bigQueryService.getString(row, rm.get("clin_sig_agg_str")))
                 .alleleCount(bigQueryService.getLong(row, rm.get("allele_count")))
                 .alleleNumber(bigQueryService.getLong(row, rm.get("allele_number")))
                 .alleleFrequency(bigQueryService.getDouble(row, rm.get("allele_frequency"))));
