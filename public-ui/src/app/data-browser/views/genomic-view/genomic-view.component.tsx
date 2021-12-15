@@ -322,12 +322,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         }
     }
 
-    componentWillUnmount() {
-        localStorage.setItem('genomicSearchText', '');
-    }
-
     componentDidMount() {
-        localStorage.setItem('genomicSearchText', '');
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
