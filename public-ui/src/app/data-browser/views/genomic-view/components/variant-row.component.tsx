@@ -58,6 +58,10 @@ const styles = reactStyles({
         paddingRight: '0.75rem',
         display: 'flex',
         alignItems: 'center'
+    },
+    multipleValVariantItem: {
+        overflowWrap: 'break-word',
+        wordBreak: 'break-word'
     }
 });
 
@@ -119,18 +123,14 @@ export class VariantRowComponent extends React.Component<Props, State> {
                     </div>
                     <div style={styles.rowItem}>{(variant.genes && variant.genes.length) ? <div>{variant.genes}</div> : <div>-</div>}</div>
                     <div style={styles.rowItem}>
-                        {variant.consequence.length ? variant.consequence.map((item, index) => {
-                            return <div key={index}>{item}<br /></div>;
-                        }) : <div>–</div>}
+                        <div style={styles.multipleValVariantItem}>{variant.consequence}</div>
                     </div>
                     <div style={styles.rowItem}>
                         {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere' }}>
                             {variant.proteinChange}</div> : <div>–</div>}
                     </div>
                     <div style={styles.rowItem}>
-                        {variant.clinicalSignificance.length ? variant.clinicalSignificance.map((item, index) => {
-                            return <div key={index}>{item}<br /></div>;
-                        }) : <div>–</div>}
+                        <div style={styles.multipleValVariantItem}>{variant.clinicalSignificance}</div>
                     </div>
                     <div style={styles.rowItem}>{variant.alleleCount}</div>
                     <div style={styles.rowItem}>{variant.alleleNumber}</div>
