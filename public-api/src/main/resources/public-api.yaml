@@ -1332,6 +1332,18 @@ definitions:
         description: gene column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
+      consequence:
+        description: consequence column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      protein_change:
+        description: Protein change column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      clinical_significance:
+        description: Clinical significance column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
       alleleCount:
         description: allele count column metadata
         type: object
