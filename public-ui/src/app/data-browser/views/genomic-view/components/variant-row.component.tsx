@@ -8,7 +8,7 @@ import { VariantExpandedComponent } from './variant-expanded.component';
 const styles = reactStyles({
     rowLayout: {
         display: 'grid',
-        gridTemplateColumns: '13rem 10rem 15rem 10rem 10rem 10rem 10rem 10rem',
+        gridTemplateColumns: '13rem 10rem 13rem 10rem 12rem 10rem 10rem 10rem',
         alignItems: 'center',
         width: '89rem',
         background: 'white',

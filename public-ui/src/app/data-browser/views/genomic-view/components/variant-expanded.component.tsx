@@ -64,7 +64,8 @@ const styles = reactStyles({
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif'
     },
     catInfo: {
-        overflowWrap: 'anywhere'
+        overflowWrap: 'anywhere',
+        display: 'inline-block'
     },
     totalCatHeading: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',

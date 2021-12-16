@@ -96,8 +96,23 @@ interface State {
 
 class SortMetadataClass implements SortMetadata {
     variantId: any;
-    constructor(variantId: any) {
+    gene: any;
+    consequence: any;
+    proteinChange: any;
+    clinicalSignificance: any;
+    alleleCount: any;
+    alleleNumber: any;
+    alleleFrequency: any;
+    constructor(variantId: any, gene: any, consequence: any, proteinChange: any, clinicalSignificance: any,
+    alleleCount: any, alleleNumber: any, alleleFrequency: any) {
         this.variantId = variantId;
+        this.gene = gene;
+        this.consequence = consequence;
+        this.proteinChange = proteinChange;
+        this.clinicalSignificance = clinicalSignificance;
+        this.alleleCount = alleleCount;
+        this.alleleNumber = alleleNumber;
+        this.alleleFrequency = alleleFrequency;
     }
 }
 
@@ -231,15 +246,55 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     fetchVariantData() {
         const {searchTerm, currentPage, sortMetadata} = this.state;
         let variantSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let geneSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let consequenceSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let proteinChangeSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let clinicalSignificanceSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let alleleCountSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let alleleNumberSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
+        let alleleFrequencySortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
         if (sortMetadata) {
-            variantSortMetadata = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'],
-            sortMetadata['variant_id']['sortDirection'], sortMetadata['variant_id']['sortOrder']);
+            if (sortMetadata['variant_id']) {
+                variantSortMetadata = new SortColumnDetailsClass(sortMetadata['variant_id']['sortActive'],
+                sortMetadata['variant_id']['sortDirection'], sortMetadata['variant_id']['sortOrder']);
+            }
+            if (sortMetadata['gene']) {
+                geneSortMetadata = new SortColumnDetailsClass(sortMetadata['gene']['sortActive'],
+                sortMetadata['gene']['sortDirection'], sortMetadata['gene']['sortOrder']);
+            }
+            if (sortMetadata['consequence']) {
+                consequenceSortMetadata = new SortColumnDetailsClass(sortMetadata['consequence']['sortActive'],
+                sortMetadata['consequence']['sortDirection'], sortMetadata['consequence']['sortOrder']);
+            }
+            if (sortMetadata['protein_change']) {
+                proteinChangeSortMetadata = new SortColumnDetailsClass(sortMetadata['protein_change']['sortActive'],
+                sortMetadata['protein_change']['sortDirection'], sortMetadata['protein_change']['sortOrder']);
+            }
+            if (sortMetadata['clinical_significance']) {
+                clinicalSignificanceSortMetadata = new SortColumnDetailsClass(sortMetadata['clinical_significance']['sortActive'],
+                sortMetadata['clinical_significance']['sortDirection'], sortMetadata['clinical_significance']['sortOrder']);
+            }
+            if (sortMetadata['allele_count']) {
+                alleleCountSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_count']['sortActive'],
+                sortMetadata['allele_count']['sortDirection'], sortMetadata['allele_count']['sortOrder']);
+            }
+            if (sortMetadata['allele_number']) {
+                alleleNumberSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_number']['sortActive'],
+                sortMetadata['allele_number']['sortDirection'], sortMetadata['allele_number']['sortOrder']);
+            }
+            if (sortMetadata['allele_frequency']) {
+                alleleFrequencySortMetadata = new SortColumnDetailsClass(sortMetadata['allele_frequency']['sortActive'],
+                sortMetadata['allele_frequency']['sortDirection'], sortMetadata['allele_frequency']['sortOrder']);
+            }
         }
-        const variantSortMetadataObj = new SortMetadataClass(variantSortMetadata);
+        const sortMetadataObj = new SortMetadataClass(variantSortMetadata, geneSortMetadata, consequenceSortMetadata,
+        proteinChangeSortMetadata, clinicalSignificanceSortMetadata,
+        alleleCountSortMetadata,
+        alleleNumberSortMetadata, alleleFrequencySortMetadata);
         const searchRequest = {
                 query: searchTerm,
                 pageNumber: currentPage + 1,
-                sortMetadata: variantSortMetadataObj
+                sortMetadata: sortMetadataObj
         };
         genomicsApi().searchVariants(searchRequest).then(
                 results => {
@@ -267,12 +322,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         }
     }
 
-    componentWillUnmount() {
-        localStorage.setItem('genomicSearchText', '');
-    }
-
     componentDidMount() {
-        localStorage.setItem('genomicSearchText', '');
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
