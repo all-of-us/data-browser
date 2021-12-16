@@ -54,7 +54,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            searchWord: localStorage.getItem('genomicSearchText') ? localStorage.getItem('genomicSearchText') : '',
+            searchWord: '',
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -62,14 +62,14 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleChange(val: string) {
-        if (val !== '') {
-            localStorage.setItem('genomicSearchText', val);
-        } else {
-            localStorage.removeItem('genomicSearchText');
-        }
         this.setState({ searchWord: val });
         this.props.onSearchTerm(val);
     }
+
+  componentWillUnmount() {
+    this.setState({ searchWord: '' });
+    this.props.onSearchTerm('');
+  }
 
     render() {
         const { searchWord } = this.state;
