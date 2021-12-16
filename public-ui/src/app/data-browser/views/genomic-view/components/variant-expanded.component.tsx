@@ -134,6 +134,8 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
         if (!loading) {
             variantPopulationDetails = prepVariantPopulationDetails(variantDetails);
         }
+        console.log(variant);
+        console.log(variantDetails);
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.variantExpanded}>
@@ -199,8 +201,11 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                             <React.Fragment>{item.AlleleNumber}</React.Fragment> :
                                             <span style={styles.catHeading}>{item.AlleleNumber}</span>}</div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
-                                            <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment>
-                                            : <span style={styles.catHeading}>{item.AlleleFrequency.toFixed(2)}</span>}</div>
+                                            <React.Fragment>
+                                            {item.AlleleFrequency > 0 ? item.AlleleFrequency.toFixed(6) : item.AlleleFrequency}
+                                            </React.Fragment>
+                                            : <span style={styles.catHeading}>{item.AlleleFrequency > 0 ? item.AlleleFrequency.toFixed(6) :
+                                            item.AlleleFrequency}</span>}</div>
                                     </div>;
                                 })}
                             </div>
