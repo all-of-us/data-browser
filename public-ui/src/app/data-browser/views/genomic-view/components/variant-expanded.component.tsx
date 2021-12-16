@@ -70,7 +70,7 @@ const styles = reactStyles({
     catInfo: {
         overflowWrap: 'anywhere',
         height: '1em',
-        display: 'block'
+        display: 'inline-block'
     },
     totalCatHeading: {
         fontFamily: 'gothamBold,Arial, Helvetica, sans-serif',

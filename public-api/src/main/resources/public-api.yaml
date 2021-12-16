@@ -1332,6 +1332,18 @@ definitions:
         description: gene column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
+      consequence:
+        description: consequence column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      proteinChange:
+        description: Protein change column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      clinicalSignificance:
+        description: Clinical significance column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
       alleleCount:
         description: allele count column metadata
         type: object
@@ -1429,17 +1441,13 @@ definitions:
         type: string
       consequence:
         description: consequence
-        type: array
-        items:
-          type: string
+        type: string
       proteinChange:
         description: protein change
         type: string
       clinicalSignificance:
         description: clinical significance
-        type: array
-        items:
-          type: string
+        type: string
       alleleCount:
         description: allele count
         type: integer
@@ -1479,9 +1487,7 @@ definitions:
         type: string
       rsNumber:
         description: rs number
-        type: array
-        items:
-          type: string
+        type: string
       afrAlleleCount:
         description: African Ancestry Allele Count
         type: integer
