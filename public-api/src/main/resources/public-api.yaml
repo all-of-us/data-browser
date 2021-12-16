@@ -1336,11 +1336,11 @@ definitions:
         description: consequence column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
-      protein_change:
+      proteinChange:
         description: Protein change column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
-      clinical_significance:
+      clinicalSignificance:
         description: Clinical significance column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"

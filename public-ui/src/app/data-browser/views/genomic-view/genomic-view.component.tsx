@@ -266,13 +266,13 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 consequenceSortMetadata = new SortColumnDetailsClass(sortMetadata['consequence']['sortActive'],
                 sortMetadata['consequence']['sortDirection'], sortMetadata['consequence']['sortOrder']);
             }
-            if (sortMetadata['proteinChangeSortMetadata']) {
-                proteinChangeSortMetadata = new SortColumnDetailsClass(sortMetadata['proteinChange']['sortActive'],
-                sortMetadata['proteinChange']['sortDirection'], sortMetadata['proteinChange']['sortOrder']);
+            if (sortMetadata['protein_change']) {
+                proteinChangeSortMetadata = new SortColumnDetailsClass(sortMetadata['protein_change']['sortActive'],
+                sortMetadata['protein_change']['sortDirection'], sortMetadata['protein_change']['sortOrder']);
             }
-            if (sortMetadata['clinicalSignificanceSortMetadata']) {
-                clinicalSignificanceSortMetadata = new SortColumnDetailsClass(sortMetadata['clinicalSignificance']['sortActive'],
-                sortMetadata['clinicalSignificance']['sortDirection'], sortMetadata['clinicalSignificance']['sortOrder']);
+            if (sortMetadata['clinical_significance']) {
+                clinicalSignificanceSortMetadata = new SortColumnDetailsClass(sortMetadata['clinical_significance']['sortActive'],
+                sortMetadata['clinical_significance']['sortDirection'], sortMetadata['clinical_significance']['sortOrder']);
             }
             if (sortMetadata['allele_count']) {
                 alleleCountSortMetadata = new SortColumnDetailsClass(sortMetadata['allele_count']['sortActive'],
@@ -322,12 +322,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         }
     }
 
-    componentWillUnmount() {
-        localStorage.setItem('genomicSearchText', '');
-    }
-
     componentDidMount() {
-        localStorage.setItem('genomicSearchText', '');
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
