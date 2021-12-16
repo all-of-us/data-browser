@@ -134,8 +134,6 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
         if (!loading) {
             variantPopulationDetails = prepVariantPopulationDetails(variantDetails);
         }
-        console.log(variant);
-        console.log(variantDetails);
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.variantExpanded}>

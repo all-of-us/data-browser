@@ -62,7 +62,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
-         console.log('Am i here at all?');
          this.props.onSearchTerm('');
    }
 
