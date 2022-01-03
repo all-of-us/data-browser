@@ -237,7 +237,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
             </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
                         <div style={styles.center}><Spinner /> </div>}</div>
         }
-            <div style={styles.paginator}>
+            {(!loading && !loadingVariantListSize && searchResults && searchResults.length > 50) && <div style={styles.paginator}>
                 <ReactPaginate
                     previousLabel={'Previous'}
                     nextLabel={'Next'}
@@ -251,7 +251,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     containerClassName={'pagination'}
                     forcePage={currentPage}
                 />
-            </div>
+            </div>}
         </React.Fragment>;
     }
 }
