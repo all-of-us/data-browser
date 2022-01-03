@@ -26,6 +26,11 @@ const styles = reactStyles({
         width: '1.3em',
         height: '1.3em',
         color: '#216fb4'
+    },
+    questionNote: {
+        display: 'block',
+        marginTop: '0.5em',
+        fontSize: '14px'
     }
 });
 
@@ -121,10 +126,12 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
     render() {
         const { question, searchTerm, isCopeSurvey, participantCount, versionAnalysis, surveyName } = this.props;
         const { showAnswers, questionWithResults, surveyCountAnalysis } = this.state;
-        return <div >
+        return <div>
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
                 <HighlightReactComponent searchTerm={searchTerm} text={question.conceptName} />
+                {(question.conceptId === 1585852) && <span style={styles.questionNote}>Note: Active duty does not include training for the Reserves or National Guard, but DOES
+                include activation, for example, for the Persian Gulf War</span>}
                 {(question.conceptId === 1586140 || question.conceptId === 1585838) && <TooltipReactComponent
                     label='Gender Identity Question Help Text'
                     searchTerm={searchTerm}
