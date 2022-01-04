@@ -130,7 +130,8 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>
                 <HighlightReactComponent searchTerm={searchTerm} text={question.conceptName} />
-                {(question.conceptId === 1585852) && <span style={styles.questionNote}>Note: Active duty does not include training for the Reserves or National Guard, but DOES
+                {(question.conceptId === 1585852) && <span style={styles.questionNote}>Note: Active duty does not include
+                 training for the Reserves or National Guard, but DOES
                 include activation, for example, for the Persian Gulf War</span>}
                 {(question.conceptId === 1586140 || question.conceptId === 1585838) && <TooltipReactComponent
                     label='Gender Identity Question Help Text'
