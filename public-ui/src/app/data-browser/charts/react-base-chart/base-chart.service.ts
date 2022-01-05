@@ -45,6 +45,17 @@ export const AGE_STRATUM_MAP = {
     '9': '89+'
 };
 
+export const AGE_DECILE_MAP = {
+    "18-29": '2',
+    "30-39": '3',
+    "40-49": '4',
+    "50-59": '5',
+    "60-69": '6',
+    "70-79": '7',
+    "80-89": '8',
+    "89+": '9'
+};
+
 export const baseOptions = {
   lang: { thousandsSep: ',' },
   style: {

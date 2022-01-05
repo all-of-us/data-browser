@@ -220,7 +220,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     getGenomicParticipantCounts() {
         genomicsApi().getParticipantCounts().then((results) => {
             results.results.forEach(type => {
-                if (type.stratum4 === null) {
+                if (type.stratum4 === null || type.stratum4 === '') {
                     this.setState({
                         participantCount: type.countValue.toLocaleString()
                     });
