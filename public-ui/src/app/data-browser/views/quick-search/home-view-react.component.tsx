@@ -410,8 +410,6 @@ export const dBHomeComponent = withRouteData(
 
         handleChange(val) {
             this.setState({ searchWord: val });
-            triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
-                  val, null);
             this.search(val);
         }
         iconClickEvent(iconString: string) {
@@ -438,6 +436,8 @@ export const dBHomeComponent = withRouteData(
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
+            triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
+                              val, null);
             return dataBrowserApi().getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
