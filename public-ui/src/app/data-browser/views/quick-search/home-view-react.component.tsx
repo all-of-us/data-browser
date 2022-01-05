@@ -7,6 +7,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { genomicTileMetadata } from 'app/utils/constants';
 import { globalStyles } from 'app/utils/global-styles';
+import { triggerEvent } from 'app/utils/google_analytics';
 import { NavStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -409,6 +410,8 @@ export const dBHomeComponent = withRouteData(
 
         handleChange(val) {
             this.setState({ searchWord: val });
+            triggerEvent('domainPageSearch', 'Search', 'Search Inside Domain ' + this.props.domain, 'Domain Search',
+                  val, 'Search');
             this.search(val);
         }
         iconClickEvent(iconString: string) {
