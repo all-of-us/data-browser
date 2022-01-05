@@ -1,4 +1,3 @@
-import { AGE_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import * as React from 'react';
 import { GenomicChartComponent } from './genomic-chart.component';
@@ -81,7 +80,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
             }
         });
         if (this.currentAgeArr && this.currentAgeArr[0]) {
-            this.currentAgeArr[0].results.map(o => {o.analysisStratumName = o.stratum2});
+            this.currentAgeArr[0].results.map(o => {o.analysisStratumName = o.stratum2;});
             this.currentAgeArr[0].results.sort((a, b) =>
                 (a.analysisStratumName > b.analysisStratumName) - (a.analysisStratumName < b.analysisStratumName));
         }
