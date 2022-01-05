@@ -80,7 +80,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
             }
         });
         if (this.currentAgeArr && this.currentAgeArr[0]) {
-            this.currentAgeArr[0].results.map(o => {o.analysisStratumName = o.stratum2;});
+            this.currentAgeArr[0].results.map(o => {o.analysisStratumName = o.stratum2; });
             this.currentAgeArr[0].results.sort((a, b) =>
                 (a.analysisStratumName > b.analysisStratumName) - (a.analysisStratumName < b.analysisStratumName));
         }
