@@ -410,8 +410,8 @@ export const dBHomeComponent = withRouteData(
 
         handleChange(val) {
             this.setState({ searchWord: val });
-            triggerEvent('domainPageSearch', 'Search', 'Search Inside Domain ' + this.props.domain, 'Domain Search',
-                  val, 'Search');
+            triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
+                  val, null);
             this.search(val);
         }
         iconClickEvent(iconString: string) {
