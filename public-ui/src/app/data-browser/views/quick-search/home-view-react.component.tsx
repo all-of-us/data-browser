@@ -7,6 +7,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { genomicTileMetadata } from 'app/utils/constants';
 import { globalStyles } from 'app/utils/global-styles';
+import { triggerEvent } from 'app/utils/google_analytics';
 import { NavStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -435,6 +436,8 @@ export const dBHomeComponent = withRouteData(
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
+            triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
+                              this.state.searchWord, null);
             return dataBrowserApi().getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
