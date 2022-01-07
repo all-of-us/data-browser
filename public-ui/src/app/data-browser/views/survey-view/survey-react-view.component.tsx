@@ -8,6 +8,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-metadata';
+import { triggerEvent } from 'app/utils/google_analytics';
 import { navigate, navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -179,6 +180,10 @@ interface State {
 export const SurveyViewReactComponent = withRouteData(class extends React.Component<{}, State> {
     search = _.debounce((val) => {
         this.fetchSurvey(this.state.surveyId);
+        if (val) {
+                triggerEvent('surveySearch', 'Search', 'Search Inside Survey ' + this.state.survey.name, 'Survey Search',
+                              val, null);
+        }
         const { id } = urlParamsStore.getValue();
         navigate(['survey', id, val]);
     }, 1000);

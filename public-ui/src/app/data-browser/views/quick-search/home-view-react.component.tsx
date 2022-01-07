@@ -436,8 +436,11 @@ export const dBHomeComponent = withRouteData(
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
-            triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
+            const { searchWord } = this.state;
+            if (searchWord) {
+                triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
                               this.state.searchWord, null);
+            }
             return dataBrowserApi().getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
