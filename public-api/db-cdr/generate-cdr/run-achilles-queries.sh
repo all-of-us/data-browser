@@ -480,6 +480,7 @@ where observation_concept_id in (903120)
 or observation_source_concept_id in (903120))) as count_value,
 0 as source_count_value"
 
+:'
 echo "Getting Fitbit participant counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -493,6 +494,7 @@ union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id) as count_value, 0 as source_count_value;"
+'
 
 echo "Getting genomic tile counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -590,6 +592,7 @@ where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136,
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 group by p.gender_concept_id"
 
+: '
 echo "Getting fitbit participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -603,6 +606,7 @@ SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 union distinct
 SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id
 group by 5;"
+'
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -666,6 +670,7 @@ on m.observation_id=p.observation_id
 group by age_stratum)
 group by 2,5;"
 
+:'
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
@@ -698,6 +703,7 @@ select 0 as id, 3301 as analysis_id, '0' as stratum_1,'Fitbit' as stratum_3, age
 count(distinct person_id) as count_value, 0 as source_count_value
 from m_age_stratum p
 group by age_stratum;"
+'
 
 ####################
 # survey counts #
