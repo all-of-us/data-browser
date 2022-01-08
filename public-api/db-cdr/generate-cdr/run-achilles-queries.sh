@@ -592,7 +592,7 @@ where measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136,
 or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
 group by p.gender_concept_id"
 
-: '
+:'
 echo "Getting fitbit participant counts by gender"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
