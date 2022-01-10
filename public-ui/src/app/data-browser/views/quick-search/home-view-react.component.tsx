@@ -555,6 +555,8 @@ export const dBHomeComponent = withRouteData(
                                 </div>
                             </React.Fragment>
                         }
+                        {(surveyInfo.length > 0) &&
+                        <React.Fragment>
                         <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions </h5>
                         <div style={styles.resultBoxes}>
                             {
@@ -565,6 +567,8 @@ export const dBHomeComponent = withRouteData(
 
                             }
                         </div>
+                        </React.Fragment>
+                        }
                         {(physicalMeasurementsInfo.length > 0) &&
                         <React.Fragment>
                         <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
