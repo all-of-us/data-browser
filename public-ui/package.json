@@ -46,7 +46,6 @@
     "moment": "^2.20.1",
     "mutationobserver-shim": "^0.3.2",
     "ngx-pagination": "^5.0.0",
-    "ngx-responsive": "^9.0.3",
     "nouislider": "10.0.0",
     "nyc": "^15.1.0",
     "portable-fetch": "^3.0.0",
@@ -87,7 +86,6 @@
     "protractor": "~7.0.0",
     "ts-node": "~3.0.4",
     "tslint": "^5.9.1",
-    "tslint-microsoft-contrib": "^6.2.0",
     "typescript": "^3.9.5"
   }
 }
