@@ -37,7 +37,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
   questionConceptIds = ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786', '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'];
   private subscriptions: ISubscription[] = [];
   loading = false;
-  surveyPdfUrl = '/assets/surveys/' + this.surveyConceptId + '.pdf';
+  surveyPdfUrl = '/assets/surveys/';
   surveyName: string;
   surveyDescription: string;
   conceptCodeTooltip: any;
@@ -73,6 +73,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.domainId = params.id.toLowerCase();
       this.surveyConceptId = this.dbc.surveyRouteToIds[this.domainId];
+      this.surveyPdfUrl += this.surveyConceptId + '.pdf';
       this.prevSearchText = params.search ? params.search : '';
       if (this.prevSearchText) {
         this.searchText.setValue(this.prevSearchText);
