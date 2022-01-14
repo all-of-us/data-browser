@@ -302,6 +302,10 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
                     NavStore.navigateByUrl(url);
                     break;
+                case 43528895:
+                    url = this.props.searchWord ? 'survey/health-care-access-and-utilization/' + this.props.searchWord : 'survey/health-care-access-and-utilization';
+                    NavStore.navigateByUrl(url);
+                    break;
                 default:
                     url = this.props.searchWord ? 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() + '/' + this.props.searchWord : 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
