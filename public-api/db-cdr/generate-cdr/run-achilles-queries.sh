@@ -710,28 +710,3 @@ else
     echo "FAILED To generate survey counts"
     exit 1
 fi
-
-####################
-# fmh condition counts #
-####################
-# Generate survey counts
-if ./generate-cdr/generate-fmh-condition-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
-then
-    echo "FMH condition counts generated"
-else
-    echo "FAILED To generate fmh condition counts"
-    exit 1
-fi
-
-
-####################
-# fmh family member counts #
-####################
-# Generate survey counts
-if ./generate-cdr/generate-fmh-family-member-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
-then
-    echo "FMH family member counts generated"
-else
-    echo "FAILED To generate fmh family member counts"
-    exit 1
-fi
