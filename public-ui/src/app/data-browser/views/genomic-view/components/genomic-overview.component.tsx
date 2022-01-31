@@ -79,10 +79,15 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                     this.participantCountsArr.push(item);
             }
         });
+        if (this.currentAgeArr && this.currentAgeArr[0]) {
+            this.currentAgeArr[0].results.map(o => {o.analysisStratumName = o.stratum2; });
+            this.currentAgeArr[0].results.sort((a, b) =>
+                a.analysisStratumName.localeCompare(b.analysisStratumName));
+        }
         this.setState({
-            raceEthData: this.raceEthArr,
-            sexAtBirthData: this.sexAtBirthArr,
-            currentAgeData: this.currentAgeArr,
+            raceEthData: (this.raceEthArr && this.raceEthArr[0]) ? this.raceEthArr[0] : null,
+            sexAtBirthData: (this.sexAtBirthArr && this.sexAtBirthArr[0]) ? this.sexAtBirthArr[0] : null,
+            currentAgeData: (this.currentAgeArr && this.currentAgeArr[0]) ? this.currentAgeArr[0] : null,
             participantCounts: this.participantCountsArr,
             loading: false
         });
@@ -103,9 +108,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                     </div>
                 </div>
                 {!loading && <React.Fragment>
-                    <GenomicChartComponent counts={participantCounts[0]} title='Race/ethnicity' data={raceEthData[0]} />
-                    <GenomicChartComponent counts={participantCounts[0]} title='Sex assigned at birth' data={sexAtBirthData[0]} />
-                    <GenomicChartComponent counts={participantCounts[0]} title='Current age' data={currentAgeData[0]} />
+                    <GenomicChartComponent counts={participantCounts[0]} title='Race/ethnicity' data={raceEthData} />
+                    <GenomicChartComponent counts={participantCounts[0]} title='Sex assigned at birth' data={sexAtBirthData} />
+                    <GenomicChartComponent counts={participantCounts[0]} title='Current age' data={currentAgeData} />
                 </React.Fragment>}
             </div>
         </React.Fragment>;

@@ -12,11 +12,9 @@ export function triggerEvent(
         eventLabel: string, searchTerm: string, tooltipAction: string) {
   if (window['gtag']) {
     gtag('event', eventName, {
-      'category': 'Data Browser ' + eventCategory,
-      'action': eventAction,
-      'label': eventLabel,
-      'landingSearchTerm': searchTerm,
-      'tooltipsHoverAction': tooltipAction
+      'event_category': 'Data Browser ' + eventCategory,
+      'event_action': eventAction,
+      'event_label': searchTerm
     });
   } else {
     console.error('Google Analytics gtag.js has not been loaded');

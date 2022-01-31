@@ -51,6 +51,10 @@ const styles = reactStyles({
         display: 'flex',
         alignItems: 'center'
     },
+    variantIdLabel: {
+        width: 'fitContent',
+        whiteSpace: 'nowrap'
+    },
     body: {
         display: 'grid',
         gridTemplateColumns: '25% 25% 25% 25%',
@@ -65,6 +69,7 @@ const styles = reactStyles({
     },
     catInfo: {
         overflowWrap: 'anywhere',
+        height: '1em',
         display: 'inline-block'
     },
     totalCatHeading: {
@@ -138,11 +143,11 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
             <style>{css}</style>
             <div style={styles.variantExpanded}>
                 <div style={styles.top}>
-                    <span style={styles.variantId}><strong>Variant ID: </strong> {!loading ?
-                    <span style={{ paddingLeft: '1em', overflowWrap: 'anywhere' }}>
-                        {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
+                    <span style={styles.variantId}><strong style={styles.variantIdLabel}>Variant ID: </strong> {!loading ?
+                        <span style={{ paddingLeft: '1em', overflowWrap: 'anywhere' }}>
+                            {variant.variantId}</span> : <div style={styles.loading}><Spinner /></div>} </span>
                     <div ><ClrIcon onClick={(e) => this.props.closed()} className='exit' shape='window-close'
-                    style={styles.closeIcon}/></div>
+                        style={styles.closeIcon} /></div>
                 </div>
                 {!loading && <React.Fragment><div style={styles.body}>
                     <div>
@@ -164,7 +169,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                     <div>
                         <span style={styles.catHeading}>RS Number:</span><br />
                         <span style={styles.catInfo}>{variantDetails.rsNumber ? [<a href={rsLink} key={variantDetails.variantId}
-                        style={styles.rsLink} target='_blank'>{variantDetails.rsNumber}</a>] : '-'}</span>
+                            style={styles.rsLink} target='_blank'>{variantDetails.rsNumber}</a>] : '-'}</span>
                     </div>
                     <div>
                         <span style={styles.catHeading}>Gene:</span><br />
@@ -191,7 +196,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                         <div style={styles.popTableData}>{(item.Ancestry !== 'Total') ?
                                             <span><i className='fas fa-circle' style={{ ...colorStyle, marginRight: '.5rem', transform: 'scale(1.3)' }} />
                                                 {item.Ancestry} </span> :
-                                                <span style={styles.totalCatHeading}>{item.Ancestry}</span>} </div>
+                                            <span style={styles.totalCatHeading}>{item.Ancestry}</span>} </div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
                                             <React.Fragment>{item.AlleleCount}</React.Fragment> :
                                             <span style={styles.catHeading}>{item.AlleleCount}</span>}</div>
@@ -199,8 +204,11 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                             <React.Fragment>{item.AlleleNumber}</React.Fragment> :
                                             <span style={styles.catHeading}>{item.AlleleNumber}</span>}</div>
                                         <div style={styles.popTableData}>{item.Ancestry !== 'Total' ?
-                                            <React.Fragment>{item.AlleleFrequency.toFixed(2)}</React.Fragment>
-                                            : <span style={styles.catHeading}>{item.AlleleFrequency.toFixed(2)}</span>}</div>
+                                            <React.Fragment>
+                                            {item.AlleleFrequency > 0 ? item.AlleleFrequency.toFixed(6) : item.AlleleFrequency}
+                                            </React.Fragment>
+                                            : <span style={styles.catHeading}>{item.AlleleFrequency > 0 ? item.AlleleFrequency.toFixed(6) :
+                                            item.AlleleFrequency}</span>}</div>
                                     </div>;
                                 })}
                             </div>

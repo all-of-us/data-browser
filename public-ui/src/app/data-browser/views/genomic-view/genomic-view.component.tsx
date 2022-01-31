@@ -3,6 +3,7 @@ import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/co
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { globalStyles } from 'app/utils/global-styles';
+import { triggerEvent } from 'app/utils/google_analytics';
 import _ from 'lodash';
 import { Variant } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
@@ -208,6 +209,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     getVariantSearch(searchTerm: string) {
         this.getSearchSize(searchTerm);
         if (searchTerm !== '') {
+            triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
+                              searchTerm, null);
             this.setState({ loadingResults: true, currentPage: 0 }, () => { this.fetchVariantData(); });
         } else {
             this.setState({
@@ -220,7 +223,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     getGenomicParticipantCounts() {
         genomicsApi().getParticipantCounts().then((results) => {
             results.results.forEach(type => {
-                if (type.stratum4 === null) {
+                if (type.stratum4 === null || type.stratum4 === '') {
                     this.setState({
                         participantCount: type.countValue.toLocaleString()
                     });

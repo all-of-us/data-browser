@@ -59,10 +59,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         };
     }
 
-    componentWillUnmount() {
-        localStorage.removeItem('genomicSearchText');
-    }
-
     handlePageChange(info) {
         this.props.onPageChange(info);
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });

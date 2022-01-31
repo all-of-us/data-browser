@@ -10,6 +10,7 @@ import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { PM_CONCEPTS, routeToDomain } from 'app/utils/constants';
 import { GraphType } from 'app/utils/enum-defs';
+import { triggerEvent } from 'app/utils/google_analytics';
 import { navigateByUrl, urlParamsStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import _ from 'lodash';
@@ -377,7 +378,7 @@ export const EhrViewReactComponent = withRouteData(
         }
 
         getTopConcepts() {
-            const { searchWord, domain: { domain }, measurementTestFilter, measurementOrderFilter } = this.state;
+            const { searchWord, domain: { domain, name }, measurementTestFilter, measurementOrderFilter } = this.state;
             const searchRequest = {
                 query: searchWord,
                 domain: domain.toUpperCase(),
@@ -388,6 +389,10 @@ export const EhrViewReactComponent = withRouteData(
                 measurementTests: measurementTestFilter ? 1 : 0,
                 measurementOrders: measurementOrderFilter ? 1 : 0
             };
+            if (searchWord) {
+                triggerEvent('domainPageSearch', 'Search', 'Search Inside Domain ' + name, 'Domain Search',
+                              searchWord, null);
+            }
             this.fetchConcepts(searchRequest);
         }
 

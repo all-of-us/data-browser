@@ -7,6 +7,7 @@ import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComp
 import { reactStyles } from 'app/utils';
 import { genomicTileMetadata } from 'app/utils/constants';
 import { globalStyles } from 'app/utils/global-styles';
+import { triggerEvent } from 'app/utils/google_analytics';
 import { NavStore } from 'app/utils/navigation';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
@@ -351,6 +352,10 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     url = this.props.searchWord ? 'survey/covid-19-participant-experience/' + this.props.searchWord : 'survey/covid-19-participant-experience';
                     NavStore.navigateByUrl(url);
                     break;
+                case 43528895:
+                    url = this.props.searchWord ? 'survey/health-care-access-and-utilization/' + this.props.searchWord : 'survey/health-care-access-and-utilization';
+                    NavStore.navigateByUrl(url);
+                    break;
                 default:
                     url = this.props.searchWord ? 'survey/' + info.name.replaceAll(' ', '-').toLowerCase() + '/' + this.props.searchWord : 'survey/' + info.name.replaceAll(' ', '-').toLowerCase();
                     NavStore.navigateByUrl(url);
@@ -485,6 +490,11 @@ export const dBHomeComponent = withRouteData(
 
         getDomainInfos() {
             // http get the domain info to populate the cards on the homepage
+            const { searchWord } = this.state;
+            if (searchWord) {
+                triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
+                              this.state.searchWord, null);
+            }
             return dataBrowserApi().getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
                     result.domainInfos = result.domainInfos.filter(domain =>
@@ -613,6 +623,8 @@ export const dBHomeComponent = withRouteData(
                                 </div>
                             </div>
                         }
+                        {(surveyInfo.length > 0) &&
+                        <React.Fragment>
                         <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions </h5>
                         <div style={styles.resultBoxes}>
                             {
@@ -623,6 +635,22 @@ export const dBHomeComponent = withRouteData(
 
                             }
                         </div>
+                        </React.Fragment>
+                        }
+                        {(physicalMeasurementsInfo.length > 0) &&
+                        <React.Fragment>
+                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                            Physical Measurements and Wearables </h5>
+                        <div style={styles.resultBoxes}>
+                            {
+                                physicalMeasurementsInfo.map((phyMeasurements, index) => {
+                                    const key = 'phyMeasurements' + index;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw' />;
+                                })
+                            }
+                        </div>
+                        </React.Fragment>
+                                                }
                     </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
