@@ -38,7 +38,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
-    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XY]*:).*";
+    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XY]*:{0,1}).*";
     private static final String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where contig = @contig";
@@ -86,13 +86,16 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String contig = "";
+        String contig = variantSearchTerm;
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(variantSearchTerm)) {
             // Check if the search term matches genomic region search term pattern
             if (variantSearchTerm.matches(genomicRegionRegex)) {
-                String[] regionTermSplit = variantSearchTerm.split(":");
-                contig = regionTermSplit[0];
+                String[] regionTermSplit = new String[0];
+                if (variantSearchTerm.contains(":")) {
+                    regionTermSplit = variantSearchTerm.split(":");
+                    contig = regionTermSplit[0];
+                }
                 finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
                     String[] rangeSplit = regionTermSplit[1].split("-");
@@ -210,13 +213,16 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String contig = "";
+        String contig = variantSearchTerm;
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(variantSearchTerm)) {
             // Check if the search term matches genomic region search term pattern
             if (variantSearchTerm.matches(genomicRegionRegex)) {
-                String[] regionTermSplit = variantSearchTerm.split(":");
-                contig = regionTermSplit[0];
+                String[] regionTermSplit = new String[0];
+                if (variantSearchTerm.contains(":")) {
+                    regionTermSplit = variantSearchTerm.split(":");
+                    contig = regionTermSplit[0];
+                }
                 finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
                     String[] rangeSplit = regionTermSplit[1].split("-");
