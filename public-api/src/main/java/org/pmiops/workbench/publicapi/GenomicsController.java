@@ -38,7 +38,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
-    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XY]*:{0,1}).*";
+    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XYxy]*:{0,1}).*";
     private static final String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where contig = @contig";
