@@ -68,17 +68,15 @@ const css = `
 .genomic-boxes {
     width: calc(((100% / 12) * 4) - 18px);
     padding-right:.5rem;
-    
 }
+
 .genomic-box {
     height:87.5%;
 }
-
 .genomic-box .result-box{
     width:100%;
     height:100%;
     margin-bottom:0;
-    
 }
 .pm-boxes{
     padding-left:.5rem;
@@ -157,7 +155,7 @@ const css = `
     .genomic-box {
         height:90.4%;
     }
-    
+
     .result-box:nth-of-type(2) {
         margin-right: 0;
     }
@@ -389,8 +387,9 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             <div style={styles.resultBody}>
                 <span style={styles.resultBodyItem}>
                     <div style={styles.resultStat}>
-                        {(domainType === 'ehr' || domainType === 'pmw') ? standardConceptCount.toLocaleString() : ((domainType === 'survey') ? questionCount.toLocaleString()
-                            : wgsParticipantCount.toLocaleString())}
+                        {(domainType === 'ehr' || domainType === 'pmw') ? standardConceptCount.toLocaleString() :
+                            ((domainType === 'survey') ? questionCount.toLocaleString()
+                                : wgsParticipantCount.toLocaleString())}
                     </div>
                     {(domainType === 'genomics') ? 'participants in the WGS dataset' : (searchWord ?
                         (domainType === 'ehr' ? <span>matching medical concepts</span> :
@@ -493,7 +492,7 @@ export const dBHomeComponent = withRouteData(
             const { searchWord } = this.state;
             if (searchWord) {
                 triggerEvent('searchOnLandingPage', 'Search', 'Homepage Search Across Data', 'Homepage Search',
-                              this.state.searchWord, null);
+                    this.state.searchWord, null);
             }
             return dataBrowserApi().getDomainTotals(this.state.searchWord, 1, 1).then(
                 result => {
@@ -616,7 +615,9 @@ export const dBHomeComponent = withRouteData(
                                         {
                                             physicalMeasurementsInfo.map((phyMeasurements, index) => {
                                                 const key = 'phyMeasurements' + index;
-                                                return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw' />;
+                                                return <ResultLinksComponent key={key}
+                                                    searchWord={searchWord} {...phyMeasurements}
+                                                    domainType='pmw' />;
                                             })
                                         }
                                     </div>
@@ -624,18 +625,20 @@ export const dBHomeComponent = withRouteData(
                             </div>
                         }
                         {(surveyInfo.length > 0) &&
-                        <React.Fragment>
-                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions </h5>
-                        <div style={styles.resultBoxes}>
-                            {
-                                surveyInfo.map((survey, index) => {
-                                    const key = 'survey' + index;
-                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...survey} domainType='survey' />;
-                                })
+                            <React.Fragment>
+                                <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions </h5>
+                                <div style={styles.resultBoxes}>
+                                    {
+                                        surveyInfo.map((survey, index) => {
+                                            const key = 'survey' + index;
+                                            return <ResultLinksComponent key={key}
+                                                searchWord={searchWord} {...survey}
+                                                domainType='survey' />;
+                                        })
 
-                            }
-                        </div>
-                        </React.Fragment>
+                                    }
+                                </div>
+                            </React.Fragment>
                         }
                     </section>
                 }
