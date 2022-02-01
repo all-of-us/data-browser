@@ -637,20 +637,6 @@ export const dBHomeComponent = withRouteData(
                         </div>
                         </React.Fragment>
                         }
-                        {(physicalMeasurementsInfo.length > 0) &&
-                        <React.Fragment>
-                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                            Physical Measurements and Wearables </h5>
-                        <div style={styles.resultBoxes}>
-                            {
-                                physicalMeasurementsInfo.map((phyMeasurements, index) => {
-                                    const key = 'phyMeasurements' + index;
-                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...phyMeasurements} domainType='pmw' />;
-                                })
-                            }
-                        </div>
-                        </React.Fragment>
-                                                }
                     </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
