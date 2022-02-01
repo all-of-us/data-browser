@@ -186,7 +186,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId, String searchWord, List<String> conceptIds) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSurveyQuestions(Long surveyConceptId, String searchWord) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -203,10 +203,10 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         if (searchWord == null || searchWord.isEmpty()) {
             // Get all the questions
-            questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId, conceptIds));
+            questionResp.setItems(surveyMetadataService.getSurveyQuestions(surveyConceptId));
         } else {
             // TODO Get only the matching questions
-            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, searchWord, conceptIds));
+            questionResp.setItems(surveyMetadataService.getMatchingSurveyQuestions(surveyConceptId, searchWord));
         }
 
         response.setQuestions(questionResp);
@@ -225,8 +225,13 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         List<SurveyMetadata> questions = new ArrayList<>();
 
         if (level == 1) {
+            System.out.println("!!!!!!!!!!!!!!! 1111111111111 !!!!!!!!!!!!!!!!!");
+            System.out.println(conceptId);
+            System.out.println(answerConceptId);
+            System.out.println(surveyConceptId);
             questions = surveyMetadataService.getSubQuestionsLevel1(String.valueOf(conceptId), String.valueOf(answerConceptId), String.valueOf(surveyConceptId));
         } else if (level == 2) {
+            System.out.println("!!!!!!!!!!!!!!! 2222222222222 !!!!!!!!!!!!!!!!!");
             questions = surveyMetadataService.getSubQuestionsLevel2(String.valueOf(conceptId), String.valueOf(answerConceptId));
         }
 
