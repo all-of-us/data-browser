@@ -179,10 +179,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         };
     }
 
-    componentCleanup() { // this will hold the cleanup code
-        localStorage.setItem('searchWord', '');
-    }
-
     sideBarItems = [
         {
             id: 1,
@@ -224,6 +220,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 loadingResults: false
             });
         }
+    }
+
+    componentCleanup() { // this will hold the cleanup code
+        localStorage.setItem('searchWord', '');
     }
 
     componentWillUnmount() {
