@@ -60,11 +60,11 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         const sortingDemoArr = [
             'White',
             'Asian',
-            'Black',
-            'Hispanic',
+            'Black, African American, or African',
+            'Hispanic, Latino, or Spanish',
             'More than one race/ethnicity',
             'Other',
-            ' Prefer Not To Answer'
+            'Prefer Not To Answer'
         ];
         const sortingSexArr = [
             'Female',
