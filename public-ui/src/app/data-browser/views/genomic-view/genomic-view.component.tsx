@@ -180,7 +180,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     componentCleanup() { // this will hold the cleanup code
-        console.log('Cleaning up');
         localStorage.setItem('searchWord', '');
     }
 
@@ -323,7 +322,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     sideBarClick(selected: number) {
-        const {searchTerm} = this.state;
         this.setState({
             selectionId: selected
         });
