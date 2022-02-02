@@ -646,13 +646,4 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_conditions_member_metadata\`"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_metadata\`"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_fm_metadata\`"
-
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
