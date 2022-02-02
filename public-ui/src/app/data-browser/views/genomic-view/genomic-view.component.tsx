@@ -164,6 +164,7 @@ const css = `
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);
+        this.componentCleanup = this.componentCleanup.bind(this);
         this.state = {
             selectionId: 2,
             searchResults: [],
@@ -176,6 +177,11 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             chartData: null,
             sortMetadata: null
         };
+    }
+
+    componentCleanup() { // this will hold the cleanup code
+        console.log('Cleaning up');
+        localStorage.setItem('searchWord', '');
     }
 
     sideBarItems = [
@@ -208,6 +214,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     getVariantSearch(searchTerm: string) {
         this.getSearchSize(searchTerm);
+        localStorage.setItem('searchWord', searchTerm);
         if (searchTerm !== '') {
             triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
                               searchTerm, null);
@@ -218,6 +225,12 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 loadingResults: false
             });
         }
+    }
+
+    componentWillUnmount() {
+        localStorage.setItem('searchWord', '');
+        this.componentCleanup();
+        window.removeEventListener('beforeunload', this.componentCleanup); // remove the event handler for normal unmounting
     }
 
     getGenomicParticipantCounts() {
@@ -310,6 +323,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     sideBarClick(selected: number) {
+        const {searchTerm} = this.state;
         this.setState({
             selectionId: selected
         });
@@ -326,6 +340,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     componentDidMount() {
+        window.addEventListener('beforeunload', this.componentCleanup);
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
