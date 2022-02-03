@@ -164,6 +164,7 @@ const css = `
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);
+        this.componentCleanup = this.componentCleanup.bind(this);
         this.state = {
             selectionId: 2,
             searchResults: [],
@@ -208,6 +209,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     getVariantSearch(searchTerm: string) {
         this.getSearchSize(searchTerm);
+        localStorage.setItem('searchWord', searchTerm);
         if (searchTerm !== '') {
             triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
                               searchTerm, null);
@@ -218,6 +220,16 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 loadingResults: false
             });
         }
+    }
+
+    componentCleanup() { // this will hold the cleanup code
+        localStorage.setItem('searchWord', '');
+    }
+
+    componentWillUnmount() {
+        localStorage.setItem('searchWord', '');
+        this.componentCleanup();
+        window.removeEventListener('beforeunload', this.componentCleanup); // remove the event handler for normal unmounting
     }
 
     getGenomicParticipantCounts() {
@@ -326,6 +338,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     componentDidMount() {
+        window.addEventListener('beforeunload', this.componentCleanup);
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
