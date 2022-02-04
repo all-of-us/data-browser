@@ -4,6 +4,11 @@ import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
 const styles = reactStyles({
+    searchText: {
+        marginBottom: '-1em',
+        fontFamily: 'gothamBold',
+        fontSize: '.9em'
+    },
     searchBar: {
         paddingRight: '2rem',
         width: '35em'
@@ -27,7 +32,6 @@ const styles = reactStyles({
 
 const css = `
 .search-container {
-    padding-top: 1em;
     padding-bottom: 1em;
     display: flex;
     align-items: flex-end;
@@ -76,6 +80,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
             <style>{css}</style>
+                <h5 style={styles.searchText}>Search</h5>
             <div className='search-container'>
                 <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
