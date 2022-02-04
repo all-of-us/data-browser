@@ -14,7 +14,7 @@ import { GenomicSearchComponent } from './components/genomic-search.component';
 const styles = reactStyles({
     title: {
         fontSize: '35px',
-        marginBottom:'0',
+        marginBottom: '0',
         fontFamily: 'gothamBook'
     },
     pageHeader: {
@@ -46,12 +46,10 @@ const styles = reactStyles({
         width: 'fit-content'
     },
     topBarItem: {
-        // display: 'flex',
         fontSize: '1em',
         width: '100%',
         cursor: 'pointer',
         padding: '1em 2em'
-        // margin: '0.5rem'
     },
     topBarItemText: {
         width: '75%'
@@ -190,7 +188,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         {
             id: 1,
             label: 'Participant Demographics'
-            
+
         }
     ];
     title = 'Genomic Data';
@@ -362,7 +360,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         Data page to view currently available genomic data by participant - reported
                         for preliminary exploration of genetic variant allele frequencies by with select
                         annotations and genetic ancestry associations. */}
-                        </p>
+                    </p>
                     </div>
                 </div>
                 <div style={styles.viewLayout}>
