@@ -179,10 +179,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         };
     }
 
-    componentCleanup() { // this will hold the cleanup code
-        localStorage.setItem('searchWord', '');
-    }
-
     sideBarItems = [
         {
             id: 1,
@@ -217,13 +213,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         if (searchTerm !== '') {
             triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
                               searchTerm, null);
-            this.setState({ loadingResults: true, currentPage: 0 }, () => { this.fetchVariantData(); });
+            this.setState({ loadingResults: true, currentPage: 1 }, () => { this.fetchVariantData(); });
         } else {
             this.setState({
                 searchResults: null,
                 loadingResults: false
             });
         }
+    }
+
+    componentCleanup() { // this will hold the cleanup code
+        localStorage.setItem('searchWord', '');
     }
 
     componentWillUnmount() {
@@ -308,7 +308,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         alleleNumberSortMetadata, alleleFrequencySortMetadata);
         const searchRequest = {
                 query: searchTerm,
-                pageNumber: currentPage + 1,
+                pageNumber: currentPage,
                 sortMetadata: sortMetadataObj
         };
         genomicsApi().searchVariants(searchRequest).then(

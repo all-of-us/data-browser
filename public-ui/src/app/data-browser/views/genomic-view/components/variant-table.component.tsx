@@ -4,6 +4,7 @@ import { Variant } from 'publicGenerated';
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
+import { TablePaginatorComponent } from './table-paginator.component';
 
 const styles = reactStyles({
     tableContainer: {
@@ -66,6 +67,10 @@ const styles = reactStyles({
         borderLeft: '1px solid #CCCCCC',
         borderTop: 'none',
         borderRadius: '0 0 3px 3px',
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '2em',
+        justifyContent: 'flex-end'
     }
 
 });
@@ -127,7 +132,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     handlePageClick = (data) => {
         const { searchTerm } = this.props;
         this.setState({ loading: true });
-        this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
+        this.props.onPageChange({ selectedPage: data, searchTerm: searchTerm });
     }
 
     sortClick(key: string) {
@@ -238,19 +243,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         <div style={styles.center}><Spinner /> </div>}</div>
         }
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > 50) && <div style={styles.paginator}>
-                <ReactPaginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
-                    breakLabel={'...'}
-                    breakClassName={'break-me'}
-                    activeClassName={'active'}
-                    pageCount={Math.ceil(variantListSize / 50)}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handlePageClick}
-                    containerClassName={'pagination'}
-                    forcePage={currentPage}
-                />
+                <TablePaginatorComponent pageCount={Math.ceil(variantListSize / 50)} variantListSize={variantListSize}
+                currentPage={currentPage} resultsSize={searchResults.length}
+                onPageChange={(info) => { this.handlePageClick(info); }}/>
             </div>}
         </React.Fragment>;
     }
