@@ -52,17 +52,21 @@ interface Props {
     currentPage: number;
     resultsSize: number;
     onPageChange: Function;
+    rowCount: number;
+    onRowCountChange: Function;
 }
 
 interface State {
     currentPage: number;
+    rowCount: number;
 }
 
 export class TablePaginatorComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            currentPage: props.currentPage ? props.currentPage : 1
+            currentPage: props.currentPage ? props.currentPage : 1,
+            rowCount: props.rowCount ? props.rowCount : 50
         };
     }
 
@@ -70,8 +74,13 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
         this.setState({currentPage: +event.target.value}, () => {this.props.onPageChange(this.state.currentPage);});
     }
 
+    rowCountChange(event) {
+        this.setState({rowCount: +event.target.value}, () => {
+            this.props.onRowCountChange(this.state.rowCount);} );
+    }
+
     render() {
-        const {currentPage} = this.state;
+        const {currentPage, rowCount} = this.state;
         const {pageCount, variantListSize, resultsSize} = this.props;
         const options = [];
         for(var i = 0; i < pageCount; i++) {
@@ -88,7 +97,15 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
                                     {options.map(({ value, label }, index) => <option value={value} key={value}>{label}</option>)}
                                 </select>
                             </label></div>
-                        <div style={styles.pageNum}>Row Count Selector</div>
+                        <div style={styles.pageNum}>
+                            <label style={styles.pageDropDownLabel}>Rows per page:
+                                <select value={rowCount} onChange={this.rowCountChange.bind(this)}>
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={50}>50</option>
+                                </select>
+                            </label>
+                        </div>
                         <div style={styles.pageNum}>{resultsSize} of {variantListSize} entries</div>
                         <div style={styles.pageNum}>
                             <button style={currentPage !== 1 ? styles.pageButton : styles.disabledPageButton} disabled={currentPage === 1}

@@ -81,12 +81,14 @@ const css = `
 interface Props {
     onPageChange: Function;
     onSortClick: Function;
+    onRowCountChange: Function;
     searchResults: Variant[];
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchTerm: string;
     currentPage: number;
+    rowCount: number;
 }
 
 interface State {
@@ -135,6 +137,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.props.onPageChange({ selectedPage: data, searchTerm: searchTerm });
     }
 
+    handleRowCountChange = (data) => {
+        this.props.onRowCountChange({rowCount: data});
+    }
+
     sortClick(key: string) {
         const {sortMetadata} = this.state;
         if (sortMetadata[key]['sortActive']) {
@@ -156,7 +162,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { loadingVariantListSize, variantListSize, currentPage } = this.props;
+        const { loadingVariantListSize, variantListSize, currentPage, rowCount } = this.props;
         const { loading, searchResults, sortMetadata } = this.state;
         return <React.Fragment>
                 <style>{css}</style>
@@ -245,7 +251,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > 50) && <div style={styles.paginator}>
                 <TablePaginatorComponent pageCount={Math.ceil(variantListSize / 50)} variantListSize={variantListSize}
                 currentPage={currentPage} resultsSize={searchResults.length}
-                onPageChange={(info) => { this.handlePageClick(info); }}/>
+                rowCount={rowCount}
+                onPageChange={(info) => { this.handlePageClick(info); }}
+                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/>
             </div>}
         </React.Fragment>;
     }
