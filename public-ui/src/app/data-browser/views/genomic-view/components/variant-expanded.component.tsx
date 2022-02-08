@@ -42,18 +42,7 @@ const css = `
     font-size: 14px;
     width: 100%;
 },
-@media (max-width: 1500px) {
-    
-}
-@media (max-width: 1400px) {
 
-}
-@media (max-width: 1300px) {
-
-}
-@media (max-width: 1200px) {
-
-}
 @media (max-width: 900px) {
         .pop-table-container{
         display: flex;
@@ -63,7 +52,8 @@ const css = `
         text-align: center;
     }
     .body{
-        grid-template-columns: 33.33% 33.33% 33.33%
+        grid-template-columns: 33.33% 33.33% 33.33%;
+        padding-right: 2rem;
     }
 }
 }
@@ -217,9 +207,9 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                         <span style={styles.catInfo}>{variant.clinicalSignificance}</span>
                     </div>
                 </div>
-                <h4 className='pop-title'>Genetic Ancestry Populations</h4>
+                    <h4 className='pop-title'>Genetic Ancestry Populations</h4>
                     <div className='pop-table-container'>
-                        <div style={{width:'100%'}}>
+                        <div style={{ width: '100%' }}>
                             <div className='pop-table'>
                                 <div style={styles.popTableHeading}></div>
                                 <div style={styles.popTableHeading}><span style={styles.catHeading}>Allele Count</span></div>
