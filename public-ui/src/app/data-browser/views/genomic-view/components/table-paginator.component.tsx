@@ -117,8 +117,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
                                 disabled={currentPage === pageCount}
                             onClick={(e) => {this.setState({currentPage: this.state.currentPage + 1}, () => {
                                 this.props.onPageChange(this.state.currentPage);})}}>
-                                <i className='fas fa-angle-right' style={currentPage !== pageCount ?
-                                    styles.enabledIcon : styles.disabledIcon}/></button>
+                                <i className='fas fa-angle-right' style={currentPage !== pageCount ? styles.enabledIcon : styles.disabledIcon}/></button>
                         </div>
                </React.Fragment>;
     }
