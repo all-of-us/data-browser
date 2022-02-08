@@ -133,7 +133,7 @@ const css = `
     .faq-heading-text {
         padding-left: 15%;
         padding-right: 15%;
-        padding-top: 48%;
+        padding-top: 1rem;
     }
     @media (max-width: 1500px) {
         .faq-heading-text {
