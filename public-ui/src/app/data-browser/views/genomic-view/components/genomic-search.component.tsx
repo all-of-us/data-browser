@@ -7,13 +7,8 @@ import { VariantTableComponent } from './variant-table.component';
 const styles = reactStyles({
     border: {
         background: 'white',
-        borderRadius: '3px',
         padding: '2em',
         paddingTop: '1em',
-        marginLeft: '1em',
-        marginRight: '1em',
-        marginBottom: '1em',
-        marginTop: '0.5em',
     },
     titleBox: {
         display: 'flex',
@@ -21,10 +16,11 @@ const styles = reactStyles({
         alignItems: 'flex-start'
     },
     boxHeading: {
+        margin: 0,
         fontFamily: 'GothamBook, Arial, sans-serif',
         fontWeight: 100,
         fontStyle: 'normal',
-        fontSize: '1.3em',
+        fontSize: '.8em',
         fontStretch: 'normal',
         lineHeight: '1.47em',
         letterSpacing: 'normal',
@@ -80,9 +76,10 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
         rowCount} = this.props;
         return <React.Fragment>
-            <div style={styles.border}>
-                <div style={styles.titleBox}>
-                    <div style={styles.boxHeading} ref={this.scrollDiv}>Variant Search</div>
+            <div style={styles.titleBox}>
+                <p style={styles.boxHeading} ref={this.scrollDiv}>
+                    Variant search: Perform preliminary exploration of genetic variant allele frequencies for a gene or genomic regiion.
+                    Drill down into specific variants to view select annotations and genetic ancestry associations. </p>
 
                 </div>
                 <VariantSearchComponent
@@ -100,7 +97,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
                     currentPage={currentPage}
                     rowCount={rowCount}/>
-            </div>
         </React.Fragment>;
     }
 }
