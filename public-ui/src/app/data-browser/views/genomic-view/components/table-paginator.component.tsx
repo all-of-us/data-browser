@@ -71,22 +71,22 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
     }
 
     handleChange(event) {
-        this.setState({currentPage: +event.target.value}, () => {this.props.onPageChange(this.state.currentPage);});
+        this.setState({currentPage: +event.target.value}, () => {this.props.onPageChange(this.state.currentPage); });
     }
 
     rowCountChange(event) {
         this.setState({rowCount: +event.target.value}, () => {
-            this.props.onRowCountChange(this.state.rowCount);} );
+            this.props.onRowCountChange(this.state.rowCount); } );
     }
 
     render() {
         const {currentPage, rowCount} = this.state;
         const {pageCount, variantListSize, resultsSize} = this.props;
         const options = [];
-        for(var i = 0; i < pageCount; i++) {
-              var obj = {};
-              obj['value'] = i+1;
-              obj['label'] = i+1;
+        for (let i = 0; i < pageCount; i++) {
+              const obj = {};
+              obj['value'] = i + 1;
+              obj['label'] = i + 1;
               options.push(obj);
         }
         return <React.Fragment>
@@ -110,7 +110,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
                         <div style={styles.pageNum}>
                             <button style={currentPage !== 1 ? styles.pageButton : styles.disabledPageButton} disabled={currentPage === 1}
                                 onClick={(e) => {this.setState({currentPage: this.state.currentPage - 1}, () => {
-                                    this.props.onPageChange(this.state.currentPage);})}}>
+                                    this.props.onPageChange(this.state.currentPage); })}}>
                                 <i className='fas fa-angle-left' style={currentPage !== 1 ? styles.enabledIcon : styles.disabledIcon}/></button>
                             <button style={currentPage !== pageCount ? styles.pageButton : styles.disabledPageButton} disabled={currentPage === pageCount}
                             onClick={(e) => {this.setState({currentPage: this.state.currentPage + 1}, () => {
