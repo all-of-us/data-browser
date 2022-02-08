@@ -1192,6 +1192,136 @@ where observation_source_concept_id in (43528631, 43528629, 702788, 43528628, 43
 and value_source_concept_id in (43529940, 43529943, 43529944, 43529945, 43529946, 43529947);
 "
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43528678, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_EndocrineCondition', 43528678, unit_source_value, qualifier_source_value,
+43529065, 'EndocrineCondition_Hyperthyroidism', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529067, 43529071, 43529064, 43529068, 43529072, 43529070);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836797, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'EndocrineCondition_Hyperthyroidism_yes', 836797, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529067, 43529071, 43529064, 43529068, 43529072, 43529070);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43528678, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_EndocrineCondition', 43528678, unit_source_value, qualifier_source_value,
+43529074, 'EndocrineCondition_Hypothyroidism', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529073, 43529081, 43529079, 43529080, 43529076, 43529077);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836798, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'EndocrineCondition_Hypothyroidism_yes', 836798, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529073, 43529081, 43529079, 43529080, 43529076, 43529077);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43528678, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_EndocrineCondition', 43528678, unit_source_value, qualifier_source_value,
+43529925, 'EndocrineCondition_Type1Diabetes', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529927, 43529931, 43529924, 43529930, 43529928, 43529929);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836799, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'EndocrineCondition_Type1Diabetes_yes', 836799, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529927, 43529931, 43529924, 43529930, 43529928, 43529929);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43528678, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_EndocrineCondition', 43528678, unit_source_value, qualifier_source_value,
+43529934, 'EndocrineCondition_Type2Diabetes', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529936, 43529935, 43529937, 43529939, 43529938, 43529933);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836800, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'EndocrineCondition_Type2Diabetes_yes', 836800, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529936, 43529935, 43529937, 43529939, 43529938, 43529933);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43528678, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_EndocrineCondition', 43528678, unit_source_value, qualifier_source_value,
+43529670, 'EndocrineCondition_OtherDiabetes', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529672, 43529675, 43529669, 43529671, 43529674, 43529673);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836848, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'EndocrineCondition_OtherDiabetes_yes', 836848, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (702783, 43528675, 43528676, 43528677, 43528944, 43528674)
+and value_source_concept_id in (43529672, 43529675, 43529669, 43529671, 43529674, 43529673);
+"
+
 # Cope survey response counts by version
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
