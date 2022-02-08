@@ -9,13 +9,6 @@ const styles = reactStyles({
         marginTop: '1em',
         marginBottom: '1em'
     },
-    pageDropDownLabel: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1em'
-    },
     pageButton: {
         textDecoration: 'none',
         display: 'inline-block',
@@ -44,6 +37,21 @@ const styles = reactStyles({
 });
 
 const css = `
+    .page-drop-down-label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1em;
+    }
+    @media (max-width: 600px) {
+        .paginator {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            justify-content: flex-start;
+        }
+    }
 `;
 
 interface Props {
@@ -66,7 +74,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             currentPage: props.currentPage ? props.currentPage : 1,
-            rowCount: props.rowCount ? props.rowCount : 50
+            rowCount: props.rowCount ? props.rowCount : 10
         };
     }
 
@@ -92,13 +100,13 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
         return <React.Fragment>
                         <style>{css}</style>
                         <div style={styles.pageNum}>
-                            <label style={styles.pageDropDownLabel}>Page:
+                            <label className='page-drop-down-label'>Page:
                                 <select value={currentPage} onChange={this.handleChange.bind(this)}>
                                     {options.map(({ value, label }, index) => <option value={value} key={value}>{label}</option>)}
                                 </select>
                             </label></div>
                         <div style={styles.pageNum}>
-                            <label style={styles.pageDropDownLabel}>Rows per page:
+                            <label className='page-drop-down-label'>Rows per page:
                                 <select value={rowCount} onChange={this.rowCountChange.bind(this)}>
                                     <option value={10}>10</option>
                                     <option value={20}>20</option>

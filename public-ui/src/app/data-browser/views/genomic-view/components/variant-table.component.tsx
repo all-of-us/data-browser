@@ -58,23 +58,30 @@ const styles = reactStyles({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    paginator: {
-        background: '#f9f9fa',
-        borderBottom: '1px solid #CCCCCC',
-        borderRight: '1px solid #CCCCCC',
-        borderLeft: '1px solid #CCCCCC',
-        borderTop: 'none',
-        borderRadius: '0 0 3px 3px',
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '2em',
-        justifyContent: 'flex-end'
     }
-
 });
 
 const css = `
+    .paginator {
+        background: #f9f9fa;
+        border-bottom: 1px solid #CCCCCC;
+        border-right: 1px solid #CCCCCC;
+        border-left: 1px solid #CCCCCC;
+        border-top: none;
+        border-radius: 0 0 3px 3px;
+        display: flex;
+        flex-direction: row;
+        gap: 2em;
+        justify-content: flex-end;
+    }
+    @media (max-width: 600px) {
+        .paginator {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 0;
+        }
+    }
 `;
 
 interface Props {
@@ -247,8 +254,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
             </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
                         <div style={styles.center}><Spinner /> </div>}</div>
         }
-            {(!loading && !loadingVariantListSize && searchResults && variantListSize > 50) && <div style={styles.paginator}>
-                <TablePaginatorComponent pageCount={Math.ceil(variantListSize / 50)} variantListSize={variantListSize}
+            {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
+                <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
                 currentPage={currentPage} resultsSize={searchResults.length}
                 rowCount={rowCount}
                 onPageChange={(info) => { this.handlePageClick(info); }}

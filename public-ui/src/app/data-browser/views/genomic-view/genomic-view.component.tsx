@@ -134,32 +134,6 @@ const css = `
     .faq-heading-text {
         padding-left: 15%;
         padding-right: 15%;
-        padding-top: 48%;
-    }
-    @media (max-width: 1500px) {
-        .faq-heading-text {
-            padding-top: 55%;
-        }
-    }
-    @media (max-width: 1400px) {
-        .faq-heading-text {
-            padding-top: 58%;
-        }
-    }
-    @media (max-width: 1300px) {
-        .faq-heading-text {
-            padding-top: 65%;
-        }
-    }
-    @media (max-width: 1200px) {
-        .faq-heading-text {
-            padding-top: 60%;
-        }
-    }
-    @media (max-width: 1100px) {
-        .faq-heading-text {
-            padding-top: 90%;
-        }
     }
 `;
 
@@ -217,7 +191,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         if (searchTerm !== '') {
             triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
                  searchTerm, null);
-            this.setState({ loadingResults: true, currentPage: 1, rowCount: 50 }, () => { this.fetchVariantData(); });
+            this.setState({ loadingResults: true, currentPage: 1, rowCount: 10 }, () => { this.fetchVariantData(); });
         } else {
             this.setState({
                 searchResults: null,
