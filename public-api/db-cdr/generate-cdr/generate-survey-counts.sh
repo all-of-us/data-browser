@@ -1374,6 +1374,86 @@ where observation_source_concept_id in (43529152, 43529153, 43529154, 43529155, 
 and value_source_concept_id in (43529160, 43529165, 43529166, 43529164, 43529159, 43529161);
 "
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43529767, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_RespiratoryCondition', 43529767, unit_source_value, qualifier_source_value,
+43528438, 'RespiratoryCondition_Asthma', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (43529764, 43529766, 43529765, 43529191, 43529763, 43529762)
+and value_source_concept_id in (43528435, 43528440, 43528441, 43528437, 43528436, 43528434);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836815, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'RespiratoryCondition_Asthma_yes', 836815, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (43529764, 43529766, 43529765, 43529191, 43529763, 43529762)
+and value_source_concept_id in (43528435, 43528440, 43528441, 43528437, 43528436, 43528434);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43529767, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_RespiratoryCondition', 43529767, unit_source_value, qualifier_source_value,
+43528553, 'RespiratoryCondition_ChronicLungDisease', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (43529764, 43529766, 43529765, 43529191, 43529763, 43529762)
+and value_source_concept_id in (43528555, 43528549, 43528554, 43528550, 702791, 43528552);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836858, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'RespiratoryCondition_ChronicLungDisease_yes', 836858, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (43529764, 43529766, 43529765, 43529191, 43529763, 43529762)
+and value_source_concept_id in (43528555, 43528549, 43528554, 43528550, 702791, 43528552);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 43529767, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'DiagnosedHealthCondition_RespiratoryCondition', 43529767, unit_source_value, qualifier_source_value,
+43529836, 'RespiratoryCondition_SleepApnea', questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (43529764, 43529766, 43529765, 43529191, 43529763, 43529762)
+and value_source_concept_id in (43529838, 43529833, 43529839, 43529834, 43529832, 43529835);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+(observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id)
+select observation_id, person_id, 836816, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
+qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'RespiratoryCondition_SleepApnea_yes', 836816, unit_source_value, qualifier_source_value,
+value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+where observation_source_concept_id in (43529764, 43529766, 43529765, 43529191, 43529763, 43529762)
+and value_source_concept_id in (43529838, 43529833, 43529839, 43529834, 43529832, 43529835);
+"
+
+
+
 # Cope survey response counts by version
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
