@@ -219,6 +219,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         }
         api.getDomainTotals(searchWord, 1, 1).then(
             (data: any) => {
+                console.log(data);
                 data.surveyModules.forEach(survey => {
                     const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
                         survey.name.split(' ').join('-').toLowerCase();

@@ -64,9 +64,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
     private static final Logger logger = Logger.getLogger(DataBrowserController.class.getName());
 
-    public static final ArrayList<Long> FMH_CONDITION_CONCEPT_IDS = new ArrayList<>(Arrays.asList(43528515L, 1384639L, 43528634L, 43528761L, 43529158L, 43529767L, 43529272L, 43529217L, 702786L, 43529966L, 43529638L));
-    public static final ArrayList<Long> FMH_FM_CONCEPT_IDS = new ArrayList<>(Arrays.asList(43528764L, 43528763L, 43528649L, 43528651L, 43528650L, 43528765L));
-
     public static Set<String> validAgeDeciles = new TreeSet<String>(Arrays.asList(new String[]{"2", "3", "4", "5", "6", "7", "8", "9"}));
 
     public DataBrowserController() {}
@@ -150,7 +147,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             List<String> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
             domainInfoList = domainInfoService.getStandardCodeMatchCounts(domainKeyword, query, toMatchConceptIds, filter);
-            surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword, FMH_CONDITION_CONCEPT_IDS, FMH_FM_CONCEPT_IDS);
+            surveyModuleList = surveyModuleService.findSurveyModuleQuestionCounts(surveyKeyword);
         } else {
             List<String> filter = domainInfoService.getTestOrderFilter(testFilter == 1 ? TestFilter.SELECTED: TestFilter.UNSELECTED, orderFilter == 1 ? OrderFilter.SELECTED: OrderFilter.UNSELECTED);
 
