@@ -169,7 +169,6 @@ interface State {
     surveyPdfUrl: any;
     isCopeSurvey: boolean;
     searchWord: string;
-    extraQuestionConceptIds: Array<any>;
     surveyVersions: Array<any>;
     showAnswer: {};
     questions: Array<any>;
@@ -197,7 +196,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
             surveyId: urlParamsStore.getValue().id,
             surveyPdfUrl: '',
             searchWord: search,
-            extraQuestionConceptIds: [],
             showAnswer: {},
             questions: [],
             loading: true,
@@ -291,8 +289,8 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
     }
 
     getSurvey() {
-        const { survey, searchWord, extraQuestionConceptIds } = this.state;
-        api.getSurveyQuestions(survey.conceptId.toString(), searchWord, extraQuestionConceptIds).then(
+        const { survey, searchWord } = this.state;
+        api.getSurveyQuestions(survey.conceptId.toString(), searchWord).then(
             (x: any) => {
                 this.processSurveyQuestions(x);
             }).catch(e => {
