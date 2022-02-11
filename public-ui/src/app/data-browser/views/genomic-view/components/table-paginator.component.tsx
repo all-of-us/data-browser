@@ -89,7 +89,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
 
     render() {
         const {currentPage, rowCount} = this.state;
-        const {pageCount, variantListSize, resultsSize} = this.props;
+        const {pageCount} = this.props;
         const options = [];
         for (let i = 0; i < pageCount; i++) {
               const obj = {};
