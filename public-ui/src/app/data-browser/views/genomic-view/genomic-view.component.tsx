@@ -72,6 +72,7 @@ const styles = reactStyles({
         color: 'rgb(38, 34, 98)',
         margin: '0px auto',
         display: 'flex',
+        paddingTop: '1em',
         justifyContent: 'flex-start'
     },
     faqLink: {
