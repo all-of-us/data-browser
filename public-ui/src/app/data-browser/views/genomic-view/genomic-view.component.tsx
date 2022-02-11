@@ -72,14 +72,12 @@ const styles = reactStyles({
         color: 'rgb(38, 34, 98)',
         margin: '0px auto',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
     faqLink: {
         color: '#0079b8',
         cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center'
+        paddingLeft: '0.25em'
     }
 });
 
@@ -131,10 +129,6 @@ class SortColumnDetailsClass implements SortColumnDetails {
 }
 
 const css = `
-    .faq-heading-text {
-        padding-left: 15%;
-        padding-right: 15%;
-    }
 `;
 
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
@@ -384,7 +378,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                         {selectionId === 3 &&
                             <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
                         <div style={styles.faqHeading}>
-                            <div className='faq-heading-text'>Questions about genomics? <br />
+                            <div className='faq-heading-text'>Questions about genomics?
                                 <span style={styles.faqLink} onClick={() => this.topBarClick(3)}>Learn More</span>
                             </div>
                         </div>
