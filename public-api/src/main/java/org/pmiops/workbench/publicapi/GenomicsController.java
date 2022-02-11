@@ -38,10 +38,14 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
+<<<<<<< HEAD
     private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XYxy]*:{0,1}).*";
+=======
+    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
+>>>>>>> 79bf2630b190f3f9708b3c7b032d18fb432d6b50
     private static final String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
-    private static final String WHERE_CONTIG = " where contig = @contig";
+    private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
@@ -86,7 +90,11 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+<<<<<<< HEAD
         String contig = variantSearchTerm;
+=======
+        String contig = "(?i)(" + variantSearchTerm + ")";
+>>>>>>> 79bf2630b190f3f9708b3c7b032d18fb432d6b50
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(variantSearchTerm)) {
             // Check if the search term matches genomic region search term pattern
@@ -94,7 +102,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (variantSearchTerm.contains(":")) {
                     regionTermSplit = variantSearchTerm.split(":");
+<<<<<<< HEAD
                     contig = regionTermSplit[0];
+=======
+                    contig = "(?i)(" + regionTermSplit[0] + ")";
+>>>>>>> 79bf2630b190f3f9708b3c7b032d18fb432d6b50
                 }
                 finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
@@ -213,7 +225,11 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+<<<<<<< HEAD
         String contig = variantSearchTerm;
+=======
+        String contig = "(?i)(" + variantSearchTerm + ")";
+>>>>>>> 79bf2630b190f3f9708b3c7b032d18fb432d6b50
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(variantSearchTerm)) {
             // Check if the search term matches genomic region search term pattern
@@ -221,7 +237,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (variantSearchTerm.contains(":")) {
                     regionTermSplit = variantSearchTerm.split(":");
+<<<<<<< HEAD
                     contig = regionTermSplit[0];
+=======
+                    contig = "(?i)(" + regionTermSplit[0] + ")";
+>>>>>>> 79bf2630b190f3f9708b3c7b032d18fb432d6b50
                 }
                 finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {

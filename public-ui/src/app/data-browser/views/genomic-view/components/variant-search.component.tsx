@@ -4,9 +4,16 @@ import { Spinner } from 'app/utils/spinner';
 import * as React from 'react';
 
 const styles = reactStyles({
+    searchText: {
+        marginBottom: '-1em',
+        fontFamily: 'gothamBold',
+        fontSize: '.9em'
+    },
     searchBar: {
         paddingRight: '2rem',
-        width: '35em'
+        width: '100%',
+        maxWidth: '35em'
+
     },
     searchHelpText: {
         paddingTop: '2em',
@@ -27,7 +34,6 @@ const styles = reactStyles({
 
 const css = `
 .search-container {
-    padding-top: 1em;
     padding-bottom: 1em;
     display: flex;
     align-items: flex-end;
@@ -72,11 +78,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
             <style>{css}</style>
+            <h5 style={styles.searchText}>Search</h5>
             <div className='search-container'>
                 <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, or genomic region'/>
+                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, or genomic region' />
                 </div>
                 <div style={styles.searchHelpText}>
                     Examples: <br></br>
@@ -85,9 +92,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 </div>
             </div>
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
-            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
-                <Spinner /></span> } results</strong>}
+                    <Spinner /></span>} results</strong>}
         </React.Fragment>;
     }
 }
