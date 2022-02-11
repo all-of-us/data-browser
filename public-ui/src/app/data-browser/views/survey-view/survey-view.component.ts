@@ -158,7 +158,7 @@ export class SurveyViewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.searchText.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query, this.surveyExtraQuestionConceptIds)), )
+      switchMap((query) => this.api.getSurveyQuestions(this.surveyConceptId, query)), )
       .subscribe({
         next: results => {
           this.processSurveyQuestions(results);
