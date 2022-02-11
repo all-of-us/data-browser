@@ -1192,6 +1192,10 @@ definitions:
         type: integer
         default: 0
         description: By default it returns the first page and then its next pages from that on.
+      rowCount:
+        type: integer
+        default: 10
+        description: Number of rows user wants to view per page
       sortMetadata:
         type: object
         description: sort metadata

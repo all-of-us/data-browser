@@ -32,12 +32,14 @@ const styles = reactStyles({
 interface Props {
     onSearchInput: Function;
     onPageChange: Function;
+    onRowCountChange: Function;
     onSortClick: Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchResults: Variant[];
     currentPage: number;
+    rowCount: number;
     participantCount: string;
 }
 
@@ -60,33 +62,41 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
 
+    handleRowCountChange(info) {
+        this.props.onRowCountChange(info);
+        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
     handleSortClick(sortMetadata) {
         this.props.onSortClick(sortMetadata);
     }
 
     render() {
         const { searchTerm } = this.state;
-        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
+        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
+        rowCount} = this.props;
         return <React.Fragment>
             <div style={styles.titleBox}>
                 <p style={styles.boxHeading} ref={this.scrollDiv}>
                     Variant search: Perform preliminary exploration of genetic variant allele frequencies for a gene or genomic regiion.
                     Drill down into specific variants to view select annotations and genetic ancestry associations. </p>
 
-            </div>
-            <VariantSearchComponent
-                onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
-                loading={loadingVariantListSize}
-                variantListSize={variantListSize} />
-            <VariantTableComponent
-                loadingResults={loadingResults}
-                loadingVariantListSize={loadingVariantListSize}
-                variantListSize={variantListSize}
-                searchResults={searchResults}
-                searchTerm={searchTerm}
-                onPageChange={(info: any) => this.handlePageChange(info)}
-                onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
-                currentPage={currentPage} />
+                </div>
+                <VariantSearchComponent
+                    onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
+                    loading={loadingVariantListSize}
+                    variantListSize={variantListSize} />
+                <VariantTableComponent
+                    loadingResults={loadingResults}
+                    loadingVariantListSize={loadingVariantListSize}
+                    variantListSize={variantListSize}
+                    searchResults={searchResults}
+                    searchTerm={searchTerm}
+                    onRowCountChange={(info: any) => this.handleRowCountChange(info)}
+                    onPageChange={(info: any) => this.handlePageChange(info)}
+                    onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
+                    currentPage={currentPage}
+                    rowCount={rowCount}/>
         </React.Fragment>;
     }
 }
