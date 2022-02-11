@@ -100,21 +100,21 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
         return <React.Fragment>
                         <style>{css}</style>
                         <div style={styles.pageNum}>
+                            <label className='page-drop-down-label'>Rows per page:
+                                <select value={rowCount} onChange={this.rowCountChange.bind(this)}>
+                                    <option value={10}>10</option>
+                                    <option value={25}>25</option>
+                                    <option value={50}>50</option>
+                                    <option value={100}>100</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div style={styles.pageNum}>
                             <label className='page-drop-down-label'>Page:
                                 <select value={currentPage} onChange={this.handleChange.bind(this)}>
                                     {options.map(({ value, label }, index) => <option value={value} key={value}>{label}</option>)}
                                 </select>
                             </label></div>
-                        <div style={styles.pageNum}>
-                            <label className='page-drop-down-label'>Rows per page:
-                                <select value={rowCount} onChange={this.rowCountChange.bind(this)}>
-                                    <option value={10}>10</option>
-                                    <option value={20}>20</option>
-                                    <option value={50}>50</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div style={styles.pageNum}>{resultsSize} of {variantListSize} entries</div>
                         <div style={styles.pageNum}>
                             <button style={currentPage !== 1 ? styles.pageButton : styles.disabledPageButton}
                                 disabled={currentPage === 1}
