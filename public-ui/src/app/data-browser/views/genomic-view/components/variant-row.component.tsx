@@ -72,7 +72,7 @@ const css = `
         width: 71rem;
     }
 }
-`
+`;
 
 interface Props {
     variant: Variant;
