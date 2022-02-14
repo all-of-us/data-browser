@@ -24,13 +24,12 @@ const styles = reactStyles({
         marginTop: '0.5rem',
         height: '25rem'
     },
-
     headingItem: {
         fontSize: '.8em',
         paddingTop: '.5rem',
         paddingBottom: '.5rem',
         paddingLeft: '.75rem',
-        borderBottom: '1px solid #CCCCCC'
+        
     },
     headingLabel: {
         borderBottom: '1px dashed',
@@ -66,11 +65,18 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 13rem 10rem 13rem 10rem 12rem 10rem 10rem 10rem;
+    grid-template-columns: 11rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    width: 89rem;
+    width: 72rem;
     position: relative;
+    border-bottom: 1px solid #CCCCCC;
+}
+@media (max-width: 900px) {
+    .header-layout {
+        grid-template-columns: 10rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+        width: 71rem;
+    }
 }
 `;
 

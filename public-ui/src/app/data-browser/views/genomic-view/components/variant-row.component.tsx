@@ -6,16 +6,6 @@ import * as React from 'react';
 import { VariantExpandedComponent } from './variant-expanded.component';
 
 const styles = reactStyles({
-    rowLayout: {
-        display: 'grid',
-        gridTemplateColumns: '13rem 10rem 13rem 10rem 12rem 10rem 10rem 10rem',
-        alignItems: 'center',
-        width: '89rem',
-        background: 'white',
-        fontSize: '.8em',
-        borderBottom: '1px solid #CCCCCC',
-        position: 'relative'
-    },
     variant: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -65,6 +55,25 @@ const styles = reactStyles({
     }
 });
 
+const css = `
+.row-layout {
+    display: grid;
+    grid-template-columns: 11rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+    align-items: center;
+    width: 72rem;
+    background: white;
+    font-size: .8em;
+    border-bottom: 1px solid #CCCCCC;
+    position: relative;
+}
+@media (max-width: 900px) {
+    .row-layout {
+        grid-template-columns: 10rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+        width: 71rem;
+    }
+}
+`
+
 interface Props {
     variant: Variant;
 }
@@ -107,12 +116,13 @@ export class VariantRowComponent extends React.Component<Props, State> {
         const { variant } = this.props;
         const { variantClicked, variantDetails, loadingVarDetails } = this.state;
         return <React.Fragment>
+            <style>{css}</style>
             {(!loadingVarDetails && variantClicked) ? <VariantExpandedComponent
                 loading={loadingVarDetails}
                 variant={variant}
                 variantDetails={variantDetails}
                 closed={() => this.handleClick()} /> :
-                <div style={styles.rowLayout}>
+                <div className='row-layout'>
                     <div onClick={() => this.handleClick(variant.variantId)} style={styles.variant}>
                         <div style={{ ...styles.first, ...styles.rowItem, ...styles.variantId }}>
                         <div style={styles.variantIdText}>{(variant.variantId.length > 40) ?
