@@ -274,10 +274,7 @@ public class DataBrowserApiTest {
     public void getSurveyQuestionsTest() throws ApiException {
         Long surveyConceptId = null;
         String searchWord = null;
-        List<String> questionConceptIds = null;
-        SurveyQuestionFetchResponse response = api.getSurveyQuestions(surveyConceptId, searchWord, questionConceptIds);
-
-        // TODO: test validations
+        SurveyQuestionFetchResponse response = api.getSurveyQuestions(surveyConceptId, searchWord);
     }
     
     /**

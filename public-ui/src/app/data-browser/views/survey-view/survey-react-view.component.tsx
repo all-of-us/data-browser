@@ -169,7 +169,6 @@ interface State {
     surveyPdfUrl: any;
     isCopeSurvey: boolean;
     searchWord: string;
-    extraQuestionConceptIds: Array<any>;
     surveyVersions: Array<any>;
     showAnswer: {};
     questions: Array<any>;
@@ -197,7 +196,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
             surveyId: urlParamsStore.getValue().id,
             surveyPdfUrl: '',
             searchWord: search,
-            extraQuestionConceptIds: [],
             showAnswer: {},
             questions: [],
             loading: true,
@@ -219,6 +217,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         }
         api.getDomainTotals(searchWord, 1, 1).then(
             (data: any) => {
+                console.log(data);
                 data.surveyModules.forEach(survey => {
                     const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
                         survey.name.split(' ').join('-').toLowerCase();
@@ -243,9 +242,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         const surveyPdfUrl = (surveyConceptId === 43528895) ?
             '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
-        const extraConcepts = surveyConceptId === 43528698 ?
-            ['43528515', '1384639', '43528634', '43528761', '43529158', '43529767', '43529272', '43529217', '702786',
-                '43529966', '43529638', '43528764', '43528763', '43528649', '43528651', '43528650', '43528765'] : [];
         const copeFlag = surveyConceptId === 1333342;
         if (surveyConceptId === 1333342) {
             const surveyVersions = [];
@@ -281,8 +277,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         this.setState({
             survey: survey,
             surveyPdfUrl: surveyPdfUrl,
-            isCopeSurvey: copeFlag,
-            extraQuestionConceptIds: extraConcepts
+            isCopeSurvey: copeFlag
         }, () => {
             this.getSurvey();
         });
@@ -294,8 +289,8 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
     }
 
     getSurvey() {
-        const { survey, searchWord, extraQuestionConceptIds } = this.state;
-        api.getSurveyQuestions(survey.conceptId.toString(), searchWord, extraQuestionConceptIds).then(
+        const { survey, searchWord } = this.state;
+        api.getSurveyQuestions(survey.conceptId.toString(), searchWord).then(
             (x: any) => {
                 this.processSurveyQuestions(x);
             }).catch(e => {
@@ -307,6 +302,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
     processSurveyQuestions(results: any) {
         const survey = results.survey;
         const questions = results.questions.items;
+        console.log(questions);
         this.setDefaults(questions, 0, survey);
     }
 
@@ -406,7 +402,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                             {questions && <div className='survey-results' style={styles.surveyResults}>
                                 {questions.map((question, index) => {
                                     const key = question.conceptId + '-' + index;
-                                    if (question.type === 'QUESTION') {
+                                    if (question.type === 'QUESTION' || question.type === 'Question') {
                                         return <div className='question-result' key={key}>
                                             <div className='secondary-display' style={styles.secondaryDisplay}>
                                                 <div className='body-default'>

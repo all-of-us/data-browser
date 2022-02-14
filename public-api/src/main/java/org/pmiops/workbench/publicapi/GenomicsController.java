@@ -38,13 +38,14 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
-    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
-    private static final String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
+    private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
+    private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
+    private static final String WHERE_GENE_EXACT = " where lower(genes) = @genes";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
@@ -86,14 +87,18 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String contig = "(?i)(" + variantSearchTerm + ")";
+        String searchTerm = variantSearchTerm;
+        if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+            searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
+        }
+        String contig = "(?i)(" + searchTerm + ")";
         // Make sure the search term is not empty
-        if (!Strings.isNullOrEmpty(variantSearchTerm)) {
+        if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
-            if (variantSearchTerm.matches(genomicRegionRegex)) {
+            if (searchTerm.matches(genomicRegionRegex)) {
                 String[] regionTermSplit = new String[0];
-                if (variantSearchTerm.contains(":")) {
-                    regionTermSplit = variantSearchTerm.split(":");
+                if (searchTerm.contains(":")) {
+                    regionTermSplit = searchTerm.split(":");
                     contig = "(?i)(" + regionTermSplit[0] + ")";
                 }
                 finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
@@ -109,13 +114,18 @@ public class GenomicsController implements GenomicsApiDelegate {
                         System.out.println("Trying to convert bad number.");
                     }
                 }
-            } else if (variantSearchTerm.matches(variantIdRegex)) {
+            } else if (searchTerm.matches(variantIdRegex)) {
                 // Check if the search term matches variant id pattern
-                variant_id = variantSearchTerm;
+                variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                genes = "(?i)" + variantSearchTerm;
-                finalSql += WHERE_GENE;
+                if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+                    genes = searchTerm.toLowerCase();
+                    finalSql += WHERE_GENE_EXACT;
+                } else {
+                    genes = "(?i)" + searchTerm;
+                    finalSql += WHERE_GENE;
+                }
             }
         }
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
@@ -142,6 +152,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         String variantSearchTerm = searchVariantsRequest.getQuery();
         Integer page = searchVariantsRequest.getPageNumber();
+        Integer rowCount = searchVariantsRequest.getRowCount();
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
@@ -213,14 +224,18 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String contig = "(?i)(" + variantSearchTerm + ")";
+        String searchTerm = variantSearchTerm;
+        if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+            searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
+        }
+        String contig = "(?i)(" + searchTerm + ")";
         // Make sure the search term is not empty
-        if (!Strings.isNullOrEmpty(variantSearchTerm)) {
+        if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
-            if (variantSearchTerm.matches(genomicRegionRegex)) {
+            if (searchTerm.matches(genomicRegionRegex)) {
                 String[] regionTermSplit = new String[0];
-                if (variantSearchTerm.contains(":")) {
-                    regionTermSplit = variantSearchTerm.split(":");
+                if (searchTerm.contains(":")) {
+                    regionTermSplit = searchTerm.split(":");
                     contig = "(?i)(" + regionTermSplit[0] + ")";
                 }
                 finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
@@ -236,17 +251,22 @@ public class GenomicsController implements GenomicsApiDelegate {
                         System.out.println("Trying to convert bad number.");
                     }
                 }
-            } else if (variantSearchTerm.matches(variantIdRegex)) {
+            } else if (searchTerm.matches(variantIdRegex)) {
                 // Check if the search term matches variant id pattern
-                variant_id = variantSearchTerm;
+                variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                genes = "(?i)" + variantSearchTerm;
-                finalSql += WHERE_GENE;
+                if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+                    genes = searchTerm.toLowerCase();
+                    finalSql += WHERE_GENE_EXACT;
+                } else {
+                    genes = "(?i)" + searchTerm;
+                    finalSql += WHERE_GENE;
+                }
             }
         }
         finalSql += ORDER_BY_CLAUSE;
-        finalSql += " LIMIT 50 OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*50);
+        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)* rowCount);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
