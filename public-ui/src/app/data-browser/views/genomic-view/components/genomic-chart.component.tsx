@@ -85,6 +85,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         let wgsData: Array<any> = [], microArrayData: Array<any> = [];
         chartOptions.chart.type = data.chartType;
         chartOptions.xAxis.categories = [];
+        console.log(chartOptions);
         chartOptions.column = {};
         data.results.forEach(result => {
             if (GENDER_STRATUM_MAP[result.stratum2]) {
