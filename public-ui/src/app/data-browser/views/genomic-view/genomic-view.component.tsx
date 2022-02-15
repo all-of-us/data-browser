@@ -329,15 +329,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             <div style={styles.pageHeader}>
                 <div style={styles.titleContainer}>
                     <h1 style={styles.title}>{this.title}</h1>
-                    <div><p style={{ ...globalStyles.bodyDefault, ...styles.genomicsDescText }}>
-                        This section provides an overview of genomic data within the current
-                        <i> All of Us</i> dataset.
-                        {/* Researchers can use the Participants with Genomic
-                        Data page to view currently available genomic data by participant - reported
-                        for preliminary exploration of genetic variant allele frequencies by with select
-                        annotations and genetic ancestry associations. */}
-                    </p>
-                    </div>
                 </div>
                 <div style={styles.viewLayout}>
                     <div style={styles.topBarLayout} id='topBar'>

@@ -8,7 +8,6 @@ import * as React from 'react';
 const styles = reactStyles({
     chartContainer: {
         background: 'rgba(33,111,180,0.05)',
-        margin: '1em',
         padding: '1em',
         paddingTop: '.25em'
     },
