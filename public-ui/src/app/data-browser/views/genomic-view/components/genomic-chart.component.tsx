@@ -150,8 +150,10 @@ export class GenomicChartComponent extends React.Component<Props, State> {
             <div style={styles.legendLayout}>
                 <h3 style={styles.chartTitle}>{title}</h3>
                 <div style={styles.legend}>
-                    <i className='fas fa-circle' style={{ color: '#216FB4' }}></i> <span style={styles.legendItem}>Whole Genome Sequencing</span>
-                    <i className='fas fa-circle' style={{ color: '#8BC990' }}></i> <span style={styles.legendItem}>Genotyping Arrays</span>
+                    <i className='fas fa-circle' style={{ color: '#216FB4' }}></i> <span style={styles.legendItem}>
+                        Whole Genome Sequencing</span>
+                    <i className='fas fa-circle' style={{ color: '#8BC990' }}></i> <span style={styles.legendItem}>
+                        Genotyping Arrays</span>
                 </div>
             </div>
             {options && <HighchartsReact allowChartUpdate='false' highcharts={highCharts} options={options} />}

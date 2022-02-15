@@ -2,7 +2,6 @@ import { withRouteData } from 'app/components/app-router';
 import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/components/genomic-overview.component';
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
-import { globalStyles } from 'app/utils/global-styles';
 import { triggerEvent } from 'app/utils/google_analytics';
 import _ from 'lodash';
 import { Variant } from 'publicGenerated';

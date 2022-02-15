@@ -408,7 +408,8 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     }
                 </span>
                 {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>
-                    {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Genotyping Array dataset</span></React.Fragment>}
+                    {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Genotyping Array dataset</span>
+                        </React.Fragment>}
                 {
                     (questionCount &&
                         <div style={styles.resultBodyItem}>
