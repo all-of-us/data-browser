@@ -162,7 +162,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
         }
     ];
-    title = 'Genomic Data';
+    title = 'Genomic Variants';
 
     search = _.debounce((searchTerm: string) => this.getVariantSearch(searchTerm), 1000);
 
