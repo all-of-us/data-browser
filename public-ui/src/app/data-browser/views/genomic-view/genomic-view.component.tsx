@@ -134,7 +134,6 @@ const css = `
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);
-        this.componentCleanup = this.componentCleanup.bind(this);
         this.state = {
             selectionId: 2,
             searchResults: [],
@@ -305,7 +304,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     componentDidMount() {
-        window.addEventListener('beforeunload', this.componentCleanup);
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
