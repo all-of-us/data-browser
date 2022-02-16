@@ -60,7 +60,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            searchWord: localStorage.getItem('searchWord') ? localStorage.getItem('searchWord') : '',
+            searchWord:  '',
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
