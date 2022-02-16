@@ -62,7 +62,7 @@ const css = `
 
 .geno-pm-container {
     display:flex;
-    margin-bottom: 2rem;
+    margin-bottom:2rem;
 }
 
 .genomic-boxes {
@@ -127,6 +127,7 @@ const css = `
     flex-wrap: wrap;
     flex-flow: column-reverse;
     padding-left:1em;
+    padding-bottom:5em;
     justify-content: 'flex-start';
 }
 
@@ -187,7 +188,7 @@ const styles = reactStyles({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        marginBottom: '2rem',
+        marginBottom: '48px',
         flexGrow: 1
     },
     resultBox: {
