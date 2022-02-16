@@ -19,8 +19,7 @@ const styles = reactStyles({
     pageHeader: {
         paddingTop: '18px',
         paddingBottom: '18px',
-        lineHeight: '1.5',
-        fontSize: '16px'
+        lineHeight: '1.5'
     },
     titleContainer: {
         lineHeight: '1em',

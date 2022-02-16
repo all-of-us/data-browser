@@ -38,7 +38,7 @@ const css = `
     padding-top: 1rem;
     font-size: 14px;
     width: 100%;
-}
+},
 
 @media (max-width: 900px) {
         .pop-table-container{
