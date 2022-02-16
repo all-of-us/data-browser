@@ -10,8 +10,6 @@ const styles = reactStyles({
     desc: {
         color: '#302C71',
         margin: '0',
-        padding: '1em',
-        paddingLeft: '0',
         fontSize: '.8em'
     },
     headingLayout: {
@@ -89,10 +87,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         const { participantCount } = this.props;
         return <React.Fragment>
                 <div style={styles.headingLayout}>
-                    <div>
-                        <h3 style={styles.title}>Participant Demographics</h3>
                         <p style={styles.desc}>Demographic data is self-reported by participants</p>
-                    </div>
                     <div>
                         <span>{participantCount} participants</span>
                     </div>

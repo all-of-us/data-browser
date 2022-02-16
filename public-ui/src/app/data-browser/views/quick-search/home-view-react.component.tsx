@@ -365,8 +365,8 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             } else if (info.name === 'Fitbit') {
                 const url = this.props.searchWord ? 'fitbit/' + this.props.searchWord : 'fitbit';
                 NavStore.navigateByUrl(url);
-            } else if (info.name === 'Whole Genome Sequencing (WGS) + Genotyping Arrays') {
-                const url = this.props.searchWord ? 'genomic-data/' + this.props.searchWord : 'genomic-data';
+            } else if (info.name === 'Genomic Variants') {
+                const url = this.props.searchWord ? 'genomic-variants/' + this.props.searchWord : 'genomic-variants';
                 NavStore.navigateByUrl(url);
             }
         }
@@ -390,7 +390,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                             ((domainType === 'survey') ? questionCount.toLocaleString()
                                 : wgsParticipantCount.toLocaleString())}
                     </div>
-                    {(domainType === 'genomics') ? 'participants in the WGS dataset' : (searchWord ?
+                    {(domainType === 'genomics') ? 'participants in the Whole Genome Sequencing (WGS) dataset' : (searchWord ?
                         (domainType === 'ehr' ? <span>matching medical concepts</span> :
                             (domainType === 'survey' ? <span>matching survey questions</span> :
                                 (name.toLowerCase() === 'physical measurements' ? <span>matching Physical Measurements</span> :
@@ -408,7 +408,8 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     }
                 </span>
                 {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>
-                    {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Array dataset</span></React.Fragment>}
+                    {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Genotyping Array dataset</span>
+                        </React.Fragment>}
                 {
                     (questionCount &&
                         <div style={styles.resultBodyItem}>
@@ -426,7 +427,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
             </div>
             <div style={styles.resultBoxLink}>
                 {(questionCount ? <a className='result-bottom-link'>View Complete Survey</a> :
-                    (domain === 'Genomics' ? <a className='result-bottom-link'>View Genomic Data</a>
+                    (domain === 'Genomics' ? <a className='result-bottom-link'>View Genomic Variants</a>
                         : <a className='result-bottom-link'>View {name}</a>))}
             </div>
         </div>;
