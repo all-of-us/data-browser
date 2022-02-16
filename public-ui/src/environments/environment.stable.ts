@@ -8,7 +8,7 @@ export const environment = {
   gtmId: 'GTM-NQ9XDTW',
   gtmAuth: '87R8_4UCXpVCroAA7bGkAg',
   gtmPreview: 'env-27',
-  reactHomeView: true,
+  reactHomeView: false,
   reactChart: true,
   reactSurveyTable: false,
   reactSurvey: true,
