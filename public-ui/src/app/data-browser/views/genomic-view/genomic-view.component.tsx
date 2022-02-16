@@ -223,7 +223,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     fetchVariantData() {
-        const {searchTerm, currentPage, sortMetadata, rowCount} = this.state;
+        const {searchTerm, sortMetadata, rowCount} = this.state;
         let variantSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
         let geneSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
         let consequenceSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
