@@ -355,7 +355,6 @@ export const genomicOptions = {
           maxPointWidth: 100,
           minPointWidth: 50,
           pointPadding: 0,
-          groupPadding: 0.3,
           borderWidth: 0,
           fontSize: '',
           events: {

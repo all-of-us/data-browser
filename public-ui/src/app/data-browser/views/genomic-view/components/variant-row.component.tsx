@@ -123,16 +123,14 @@ export class VariantRowComponent extends React.Component<Props, State> {
                     </div>
                     <div style={styles.rowItem}>{(variant.genes && variant.genes.length) ? <div>{variant.genes}</div> : <div>-</div>}</div>
                     <div style={styles.rowItem}>
-                        <div style={styles.multipleValVariantItem}>{(variant.consequence && variant.consequence.length) ?
-                            <span>{variant.consequence}</span> : <span>-</span>}</div>
+                        <div style={styles.multipleValVariantItem}>{variant.consequence}</div>
                     </div>
                     <div style={styles.rowItem}>
                         {variant.proteinChange ? <div style={{ overflowWrap: 'anywhere' }}>
                             {variant.proteinChange}</div> : <div>–</div>}
                     </div>
                     <div style={styles.rowItem}>
-                        <div style={styles.multipleValVariantItem}>{(variant.clinicalSignificance && variant.clinicalSignificance.length) ?
-                        <span>{variant.clinicalSignificance}</span> : <span>-</span> }</div>
+                        <div style={styles.multipleValVariantItem}>{variant.clinicalSignificance}</div>
                     </div>
                     <div style={styles.rowItem}>{variant.alleleCount}</div>
                     <div style={styles.rowItem}>{variant.alleleNumber}</div>
