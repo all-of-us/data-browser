@@ -142,7 +142,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         String variantSearchTerm = searchVariantsRequest.getQuery();
         Integer page = searchVariantsRequest.getPageNumber();
-        Integer rowCount = searchVariantsRequest.getRowCount();
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
@@ -247,7 +246,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
         }
         finalSql += ORDER_BY_CLAUSE;
-        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)* rowCount);
+        finalSql += " LIMIT 50 OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*50);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
