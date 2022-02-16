@@ -194,16 +194,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         }
     }
 
-    componentCleanup() { // this will hold the cleanup code
-        localStorage.setItem('searchWord', '');
-    }
-
-    componentWillUnmount() {
-        localStorage.setItem('searchWord', '');
-        this.componentCleanup();
-        window.removeEventListener('beforeunload', this.componentCleanup); // remove the event handler for normal unmounting
-    }
-
     getGenomicParticipantCounts() {
         genomicsApi().getParticipantCounts().then((results) => {
             results.results.forEach(type => {
