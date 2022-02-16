@@ -577,7 +577,11 @@ export const dBHomeComponent = withRouteData(
                 {!loading &&
                     <section style={styles.results}>
                         <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                            EHR Domains</h5>
+                            EHR Domains<span className='tooltip-container'><TooltipReactComponent
+                                label='Homepage Tooltip Hover'
+                                searchTerm={searchWord}
+                                action='Tooltip Home Page EHR Domains'
+                                tooltipKey='ehrDomainHelpText' /></span></h5>
 
                         <div className='result-boxes'>
                             {
@@ -593,6 +597,11 @@ export const dBHomeComponent = withRouteData(
                             <div className='geno-pm-container'>
                                 <div className='genomic-boxes'>
                                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics
+                                        <span className='tooltip-container'><TooltipReactComponent
+                                            label='Homepage Tooltip Hover'
+                                            searchTerm={searchWord}
+                                            action='Tooltip Home Page Genomic Data Domain'
+                                            tooltipKey='genomicDomainHelpText' /></span>
                                     </h5>
                                     <div className='genomic-box'>
                                         <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo}
