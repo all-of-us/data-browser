@@ -366,7 +366,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
                         <div style={styles.faqHeading}>
                             <div className='faq-heading-text'>Questions about genomics?
-                                <span style={styles.faqLink} onClick={() => this.topBarClick(3)}>Learn More</span>
+                                <span style={styles.faqLink} onClick={() => this.sideBarClick(3)}>Learn More</span>
                             </div>
                         </div>
                     </div>
