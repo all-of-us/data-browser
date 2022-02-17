@@ -81,13 +81,13 @@ const routes: Routes = [
           }
         },
         {
-          path: 'genomic-data',
+          path: 'genomic-variants',
           component: AppRouting,
           canActivate: [IsSafeGuard],
           data: {
-            title: 'Genomic Data',
+            title: 'Genomic Variants',
             breadcrumb: {
-              value: 'Genomic Data'
+              value: 'Genomic Variants'
             }
           }
         },
