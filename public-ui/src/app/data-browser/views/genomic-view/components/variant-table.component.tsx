@@ -274,4 +274,5 @@ export class VariantTableComponent extends React.Component<Props, State> {
             </div>}
         </React.Fragment>;
     }
+
 }
