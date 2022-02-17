@@ -2,7 +2,7 @@ import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
 import * as React from 'react';
-import { TablePaginatorComponent } from './table-paginator.component';
+import ReactPaginate from 'react-paginate';
 import { VariantRowComponent } from './variant-row.component';
 
 const styles = reactStyles({
@@ -58,43 +58,30 @@ const styles = reactStyles({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    paginator: {
+        background: '#f9f9fa',
+        borderBottom: '1px solid #CCCCCC',
+        borderRight: '1px solid #CCCCCC',
+        borderLeft: '1px solid #CCCCCC',
+        borderTop: 'none',
+        borderRadius: '0 0 3px 3px',
     }
+
 });
 
 const css = `
-    .paginator {
-        background: #f9f9fa;
-        border-bottom: 1px solid #CCCCCC;
-        border-right: 1px solid #CCCCCC;
-        border-left: 1px solid #CCCCCC;
-        border-top: none;
-        border-radius: 0 0 3px 3px;
-        display: flex;
-        flex-direction: row;
-        gap: 2em;
-        justify-content: flex-end;
-    }
-    @media (max-width: 600px) {
-        .paginator {
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            gap: 0;
-        }
-    }
 `;
 
 interface Props {
     onPageChange: Function;
     onSortClick: Function;
-    onRowCountChange: Function;
     searchResults: Variant[];
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchTerm: string;
     currentPage: number;
-    rowCount: number;
 }
 
 interface State {
@@ -140,11 +127,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     handlePageClick = (data) => {
         const { searchTerm } = this.props;
         this.setState({ loading: true });
-        this.props.onPageChange({ selectedPage: data, searchTerm: searchTerm });
-    }
-
-    handleRowCountChange = (data) => {
-        this.props.onRowCountChange({rowCount: data});
+        this.props.onPageChange({ selectedPage: data.selected, searchTerm: searchTerm });
     }
 
     sortClick(key: string) {
@@ -168,7 +151,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { loadingVariantListSize, variantListSize, currentPage, rowCount } = this.props;
+        const { loadingVariantListSize, variantListSize, currentPage } = this.props;
         const { loading, searchResults, sortMetadata } = this.state;
         return <React.Fragment>
                 <style>{css}</style>
@@ -254,12 +237,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
             </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
                         <div style={styles.center}><Spinner /> </div>}</div>
         }
-            {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
-                <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
-                currentPage={currentPage} resultsSize={searchResults.length}
-                rowCount={rowCount}
-                onPageChange={(info) => { this.handlePageClick(info); }}
-                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/>
+            {(!loading && !loadingVariantListSize && searchResults && variantListSize > 50) && <div style={styles.paginator}>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    activeClassName={'active'}
+                    pageCount={Math.ceil(variantListSize / 50)}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={'pagination'}
+                    forcePage={currentPage}
+                />
             </div>}
         </React.Fragment>;
     }

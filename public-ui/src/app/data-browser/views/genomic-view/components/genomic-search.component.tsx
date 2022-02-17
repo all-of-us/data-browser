@@ -36,14 +36,12 @@ const styles = reactStyles({
 interface Props {
     onSearchInput: Function;
     onPageChange: Function;
-    onRowCountChange: Function;
     onSortClick: Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
     searchResults: Variant[];
     currentPage: number;
-    rowCount: number;
     participantCount: string;
 }
 
@@ -66,19 +64,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
 
-    handleRowCountChange(info) {
-        this.props.onRowCountChange(info);
-        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
-    }
-
     handleSortClick(sortMetadata) {
         this.props.onSortClick(sortMetadata);
     }
 
     render() {
         const { searchTerm } = this.state;
-        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
-        rowCount} = this.props;
+        const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput } = this.props;
         return <React.Fragment>
             <div style={styles.border}>
                 <div style={styles.titleBox}>
@@ -95,11 +87,9 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     variantListSize={variantListSize}
                     searchResults={searchResults}
                     searchTerm={searchTerm}
-                    onRowCountChange={(info: any) => this.handleRowCountChange(info)}
                     onPageChange={(info: any) => this.handlePageChange(info)}
                     onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
-                    currentPage={currentPage}
-                    rowCount={rowCount}/>
+                    currentPage={currentPage} />
             </div>
         </React.Fragment>;
     }
