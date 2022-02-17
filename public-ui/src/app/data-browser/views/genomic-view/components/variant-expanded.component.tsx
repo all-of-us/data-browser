@@ -12,15 +12,12 @@ const css = `
     height:2rem;
     color:#216FB4;
 }
-
-.pop-table:last-of-type {
-    padding-bottom: 1rem;
-}
 .pop-table-container {
     display: grid;
     grid-template-columns: 60% 40%;
     text-align: left;
     align-items: center;
+    margin-top: 1rem;
 }
 .pop-title {
     font-weight: bold;
