@@ -21,8 +21,8 @@ public class SurveyModuleService {
         this.domainMapper = domainMapper;
     }
 
-    public List<SurveyModule> findSurveyModuleQuestionCounts(String matchExpression) {
-        return surveyModuleDao.findSurveyModuleQuestionCounts(matchExpression).stream()
+    public List<SurveyModule> findSurveyModuleQuestionCounts(String matchExpression, List<Long> fmhConditionConceptIds, List<Long> fmhFMConceptIds) {
+        return surveyModuleDao.findSurveyModuleQuestionCounts(matchExpression, fmhConditionConceptIds, fmhFMConceptIds).stream()
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
