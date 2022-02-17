@@ -2,7 +2,6 @@ import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
 import * as React from 'react';
-import { TablePaginatorComponent } from './table-paginator.component';
 import { VariantRowComponent } from './variant-row.component';
 
 const styles = reactStyles({
