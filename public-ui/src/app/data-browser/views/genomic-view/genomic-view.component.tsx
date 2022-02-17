@@ -145,7 +145,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             loadingVariantListSize: null,
             searchTerm: '',
             currentPage: null,
-            rowCount: 50,
+            rowCount: 10,
             participantCount: null,
             chartData: null,
             sortMetadata: null

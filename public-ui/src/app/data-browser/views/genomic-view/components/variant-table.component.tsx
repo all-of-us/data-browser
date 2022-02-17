@@ -2,7 +2,7 @@ import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
 import * as React from 'react';
-// import { TablePaginatorComponent } from './table-paginator.component';
+import { TablePaginatorComponent } from './table-paginator.component';
 import { VariantRowComponent } from './variant-row.component';
 
 const styles = reactStyles({
@@ -176,9 +176,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { loadingVariantListSize, variantListSize,
-            // currentPage,
-            rowCount } = this.props;
+        const { loadingVariantListSize, variantListSize, currentPage, rowCount } = this.props;
         const { loading, searchResults, sortMetadata } = this.state;
         return <React.Fragment>
             <style>{css}</style>
@@ -268,11 +266,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     <div style={styles.center}><Spinner /> </div>}</div>
             }
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
-                {/* <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
+                { <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
                 currentPage={currentPage} resultsSize={searchResults.length}
                 rowCount={rowCount}
                 onPageChange={(info) => { this.handlePageClick(info); }}
-                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/> */}
+                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/> }
             </div>}
         </React.Fragment>;
     }
