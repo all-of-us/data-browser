@@ -2,7 +2,7 @@ import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
 import { Variant } from 'publicGenerated';
 import * as React from 'react';
-import { TablePaginatorComponent } from './table-paginator.component';
+// import { TablePaginatorComponent } from './table-paginator.component';
 import { VariantRowComponent } from './variant-row.component';
 
 const styles = reactStyles({
@@ -152,7 +152,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
 
     handleRowCountChange = (data) => {
-        this.props.onRowCountChange({rowCount: data});
+        this.props.onRowCountChange({ rowCount: data });
     }
 
     sortClick(key: string) {
@@ -176,7 +176,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { loadingVariantListSize, variantListSize, currentPage, rowCount } = this.props;
+        const { loadingVariantListSize, variantListSize,
+            // currentPage,
+            rowCount } = this.props;
         const { loading, searchResults, sortMetadata } = this.state;
         return <React.Fragment>
             <style>{css}</style>
@@ -259,12 +261,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
                                         onClick={() => { this.sortClick('allele_frequency'); }}></i>}</React.Fragment>}
                         </div>
                     </div>
-                {searchResults && searchResults.map((variant, index) => {
-                    return <VariantRowComponent key={variant.variantId} variant={variant} />;
-                })}
-            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
-                        <div style={styles.center}><Spinner /> </div>}</div>
-        }
+                    {searchResults && searchResults.map((variant, index) => {
+                        return <VariantRowComponent key={variant.variantId} variant={variant} />;
+                    })}
+                </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
+                    <div style={styles.center}><Spinner /> </div>}</div>
+            }
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
                 {/* <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
                 currentPage={currentPage} resultsSize={searchResults.length}
