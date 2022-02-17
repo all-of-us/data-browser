@@ -259,46 +259,18 @@ export class VariantTableComponent extends React.Component<Props, State> {
                                         onClick={() => { this.sortClick('allele_frequency'); }}></i>}</React.Fragment>}
                         </div>
                     </div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('allele_count'); }}
-                    title='Click to sort'>Allele Count</span>
-                    {sortMetadata['allele_count']['sortActive'] &&
-                    <React.Fragment>{sortMetadata['allele_count']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                                onClick={() => {this.sortClick('allele_count'); }}></i>
-                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                                onClick={() => {this.sortClick('allele_count'); }}></i>}</React.Fragment>}
-                    </div>
-                    <div style={styles.headingItem}><span style={styles.headingLabel} onClick={() => {this.sortClick('allele_number'); }}
-                    title='Click to sort'>Allele Number</span>
-                    {sortMetadata['allele_number']['sortActive'] &&
-                    <React.Fragment>{sortMetadata['allele_number']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                                onClick={() => {this.sortClick('allele_number'); }}></i>
-                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                                onClick={() => {this.sortClick('allele_number'); }}></i>}</React.Fragment>}
-                    </div>
-                    <div style={{ ...styles.headingItem, ...styles.last }}><span style={styles.headingLabel}
-                    onClick={() => {this.sortClick('allele_frequency'); }} title='Click to sort'>Allele Frequency</span>
-                    {sortMetadata['allele_frequency']['sortActive'] &&
-                    <React.Fragment>{sortMetadata['allele_frequency']['sortDirection'] === 'asc' ?
-                    <i className='fas fa-arrow-down' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                                onClick={() => {this.sortClick('allele_frequency'); }}></i>
-                    : <i className='fas fa-arrow-up' style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}
-                                                onClick={() => {this.sortClick('allele_frequency'); }}></i>}</React.Fragment>}
-                    </div>
-                </div>
-                {searchResults && searchResults.map((variant, index) => {
-                    return <VariantRowComponent key={variant.variantId} variant={variant} />;
-                })}
-            </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
-                        <div style={styles.center}><Spinner /> </div>}</div>
-        }
+                    {searchResults && searchResults.map((variant, index) => {
+                        return <VariantRowComponent key={variant.variantId} variant={variant} />;
+                    })}
+                </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
+                    <div style={styles.center}><Spinner /> </div>}</div>
+            }
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
-                <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
+                { <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
                 currentPage={currentPage} resultsSize={searchResults.length}
                 rowCount={rowCount}
                 onPageChange={(info) => { this.handlePageClick(info); }}
-                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/>
+                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/> }
             </div>}
         </React.Fragment>;
     }
