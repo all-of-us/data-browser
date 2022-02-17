@@ -90,13 +90,6 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
     render() {
         const {currentPage, rowCount} = this.state;
         const {pageCount} = this.props;
-        const options = [];
-        for (let i = 0; i < pageCount; i++) {
-              const obj = {};
-              obj['value'] = i + 1;
-              obj['label'] = i + 1;
-              options.push(obj);
-        }
         return <React.Fragment>
                         <style>{css}</style>
                         <div style={styles.pageNum}>
@@ -109,12 +102,6 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
                                 </select>
                             </label>
                         </div>
-                        <div style={styles.pageNum}>
-                            <label className='page-drop-down-label'>Page:
-                                <select value={currentPage} onChange={this.handleChange.bind(this)}>
-                                    {options.map(({ value, label }, index) => <option value={value} key={value}>{label}</option>)}
-                                </select>
-                            </label></div>
                         <div style={styles.pageNum}>
                             <button style={currentPage !== 1 ? styles.pageButton : styles.disabledPageButton}
                                 disabled={currentPage === 1}

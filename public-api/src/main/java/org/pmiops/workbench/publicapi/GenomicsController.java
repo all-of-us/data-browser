@@ -143,6 +143,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String variantSearchTerm = searchVariantsRequest.getQuery();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
+        System.out.println(rowCount);
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
