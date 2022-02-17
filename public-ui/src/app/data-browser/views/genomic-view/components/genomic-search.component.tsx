@@ -89,8 +89,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     searchTerm={searchTerm}
                     onPageChange={(info: any) => this.handlePageChange(info)}
                     onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
-                    currentPage={currentPage}
-                    rowCount={rowCount}/>
+                    currentPage={currentPage} />
             </div>
         </React.Fragment>;
     }
