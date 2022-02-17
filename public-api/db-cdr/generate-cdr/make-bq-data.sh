@@ -84,8 +84,8 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
-create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata)
+create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata survey_version_metadata)
 
 for t in "${create_tables[@]}"
 do
@@ -96,7 +96,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map fmh_metadata fmh_fm_metadata fmh_conditions_member_metadata survey_metadata survey_version_metadata)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -134,12 +134,12 @@ if [ "$SEARCH_VAT" = true ]; then
          END
          ASC
   )  AS row_number
-  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_99k_v1\`
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_99k_v1\`
+     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v2\`
      GROUP BY vid
   )
   SELECT
@@ -644,6 +644,15 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_conditions_member_metadata\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_metadata\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.fmh_fm_metadata\`"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
