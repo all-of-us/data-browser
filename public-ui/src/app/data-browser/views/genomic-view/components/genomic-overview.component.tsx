@@ -3,7 +3,15 @@ import * as React from 'react';
 import { GenomicChartComponent } from './genomic-chart.component';
 
 const styles = reactStyles({
-
+    innerContainer: {
+        background: 'white',
+        marginLeft: '1em',
+        marginRight: '1em',
+        marginBottom: '1em',
+        marginTop: '0.5em',
+        padding: '2em',
+        paddingTop: '1em',
+    },
     title: {
         margin: '0',
     },
@@ -51,6 +59,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     participantCountsArr: any[] = [];
 
     componentDidMount() {
+        // { this.props.chartData && this.getGenomicChartData(); }
         this.getGenomicChartData();
     }
 
@@ -88,6 +97,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         const { raceEthData, sexAtBirthData, currentAgeData, participantCounts, loading } = this.state;
         const { participantCount } = this.props;
         return <React.Fragment>
+            <div style={styles.innerContainer}>
                 <div style={styles.headingLayout}>
                     <div>
                         <h3 style={styles.title}>Participant Demographics</h3>
@@ -102,6 +112,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                     <GenomicChartComponent counts={participantCounts[0]} title='Sex assigned at birth' data={sexAtBirthData} />
                     <GenomicChartComponent counts={participantCounts[0]} title='Current age' data={currentAgeData} />
                 </React.Fragment>}
+            </div>
         </React.Fragment>;
     }
 }
