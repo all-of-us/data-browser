@@ -266,11 +266,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         <div style={styles.center}><Spinner /> </div>}</div>
         }
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
-                <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
+                {/* <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}
                 currentPage={currentPage} resultsSize={searchResults.length}
                 rowCount={rowCount}
                 onPageChange={(info) => { this.handlePageClick(info); }}
-                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/>
+                onRowCountChange={(info) => { this.handleRowCountChange(info); }}/> */}
             </div>}
         </React.Fragment>;
     }
