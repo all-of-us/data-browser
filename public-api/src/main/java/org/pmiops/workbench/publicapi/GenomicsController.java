@@ -38,13 +38,14 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
-    private static final String genomicRegionRegex = "(?i)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
-    private static final String variantIdRegex = "(?i)(\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}";
+    private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
+    private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
+    private static final String WHERE_GENE_EXACT = " where lower(genes) = @genes";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
@@ -86,14 +87,18 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String contig = "(?i)(" + variantSearchTerm + ")";
+        String searchTerm = variantSearchTerm;
+        if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+            searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
+        }
+        String contig = "(?i)(" + searchTerm + ")";
         // Make sure the search term is not empty
-        if (!Strings.isNullOrEmpty(variantSearchTerm)) {
+        if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
-            if (variantSearchTerm.matches(genomicRegionRegex)) {
+            if (searchTerm.matches(genomicRegionRegex)) {
                 String[] regionTermSplit = new String[0];
-                if (variantSearchTerm.contains(":")) {
-                    regionTermSplit = variantSearchTerm.split(":");
+                if (searchTerm.contains(":")) {
+                    regionTermSplit = searchTerm.split(":");
                     contig = "(?i)(" + regionTermSplit[0] + ")";
                 }
                 finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
@@ -109,13 +114,18 @@ public class GenomicsController implements GenomicsApiDelegate {
                         System.out.println("Trying to convert bad number.");
                     }
                 }
-            } else if (variantSearchTerm.matches(variantIdRegex)) {
+            } else if (searchTerm.matches(variantIdRegex)) {
                 // Check if the search term matches variant id pattern
-                variant_id = variantSearchTerm;
+                variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                genes = "(?i)" + variantSearchTerm;
-                finalSql += WHERE_GENE;
+                if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+                    genes = searchTerm.toLowerCase();
+                    finalSql += WHERE_GENE_EXACT;
+                } else {
+                    genes = "(?i)" + searchTerm;
+                    finalSql += WHERE_GENE;
+                }
             }
         }
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
@@ -142,24 +152,22 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         String variantSearchTerm = searchVariantsRequest.getQuery();
         Integer page = searchVariantsRequest.getPageNumber();
-        Integer rowCount = searchVariantsRequest.getRowCount();
-        System.out.println(rowCount);
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
             if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.getSortActive()) {
-                    if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
-                        ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
-                    }
+                if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
+                }
             }
             SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
             if (geneColumnSortMetadata != null && geneColumnSortMetadata.getSortActive()) {
-                    if (geneColumnSortMetadata.getSortDirection().equals("desc")) {
-                        ORDER_BY_CLAUSE = " ORDER BY genes DESC";
-                    } else {
-                        ORDER_BY_CLAUSE = " ORDER BY genes ASC";
-                    }
+                if (geneColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY genes DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY genes ASC";
+                }
             }
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.getSortActive()) {
@@ -187,27 +195,27 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
             if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.getSortActive()) {
-                    if (alleleCountColumnSortMetadata.getSortDirection().equals("desc")) {
-                        ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
-                    } else {
-                        ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
-                    }
+                if (alleleCountColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
+                }
             }
             SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
             if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.getSortActive()) {
-                    if (alleleNumberColumnSortMetadata.getSortDirection().equals("desc")) {
-                        ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
-                    } else {
-                        ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
-                    }
+                if (alleleNumberColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
+                }
             }
             SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
             if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.getSortActive()) {
-                    if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("desc")) {
-                        ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
-                    } else {
-                        ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
-                    }
+                if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
+                }
             }
         }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
@@ -215,14 +223,18 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String contig = "(?i)(" + variantSearchTerm + ")";
+        String searchTerm = variantSearchTerm;
+        if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+            searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
+        }
+        String contig = "(?i)(" + searchTerm + ")";
         // Make sure the search term is not empty
-        if (!Strings.isNullOrEmpty(variantSearchTerm)) {
+        if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
-            if (variantSearchTerm.matches(genomicRegionRegex)) {
+            if (searchTerm.matches(genomicRegionRegex)) {
                 String[] regionTermSplit = new String[0];
-                if (variantSearchTerm.contains(":")) {
-                    regionTermSplit = variantSearchTerm.split(":");
+                if (searchTerm.contains(":")) {
+                    regionTermSplit = searchTerm.split(":");
                     contig = "(?i)(" + regionTermSplit[0] + ")";
                 }
                 finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
@@ -238,17 +250,22 @@ public class GenomicsController implements GenomicsApiDelegate {
                         System.out.println("Trying to convert bad number.");
                     }
                 }
-            } else if (variantSearchTerm.matches(variantIdRegex)) {
+            } else if (searchTerm.matches(variantIdRegex)) {
                 // Check if the search term matches variant id pattern
-                variant_id = variantSearchTerm;
+                variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                genes = "(?i)" + variantSearchTerm;
-                finalSql += WHERE_GENE;
+                if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
+                    genes = searchTerm.toLowerCase();
+                    finalSql += WHERE_GENE_EXACT;
+                } else {
+                    genes = "(?i)" + searchTerm;
+                    finalSql += WHERE_GENE;
+                }
             }
         }
         finalSql += ORDER_BY_CLAUSE;
-        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)* rowCount);
+        finalSql += " LIMIT 50 OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*50);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -263,14 +280,14 @@ public class GenomicsController implements GenomicsApiDelegate {
         List<Variant> variantList = new ArrayList<>();
         for (List<FieldValue> row : result.iterateAll()) {
             variantList.add(new Variant()
-                .variantId(bigQueryService.getString(row, rm.get("variant_id")))
-                .genes(bigQueryService.getString(row, rm.get("genes")))
-                .consequence(bigQueryService.getString(row, rm.get("cons_agg_str")))
-                .proteinChange(bigQueryService.getString(row, rm.get("protein_change")))
-                .clinicalSignificance(bigQueryService.getString(row, rm.get("clin_sig_agg_str")))
-                .alleleCount(bigQueryService.getLong(row, rm.get("allele_count")))
-                .alleleNumber(bigQueryService.getLong(row, rm.get("allele_number")))
-                .alleleFrequency(bigQueryService.getDouble(row, rm.get("allele_frequency"))));
+                    .variantId(bigQueryService.getString(row, rm.get("variant_id")))
+                    .genes(bigQueryService.getString(row, rm.get("genes")))
+                    .consequence(bigQueryService.getString(row, rm.get("cons_agg_str")))
+                    .proteinChange(bigQueryService.getString(row, rm.get("protein_change")))
+                    .clinicalSignificance(bigQueryService.getString(row, rm.get("clin_sig_agg_str")))
+                    .alleleCount(bigQueryService.getLong(row, rm.get("allele_count")))
+                    .alleleNumber(bigQueryService.getLong(row, rm.get("allele_number")))
+                    .alleleFrequency(bigQueryService.getDouble(row, rm.get("allele_frequency"))));
         }
         VariantListResponse variantListResponse = new VariantListResponse();
         variantListResponse.setItems(variantList);
