@@ -37,7 +37,6 @@ const styles = reactStyles({
     topBarLayout: {
         color: '#0079b8',
         display: 'flex',
-        // flexDirection: 'column',
         alignItems: 'center',
         borderBottom: '1px solid #216fb4',
         width: '100%'
