@@ -32,12 +32,12 @@ const styles = reactStyles({
         // display: 'grid
         gridTemplateColumns: '185px 85%',
         columnGap: '0.5rem',
-        marginTop: '1em'
+        marginTop: '1em',
+        maxWidth: '70rem'
     },
     topBarLayout: {
         color: '#0079b8',
         display: 'flex',
-        // flexDirection: 'column',
         alignItems: 'center',
         borderBottom: '1px solid #216fb4',
         width: '100%'
