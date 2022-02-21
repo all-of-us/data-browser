@@ -32,7 +32,8 @@ const styles = reactStyles({
         // display: 'grid
         gridTemplateColumns: '185px 85%',
         columnGap: '0.5rem',
-        marginTop: '1em'
+        marginTop: '1em',
+        maxWidth: '70rem'
     },
     topBarLayout: {
         color: '#0079b8',
