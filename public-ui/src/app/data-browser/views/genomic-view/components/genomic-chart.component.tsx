@@ -9,7 +9,8 @@ const styles = reactStyles({
     chartContainer: {
         background: 'rgba(33,111,180,0.05)',
         padding: '1em',
-        paddingTop: '.25em'
+        paddingTop: '.25em',
+        marginBottom: '1em' 
     },
     chartTitle: {
         fontSize: '1em',
