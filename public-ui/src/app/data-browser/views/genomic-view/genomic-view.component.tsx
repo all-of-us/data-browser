@@ -29,7 +29,6 @@ const styles = reactStyles({
         display: 'block'
     },
     viewLayout: {
-        // display: 'grid
         gridTemplateColumns: '185px 85%',
         columnGap: '0.5rem',
         marginTop: '1em',
@@ -65,7 +64,7 @@ const styles = reactStyles({
     },
     innerContainer: {
         background: 'white',
-        padding: '1em'
+        padding:'1em'
     },
     faqHeading: {
         fontSize: '0.8em',
