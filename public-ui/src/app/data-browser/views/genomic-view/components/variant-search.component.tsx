@@ -80,8 +80,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 </div>
                 <div style={styles.searchHelpText}>
                     Examples: <br></br>
-                    Gene: TP53, Variant: 17-7577097-C-T, <br></br>
-                    Genomic Region: chr17:7572855-7579987
+                    <strong>Gene:</strong> BRCA2, <strong>Variant:</strong> 13-32355250-T-C, <br></br>
+                    <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :

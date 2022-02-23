@@ -91,7 +91,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
             searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
         }
-        String contig = "(?i)(" + searchTerm + ")";
+        String contig = "(?i)(" + searchTerm + ")$";
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
@@ -99,7 +99,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (searchTerm.contains(":")) {
                     regionTermSplit = searchTerm.split(":");
-                    contig = "(?i)(" + regionTermSplit[0] + ")";
+                    contig = "(?i)(" + regionTermSplit[0] + ")$";
                 }
                 finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
@@ -227,7 +227,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
             searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
         }
-        String contig = "(?i)(" + searchTerm + ")";
+        String contig = "(?i)(" + searchTerm + ")$";
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
@@ -235,7 +235,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (searchTerm.contains(":")) {
                     regionTermSplit = searchTerm.split(":");
-                    contig = "(?i)(" + regionTermSplit[0] + ")";
+                    contig = "(?i)(" + regionTermSplit[0] + ")$";
                 }
                 finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
