@@ -64,7 +64,7 @@ const styles = reactStyles({
     },
     innerContainer: {
         background: 'white',
-        padding:'1em'
+        padding: '1em'
     },
     faqHeading: {
         fontSize: '0.8em',
@@ -184,7 +184,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         localStorage.setItem('searchWord', searchTerm);
         if (searchTerm !== '') {
             triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
-                 searchTerm, null);
+                searchTerm, null);
             this.setState({ loadingResults: true, currentPage: 1, rowCount: 10 }, () => { this.fetchVariantData(); });
         } else {
             this.setState({
@@ -227,7 +227,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     handleRowCountChange(info) {
-        this.setState({loadingResults: true, rowCount: +info.rowCount}, () => { this.fetchVariantData(); });
+        this.setState({ loadingResults: true, rowCount: +info.rowCount }, () => { this.fetchVariantData(); });
     }
 
     handleSortClick(sortMetadataTemp) {
@@ -235,7 +235,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     fetchVariantData() {
-        const {searchTerm, currentPage, sortMetadata, rowCount} = this.state;
+        const { searchTerm, currentPage, sortMetadata, rowCount } = this.state;
         let variantSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
         let geneSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
         let consequenceSortMetadata = new SortColumnDetailsClass(false, 'asc', 1);
@@ -283,10 +283,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             alleleCountSortMetadata,
             alleleNumberSortMetadata, alleleFrequencySortMetadata);
         const searchRequest = {
-                query: searchTerm,
-                pageNumber: currentPage,
-                rowCount: rowCount,
-                sortMetadata: sortMetadataObj
+            query: searchTerm,
+            pageNumber: currentPage,
+            rowCount: rowCount,
+            sortMetadata: sortMetadataObj
         };
         genomicsApi().searchVariants(searchRequest).then(
             results => {
@@ -322,7 +322,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     render() {
         const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-        participantCount, chartData, rowCount } = this.state;
+            participantCount, chartData, rowCount } = this.state;
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.pageHeader}>
