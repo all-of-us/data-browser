@@ -65,6 +65,7 @@ const styles = reactStyles({
     },
     variantExpanded: {
         position: 'sticky',
+        overflowX: 'hidden',
         width: '100%',
         background: '#ECF1F4',
         top: '0px',
