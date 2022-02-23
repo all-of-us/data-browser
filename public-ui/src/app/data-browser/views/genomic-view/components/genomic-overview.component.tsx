@@ -5,12 +5,6 @@ import { GenomicChartComponent } from './genomic-chart.component';
 const styles = reactStyles({
     innerContainer: {
         background: 'white',
-        marginLeft: '1em',
-        marginRight: '1em',
-        marginBottom: '1em',
-        marginTop: '0.5em',
-        padding: '2em',
-        paddingTop: '1em',
     },
     title: {
         margin: '0',
@@ -22,6 +16,7 @@ const styles = reactStyles({
     },
     headingLayout: {
         display: 'flex',
+        marginBottom: '1em',
         justifyContent: 'space-between',
         alignItems: 'flex-start'
     }
