@@ -14,7 +14,7 @@ const styles = reactStyles({
         borderRadius: '3px 3px 0 0',
         background: '#FAFAFA',
         marginTop: '0.5rem',
-        overflowX: 'auto',
+        overflowX: 'scroll',
         overflowY: 'hidden'
     },
     tableFrame: {
