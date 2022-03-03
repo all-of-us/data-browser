@@ -71,6 +71,7 @@ export const baseOptions = {
   tooltip: {
         followPointer: true,
         outside: false,
+        hideDelay: 0,
         formatter: function(tooltip) {
           if (this.point.y <= 20) {
             if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
@@ -263,8 +264,8 @@ export const genomicOptions = {
       shadow: false,
       headerFormat: '<div class="geno-chart-tooltip">',
       pointFormat: '{point.toolTipHelpText}',
-      footerFormat: '</div>'
-
+      footerFormat: '</div>',
+      hideDelay: 0
   },
   xAxis: {
       labels: {
