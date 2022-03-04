@@ -14,5 +14,5 @@ export const environment = {
   reactSurvey: true,
   ehrReact: false,
   testReact: false,
-  geno: false
+  geno: true
 };
