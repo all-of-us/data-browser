@@ -75,7 +75,7 @@ const css = `
 }
 .genomic-box .result-box{
     width:100%;
-    height:100%;
+    height:101.5%;
     margin-bottom:0;
 }
 .pm-boxes{
@@ -93,12 +93,9 @@ const css = `
 }
 
 .result-box {
-    /* height:auto; */
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    /* min-width: calc(((100%/12)*3) - 14px); */
     width: calc(((100% / 12) * 3) - 18px);
     margin-right: 18px;
     margin-bottom: 18px;
@@ -108,12 +105,9 @@ const css = `
 }
 
 .genomic-result-box {
-    /* height:auto; */
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    /* min-width: calc(((100%/12)*3) - 14px); */
     width: calc(((100% / 12) * 3) - 18px);
     margin-bottom: 18px;
     border-radius: 5px;
@@ -152,7 +146,7 @@ const css = `
         margin-bottom:18px;
     }
     .genomic-box {
-        height:90.4%;
+        height:auto;
     }
 
     .result-box:nth-of-type(2) {
@@ -194,7 +188,6 @@ const styles = reactStyles({
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
         width: 'calc(((100% / 12) * 3) - 18px)',
         marginRight: '18px',
         marginBottom: '18px',
@@ -210,7 +203,7 @@ const styles = reactStyles({
         paddingBottom: '3px',
         margin: '0',
         fontSize: '16px',
-        height: '20%',
+        height: '4.5rem',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
