@@ -56,7 +56,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
   graphToShow = GraphType.BiologicalSex;
   showTopConcepts: boolean;
   medlinePlusLink: string;
-  reactChart: boolean;
   graphType = GraphType;
   treeData: any;
   expanded = true;
@@ -91,7 +90,6 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit() {
     this.testReact = environment.testReact;
-    this.reactChart = environment.reactChart;
     this.ehrReact = environment.ehrReact;
     this.route.params.subscribe(params => {
       this.routeDomainId = params.id;

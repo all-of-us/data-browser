@@ -22,7 +22,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
   bsChartTitle = 'Sex Assigned At Birth';
   domainCountAnalysis: any;
   testReact: boolean;
-  reactChart: boolean;
   // Todo put constants in a class for use in other views
   chartType = 'bar';
 
@@ -62,7 +61,6 @@ export class PhysicalMeasurementsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.testReact = environment.testReact;
-    this.reactChart = environment.reactChart;
     this.searchText = localStorage.getItem('searchText');
     this.pmGroups = this.dbc.pmGroups;
 
