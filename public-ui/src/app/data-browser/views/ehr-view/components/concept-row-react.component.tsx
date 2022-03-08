@@ -324,8 +324,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                                         tooltipKey='conceptSynonyms' />
                 </div>
                 <HighlightReactComponent searchTerm={searchTerm} text={synonymsStr} />
-                <a tabIndex={tabIndex} className='toggle-link' onClick={() =>
-                this.setState({showMoreSynonyms: !this.state.showMoreSynonyms})}>
+                <a tabIndex={tabIndex} className='toggle-link'
+                onClick={(e) => {e.stopPropagation(); this.setState({showMoreSynonyms: !this.state.showMoreSynonyms}); }}>
                 {(synonymString.length > 100) ? (showMoreSynonyms ? ' See Less' : <React.Fragment><ClrIcon shape='ellipsis-horizontal'
                 style={{color: '#2691D0'}}/> See More</React.Fragment>) : ''}
                 </a>
@@ -337,7 +337,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                     <span className='drug-brands-meta'>Found in these commercially branded products</span>
                     <div>
                     <a tabIndex={tabIndex} className='toggle-link brands-link' style={styles.showMoreLink}
-                                    onClick={() => this.setState({showMoreDrugBrands: !this.state.showMoreDrugBrands})}>
+                    onClick={(e) => {e.stopPropagation(); this.setState({showMoreDrugBrands: !this.state.showMoreDrugBrands}); }}>
                                     {(concept.drugBrands.length > 10) ? (showMoreDrugBrands ?
                                     <React.Fragment>See Less
                                     <ClrIcon shape='caret' style={{color: '#2691D0'}} dir='down'/>
