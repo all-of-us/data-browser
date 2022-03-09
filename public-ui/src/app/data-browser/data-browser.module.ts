@@ -52,7 +52,6 @@ import { QuickSearchComponent } from './views/quick-search/quick-search.componen
 import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
 import { SurveyAnswerWrapperComponent } from './views/survey-view/components/survey-answer-react.component';
 import { SurveyQuestionWrapperComponent } from './views/survey-view/components/survey-question-react.component';
-import { SurveyViewComponent } from './views/survey-view/survey-view.component';
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
@@ -72,7 +71,6 @@ import { SurveyViewComponent } from './views/survey-view/survey-view.component';
     SurveyChartComponent,
     ChartComponent,
     ConceptChartsComponent,
-    SurveyViewComponent,
     ChartTopResultsComponent,
     ChartBaseComponent,
     SourcesComponent,
