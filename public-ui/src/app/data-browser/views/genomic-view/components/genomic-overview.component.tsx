@@ -92,7 +92,8 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         return <React.Fragment>
             <div style={styles.innerContainer}>
                 <div style={styles.headingLayout}>
-                        <p style={styles.desc}>Demographic data is self-reported by participants</p>
+                        <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and age of participants
+                        whose genomic data are available within the Researcher Workbench. </p>
                     <div>
                         <span>{participantCount} participants</span>
                     </div>

@@ -78,8 +78,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         return <React.Fragment>
             <div style={styles.titleBox}>
                 <p style={styles.boxHeading} ref={this.scrollDiv}>
-                    Perform preliminary exploration of genetic variant allele frequencies for a gene or genomic region.
-                    Drill down into specific variants to view select annotations and genetic ancestry associations. </p>
+                    Use the Variant Search to explore allele frequencies for a gene or genomic region. Drill down into
+                    specific variants to view select annotations and genetic ancestry associations. </p>
 
                 </div>
                 <VariantSearchComponent
