@@ -525,13 +525,13 @@ export const dBHomeComponent = withRouteData(
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
                 The Data Browser provides interactive views of the publicly-available <i>All of Us</i> Research Program participant data.
-                Electronic Health Record (EHR) data are derived from reports by health care providers. Genomic data are derived from biosamples
-                provided by participants. Physical measurements are taken at the time of participant enrollment.
-                Data from survey responses and wearables data are collected from participants on an ongoing basis.
+                Electronic Health Record (EHR) data are derived from reports by health care providers. Genomic data are
+                derived from biosamples provided by participants. Physical measurements are taken at the time of participant
+                enrollment. Data from survey responses and wearables data are collected from participants on an ongoing basis.
                 <br /><br />
                 In order to protect participant privacy, we have removed personal identifiers, rounded aggregate data to counts of 20,
-                and only included summary demographic information in the Data Browser. Detailed data are available for analysis in the Researcher Workbench.
-                <br /><br />
+                and only included summary demographic information in the Data Browser. Detailed data are available for analysis
+                in the Researcher Workbench. <br /><br />
                 <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
                 <div className='search-icon-container'>
