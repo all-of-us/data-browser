@@ -299,8 +299,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     {(!searchResults || (searchResults && searchResults.length === 0)) &&
                     <div style={styles.helpTextContainer}>
                     <div style={styles.helpText}>Enter a search query in the search bar above or get started with an example query:</div>
-                    <div style={styles.helpText}><strong>Gene:</strong> <div onClick={() => this.searchItem('BRCA2')} style={styles.helpSearchDiv}>BRCA2</div></div>
-                    <div style={styles.helpText}><strong>Variant:</strong> <div onClick={() => this.searchItem('13-32355250-T-C')} style={styles.helpSearchDiv}>13-32355250-T-C</div></div>
+                    <div style={styles.helpText}><strong>Gene:</strong> <div onClick={() => this.searchItem('BRCA2')}
+                    style={styles.helpSearchDiv}>BRCA2</div></div>
+                    <div style={styles.helpText}><strong>Variant:</strong> <div onClick={() => this.searchItem('13-32355250-T-C')}
+                    style={styles.helpSearchDiv}>13-32355250-T-C</div></div>
                     <div style={styles.helpText}><strong>Genomic region:</strong> <div onClick={() => this.searchItem('chr13:32355000-32375000')} style={styles.helpSearchDiv}>chr13:32355000-32375000</div></div>
                     </div>}
                     </div>
