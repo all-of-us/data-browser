@@ -13,14 +13,14 @@ const styles = reactStyles({
     padding: '14px'
   },
   mainMenuItem: {
-    color: 'white',
+    color: 'red',
     fontSize: '0.9rem',
     width: '100%',
     marginTop: '0.5rem',
     paddingBottom: '0.25rem',
   },
   mainMenuItemLink: {
-    color: 'white',
+    color: 'rgba(190,225,255,1)',
     fontFamily: 'GothamBold, Helvetica Neue, sans-serif',
     textTransform: 'uppercase'
   },
@@ -36,6 +36,12 @@ const styles = reactStyles({
 });
 
 const css = `
+  footer .db-container{
+    position: relative;
+    max-width: 1180px;
+    padding: 0;
+    margin: 0 auto;
+  }
   footer .foot-apply a {
     display: block;
     margin-top: 1rem;
