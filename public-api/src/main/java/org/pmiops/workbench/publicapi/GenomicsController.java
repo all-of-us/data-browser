@@ -119,12 +119,12 @@ public class GenomicsController implements GenomicsApiDelegate {
                 variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
-                    genes = searchTerm.toLowerCase();
-                    finalSql += WHERE_GENE_EXACT;
-                } else {
+                if (variantSearchTerm.startsWith("~")) {
                     genes = "(?i)" + searchTerm;
                     finalSql += WHERE_GENE;
+                } else {
+                    genes = searchTerm.toLowerCase();
+                    finalSql += WHERE_GENE_EXACT;
                 }
             }
         }
@@ -256,12 +256,12 @@ public class GenomicsController implements GenomicsApiDelegate {
                 variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
-                if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
-                    genes = searchTerm.toLowerCase();
-                    finalSql += WHERE_GENE_EXACT;
-                } else {
+                if (variantSearchTerm.startsWith("~")) {
                     genes = "(?i)" + searchTerm;
                     finalSql += WHERE_GENE;
+                } else {
+                    genes = searchTerm.toLowerCase();
+                    finalSql += WHERE_GENE_EXACT;
                 }
             }
         }
