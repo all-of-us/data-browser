@@ -53,8 +53,7 @@ const styles = reactStyles({
     helpTextContainer: {
         display: 'flex',
         height: '100%',
-        marginLeft: '20%',
-        marginRight: '20%',
+        margin: '0 auto',
         width: '60%',
         justifyContent: 'center',
         alignItems: 'flex-start',
