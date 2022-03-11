@@ -538,8 +538,15 @@ li.active-menu:before {
 }
 
 /* large screens */
-
+@media only screen and (min-width: 1530px) {
+  .site-branding-container {
+    transform: translateY(0px) !important;
+  }
+}
 @media only screen and (min-width: 1168px) {
+  .site-branding-container {
+    transform: translateY(-48px);
+  }
   .cta-bar {
     padding: 0 calc(10%);
   }
@@ -597,16 +604,12 @@ li.active-menu:before {
     width: auto;
   }
   .cta-bar {
-    padding-top: 14px;
     flex-wrap: nowrap;
     display: flex;
     align-items: flex-end;
   }
   .cta-bar aside p {
     white-space: nowrap;
-  }
-  .cta-bar .login-btn {
-    display: block;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li {
     border: none;
@@ -616,13 +619,13 @@ li.active-menu:before {
     top: 5px;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li > a {
-    padding: 10px 25px;
+    padding: 0.7rem 1.4rem 0.8rem;
     position: relative;
     white-space: nowrap;
-    top: 2px;
+    top: -2px;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a {
-    padding: 10px;
+  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a:hover svg {
+    stroke: #ffffff !important;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li.menu-item-has-children:before {
     content: none;
@@ -658,7 +661,7 @@ li.active-menu:before {
     padding-left: 0;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
     background: #fff;
-    top: 20px;
+    top: 37px;
     width: 300px;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > .icon_search > .sub-menu {
@@ -670,8 +673,9 @@ li.active-menu:before {
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > .icon_search a svg {
     stroke: #262262 !important;
   }
+
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
-    padding-left: 14px;
+    padding-left: 1em;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li ul.sub-menu {
     padding-left: 0;
@@ -737,7 +741,7 @@ li.active-menu:before {
     width: 2px;
     height: 32px;
     background: #262262;
-    margin: 0 1rem;
+    margin: 0 1em;
   }
   .site-branding-container .site-branding .logo .nih-logo {
     display: flex;
