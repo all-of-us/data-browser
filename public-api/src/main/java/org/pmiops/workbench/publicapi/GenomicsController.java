@@ -88,8 +88,8 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         String variant_id = "";
         String searchTerm = variantSearchTerm;
-        if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
-            searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
+        if (variantSearchTerm.startsWith("~")) {
+            searchTerm = variantSearchTerm.substring(1);
         }
         String contig = "(?i)(" + searchTerm + ")$";
         // Make sure the search term is not empty
@@ -225,8 +225,8 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         String variant_id = "";
         String searchTerm = variantSearchTerm;
-        if (variantSearchTerm.startsWith("\"") && variantSearchTerm.endsWith("\"") && variantSearchTerm.length() > 2) {
-            searchTerm = variantSearchTerm.substring(1, variantSearchTerm.length() - 1);
+        if (variantSearchTerm.startsWith("~")) {
+            searchTerm = variantSearchTerm.substring(1);
         }
         String contig = "(?i)(" + searchTerm + ")$";
         // Make sure the search term is not empty
