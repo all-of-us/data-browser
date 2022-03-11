@@ -98,7 +98,7 @@ export class RhHeader extends React.Component<{}, State> {
                     </ul>
                   </li>
                   <li className='nav_apply'>
-                    <a href='https://www.researchallofus.org/apply/'>APPLY</a>
+                    <a href='https://www.researchallofus.org/register/'>REGISTER</a>
                   </li>
                 </ul>
                 <div className='mobile-nav'>
