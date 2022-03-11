@@ -89,10 +89,10 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                             <strong>What is genetic ancestry?</strong>
                         </div>
                         <div style={styles.answer}>
-                            Genetic ancestry shows where an individual’s ancestors might have lived hundreds of years ago.
-                            This is because people whose ancestors lived in the same part of the world have similar patterns in their DNA.
-                            By comparing an individual’s DNA to the DNA of people who know their ancestry, we can estimate where an
-                            individual’s ancestors may have lived.
+                            Genetic ancestry shows the part of the world where an individual’s ancestors may have lived.
+                            People whose ancestors lived in the same region of the world have similar patterns in their DNA.
+                            By comparing an individual’s DNA to the DNA of others whose ancestry we know, we can estimate where
+                            an individual’s ancestors may have lived.
                         </div>
                         <div style={styles.question}>
                             <strong>How is genetic ancestry different from race and ethnicity?</strong>
@@ -129,13 +129,10 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
                             <strong>What are the limitations of the genetic ancestry analysis shown in the Variant Search?</strong>
                         </div>
                         <div style={styles.answer}>
-                            This resource is intended to provide only a broad look at genetic variation by genetic ancestry,
-                            but genetic ancestry is much more complex than what we convey in this browser. Genetic ancestry depends
-                            on how groups have migrated over time and who individuals in those groups reproduced with. Individuals may
-                            have a blend of multiple genetic ancestries. Genetic ancestry can be calculated at a more specific level
-                            than the broad geographic regions shown here. Even at more specific levels, genetic ancestry categories are
-                            by nature simplified. In reality, genetic ancestry varies on a continuum without neat categories.
-                            None of this is captured by the Variant Search resource.
+                            Genetic ancestry is more complex than what is included in the Data Browser.
+                            The available data is intended to provide a broad overview of genetic variation by ancestry.
+                            Genetic ancestry is linked to migration over time among populations. Individuals may have a
+                            blend of multiple ancestries. The specific details and categories aren't captured by the Variant Search.
                         </div>
                     </div>
                 </div>

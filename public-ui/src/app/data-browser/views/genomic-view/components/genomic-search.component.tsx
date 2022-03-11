@@ -78,13 +78,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         return <React.Fragment>
             <div style={styles.titleBox}>
                 <p style={styles.boxHeading} ref={this.scrollDiv}>
-                    Perform preliminary exploration of genetic variant allele frequencies for a gene or genomic region.
-                    Drill down into specific variants to view select annotations and genetic ancestry associations. </p>
-
+                    Use the Variant Search to explore allele frequencies for a gene or genomic region. Drill down into
+                    specific variants to view select annotations and genetic ancestry associations. </p>
                 </div>
                 <VariantSearchComponent
                     onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
                     loading={loadingVariantListSize}
+                    searchTerm={searchTerm}
                     variantListSize={variantListSize} />
                 <VariantTableComponent
                     loadingResults={loadingResults}
@@ -92,6 +92,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     variantListSize={variantListSize}
                     searchResults={searchResults}
                     searchTerm={searchTerm}
+                    onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
                     onRowCountChange={(info: any) => this.handleRowCountChange(info)}
                     onPageChange={(info: any) => this.handlePageChange(info)}
                     onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}

@@ -43,6 +43,7 @@ const css = `
 
 interface Props {
     onSearchTerm: Function;
+    searchTerm: string;
     variantListSize: number;
     loading: boolean;
 }
@@ -66,10 +67,18 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.props.onSearchTerm(val);
     }
 
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        const { searchTerm } = this.props;
+        if (prevProps.searchTerm !== searchTerm) {
+            this.setState({ searchWord: searchTerm });
+        }
+    }
+
     render() {
         const { searchWord } = this.state;
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
+        console.log(searchWord);
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
