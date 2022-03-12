@@ -49,6 +49,32 @@ const styles = reactStyles({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    helpTextContainer: {
+        display: 'flex',
+        height: '100%',
+        margin: '0 auto',
+        width: '60%',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        flexDirection: 'column'
+    },
+    helpText: {
+        margin: 0,
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontWeight: 100,
+        fontStyle: 'normal',
+        fontSize: '1em',
+        fontStretch: 'normal',
+        lineHeight: '1.47em',
+        letterSpacing: 'normal',
+        textAlign: 'left',
+        color: '#262262'
+    },
+    helpSearchDiv: {
+        display: 'inline',
+        textDecoration: 'underline',
+        cursor: 'pointer'
     }
 });
 
@@ -92,6 +118,7 @@ const css = `
 
 interface Props {
     onPageChange: Function;
+    onSearchTerm: Function;
     onSortClick: Function;
     onRowCountChange: Function;
     searchResults: Variant[];
@@ -173,6 +200,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
         this.setState({ sortMetadata: sortMetadata }, () => {
             this.props.onSortClick(this.state.sortMetadata);
         });
+    }
+
+    searchItem(searchTerm: string) {
+        this.props.onSearchTerm(searchTerm);
     }
 
     render() {
@@ -263,7 +294,17 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         return <VariantRowComponent key={variant.variantId} variant={variant} />;
                     })}
                 </div> : <div style={styles.tableFrame}>{(loading || loadingVariantListSize) &&
-                    <div style={styles.center}><Spinner /> </div>}</div>
+                    <div style={styles.center}><Spinner /> </div>}
+                    {(!searchResults || (searchResults && searchResults.length === 0)) &&
+                    <div style={styles.helpTextContainer}>
+                    <div style={styles.helpText}>Enter a search query in the search bar above or get started with an example query:</div>
+                    <div style={styles.helpText}><strong>Gene:</strong> <div onClick={() => this.searchItem('BRCA2')}
+                    style={styles.helpSearchDiv}>BRCA2</div></div>
+                    <div style={styles.helpText}><strong>Variant:</strong> <div onClick={() => this.searchItem('13-32355250-T-C')}
+                    style={styles.helpSearchDiv}>13-32355250-T-C</div></div>
+                    <div style={styles.helpText}><strong>Genomic region:</strong> <div onClick={() => this.searchItem('chr13:32355000-32375000')} style={styles.helpSearchDiv}>chr13:32355000-32375000</div></div>
+                    </div>}
+                    </div>
             }
             {(!loading && !loadingVariantListSize && searchResults && variantListSize > rowCount) && <div className='paginator'>
                 { <TablePaginatorComponent pageCount={Math.ceil(variantListSize / rowCount)} variantListSize={variantListSize}

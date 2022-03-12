@@ -16,17 +16,18 @@ import * as React from 'react';
 
 const css = `
 .disclaimer-btn {
-    padding: 1rem 2rem;
-    color: #f9f9fa;
-    text-transform: uppercase;
-    border-radius: 0.3rem;
-    background: #816492;
+    font-size: 15px;
+    color: #337ab7;
+    cursor: pointer;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    text-decoration: underline;
 }
 
 .disclaimer-btn:hover {
-    background: #262262;
-    color: #fff;
-  }
+    color: #262262;
+}
 
   .icons img {
     width: 100px;
@@ -42,6 +43,9 @@ const css = `
 }
 .icons img {
     text-align: center;
+}
+.icon-link{
+    color:#2b266d;
 }
 .result-bottom-link {
     font-size: 15px;
@@ -283,7 +287,10 @@ const styles = reactStyles({
         display: 'flex',
         alignItems: 'baseline',
         justifyContent: 'center',
-        width: '100%'
+        width: '100%',
+        color: '#2b266d'
+
+
     },
     resultBodyDescription: {
         height: '7em'
@@ -402,7 +409,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                 </span>
                 {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>
                     {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Genotyping Array dataset</span>
-                        </React.Fragment>}
+                </React.Fragment>}
                 {
                     (questionCount &&
                         <div style={styles.resultBodyItem}>
@@ -535,7 +542,6 @@ export const dBHomeComponent = withRouteData(
                     Please read the public data use statement available below for additional information about our
                     unique dataset and how to
                     acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
-
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
                 <div className='search-icon-container'>

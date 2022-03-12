@@ -577,14 +577,14 @@ input[type="password"]:focus {
   } */
 
 a a:link a:visited {
-  color: #bee1ff;
+  color: #2b266d;
 }
 
 .toggle-link {
   cursor: pointer;
 }
 .copy-alert {
-  border: 1px solid #2f2e7e;
+  border: 1px solid #2b266d;
   background: white;
   border-radius: 2px;
   font-size: 10px;

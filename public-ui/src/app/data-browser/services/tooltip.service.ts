@@ -9,10 +9,8 @@ export interface Tooltip {
 // Const for tooltip component
 export const tooltips = {
     'Search Across Data Types': {
-        texts: ['Conduct a search across all ', 'All of Us',
-            `Research Program data types, including surveys, physical measurements taken at the time of participant enrollment
-             (“program physical measurements”), and electronic health record (EHR) data. Search using common keywords and/or
-             billing or data standards codes (i.e., SNOMED, CPT, ICD). `]
+        texts: [`Search across all non-genomic data types by using common keywords and/or billing or data standards codes
+        (i.e., SNOMED, CPT, ICD). Searchable genomic variant data are available within the Genomic Variants section.`]
     },
     'raceEthnicityQuestionHelpText': {
         texts: [`Through "The Basics" program survey, participants self-report race and ethnicity information to the`,
@@ -100,7 +98,7 @@ export const tooltips = {
     'health care access & utilization': `This survey asks questions about participants' access
                                            to and use of health care.`,
     'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
-    'genomics': 'Genomic Variants',
+    'genomics': 'Search and explore genomic variant data available within the dataset.',
     'pmValueChartHelpText': 'Values provide the numeric result of the ' +
         'physical measurements taken at the time of participant enrollment. ' +
         'Unit of measurement displayed has not been converted so each data ' +
@@ -210,10 +208,8 @@ export const getTooltip = (textKey) => {
 export class TooltipService {
     tooltips = {
         'Search Across Data Types': {
-            texts: ['Conduct a search across all ', 'All of Us',
-                `Research Program data types, including surveys, physical measurements taken at the time of participant enrollment
-             (“program physical measurements”), and electronic health record (EHR) data. Search using common keywords and/or
-             billing or data standards codes (i.e., SNOMED, CPT, ICD). `]
+            texts: [`Search across all non-genomic data types by using common keywords and/or billing or data standards codes (i.e., SNOMED, CPT, ICD).
+            Searchable genomic variant data are available within the Genomic Variants section.`]
         },
         'raceEthnicityQuestionHelpText': {
             texts: [`Through "The Basics" program survey, participants self-report race and ethnicity information to the`,
@@ -300,7 +296,7 @@ export class TooltipService {
         'health care access & utilization': `This survey asks questions about participants' access
                                            to and use of health care.`,
         'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
-        'genomics': 'Genomic Variants',
+        'genomics': 'Search and explore genomic variant data available within the dataset.',
         'pmValueChartHelpText': 'Values provide the numeric result of the ' +
             'physical measurements taken at the time of participant enrollment. ' +
             'Unit of measurement displayed has not been converted so each data ' +

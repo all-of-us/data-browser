@@ -7,7 +7,7 @@ import { reactStyles } from 'app/utils';
 import * as React from 'react';
 
 const css = `
-.disclaimer-btn {
+.ok-btn {
     padding: 1rem 2rem;
     color: #f9f9fa;
     text-transform: uppercase;
@@ -16,7 +16,7 @@ const css = `
     float: right;
 }
 
-.disclaimer-btn:hover {
+.ok-btn:hover {
     background: #262262;
     color: #fff;
   }
@@ -140,7 +140,7 @@ export const PopUpReactComponent =
           <h2 style={styles.cardTitle}>{helptexts[props.helpText].title}</h2>
           <div>{helptexts[props.helpText].statement}</div>
           <div style={styles.btnContainer}>
-            <button onClick={props.onClose} className='disclaimer-btn'>OK</button>
+            <button onClick={props.onClose} className='ok-btn'>OK</button>
           </div>
         </div>
       </div>
