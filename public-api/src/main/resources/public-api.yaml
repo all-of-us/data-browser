@@ -1219,6 +1219,10 @@ definitions:
         type: object
         description: sort metadata
         $ref: "#/definitions/SortMetadata"
+      filterMetadata:
+        type: object
+        description: filters
+        $ref: "#/definitions/GenomicFilters"
 
   SearchConceptsRequest:
     type: object
