@@ -121,7 +121,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
-                    genes = "(?i)" + searchTerm;;
+                    genes = "(?i)" + searchTerm;
                     finalSql += WHERE_GENE;
                 } else {
                     genes = searchTerm.toLowerCase();
