@@ -501,7 +501,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select 0 as id, 3000 as analysis_id, 'Genomics' as stratum_3, count(person) as count_value, 0 as source_count_value from
 (select distinct p.person_id as person from \`${WORKBENCH_PROJECT}.${GENOMICS_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
-where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen')
 union distinct
 select distinct p.person_id as person from \`${WORKBENCH_PROJECT}.${GENOMICS_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id);"
