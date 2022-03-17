@@ -44,8 +44,9 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
-    private static final String WHERE_GENE = " where REGEXP_CONTAINS(genes, @genes)";
-    private static final String WHERE_GENE_EXACT = " where lower(genes) = @genes";
+    private static final String WHERE_GENE = ", unnest(split(genes, ',')) AS gene\n" +
+            " where REGEXP_CONTAINS(gene, @genes)";
+    private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ','))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
@@ -120,7 +121,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_VARIANT_ID;
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
-                    genes = "(?i)" + searchTerm;
+                    genes = "(?i)" + searchTerm;;
                     finalSql += WHERE_GENE;
                 } else {
                     genes = searchTerm.toLowerCase();
