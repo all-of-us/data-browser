@@ -517,7 +517,7 @@ union all
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from
 \`${WORKBENCH_PROJECT}.${GENOMICS_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
-where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002');"
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen');"
 
 echo "Getting genomic biological sex counts"
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -530,7 +530,7 @@ group by 4
 union all
 select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${WORKBENCH_PROJECT}.${GENOMICS_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
-where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen')
 group by 4;"
 
 echo "Getting genomic race/ ethnicity counts"
@@ -554,7 +554,7 @@ group by 4
 union all
 select 0 as id, 3503 as analysis_id, '0' as stratum_1,race_eth as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${WORKBENCH_PROJECT}.${GENOMICS_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
-where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen')
 group by 4;"
 
 echo "Getting genomic current age counts"
@@ -576,7 +576,7 @@ when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
 when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'wgs' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${WORKBENCH_PROJECT}.${GENOMICS_DATASET}.prep_wgs_metadata\` a join \`${BQ_PROJECT}.${BQ_DATASET}._deid_map\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
-where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002')
+where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen')
 group by 4;"
 
 echo "Getting physical measurement participant counts by gender"
