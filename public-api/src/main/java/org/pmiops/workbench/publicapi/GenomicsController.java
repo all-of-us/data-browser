@@ -351,6 +351,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
+        GenomicFilters filters = searchVariantsRequest.getFilterMetadata();
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
@@ -416,6 +417,18 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
+        String WHERE_GENE_NOT_IN = "";
+        if (filters != null) {
+            List<GenomicFilterOption> geneFilters = filters.getGene();
+            if (geneFilters != null && geneFilters.size() > 0) {
+                for(int i=0; i < geneFilters.size(); i++) {
+                    GenomicFilterOption filter = geneFilters.get(i);
+                    if (!filter.getChecked()) {
+                        WHERE_GENE_NOT_IN += " AND NOT REGEXP_CONTAINS(genes, " + filter.getOption() + ")";
+                    }
+                }
+            }
+        }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -461,6 +474,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                     finalSql += WHERE_GENE_EXACT;
                 }
             }
+        }
+        if (WHERE_GENE_NOT_IN.length() > 0) {
+            finalSql += WHERE_GENE_NOT_IN;
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
