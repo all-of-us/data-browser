@@ -454,6 +454,24 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CON_NOT_IN = WHERE_CON_NOT_IN.substring(0, WHERE_CON_NOT_IN.length()-1);
             WHERE_CON_NOT_IN += ")) ";
         }
+        String WHERE_CLIN_NOT_IN = " AND NOT EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
+        boolean clinFilterFlag = false;
+        if (filters != null) {
+            List<GenomicFilterOption> clinFilters = filters.getClinicalSignificance();
+            if (clinFilters != null && clinFilters.size() > 0) {
+                for(int i=0; i < clinFilters.size(); i++) {
+                    GenomicFilterOption filter = clinFilters.get(i);
+                    if (!filter.getChecked()) {
+                        WHERE_CLIN_NOT_IN += "\"" + filter.getOption() + "\",";
+                    }
+                }
+            }
+        }
+        if (WHERE_CLIN_NOT_IN.substring(WHERE_CLIN_NOT_IN.length() - 1).equals(",")) {
+            clinFilterFlag = true;
+            WHERE_CLIN_NOT_IN = WHERE_CLIN_NOT_IN.substring(0, WHERE_CLIN_NOT_IN.length()-1);
+            WHERE_CLIN_NOT_IN += ")) ";
+        }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -505,6 +523,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         if (conFilterFlag) {
             finalSql += WHERE_CON_NOT_IN;
+        }
+        if (clinFilterFlag) {
+            finalSql += WHERE_CLIN_NOT_IN;
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
