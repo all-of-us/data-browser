@@ -426,7 +426,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
                     if (!filter.getChecked()) {
-                        WHERE_GENE_NOT_IN += "\"" + filter.getOption() + "\",";
+                        WHERE_GENE_NOT_IN += "\"" + filter.getOption().toLowerCase() + "\",";
                     }
                 }
             }
@@ -435,6 +435,24 @@ public class GenomicsController implements GenomicsApiDelegate {
             geneFilterFlag = true;
             WHERE_GENE_NOT_IN = WHERE_GENE_NOT_IN.substring(0, WHERE_GENE_NOT_IN.length()-1);
             WHERE_GENE_NOT_IN += ")) ";
+        }
+        String WHERE_CON_NOT_IN = " AND NOT EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
+        boolean conFilterFlag = false;
+        if (filters != null) {
+            List<GenomicFilterOption> conFilters = filters.getConsequence();
+            if (conFilters != null && conFilters.size() > 0) {
+                for(int i=0; i < conFilters.size(); i++) {
+                    GenomicFilterOption filter = conFilters.get(i);
+                    if (!filter.getChecked()) {
+                        WHERE_CON_NOT_IN += "\"" + filter.getOption() + "\",";
+                    }
+                }
+            }
+        }
+        if (WHERE_CON_NOT_IN.substring(WHERE_CON_NOT_IN.length() - 1).equals(",")) {
+            conFilterFlag = true;
+            WHERE_CON_NOT_IN = WHERE_CON_NOT_IN.substring(0, WHERE_CON_NOT_IN.length()-1);
+            WHERE_CON_NOT_IN += ")) ";
         }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
@@ -484,6 +502,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         if (geneFilterFlag) {
             finalSql += WHERE_GENE_NOT_IN;
+        }
+        if (conFilterFlag) {
+            finalSql += WHERE_CON_NOT_IN;
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
