@@ -418,17 +418,23 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
-        String WHERE_GENE_NOT_IN = "";
+        String WHERE_GENE_NOT_IN = " AND NOT EXISTS ( select gene from UNNEST (split(lower(genes), ', ')) as gene where gene in (";
+        boolean geneFilterFlag = false;
         if (filters != null) {
             List<GenomicFilterOption> geneFilters = filters.getGene();
             if (geneFilters != null && geneFilters.size() > 0) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
                     if (!filter.getChecked()) {
-                        WHERE_GENE_NOT_IN += " AND NOT REGEXP_CONTAINS(genes, " + filter.getOption() + ")";
+                        WHERE_GENE_NOT_IN += "\"" + filter.getOption() + "\",";
                     }
                 }
             }
+        }
+        if (WHERE_GENE_NOT_IN.substring(WHERE_GENE_NOT_IN.length() - 1).equals(",")) {
+            geneFilterFlag = true;
+            WHERE_GENE_NOT_IN = WHERE_GENE_NOT_IN.substring(0, WHERE_GENE_NOT_IN.length()-1);
+            WHERE_GENE_NOT_IN += ")) ";
         }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
@@ -476,11 +482,12 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
-        if (WHERE_GENE_NOT_IN.length() > 0) {
+        if (geneFilterFlag) {
             finalSql += WHERE_GENE_NOT_IN;
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
+        System.out.println(finalSql);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
