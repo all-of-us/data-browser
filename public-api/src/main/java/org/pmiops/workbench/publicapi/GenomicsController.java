@@ -425,7 +425,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             if (geneFilters != null && geneFilters.size() > 0) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
-                    if (!filter.getChecked()) {
+                    if (!filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
                         WHERE_GENE_NOT_IN += "\"" + filter.getOption().toLowerCase() + "\",";
                     }
                 }
@@ -463,6 +463,8 @@ public class GenomicsController implements GenomicsApiDelegate {
                     GenomicFilterOption filter = clinFilters.get(i);
                     if (!filter.getChecked()) {
                         WHERE_CLIN_NOT_IN += "\"" + filter.getOption() + "\",";
+                    } else if(!filter.getChecked() && Strings.isNullOrEmpty(filter.getOption())) {
+                        WHERE_CLIN_NOT_IN = " AND ARRAY_LENGTH(clinical_significance) != 0" + WHERE_CLIN_NOT_IN;
                     }
                 }
             }
