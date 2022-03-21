@@ -474,6 +474,39 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CLIN_NOT_IN = WHERE_CLIN_NOT_IN.substring(0, WHERE_CLIN_NOT_IN.length()-1);
             WHERE_CLIN_NOT_IN += ")) ";
         }
+        /* TODO Change this or clean this up when things are final. I am not yet sure how we will be dealing with these
+        String WHERE_ALLELE_COUNT_IN = " AND allele_count ";
+        if (filters != null) {
+            GenomicFilterOption alleleCountFilter = filters.getAlleleCount();
+            if (alleleCountFilter != null) {
+                if (filter.getChecked()) {
+                    // TODO Add a check here if max and min has changed from default
+                        WHERE_ALLELE_COUNT_IN += " >= " + max " AND <= " + MIN;
+                }
+            }
+        }
+        String WHERE_ALLELE_NUMBER_IN = " AND allele_number ";
+        if (filters != null) {
+            GenomicFilterOption alleleNumFilter = filters.getAlleleNumber();
+            if (alleleNumFilter != null) {
+                if (filter.getChecked()) {
+                    // TODO Add a check here if max and min has changed from default
+                        WHERE_ALLELE_NUMBER_IN += " >= " + max " AND <= " + MIN;
+                }
+            }
+        }
+        String WHERE_ALLELE_FREQ_IN = " AND allele_frequency ";
+        if (filters != null) {
+            GenomicFilterOption alleleFreqFilter = filters.getAlleleFrequency();
+            if (alleleFreqFilter != null) {
+                if (filter.getChecked()) {
+                    // TODO Add a check here if max and min has changed from default
+                        WHERE_ALLELE_FREQ_IN += " >= " + max " AND <= " + MIN;
+                }
+            }
+        }
+
+         */
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -529,6 +562,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (clinFilterFlag) {
             finalSql += WHERE_CLIN_NOT_IN;
         }
+        // TODO: Add allele count / number / frequency filter
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
         System.out.println(finalSql);
