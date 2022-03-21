@@ -98,11 +98,11 @@ paths:
       description: Gets the size of variant result list
       operationId: "getVariantSearchResultSize"
       parameters:
-        - in: query
-          name: variant-search-term
-          type: string
-          required: true
-          description: variant search term
+        - in: body
+          name: request
+          description: variant result size request
+          schema:
+            $ref: "#/definitions/VariantResultSizeRequest"
       responses:
         200:
           description: Variant result list size
@@ -1196,6 +1196,21 @@ definitions:
       - GENO_GENDER_ANALYSIS
       - GENO_AGE_ANALYSIS
       - GENO_RACE_ANALYSIS
+
+  VariantResultSizeRequest:
+    type: object
+    required:
+      - query
+    properties:
+      query:
+        type: string
+        description: >
+          A query string that can be used to match a subset of the name (case-insensitively),
+          the entire code value (case-insensitively), or the concept ID.
+      filterMetadata:
+        type: object
+        description: filters
+        $ref: "#/definitions/GenomicFilters"
 
   SearchVariantsRequest:
     type: object

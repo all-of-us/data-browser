@@ -326,6 +326,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
+        // TODO Add same filters from search results api
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
