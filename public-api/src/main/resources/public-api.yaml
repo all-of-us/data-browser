@@ -141,6 +141,24 @@ paths:
           schema:
             $ref: "#/definitions/VariantInfo"
 
+  /v1/genomics/genomic-filter-options:
+    get:
+      tags:
+        - genomics
+      description: Gets the size of each genomic filter option
+      operationId: "getGenomicFilterOptions"
+      parameters:
+        - in: query
+          name: variant-search-term
+          type: string
+          required: true
+          description: variant search term
+      responses:
+        200:
+          description: A collection of filters
+          schema:
+            $ref: "#/definitions/GenomicFilters"
+
   # Data Browser #######################################################################
   /v1/config:
     get:
@@ -1467,6 +1485,37 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Variant"
+
+  GenomicFilters:
+    type: object
+    properties:
+      gene:
+        description: Gene Filters
+        type: "array"
+        items:
+          $ref: "#/definitions/GenomicFilterOption"
+      consequence:
+        description: Consequence Filters
+        type: "array"
+        items:
+          $ref: "#/definitions/GenomicFilterOption"
+      clinicalSignificance:
+        description: Clinical Significance Filters
+        type: "array"
+        items:
+          $ref: "#/definitions/GenomicFilterOption"
+      alleleCount:
+        description: Allele Count Range Filter
+        type: object
+        $ref: "#/definitions/GenomicFilterOption"
+      alleleNumber:
+        description: Allele Number Range Filter
+        type: object
+        $ref: "#/definitions/GenomicFilterOption"
+      alleleFrequency:
+        description: Allele Frequency Range Filter
+        type: object
+        $ref: "#/definitions/GenomicFilterOption"
 
   VariantInfo:
     type: object
