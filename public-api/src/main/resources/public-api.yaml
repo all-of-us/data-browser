@@ -1517,6 +1517,28 @@ definitions:
         type: object
         $ref: "#/definitions/GenomicFilterOption"
 
+  GenomicFilterOption:
+    type: object
+    properties:
+      option:
+        description: Filter Name
+        type: string
+      count:
+        description: count
+        type: integer
+        format: int64
+      min:
+        description: min value
+        type: integer
+        format: int64
+      max:
+        description: max value
+        type: integer
+        format: int64
+      checked:
+        description: boolean flag
+        type: boolean
+
   VariantInfo:
     type: object
     required:
