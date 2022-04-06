@@ -68,26 +68,25 @@ public class GenomicsController implements GenomicsApiDelegate {
             " unnest(split(genes, ', ')) gene\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_CON = " group by genes),\n" +
             "b as\n" +
-            "(select 'Consequence' as option, '' as genes, " +
-            "(SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as conseq, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant\n";
-    private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by 3),\n" +
+            "(select 'Consequence' as option, '' as genes, conseq, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
+            "from ${projectId}.${dataSetId}.wgs_variant, unnest(consequence) AS conseq\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by conseq),\n" +
             "c as\n" +
-            "(select 'Clinical Significance' as option, '' as genes, '' as consequence, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_significance, \n" +
+            "(select 'Clinical Significance' as option, '' as genes, '' as consequence, clin as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, count(*) as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant\n";
-    private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by 4),\n" +
+            "from ${projectId}.${dataSetId}.wgs_variant, unnest(clinical_significance) AS clin\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by clin),\n" +
             "d as \n" +
             "(select 'Allele Count' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, 0 as clin_count,\n" +
             "min(allele_count) as min_count, max(allele_count) as max_count\n" +
-            "from `aou-db-prod.genomics_v1.wgs_variant`\n";
+            "from ${projectId}.${dataSetId}.wgs_variant\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER = "),\n" +
             "e as \n" +
             "(select 'Allele Number' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, 0 as clin_count,\n" +
             "min(allele_number) as min_count, max(allele_number) as max_count\n" +
-            "from `aou-db-prod.genomics_v1.wgs_variant`\n";
+            "from ${projectId}.${dataSetId}.wgs_variant\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_UNION = ")" +
             "select * from a \n" +
             "union all \n" +

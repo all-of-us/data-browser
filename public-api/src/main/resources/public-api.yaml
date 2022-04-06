@@ -1535,6 +1535,16 @@ definitions:
         description: max value
         type: integer
         format: int64
+      minFreq:
+        description: min Allele Frequency
+        type: number
+        format: float
+        default: 0
+      maxFreq:
+        description: max Allele Frequency
+        type: number
+        format: float
+        default: 1
       checked:
         description: boolean flag
         type: boolean
