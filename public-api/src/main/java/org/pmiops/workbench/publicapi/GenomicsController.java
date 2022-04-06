@@ -61,28 +61,30 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency from ${projectId}.${dataSetId}.wgs_variant";
 
     private static final String FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
-            "(select 'Gene' as option, gene, '' as conseq, '' as clin_significance, count(*) as gene_count, 0 as con_count, " +
+            "(select 'Gene' as option, genes as genes, '' as conseq, '' as clin_significance, count(*) as gene_count, " +
+            "0 as con_count, " +
             "0 as clin_count, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant tj cross join\n" +
-            "     unnest(split(genes, ', ')) gene\n";
-    private static final String FILTER_OPTION_SQL_TEMPLATE_CON = " group by gene),\n" +
+            " unnest(split(genes, ', ')) gene\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_CON = " group by genes),\n" +
             "b as\n" +
-            "(select 'Consequence' as option, '' as gene, conseq, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant, unnest(consequence) AS conseq\n";
-    private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by conseq),\n" +
+            "(select 'Consequence' as option, '' as genes, " +
+            "(SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as conseq, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
+            "from ${projectId}.${dataSetId}.wgs_variant\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by 3),\n" +
             "c as\n" +
-            "(select 'Clinical Significance' as option, '' as gene, '' as consequence, clin as clin_significance, \n" +
+            "(select 'Clinical Significance' as option, '' as genes, '' as consequence, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, count(*) as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant, unnest(clinical_significance) AS clin\n";
-    private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by clin),\n" +
+            "from ${projectId}.${dataSetId}.wgs_variant\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by 4),\n" +
             "d as \n" +
-            "(select 'Allele Count' as option, '' as gene, '' as consequence, '' as clin_significance, \n" +
+            "(select 'Allele Count' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, 0 as clin_count,\n" +
             "min(allele_count) as min_count, max(allele_count) as max_count\n" +
             "from `aou-db-prod.genomics_v1.wgs_variant`\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER = "),\n" +
             "e as \n" +
-            "(select 'Allele Number' as option, '' as gene, '' as consequence, '' as clin_significance, \n" +
+            "(select 'Allele Number' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, 0 as clin_count,\n" +
             "min(allele_number) as min_count, max(allele_number) as max_count\n" +
             "from `aou-db-prod.genomics_v1.wgs_variant`\n";
@@ -398,10 +400,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 if (variantSearchTerm.startsWith("~")) {
                     genes = "(?i)" + searchTerm;
                     finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
+                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE +
+                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE +
                             FILTER_OPTION_SQL_TEMPLATE_UNION;
                 } else {
                     genes = searchTerm.toLowerCase();
@@ -414,6 +416,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
+        System.out.println("**********************");
+        System.out.println(finalSql);
+        System.out.println("**********************");
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -433,7 +438,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         GenomicFilterOption alleleNumberFilter = new GenomicFilterOption();
         for (List<FieldValue> row : result.iterateAll()) {
             String option = bigQueryService.getString(row, rm.get("option"));
-            String gene = bigQueryService.getString(row, rm.get("gene"));
+            String gene = bigQueryService.getString(row, rm.get("genes"));
             String conseq = bigQueryService.getString(row, rm.get("conseq"));
             String clinSignificance = bigQueryService.getString(row, rm.get("clin_significance"));
             Long geneCount = bigQueryService.getLong(row, rm.get("gene_count"));
