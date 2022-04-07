@@ -178,7 +178,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                     loadingVariantListSize: false
                 });
             }
-        );
+        ).catch(e => {
+            console.log(e, 'error');
+        });
     }
 
     getVariantSearch(searchTerm: string) {
