@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableList;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.CommonStorageEnums;
 import org.pmiops.workbench.model.SearchVariantsRequest;
+import org.pmiops.workbench.model.VariantResultSizeRequest;
 import org.pmiops.workbench.model.SortMetadata;
 import org.pmiops.workbench.model.SortColumnDetails;
 
@@ -118,7 +119,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
     @Override
-    public ResponseEntity<Long> getVariantSearchResultSize(String variantSearchTerm) {
+    public ResponseEntity<Long> getVariantSearchResultSize(VariantResultSizeRequest variantResultSizeRequest) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -129,6 +130,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+        String variantSearchTerm = variantResultSizeRequest.getQuery();
         String searchTerm = variantSearchTerm;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);

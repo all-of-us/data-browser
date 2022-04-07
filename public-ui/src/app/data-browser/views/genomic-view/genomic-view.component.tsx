@@ -167,16 +167,18 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     getSearchSize(searchTerm: string) {
         this.setState({ loadingVariantListSize: true });
-        genomicsApi().getVariantSearchResultSize(searchTerm).then(
+        const variantSizeRequest = {
+                    query: searchTerm,
+                    filterMetadata: null
+        };
+        genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
             result => {
                 this.setState({
                     variantListSize: searchTerm !== '' ? result : 0,
                     loadingVariantListSize: false
                 });
             }
-        ).catch(e => {
-            console.log(e, 'error');
-        });
+        );
     }
 
     getVariantSearch(searchTerm: string) {
