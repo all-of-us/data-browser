@@ -469,14 +469,14 @@ public class GenomicsController implements GenomicsApiDelegate {
             } else if (option.equals("Allele Count")) {
                 genomicFilterOption.setOption("");
                 genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(true);
+                genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(minCount);
                 genomicFilterOption.setMax(maxCount);
                 alleleCountFilter = genomicFilterOption;
             } else if (option.equals("Allele Number")) {
                 genomicFilterOption.setOption("");
                 genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(true);
+                genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(minCount);
                 genomicFilterOption.setMax(maxCount);
                 alleleNumberFilter = genomicFilterOption;
@@ -485,7 +485,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         GenomicFilterOption alleleFrequencyFilter = new GenomicFilterOption();
         alleleFrequencyFilter.setOption("");
         alleleFrequencyFilter.setCount(0L);
-        alleleFrequencyFilter.setChecked(true);
+        alleleFrequencyFilter.setChecked(false);
         alleleFrequencyFilter.setMin(0L);
         alleleFrequencyFilter.setMax(1L);
 
