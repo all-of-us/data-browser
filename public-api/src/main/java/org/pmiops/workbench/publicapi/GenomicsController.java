@@ -70,12 +70,12 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String FILTER_OPTION_SQL_TEMPLATE_CON = " group by genes),\n" +
             "b as\n" +
             "(select 'Consequence' as option, '' as genes, conseq, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant, unnest(consequence) AS conseq\n";
+            "from ${projectId}.${dataSetId}.wgs_variant left join unnest(consequence) AS conseq\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by conseq),\n" +
             "c as\n" +
             "(select 'Clinical Significance' as option, '' as genes, '' as consequence, clin as clin_significance, \n" +
             "0 as gene_count, 0 as con_count, count(*) as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant, unnest(clinical_significance) AS clin\n";
+            "from ${projectId}.${dataSetId}.wgs_variant left join unnest(clinical_significance) AS clin\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by clin),\n" +
             "d as \n" +
             "(select 'Allele Count' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
@@ -174,7 +174,13 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
         }
         String WHERE_GENE_NOT_IN = " AND lower(genes) not in (";
+        String WHERE_CON_NOT_IN = " AND NOT EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
+        String WHERE_CON_NOT_NULL = "";
+        String WHERE_CLIN_NOT_IN = " AND NOT EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
+        String WHERE_CLIN_NOT_NULL = "";
         boolean geneFilterFlag = false;
+        boolean conFilterFlag = false;
+        boolean clinFilterFlag = false;
         if (filters != null) {
             List<GenomicFilterOption> geneFilters = filters.getGene();
             if (geneFilters != null && geneFilters.size() > 0) {
@@ -185,16 +191,63 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
+            List<GenomicFilterOption> conFilters = filters.getConsequence();
+            if (conFilters != null && conFilters.size() > 0) {
+                for(int i=0; i < conFilters.size(); i++) {
+                    GenomicFilterOption filter = conFilters.get(i);
+                    if (!filter.getChecked()) {
+                        if (!Strings.isNullOrEmpty(filter.getOption())) {
+                            WHERE_CON_NOT_IN += "\"" + filter.getOption() + "\",";
+                        } else {
+                            WHERE_CON_NOT_NULL = " AND NOT ARRAY_LENGTH(consequence) = 0";
+                        }
+                    }
+                }
+            }
+            List<GenomicFilterOption> clinFilters = filters.getClinicalSignificance();
+            if (clinFilters != null && clinFilters.size() > 0) {
+                for(int i=0; i < clinFilters.size(); i++) {
+                    GenomicFilterOption filter = clinFilters.get(i);
+                    if (!filter.getChecked()) {
+                        if (!Strings.isNullOrEmpty(filter.getOption())) {
+                            WHERE_CLIN_NOT_IN += "\"" + filter.getOption() + "\",";
+                        } else {
+                            WHERE_CLIN_NOT_NULL = " AND NOT ARRAY_LENGTH(clinical_significance) = 0";
+                        }
+                    }
+                }
+            }
         }
         if (WHERE_GENE_NOT_IN.substring(WHERE_GENE_NOT_IN.length() - 1).equals(",")) {
             geneFilterFlag = true;
             WHERE_GENE_NOT_IN = WHERE_GENE_NOT_IN.substring(0, WHERE_GENE_NOT_IN.length()-1);
             WHERE_GENE_NOT_IN += ") ";
         }
+        if (WHERE_CON_NOT_IN.substring(WHERE_CON_NOT_IN.length() - 1).equals(",")) {
+            conFilterFlag = true;
+            WHERE_CON_NOT_IN = WHERE_CON_NOT_IN.substring(0, WHERE_CON_NOT_IN.length()-1);
+            WHERE_CON_NOT_IN += ")) ";
+        }
+        if (WHERE_CLIN_NOT_IN.substring(WHERE_CLIN_NOT_IN.length() - 1).equals(",")) {
+            clinFilterFlag = true;
+            WHERE_CLIN_NOT_IN = WHERE_CLIN_NOT_IN.substring(0, WHERE_CLIN_NOT_IN.length()-1);
+            WHERE_CLIN_NOT_IN += ")) ";
+        }
         if (geneFilterFlag) {
             finalSql += WHERE_GENE_NOT_IN;
         }
-        System.out.println(finalSql);
+        if (conFilterFlag) {
+            finalSql += WHERE_CON_NOT_IN;
+        }
+        if (clinFilterFlag) {
+            finalSql += WHERE_CLIN_NOT_IN;
+        }
+        if (WHERE_CON_NOT_NULL.length() > 0) {
+            finalSql += WHERE_CON_NOT_NULL;
+        }
+        if (WHERE_CLIN_NOT_NULL.length() > 0) {
+            finalSql += WHERE_CLIN_NOT_NULL;
+        }
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
