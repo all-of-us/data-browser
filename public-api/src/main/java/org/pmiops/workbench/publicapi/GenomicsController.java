@@ -178,6 +178,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         String WHERE_CON_NOT_NULL = "";
         String WHERE_CLIN_NOT_IN = " AND NOT EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
         String WHERE_CLIN_NOT_NULL = "";
+        String ALLELE_COUNT_FILTER = "";
+        String ALLELE_NUMBER_FILTER = "";
+        String ALLELE_FREQUENCY_FILTER = "";
         boolean geneFilterFlag = false;
         boolean conFilterFlag = false;
         boolean clinFilterFlag = false;
@@ -217,6 +220,24 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
+            GenomicFilterOption acFilter = filters.getAlleleCount();
+            if (acFilter != null && acFilter.getChecked()) {
+                Long minVal = acFilter.getMin();
+                Long maxVal = acFilter.getMax();
+                ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
+            }
+            GenomicFilterOption anFilter = filters.getAlleleNumber();
+            if (anFilter != null && anFilter.getChecked()) {
+                Long minVal = anFilter.getMin();
+                Long maxVal = anFilter.getMax();
+                ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
+            }
+            GenomicFilterOption afFilter = filters.getAlleleFrequency();
+            if (afFilter != null && afFilter.getChecked()) {
+                Float minVal = afFilter.getMinFreq();
+                Float maxVal = afFilter.getMaxFreq();
+                ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
+            }
         }
         if (WHERE_GENE_NOT_IN.substring(WHERE_GENE_NOT_IN.length() - 1).equals(",")) {
             geneFilterFlag = true;
@@ -248,6 +269,16 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (WHERE_CLIN_NOT_NULL.length() > 0) {
             finalSql += WHERE_CLIN_NOT_NULL;
         }
+        if (ALLELE_COUNT_FILTER.length() > 0) {
+            finalSql += ALLELE_COUNT_FILTER;
+        }
+        if (ALLELE_NUMBER_FILTER.length() > 0) {
+            finalSql += ALLELE_NUMBER_FILTER;
+        }
+        if (ALLELE_FREQUENCY_FILTER.length() > 0) {
+            finalSql += ALLELE_FREQUENCY_FILTER;
+        }
+        System.out.println(finalSql);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
