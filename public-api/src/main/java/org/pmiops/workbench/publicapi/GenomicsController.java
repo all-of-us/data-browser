@@ -49,7 +49,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
             " where REGEXP_CONTAINS(gene, @genes)";
-    private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(genes, @genes)";
+    private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(gene, @genes)";
     private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
@@ -65,7 +65,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "(select 'Gene' as option, genes as genes, '' as conseq, '' as clin_significance, count(*) as gene_count, " +
             "0 as con_count, " +
             "0 as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant tj cross join\n" +
+            "from ${projectId}.${dataSetId}.wgs_variant tj, \n" +
             " unnest(split(genes, ', ')) gene\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_CON = " group by genes),\n" +
             "b as\n" +
@@ -131,6 +131,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         String variant_id = "";
         String variantSearchTerm = variantResultSizeRequest.getQuery();
+        GenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
         String searchTerm = variantSearchTerm;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
@@ -172,6 +173,28 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
+        String WHERE_GENE_NOT_IN = " AND lower(genes) not in (";
+        boolean geneFilterFlag = false;
+        if (filters != null) {
+            List<GenomicFilterOption> geneFilters = filters.getGene();
+            if (geneFilters != null && geneFilters.size() > 0) {
+                for(int i=0; i < geneFilters.size(); i++) {
+                    GenomicFilterOption filter = geneFilters.get(i);
+                    if (!filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
+                        WHERE_GENE_NOT_IN += "\"" + filter.getOption().toLowerCase() + "\",";
+                    }
+                }
+            }
+        }
+        if (WHERE_GENE_NOT_IN.substring(WHERE_GENE_NOT_IN.length() - 1).equals(",")) {
+            geneFilterFlag = true;
+            WHERE_GENE_NOT_IN = WHERE_GENE_NOT_IN.substring(0, WHERE_GENE_NOT_IN.length()-1);
+            WHERE_GENE_NOT_IN += ") ";
+        }
+        if (geneFilterFlag) {
+            finalSql += WHERE_GENE_NOT_IN;
+        }
+        System.out.println(finalSql);
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
