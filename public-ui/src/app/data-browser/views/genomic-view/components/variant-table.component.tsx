@@ -104,7 +104,7 @@ const css = `
         display: flex;
         flex-direction: row;
         gap: 2em;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
     @media (max-width: 600px) {
         .paginator {
