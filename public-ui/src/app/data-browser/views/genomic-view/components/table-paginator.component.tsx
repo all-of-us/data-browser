@@ -4,7 +4,6 @@ import * as React from 'react';
 const styles = reactStyles({
     pageNum: {
         alignSelf: 'flex-end',
-        paddingRight: '1em',
         fontSize: '12px',
         marginTop: '1em',
         marginBottom: '1em'
@@ -12,18 +11,20 @@ const styles = reactStyles({
     pageButton: {
         textDecoration: 'none',
         display: 'inline-block',
-        marginRight: '2em',
+        marginRight: '1em',
+        marginLeft: '1em',
         color: 'black',
-        border: 'none',
+        border: '1px solid rgb(33, 111, 180)',
         background: 'none',
         cursor: 'pointer'
     },
     disabledPageButton: {
         textDecoration: 'none',
         display: 'inline-block',
-        marginRight: '2em',
+        marginRight: '1em',
+        marginLeft: '1em',
         color: 'grey',
-        border: 'none',
+        border: '1px solid rgb(33, 111, 180)',
         background: 'none',
         cursor: 'none',
         pointerEvents: 'none'
@@ -41,6 +42,7 @@ const css = `
         display: flex;
         flex-direction: row;
         align-items: center;
+        padding-left: 1em;
         justify-content: space-between;
         gap: 1em;
     }
@@ -93,7 +95,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
         return <React.Fragment>
                         <style>{css}</style>
                         <div style={styles.pageNum}>
-                            <label className='page-drop-down-label'>Rows per page:
+                            <label className='page-drop-down-label'>Showing at a time
                                 <select value={rowCount} onChange={this.rowCountChange.bind(this)}>
                                     <option value={10}>10</option>
                                     <option value={25}>25</option>
@@ -109,6 +111,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
                                     this.props.onPageChange(this.state.currentPage); }); } } >
                                 <i className='fas fa-angle-left' style={currentPage !== 1 ?
                                     styles.enabledIcon : styles.disabledIcon}/></button>
+                                    Page {currentPage} of {pageCount}
                             <button style={currentPage !== pageCount ? styles.pageButton : styles.disabledPageButton}
                                 disabled={currentPage === pageCount}
                             onClick={(e) => {this.setState({currentPage: this.state.currentPage + 1}, () => {

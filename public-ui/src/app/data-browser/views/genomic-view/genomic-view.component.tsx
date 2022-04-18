@@ -93,6 +93,7 @@ interface State {
     participantCount: string;
     chartData: any;
     sortMetadata: any;
+    filterMetadata: any;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -146,7 +147,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             rowCount: 10,
             participantCount: null,
             chartData: null,
-            sortMetadata: null
+            sortMetadata: null,
+            filterMetadata: null,
         };
     }
 
@@ -167,7 +169,11 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     getSearchSize(searchTerm: string) {
         this.setState({ loadingVariantListSize: true });
-        genomicsApi().getVariantSearchResultSize(searchTerm).then(
+        const variantSizeRequest = {
+                    query: searchTerm,
+                    filterMetadata: this.state.filterMetadata
+        };
+        genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
             result => {
                 this.setState({
                     variantListSize: searchTerm !== '' ? result : 0,
@@ -179,8 +185,19 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         });
     }
 
+    getFilterMetadata(searchTerm: string) {
+        genomicsApi().getGenomicFilterOptions(searchTerm).then(
+            result => {
+                this.setState({filterMetadata: result});
+            }
+        ).catch(e => {
+            console.log(e, 'error');
+        });
+    }
+
     getVariantSearch(searchTerm: string) {
         this.getSearchSize(searchTerm);
+        this.getFilterMetadata(searchTerm);
         localStorage.setItem('searchWord', searchTerm);
         if (searchTerm !== '') {
             triggerEvent('genomicsPageSearch', 'Search', 'Search In Genomics Data', 'Genomic Search',
