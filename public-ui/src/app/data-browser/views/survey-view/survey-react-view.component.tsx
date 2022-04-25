@@ -178,7 +178,7 @@ interface State {
 
 export const SurveyViewReactComponent = withRouteData(class extends React.Component<{}, State> {
     search = _.debounce((val) => {
-        this.setState({loading: true}, () => {this.fetchSurvey(this.state.surveyId);});
+        this.setState({loading: true}, () => {this.fetchSurvey(this.state.surveyId); });
         if (val) {
                 triggerEvent('surveySearch', 'Search', 'Search Inside Survey ' + this.state.survey.name, 'Survey Search',
                               val, null);

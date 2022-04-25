@@ -264,8 +264,6 @@ const styles = reactStyles({
         fontSize: '35px',
         lineHeight: '1em'
     },
-    variantResultText: {
-    },
     dBTitle: {
         textAlign: 'center',
         margin: 0,
@@ -560,7 +558,8 @@ export const dBHomeComponent = withRouteData(
         }
 
         render() {
-            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo, variantListSize, loadingVariantListSize} = this.state;
+            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo, variantListSize,
+            loadingVariantListSize} = this.state;
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
@@ -612,7 +611,8 @@ export const dBHomeComponent = withRouteData(
                 {(loading || loadingVariantListSize) && <Spinner />}
                 {(!loading && !loadingVariantListSize) &&
                     <section style={styles.results}>
-                        {(domainInfo.length > 0) && <React.Fragment><h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                        {(domainInfo.length > 0) && <React.Fragment><h5 style={{ ...globalStyles.secondaryDisplay,
+                        ...styles.resultHeading }}>
                             EHR Domains</h5>
 
                         <div className='result-boxes'>
@@ -633,7 +633,8 @@ export const dBHomeComponent = withRouteData(
                                     </h5>
                                     <div className='genomic-box'>
                                         <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo}
-                                            domainType='genomics' variantListSize={variantListSize} loadingVariantListSize={loadingVariantListSize}/>
+                                            domainType='genomics' variantListSize={variantListSize}
+                                            loadingVariantListSize={loadingVariantListSize}/>
                                     </div>
                                 </div>}
                                 {(physicalMeasurementsInfo.length > 0) && <div className='pm-boxes'>

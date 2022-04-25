@@ -199,8 +199,10 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
                     })
                 }
                 {   (variantSearchResultSize > 0) &&
-                    <div key="genomics-results"> {variantSearchResultSize} {(variantSearchResultSize > 1) ? 'results' : 'result'} available in genomic data:
-                        <a style={styles.domainResult} onClick={() => this.handleOnClick(variantSearchResultSize, 'genomic-variants')}>genomic-variants</a>
+                    <div key='genomics-results'> {variantSearchResultSize} {(variantSearchResultSize > 1) ? 'results' : 'result'}
+                    available in genomic data:
+                        <a style={styles.domainResult} onClick={() => this.handleOnClick(variantSearchResultSize, 'genomic-variants')}>
+                        genomic-variants</a>
                     </div>
                 }
             </div>
