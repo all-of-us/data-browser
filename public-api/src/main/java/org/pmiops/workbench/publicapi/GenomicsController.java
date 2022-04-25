@@ -43,12 +43,16 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
+    private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
     private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
             " where REGEXP_CONTAINS(gene, @genes)";
+    private static final String WHERE_RS_NUMBER_CONTAINS = ", unnest(rs_number) AS rsid\n" +
+            " where REGEXP_CONTAINS(rsid, @rs_id)";
+    private static final String WHERE_RS_NUMBER_EXACT = " where @rs_id in unnest(rs_number)";
     private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(gene, @genes)";
     private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
@@ -130,6 +134,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+        String rs_id = "";
         String variantSearchTerm = variantResultSizeRequest.getQuery();
         GenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
         String searchTerm = variantSearchTerm;
@@ -163,6 +168,14 @@ public class GenomicsController implements GenomicsApiDelegate {
                 // Check if the search term matches variant id pattern
                 variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
+            } else if (searchTerm.matches(rsNumberRegex)) {
+                if (variantSearchTerm.startsWith("~")) {
+                    rs_id = "(?i)" + searchTerm;
+                    finalSql += WHERE_RS_NUMBER_CONTAINS;
+                } else {
+                    rs_id = searchTerm;
+                    finalSql += WHERE_RS_NUMBER_EXACT;
+                }
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
                     genes = "(?i)" + searchTerm;
@@ -284,6 +297,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("low", QueryParameterValue.int64(low))
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .addNamedParameter("genes", QueryParameterValue.string(genes))
+                .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
         qjc = bigQueryService.filterBigQueryConfig(qjc);
@@ -374,6 +388,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+        String rs_id = "";
         String searchTerm = variantSearchTerm;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
@@ -405,6 +420,14 @@ public class GenomicsController implements GenomicsApiDelegate {
                 // Check if the search term matches variant id pattern
                 variant_id = searchTerm;
                 finalSql += WHERE_VARIANT_ID;
+            } else if (searchTerm.matches(rsNumberRegex)) {
+                if (variantSearchTerm.startsWith("~")) {
+                    rs_id = "(?i)" + searchTerm;
+                    finalSql += WHERE_RS_NUMBER_CONTAINS;
+                } else {
+                    rs_id = searchTerm;
+                    finalSql += WHERE_RS_NUMBER_EXACT;
+                }
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
                     genes = "(?i)" + searchTerm;
@@ -423,6 +446,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("low", QueryParameterValue.int64(low))
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .addNamedParameter("genes", QueryParameterValue.string(genes))
+                .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
         qjc = bigQueryService.filterBigQueryConfig(qjc);
@@ -457,6 +481,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+        String rs_id = "";
         String searchTerm = variantSearchTerm;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
@@ -503,6 +528,24 @@ public class GenomicsController implements GenomicsApiDelegate {
                         FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_VARIANT_ID +
                         FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_VARIANT_ID +
                         FILTER_OPTION_SQL_TEMPLATE_UNION;
+            } else if (searchTerm.matches(rsNumberRegex)) {
+                if (variantSearchTerm.startsWith("~")) {
+                    rs_id = "(?i)" + searchTerm;
+                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_CONTAINS +
+                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_CONTAINS +
+                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_CONTAINS +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_CONTAINS +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_CONTAINS +
+                            FILTER_OPTION_SQL_TEMPLATE_UNION;
+                } else {
+                    rs_id = searchTerm;
+                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_EXACT +
+                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_EXACT +
+                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_EXACT +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_EXACT +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_EXACT +
+                            FILTER_OPTION_SQL_TEMPLATE_UNION;
+                }
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
                     genes = "(?i)" + searchTerm;
@@ -529,6 +572,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("low", QueryParameterValue.int64(low))
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .addNamedParameter("genes", QueryParameterValue.string(genes))
+                .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
         qjc = bigQueryService.filterBigQueryConfig(qjc);

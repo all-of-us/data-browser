@@ -299,9 +299,11 @@ export const EhrViewReactComponent = withRouteData(
             };
         }
         domainTotals = _.debounce(() => {
-            this.getDomainTotals();
-            this.getTopConcepts();
-            this.changeUrl();
+            this.setState({loading: true}, () => {
+                this.getDomainTotals();
+                this.getTopConcepts();
+                this.changeUrl();
+            });
         }, 1000);
 
         componentDidMount() {

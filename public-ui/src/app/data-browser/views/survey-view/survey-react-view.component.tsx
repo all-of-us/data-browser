@@ -178,7 +178,7 @@ interface State {
 
 export const SurveyViewReactComponent = withRouteData(class extends React.Component<{}, State> {
     search = _.debounce((val) => {
-        this.fetchSurvey(this.state.surveyId);
+        this.setState({loading: true}, () => {this.fetchSurvey(this.state.surveyId);});
         if (val) {
                 triggerEvent('surveySearch', 'Search', 'Search Inside Survey ' + this.state.survey.name, 'Survey Search',
                               val, null);
@@ -209,7 +209,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
     }
 
     fetchSurvey(domain) {
-
         const { searchWord, surveyId } = this.state;
         let fetchDomain = surveyId;
         if (domain && surveyId !== domain) {
@@ -217,7 +216,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         }
         api.getDomainTotals(searchWord, 1, 1).then(
             (data: any) => {
-                console.log(data);
                 data.surveyModules.forEach(survey => {
                     const surveyRoute = survey.conceptId === 43528895 ? 'health-care-access-and-utilization' :
                         survey.name.split(' ').join('-').toLowerCase();
@@ -302,7 +300,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
     processSurveyQuestions(results: any) {
         const survey = results.survey;
         const questions = results.questions.items;
-        console.log(questions);
         this.setDefaults(questions, 0, survey);
     }
 

@@ -41,6 +41,7 @@ interface Props {
     currentPage: number;
     rowCount: number;
     participantCount: string;
+    searchTerm: string;
 }
 
 interface State {
@@ -55,6 +56,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.state = {
             searchTerm: null,
         };
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        const { searchTerm } = this.props;
+        if (prevProps.searchTerm !== searchTerm) {
+            this.setState({ searchTerm: searchTerm });
+        }
     }
 
     handlePageChange(info) {

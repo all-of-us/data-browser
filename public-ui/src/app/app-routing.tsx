@@ -102,6 +102,14 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
           }})}
     />
     <AppRoute
+      path='/genomic-variants/:search'
+      component={() => GenomicViewComponent(
+        {routeData: {
+            title: 'Genomic Variants',
+            breadcrumb: {value: 'Genomic Variants'}
+          }})}
+    />
+    <AppRoute
       path='/physical-measurements'
       component={() => PMReactComponent(
         {routeData: {
