@@ -526,6 +526,7 @@ export const dBHomeComponent = withRouteData(
 
         render() {
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo } = this.state;
+            const noResults = (domainInfo.length === 0 && physicalMeasurementsInfo.length === 0 && surveyInfo.length === 0);
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
@@ -577,8 +578,8 @@ export const dBHomeComponent = withRouteData(
                 {(loading) && <Spinner />}
                 {!loading &&
                     <section style={styles.results}>
-                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
-                            EHR Domains</h5>
+                        {(domainInfo.length > 0) && <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                            EHR Domains</h5>}
 
                         <div className='result-boxes'>
                             {
@@ -632,6 +633,7 @@ export const dBHomeComponent = withRouteData(
                                 </div>
                             </React.Fragment>
                         }
+                        {noResults && <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>0 results</h5>}
                     </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
