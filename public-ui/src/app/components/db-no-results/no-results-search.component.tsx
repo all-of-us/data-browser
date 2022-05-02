@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { dataBrowserApi } from 'app/services/swagger-fetch-clients';
+import { dataBrowserApi, genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { domainToRoute, surveyIdToRoute } from 'app/utils/constants';
 import { navigateByUrl } from 'app/utils/navigation';
@@ -56,11 +56,14 @@ interface Props {
 }
 
 interface State {
+    searchValue: string;
     domainInfoResults: Array<any>;
     surveyModuleResults: Array<any>;
     pmResults: Array<any>;
     fitbitResults: Array<any>;
     loading: boolean;
+    variantSearchResultSize: number;
+    genomicSearchLoading: boolean;
 }
 
 export class NoResultSearchComponent extends React.Component<Props, State> {
@@ -68,10 +71,13 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             domainInfoResults: [],
+            searchValue: props.searchValue,
             surveyModuleResults: [],
             pmResults: [],
             fitbitResults: [],
-            loading: true
+            loading: true,
+            genomicSearchLoading: true,
+            variantSearchResultSize: 0
         };
     }
 
@@ -79,8 +85,16 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
         this.fetchDomainTotals();
     }
 
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        const {searchValue} = this.props;
+        if (prevProps.searchValue !== searchValue) {
+            this.setState({searchValue: searchValue});
+        }
+    }
+
     fetchDomainTotals() {
-        const {searchValue, measurementTestFilter, measurementOrderFilter} = this.props;
+        const {measurementTestFilter, measurementOrderFilter} = this.props;
+        const {searchValue} = this.state;
         dataBrowserApi().getDomainTotals(searchValue, measurementTestFilter, measurementOrderFilter).then(result => {
             result.domainInfos = result.domainInfos.filter(domain => domain.standardConceptCount > 0);
             this.setState({
@@ -92,6 +106,18 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
                 loading: false
             });
         });
+        const variantSizeRequest = {
+            query: searchValue,
+            filterMetadata: null
+        };
+        genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
+            result => {
+                this.setState({genomicSearchLoading: false, variantSearchResultSize: result});
+            }
+        ).catch(e => {
+            this.setState({genomicSearchLoading: false, variantSearchResultSize: 0});
+            console.log(e, 'error');
+       });
     }
 
     handleOnClick(domainInfo: any, type: string) {
@@ -116,16 +142,20 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
             url += 'fitbit';
             localStorage.setItem('searchText', searchValue);
             navigateByUrl(url);
+        } else if (type === 'genomic-variants') {
+            url += 'genomic-variants';
+            url += '/' + searchValue;
+            navigateByUrl(url);
         }
     }
 
     render() {
-        const {searchValue} = this.props;
-        const {loading, domainInfoResults, surveyModuleResults, pmResults, fitbitResults} = this.state;
+        const {loading, domainInfoResults, surveyModuleResults, pmResults, fitbitResults, genomicSearchLoading,
+        variantSearchResultSize, searchValue} = this.state;
         return <React.Fragment>
             <style>{styleCss}</style>
             <div style={styles.noResults}>
-                { loading ?
+                { (loading || genomicSearchLoading) ?
                 <div style={styles.loadingDiv}>
                     <p style={styles.loadingText}>Searching whole site for <strong>{searchValue} </strong></p>
                     <div style={styles.spinnerDiv}><LoadingDots /></div>
@@ -167,6 +197,13 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
                           <a style={styles.domainResult} onClick={() => this.handleOnClick(fitbitInfo, 'fitbit')}>{fitbitInfo.name}</a>
                        </div>;
                     })
+                }
+                {   (variantSearchResultSize > 0) &&
+                    <div key='genomics-results'> {variantSearchResultSize} {(variantSearchResultSize > 1) ? 'results' : 'result'}
+                    available in genomic data:
+                        <a style={styles.domainResult} onClick={() => this.handleOnClick(variantSearchResultSize, 'genomic-variants')}>
+                        genomic-variants</a>
+                    </div>
                 }
             </div>
         </React.Fragment>;

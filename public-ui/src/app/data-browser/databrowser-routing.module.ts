@@ -92,6 +92,17 @@ const routes: Routes = [
           }
         },
         {
+          path: 'genomic-variants/:search',
+          component: AppRouting,
+          canActivate: [IsSafeGuard],
+          data: {
+            title: 'Genomic Variants',
+            breadcrumb: {
+              value: 'Genomic Variants'
+            }
+          }
+        },
+        {
           path: 'physical-measurements',
           component: AppRouting,
           data: {

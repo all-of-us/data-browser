@@ -309,6 +309,8 @@ interface ResultLinkProps {
     domainType: string;
     wgsParticipantCount: number;
     microarrayParticipantCount: number;
+    variantListSize: number;
+    loadingVariantListSize: boolean;
 }
 
 export const ResultLinksComponent = (class extends React.Component<ResultLinkProps> {
@@ -373,7 +375,7 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
     }
     render() {
         const { name, description, questionCount, standardConceptCount, domain, participantCount, domainType, searchWord,
-            wgsParticipantCount, microarrayParticipantCount } = this.props;
+            wgsParticipantCount, microarrayParticipantCount, variantListSize, loadingVariantListSize } = this.props;
         return <div
             onClick={() => this.resultClick(this.props)}
             className='result-box'>
@@ -410,6 +412,8 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                 {(domainType === 'genomics') && <React.Fragment><div style={styles.resultStat}>
                     {microarrayParticipantCount.toLocaleString()} </div> <span>participants in the Genotyping Array dataset</span>
                 </React.Fragment>}
+                {(domainType === 'genomics' && searchWord && !loadingVariantListSize && variantListSize > 0) &&
+                    <span style={styles.resultBodyItem}><div style={styles.resultStat}>{variantListSize}</div> variants found</span>}
                 {
                     (questionCount &&
                         <div style={styles.resultBodyItem}>
@@ -438,6 +442,8 @@ interface State {
     surveyInfo: any[];
     domainInfo: any[];
     genomicInfo: any;
+    variantListSize: number;
+    loadingVariantListSize: boolean;
     physicalMeasurementsInfo: any[];
     searchWord: string;
     popUp: boolean;
@@ -452,6 +458,8 @@ export const dBHomeComponent = withRouteData(
                 surveyInfo: [],
                 domainInfo: [],
                 genomicInfo: null,
+                variantListSize: 593597983,
+                loadingVariantListSize: false,
                 physicalMeasurementsInfo: [],
                 searchWord: localStorage.getItem('searchText') ? localStorage.getItem('searchText') : '',
                 popUp: false,
@@ -459,7 +467,12 @@ export const dBHomeComponent = withRouteData(
             };
         }
 
-        search = _.debounce((val) => this.getDomainInfos(), 1000);
+        search = _.debounce((val) => {
+        this.getDomainInfos();
+        if (val) {
+            this.getVariantResultSize();
+        }
+        }, 1000);
 
         handleChange(val) {
             this.setState({ searchWord: val });
@@ -484,6 +497,26 @@ export const dBHomeComponent = withRouteData(
                 this.setState({ genomicInfo: genomicTileMetadata });
             }).catch(e => {
                 console.log(e, 'error');
+            });
+        }
+
+        getVariantResultSize() {
+            const {searchWord} = this.state;
+            const variantSizeRequest = {
+                query: searchWord,
+                filterMetadata: null
+            };
+            this.setState({loadingVariantListSize: true});
+            genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
+                result => {
+                    this.setState({
+                        variantListSize: result,
+                        loadingVariantListSize: false
+                    });
+                }
+            ).catch(e => {
+                console.log(e, 'error');
+                this.setState({loadingVariantListSize: false});
             });
         }
 
@@ -525,7 +558,8 @@ export const dBHomeComponent = withRouteData(
         }
 
         render() {
-            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo } = this.state;
+            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo, variantListSize,
+            loadingVariantListSize} = this.state;
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
@@ -574,33 +608,36 @@ export const dBHomeComponent = withRouteData(
                         </div>
                     </div>
                 </div>
-                {(loading) && <Spinner />}
-                {!loading &&
+                {(loading || loadingVariantListSize) && <Spinner />}
+                {(!loading && !loadingVariantListSize) &&
                     <section style={styles.results}>
-                        <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
+                        {(domainInfo.length > 0) && <React.Fragment><h5 style={{ ...globalStyles.secondaryDisplay,
+                        ...styles.resultHeading }}>
                             EHR Domains</h5>
 
                         <div className='result-boxes'>
                             {
                                 domainInfo.map((domain, index) => {
                                     const key = 'domain' + index;
-                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...domain} domainType='ehr' />;
+                                    return <ResultLinksComponent key={key} searchWord={searchWord} {...domain}
+                                    domainType='ehr' variantListSize={variantListSize}
+                                    loadingVariantListSize={loadingVariantListSize}/>;
 
                                 })
 
                             }
-                        </div>
-                        {(environment.geno && physicalMeasurementsInfo.length > 0 && genomicInfo) &&
-                            <div className='geno-pm-container'>
-                                <div className='genomic-boxes'>
+                        </div></React.Fragment>}
+                                <div className='geno-pm-container'>
+                                {(environment.geno && genomicInfo && !loadingVariantListSize && (variantListSize > 0)) && <div className='genomic-boxes'>
                                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Genomics
                                     </h5>
                                     <div className='genomic-box'>
                                         <ResultLinksComponent key='genomics-tile' searchWord={searchWord} {...genomicInfo}
-                                            domainType='genomics' />
+                                            domainType='genomics' variantListSize={variantListSize}
+                                            loadingVariantListSize={loadingVariantListSize}/>
                                     </div>
-                                </div>
-                                <div className='pm-boxes'>
+                                </div>}
+                                {(physicalMeasurementsInfo.length > 0) && <div className='pm-boxes'>
                                     <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>
                                         Physical Measurements and Wearables </h5>
                                     <div className='pm-box'>
@@ -609,13 +646,14 @@ export const dBHomeComponent = withRouteData(
                                                 const key = 'phyMeasurements' + index;
                                                 return <ResultLinksComponent key={key}
                                                     searchWord={searchWord} {...phyMeasurements}
-                                                    domainType='pmw' />;
+                                                    domainType='pmw' variantListSize={variantListSize}
+                                                    loadingVariantListSize={loadingVariantListSize}/>;
                                             })
                                         }
                                     </div>
-                                </div>
+                                </div>}
                             </div>
-                        }
+
                         {(surveyInfo.length > 0) &&
                             <React.Fragment>
                                 <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>Survey Questions </h5>
@@ -625,7 +663,8 @@ export const dBHomeComponent = withRouteData(
                                             const key = 'survey' + index;
                                             return <ResultLinksComponent key={key}
                                                 searchWord={searchWord} {...survey}
-                                                domainType='survey' />;
+                                                domainType='survey' variantListSize={variantListSize}
+                                                loadingVariantListSize={loadingVariantListSize}/>;
                                         })
 
                                     }
