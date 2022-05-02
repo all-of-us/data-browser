@@ -391,16 +391,25 @@ export const ResultLinksComponent = (class extends React.Component<ResultLinkPro
                     {(domainType === 'survey') &&
                     <span style={styles.resultBodyItem}><div style={styles.resultStat}>{questionCount.toLocaleString()}</div></span>}
                     {(domainType === 'genomics' && !searchWord) &&
-                    <span style={styles.resultBodyItem}><React.Fragment><div style={styles.resultStat}>{wgsParticipantCount.toLocaleString()}</div>
+                    <span style={styles.resultBodyItem}><React.Fragment><div style={styles.resultStat}>
+                    {wgsParticipantCount.toLocaleString()}</div>
                     <span> participants in the Whole Genome Sequencing (WGS) dataset</span></React.Fragment></span>}
-                    {(searchWord && domainType === 'ehr')  && <span style={styles.resultBodyItem}><span>matching medical concepts</span></span>}
-                    {(searchWord && domainType === 'survey') && <span style={styles.resultBodyItem}><span>matching survey questions</span></span>}
-                    {(searchWord && name.toLowerCase() === 'physical measurements') && <span style={styles.resultBodyItem}><span>matching Physical Measurements</span></span>}
-                    {(searchWord && name.toLowerCase() === 'fitbit') && <span style={styles.resultBodyItem}><span>matching Fitbit Measurements</span></span>}
-                    {(!searchWord && domainType === 'ehr') && <span style={styles.resultBodyItem}><span>medical concepts</span></span>}
-                    {(!searchWord && domainType === 'survey') && <span style={styles.resultBodyItem}><span>questions available</span></span>}
-                    {(!searchWord && name.toLowerCase() === 'physical measurements') && <span style={styles.resultBodyItem}><span>Physical Measurements</span></span>}
-                    {(!searchWord && name.toLowerCase() === 'fitbit') && <span style={styles.resultBodyItem}><span>Fitbit Measurements</span></span>}
+                    {(searchWord && domainType === 'ehr')  && <span style={styles.resultBodyItem}>
+                    <span>matching medical concepts</span></span>}
+                    {(searchWord && domainType === 'survey') && <span style={styles.resultBodyItem}>
+                    <span>matching survey questions</span></span>}
+                    {(searchWord && name.toLowerCase() === 'physical measurements') &&
+                    <span style={styles.resultBodyItem}><span>matching Physical Measurements</span></span>}
+                    {(searchWord && name.toLowerCase() === 'fitbit') && <span style={styles.resultBodyItem}>
+                    <span>matching Fitbit Measurements</span></span>}
+                    {(!searchWord && domainType === 'ehr') && <span style={styles.resultBodyItem}>
+                    <span>medical concepts</span></span>}
+                    {(!searchWord && domainType === 'survey') && <span style={styles.resultBodyItem}>
+                    <span>questions available</span></span>}
+                    {(!searchWord && name.toLowerCase() === 'physical measurements') &&
+                    <span style={styles.resultBodyItem}><span>Physical Measurements</span></span>}
+                    {(!searchWord && name.toLowerCase() === 'fitbit') &&
+                    <span style={styles.resultBodyItem}><span>Fitbit Measurements</span></span>}
                 {(participantCount && !(domainType === 'genomics')) &&
                         <span style={styles.resultBodyItem}><span>
                         <strong> {participantCount.toLocaleString()}</strong> participants in this domain</span></span>
