@@ -197,6 +197,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     getFilterMetadata(searchTerm: string) {
+        console.log('P*P*P*P*P*P*P*P*P*P*P*P');
+        console.log(searchTerm);
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
                 this.setState({filterMetadata: result});
@@ -345,7 +347,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     componentDidMount() {
         window.addEventListener('beforeunload', this.componentCleanup);
         const {search} = urlParamsStore.getValue();
-        this.setState({searchTerm: search}, () => {this.getVariantSearch(search); });
+        if (search) {
+            this.setState({searchTerm: search}, () => {this.getVariantSearch(search); });
+        }
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
