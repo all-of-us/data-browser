@@ -24,15 +24,12 @@ const css = `
     padding: 0!important;
     text-decoration: underline;
 }
-
 .disclaimer-btn:hover {
     color: #262262;
 }
-
   .icons img {
     width: 100px;
 }
-
 .icons:first-of-type {
     margin-left: 0;
 }
@@ -52,7 +49,6 @@ const css = `
     color: #337ab7;
     cursor: pointer;
 }
-
 .result-bottom-link:hover {
     color: #262262;
 }
@@ -63,17 +59,14 @@ const css = `
     margin-bottom: 2rem;
     flex-grow: 1;
 }
-
 .geno-pm-container {
     display:flex;
     margin-bottom: 2rem;
 }
-
 .genomic-boxes {
     width: calc(((100% / 12) * 4) - 18px);
     padding-right:.5rem;
 }
-
 .genomic-box {
     height:87.5%;
 }
@@ -86,16 +79,13 @@ const css = `
     padding-left:.5rem;
     width:100%;
 }
-
 .pm-box{
     display:flex;
 }
-
 .pm-box .result-box{
     width: calc(((100% / 12) * 4) - 18px);
     margin-bottom:0;
 }
-
 .result-box {
     cursor: pointer;
     display: flex;
@@ -107,7 +97,6 @@ const css = `
     background-color: #ffffff;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
 }
-
 .genomic-result-box {
     cursor: pointer;
     display: flex;
@@ -118,8 +107,6 @@ const css = `
     background-color: #ffffff;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
 }
-
-
 .search-icon-container {
     display: flex;
     flex-wrap: wrap;
@@ -127,7 +114,6 @@ const css = `
     padding-left:1em;
     justify-content: 'flex-start';
 }
-
 @media (max-width: 1000px) {
     .iconlinks {
         margin-bottom: -13em;
@@ -152,16 +138,13 @@ const css = `
     .genomic-box {
         height:auto;
     }
-
     .result-box:nth-of-type(2) {
         margin-right: 0;
     }
 }
-
 .result-box:last-of-type {
     margin-right: 0;
 }
-
 .cope-preview {
     justify-content: flex-start;
 }
@@ -570,6 +553,8 @@ export const dBHomeComponent = withRouteData(
         render() {
             const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo, variantListSize,
             loadingVariantListSize} = this.state;
+            const noResults = (domainInfo.length === 0 && physicalMeasurementsInfo.length === 0 && surveyInfo.length === 0
+            && variantListSize === 0);
             return <React.Fragment>
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
@@ -681,6 +666,7 @@ export const dBHomeComponent = withRouteData(
                                 </div>
                             </React.Fragment>
                         }
+                        {noResults && <h5 style={{ ...globalStyles.secondaryDisplay, ...styles.resultHeading }}>0 results</h5>}
                     </section>
                 }
                 {popUp && <PopUpReactComponent helpText='HomeViewPopup' onClose={() => this.closePopUp()} />}
@@ -688,4 +674,3 @@ export const dBHomeComponent = withRouteData(
         }
     }
 );
-
