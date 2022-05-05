@@ -78,7 +78,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const { searchWord } = this.state;
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
-        console.log(searchWord);
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>

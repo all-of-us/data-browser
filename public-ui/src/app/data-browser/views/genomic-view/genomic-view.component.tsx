@@ -3,6 +3,7 @@ import { GenomicOverviewComponent } from 'app/data-browser/views/genomic-view/co
 import { genomicsApi } from 'app/services/swagger-fetch-clients';
 import { reactStyles } from 'app/utils';
 import { triggerEvent } from 'app/utils/google_analytics';
+import { urlParamsStore } from 'app/utils/navigation';
 import _ from 'lodash';
 import { Variant } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
@@ -165,7 +166,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     ];
     title = 'Genomic Variants';
 
-    search = _.debounce((searchTerm: string) => this.getVariantSearch(searchTerm), 1000);
+    search = _.debounce((searchTerm: string) => {this.getVariantSearch(searchTerm);
+    this.changeUrl(); }, 1000);
+
+    changeUrl() {
+        const {searchTerm} = this.state;
+        let url = 'genomic-variants';
+        if (searchTerm) {
+            url += '/' + searchTerm;
+        }
+        window.history.replaceState(null, 'Genomic Variants', url);
+    }
 
     getSearchSize(searchTerm: string) {
         this.setState({ loadingVariantListSize: true });
@@ -186,6 +197,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     getFilterMetadata(searchTerm: string) {
+        console.log('P*P*P*P*P*P*P*P*P*P*P*P');
+        console.log(searchTerm);
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
                 this.setState({filterMetadata: result});
@@ -333,13 +346,17 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.componentCleanup);
+        const {search} = urlParamsStore.getValue();
+        if (search) {
+            this.setState({searchTerm: search}, () => {this.getVariantSearch(search); });
+        }
         this.getGenomicParticipantCounts();
         this.getGenomicChartData();
     }
 
     render() {
         const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-            participantCount, chartData, rowCount } = this.state;
+            participantCount, chartData, rowCount, searchTerm } = this.state;
         return <React.Fragment>
             <style>{css}</style>
             <div style={styles.pageHeader}>
@@ -368,9 +385,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                             />}
                         {selectionId === 2 &&
                             <GenomicSearchComponent
-                                onSearchInput={(searchTerm: string) => {
-                                    this.handleSearchTerm(searchTerm);
-                                    this.setState({ searchTerm: searchTerm });
+                                onSearchInput={(searchWord: string) => {
+                                    this.handleSearchTerm(searchWord);
+                                    this.setState({ searchTerm: searchWord });
                                 }}
                                 onPageChange={(info) => { this.handlePageChange(info); }}
                                 onRowCountChange={(info) => { this.handleRowCountChange(info); }}
@@ -381,7 +398,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 loadingVariantListSize={loadingVariantListSize}
                                 loadingResults={loadingResults}
                                 searchResults={searchResults}
-                                participantCount={participantCount} />}
+                                participantCount={participantCount}
+                                searchTerm={searchTerm}/>}
 
                         {selectionId === 3 &&
                             <GenomicFaqComponent closed={() => this.handleFaqClose()} />}

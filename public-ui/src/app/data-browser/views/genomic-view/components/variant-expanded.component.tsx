@@ -160,7 +160,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
     render() {
         const { variantDetails, variant, loading } = this.props;
         let variantPopulationDetails: any[] = [];
-        const rsLink = 'https://www.ncbi.nlm.nih.gov/snp/' + variantDetails.rsNumber;
+        const rsLink = 'https://www.ncbi.nlm.nih.gov/snp/?term=' + variantDetails.rsNumber;
         if (!loading) {
             variantPopulationDetails = prepVariantPopulationDetails(variantDetails);
         }
