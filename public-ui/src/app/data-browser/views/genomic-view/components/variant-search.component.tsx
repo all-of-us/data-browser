@@ -1,6 +1,8 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { reactStyles } from 'app/utils';
 import { Spinner } from 'app/utils/spinner';
+import { ClrIcon } from 'app/utils/clr-icon';
+import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -22,6 +24,12 @@ const styles = reactStyles({
         display: 'flex',
         alignItems: 'center',
         height: '1rem'
+    },
+    filterBtn: {
+        fontFamily: 'gothamBold',
+        color:'#216FB4',
+        paddingBottom:'1rem',
+
     }
 });
 
@@ -45,10 +53,12 @@ interface Props {
     onSearchTerm: Function;
     searchTerm: string;
     variantListSize: number;
+    filterMetadata: GenomicFilters;
     loading: boolean;
 }
 interface State {
     searchWord: string;
+    filterShow: boolean;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -56,6 +66,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             searchWord:  '',
+            filterShow: false
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -72,6 +83,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         if (prevProps.searchTerm !== searchTerm) {
             this.setState({ searchWord: searchTerm });
         }
+    }
+    showFilter(){
+        this.setState({filterShow: true})
     }
 
     render() {
@@ -92,10 +106,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
+            {!loading && <div style={styles.filterBtn}><ClrIcon onClick={()=>this.showFilter()} shape="filter-2"/> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
             <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                 <Spinner /></span> } results</strong>}
+                
         </React.Fragment>;
     }
 }

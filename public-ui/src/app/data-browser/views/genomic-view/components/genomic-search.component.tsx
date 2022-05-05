@@ -1,5 +1,5 @@
 import { reactStyles } from 'app/utils';
-import { Variant } from 'publicGenerated';
+import { Variant,GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
@@ -42,6 +42,7 @@ interface Props {
     rowCount: number;
     participantCount: string;
     searchTerm: string;
+    filterMetadata:GenomicFilters;
 }
 
 interface State {
@@ -82,7 +83,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     render() {
         const { searchTerm } = this.state;
         const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
-        rowCount} = this.props;
+        rowCount,filterMetadata} = this.props;
         return <React.Fragment>
             <div style={styles.titleBox}>
                 <p style={styles.boxHeading} ref={this.scrollDiv}>
@@ -93,7 +94,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                     onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
                     loading={loadingVariantListSize}
                     searchTerm={searchTerm}
-                    variantListSize={variantListSize} />
+                    variantListSize={variantListSize}
+                    filterMetadata={filterMetadata} />
                 <VariantTableComponent
                     loadingResults={loadingResults}
                     loadingVariantListSize={loadingVariantListSize}
