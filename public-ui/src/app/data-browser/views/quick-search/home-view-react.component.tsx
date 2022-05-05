@@ -568,7 +568,7 @@ export const dBHomeComponent = withRouteData(
         }
 
         render() {
-            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, popUp, loading, genomicInfo, variantListSize, 
+            const { domainInfo, physicalMeasurementsInfo, surveyInfo, searchWord, loading, genomicInfo, variantListSize,
               loadingVariantListSize } = this.state;
             const noResults = (domainInfo.length === 0 && physicalMeasurementsInfo.length === 0 && surveyInfo.length === 0);
             return <React.Fragment>
