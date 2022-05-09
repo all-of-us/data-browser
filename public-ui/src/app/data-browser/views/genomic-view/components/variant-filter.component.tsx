@@ -2,6 +2,7 @@ import * as React from 'react';
 import { GenomicFilters } from 'publicGenerated';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { reactStyles } from 'app/utils';
+import { VariantFilterItemComponent } from 'app/data-browser/views/genomic-view/components/variant-filter-item.component'
 
 const styles = reactStyles({
     filterBox: {
@@ -14,17 +15,6 @@ const styles = reactStyles({
         boxShadow: '0 1px 3px 0 rgba(0,0,0,0.15), 0 0 2px 0 rgba(0,0,0,0.25), 0 2px 2px 0 rgba(0,0,0,0.15)',
         width: '264px',
         height: '421px'
-    },
-    filterItem: {
-        width: '100%',
-        padding: '.5rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        color: '#262262',
-        fontSize: '.8em',
-        letterSpacing: 0,
-        lineHeight: '16px'
     },
     filterItemHandleClosed: {
         transform: 'rotate(90deg)'
@@ -52,21 +42,23 @@ const styles = reactStyles({
         background: '#262262',
         color: 'white',
         width: '45%'
+    },
+    filterItems: {
+        maxHeight:'340px',
+        overflowY:'scroll'
     }
 })
 
-interface Cats {
-    display: String, 
+export interface Cat {
+    display: String,
     field: String;
 }
 
 interface Props {
     filterMetadata: GenomicFilters;
-
 }
 interface State {
-    filterCats: Cats[];
-    filterOpen: Boolean;
+    filterCats: Cat[];
 
 }
 
@@ -76,47 +68,31 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             filterCats: [
-                {display: 'Gene', field: 'gene'},
-                {display: 'Consequence', field: 'consequence'},
-                {display: 'Clinical Significance', field: 'clinicalSignificance'},
-                {display: 'Allele Count', field: 'alleleCount'},
-                {display: 'Allele Number', field: 'alleleNumber'},
-                {display: 'Allele Frequency', field: 'alleleFrequency'},
+                { display: 'Gene', field: 'gene' },
+                { display: 'Consequence', field: 'consequence' },
+                { display: 'Clinical Significance', field: 'clinicalSignificance' },
+                { display: 'Allele Count', field: 'alleleCount' },
+                { display: 'Allele Number', field: 'alleleNumber' },
+                { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
-            filterOpen: false
         };
     }
 
-    filterClick() {
-        this.setState({ filterOpen: true })
-
-    }
 
     render() {
         const { filterMetadata } = this.props;
-        const { filterCats, filterOpen } = this.state;
-        return <div onClick={() => {
-            this.filterClick();
-        }} style={styles.filterBox}>
-            {filterCats.map((cat, index) => {
-                const key = 'cat' + index;
-                return <div style={styles.filterItem} key={key}>
-                    <span>{cat.display}</span>
-                    <span><ClrIcon style={styles.filterItemHandleClosed} shape='angle' /></span>
-                    {
-                    // console.log(filterMetadata[cat.field.toString()],filterMetadata[cat.field.toString()].length,cat)
-                    (filterOpen && filterMetadata && filterMetadata[cat.field.toString()].length)  && filterMetadata[cat.field.toString()].map((item: string,index)=>{
-                        console.log(item,cat.display);
-                        
-                        return <div>test</div>
-                    })
-                    }
+        const { filterCats } = this.state;
+        return <div style={styles.filterBox}>
+            <div style={styles.filterItems}>
+                {filterCats.map((cat, index) => {
+                    const key = 'cat' + index;
+                    { return filterMetadata && <VariantFilterItemComponent key={key} category={cat} filterItem={filterMetadata[cat.field.toString()]} /> }
+                })
+                }
+                <div style={styles.actionBtnContainer}>
+                    <button style={styles.clearBtn}>Clear</button>
+                    <button style={styles.applyBtn}>Apply</button>
                 </div>
-            })
-            }
-            <div style={styles.actionBtnContainer}>
-                <button style={styles.clearBtn}>Clear</button>
-                <button style={styles.applyBtn}>Apply</button>
             </div>
         </div>
     }
