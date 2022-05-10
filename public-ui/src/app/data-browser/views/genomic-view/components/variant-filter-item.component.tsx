@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { reactStyles } from 'app/utils';
 import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 const styles = reactStyles({
     filterItem: {
@@ -62,7 +63,7 @@ const styles = reactStyles({
         wordWrap: 'break-word'
     },
     filterSlider: {
-        padding: '1rem'
+        padding: '1rem 0'
     }
 })
 
@@ -75,6 +76,8 @@ interface State {
     filterItemOpen: Boolean;
     filterItemState: any;
     filterCheckMap: any;
+    sliderMax: number;
+    sliderMin: number;
 }
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
@@ -85,7 +88,10 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             filterItemOpen: false,
             filterItemState: props.filterItem || "",
             filterCheckMap: props.filterItem || "",
+            sliderMax: undefined,
+            sliderMin: undefined
         }
+
     }
 
     filterClick() {
@@ -115,13 +121,19 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         this.setState({ filterItemState: this.state.filterItemState });
     }
 
-    handleRangeSelect(item) {
+    handleRangeSelect(event, isMax) {
+        console.log(event.target);
 
+        if (isMax) {
+            this.setState({ sliderMax: event.target.value })
+        } else {
+            this.setState({ sliderMin: event.target.value })
+        }
     }
 
     render(): React.ReactNode {
         const { category } = this.props;
-        const { filterItemOpen, filterItemState } = this.state;
+        const { filterItemOpen, filterItemState, sliderMin, sliderMax } = this.state;
         return <React.Fragment >
             <div onClick={() => this.filterClick()} style={styles.filterItem}>
                 <span>{category.display}</span>
@@ -142,17 +154,22 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                     </span>
                 })}
             </div> : <div>
-                {console.log(filterItemState)}
-            {filterItemOpen && <div style={styles.filterItemForm}>
-                                        <input style={styles.filterSlider} type="range" min={filterItemState.min} max={filterItemState.max} onChange={(e) => this.handleRangeSelect(e)} id={filterItemState.option} name={'slider'} />
+                {console.log(filterItemState, sliderMax)}
+                {filterItemOpen && <div style={styles.filterItemForm}>
 
-                
-            </div> }
+                    <label>min {sliderMin || filterItemState.min} </label>
+                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} min={filterItemState.min} max={sliderMax || filterItemState.max} defaultValue={filterItemState.min} onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
+
+                    <label>max {sliderMax || filterItemState.max}</label>
+                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} min={sliderMin || filterItemState.min} max={filterItemState.max} defaultValue={filterItemState.max} onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
+
+
+                </div>}
             </div>
-    }
-            
-            
-             
+            }
+
+
+
 
         </React.Fragment>
     }
