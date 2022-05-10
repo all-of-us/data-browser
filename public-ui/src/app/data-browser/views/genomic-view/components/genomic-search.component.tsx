@@ -34,6 +34,7 @@ interface Props {
     onPageChange: Function;
     onRowCountChange: Function;
     onSortClick: Function;
+    onFilterSubmit:Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
@@ -79,6 +80,10 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     handleSortClick(sortMetadata) {
         this.props.onSortClick(sortMetadata);
     }
+    handleFilterSubmit(filteredMetadata) {
+        this.props.onFilterSubmit(filteredMetadata);
+        
+    }
 
     render() {
         const { searchTerm } = this.state;
@@ -92,6 +97,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
                 </div>
                 <VariantSearchComponent
                     onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
+                    onFilterSubmit={(filteredMetadata)=>{this.handleFilterSubmit(filteredMetadata)}}
                     loading={loadingVariantListSize}
                     searchTerm={searchTerm}
                     variantListSize={variantListSize}

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { reactStyles } from 'app/utils';
 import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 const styles = reactStyles({
     filterItem: {
@@ -70,6 +69,7 @@ const styles = reactStyles({
 interface Props {
     filterItem: any;
     category: Cat;
+    onFilterChange: Function
 }
 
 interface State {
@@ -91,7 +91,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             sliderMax: undefined,
             sliderMin: undefined
         }
-
     }
 
     filterClick() {
@@ -104,6 +103,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             filterItemState: filtered,
             filterCheckMap: filtered
         });
+        this.props.onFilterChange(filtered,this.props.category)
     }
 
     filterBySearch(e) {
@@ -119,16 +119,17 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             el.checked = value
         });
         this.setState({ filterItemState: this.state.filterItemState });
+        this.props.onFilterChange(this.state.filterItemState, this.props.category)
     }
-
+    
     handleRangeSelect(event, isMax) {
-        console.log(event.target);
-
+        const filters = this.state.filterItemState;
         if (isMax) {
-            this.setState({ sliderMax: event.target.value })
+            filters.max = event.target.value;
         } else {
-            this.setState({ sliderMin: event.target.value })
+            filters.min = event.target.value;
         }
+        this.props.onFilterChange(filters,this.props.category)
     }
 
     render(): React.ReactNode {
@@ -154,16 +155,11 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                     </span>
                 })}
             </div> : <div>
-                {console.log(filterItemState, sliderMax)}
                 {filterItemOpen && <div style={styles.filterItemForm}>
-
                     <label>min {sliderMin || filterItemState.min} </label>
                     <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} min={filterItemState.min} max={sliderMax || filterItemState.max} defaultValue={filterItemState.min} onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
-
                     <label>max {sliderMax || filterItemState.max}</label>
                     <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} min={sliderMin || filterItemState.min} max={filterItemState.max} defaultValue={filterItemState.max} onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
-
-
                 </div>}
             </div>
             }

@@ -55,6 +55,7 @@ const css = `
 
 interface Props {
     onSearchTerm: Function;
+    onFilterSubmit: Function;
     searchTerm: string;
     variantListSize: number;
     filterMetadata: GenomicFilters;
@@ -91,11 +92,16 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     showFilter() {
         this.setState({ filterShow: true })
     }
+    handleFilterSubmit(filteredMetadata) {
+        this.props.onFilterSubmit(filteredMetadata)
+
+    }
 
     render() {
         const { searchWord } = this.state;
         const { variantListSize, loading, filterMetadata } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
+        
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
@@ -115,7 +121,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                     <Spinner /></span>} results</strong>}
-                    <div style={styles.filterContainer}>{!loading && <VariantFilterComponent filterMetadata={filterMetadata} />}</div>
+                <div style={styles.filterContainer}>{!loading && <VariantFilterComponent filterMetadata={filterMetadata} onFilterSubmit={(filteredMetadata)=>this.handleFilterSubmit(filteredMetadata)}  />}</div>
 
         </React.Fragment>;
     }

@@ -203,8 +203,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         console.log(searchTerm);
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
-                console.log(result, 'sup result');
-
                 this.setState({ filterMetadata: result });
             }
         ).catch(e => {
@@ -358,6 +356,11 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         this.getGenomicChartData();
     }
 
+    handleFilterSubmit(filteredMetadata) {
+        console.log(filteredMetadata);
+        
+    }
+
     render() {
         const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
             participantCount, chartData, rowCount, searchTerm, filterMetadata } = this.state;
@@ -396,6 +399,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 onPageChange={(info) => { this.handlePageChange(info); }}
                                 onRowCountChange={(info) => { this.handleRowCountChange(info); }}
                                 onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
+                                onFilterSubmit={(filteredMetadata)=>this.handleFilterSubmit(filteredMetadata)}
                                 currentPage={currentPage}
                                 rowCount={rowCount}
                                 variantListSize={variantListSize}
