@@ -28,18 +28,18 @@ const styles = reactStyles({
         display: 'flex',
 
     },
-    textFilter : {
+    textFilter: {
         border: 'solid rgba(74,74,74,0.4) 1px',
     },
-    selectBtn:{
-        border:'none',
-        background:'transparent',
-        color:'#216FB4'
+    selectBtn: {
+        border: 'none',
+        background: 'transparent',
+        color: '#216FB4'
     },
-    selectNoBtn:{
-        border:'none',
-        background:'transparent',
-        color:'#216FB4'
+    selectNoBtn: {
+        border: 'none',
+        background: 'transparent',
+        color: '#216FB4'
     },
     filterItemForm: {
         display: 'flex',
@@ -106,16 +106,19 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     }
 
     selectAll() {
-        // const allChecked = this.state.filterItemState.length && this.state.filterItemState.forEach((el,index) => {
-            console.log(this.state.filterItemState);
-            const test = this.state.filterItemState.forEach(el => el.checked = true)
-            this.setState({
-                filterItemState: this.state.filterItemState
-            });
-            console.log(this.state.filterItemState,'NBA');
+        this.state.filterItemState.forEach(el => {
+            el.checked = true
+        });
+        this.setState({ filterItemState: this.state.filterItemState });
+    }
 
-
-
+    selectNone() {
+        this.state.filterItemState.forEach(el => {
+            el.checked = false
+        });
+        this.setState({ filterItemState: this.state.filterItemState });
+        
+        // this.setState({ filterItemState: unchecked })
     }
 
     render(): React.ReactNode {
@@ -131,7 +134,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 <div style={styles.selectContainer}>
                     <span>Select</span><button style={styles.selectBtn} onClick={() => this.selectAll()}> All</button>
                     <span>|</span>
-                    <button style={styles.selectBtn}>None</button>
+                    <button style={styles.selectBtn} onClick={() => this.selectNone()} >None</button>
                 </div>
                 {Array.isArray(filterItemState) && filterItemState.map((item: any, index: number) => {
                     const key = 'option' + index;
