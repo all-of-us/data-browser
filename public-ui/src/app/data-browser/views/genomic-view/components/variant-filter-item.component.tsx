@@ -23,6 +23,24 @@ const styles = reactStyles({
     filterItemOpen: {
         transform: 'rotate(180deg)'
     },
+    selectContainer: {
+        width: '100%',
+        display: 'flex',
+
+    },
+    textFilter : {
+        border: 'solid rgba(74,74,74,0.4) 1px',
+    },
+    selectBtn:{
+        border:'none',
+        background:'transparent',
+        color:'#216FB4'
+    },
+    selectNoBtn:{
+        border:'none',
+        background:'transparent',
+        color:'#216FB4'
+    },
     filterItemForm: {
         display: 'flex',
         flexDirection: 'column',
@@ -62,8 +80,8 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             filterItemOpen: false,
-            filterItemState: props.filterItem,
-            filterItemState: props.filterItem,
+            filterItemState: props.filterItem || "",
+            filterCheckMap: props.filterItem || "",
         }
     }
 
@@ -72,38 +90,57 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     }
 
     handleCheck(filteredItem) {
+        const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el)
         this.setState({
-            filterItemState: this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el),
-            filterCheckMap: this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el)
+            filterItemState: filtered,
+            filterCheckMap: filtered
         });
     }
 
     filterBySearch(e) {
-        if(e.target.value){
-         this.setState({filterItemState:this.state.filterItemState.filter(item => item.option.toLowerCase().startsWith(e.target.value))})
+        if (e.target.value) {
+            this.setState({ filterItemState: this.state.filterItemState.filter(item => item.option && item.option.toLowerCase().startsWith(e.target.value)) })
         } else {
-            this.setState({filterItemState:this.state.filterCheckMap})
+            this.setState({ filterItemState: this.state.filterCheckMap })
         }
+    }
+
+    selectAll() {
+        // const allChecked = this.state.filterItemState.length && this.state.filterItemState.forEach((el,index) => {
+            console.log(this.state.filterItemState);
+            const test = this.state.filterItemState.forEach(el => el.checked = true)
+            this.setState({
+                filterItemState: this.state.filterItemState
+            });
+            console.log(this.state.filterItemState,'NBA');
+
+
+
     }
 
     render(): React.ReactNode {
         const { category } = this.props;
         const { filterItemOpen, filterItemState } = this.state;
-        return <React.Fragment>
+        return <React.Fragment >
             <div onClick={() => this.filterClick()} style={styles.filterItem}>
                 <span>{category.display}</span>
                 <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
             </div>
-            {filterItemOpen && <form style={styles.filterItemForm}>
-                <input type="input" onChange={(e)=>this.filterBySearch(e)} />
-                {filterItemState.length && filterItemState.map((item: any, index: number) => {
+            {filterItemOpen && <div style={styles.filterItemForm}>
+                <input style={styles.textFilter} type="input" onChange={(e) => this.filterBySearch(e)} />
+                <div style={styles.selectContainer}>
+                    <span>Select</span><button style={styles.selectBtn} onClick={() => this.selectAll()}> All</button>
+                    <span>|</span>
+                    <button style={styles.selectBtn}>None</button>
+                </div>
+                {Array.isArray(filterItemState) && filterItemState.map((item: any, index: number) => {
                     const key = 'option' + index;
                     return <span style={styles.filterItemOption} key={key}>
-                        <input onChange={() => this.handleCheck(item)} id={item.option} style={styles.filterItemCheck} type="checkbox" name={item.option} value={item.option} checked={item.checked} />
+                        <input onChange={() => this.handleCheck(item)} id={item.option} style={styles.filterItemCheck} type="checkbox" name={item.option} checked={item.checked} />
                         <label style={styles.filterItemLabel} htmlFor={item.option}>{item.option}</label>
                     </span>
                 })}
-            </form>
+            </div>
             }
 
         </React.Fragment>
