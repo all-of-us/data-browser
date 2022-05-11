@@ -125,11 +125,11 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     handleRangeSelect(event, isMax) {
         const filters = this.state.filterItemState;
         if (isMax) {
-            filters.max = event.target.value;
+            this.setState({sliderMax:event.target.value});
         } else {
-            filters.min = event.target.value;
+            this.setState({sliderMin:event.target.value});
         }
-        this.props.onFilterChange(filters,this.props.category)
+        this.props.onFilterChange(filters,this.props.category);
     }
 
     render(): React.ReactNode {
@@ -163,10 +163,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 </div>}
             </div>
             }
-
-
-
-
         </React.Fragment>
     }
 
