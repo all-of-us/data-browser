@@ -94,7 +94,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
     handleFilterSubmit(filteredMetadata) {
         this.props.onFilterSubmit(filteredMetadata)
-
     }
 
     render() {

@@ -81,8 +81,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         this.props.onSortClick(sortMetadata);
     }
     handleFilterSubmit(filteredMetadata) {
-        this.props.onFilterSubmit(filteredMetadata);
-        
+        this.props.onFilterSubmit(filteredMetadata);     
     }
 
     render() {

@@ -5,7 +5,7 @@ import { reactStyles } from 'app/utils';
 import { triggerEvent } from 'app/utils/google_analytics';
 import { urlParamsStore } from 'app/utils/navigation';
 import _ from 'lodash';
-import { Variant } from 'publicGenerated';
+import { GenomicFilters, Variant, SearchVariantsRequest } from 'publicGenerated';
 import { SortColumnDetails, SortMetadata } from 'publicGenerated/fetch';
 import * as React from 'react';
 import { GenomicFaqComponent } from './components/genomic-faq.component';
@@ -94,7 +94,8 @@ interface State {
     participantCount: string;
     chartData: any;
     sortMetadata: any;
-    filterMetadata: any;
+    filterMetadata: GenomicFilters;
+    filteredMetadata: GenomicFilters;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -150,6 +151,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             chartData: null,
             sortMetadata: null,
             filterMetadata: null,
+            filteredMetadata: undefined
         };
     }
 
@@ -182,10 +184,12 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
 
     getSearchSize(searchTerm: string) {
         this.setState({ loadingVariantListSize: true });
+        this.getFilterMetadata(searchTerm);
         const variantSizeRequest = {
             query: searchTerm,
             filterMetadata: this.state.filterMetadata
         };
+
         genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
             result => {
                 this.setState({
@@ -199,11 +203,12 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     getFilterMetadata(searchTerm: string) {
-        console.log('P*P*P*P*P*P*P*P*P*P*P*P');
-        console.log(searchTerm);
+        console.log(searchTerm, 'this is the searchterm');
+
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
                 this.setState({ filterMetadata: result });
+                console.log(result, 'resullt');
             }
         ).catch(e => {
             console.log(e, 'error');
@@ -314,12 +319,14 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             proteinChangeSortMetadata, clinicalSignificanceSortMetadata,
             alleleCountSortMetadata,
             alleleNumberSortMetadata, alleleFrequencySortMetadata);
-        const searchRequest = {
+        const searchRequest: SearchVariantsRequest = {
             query: searchTerm,
             pageNumber: currentPage,
             rowCount: rowCount,
             sortMetadata: sortMetadataObj
         };
+        console.log(searchRequest,"searchRequest222");
+        
         genomicsApi().searchVariants(searchRequest).then(
             results => {
                 this.setState({
@@ -328,6 +335,21 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                 });
             }
         );
+    }
+
+    filterGenomics(filteredMetadata: GenomicFilters) {
+        const { searchTerm, currentPage, sortMetadata, rowCount } = this.state;
+        const searchRequest = {
+            query: searchTerm,
+            pageNumber: currentPage,
+            rowCount: rowCount,
+            filterMetadata: filteredMetadata
+        };
+        console.log(searchRequest, 'searchRequestsearchRequest');
+
+        genomicsApi().searchVariants(searchRequest).then((results) => {
+            this.setState({searchResults:results.items})
+        });
     }
 
     topBarClick(selected: number) {
@@ -356,9 +378,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         this.getGenomicChartData();
     }
 
-    handleFilterSubmit(filteredMetadata) {
-        console.log(filteredMetadata);
-        
+    handleFilterSubmit(filteredMetadata: GenomicFilters) {
+        // this.setState({filteredMetadata: filteredMetadata});
+        this.filterGenomics(filteredMetadata);
+
     }
 
     render() {
@@ -399,7 +422,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 onPageChange={(info) => { this.handlePageChange(info); }}
                                 onRowCountChange={(info) => { this.handleRowCountChange(info); }}
                                 onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
-                                onFilterSubmit={(filteredMetadata)=>this.handleFilterSubmit(filteredMetadata)}
+                                onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
                                 currentPage={currentPage}
                                 rowCount={rowCount}
                                 variantListSize={variantListSize}

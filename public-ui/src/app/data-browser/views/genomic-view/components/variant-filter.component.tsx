@@ -60,7 +60,7 @@ interface Props {
 }
 interface State {
     filterCats: Cat[];
-    filteredMetadata:GenomicFilters
+    filteredMetadata:any;
 
 }
 
@@ -80,21 +80,20 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             filteredMetadata:this.props.filterMetadata
         };
     }
-    handleFilterChange(e, cat){
-        this.props.filterMetadata[cat] = e;
-        this.setState({filteredMetadata:this.props.filterMetadata});
-        console.log(this.state.filteredMetadata,'filtered');
-        
-        
-    }
-    submitFilter() {
-        this.props.onFilterSubmit(this.state.filteredMetadata)
+    handleFilterChange(filteredItem, cat){
 
+        this.props.filterMetadata[cat.field] = filteredItem;
+        this.setState({filteredMetadata: this.props.filterMetadata});
+        // this.props.onFilterSubmit(this.props.filterMetadata);
+    }
+    submitFilter(filteredMetadata) {
+        filteredMetadata = this.state.filteredMetadata;
+        this.props.onFilterSubmit(filteredMetadata);
     }
 
     render() {
         const { filterMetadata } = this.props;
-        const { filterCats } = this.state;
+        const { filterCats, filteredMetadata } = this.state;
         return <div style={styles.filterBox}>
             <div style={styles.filterItems}>
                 {filterCats.map((cat, index) => {
@@ -104,7 +103,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 }
                 <div style={styles.actionBtnContainer}>
                     <button style={styles.clearBtn}>Clear</button>
-                    <button onClick={()=>this.submitFilter()} style={styles.applyBtn}>Apply</button>
+                    <button onClick={()=>this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
                 </div>
             </div>
         </div>
