@@ -200,7 +200,7 @@ dependencies {
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
   compile "com.google.appengine:appengine:${GAE_VERSION}"
   compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
-  compile("org.springframework.boot:spring-boot-starter-web:2.0.0.RELEASE") {
+  compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
@@ -211,7 +211,7 @@ dependencies {
 
   compile 'com.google.code.gson:gson:2.8.9'
   compile 'com.google.api-client:google-api-client:1.30.5'
-  compile("org.springframework.boot:spring-boot-starter-actuator:2.0.0.RELEASE") {
+  compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
