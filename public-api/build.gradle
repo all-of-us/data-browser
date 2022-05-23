@@ -92,9 +92,9 @@ configurations {
 buildscript {    // Configuration for building
 
   ext {
-    GAE_VERSION = '1.9.64'
-    SPRING_BOOT_VERSION = '1.5.22.RELEASE'
-    JACKSON_VERSION = '2.9.9'
+    GAE_VERSION = '2.0.5'
+    SPRING_BOOT_VERSION = '2.3.12.RELEASE'
+    JACKSON_VERSION = '2.13.3'
   }
 
   repositories {
