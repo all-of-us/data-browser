@@ -94,7 +94,7 @@ buildscript {    // Configuration for building
   ext {
     GAE_VERSION = '1.9.64'
     SPRING_BOOT_VERSION = '1.5.22.RELEASE'
-    JACKSON_VERSION = '2.9.9'
+    JACKSON_VERSION = '2.9.10'
   }
 
   repositories {
@@ -200,7 +200,7 @@ dependencies {
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
   compile "com.google.appengine:appengine:${GAE_VERSION}"
   compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
-  compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
+  compile("org.springframework.boot:spring-boot-starter-web:2.0.0.RELEASE") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
@@ -209,9 +209,9 @@ dependencies {
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
 
-  compile 'com.google.code.gson:gson:2.8.5'
+  compile 'com.google.code.gson:gson:2.8.9'
   compile 'com.google.api-client:google-api-client:1.30.5'
-  compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
+  compile("org.springframework.boot:spring-boot-starter-actuator:2.0.0.RELEASE") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
@@ -259,7 +259,7 @@ dependencies {
   generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
   generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'
   generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  generatedCompile 'com.google.code.gson:gson:2.8.5'
+  generatedCompile 'com.google.code.gson:gson:2.8.9'
   generatedCompile 'joda-time:joda-time:2.10'
   generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }

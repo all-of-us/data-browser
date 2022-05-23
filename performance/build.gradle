@@ -13,7 +13,7 @@ apply plugin: 'scala'
 def projectScalaVersion = '2.12.3'
 
 dependencies {
-    compile group: 'io.gatling', name: 'gatling-core', version: '3.0.2'
+    compile group: 'io.gatling', name: 'gatling-core', version: '2.9.9.1'
     compile group: 'io.gatling', name: 'gatling-http', version: '3.0.2'
     compile group: 'org.scala-lang', name: 'scala-library', version: projectScalaVersion
 }
