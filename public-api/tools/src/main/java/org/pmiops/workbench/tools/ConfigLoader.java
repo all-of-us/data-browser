@@ -22,7 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.WebApplicationType;
 
 @SpringBootApplication
-@EnableJpaRepositories(configDaoRef1 = "org.pmiops.workbench.db.dao")
+@EnableJpaRepositories("org.pmiops.workbench.db.dao")
 @EntityScan("org.pmiops.workbench.db.model")
 /**
  * Run by api/project.rb update-cloud-config and (locally) docker-compose run update-config, which

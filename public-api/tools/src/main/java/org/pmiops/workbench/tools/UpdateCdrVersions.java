@@ -29,7 +29,6 @@ import org.springframework.boot.WebApplicationType;
  * Reads CDR versions from a JSON file and updates the database to match.
  */
 @SpringBootApplication
-@EnableJpaRepositories(configDaoRef2 = "org.pmiops.workbench.db.dao")
 @EntityScan("org.pmiops.workbench.db.model")
 public class UpdateCdrVersions {
 
