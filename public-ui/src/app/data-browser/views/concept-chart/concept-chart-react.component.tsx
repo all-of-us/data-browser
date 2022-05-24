@@ -323,7 +323,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             ...conceptAnalyses.measurementValueGenderAnalysis.find(
                 aa => aa.unitName === 'No unit')
         };
-        console.log('I am clicked');
         if (su.toLowerCase().indexOf('text') >= 0) {
             tempDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
         } else {
