@@ -113,6 +113,6 @@ public class UpdateCdrVersions {
   }
 
   public static void main(String[] args) throws Exception {
-    new SpringApplicationBuilder(UpdateCdrVersions.class).web(WebApplicationType.NONE).run(args);
+    new SpringApplicationBuilder(UpdateCdrVersions.class).web(WebApplicationType.NONE).run(args).close();
   }
 }
