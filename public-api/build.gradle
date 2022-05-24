@@ -215,7 +215,7 @@ dependencies {
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
 
-  compile 'org.springframework.boot:spring-boot-starter-validation'
+  compile 'org.springframework.boot:spring-boot-starter-validation:2.5.13'
 
   compile 'com.google.code.gson:gson:2.8.9'
   compile 'com.google.api-client:google-api-client:1.30.5'
@@ -268,7 +268,7 @@ dependencies {
   generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
   generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'
   generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
+  generatedCompile 'org.springframework.boot:spring-boot-starter-validation:2.5.13'
   generatedCompile 'com.google.code.gson:gson:2.8.9'
   generatedCompile 'joda-time:joda-time:2.9.9'
   generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
