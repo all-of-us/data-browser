@@ -164,6 +164,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         dataBrowserApi().getConceptAnalysisResults(
             [concept.conceptId.toString()], concept.domainId
         ).then(results => {
+            console.log(results);
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
@@ -322,6 +323,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             ...conceptAnalyses.measurementValueGenderAnalysis.find(
                 aa => aa.unitName === 'No unit')
         };
+        console.log('I am clicked');
         if (su.toLowerCase().indexOf('text') >= 0) {
             tempDisplayMeasurementGenderAnalysis.results.filter(r => r.measurementValueType === 'text');
         } else {
@@ -416,7 +418,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         noUnitValueButtons.map((noUnit, index) => {
                                             return <div key={index} className={selectedMeasurementType === noUnit ? 'active btn btn-link measurement-filter-choice' : 'btn btn-link measurement-filter-choice'}
                                                 style={styles.measurementFilterChoice}
-                                                onClick={() => this.showSpecificMeasurementTypeValues(noUnit)}>{noUnit}</div>;
+                                                onClick={(e) => {e.stopPropagation(); this.showSpecificMeasurementTypeValues(noUnit); }}>{noUnit}</div>;
                                         })
                                     }
                                 </div>
