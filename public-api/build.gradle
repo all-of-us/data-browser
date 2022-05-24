@@ -231,7 +231,7 @@ dependencies {
   compile "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
   compile 'com.squareup.okhttp:okhttp:2.7.5'
   compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  compile 'joda-time:joda-time:2.9.10'
+  compile 'joda-time:joda-time:2.9.9'
   compile 'javax.inject:javax.inject:1'
   compile 'io.swagger:swagger-annotations:1.5.16'
   compile 'org.apache.commons:commons-lang3:3.0'
@@ -270,7 +270,7 @@ dependencies {
   generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
   generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
   generatedCompile 'com.google.code.gson:gson:2.8.9'
-  generatedCompile 'joda-time:joda-time:2.9.10'
+  generatedCompile 'joda-time:joda-time:2.9.9'
   generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }
 
