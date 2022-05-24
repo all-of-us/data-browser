@@ -410,7 +410,7 @@ Common.register_command({
 def run_gradle(cmd_name, args)
   ensure_docker cmd_name, args
   begin
-    Common.new.run_inline %W{./gradlew} + args
+    Common.new.run_inline %W{gradle} + args
   ensure
     if $! && $!.status != 0
       Common.new.error "Command exited with non-zero status"
@@ -420,9 +420,9 @@ def run_gradle(cmd_name, args)
 end
 
 Common.register_command({
-  :invocation => "./gradlew",
+  :invocation => "gradle",
   :description => "Runs gradle inside the API docker container with the given arguments.",
-  :fn => ->(*args) { run_gradle("gradlew", args) }
+  :fn => ->(*args) { run_gradle("gradle", args) }
 })
 
 
