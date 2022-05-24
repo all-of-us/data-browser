@@ -102,7 +102,7 @@ repositories {   // repositories for Jar's you access in your code
 
 
 dependencies {
-  compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.11'
+  compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.12'
   compile 'commons-io:commons-io:2.6'
   compile 'joda-time:joda-time:2.10'
   compile 'com.github.fge:json-patch:1.9'
