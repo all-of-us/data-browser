@@ -36,7 +36,7 @@ public class ConfigLoader {
       ImmutableMap.of(Config.MAIN_CONFIG_ID, WorkbenchConfig.class,
           Config.CDR_BIGQUERY_SCHEMA_CONFIG_ID, CdrBigQuerySchemaConfig.class);
 
-  @Bean
+  @Bean(name="ConfigLoader")
   public CommandLineRunner run(ConfigDao configDao) {
     return (args) -> {
       if (args.length != 2) {

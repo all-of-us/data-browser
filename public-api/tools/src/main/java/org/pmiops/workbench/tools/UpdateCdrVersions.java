@@ -35,7 +35,7 @@ public class UpdateCdrVersions {
 
   private static final Logger logger = Logger.getLogger(UpdateCdrVersions.class.getName());
 
-  @Bean
+  @Bean(name="UpdateCdrVersions")
   public CommandLineRunner run(CdrVersionDao cdrVersionDao)
       throws IOException {
     return (args) -> {
