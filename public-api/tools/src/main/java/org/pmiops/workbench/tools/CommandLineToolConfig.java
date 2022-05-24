@@ -4,7 +4,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.gson.Gson;
 import org.pmiops.workbench.db.dao.ConfigDao;
-import org.pmiops.workbench.db.model.DbConfig;
+import org.pmiops.workbench.db.model.Config;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
