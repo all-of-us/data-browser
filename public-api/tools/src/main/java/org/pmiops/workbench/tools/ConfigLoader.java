@@ -93,7 +93,7 @@ public class ConfigLoader {
   }
 
   public static void main(String[] args) throws Exception {
-    new SpringApplicationBuilder(ConfigLoader.class).web(WebApplicationType.NONE).run(args);
+    CommandLineToolConfig.runCommandLine(ConfigLoader.class, args);
   }
 
 }
