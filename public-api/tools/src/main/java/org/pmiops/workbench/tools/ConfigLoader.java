@@ -22,6 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConfigLoader {
