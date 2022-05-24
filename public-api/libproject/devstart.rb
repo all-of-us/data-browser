@@ -410,7 +410,7 @@ Common.register_command({
 def run_gradle(cmd_name, args)
   ensure_docker cmd_name, args
   begin
-    Common.new.run_inline %W{gradle} + args
+    Common.new.run_inline %W{./gradlew} + args
   ensure
     if $! && $!.status != 0
       Common.new.error "Command exited with non-zero status"
