@@ -23,6 +23,8 @@ import org.springframework.boot.WebApplicationType;
 
 @SpringBootApplication
 @EnableJpaRepositories("org.pmiops.workbench.db.dao")
+@ComponentScan(excludeFilters =
+        {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ConfigLoader.class)})
 @EntityScan("org.pmiops.workbench.db.model")
 /**
  * Run by api/project.rb update-cloud-config and (locally) docker-compose run update-config, which
