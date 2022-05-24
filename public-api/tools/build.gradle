@@ -104,7 +104,7 @@ repositories {   // repositories for Jar's you access in your code
 dependencies {
   compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.13'
   compile 'commons-io:commons-io:2.6'
-  compile 'joda-time:joda-time:2.10'
+  compile 'joda-time:joda-time:2.9.10'
   compile 'com.github.fge:json-patch:1.9'
   compile 'io.swagger:swagger-annotations:1.5.9'
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.9'
