@@ -29,13 +29,13 @@ import org.springframework.boot.WebApplicationType;
  * Reads CDR versions from a JSON file and updates the database to match.
  */
 @SpringBootApplication
-@EnableJpaRepositories("org.pmiops.workbench.db.dao")
+@EnableJpaRepositories(configDaoRef2 = "org.pmiops.workbench.db.dao")
 @EntityScan("org.pmiops.workbench.db.model")
 public class UpdateCdrVersions {
 
   private static final Logger logger = Logger.getLogger(UpdateCdrVersions.class.getName());
 
-  @Bean(name="UpdateCdrVersions")
+  @Bean
   public CommandLineRunner run(CdrVersionDao cdrVersionDao)
       throws IOException {
     return (args) -> {

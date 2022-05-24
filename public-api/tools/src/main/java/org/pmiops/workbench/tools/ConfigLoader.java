@@ -22,7 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.WebApplicationType;
 
 @SpringBootApplication
-@EnableJpaRepositories("org.pmiops.workbench.db.dao")
+@EnableJpaRepositories(configDaoRef1 = "org.pmiops.workbench.db.dao")
 @EntityScan("org.pmiops.workbench.db.model")
 /**
  * Run by api/project.rb update-cloud-config and (locally) docker-compose run update-config, which
@@ -36,7 +36,7 @@ public class ConfigLoader {
       ImmutableMap.of(Config.MAIN_CONFIG_ID, WorkbenchConfig.class,
           Config.CDR_BIGQUERY_SCHEMA_CONFIG_ID, CdrBigQuerySchemaConfig.class);
 
-  @Bean(name="ConfigLoader")
+  @Bean
   public CommandLineRunner run(ConfigDao configDao) {
     return (args) -> {
       if (args.length != 2) {
