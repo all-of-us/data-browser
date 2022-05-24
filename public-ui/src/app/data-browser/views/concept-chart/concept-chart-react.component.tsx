@@ -417,7 +417,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                                         noUnitValueButtons.map((noUnit, index) => {
                                             return <div key={index} className={selectedMeasurementType === noUnit ? 'active btn btn-link measurement-filter-choice' : 'btn btn-link measurement-filter-choice'}
                                                 style={styles.measurementFilterChoice}
-                                                onClick={(e) => {e.stopPropagation(); this.showSpecificMeasurementTypeValues(noUnit); }}>{noUnit}</div>;
+                                                onClick={(e) => {e.stopPropagation();
+                                                this.showSpecificMeasurementTypeValues(noUnit); }}>{noUnit}</div>;
                                         })
                                     }
                                 </div>
