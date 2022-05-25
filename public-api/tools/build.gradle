@@ -49,7 +49,7 @@ buildscript {    // Configuration for building
   }
   dependencies {
     classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
-    classpath "io.spring.gradle:dependency-management-plugin:$project.ext.SPRING_DEPENDENCY_MANAGEMENT_VERSION"
+    classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
   }
 }
 
