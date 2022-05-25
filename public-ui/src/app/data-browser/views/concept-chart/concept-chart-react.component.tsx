@@ -164,7 +164,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         dataBrowserApi().getConceptAnalysisResults(
             [concept.conceptId.toString()], concept.domainId
         ).then(results => {
-            console.log(results);
             this.setState({
                 conceptAnalyses: results.items[0],
                 displayGraphErrorMessage: false,
