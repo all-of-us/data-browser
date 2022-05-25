@@ -55,7 +55,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
 
   getValueChartOptions() {
      const {valueAnalysis: {analysisName, results, unitName}, genderId, chartTitle} = this.props;
-     const {categories, series} = this.prepValueCatsAndData(results.filter(r => r.stratum3 === genderId), analysisName);
+     const valueResults = (!results) ? [] : results;
+     const {categories, series} = this.prepValueCatsAndData(valueResults.filter(r => r.stratum3 === genderId), analysisName);
      this.setValueChartOptions(analysisName, categories, series, chartTitle, unitName);
   }
 
