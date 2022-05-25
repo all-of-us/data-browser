@@ -68,7 +68,7 @@ public class ConfigLoader {
         log.info(marshalledDiff.toString());
         System.exit(1);
       }
-      Config existingConfig = configDao.findOne(configKey);
+      Config existingConfig = configDao.findById(configKey).orElse(null);
       if (existingConfig == null) {
         log.info("No configuration exists, creating one.");
         Config config = new Config();
