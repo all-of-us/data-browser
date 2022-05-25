@@ -135,6 +135,7 @@ const css = `
 `;
 
 export const GenomicViewComponent = withRouteData(class extends React.Component<{}, State> {
+    loading:boolean;
     constructor(props: {}) {
         super(props);
         this.componentCleanup = this.componentCleanup.bind(this);
@@ -325,7 +326,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             rowCount: rowCount,
             sortMetadata: sortMetadataObj
         };
-        console.log(searchRequest,"searchRequest222");
+        // console.log(searchRequest,"searchRequest222");
         
         genomicsApi().searchVariants(searchRequest).then(
             results => {
@@ -345,11 +346,10 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             rowCount: rowCount,
             filterMetadata: filteredMetadata
         };
-        console.log(searchRequest, 'searchRequestsearchRequest');
-
         genomicsApi().searchVariants(searchRequest).then((results) => {
-            this.setState({searchResults:results.items})
+            this.setState({searchResults:results.items});
         });
+        
     }
 
     topBarClick(selected: number) {
@@ -381,6 +381,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
         // this.setState({filteredMetadata: filteredMetadata});
         this.filterGenomics(filteredMetadata);
+        this.setState({loadingResults:false})
 
     }
 
@@ -422,7 +423,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 onPageChange={(info) => { this.handlePageChange(info); }}
                                 onRowCountChange={(info) => { this.handleRowCountChange(info); }}
                                 onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
-                                onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
+                                onFilterSubmit={(filteredMetadata: GenomicFilters) => {this.setState({loadingResults:true});this.handleFilterSubmit(filteredMetadata)}}
                                 currentPage={currentPage}
                                 rowCount={rowCount}
                                 variantListSize={variantListSize}

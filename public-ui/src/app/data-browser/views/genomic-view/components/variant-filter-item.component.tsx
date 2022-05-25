@@ -163,9 +163,9 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             </div> : <div>
                 {filterItemOpen && <div style={styles.filterItemForm}>
                     <label>min {this.displayNumber(false)} </label>
-                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} min={filterItemState.min} max={sliderMax || filterItemState.max} defaultValue={filterItemState.min} onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
+                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq}  defaultValue={filterItemState.min} onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
                     <label>max {this.displayNumber(true)}</label>
-                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} min={sliderMin || filterItemState.min} max={filterItemState.max} defaultValue={filterItemState.max} onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
+                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} defaultValue={filterItemState.max} onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
                 </div>}
             </div>
             }

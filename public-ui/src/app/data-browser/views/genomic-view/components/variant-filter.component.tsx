@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { GenomicFilters } from 'publicGenerated';
-import { ClrIcon } from 'app/utils/clr-icon';
 import { reactStyles } from 'app/utils';
 import { VariantFilterItemComponent } from 'app/data-browser/views/genomic-view/components/variant-filter-item.component'
 
@@ -44,8 +43,8 @@ const styles = reactStyles({
         width: '45%'
     },
     filterItems: {
-        maxHeight:'340px',
-        overflowY:'scroll'
+        maxHeight: '340px',
+        overflowY: 'scroll'
     }
 })
 
@@ -60,7 +59,7 @@ interface Props {
 }
 interface State {
     filterCats: Cat[];
-    filteredMetadata:any;
+    filteredMetadata: any;
 
 }
 
@@ -77,16 +76,16 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Number', field: 'alleleNumber' },
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
-            filteredMetadata:this.props.filterMetadata
+            filteredMetadata: this.props.filterMetadata
         };
     }
-    handleFilterChange(filteredItem, cat){
+    handleFilterChange(filteredItem: GenomicFilters, cat) {
 
         this.props.filterMetadata[cat.field] = filteredItem;
-        this.setState({filteredMetadata: this.props.filterMetadata});
+        this.setState({ filteredMetadata: this.props.filterMetadata });
         // this.props.onFilterSubmit(this.props.filterMetadata);
     }
-    submitFilter(filteredMetadata) {
+    submitFilter(filteredMetadata: GenomicFilters) {
         filteredMetadata = this.state.filteredMetadata;
         this.props.onFilterSubmit(filteredMetadata);
     }
@@ -98,12 +97,12 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             <div style={styles.filterItems}>
                 {filterCats.map((cat, index) => {
                     const key = 'cat' + index;
-                    { return filterMetadata && <VariantFilterItemComponent onFilterChange={(e,cat)=>this.handleFilterChange(e,cat)} key={key} category={cat} filterItem={filterMetadata[cat.field.toString()]} /> }
+                    { return filterMetadata && <VariantFilterItemComponent onFilterChange={(e, cat) => this.handleFilterChange(e, cat)} key={key} category={cat} filterItem={filterMetadata[cat.field.toString()]} /> }
                 })
                 }
                 <div style={styles.actionBtnContainer}>
                     <button style={styles.clearBtn}>Clear</button>
-                    <button onClick={()=>this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
+                    <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
                 </div>
             </div>
         </div>
