@@ -62,10 +62,12 @@ import org.pmiops.workbench.service.SurveyMetadataService;
 import org.pmiops.workbench.service.AchillesResultDistService;
 import org.pmiops.workbench.cdr.ConceptMapper;
 import org.pmiops.workbench.cdr.ConceptMapperImpl;
+import org.springframework.test.context.TestPropertySource;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+@TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
 public class DataBrowserControllerTest {
 
     private static final Concept CLIENT_CONCEPT_1 = new Concept()

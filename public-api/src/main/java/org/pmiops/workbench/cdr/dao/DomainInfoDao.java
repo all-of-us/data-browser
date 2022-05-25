@@ -20,11 +20,11 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
    */
   @Query(nativeQuery=true,
           value="select " +
-                  "d.domain, d.domain_id, d.name, d.description, d.concept_id, " +
-                  "0 all_concept_count, c.count standard_concept_count, d.participant_count participant_count " +
+                  "d.domain as domain, d.domain_id as domain_id, d.name as name, d.description as description, d.concept_id as concept_id, " +
+                  "0 as all_concept_count, c.count as standard_concept_count, d.participant_count as participant_count " +
                   "from domain_info d " +
                   "left outer join (" +
-                  "  select c1.domain_id, count(*) as count " +
+                  "  select c1.domain_id as domain_id, count(*) as count " +
                   "  from (" +
                   "    (select domain_id, concept_id from concept " +
                   "     where has_counts > 0 and " +

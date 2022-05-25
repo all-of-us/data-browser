@@ -113,7 +113,7 @@ buildscript {    // Configuration for building
   }
 }
 
-ext['hibernate.version'] = '5.2.10.Final'
+ext['hibernate.version'] = '5.4.31.Final'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
