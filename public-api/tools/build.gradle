@@ -1,9 +1,9 @@
 // Gradle targets for tools, used by Ruby commands and docker-compose.
 
-ext['hibernate.version'] = '5.2.10.Final'
 ext {
   SPRING_BOOT_VERSION = '2.3.9.RELEASE'
   SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
+  HIBERNATE_VERSION = '5.2.10.Final'
 }
 
 apply plugin: 'java'
