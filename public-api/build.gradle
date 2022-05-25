@@ -228,7 +228,6 @@ dependencies {
 
   compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
   compile("org.springframework.boot:spring-boot-starter-tomcat")
-
   compile("org.springframework.boot:spring-boot-starter-jdbc") {
     exclude group: 'com.zaxxer', module: 'HikariCP'
   }

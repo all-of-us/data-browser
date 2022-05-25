@@ -120,6 +120,11 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp:2.7.5'
   compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
   compile 'org.hibernate:hibernate-core:5.2.10.Final'
+  compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
+  compile("org.springframework.boot:spring-boot-starter-tomcat")
+  compile("org.springframework.boot:spring-boot-starter-jdbc") {
+    exclude group: 'com.zaxxer', module: 'HikariCP'
+  }
 }
 
 
