@@ -20,10 +20,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.WebApplicationType;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
-@EnableJpaRepositories("org.pmiops.workbench.db.dao")
-@EntityScan("org.pmiops.workbench.db.model")
+@Configuration
 /**
  * Run by api/project.rb update-cloud-config and (locally) docker-compose run update-config, which
  * is automatically invoked during api/project.rb dev-up.
@@ -93,7 +92,7 @@ public class ConfigLoader {
   }
 
   public static void main(String[] args) throws Exception {
-    new SpringApplicationBuilder(ConfigLoader.class).web(WebApplicationType.NONE).run(args);
+    CommandLineToolConfig.runCommandLine(ConfigLoader.class, args);
   }
 
 }
