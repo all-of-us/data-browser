@@ -183,9 +183,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         window.history.replaceState(null, 'Genomic Variants', url);
     }
 
-    getSearchSize(searchTerm: string) {
+    getSearchSize(searchTerm: string,filtered?: boolean) {
         this.setState({ loadingVariantListSize: true });
-        this.getFilterMetadata(searchTerm);
+        {!filtered && this.getFilterMetadata(searchTerm);}
         const variantSizeRequest = {
             query: searchTerm,
             filterMetadata: this.state.filterMetadata
@@ -381,7 +381,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
         // this.setState({filteredMetadata: filteredMetadata});
         this.filterGenomics(filteredMetadata);
-        this.setState({loadingResults:false})
+        this.setState({loadingResults:false});
+        this.getSearchSize(this.state.searchTerm,true);
+       
 
     }
 
