@@ -110,7 +110,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             el.checked = value;
         });
         this.setState({ filterItemState: this.state.filterItemState });
-        
+
         this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
     handleCheck(filteredItem) {
