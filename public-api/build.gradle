@@ -197,7 +197,7 @@ dependencies {
   compile 'mysql:mysql-connector-java:8.0.13'
 
   // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-  compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.0.RELEASE'
+  compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.2'
   compile 'com.google.guava:guava:26.0-jre'
 
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
